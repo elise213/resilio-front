@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link, useLocation } from "react-router-dom";
+// import { Link, useLocation } from "react-router-dom";
 import { SimpleMap } from "../component/SimpleMap";
 import { ResourceCard } from "../component/ResourceCard";
 import { useSearchParams } from "react-router-dom";
@@ -387,7 +387,8 @@ const Home = () => {
 
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>
-              {store.searchResults.map((result, i) => {
+              {store.dummydata.map((result, i) => {
+                // {store.searchResults.map((result, i) => {
                 return (
                   <li key={i}>
                     <ResourceCard
@@ -400,6 +401,7 @@ const Home = () => {
                       id={result.id}
                       link={"/resource/" + result.id}
                       type="resource"
+                      item={result}
                     />
                   </li>
                 );
