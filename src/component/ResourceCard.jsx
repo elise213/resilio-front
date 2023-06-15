@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import AddFave from "./AddFave";
+import Modal from "./Modal"
 
 export const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
@@ -17,29 +18,19 @@ export const ResourceCard = (props) => {
     icon = "fa-solid fa-person-shelter";
   }
 
-  // let image = "";
-  // if (props.image == "") {
-  //   image = { AliveLogo };
-  // } else {
-  //   image = props.image;
-  // }
-
   return (
-    <div className="resource-card row">
+    <div className="resource-card row" onClick={() => openModal(props.id)}>
       <div className="">
-        <Link to={props.link} className="text-decoration-none">
-          <div className="card-header">
-            <div className="card-title-div">
-              <p className="resource-card-title-name">{props.name}</p>
-            </div>
+        <div className="card-header">
+          <div className="card-title-div">
+            <p className="resource-card-title-name">{props.name}</p>
           </div>
-          <div className="d-flex justify-content-center">
-            <img className="card-img" src={props.image} alt="profile picture" />
-          </div>
-        </Link>
+        </div>
+        <div className="d-flex justify-content-center">
+          <img className="card-img" src={props.image} alt="profile picture" />
+        </div>
       </div>
       <div className="favorite-button-container">
-
         <AddFave
           name={props.name}
           type={props.type}
@@ -48,6 +39,19 @@ export const ResourceCard = (props) => {
           <i className={`${icon} card-icon`} />
         </div>
       </div>
+      {/* Button trigger modal */}
+      <div className="more-button">
+        <button
+          type="button"
+          className="btn learn-more"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          More
+        </button>
+      </div>
+
+      <Modal resource={props.item} />
     </div>
   );
 }

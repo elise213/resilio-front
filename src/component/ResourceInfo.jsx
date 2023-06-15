@@ -9,66 +9,57 @@ import { SimpleMap2 } from "./SimpleMap2";
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
 
-  function filterNonNullValues(schedule) {
-    const result = {};
-    const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  // function filterNonNullValues(schedule) {
+  //   const result = {};
+  //   const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-    daysOfWeek.forEach(day => {
-      const startKey = `${day}Start`;
-      const endKey = `${day}End`;
+  //   daysOfWeek.forEach(day => {
+  //     const startKey = `${day}Start`;
+  //     const endKey = `${day}End`;
+  //     if (schedule[startKey] !== null && schedule[endKey] !== null) {
+  //       result[startKey] = schedule[startKey];
+  //       result[endKey] = schedule[endKey];
+  //     } else {
+  //       result[startKey] = 'closed';
+  //       result[endKey] = 'closed';
+  //     }
+  //   });
+  //   return result;
+  // }
 
-      if (schedule[startKey] !== null && schedule[endKey] !== null) {
-        result[startKey] = schedule[startKey];
-        result[endKey] = schedule[endKey];
-      } else {
-        result[startKey] = 'closed';
-        result[endKey] = 'closed';
-      }
-    });
+  // function formatTime(time) {
+  //   if (time == 'closed') {
+  //     return 'closed'
+  //   }
+  //   const [hour, minute] = time.split(':');
+  //   let formattedTime = time;
 
-    return result;
-  }
+  //   if (parseInt(hour) > 12) {
+  //     formattedTime = `${parseInt(hour) - 12}:${minute} p.m.`;
+  //   } else {
+  //     formattedTime = `${hour}:${minute} a.m.`;
+  //   }
+  //   return formattedTime;
+  // }
 
-  function formatTime(time) {
-    if (time == 'closed') {
-      return 'closed'
-    }
-    const [hour, minute] = time.split(':');
-    let formattedTime = time;
+  // const schedule2 = filterNonNullValues(props.schedule);
+  // console.log("schedule 2", schedule2);
 
-    if (parseInt(hour) > 12) {
-      formattedTime = `${parseInt(hour) - 12}:${minute} p.m.`;
-    } else {
-      formattedTime = `${hour}:${minute} a.m.`;
-    }
-    return formattedTime;
-  }
+  // const formattedSchedule = {};
 
-  const schedule2 = filterNonNullValues(props.schedule);
-  console.log("schedule 2", schedule2);
+  // Object.keys(schedule2).forEach(key => {
+  //   const day = key.replace(/End|Start/g, ''); // Extract the day from the key
+  //   const start = schedule2[`${day}Start`];
+  //   const end = schedule2[`${day}End`];
+  //   const formattedStart = formatTime(start);
+  //   const formattedEnd = formatTime(end);
+  //   formattedSchedule[day] = (start && end) && (formattedStart !== 'closed') ? `${formattedStart} - ${formattedEnd}` : 'Closed';
+  // });
 
-  const formattedSchedule = {};
-
-  Object.keys(schedule2).forEach(key => {
-    const day = key.replace(/End|Start/g, ''); // Extract the day from the key
-    const start = schedule2[`${day}Start`];
-    const end = schedule2[`${day}End`];
-    const formattedStart = formatTime(start);
-    const formattedEnd = formatTime(end);
-    formattedSchedule[day] = (start && end) && (formattedStart !== 'closed') ? `${formattedStart} - ${formattedEnd}` : 'Closed';
-  });
-
-  { console.log("formatted sched", formattedSchedule); }
+  // { console.log("formatted sched", formattedSchedule); }
 
   return (
     <div className="offering-card m-4">
-      {/* <Link to={"/"}>
-        <div className="back-to-search">
-          <i className="fa-solid fa-arrow-left-long me-3"></i>
-          Back to Search Results
-        </div>
-      </Link> */}
-
       <div className="map-carousel-column">
 
         {/* _______CAROUSEL_______ */}
@@ -97,10 +88,7 @@ export const ResourceInfo = (props) => {
                 onError={(e) => {
                   e.target.src = ""
                 }}
-              // onError={({ currentTarget }) => {
-              //   currentTarget.onerror = null;
-              //   currentTarget.src = { imgLogo };
-              // }}
+
               />
             </div>
             {props.image2 != "" && (
@@ -146,9 +134,6 @@ export const ResourceInfo = (props) => {
         <div className="details-column">
           {/* DESCRIPTION */}
           <div className="description-div fifty">
-            <div className="resource-name">
-              <h1 className="resource-title">{props.name}</h1>
-            </div>
             <p className="resource-card-text description mt-3">{props.description}</p>
           </div>
           {/* ADDRESS */}
@@ -171,23 +156,15 @@ export const ResourceInfo = (props) => {
             </div>
 
             {/* SCHEDULE */}
-            <div className="d-flex info">
+            {/* <div className="d-flex info">
               <i className="fa-solid fa-calendar-days me-4"></i>
-              {/* <span className="resource-card-text">Schedule:</span> */}
               <div className="">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
                   <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
                 ))}
               </div>
-            </div>
-
+            </div> */}
           </div>
-          {/* <Link to={"/contact"}>
-            <div className="back-to-search resource-card-text">
-              <i class="fa-solid fa-triangle-exclamation me-3"></i>
-              Report incorrect information
-            </div>
-          </Link> */}
         </div>
       </div>
     </div >
