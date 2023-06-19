@@ -17,8 +17,6 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
     }
   });
 
-
-
   useEffect(() => {
     setPlace(city);
   }, [city])

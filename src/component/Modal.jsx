@@ -15,9 +15,15 @@ const Modal = (props) => {
                     <div className="modal-dialog modal-xxsl">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <span className="modal-title" id="exampleModalLabel">{props.resource.name}</span>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div className="col-3" id="">{""}</div>
+                                <div className='col-6 modal-title-div'>
+                                    <span className="modal-title" id="exampleModalLabel">{props.resource.name}</span>
+                                </div>
+                                <div className='col-3 close-modal-div'>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
                             </div>
+
                             <div className="modal-body d-flex">
                                 <div className="offering-details-page">
                                     <div className="details">
@@ -32,7 +38,7 @@ const Modal = (props) => {
                                             picture={props.resource.picture}
                                             image={props.resource.image}
                                             image2={props.resource.image2}
-                                            schedule={props.resource.schedule}
+                                            schedule={store.schedule}
                                             latitude={props.resource.latitude}
                                             longitude={props.resource.longitude}
                                         />

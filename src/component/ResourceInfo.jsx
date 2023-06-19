@@ -9,54 +9,61 @@ import { SimpleMap2 } from "./SimpleMap2";
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
 
-  // function filterNonNullValues(schedule) {
-  //   const result = {};
-  //   const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  function filterNonNullValues(schedule) {
+    const result = {};
+    const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-  //   daysOfWeek.forEach(day => {
-  //     const startKey = `${day}Start`;
-  //     const endKey = `${day}End`;
-  //     if (schedule[startKey] !== null && schedule[endKey] !== null) {
-  //       result[startKey] = schedule[startKey];
-  //       result[endKey] = schedule[endKey];
-  //     } else {
-  //       result[startKey] = 'closed';
-  //       result[endKey] = 'closed';
-  //     }
-  //   });
-  //   return result;
-  // }
+    daysOfWeek.forEach(day => {
+      const startKey = `${day}Start`;
+      const endKey = `${day}End`;
+      if (schedule[startKey] !== null && schedule[endKey] !== null) {
+        result[startKey] = schedule[startKey];
+        result[endKey] = schedule[endKey];
+      } else {
+        result[startKey] = 'closed';
+        result[endKey] = 'closed';
+      }
+    });
+    return result;
+  }
 
-  // function formatTime(time) {
-  //   if (time == 'closed') {
-  //     return 'closed'
-  //   }
-  //   const [hour, minute] = time.split(':');
-  //   let formattedTime = time;
+  function formatTime(time) {
+    if (time === 'closed') {
+      return 'closed';
+    }
+    if (!time) {
+      return '';
+    }
 
-  //   if (parseInt(hour) > 12) {
-  //     formattedTime = `${parseInt(hour) - 12}:${minute} p.m.`;
-  //   } else {
-  //     formattedTime = `${hour}:${minute} a.m.`;
-  //   }
-  //   return formattedTime;
-  // }
+    const [hour, minute] = time.split(':');
+    let formattedTime = time;
 
-  // const schedule2 = filterNonNullValues(props.schedule);
-  // console.log("schedule 2", schedule2);
+    if (parseInt(hour) > 12) {
+      formattedTime = `${parseInt(hour) - 12}:${minute} p.m.`;
+    } else {
+      formattedTime = `${hour}:${minute} a.m.`;
+    }
+    return formattedTime;
+  }
 
-  // const formattedSchedule = {};
 
-  // Object.keys(schedule2).forEach(key => {
-  //   const day = key.replace(/End|Start/g, ''); // Extract the day from the key
-  //   const start = schedule2[`${day}Start`];
-  //   const end = schedule2[`${day}End`];
-  //   const formattedStart = formatTime(start);
-  //   const formattedEnd = formatTime(end);
-  //   formattedSchedule[day] = (start && end) && (formattedStart !== 'closed') ? `${formattedStart} - ${formattedEnd}` : 'Closed';
-  // });
+  const index = props.id - 1
+  const schedule2 = filterNonNullValues(props.schedule[index]);
+  console.log("schedule 2", schedule2);
 
-  // { console.log("formatted sched", formattedSchedule); }
+  const formattedSchedule = {};
+
+  (schedule2 != undefined) ?
+    Object.keys(schedule2).forEach(key => {
+      const day = key.replace(/End|Start/g, ''); // Extract the day from the key
+      const start = schedule2[`${day}Start`];
+      const end = schedule2[`${day}End`];
+      const formattedStart = formatTime(start);
+      const formattedEnd = formatTime(end);
+      formattedSchedule[day] = (start && end) && (formattedStart !== 'closed') ? `${formattedStart} - ${formattedEnd}` : 'Closed';
+    }) : "";
+
+  { console.log("formatted sched", formattedSchedule); }
 
   return (
     <div className="offering-card m-4">
@@ -156,17 +163,23 @@ export const ResourceInfo = (props) => {
             </div>
 
             {/* SCHEDULE */}
-            {/* <div className="d-flex info">
+            <div className="d-flex info">
               <i className="fa-solid fa-calendar-days me-4"></i>
               <div className="">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
                   <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
                 ))}
               </div>
-            </div> */}
+            </div>
+            <p>
+              Is there a problem with this information?
+              <Link href="/contact">
+                {" "}Let us know! </Link>
+            </p>
           </div>
         </div>
       </div>
     </div >
+
   );
 }

@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import AddFave from "./AddFave";
 import Modal from "./Modal"
@@ -19,11 +18,14 @@ export const ResourceCard = (props) => {
   }
 
   return (
-    <div className="resource-card row" onClick={() => openModal(props.id)}>
+    <div className="resource-card row" >
       <div className="">
         <div className="card-header">
           <div className="card-title-div">
             <p className="resource-card-title-name">{props.name}</p>
+            <div className="">
+              <i className={`${icon} card-icon m-2`} />
+            </div>
           </div>
         </div>
         <div className="d-flex justify-content-center">
@@ -31,26 +33,22 @@ export const ResourceCard = (props) => {
         </div>
       </div>
       <div className="favorite-button-container">
-        <AddFave
+        {/* <AddFave
           name={props.name}
           type={props.type}
-        />
-        <div className="">
-          <i className={`${icon} card-icon`} />
+        /> */}
+        <div className="more-button">
+          <button
+            type="button"
+            className="btn learn-more"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Learn More
+          </button>
         </div>
       </div>
       {/* Button trigger modal */}
-      <div className="more-button">
-        <button
-          type="button"
-          className="btn learn-more"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          More
-        </button>
-      </div>
-
       <Modal resource={props.item} />
     </div>
   );
