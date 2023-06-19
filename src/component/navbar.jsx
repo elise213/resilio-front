@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import LogRegBtn from "./LogRegBtn";
-import AliveLogo from "../assets/resilio.png"
+import AliveLogo from "/assets/RESILIO.png"
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);

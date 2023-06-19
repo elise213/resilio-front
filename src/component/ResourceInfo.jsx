@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import imgLogo from "../assets/HDLOGOTRANSP.png";
+import imgLogo from "/assets/HDLOGOTRANSP.png";
 import { Context } from "../store/appContext";
 import AddFave from "./AddFave";
 import { SimpleMap2 } from "./SimpleMap2";
