@@ -32,7 +32,7 @@ const Home = () => {
   const circleInstance = useRef();
 
   useEffect(() => {
-    new CircleType(circleInstance.current).radius(650);
+    new CircleType(circleInstance.current).radius(500);
     actions.setSearchResults();
 
   }, [searchParams]);
@@ -46,7 +46,6 @@ const Home = () => {
       setSwLng(place.bounds.sw.lng)
       console.log("NELAT", neLat)
     }
-
     setSearchParams({
       food: food,
       shelter: shelter,
@@ -194,7 +193,8 @@ const Home = () => {
             {/* <!-- What type of resource--> */}
             <div className="what-type">
               <div className="question">
-                <div className="my-2" ref={circleInstance}>FREE  COMMUNITY  RESOURCES</div>
+                <div className="my-2 circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
+                {/* <span>WHAT DO YOU NEED?</span> */}
               </div>
               <div className="selection">
                 <div className="form-check">
@@ -232,7 +232,7 @@ const Home = () => {
                     onChange={handleHealth}
                   />
                   <label className="form-check-label" htmlFor="health">
-                    Health
+                    Healthcare
                   </label>
                 </div>
                 <div className="form-check form-check-inline ">
@@ -245,11 +245,28 @@ const Home = () => {
                     onChange={handleHygiene}
                   />
                   <label className="form-check-label" htmlFor="hygiene">
-                    Hygiene
+                    Shower
                   </label>
                 </div>
-                {/* Filter by day */}
+                <div className="form-check form-check-inline ">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="hygiene"
+                    value="hygiene"
+                    name="selection"
+                    onChange={handleHygiene}
+                  />
+                  <label className="form-check-label" htmlFor="hygiene">
+                    Bathroom
+                  </label>
+                </div>
+              </div>
+              {/* Filter by day */}
+              <div className="dropdown-div">
+
                 <div className="dropdown">
+
                   <button className="btn dropdown-toggle form-check-label" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Schedule
                   </button>
