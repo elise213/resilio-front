@@ -67,7 +67,7 @@ export const ResourceInfo = (props) => {
 
   return (
     <div className="offering-card m-4">
-      <div className="map-carousel-column">
+      <div className="carousel-description-div">
 
         {/* _______CAROUSEL_______ */}
         <div id="carouselExampleIndicators" className="carousel slide" data-bs-interval="false">
@@ -134,52 +134,57 @@ export const ResourceInfo = (props) => {
             ></span>
             <span className="visually-hidden">Next</span>
           </button>
-          <SimpleMap2 latitude={props.latitude} longitude={props.longitude} />
         </div>
+        {/* DESCRIPTION */}
+        <div className="description-div">
+          <p className="resource-card-text description">{props.description}</p>
+        </div>
+      </div>
+
+      <div className="info-map-div">
 
 
         <div className="details-column">
-          {/* DESCRIPTION */}
-          <div className="description-div fifty">
-            <p className="resource-card-text description mt-3">{props.description}</p>
-          </div>
           {/* ADDRESS */}
-          <div className="fifty">
-            <div className="info">
-              <i className="fa-solid fa-map-location-dot me-4"></i>
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.address)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="resource-card-text"
-              >
-                {props.address}
-              </a>
-            </div>
-            {/* WEBSITE */}
-            <div className="info">
-              <i className="fa-solid fa-wifi me-4"></i>
-              <a href={"https://www." + props.website} className="resource-card-text">{props.website}</a>
-            </div>
+          <div className="info">
+            <i className="fa-solid fa-map-location-dot me-4"></i>
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="resource-card-text"
+            >
+              {props.address}
+            </a>
+          </div>
+          {/* WEBSITE */}
+          <div className="info">
+            <i className="fa-solid fa-wifi me-4"></i>
+            <a href={"https://www." + props.website} className="resource-card-text">{props.website}</a>
+          </div>
 
-            {/* SCHEDULE */}
-            <div className="d-flex info">
-              <i className="fa-solid fa-calendar-days me-4"></i>
-              <div className="">
-                {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-                  <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
-                ))}
-              </div>
+          {/* SCHEDULE */}
+          <div className="d-flex info">
+            <i className="fa-solid fa-calendar-days me-4"></i>
+            <div className="">
+              {Object.entries(formattedSchedule).map(([day, schedule], index) => (
+                <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
+              ))}
             </div>
-            <p>
-              Is there a problem with this information?
-              <Link href="/contact">
-                {" "}Let us know! </Link>
-            </p>
           </div>
         </div>
+        {/* MAP */}
+        <div className="w-50">
+          <SimpleMap2 latitude={props.latitude} longitude={props.longitude} />
+        </div>
       </div>
-    </div >
-
+      <div className="mt-5 modal-footer resource-card-text justify-content-center">
+        <p>
+          Is there a problem with this information?
+          <Link href="/contact">
+            {" "}Let us know </Link>
+        </p>
+      </div>
+    </div>
   );
 }
