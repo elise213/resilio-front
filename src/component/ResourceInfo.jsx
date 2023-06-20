@@ -147,7 +147,7 @@ export const ResourceInfo = (props) => {
         <div className="details-column">
           {/* ADDRESS */}
           <div className="info">
-            <i className="fa-solid fa-map-location-dot me-4"></i>
+            <i className="fa-solid fa-map-pin me-4"></i>
             <a
               href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.address)}`}
               target="_blank"
@@ -159,13 +159,13 @@ export const ResourceInfo = (props) => {
           </div>
           {/* WEBSITE */}
           <div className="info">
-            <i className="fa-solid fa-wifi me-4"></i>
+            <i className="fa-solid fa-earth-americas me-4"></i>
             <a href={"https://www." + props.website} className="resource-card-text">{props.website}</a>
           </div>
 
           {/* SCHEDULE */}
           <div className="d-flex info">
-            <i className="fa-solid fa-calendar-days me-4"></i>
+            <i className="fa-solid fa-calendar-check me-4"></i>
             <div className="">
               {Object.entries(formattedSchedule).map(([day, schedule], index) => (
                 <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
@@ -177,13 +177,6 @@ export const ResourceInfo = (props) => {
         <div className="w-50">
           <SimpleMap2 latitude={props.latitude} longitude={props.longitude} />
         </div>
-      </div>
-      <div className="mt-5 modal-footer resource-card-text justify-content-center">
-        <p>
-          Is there a problem with this information?
-          <Link href="/contact">
-            {" "}Let us know </Link>
-        </p>
       </div>
     </div>
   );

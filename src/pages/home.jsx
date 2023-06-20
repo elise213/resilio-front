@@ -428,7 +428,7 @@ const Home = () => {
           </div>
 
           {/* Search Results Map */}
-          <div className="map-and-cities">
+          <div className="map-and-cities mx-auto">
             <SimpleMap ZipCode={zipCode} setPlace={setPlace} />
           </div>
         </div>

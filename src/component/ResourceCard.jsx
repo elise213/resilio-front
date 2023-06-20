@@ -28,9 +28,10 @@ export const ResourceCard = (props) => {
             </div>
           </div>
         </div>
-        <div className="d-flex justify-content-center">
+        <div className="card-image-container">
           <img className="card-img" src={props.image} alt="profile picture" />
         </div>
+
       </div>
       <div className="favorite-button-container">
         {/* <AddFave
@@ -42,14 +43,14 @@ export const ResourceCard = (props) => {
             type="button"
             className="btn learn-more"
             data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
+            data-bs-target={"#exampleModal" + props.id}
           >
             Learn More
           </button>
         </div>
       </div>
       {/* Button trigger modal */}
-      <Modal resource={props.item} />
+      <Modal resource={props.item} id={props.id} />
     </div>
   );
 }
