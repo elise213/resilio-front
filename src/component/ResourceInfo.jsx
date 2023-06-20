@@ -174,7 +174,7 @@ export const ResourceInfo = (props) => {
           </div>
         </div>
         {/* MAP */}
-        <div className="w-50">
+        <div className="modal-map">
           <SimpleMap2 latitude={props.latitude} longitude={props.longitude} />
         </div>
       </div>
