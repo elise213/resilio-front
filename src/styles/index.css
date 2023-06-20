@@ -1,4 +1,4 @@
-/* _____________________________________________________________RESOURCE / OFFERING INFO */
+/* _____________________________________________________________RESOURCE INFO */
 
 .resource-title {
   font-family: "Carme", sans-serif;
@@ -12,7 +12,6 @@
 }
 
 .resource-name {
-  /* margin: 20px 0 20px 0; */
   display: flex;
   justify-content: center;
 }
@@ -54,8 +53,6 @@
   width: 35vw;
   object-fit: cover;
   height: 40vh;
-  /* border: 4px solid lightgreen; */
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
   border-radius: 1.5%;
 }
 
@@ -92,7 +89,6 @@
   justify-content: center;
   padding-left: 10px;
   margin: 30px 10px 10px 10px;
-  /* align-items: center; */
 }
 
 .description {
@@ -124,9 +120,16 @@
 }
 
 .card-img {
-  object-fit: contain;
-  margin: 0px;
-  padding: 0px;
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card-image-container {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  overflow: hidden;
 }
 
 .resource-card {
@@ -155,14 +158,15 @@
   min-height: 20%;
   display: flex;
   justify-content: between;
-  /* flex-direction: column; */
 }
 
 .card-title-div {
   width: 100%;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 8px;
 }
 
 .resource-card-title-name {
@@ -245,8 +249,8 @@
 }
 
 .modal-content {
-  width: 90vw;
-  border: 4px solid salmon;
+  margin: 20px;
+  border: 8px double salmon !important;
 }
 
 .close-modal-div {
@@ -259,13 +263,6 @@
   justify-content: center;
 }
 
-.modal-body {
-  /* overflow-x: scroll; */
-  background-color: whitesmoke;
-  display: block;
-  padding: 20px;
-}
-
 .modal-dialog {
   width: 100vw;
   max-width: none !important;
@@ -274,7 +271,7 @@
 }
 
 .modal-footer {
-  border: none;
+  border: none !important;
 }
 
 .modal-dialog {
@@ -286,6 +283,7 @@
 .modal-header .btn-close {
   padding: 0;
   margin: 0;
+  z-index: 5;
 }
 
 .modal-title {
@@ -331,7 +329,6 @@
 
 .scroll-search-results {
   height: 73vh;
-  /* width: 33vw; */
   direction: rtl;
   display: flex;
   justify-content: left;
@@ -342,15 +339,15 @@
 .scroll-search-results ul {
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-right: 15px;
+  margin: 20px;
   float: left;
   direction: ltr;
-  margin: 0px;
+  padding: 10px;
 }
 
 .scroll-search-results li {
   padding: 0;
-  margin: 0;
+  margin: 10px;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -360,17 +357,11 @@
   background-color: transparent;
 }
 
-.map-info {
-  flex-grow: 1;
-  width: 98%;
-  margin-bottom: 20px;
-  margin-top: 10px;
-}
 
 .search-results-full {
   display: flex;
   width: 90%;
-  /* margin-top: 30px; */
+  justify-content: center;
 }
 
 .grand-container {
@@ -386,7 +377,7 @@
   /* width: 86.5%; */
   padding: 5px;
   border-width: 4px;
-  border-color: rgb(108, 195, 108);
+  border-color: rgb(187, 238, 187);
   border-radius: 4px;
   border-style: solid;
   background-color: rgb(153, 224, 154);
@@ -538,16 +529,6 @@ input[type='checkbox']:after {
     margin: 10px;
   }
 
-  .offerings-column {
-    overflow-y: hidden;
-    overflow-x: scroll;
-    display: flex;
-    height: 27vh;
-    width: 100%;
-    margin-bottom: 10px;
-    margin-left: 10px;
-  }
-
   .nav-btn {
     font-size: 25px;
   }
@@ -617,23 +598,6 @@ input[type='checkbox']:after {
     padding-top: 80px;
   }
 
-
-  .offering-card {
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 25px;
-    border: none !important;
-  }
-
-  .offering-details-page {
-    margin: 0;
-    padding: 0;
-    /* border: 3px solid salmon; */
-  }
-
-  .fa-heart {
-    font-size: medium;
-  }
 }
 
 /* ______________________________________________________________SIZE < 600px */

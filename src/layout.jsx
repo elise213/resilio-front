@@ -7,6 +7,7 @@ import Donate from "./pages/Donate";
 import { Contact } from "./pages/Contact";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
+import Modal from "./component/Modal";
 // import { Footer } from "./component/footer";
 
 
@@ -38,6 +39,7 @@ const Layout = () => {
 
           </Routes>
           {/* <Footer /> */}
+          {/* <Modal /> */}
         </ScrollToTop>
       </BrowserRouter>
     </div>
