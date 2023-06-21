@@ -136,13 +136,13 @@
   font-family: "Carme", sans-serif;
   font-family: sans-serif;
   background-color: #eeeeee;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
   margin-bottom: 10px;
   width: 98%;
   align-items: end;
   padding: 4px;
   max-width: 250px;
-  border-radius: 1.5%;
+  border-radius: 1%;
   min-height: 150px;
 }
 
@@ -239,9 +239,11 @@
   color: black;
   font-size: x-large;
   align-items: center;
-  background-color: whitesmoke;
-  border: double 8px salmon;
+  /* background-color: whitesmoke; */
+  border: solid 8px salmon;
   background-color: rgb(245, 186, 77);
+  min-height: 10%;
+  ;
 }
 
 .modal-content {
@@ -298,7 +300,6 @@
 
 .info {
   display: flex;
-  /* justify-content: center; */
 }
 
 .dropdown-div {
@@ -308,8 +309,19 @@
 }
 
 .dropdown-menu {
-  background-color: white;
-  border: 2px solid lime;
+  background-color: rgb(180, 255, 210) !important;
+  border: 3px sold green;
+  border-radius: 1px !important;
+  box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#dropdownMenuButton1 {
+  border: none !important;
+}
+
+.form-check {
+  display: flex;
+  justify-content: space-between;
 }
 
 .description-buttons {
@@ -370,13 +382,12 @@
 /* _____________________________________________________________Selection-*/
 .search-container {
   word-wrap: wrap;
-  /* width: 86.5%; */
   padding: 5px;
-  border-width: 4px;
-  border-color: rgb(187, 238, 187);
-  border-radius: 4px;
-  border-style: solid;
-  background-color: rgb(153, 224, 154);
+  border-width: 6px;
+  background-color: rgb(127, 245, 174) !important;
+  border-radius: 2px;
+  /* border-style: solid; */
+  /* border-color: rgb(127, 245, 174) !important; */
   box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: flex;
   align-items: center;
@@ -388,12 +399,13 @@
   padding: 15px;
   height: 100%;
   width: 100%;
-  border: 8px double rgb(193, 246, 201);
+  border: 3px solid;
+  background-color: rgb(174, 251, 206);
   box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: rgb(169, 254, 166);
+  border-color: rgb(169, 254, 166);
 }
 
 .question {
@@ -420,7 +432,7 @@
   font-family: "Urbanist", sans-serif !important;
   font-size: 20px;
   color: black;
-  border-radius: 3%;
+  border-radius: 2px;
   direction: rtl;
 }
 
@@ -429,15 +441,20 @@
 }
 
 .form-check {
-  display: flex;
+  display: flex !important;
   margin: 10px;
 }
 
 .form-check-input {
-  background-color: white;
-  border: solid black 1px;
-  width: 18px;
-  height: 18px;
+  border: 2px double green !important;
+  margin-right: 5px;
+}
+
+.form-check-input.dropdown-item {
+  background-color: rgb(227, 251, 237);
+  width: 10px !important;
+  height: 10px;
+  border: 3px double green;
   margin-right: 10px;
   box-shadow: none;
   cursor: pointer;
@@ -453,7 +470,7 @@
 }
 
 input[type=checkbox]:checked {
-  background-color: green;
+  background-color: rgb(0, 128, 73);
   color: black !important;
 }
 
@@ -476,8 +493,8 @@ input[type='checkbox']:after {
   width: 0%;
   flex-grow: 1;
   margin-top: 20px;
-  border: 8px double rgb(101, 249, 123);
-  box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* border: 8px double rgb(101, 249, 123); */
+  /* box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .modal-map {
@@ -499,15 +516,19 @@ input[type='checkbox']:after {
   width: 100%
 }
 
+.dropdown-item {
+  width: 60px;
+}
+
 /* _____________________________________________________________SIZE < 1500px */
 @media screen and (max-width: 1500px) {
   .resource-card-title-name {
     font-size: medium;
   }
 
-  .form-check {
+  /* .form-check {
     margin: 5px;
-  }
+  } */
 }
 
 /* _____________________________________________________________SIZE < 990px */
@@ -681,10 +702,6 @@ input[type='checkbox']:after {
 
 /* ___________________________________________________________________GLOBAL */
 
-label {
-  font-family: "Urbanist", sans-serif;
-  color: black !important;
-}
 
 .submit {
   border: 1px solid black;
@@ -712,7 +729,7 @@ label {
 }
 
 .radio {
-  border-radius: 3% !important;
+  border-radius: 2px !important;
   border: solid 1px lightgray;
 }
 

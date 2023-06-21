@@ -22,7 +22,6 @@ const Modal = (props) => {
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                             </div>
-
                             <div className="modal-body d-flex">
                                 <div className="modal-div">
                                     {/* <div className="details"> */}

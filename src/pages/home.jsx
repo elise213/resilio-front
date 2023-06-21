@@ -288,7 +288,6 @@ const Home = () => {
               <div className="dropdown-div">
 
                 <div className="dropdown">
-
                   <button className="btn dropdown-toggle form-check-label" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Schedule
                   </button>
@@ -395,7 +394,6 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
 
 
             {/* <button className="maras-button" 
