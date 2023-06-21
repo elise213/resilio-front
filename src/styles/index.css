@@ -19,14 +19,12 @@
 .res-map-container {
   width: 33%;
   height: 100%;
-
 }
 
 .res-map-container-2 {
   width: 33%;
   height: 100%;
 }
-
 
 .carousel-description-div {
   display: flex;
@@ -82,7 +80,6 @@
 }
 
 .details-column {
-  width: 50%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -176,13 +173,10 @@
   font-family: "Carme", sans-serif;
 }
 
-
 .card-icon {
   color: darkgreen;
   font-size: x-large;
 }
-
-
 
 /* _____________________________________________________________NAVBAR / FOOTER*/
 .navbar {
@@ -655,7 +649,6 @@ input[type='checkbox']:after {
 
   .resource-card {
     width: 29vw !important;
-
   }
 
   .resource-card-title-name {
@@ -726,19 +719,6 @@ label {
 .radio-label {
   color: gray
 }
-
-/* .fave-button {
-  border: none;
-  background-color: transparent;
-}
-
-.colored-heart {
-  color: red;
-}
-
-.fa-heart {
-  font-size: large;
-} */
 
 .alert {
   text-align: center;
