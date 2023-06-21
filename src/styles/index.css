@@ -235,6 +235,9 @@
 }
 
 /* _________________________________________MODAL */
+.modal-div {
+  width: 100%;
+}
 
 .modal-header {
   display: flex;
@@ -329,7 +332,7 @@
 
 .scroll-search-results {
   height: 77vh;
-  width: 33%;
+  /* width: 33%; */
   direction: rtl;
   display: flex;
   justify-content: left;
@@ -344,13 +347,12 @@
   float: left;
   direction: ltr;
   padding: 10px;
+  width: 100%;
 }
 
 .scroll-search-results li {
   padding-right: 15px;
   margin: 10px;
-  display: flex;
-  justify-content: center;
   width: 100%;
 }
 
