@@ -119,7 +119,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
 
       </div> */}
 
-      <div className="map-container" style={{ height: "68vh", width: "100%" }}>
+      <div className="map-container" style={{ height: "73vh", width: "100%" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyDOhqYOYIXvrk8lt2HQQLI8cS1O8FnZt9I" }}
           center={city.center}

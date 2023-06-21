@@ -24,7 +24,7 @@ const Modal = (props) => {
                             </div>
 
                             <div className="modal-body d-flex">
-                                <div className="offering-details-page">
+                                <div className="modal-div">
                                     {/* <div className="details"> */}
                                     <ResourceInfo
                                         id={props.resource.id}
