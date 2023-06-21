@@ -117,6 +117,15 @@ const Home = () => {
       setHygiene(false);
     }
   }
+  function handleWork(event) {
+    const element = event.target;
+    if (element.checked) {
+      setWork(true);
+    }
+    if (!element.checked) {
+      setWork(false);
+    }
+  }
   function handleMonday(event) {
     const element = event.target;
     if (element.checked) {
@@ -259,6 +268,19 @@ const Home = () => {
                   />
                   <label className="form-check-label" htmlFor="hygiene">
                     Bathroom
+                  </label>
+                </div>
+                <div className="form-check form-check-inline ">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="hygiene"
+                    value="hygiene"
+                    name="selection"
+                    onChange={handleWork}
+                  />
+                  <label className="form-check-label" htmlFor="hygiene">
+                    Work
                   </label>
                 </div>
               </div>
