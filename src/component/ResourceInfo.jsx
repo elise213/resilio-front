@@ -143,33 +143,34 @@ export const ResourceInfo = (props) => {
 
       <div className="info-map-div">
 
+        <div className="details-div d-flex justify-content-center w-100">
+          <div className="details-column">
+            {/* ADDRESS */}
+            <div className="info">
+              <i className="fa-solid fa-map-pin me-4"></i>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="resource-card-text"
+              >
+                {props.address}
+              </a>
+            </div>
+            {/* WEBSITE */}
+            <div className="info">
+              <i className="fa-solid fa-earth-americas me-4"></i>
+              <a href={"https://www." + props.website} className="resource-card-text">{props.website}</a>
+            </div>
 
-        <div className="details-column">
-          {/* ADDRESS */}
-          <div className="info">
-            <i className="fa-solid fa-map-pin me-4"></i>
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.address)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="resource-card-text"
-            >
-              {props.address}
-            </a>
-          </div>
-          {/* WEBSITE */}
-          <div className="info">
-            <i className="fa-solid fa-earth-americas me-4"></i>
-            <a href={"https://www." + props.website} className="resource-card-text">{props.website}</a>
-          </div>
-
-          {/* SCHEDULE */}
-          <div className="d-flex info">
-            <i className="fa-solid fa-calendar-check me-4"></i>
-            <div className="">
-              {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-                <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
-              ))}
+            {/* SCHEDULE */}
+            <div className="d-flex info">
+              <i className="fa-solid fa-calendar-check me-4"></i>
+              <div className="">
+                {Object.entries(formattedSchedule).map(([day, schedule], index) => (
+                  <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
+                ))}
+              </div>
             </div>
           </div>
         </div>

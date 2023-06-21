@@ -14,11 +14,11 @@ const Modal = (props) => {
                     <div className="modal-dialog modal-xxsl">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <div className="col-3" id="">{""}</div>
-                                <div className='col-6 modal-title-div'>
+                                <div className="col-1" id="">{""}</div>
+                                <div className='col-10 modal-title-div'>
                                     <span className="modal-title" id="exampleModalLabel">{props.resource.name}</span>
                                 </div>
-                                <div className='col-3 close-modal-div'>
+                                <div className='col-1 close-modal-div'>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                             </div>
