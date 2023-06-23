@@ -7,7 +7,7 @@ export const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
 
   let icon = "";
-  if (props.category == "health") {
+  if (props.item.category == "health") {
     icon = "fa-solid fa-stethoscope";
   } else if (props.category == "food") {
     icon = "fa-solid fa-bowl-rice";
@@ -18,39 +18,25 @@ export const ResourceCard = (props) => {
   }
 
   return (
-    <div className="resource-card row" >
+    <div className="resource-card row"
+      data-bs-toggle="modal"
+      data-bs-target={"#exampleModal" + props.item.id} >
       <div className="">
         <div className="card-header">
           <div className="card-title-div">
-            <p className="resource-card-title-name">{props.name}</p>
+            <p className="resource-card-title-name">{props.item.name}</p>
             <div className="">
               <i className={`${icon} card-icon m-2`} />
             </div>
           </div>
         </div>
         <div className="card-image-container">
-          <img className="card-img" src={props.image} alt="profile picture" />
+          <img className="card-img" src={props.item.image} alt="profile picture" />
         </div>
+      </div>
 
-      </div>
-      <div className="favorite-button-container">
-        {/* <AddFave
-          name={props.name}
-          type={props.type}
-        /> */}
-        <div className="more-button">
-          <button
-            type="button"
-            className="btn learn-more"
-            data-bs-toggle="modal"
-            data-bs-target={"#exampleModal" + props.id}
-          >
-            Learn More
-          </button>
-        </div>
-      </div>
       {/* Button trigger modal */}
-      <Modal resource={props.item} id={props.id} />
+      <Modal resource={props.item} id={props.item.id} />
     </div>
   );
 }

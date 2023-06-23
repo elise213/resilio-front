@@ -143,7 +143,7 @@ export const ResourceInfo = (props) => {
 
       <div className="info-map-div">
 
-        <div className="details-div d-flex justify-content-center w-100">
+        <div className="details-div d-flex w-100">
           <div className="details-column">
             {/* ADDRESS */}
             <div className="info">

@@ -5,6 +5,8 @@ import { SimpleMap } from "../component/SimpleMap";
 import { ResourceCard } from "../component/ResourceCard";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
+import axios from 'axios';
+import CardModal from "../component/Nelson";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -34,7 +36,7 @@ const Home = () => {
   useEffect(() => {
     new CircleType(circleInstance.current).radius(500);
     actions.setSearchResults();
-
+    // axios.get("http://localhost:3000/getResources").then(result => console.log("RESULT", result))
   }, [searchParams]);
 
   useEffect(() => {
@@ -189,7 +191,6 @@ const Home = () => {
       setSunday(false);
     }
   }
-
   return (
     <div>
       <div className="grand-container">
@@ -285,8 +286,7 @@ const Home = () => {
                 </div>
               </div>
               {/* Filter by day */}
-              <div className="dropdown-div">
-
+              {/* <div className="dropdown-div">
                 <div className="dropdown">
                   <button className="btn dropdown-toggle form-check-label" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Schedule
@@ -392,9 +392,8 @@ const Home = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
-
 
             {/* <button className="maras-button" 
           // onClick={geoFindMe()}
@@ -424,26 +423,20 @@ const Home = () => {
 
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>
-              {store.dummydata.map((result, i) => {
-                // {store.searchResults.map((result, i) => {
+              {/* {store.dummydata.map((result, i) => { */}
+              {store.searchResults.map((result, i) => {
                 return (
                   <li key={i}>
-                    <ResourceCard
-                      category={result.category}
-                      key={result.id}
-                      name={result.name}
-                      logo={result.logo}
-                      image={result.image}
-                      description={result.description}
-                      id={result.id}
-                      link={"/resource/" + result.id}
-                      type="resource"
-                      item={result}
-                    />
+                    <ResourceCard item={result} />
                   </li>
                 );
               })}
-
+              {/* {store.searchResults.map((result, i) => {
+                return (
+                  <li key={i}>
+                    <CardModal item={result} idx={i} />
+                  </li>)
+              })} */}
             </ul>
           </div>
 
