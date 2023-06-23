@@ -1,5 +1,4 @@
 /* _____________________________________________________________RESOURCE INFO */
-
 .resource-title {
   font-family: "Carme", sans-serif;
   font-size: xx-large;
@@ -44,7 +43,7 @@
 .carousel {
   width: 50%;
   height: 100%;
-  padding: 0px 50px;
+  padding: 0px 80px;
 }
 
 .carousel-image {
@@ -91,7 +90,6 @@
 .description {
   font-family: "Carme", sans-serif;
   line-height: 2;
-  padding: 0px 40px 0px 10px;
 }
 
 .description-div {
@@ -239,17 +237,18 @@
   color: black;
   font-size: x-large;
   align-items: center;
-  /* background-color: whitesmoke; */
-  border: solid 8px salmon;
+  border: 4px solid salmon !important;
   background-color: rgb(245, 186, 77);
-  min-height: 10%;
-  ;
+  border-radius: 3px;
 }
 
 .modal-content {
   margin: 20px;
-  border: 8px double salmon !important;
-  width: 85% !important;
+  /* border: 8px double salmon !important; */
+  width: 85%;
+  max-width: 850px;
+  outline: 4px solid salmon !important;
+  outline-offset: 5px;
 }
 
 .close-modal-div {
@@ -297,7 +296,6 @@
 }
 
 /* ---------------------------------------------------------------------SEARCH PAGE */
-
 .info {
   display: flex;
 }
@@ -386,8 +384,6 @@
   border-width: 6px;
   background-color: rgb(127, 245, 174) !important;
   border-radius: 2px;
-  /* border-style: solid; */
-  /* border-color: rgb(127, 245, 174) !important; */
   box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: flex;
   align-items: center;
@@ -399,7 +395,7 @@
   padding: 15px;
   height: 100%;
   width: 100%;
-  border: 3px solid;
+  border: 7px solid;
   background-color: rgb(174, 251, 206);
   box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: flex;
@@ -443,6 +439,7 @@
 .form-check {
   display: flex !important;
   margin: 10px;
+  min-height: none !important;
 }
 
 .form-check-input {
@@ -459,7 +456,6 @@
   box-shadow: none;
   cursor: pointer;
   color: black !important;
-  vertical-align: super;
 }
 
 .form-check-label {
@@ -493,13 +489,10 @@ input[type='checkbox']:after {
   width: 0%;
   flex-grow: 1;
   margin-top: 20px;
-  /* border: 8px double rgb(101, 249, 123); */
-  /* box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .modal-map {
   width: 50%;
-  margin-right: 50px;
 }
 
 /* _____________________________________________________________CONTACT PAGE */
@@ -516,19 +509,15 @@ input[type='checkbox']:after {
   width: 100%
 }
 
-.dropdown-item {
+/* .dropdown-item {
   width: 60px;
-}
+} */
 
 /* _____________________________________________________________SIZE < 1500px */
 @media screen and (max-width: 1500px) {
   .resource-card-title-name {
     font-size: medium;
   }
-
-  /* .form-check {
-    margin: 5px;
-  } */
 }
 
 /* _____________________________________________________________SIZE < 990px */
@@ -631,21 +620,22 @@ input[type='checkbox']:after {
 
   .modal-map {
     width: 100% !important;
-    padding: 0px 80px 0px 80px;
+    padding: 0px 80px;
   }
 
   .details-div {
     width: 100%;
+    justify-content: center;
   }
 
   .details-column {
     width: none !important;
-    padding: 10px;
+    padding-left: 50px;
   }
 
   .description-div {
     width: 100% !important;
-    padding: 30px 50px 0px 50px;
+    padding: 30px 80px 0px;
   }
 
   .carousel {

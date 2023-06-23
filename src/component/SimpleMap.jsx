@@ -8,7 +8,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
   const { store, actions } = useContext(Context);
   const [city, setCity] = useState({
     // AUSTIN
-    center: { lat: 30.266666, lng: -97.733330 },
+    // center: { lat: 30.266666, lng: -97.733330 },
     // LOS ANGELES
     center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
@@ -21,27 +21,27 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
     setPlace(city);
   }, [city])
 
-  function geoFindMe() {
-    function success(position) {
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
-      // setCity({ center: { lat: latitude, lng: longitude }, bounds: null }); // reset bounds when location changes
-      setBounds(latitude, longitude);
-    }
-    function error() {
-      alert("Unable to retrieve your location");
-    }
-    if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser");
-    } else {
-      console.log("Locating…");
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
-  }
+  // function geoFindMe() {
+  //   function success(position) {
+  //     let latitude = position.coords.latitude;
+  //     let longitude = position.coords.longitude;
+  //     // setCity({ center: { lat: latitude, lng: longitude }, bounds: null }); // reset bounds when location changes
+  //     setBounds(latitude, longitude);
+  //   }
+  //   function error() {
+  //     alert("Unable to retrieve your location");
+  //   }
+  //   if (!navigator.geolocation) {
+  //     alert("Geolocation is not supported by your browser");
+  //   } else {
+  //     console.log("Locating…");
+  //     navigator.geolocation.getCurrentPosition(success, error);
+  //   }
+  // }
 
   const Marker = ({ lat, lng, color, text, category, id }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const navigate = useNavigate(); // Get the history object from the h
+    const navigate = useNavigate();
     const handleMouseEnter = () => {
       setIsHovered(true);
     };
@@ -82,7 +82,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
       ...prev,
       bounds: bounds, // update the bounds state based on the center
     }));
-    // actions.setSearchResults();
+    actions.setSearchResults();
   };
 
   const setBounds = (lati, longi) => {

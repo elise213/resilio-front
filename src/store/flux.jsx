@@ -4,8 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       token: null,
-      current_front_url: import.meta.env.FRONTEND_URL,
-      current_back_url: import.meta.env.BACKEND_URL,
+      current_front_url: import.meta.env.VITE_FRONTEND_URL,
+      current_back_url: import.meta.env.VITE_BACKEND_URL,
       latitude: null,
       longitude: null,
       token: null,
@@ -562,6 +562,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       setSearchResults: () => {
+        console.log("CURRENT BACK", getStore().current_back_url)
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getResources" + url)
           .then((response) => response.json())
