@@ -562,7 +562,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       setSearchResults: () => {
-        console.log("CURRENT BACK", getStore().current_back_url)
+        // console.log("CURRENT BACK", getStore().current_back_url)
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getResources" + url)
           .then((response) => response.json())

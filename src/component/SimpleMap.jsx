@@ -70,7 +70,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
   };
 
   const handleBoundsChange = (data) => {
-    console.log("DATA", data)
+    // console.log("DATA", data)
     const center = city.center; // get the current center of the map
     const ne = data.bounds.ne;
     const sw = data.bounds.sw;
@@ -128,6 +128,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
         >
 
           {store.searchResults.map((result, i) => {
+            // console.log("RESULT", result)
             return (
               <Marker
                 lat={result.latitude}
