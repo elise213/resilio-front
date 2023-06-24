@@ -9,7 +9,7 @@ const Modal = (props) => {
     const modalClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        e.stopImmediatePropagation();
+        // e.stopImmediatePropagation();
         return false;
     }
 
@@ -43,23 +43,11 @@ const Modal = (props) => {
                             </div>
                             <div className="modal-body d-flex">
                                 <div className="modal-div">
-                                    {/* <div className="details"> */}
                                     <ResourceInfo
                                         id={props.resource.id}
-                                        name={props.resource.name}
-                                        description={props.resource.description}
-                                        address={props.resource.address}
-                                        phone={props.resource.phone}
-                                        category={props.resource.category}
-                                        website={props.resource.website}
-                                        picture={props.resource.picture}
-                                        image={props.resource.image}
-                                        image2={props.resource.image2}
                                         schedule={store.schedule}
-                                        latitude={props.resource.latitude}
-                                        longitude={props.resource.longitude}
+                                        res={props.resource}
                                     />
-                                    {/* </div> */}
                                 </div>
                             </div>
                             <div className="modal-footer resource-card-text justify-content-center">

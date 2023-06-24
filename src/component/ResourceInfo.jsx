@@ -47,9 +47,9 @@ export const ResourceInfo = (props) => {
   }
 
 
-  const index = props.id - 1
+  const index = props.res.id - 1
   const schedule2 = filterNonNullValues(props.schedule[index]);
-  console.log("schedule 2", schedule2);
+  // console.log("schedule 2", schedule2);
 
   const formattedSchedule = {};
 
@@ -63,7 +63,7 @@ export const ResourceInfo = (props) => {
       formattedSchedule[day] = (start && end) && (formattedStart !== 'closed') ? `${formattedStart} - ${formattedEnd}` : 'Closed';
     }) : "";
 
-  { console.log("formatted sched", formattedSchedule); }
+  // { console.log("formatted sched", formattedSchedule); }
 
   return (
     <div className="offering-card m-4">
@@ -90,7 +90,7 @@ export const ResourceInfo = (props) => {
           <div className="carousel-inner">
             <div className="carousel-item carousel-frame active">
               <img
-                src={props.image}
+                src={props.res.image}
                 className="d-block w-100 carousel-image"
                 onError={(e) => {
                   e.target.src = ""
@@ -98,7 +98,7 @@ export const ResourceInfo = (props) => {
 
               />
             </div>
-            {props.image2 != "" && (
+            {props.res.image2 != "" && (
               <div className="carousel-item carousel-frame">
                 <img
                   src={props.image2}
@@ -137,30 +137,30 @@ export const ResourceInfo = (props) => {
         </div>
         {/* DESCRIPTION */}
         <div className="description-div">
-          <p className="resource-card-text description">{props.description}</p>
+          <p className="resource-card-text description">{props.res.description}</p>
         </div>
       </div>
 
       <div className="info-map-div">
 
-        <div className="details-div d-flex w-100">
+        <div className="details-div d-flex w-50">
           <div className="details-column">
             {/* ADDRESS */}
             <div className="info">
               <i className="fa-solid fa-map-pin me-4"></i>
               <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.address)}`}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.res.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="resource-card-text"
               >
-                {props.address}
+                {props.res.address}
               </a>
             </div>
             {/* WEBSITE */}
             <div className="info">
               <i className="fa-solid fa-earth-americas me-4"></i>
-              <a href={"https://www." + props.website} className="resource-card-text">{props.website}</a>
+              <a href={"https://www." + props.res.website} className="resource-card-text">{props.res.website}</a>
             </div>
 
             {/* SCHEDULE */}
@@ -168,7 +168,7 @@ export const ResourceInfo = (props) => {
               <i className="fa-solid fa-calendar-check me-4"></i>
               <div className="">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-                  <p className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
+                  <p key={index} className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
                 ))}
               </div>
             </div>
@@ -176,7 +176,7 @@ export const ResourceInfo = (props) => {
         </div>
         {/* MAP */}
         <div className="modal-map">
-          <SimpleMap2 latitude={props.latitude} longitude={props.longitude} />
+          <SimpleMap2 latitude={props.res.latitude} longitude={props.res.longitude} />
         </div>
       </div>
     </div>

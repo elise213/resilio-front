@@ -9,9 +9,9 @@ export const ResourceCard = (props) => {
   let icon = "";
   if (props.item.category == "health") {
     icon = "fa-solid fa-stethoscope";
-  } else if (props.category == "food") {
+  } else if (props.item.category == "food") {
     icon = "fa-solid fa-bowl-rice";
-  } else if (props.category == "hygiene") {
+  } else if (props.item.category == "hygiene") {
     icon = "fa-solid fa-soap";
   } else {
     icon = "fa-solid fa-person-shelter";

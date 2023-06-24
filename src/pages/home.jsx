@@ -23,7 +23,6 @@ const Home = () => {
   const [saturday, setSaturday] = useState(false);
   const [sunday, setSunday] = useState(false);
   const [zipCode, setZipCode] = useState('');
-  // const [mapResults, setMapResults] = useState('');
   const [place, setPlace] = useState()
   const [neLat, setNeLat] = useState()
   const [neLng, setNeLng] = useState()
@@ -36,7 +35,6 @@ const Home = () => {
   useEffect(() => {
     new CircleType(circleInstance.current).radius(500);
     actions.setSearchResults();
-    // axios.get("http://localhost:3000/getResources").then(result => console.log("RESULT", result))
   }, [searchParams]);
 
   useEffect(() => {
@@ -66,7 +64,7 @@ const Home = () => {
       swLat: swLat,
       swLng: swLng
     });
-    // actions.setSearchResults();
+    actions.setSearchResults();
   }, [
     monday,
     tuesday,
@@ -197,14 +195,12 @@ const Home = () => {
         {/* <div className="alert alert-danger ps-5 w-100" role="alert">
           The information in our current database is only in Los Angeles, and is only for testing purposes.
         </div> */}
-
         <div className="search-container">
           <div className="search-container-2">
             {/* <!-- What type of resource--> */}
             <div className="what-type">
               <div className="question">
                 <div className="my-2 circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
-                {/* <span>WHAT DO YOU NEED?</span> */}
               </div>
               <div className="selection">
                 <div className="form-check">
@@ -419,11 +415,8 @@ const Home = () => {
         </div>
 
         <div className="search-results-full">
-          {/* Search Results Resource Cards */}
-
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>
-              {/* {store.dummydata.map((result, i) => { */}
               {store.searchResults.map((result, i) => {
                 return (
                   <li key={i}>
@@ -431,12 +424,6 @@ const Home = () => {
                   </li>
                 );
               })}
-              {/* {store.searchResults.map((result, i) => {
-                return (
-                  <li key={i}>
-                    <CardModal item={result} idx={i} />
-                  </li>)
-              })} */}
             </ul>
           </div>
 

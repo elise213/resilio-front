@@ -44,10 +44,11 @@
   width: 50%;
   height: 100%;
   padding: 0px 80px;
+  position: absolute;
 }
 
 .carousel-image {
-  width: 35vw;
+  width: 100% !important;
   object-fit: cover;
   height: 40vh;
   border-radius: 1.5%;
@@ -55,6 +56,13 @@
 
 .carousel-item {
   margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.carouselExampleIndicators {
+  width: 100% !important;
+  color: orange !important;
 }
 
 .resource-card-text {
@@ -117,12 +125,18 @@
   object-fit: cover;
   max-width: 100%;
   max-height: 100%;
+  margin-bottom: 30px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
 }
 
 .card-image-container {
   display: flex;
   justify-content: center;
-  height: 100px;
+  height: 150px;
   overflow: hidden;
 }
 

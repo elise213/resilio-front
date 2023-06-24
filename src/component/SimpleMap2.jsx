@@ -2,15 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import { Link, useNavigate } from "react-router-dom";
-// withrouter
 
 export const SimpleMap2 = (props) => {
     const { store, actions } = useContext(Context);
 
     // let lat = 25.727264069277847;
     // let lng = -80.2627160981497;
-
-    console.log("PROPS", props)
 
     let lat = parseFloat(props.latitude);
     let lng = parseFloat(props.longitude);
@@ -22,7 +19,7 @@ export const SimpleMap2 = (props) => {
     // Define the Marker component
     const Marker = ({ lat, lng, color, text, category }) => {
         const [isHovered, setIsHovered] = useState(false);
-        const navigate = useNavigate(); // Get the history object from the h
+        const navigate = useNavigate(); // 
         const handleMouseEnter = () => {
             setIsHovered(true);
         };
