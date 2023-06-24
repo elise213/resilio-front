@@ -429,7 +429,9 @@ const Home = () => {
 
           {/* Search Results Map */}
           <div className="map-and-cities mx-auto">
-            <SimpleMap ZipCode={zipCode} setPlace={setPlace} />
+            <SimpleMap
+              // ZipCode={zipCode} 
+              setPlace={setPlace} />
           </div>
         </div>
       </div>
