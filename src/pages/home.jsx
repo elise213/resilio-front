@@ -6,7 +6,6 @@ import { ResourceCard } from "../component/ResourceCard";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
 import axios from 'axios';
-import CardModal from "../component/Nelson";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -24,10 +23,10 @@ const Home = () => {
   const [sunday, setSunday] = useState(false);
   const [zipCode, setZipCode] = useState('');
   const [place, setPlace] = useState()
-  const [neLat, setNeLat] = useState()
-  const [neLng, setNeLng] = useState()
-  const [swLat, setSwLat] = useState()
-  const [swLng, setSwLng] = useState()
+  const [neLat, setNeLat] = useState(0)
+  const [neLng, setNeLng] = useState(0)
+  const [swLat, setSwLat] = useState(0)
+  const [swLng, setSwLng] = useState(0)
   let url = window.location.search;
 
   const circleInstance = useRef();
@@ -38,13 +37,13 @@ const Home = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (place != undefined && place.bounds) {
+    if (place != undefined && place.bounds.ne.lat != undefined) {
       console.log("PLACE bounds", place.bounds)
       setNeLat(place.bounds.ne.lat)
       setNeLng(place.bounds.ne.lng)
       setSwLat(place.bounds.sw.lat)
       setSwLng(place.bounds.sw.lng)
-      console.log("NELAT", neLat)
+      // console.log("NELAT", neLat)
     }
     setSearchParams({
       food: food,

@@ -537,6 +537,10 @@ input[type='checkbox']:after {
 /* _____________________________________________________________SIZE < 990px */
 @media screen and (max-width: 990px) {
 
+  .description {
+    text-align: center;
+  }
+
   .scroll-search-results {
     display: flex;
     flex-direction: row;
