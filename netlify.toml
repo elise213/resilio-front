@@ -5,6 +5,13 @@
   to = "/index.html"
   status = 200
 
+# Add the following block for proxying API requests
+[[redirects]]
+  from = "/api/*"
+  to = "https://3.145.48.19:3000/api/:splat"
+  status = 200
+  force = true
+
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
   for = "/*"
