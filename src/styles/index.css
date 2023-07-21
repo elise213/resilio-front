@@ -212,7 +212,7 @@
 }
 
 .navbar-toggler-icon {
-  color: lightgreen;
+  color: rgb(170, 255, 192);
   font-size: xx-large;
 }
 
@@ -221,7 +221,7 @@
 }
 
 .nav-btn:hover {
-  color: lightgreen;
+  color: rgb(170, 255, 192);
   cursor: pointer;
 }
 
@@ -321,10 +321,11 @@
 }
 
 .dropdown-menu {
-  background-color: rgb(180, 255, 210) !important;
-  border: 3px sold green;
-  border-radius: 1px !important;
-  box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: none !important;
+  /* background-color: rgb(180, 255, 210) !important; */
+  /* border: 3px sold green; */
+  /* border-radius: 1px !important; */
+  /* box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 #dropdownMenuButton1 {
@@ -394,28 +395,16 @@
 /* _____________________________________________________________Selection-*/
 .search-container {
   word-wrap: wrap;
+  /* border: 5px solid rgb(170, 255, 192); */
+  /* border: 9px double rgb(134, 176, 138);
+  /* background-color: rgb(170, 255, 192) !important; */
+  /* background-color: rgb(152, 215, 165);
+  border-radius: 5px; */
+  /* box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   padding: 5px;
-  border-width: 6px;
-  background-color: rgb(127, 245, 174) !important;
-  border-radius: 2px;
-  box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 10px;
-}
-
-.search-container-2 {
-  padding: 15px;
-  height: 100%;
-  width: 100%;
-  border: 7px solid;
-  background-color: rgb(174, 251, 206);
-  box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  border-color: rgb(169, 254, 166);
 }
 
 .question {
@@ -441,13 +430,12 @@
   box-shadow: none !important;
   font-family: "Urbanist", sans-serif !important;
   font-size: 20px;
-  color: black;
-  border-radius: 2px;
-  direction: rtl;
 }
 
 .dropdown-toggle::after {
   margin-right: 10px;
+  color: salmon;
+  font-size: x-large;
 }
 
 .form-check {
@@ -457,30 +445,35 @@
 }
 
 .form-check-input {
-  border: 2px double green !important;
-  margin-right: 5px;
+  border: 2px solid green !important;
+  margin-right: 7px;
+  cursor: pointer;
 }
 
 .form-check-input.dropdown-item {
-  background-color: rgb(227, 251, 237);
-  width: 10px !important;
-  height: 10px;
-  border: 3px double green;
-  margin-right: 10px;
+  /* background-color: rgb(206, 250, 224); */
+  max-width: 5px !important;
+  min-height: 5px;
+  border: 2px solid green !important;
+  margin-right: 15px;
   box-shadow: none;
   cursor: pointer;
-  color: black !important;
+}
+
+.schedule {
+  font-size: large !important;
+  letter-spacing: 4px;
+  margin-top: 10px;
 }
 
 .form-check-label {
-  /* font-family: "Urbanist", sans-serif; */
   font-family: "Carme", sans-serif;
   font-size: 18px;
   letter-spacing: 1.4x;
 }
 
 input[type=checkbox]:checked {
-  background-color: rgb(0, 128, 73);
+  background-color: rgb(136, 216, 169);
   color: black !important;
 }
 

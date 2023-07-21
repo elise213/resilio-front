@@ -195,207 +195,207 @@ const Home = () => {
           The information in our current database is only in Los Angeles, and is only for testing purposes.
         </div> */}
         <div className="search-container">
-          <div className="search-container-2">
-            {/* <!-- What type of resource--> */}
-            <div className="what-type">
-              <div className="question">
-                <div className="my-2 circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
-              </div>
-              <div className="selection">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="food"
-                    value="food"
-                    onChange={handleFood}
-                  />
-                  <label className="form-check-label" htmlFor="food">
-                    Food
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="shelter"
-                    value="shelter"
-                    name="selection"
-                    onChange={handleShelter}
-                  />
-                  <label className="form-check-label" htmlFor="shelter">
-                    Shelter
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="health"
-                    value="health"
-                    name="selection"
-                    onChange={handleHealth}
-                  />
-                  <label className="form-check-label" htmlFor="health">
-                    Healthcare
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="hygiene"
-                    value="hygiene"
-                    name="selection"
-                    onChange={handleHygiene}
-                  />
-                  <label className="form-check-label" htmlFor="hygiene">
-                    Shower
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="hygiene"
-                    value="hygiene"
-                    name="selection"
-                    onChange={handleHygiene}
-                  />
-                  <label className="form-check-label" htmlFor="hygiene">
-                    Bathroom
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="hygiene"
-                    value="hygiene"
-                    name="selection"
-                    onChange={handleWork}
-                  />
-                  <label className="form-check-label" htmlFor="hygiene">
-                    Work
-                  </label>
-                </div>
-              </div>
-              {/* Filter by day */}
-              {/* <div className="dropdown-div">
-                <div className="dropdown">
-                  <button className="btn dropdown-toggle form-check-label" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Schedule
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="monday"
-                          value="monday"
-                          onChange={handleMonday}
-                        />
-                        <label className="form-check-label" htmlFor="monday">
-                          Monday
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="tuesday"
-                          value="tuesday"
-                          onChange={handleTuesday}
-                        />
-                        <label className="form-check-label" htmlFor="tuesday">
-                          Tuesday
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="wednesday"
-                          value="wednesday"
-                          onChange={handleWednesday}
-                        />
-                        <label className="form-check-label" htmlFor="wednesday">
-                          Wednesday
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="thursday"
-                          value="thursday"
-                          onChange={handleThursday}
-                        />
-                        <label className="form-check-label" htmlFor="thursday">
-                          Thursday
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="friday"
-                          value="friday"
-                          onChange={handleFriday}
-                        />
-                        <label className="form-check-label" htmlFor="friday">
-                          Friday
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="saturday"
-                          value="saturday"
-                          onChange={handleSaturday}
-                        />
-                        <label className="form-check-label" htmlFor="saturday">
-                          Saturday
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="form-check form-check-inline ">
-                        <input
-                          className="form-check-input dropdown-item"
-                          type="checkbox"
-                          id="sunday"
-                          value="sunday"
-                          onChange={handleSunday}
-                        />
-                        <label className="form-check-label" htmlFor="sunday">
-                          Sunday
-                        </label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div> */}
+          {/* <!-- What type of resource--> */}
+          <div className="what-type">
+            <div className="question">
+              <div className="my-2 circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
             </div>
+            <div className="selection">
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="food"
+                  value="food"
+                  name="selection"
+                  onChange={handleFood}
+                />
+                <label className="form-check-label" htmlFor="food">
+                  Food
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="shelter"
+                  value="shelter"
+                  name="selection"
+                  onChange={handleShelter}
+                />
+                <label className="form-check-label" htmlFor="shelter">
+                  Shelter
+                </label>
+              </div>
+              <div className="form-check form-check-inline ">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="health"
+                  value="health"
+                  name="selection"
+                  onChange={handleHealth}
+                />
+                <label className="form-check-label" htmlFor="health">
+                  Healthcare
+                </label>
+              </div>
+              <div className="form-check form-check-inline ">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="hygiene"
+                  value="hygiene"
+                  name="selection"
+                  onChange={handleHygiene}
+                />
+                <label className="form-check-label" htmlFor="hygiene">
+                  Shower
+                </label>
+              </div>
+              <div className="form-check form-check-inline ">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="hygiene"
+                  value="hygiene"
+                  name="selection"
+                  onChange={handleHygiene}
+                />
+                <label className="form-check-label" htmlFor="hygiene">
+                  Bathroom
+                </label>
+              </div>
+              <div className="form-check form-check-inline ">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="hygiene"
+                  value="hygiene"
+                  name="selection"
+                  onChange={handleWork}
+                />
+                <label className="form-check-label" htmlFor="hygiene">
+                  Work
+                </label>
+              </div>
+            </div>
+            {/* Filter by day */}
+            <div className="dropdown-div">
+              <div className="dropdown">
+                <button className="btn dropdown-toggle form-check-label schedule" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  SCHEDULE
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="monday"
+                        value="monday"
+                        onChange={handleMonday}
+                      />
+                      <label className="form-check-label" htmlFor="monday">
+                        Monday
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="tuesday"
+                        value="tuesday"
+                        onChange={handleTuesday}
+                      />
+                      <label className="form-check-label" htmlFor="tuesday">
+                        Tuesday
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="wednesday"
+                        value="wednesday"
+                        onChange={handleWednesday}
+                      />
+                      <label className="form-check-label" htmlFor="wednesday">
+                        Wednesday
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="thursday"
+                        value="thursday"
+                        onChange={handleThursday}
+                      />
+                      <label className="form-check-label" htmlFor="thursday">
+                        Thursday
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="friday"
+                        value="friday"
+                        onChange={handleFriday}
+                      />
+                      <label className="form-check-label" htmlFor="friday">
+                        Friday
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="saturday"
+                        value="saturday"
+                        onChange={handleSaturday}
+                      />
+                      <label className="form-check-label" htmlFor="saturday">
+                        Saturday
+                      </label>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="form-check form-check-inline ">
+                      <input
+                        className="form-check-input dropdown-item"
+                        type="checkbox"
+                        id="sunday"
+                        value="sunday"
+                        onChange={handleSunday}
+                      />
+                      <label className="form-check-label" htmlFor="sunday">
+                        Sunday
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
-            {/* <button className="maras-button" 
+          {/* <button className="maras-button" 
           // onClick={geoFindMe()}
           >
             Use my location
           </button> */}
-            {/* <div>
+          {/* <div>
             <form>
               <label htmlFor="zip-code">Please enter your zip-code</label>
               <input
@@ -410,7 +410,7 @@ const Home = () => {
               ></input>
             </form>
           </div> */}
-          </div>
+
         </div>
 
         <div className="search-results-full">
