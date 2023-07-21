@@ -767,3 +767,9 @@ input[type='checkbox']:after {
 .navbar-toggler {
   display: none
 }
+
+.form-check-inline {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+}

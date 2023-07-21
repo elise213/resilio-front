@@ -227,7 +227,7 @@ const Home = () => {
                   Shelter
                 </label>
               </div>
-              <div className="form-check form-check-inline ">
+              <div className="form-check ">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -240,7 +240,7 @@ const Home = () => {
                   Healthcare
                 </label>
               </div>
-              <div className="form-check form-check-inline ">
+              <div className="form-check">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -253,7 +253,7 @@ const Home = () => {
                   Shower
                 </label>
               </div>
-              <div className="form-check form-check-inline ">
+              <div className="form-check ">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -266,7 +266,7 @@ const Home = () => {
                   Bathroom
                 </label>
               </div>
-              <div className="form-check form-check-inline ">
+              <div className="form-check  ">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -289,6 +289,9 @@ const Home = () => {
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="monday">
+                        Monday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -296,13 +299,13 @@ const Home = () => {
                         value="monday"
                         onChange={handleMonday}
                       />
-                      <label className="form-check-label" htmlFor="monday">
-                        Monday
-                      </label>
                     </div>
                   </li>
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="tuesday">
+                        Tuesday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -310,13 +313,13 @@ const Home = () => {
                         value="tuesday"
                         onChange={handleTuesday}
                       />
-                      <label className="form-check-label" htmlFor="tuesday">
-                        Tuesday
-                      </label>
                     </div>
                   </li>
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="wednesday">
+                        Wednesday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -324,13 +327,13 @@ const Home = () => {
                         value="wednesday"
                         onChange={handleWednesday}
                       />
-                      <label className="form-check-label" htmlFor="wednesday">
-                        Wednesday
-                      </label>
                     </div>
                   </li>
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="thursday">
+                        Thursday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -338,13 +341,13 @@ const Home = () => {
                         value="thursday"
                         onChange={handleThursday}
                       />
-                      <label className="form-check-label" htmlFor="thursday">
-                        Thursday
-                      </label>
                     </div>
                   </li>
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="friday">
+                        Friday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -352,13 +355,13 @@ const Home = () => {
                         value="friday"
                         onChange={handleFriday}
                       />
-                      <label className="form-check-label" htmlFor="friday">
-                        Friday
-                      </label>
                     </div>
                   </li>
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="saturday">
+                        Saturday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -366,13 +369,13 @@ const Home = () => {
                         value="saturday"
                         onChange={handleSaturday}
                       />
-                      <label className="form-check-label" htmlFor="saturday">
-                        Saturday
-                      </label>
                     </div>
                   </li>
                   <li>
                     <div className="form-check form-check-inline ">
+                      <label className="form-check-label" htmlFor="sunday">
+                        Sunday
+                      </label>
                       <input
                         className="form-check-input dropdown-item"
                         type="checkbox"
@@ -380,9 +383,6 @@ const Home = () => {
                         value="sunday"
                         onChange={handleSunday}
                       />
-                      <label className="form-check-label" htmlFor="sunday">
-                        Sunday
-                      </label>
                     </div>
                   </li>
                 </ul>
