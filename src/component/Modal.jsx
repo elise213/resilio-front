@@ -5,14 +5,12 @@ import { ResourceInfo } from "./ResourceInfo";
 
 const Modal = (props) => {
     const { store, actions } = useContext(Context);
-
     const modalClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         // e.stopImmediatePropagation();
         return false;
     }
-
     return (
         <div aria-labelledby="exampleModalLabel" aria-hidden="true" onClick={(e) => modalClick(e)}>
             <div className="modal-dialog modal-xxl">
@@ -52,15 +50,14 @@ const Modal = (props) => {
                             </div>
                             <div className="modal-footer resource-card-text justify-content-center">
                                 <p>
-                                    Is there a problem with this information?
-                                    <Link to="/Contact"> Let us know</Link>
+                                    Is there a problem with this information? {""}
+                                    <Link to="/Contact">Let us know</Link>
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

@@ -46,10 +46,8 @@ export const ResourceInfo = (props) => {
     return formattedTime;
   }
 
-
   const index = props.res.id - 1
   const schedule2 = filterNonNullValues(props.schedule[index]);
-  // console.log("schedule 2", schedule2);
 
   const formattedSchedule = {};
 
@@ -62,8 +60,6 @@ export const ResourceInfo = (props) => {
       const formattedEnd = formatTime(end);
       formattedSchedule[day] = (start && end) && (formattedStart !== 'closed') ? `${formattedStart} - ${formattedEnd}` : 'Closed';
     }) : "";
-
-  // { console.log("formatted sched", formattedSchedule); }
 
   return (
     <div className="offering-card m-4">
@@ -95,7 +91,6 @@ export const ResourceInfo = (props) => {
                 onError={(e) => {
                   e.target.src = ""
                 }}
-
               />
             </div>
             {props.res.image2 != "" && (
@@ -166,7 +161,7 @@ export const ResourceInfo = (props) => {
             {/* SCHEDULE */}
             <div className="d-flex info">
               <i className="fa-solid fa-calendar-check me-4"></i>
-              <div className="">
+              <div className="sched-div">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
                   <p key={index} className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
                 ))}
