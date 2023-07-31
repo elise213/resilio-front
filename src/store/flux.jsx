@@ -564,9 +564,15 @@ const getState = ({ getStore, getActions, setStore }) => {
       setSearchResults: () => {
         // console.log("CURRENT BACK", getStore().current_back_url)
         let url = window.location.search;
-        fetch(getStore().current_back_url + "/api/getResources" + url)
+        fetch(getStore().current_back_url + "/api/getResources" + url, {
+          method: "GET",
+          // mode: "cors",
+          headers: {
+            "access-control-allow-origin": "*",
+            "Content-Type": "application/json",
+          }
+        })
           .then((response) => response.json())
-
           .then((data) => {
             setStore({ searchResults: data.data });
             // console.log("search results", getStore().searchResults);

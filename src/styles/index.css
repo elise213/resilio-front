@@ -1,5 +1,4 @@
-/* _____________________________________________________________RESOURCE INFO */
-.resource-title {
+_____________________________________________________________RESOURCE INFO .resource-title {
   font-family: "Carme", sans-serif;
   font-size: xx-large;
   font-weight: bold;
@@ -91,8 +90,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 10px;
-  margin: 30px 10px 10px 10px;
+  /* padding-left: 10px; */
+  /* margin: 30px 10px 10px 10px; */
+}
+
+.sched-div {
+  padding: 0 !important;
+}
+
+.details-column div {
+  padding-top: 10px;
 }
 
 .description {
@@ -300,7 +307,8 @@
 
 .modal-title {
   font-family: "Urbanist", sans-serif;
-  font-size: xx-large;
+  font-size: x-large;
+  font-weight: bold;
 }
 
 .marker-text {
@@ -322,10 +330,7 @@
 
 .dropdown-menu {
   border: none !important;
-  /* background-color: rgb(180, 255, 210) !important; */
-  /* border: 3px sold green; */
-  /* border-radius: 1px !important; */
-  /* box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+  padding: 0 !important;
 }
 
 #dropdownMenuButton1 {
@@ -350,29 +355,26 @@
 }
 
 .scroll-search-results {
-  height: 77vh;
-  /* width: 33%; */
-  direction: rtl;
   display: flex;
-  justify-content: left;
-  direction: rtl;
+  flex-direction: row;
+  height: 30vh;
+  width: 100%;
+  justify-content: center;
+  direction: unset;
+  margin: 0 !important;
 }
 
 .scroll-search-results ul {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  float: left;
-  direction: ltr;
-  padding: 10px;
-  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  /* gap: 2rem; */
 }
 
 .scroll-search-results li {
   padding-right: 15px;
-  margin: 10px;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-track {
@@ -395,12 +397,6 @@
 /* _____________________________________________________________Selection-*/
 .search-container {
   word-wrap: wrap;
-  /* border: 5px solid rgb(170, 255, 192); */
-  /* border: 9px double rgb(134, 176, 138);
-  /* background-color: rgb(170, 255, 192) !important; */
-  /* background-color: rgb(152, 215, 165);
-  border-radius: 5px; */
-  /* box-shadow: 0 4px 8px 0 rgba(19, 20, 19, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -433,7 +429,6 @@
 }
 
 .dropdown-toggle::after {
-  margin-right: 10px;
   color: salmon;
   font-size: x-large;
 }
@@ -450,13 +445,14 @@
   cursor: pointer;
 }
 
+/* WHAT */
 .form-check-input.dropdown-item {
-  /* background-color: rgb(206, 250, 224); */
   max-width: 5px !important;
-  min-height: 5px;
-  border: 2px solid green !important;
-  margin-right: 15px;
+  /* max-height: 10px; */
   box-shadow: none;
+}
+
+.form-check-input.dropdown-item:hover {
   cursor: pointer;
 }
 
@@ -527,132 +523,124 @@ input[type='checkbox']:after {
   }
 }
 
-/* _____________________________________________________________SIZE < 990px */
-@media screen and (max-width: 990px) {
-
-  .description {
-    text-align: center;
-  }
-
-  .scroll-search-results {
-    display: flex;
-    flex-direction: row;
-    height: 30vh;
-    width: 100%;
-    justify-content: center;
-    direction: unset;
-    margin-bottom: 10px;
-  }
-
-  .scroll-search-results ul {
-    overflow-x: auto;
-    overflow-y: hidden;
-    display: flex;
-    gap: 2rem;
-    margin: 10px;
-  }
-
-  .nav-btn {
-    font-size: 25px;
-  }
-
-  .my-navbar-items {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-
-  .resource-card {
-    width: 23vw;
-    height: 100%;
-    margin-left: 2px;
-    margin-right: 1px;
-  }
-
-  .card-img {
-    object-fit: cover;
-  }
-
-  .card-icon {
-    font-size: medium;
-  }
-
-  .resource-card-title-name {
-    font-size: 12px;
-  }
-
-  .map-and-cities {
-    width: 100%;
-  }
-
-  .search-container {
-    margin-bottom: 20px;
-  }
-
-  .search-results-full {
-    flex-direction: column;
-    margin: 0;
-    width: 96vw;
-  }
-
-  .grand-container {
-    margin: 0;
-  }
-
-  .map-city-buttons {
-    display: flex;
-    overflow-y: auto;
-    overflow-x: scroll;
-    display: flex;
-    height: 8vh;
-    width: 95vw;
-    gap: .5rem;
-    margin-top: 10px;
-  }
-
-  .tell-us {
-    font-size: x-large;
-    margin-bottom: 30px;
-  }
-
-  .contact-page {
-    margin: 15px;
-    padding-top: 80px;
-  }
-
-  .carousel-description-div {
-    flex-direction: column;
-  }
-
-  .info-map-div {
-    flex-direction: column;
-  }
-
-  .modal-map {
-    width: 100% !important;
-    padding: 0px 80px;
-  }
-
-  .details-div {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .details-column {
-    width: none !important;
-    padding-left: 50px;
-  }
-
-  .description-div {
-    width: 100% !important;
-    padding: 30px 80px 0px;
-  }
-
-  .carousel {
-    width: 100% !important;
-  }
+.description {
+  text-align: center;
 }
+
+.scroll-search-results {
+  display: flex;
+  flex-direction: row;
+  height: 30vh;
+  width: 100%;
+  justify-content: center;
+  direction: unset;
+  margin-bottom: 10px;
+}
+
+.scroll-search-results ul {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  gap: 2rem;
+  margin: 10px;
+}
+
+.nav-btn {
+  font-size: 25px;
+}
+
+.my-navbar-items {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.resource-card {
+  width: 200px;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 1px;
+}
+
+.card-img {
+  object-fit: cover;
+}
+
+.card-icon {
+  font-size: medium;
+}
+
+.resource-card-title-name {
+  font-size: 12px;
+}
+
+.map-and-cities {
+  width: 100%;
+}
+
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-results-full {
+  flex-direction: column;
+  margin: 0;
+  width: 96vw;
+}
+
+.grand-container {
+  margin: 0;
+}
+
+.map-city-buttons {
+  display: flex;
+  overflow-y: auto;
+  overflow-x: scroll;
+  display: flex;
+  height: 8vh;
+  width: 95vw;
+  gap: .5rem;
+  margin-top: 10px;
+}
+
+.tell-us {
+  font-size: x-large;
+  margin-bottom: 30px;
+}
+
+.contact-page {
+  margin: 15px;
+  padding-top: 80px;
+}
+
+.carousel-description-div {
+  flex-direction: column;
+}
+
+.info-map-div {
+  flex-direction: column;
+}
+
+.modal-map {
+  width: 100% !important;
+  padding: 0px 80px;
+}
+
+.details-div {
+  width: 100%;
+  justify-content: center;
+}
+
+.description-div {
+  width: 100% !important;
+  padding: 30px 80px 0px;
+}
+
+.carousel {
+  width: 100% !important;
+}
+
 
 /* ______________________________________________________________SIZE < 600px */
 
