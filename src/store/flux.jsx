@@ -8,7 +8,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       current_back_url: import.meta.env.VITE_BACKEND_URL,
       latitude: null,
       longitude: null,
-      token: null,
       is_org: null,
       name: null,
       avatarID: null,
@@ -563,18 +562,23 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       setSearchResults: () => {
         // console.log("CURRENT BACK", getStore().current_back_url)
+        let controller = new AbortController();
+
         let url = window.location.search;
-        fetch(getStore().current_back_url + "/api/getResources" + url, {
-          method: "GET",
-          // mode: "cors",
-          headers: {
-            "access-control-allow-origin": "*",
-            "Content-Type": "application/json",
+        fetch(getStore().current_back_url + "/api/getResources" + url,
+          {
+            method: "GET",
+            // mode: "cors",
+            headers: {
+              "access-control-allow-origin": "*",
+              "Content-Type": "application/json",
+            }
           }
-        })
+        )
           .then((response) => response.json())
           .then((data) => {
             setStore({ searchResults: data.data });
+
             // console.log("search results", getStore().searchResults);
           })
           .catch((error) => console.log(error));
