@@ -63,7 +63,7 @@ const Home = () => {
       swLat: swLat,
       swLng: swLng
     });
-    actions.setSearchResults();
+    // actions.setSearchResults();
   }, [
     monday,
     tuesday,

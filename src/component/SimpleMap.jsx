@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import { useNavigate } from "react-router-dom";
 
-
 export const SimpleMap = ({ zipCode, setPlace, place }) => {
   const { store, actions } = useContext(Context);
   const [city, setCity] = useState({
@@ -39,7 +38,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
   //   }
   // }
 
-  const Marker = ({ lat, lng, color, text, category, id }) => {
+  const Marker = ({ color, text, id }) => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const handleMouseEnter = () => {
@@ -70,7 +69,6 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
   };
 
   const handleBoundsChange = (data) => {
-    // console.log("DATA", data)
     const center = city.center; // get the current center of the map
     const ne = data.bounds.ne;
     const sw = data.bounds.sw;
@@ -116,7 +114,6 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
         >
           Use my Location
         </button>
-
       </div> */}
 
       <div className="map-container" style={{ height: "73vh", width: "100%" }}>
@@ -127,8 +124,8 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
           onChange={handleBoundsChange} // listen for bounds change event
         >
 
-          {store.searchResults.map((result, i) => {
-            // console.log("RESULT", result)
+          {store.searchResults.length && store.searchResults.map((result, i) => {
+            console.log("RESULT", result)
             return (
               <Marker
                 lat={result.latitude}
