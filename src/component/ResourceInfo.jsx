@@ -1,10 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import imgLogo from "/assets/HDLOGOTRANSP.png";
 import { Context } from "../store/appContext";
-import AddFave from "./AddFave";
 import { SimpleMap2 } from "./SimpleMap2";
-
+import arrow from "/assets/coralarrow.png";
 
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
@@ -26,6 +23,12 @@ export const ResourceInfo = (props) => {
     });
     return result;
   }
+
+  function shiftLeft() {
+  }
+  function shiftRight() {
+  }
+
 
   function formatTime(time) {
     if (time === 'closed') {
@@ -66,70 +69,15 @@ export const ResourceInfo = (props) => {
       <div className="carousel-description-div">
 
         {/* _______CAROUSEL_______ */}
-        <div id="carouselExampleIndicators" className="carousel slide" data-bs-interval="false">
-          <div className="carousel-indicators">
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="0"
-              className="active"
-              aria-current="true"
-              aria-label="Slide 1"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="1"
-              aria-label="Slide 4"
-            ></button>
-          </div>
-          <div className="carousel-inner">
-            <div className="carousel-item carousel-frame active">
-              <img
-                src={props.res.image}
-                className="d-block w-100 carousel-image"
-                onError={(e) => {
-                  e.target.src = ""
-                }}
-              />
-            </div>
-            {props.res.image2 != "" && (
-              <div className="carousel-item carousel-frame">
-                <img
-                  src={props.image2}
-                  className="d-block w-100 carousel-image"
-                  onError={(e) => {
-                    e.target.src = imgLogo
-                  }}
-                />
-              </div>
-            )}
-          </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev"
-          >
-            <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next"
-          >
-            <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Next</span>
-          </button>
+
+        <div className='carousel'>
+          <button className="arrow-button" onClick={shiftLeft}><img className="left-arrow" src={arrow}></img></button>
+
+          <img className="carousel-image" src={props.res.image} alt="" />
+
+          <button className="arrow-button" onClick={shiftRight}><img className="right-arrow" src={arrow}></img></button>
         </div>
+
         {/* DESCRIPTION */}
         <div className="description-div">
           <p className="resource-card-text description">{props.res.description}</p>

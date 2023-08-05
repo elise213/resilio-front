@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import { useNavigate } from "react-router-dom";
 
-export const SimpleMap = ({ zipCode, setPlace, place }) => {
+export const SimpleMap = ({ zipCode, setPlace, place, openModal }) => {
   const { store, actions } = useContext(Context);
   const [city, setCity] = useState({
     // AUSTIN
@@ -38,7 +38,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
   //   }
   // }
 
-  const Marker = ({ color, text, id }) => {
+  const Marker = ({ color, text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const handleMouseEnter = () => {
@@ -50,8 +50,9 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
     };
 
     const handleMarkerClick = () => {
-      navigate(`/resource/${encodeURIComponent(id)}`);
+      openModal(result);
     };
+
     return (
       <div
         className="marker"
@@ -83,22 +84,20 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
     actions.setSearchResults();
   };
 
-  const setBounds = (lati, longi) => {
-    let neLat = (lati + 0.18866583325124964);
-    let swLat = (lati - 0.18908662930897435);
-    let neLng = (longi + 0.44322967529295454);
-    let swLng = (longi - 0.44322967529298296);
+  // const setBounds = (lati, longi) => {
+  //   let neLat = (lati + 0.18866583325124964);
+  //   let swLat = (lati - 0.18908662930897435);
+  //   let neLng = (longi + 0.44322967529295454);
+  //   let swLng = (longi - 0.44322967529298296);
 
-    setCity({
-      center: { lat: lati, lng: longi },
-      bounds: {
-        ne: { lat: neLat, lng: neLng },
-        sw: { lat: swLat, lng: swLng }
-      }
-    }
-    )
-    actions.setSearchResults();
-  }
+  //   setCity({
+  //     center: { lat: lati, lng: longi },
+  //     bounds: {
+  //       ne: { lat: neLat, lng: neLng },
+  //       sw: { lat: swLat, lng: swLng }
+  //     }})
+  //   actions.setSearchResults();
+  // }
 
   return (
     <div className="map-info">
@@ -109,8 +108,7 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
           onClick={() => {
             geoFindMe()
             console.log("GEO CITY CENTER", city.center)
-          }
-          }
+          }}
         >
           Use my Location
         </button>
@@ -123,9 +121,8 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
           defaultZoom={11}
           onChange={handleBoundsChange} // listen for bounds change event
         >
-
           {store.searchResults.length && store.searchResults.map((result, i) => {
-            console.log("RESULT", result)
+            // console.log("RESULT", result)
             return (
               <Marker
                 lat={result.latitude}
@@ -135,6 +132,8 @@ export const SimpleMap = ({ zipCode, setPlace, place }) => {
                 key={i}
                 category={result.category}
                 id={result.id}
+                openModal={openModal}
+                result={result}
               />
             );
           })}
