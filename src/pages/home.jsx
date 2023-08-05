@@ -6,6 +6,7 @@ import { ResourceCard } from "../component/ResourceCard";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
 import axios from 'axios';
+import Modal from "../component/Modal"
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -14,6 +15,7 @@ const Home = () => {
   const [shelter, setShelter] = useState(false);
   const [health, setHealth] = useState(false);
   const [hygiene, setHygiene] = useState(false);
+  const [work, setWork] = useState(false);
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
   const [wednesday, setWednesday] = useState(false);
@@ -21,7 +23,7 @@ const Home = () => {
   const [friday, setFriday] = useState(false);
   const [saturday, setSaturday] = useState(false);
   const [sunday, setSunday] = useState(false);
-  const [zipCode, setZipCode] = useState('');
+  // const [zipCode, setZipCode] = useState('');
   const [place, setPlace] = useState()
   const [neLat, setNeLat] = useState(0)
   const [neLng, setNeLng] = useState(0)
@@ -31,6 +33,21 @@ const Home = () => {
 
   const circleInstance = useRef();
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedResource, setSelectedResource] = useState(null);
+
+  console.log("SR", selectedResource)
+
+  const openModal = (resource) => {
+    setSelectedResource(resource);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedResource(null);
+    setModalIsOpen(false);
+  };
+
   useEffect(() => {
     new CircleType(circleInstance.current).radius(500);
     actions.setSearchResults();
@@ -38,18 +55,18 @@ const Home = () => {
 
   useEffect(() => {
     if (place != undefined && place.bounds.ne.lat != undefined) {
-      console.log("PLACE bounds", place.bounds)
+      // console.log("PLACE bounds", place.bounds)
       setNeLat(place.bounds.ne.lat)
       setNeLng(place.bounds.ne.lng)
       setSwLat(place.bounds.sw.lat)
       setSwLng(place.bounds.sw.lng)
-      // console.log("NELAT", neLat)
     }
     setSearchParams({
       food: food,
       shelter: shelter,
       health: health,
       hygiene: hygiene,
+      work: work,
       monday: monday,
       tuesday: tuesday,
       wednesday: wednesday,
@@ -57,13 +74,11 @@ const Home = () => {
       friday: friday,
       saturday: saturday,
       sunday: sunday,
-      // mapIds: JSON.stringify(mapIds),
       neLat: neLat,
       neLng: neLng,
       swLat: swLat,
       swLng: swLng
     });
-    // actions.setSearchResults();
   }, [
     monday,
     tuesday,
@@ -76,118 +91,31 @@ const Home = () => {
     health,
     hygiene,
     shelter,
+    work,
     place
-    // searchParams,
   ]);
 
-  function handleFood(event) {
-    const element = event.target;
-    if (element.checked) {
-      setFood(true);
-    }
-    if (!element.checked) {
-      setFood(false);
-    }
+  function handleEvent(setter) {
+    return function (event) {
+      const element = event.target;
+      setter(element.checked);
+    };
   }
-  function handleShelter(event) {
-    const element = event.target;
-    if (element.checked) {
-      setShelter(true);
-    }
-    if (!element.checked) {
-      setShelter(false);
-    }
-  }
-  function handleHealth(event) {
-    const element = event.target;
-    if (element.checked) {
-      setHealth(true);
-    }
-    if (!element.checked) {
-      setHealth(false);
-    }
-  }
-  function handleHygiene(event) {
-    const element = event.target;
-    if (element.checked) {
-      setHygiene(true);
-    }
-    if (!element.checked) {
-      setHygiene(false);
-    }
-  }
-  function handleWork(event) {
-    const element = event.target;
-    if (element.checked) {
-      setWork(true);
-    }
-    if (!element.checked) {
-      setWork(false);
-    }
-  }
-  function handleMonday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setMonday(true);
-    }
-    if (!element.checked) {
-      setMonday(false);
-    }
-  }
-  function handleTuesday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setTuesday(true);
-    }
-    if (!element.checked) {
-      setTuesday(false);
-    }
-  }
-  function handleWednesday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setWednesday(true);
-    }
-    if (!element.checked) {
-      setWednesday(false);
-    }
-  }
-  function handleThursday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setThursday(true);
-    }
-    if (!element.checked) {
-      setThursday(false);
-    }
-  }
-  function handleFriday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setFriday(true);
-    }
-    if (!element.checked) {
-      setFriday(false);
-    }
-  }
-  function handleSaturday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setSaturday(true);
-    }
-    if (!element.checked) {
-      setSaturday(false);
-    }
-  }
-  function handleSunday(event) {
-    const element = event.target;
-    if (element.checked) {
-      setSunday(true);
-    }
-    if (!element.checked) {
-      setSunday(false);
-    }
-  }
+  const handleFood = handleEvent(setFood);
+  const handleShelter = handleEvent(setShelter);
+  const handleHealth = handleEvent(setHealth);
+  const handleHygiene = handleEvent(setHygiene);
+  const handleWork = handleEvent(setWork);
+  const handleMonday = handleEvent(setMonday);
+  const handleTuesday = handleEvent(setTuesday);
+  const handleWednesday = handleEvent(setWednesday);
+  const handleThursday = handleEvent(setThursday);
+  const handleFriday = handleEvent(setFriday);
+  const handleSaturday = handleEvent(setSaturday);
+  const handleSunday = handleEvent(setSunday);
+
+
+
   return (
     <div>
       <div className="grand-container">
@@ -419,7 +347,14 @@ const Home = () => {
               {store.searchResults.map((result, i) => {
                 return (
                   <li key={i}>
-                    <ResourceCard item={result} />
+                    <ResourceCard
+                      item={result}
+                      openModal={openModal}
+                      closeModal={closeModal}
+                      modalIsOpen={modalIsOpen}
+                      setModalIsOpen={setModalIsOpen}
+                      selectedResource={selectedResource}
+                    />
                   </li>
                 );
               })}
@@ -427,13 +362,32 @@ const Home = () => {
           </div>
 
           {/* Search Results Map */}
-          <div className="map-and-cities mx-auto">
+          <div className="map-and-cities">
             <SimpleMap
               // ZipCode={zipCode} 
-              setPlace={setPlace} />
+              setPlace={setPlace}
+              openModal={openModal}
+              closeModal={closeModal}
+              selectedResource={selectedResource}
+            />
           </div>
         </div>
       </div>
+      {modalIsOpen && (
+        <div>
+          <div className="modal-overlay"></div>
+          <div className="modal-div">
+
+            <Modal
+              resource={selectedResource}
+              modalIsOpen={modalIsOpen}
+              closeModal={closeModal}
+
+              schedule={store.schedule}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
