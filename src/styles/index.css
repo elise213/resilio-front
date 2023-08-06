@@ -106,7 +106,7 @@ _____________________________________________________________RESOURCE INFO .reso
   object-fit: cover;
   max-width: 92%;
   max-height: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .card-inner {
@@ -117,11 +117,11 @@ _____________________________________________________________RESOURCE INFO .reso
 .card-image-container {
   display: flex;
   justify-content: center;
-  height: 150px;
+  /* height: 150px; */
   overflow: hidden;
 }
 
-.resource-card {
+.my-resource-card {
   align-items: center;
   border: 1px solid lightgray;
   justify-content: center;
@@ -132,14 +132,14 @@ _____________________________________________________________RESOURCE INFO .reso
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
   margin-bottom: 10px;
   width: 98%;
-  align-items: end;
+  align-items: center;
   padding: 4px;
   max-width: 250px;
   border-radius: 1%;
   min-height: 150px;
 }
 
-.card-header {
+.resource-card-header {
   background-color: #eeeeee;
   padding: 2px;
   margin: 3%;
@@ -158,7 +158,7 @@ _____________________________________________________________RESOURCE INFO .reso
   margin-top: 8px;
 }
 
-.resource-card-title-name {
+.resource-title {
   color: black;
   font-size: medium;
   font-weight: bold !important;
@@ -211,7 +211,7 @@ _____________________________________________________________RESOURCE INFO .reso
 }
 
 .navbar-logo {
-  width: 200px;
+  width: 30vw;
   margin-left: 10px;
 }
 
@@ -229,10 +229,16 @@ _____________________________________________________________RESOURCE INFO .reso
 
 .my-dropdown {
   display: flex;
+
 }
 
 .my-dropdown-menu {
   display: flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .my-dropdown-menu div {
@@ -242,9 +248,10 @@ _____________________________________________________________RESOURCE INFO .reso
 .modal-close-div {
   display: flex;
   justify-content: center;
-  align-items: center !important;
-  height: 100%;
-  width: 10%;
+  align-items: start !important;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .x-close {
@@ -253,6 +260,11 @@ _____________________________________________________________RESOURCE INFO .reso
   background-color: transparent;
   align-self: flex-end;
   margin: 0;
+  color: salmon;
+  margin-right: 15px;
+  margin-top: 10px;
+  z-index: 1000;
+  ;
 }
 
 .x-close:hover {
@@ -262,9 +274,13 @@ _____________________________________________________________RESOURCE INFO .reso
 .modal-title-div {
   display: flex;
   justify-content: center;
-  width: 90%;
+  width: 100%;
   height: 100%;
   align-items: center;
+}
+
+.modal-title-div p {
+  margin: 0;
 }
 
 .modal-header {
@@ -309,6 +325,7 @@ _____________________________________________________________RESOURCE INFO .reso
   height: auto;
   overflow-x: hidden;
   overflow-y: scroll !important;
+  scroll-behavior: smooth;
 
 }
 
@@ -348,18 +365,12 @@ body.modal-open {
 }
 
 .carousel-image {
-  width: 80%;
+  width: 90%;
 }
 
 /* ---------------------------------------------------------------------SEARCH PAGE */
 .info {
   display: flex;
-}
-
-.dropdown-div {
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .dropdown-menu {
@@ -394,6 +405,7 @@ body.modal-open {
 }
 
 .scroll-search-results ul {
+
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
@@ -432,7 +444,7 @@ body.modal-open {
 }
 
 .my-label {
-  margin-right: 10px;
+  /* margin-right: 10px; */
   font-family: "Urbanist", sans-serif !important;
   margin-left: 10px;
   font-size: medium;
@@ -453,14 +465,18 @@ body.modal-open {
 
 .question {
   font-size: x-large;
+  font-weight: bold;
+  margin-bottom: 15px;
+  width: 100vw;
 }
 
 .selection {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 90%;
   flex-wrap: wrap;
+  margin: 0;
 }
 
 .tell-us {
@@ -488,6 +504,12 @@ body.modal-open {
 }
 
 /* WHAT */
+.what-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .schedule {
   font-size: large !important;
@@ -569,8 +591,6 @@ input[type='checkbox']:after {
     font-size: 25px;
   }
 
-
-
   .my-navbar-items {
     display: flex;
     flex-direction: column;
@@ -578,7 +598,7 @@ input[type='checkbox']:after {
     align-items: center;
   }
 
-  .resource-card {
+  .my-resource-card {
     width: 200px;
     height: 100%;
     margin-left: 2px;
@@ -587,6 +607,7 @@ input[type='checkbox']:after {
 
   .card-img {
     object-fit: cover;
+    max-height: 120px;
   }
 
   .card-icon {
@@ -619,6 +640,7 @@ input[type='checkbox']:after {
     display: flex;
     overflow-y: auto;
     overflow-x: scroll;
+    scroll-behavior: smooth;
     display: flex;
     height: 8vh;
     width: 95vw;
@@ -658,8 +680,6 @@ input[type='checkbox']:after {
     padding: 20px;
     text-align: justify;
   }
-
-
 }
 
 /* ______________________________________________________________SIZE < 600px */
@@ -667,6 +687,14 @@ input[type='checkbox']:after {
 @media screen and (max-width: 600px) {
   .tell-us {
     font-size: 18px;
+  }
+
+  .question {
+    font-size: large;
+  }
+
+  .search-container {
+    margin-bottom: 0px;
   }
 
   .favorites-col {
@@ -677,27 +705,29 @@ input[type='checkbox']:after {
     width: 100% !important;
   }
 
-  .resource-card {
-    width: 29vw !important;
+  .my-resource-card {
+    min-width: 25vw !important;
   }
 
-  .resource-card-title-name {
-    font-size: 9px !important;
+  .resource-title {
+    font-size: 13px !important;
   }
 
   .card-icon {
-    font-size: small;
+    font-size: medium;
     margin: 0;
   }
 
   .card-img {
     width: 100%;
-    height: 8vh !important;
+    /* height: 8vh !important; */
     object-fit: cover;
+    max-height: 110px;
+    margin-bottom: 8px;
   }
 
   .scroll-search-results {
-    height: 47vmin;
+    min-height: 47vmin;
   }
 
   .form-check-label {
@@ -715,6 +745,21 @@ input[type='checkbox']:after {
   .resource-card-text {
     font-size: small;
   }
+
+  .scroll-search-results ul {
+    gap: 1rem;
+  }
+}
+
+/* ______________________________________________________________SIZE < 420px */
+
+@media screen and (max-width: 420px) {
+  .my-resource-card {
+    min-width: 25vw !important;
+    /* height: auto; */
+    height: 200px;
+  }
+
 }
 
 /* ___________________________________________________________________GLOBAL */
@@ -766,7 +811,7 @@ input[type='checkbox']:after {
 }
 
 .marker-icon i {
-  color: rgb(208, 87, 74);
+  color: rgb(249, 106, 66);
   font-size: x-large;
 }
 
@@ -796,10 +841,6 @@ input[type='checkbox']:after {
   display: flex;
   width: 200px;
   justify-content: space-between;
-}
-
-.modal-title-div p {
-  margin: 0;
 }
 
 .carousel {
@@ -875,4 +916,10 @@ input[type='checkbox']:after {
 
 .my-input2:checked+.my-label:before {
   background: rgb(164, 246, 164);
+}
+
+hr {
+  border: none;
+  height: 2px;
+  background-color: black;
 }

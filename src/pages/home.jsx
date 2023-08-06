@@ -47,6 +47,7 @@ const Home = () => {
   const closeModal = () => {
     setSelectedResource(null);
     setModalIsOpen(false);
+    console.log("CLOSE MODAL")
   };
 
   useEffect(() => {
@@ -220,7 +221,7 @@ const Home = () => {
             </div>
 
             {/* Filter by day */}
-            <div className="dropdown-div">
+            <div className="selection">
               <div className="my-dropdown">
                 {!dropdownOpen &&
                   <button className="my-schedule-button"
@@ -234,6 +235,7 @@ const Home = () => {
                     <img className="right-arrow" src={arrow}></img>
                   </button>
                 }
+                <hr />
                 {dropdownOpen &&
                   <div className="my-dropdown-menu">
                     <div className="my-form-check">
