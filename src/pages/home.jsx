@@ -137,7 +137,7 @@ const Home = () => {
           {/* <!-- What type of resource--> */}
           <div className="what-type">
             <div className="question">
-              <div className="my-2 circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
+              <div className="circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
             </div>
             <div className="selection">
               <div className="my-form-check">
@@ -176,7 +176,7 @@ const Home = () => {
                   onChange={handleHealth}
                 />
                 <label className="my-label" htmlFor="health">
-                  Healthcare
+                  Health
                 </label>
               </div>
               <div className="my-form-check">
@@ -196,12 +196,12 @@ const Home = () => {
                 <input
                   className="my-input"
                   type="checkbox"
-                  id="hygiene"
-                  value="hygiene"
+                  id="bathroom"
+                  value="bathroom"
                   name="selection"
                   onChange={handleHygiene}
                 />
-                <label className="my-label" htmlFor="hygiene">
+                <label className="my-label" htmlFor="bathroom">
                   Bathroom
                 </label>
               </div>
@@ -237,7 +237,7 @@ const Home = () => {
                 }
                 <hr />
                 {dropdownOpen &&
-                  <div className="my-dropdown-menu">
+                  <div className="selection">
                     <div className="my-form-check">
                       <input
                         className="my-input2"
@@ -260,7 +260,7 @@ const Home = () => {
                         onChange={handleTuesday}
                       />
                       <label className="my-label" htmlFor="tuesday">
-                        Tues
+                        Tue
                       </label>
                     </div>
 
@@ -286,7 +286,7 @@ const Home = () => {
                         onChange={handleThursday}
                       />
                       <label className="my-label" htmlFor="thursday">
-                        Thurs
+                        Thr
                       </label>
                     </div>
 
@@ -331,7 +331,7 @@ const Home = () => {
 
                     <div className="my-form-check">
                       <input
-                        className="my-input"
+                        className="my-input2"
                         type="checkbox"
                         id="all"
                         value="all"
