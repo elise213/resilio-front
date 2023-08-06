@@ -211,7 +211,7 @@ _____________________________________________________________RESOURCE INFO .reso
 }
 
 .navbar-logo {
-  width: 30vw;
+  width: 25vw;
   margin-left: 10px;
 }
 
@@ -229,15 +229,13 @@ _____________________________________________________________RESOURCE INFO .reso
 
 .my-dropdown {
   display: flex;
-
 }
 
 .my-dropdown-menu {
   display: flex;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  justify-content: space-evenly;
+  /* align-items: center; */
+  width: 100vw !important;
   flex-wrap: wrap;
 }
 
@@ -445,7 +443,7 @@ body.modal-open {
 .my-label {
   /* margin-right: 10px; */
   font-family: "Urbanist", sans-serif !important;
-  margin-left: 10px;
+  margin-right: 8px;
   font-size: medium;
 }
 
@@ -472,10 +470,14 @@ body.modal-open {
 .selection {
   display: flex;
   justify-content: center;
+  width: 100vw !important;
   align-items: center;
-  width: 90%;
   flex-wrap: wrap;
-  margin: 0;
+  padding: 0 15px;
+}
+
+.my-label {
+  margin-right: 20px;
 }
 
 .tell-us {
@@ -537,7 +539,7 @@ input[type='checkbox']:after {
 }
 
 .circle-font span {
-  text-shadow: 2px 1px 4px #8aa68c;
+  text-shadow: 2px 1px 4px #ba9084;
 }
 
 /* _____________________________________________________________Simple-Map Component */
@@ -690,6 +692,14 @@ input[type='checkbox']:after {
   .x-close {
     color: red;
     top: 37px !important;
+  }
+
+  .selection {
+    justify-content: space-evenly !important;
+  }
+
+  .my-label {
+    margin-right: 7px !important;
   }
 
   .tell-us {
@@ -885,12 +895,12 @@ input[type='checkbox']:after {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid #000;
+  border: 1px solid salmon;
   background: #fff;
 }
 
 .my-input:checked+.my-label:before {
-  background: salmon;
+  background: rgb(245, 145, 132);
 }
 
 
@@ -913,7 +923,7 @@ input[type='checkbox']:after {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid #000;
+  border: 1px solid green;
   background: #fff;
 }
 

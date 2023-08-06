@@ -48,11 +48,11 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg mb-3" id="navbar">
+    <nav className="navbar" id="navbar">
       {/* Navbar Brand Logo - Link to Home - Always Visible*/}
-      <div className="container-fluid">
+      <div className="">
         <Link to="/">
-          <span className="navbar-brand ms-5">
+          <span className="navbar-brand">
             <img className="navbar-logo" src={AliveLogo}></img>
           </span>
         </Link>
@@ -60,12 +60,6 @@ export const Navbar = () => {
         {/* Dynamic Navbar collapse-expand */}
         <button
           className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
           onClick={handleToggle}
         >
           {!isExpanded ? <i className="fa-solid fa-bars navbar-toggler-icon"></i> : <span className="navbar-toggler-icon">X</span>}
