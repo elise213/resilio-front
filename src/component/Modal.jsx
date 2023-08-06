@@ -16,13 +16,13 @@ const Modal = (props) => {
         <div>
 
             <div className="modal-div">
+                <div className="modal-close-div">
+                    <p className="x-close" onClick={handleCloseClick}>X</p>
+                </div>
                 <div className="modal-content">
                     <div className="modal-header">
                         <div className="modal-title-div">
                             <p>{props.resource.name}</p>
-                        </div>
-                        <div className="modal-close-div">
-                            <p className="x-close" onClick={handleCloseClick}>X</p>
                         </div>
                     </div>
                     <div className="modal-body">

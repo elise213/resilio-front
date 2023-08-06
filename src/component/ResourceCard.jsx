@@ -28,13 +28,13 @@ export const ResourceCard = (props) => {
   }
 
   return (
-    <div className="resource-card" onClick={() => props.openModal(props.item)} >
+    <div className="my-resource-card" onClick={() => props.openModal(props.item)} >
       <div className="">
-        <div className="card-header">
+        <div className="resource-card-header">
           <div className="card-title-div">
-            <p className="resource-card-title-name">{props.item.name}</p>
+            <p className="resource-title">{props.item.name}</p>
             <div className="">
-              <i className={`${icon} card-icon m-2`} />
+              <i className={`${icon} card-icon`} />
             </div>
           </div>
         </div>
