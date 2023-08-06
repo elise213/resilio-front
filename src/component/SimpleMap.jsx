@@ -38,7 +38,7 @@ export const SimpleMap = ({ zipCode, setPlace, place, openModal }) => {
   //   }
   // }
 
-  const Marker = ({ color, text, id, result }) => {
+  const Marker = ({ text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const handleMouseEnter = () => {
@@ -56,7 +56,7 @@ export const SimpleMap = ({ zipCode, setPlace, place, openModal }) => {
     return (
       <div
         className="marker"
-        style={{ color: color, cursor: "pointer" }}
+        style={{ cursor: "pointer" }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleMarkerClick}
@@ -127,7 +127,6 @@ export const SimpleMap = ({ zipCode, setPlace, place, openModal }) => {
               <Marker
                 lat={result.latitude}
                 lng={result.longitude}
-                color="red"
                 text={result.name}
                 key={i}
                 category={result.category}

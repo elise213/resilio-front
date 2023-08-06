@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
 import axios from 'axios';
 import Modal from "../component/Modal"
+import arrow from "/assets/coralarrow.png";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -29,14 +30,14 @@ const Home = () => {
   const [neLng, setNeLng] = useState(0)
   const [swLat, setSwLat] = useState(0)
   const [swLng, setSwLng] = useState(0)
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   let url = window.location.search;
 
   const circleInstance = useRef();
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
-
-  console.log("SR", selectedResource)
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -114,7 +115,16 @@ const Home = () => {
   const handleSaturday = handleEvent(setSaturday);
   const handleSunday = handleEvent(setSunday);
 
-
+  function handleAll() {
+    setMonday(false);
+    setTuesday(false);
+    setWednesday(false);
+    setThursday(false);
+    setFriday(false);
+    setSaturday(false);
+    setSunday(false);
+    setDropdownOpen(false);
+  }
 
   return (
     <div>
@@ -129,191 +139,209 @@ const Home = () => {
               <div className="my-2 circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
             </div>
             <div className="selection">
-              <div className="form-check">
+              <div className="my-form-check">
                 <input
-                  className="form-check-input"
+                  className="my-input"
                   type="checkbox"
                   id="food"
                   value="food"
                   name="selection"
                   onChange={handleFood}
                 />
-                <label className="form-check-label" htmlFor="food">
+                <label className="my-label" htmlFor="food">
                   Food
                 </label>
               </div>
-              <div className="form-check">
+              <div className="my-form-check">
                 <input
-                  className="form-check-input"
+                  className="my-input"
                   type="checkbox"
                   id="shelter"
                   value="shelter"
                   name="selection"
                   onChange={handleShelter}
                 />
-                <label className="form-check-label" htmlFor="shelter">
+                <label className="my-label" htmlFor="shelter">
                   Shelter
                 </label>
               </div>
-              <div className="form-check ">
+              <div className="my-form-check">
                 <input
-                  className="form-check-input"
+                  className="my-input"
                   type="checkbox"
                   id="health"
                   value="health"
                   name="selection"
                   onChange={handleHealth}
                 />
-                <label className="form-check-label" htmlFor="health">
+                <label className="my-label" htmlFor="health">
                   Healthcare
                 </label>
               </div>
-              <div className="form-check">
+              <div className="my-form-check">
                 <input
-                  className="form-check-input"
+                  className="my-input"
                   type="checkbox"
                   id="hygiene"
                   value="hygiene"
                   name="selection"
                   onChange={handleHygiene}
                 />
-                <label className="form-check-label" htmlFor="hygiene">
+                <label className="my-label" htmlFor="hygiene">
                   Shower
                 </label>
               </div>
-              <div className="form-check ">
+              <div className="my-form-check">
                 <input
-                  className="form-check-input"
+                  className="my-input"
                   type="checkbox"
                   id="hygiene"
                   value="hygiene"
                   name="selection"
                   onChange={handleHygiene}
                 />
-                <label className="form-check-label" htmlFor="hygiene">
+                <label className="my-label" htmlFor="hygiene">
                   Bathroom
                 </label>
               </div>
-              <div className="form-check  ">
+              <div className="my-form-check">
                 <input
-                  className="form-check-input"
+                  className="my-input"
                   type="checkbox"
-                  id="hygiene"
-                  value="hygiene"
+                  id="work"
+                  value="work"
                   name="selection"
                   onChange={handleWork}
                 />
-                <label className="form-check-label" htmlFor="hygiene">
+                <label className="my-label" htmlFor="work">
                   Work
                 </label>
               </div>
             </div>
+
             {/* Filter by day */}
             <div className="dropdown-div">
-              <div className="dropdown">
-                <button className="btn dropdown-toggle form-check-label schedule" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                  SCHEDULE
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="monday">
-                        Monday
-                      </label>
+              <div className="my-dropdown">
+                {!dropdownOpen &&
+                  <button className="my-schedule-button"
+                    // type="button"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}>
+
+                    <img className="left-arrow" src={arrow}></img>
+
+                    Filter By Day
+
+                    <img className="right-arrow" src={arrow}></img>
+                  </button>
+                }
+                {dropdownOpen &&
+                  <div className="my-dropdown-menu">
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="monday"
                         value="monday"
                         onChange={handleMonday}
                       />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="tuesday">
-                        Tuesday
+                      <label className="my-label" htmlFor="monday">
+                        Mon
                       </label>
+                    </div>
+
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="tuesday"
                         value="tuesday"
                         onChange={handleTuesday}
                       />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="wednesday">
-                        Wednesday
+                      <label className="my-label" htmlFor="tuesday">
+                        Tues
                       </label>
+                    </div>
+
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="wednesday"
                         value="wednesday"
                         onChange={handleWednesday}
                       />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="thursday">
-                        Thursday
+                      <label className="my-label" htmlFor="wednesday">
+                        Wed
                       </label>
+                    </div>
+
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="thursday"
                         value="thursday"
                         onChange={handleThursday}
                       />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="friday">
-                        Friday
+                      <label className="my-label" htmlFor="thursday">
+                        Thurs
                       </label>
+                    </div>
+
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="friday"
                         value="friday"
                         onChange={handleFriday}
                       />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="saturday">
-                        Saturday
+                      <label className="my-label" htmlFor="friday">
+                        Fri
                       </label>
+                    </div>
+
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="saturday"
                         value="saturday"
                         onChange={handleSaturday}
                       />
-                    </div>
-                  </li>
-                  <li>
-                    <div className="form-check form-check-inline ">
-                      <label className="form-check-label" htmlFor="sunday">
-                        Sunday
+                      <label className="my-label" htmlFor="saturday">
+                        Sat
                       </label>
+                    </div>
+
+                    <div className="my-form-check">
                       <input
-                        className="form-check-input dropdown-item"
+                        className="my-input2"
                         type="checkbox"
                         id="sunday"
                         value="sunday"
                         onChange={handleSunday}
                       />
+                      <label className="my-label" htmlFor="sunday">
+                        Sun
+                      </label>
                     </div>
-                  </li>
-                </ul>
+
+                    <div className="my-form-check">
+                      <input
+                        className="my-input"
+                        type="checkbox"
+                        id="all"
+                        value="all"
+                        onChange={handleAll}
+                      />
+                      <label className="my-label" htmlFor="all">
+                        All
+                      </label>
+                    </div>
+
+                  </div>
+                }
               </div>
             </div>
           </div>
