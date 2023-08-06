@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { SimpleMap2 } from "./SimpleMap2";
 import arrow from "/assets/coralarrow.png";
 
+
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
 

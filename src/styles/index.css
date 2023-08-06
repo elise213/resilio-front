@@ -222,6 +222,23 @@ _____________________________________________________________RESOURCE INFO .reso
 }
 
 /* _________________________________________MODAL */
+.my-input:checked {
+  border: 2px solid salmon !important;
+  background-color: salmon !important;
+}
+
+.my-dropdown {
+  display: flex;
+}
+
+.my-dropdown-menu {
+  display: flex;
+}
+
+.my-dropdown-menu div {
+  margin: 5px;
+}
+
 .modal-close-div {
   display: flex;
   justify-content: center;
@@ -315,7 +332,7 @@ _____________________________________________________________RESOURCE INFO .reso
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(.9, 0, 0, 0.8);
   z-index: 9998;
 }
 
@@ -384,7 +401,7 @@ body.modal-open {
 }
 
 .scroll-search-results li {
-  padding-right: 15px;
+  /* padding-right: 15px; */
   width: 100%;
   margin-bottom: 20px;
 }
@@ -407,6 +424,25 @@ body.modal-open {
 }
 
 /* _____________________________________________________________Selection-*/
+
+.my-form-check {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.my-label {
+  margin-right: 10px;
+  font-family: "Urbanist", sans-serif !important;
+  margin-left: 10px;
+  font-size: medium;
+}
+
+.my-schedule-button {
+  border: none;
+  background-color: transparent;
+}
+
 .search-container {
   word-wrap: wrap;
   display: flex;
@@ -451,22 +487,7 @@ body.modal-open {
   min-height: none !important;
 }
 
-.form-check-input {
-  border: 2px solid green !important;
-  margin-right: 7px;
-  cursor: pointer;
-}
-
 /* WHAT */
-.form-check-input.dropdown-item {
-  max-width: 5px !important;
-  /* max-height: 10px; */
-  box-shadow: none;
-}
-
-.form-check-input.dropdown-item:hover {
-  cursor: pointer;
-}
 
 .schedule {
   font-size: large !important;
@@ -481,8 +502,8 @@ body.modal-open {
 }
 
 input[type=checkbox]:checked {
-  background-color: rgb(136, 216, 169);
-  color: black !important;
+  background-color: rgb(136, 216, 169) !important;
+  color: salmon !important;
 }
 
 input[type='checkbox']:after {
@@ -547,6 +568,8 @@ input[type='checkbox']:after {
   .nav-btn {
     font-size: 25px;
   }
+
+
 
   .my-navbar-items {
     display: flex;
@@ -636,26 +659,7 @@ input[type='checkbox']:after {
     text-align: justify;
   }
 
-  .carousel {
-    width: 100% !important;
-    display: flex;
-    justify-content: center;
-  }
 
-  .left-arrow {
-    width: 30px;
-    transform: scaleX(-1);
-  }
-
-  .right-arrow {
-    width: 30px;
-  }
-
-  .arrow-button {
-    border: none;
-    padding: 15px;
-    background-color: transparent;
-  }
 }
 
 /* ______________________________________________________________SIZE < 600px */
@@ -762,8 +766,16 @@ input[type='checkbox']:after {
 }
 
 .marker-icon i {
-  color: red;
-  font-size: 27px;
+  color: rgb(208, 87, 74);
+  font-size: x-large;
+}
+
+.marker-text {
+  color: salmon(208, 87, 74);
+  z-index: 100;
+  font-size: large;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border: 2px solid salmon !important;
 }
 
 .marker-icon span {
@@ -788,4 +800,79 @@ input[type='checkbox']:after {
 
 .modal-title-div p {
   margin: 0;
+}
+
+.carousel {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+
+.left-arrow {
+  width: 20px;
+  transform: scaleX(-1);
+}
+
+.right-arrow {
+  width: 20px;
+}
+
+.arrow-button {
+  border: none;
+  padding: 15px;
+  background-color: transparent;
+}
+
+.my-input {
+  display: none;
+}
+
+.my-input+.my-label {
+  position: relative;
+  padding-left: 21px;
+  cursor: pointer;
+}
+
+.my-input+.my-label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.my-input:checked+.my-label:before {
+  background: salmon;
+}
+
+
+.my-input2 {
+  display: none;
+}
+
+.my-input2+.my-label {
+  position: relative;
+  padding-left: 21px;
+  cursor: pointer;
+  margin-bottom: 4.5px;
+}
+
+.my-input2+.my-label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.my-input2:checked+.my-label:before {
+  background: rgb(164, 246, 164);
 }
