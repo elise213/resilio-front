@@ -538,9 +538,9 @@ input[type='checkbox']:after {
   font-weight: bolder;
 }
 
-.circle-font span {
+/* .circle-font span {
   text-shadow: 2px 1px 4px #ba9084;
-}
+} */
 
 /* _____________________________________________________________Simple-Map Component */
 
