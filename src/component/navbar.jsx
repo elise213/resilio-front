@@ -52,7 +52,7 @@ export const Navbar = () => {
       <div className="">
         <Link to="/?food=false&shelter=false&health=false&hygiene=false&work=false&monday=false&tuesday=false&wednesday=false&thursday=false&friday=false&saturday=false&sunday=false&neLat=34.225370249395425&neLng=-117.95839879150392&swLat=33.89714807900816&swLng=-118.51801488037111">
           <span className="navbar-brand" >
-            <img className="navbar-logo" src={AliveLogo}></img>
+            {/* <img className="navbar-logo" src={AliveLogo}></img> */}
           </span>
         </Link>
 
