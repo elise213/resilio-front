@@ -1,16 +1,12 @@
 :root {
-  --coral: rgb(255, 144, 117);
-  --coral2: rgb(247, 123, 92);
-  --green: rgb(170, 255, 192);
+  --coral: rgb(254, 139, 121);
+  --coral2: rgb(255, 109, 72);
+  --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
 }
 
-_____________________________________________________________RESOURCE INFO .resource-title {
-  font-family: "Carme", sans-serif;
-  font-size: xx-large;
-  font-weight: bold;
-  text-align: center;
-}
+/* _____________________________________________________________RESOURCE INFO  */
+
 
 .info {
   margin-bottom: 20px;
@@ -168,10 +164,9 @@ _____________________________________________________________RESOURCE INFO .reso
 
 .resource-title {
   color: black;
+  font-family: "Urbanist", sans-serif;
   font-size: medium;
-  font-weight: bold !important;
-  /* font-family: "Urbanist", sans-serif; */
-  font-family: "Carme", sans-serif;
+  font-weight: bolder;
 }
 
 .card-icon {
@@ -452,6 +447,10 @@ body.modal-open {
 .my-schedule-button {
   border: none;
   background-color: transparent;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin: 15px 0px;
 }
 
 .search-container {
@@ -502,6 +501,10 @@ body.modal-open {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.when-do-you {
+  margin-top: 15px;
 }
 
 .schedule {
@@ -596,10 +599,6 @@ body.modal-open {
 
 .map-and-cities {
   width: 100%;
-}
-
-.search-container {
-  margin-bottom: 20px;
 }
 
 .search-results-full {
@@ -813,10 +812,12 @@ body.modal-open {
 .left-arrow {
   width: 20px;
   transform: scaleX(-1);
+  margin-right: 5px;
 }
 
 .right-arrow {
   width: 20px;
+  margin-left: 5px;
 }
 
 .arrow-button {

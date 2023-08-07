@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef, useLayoutEffect, useEffect } from "react";
 import { Context } from "../store/appContext";
 // import { Link, useLocation } from "react-router-dom";
 import { SimpleMap } from "../component/SimpleMap";
@@ -35,6 +35,9 @@ const Home = () => {
   let url = window.location.search;
 
   const circleInstance = useRef();
+  const circleInstance2 = useRef();
+
+  const uniqueResults = store.searchResults.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
@@ -51,9 +54,21 @@ const Home = () => {
   };
 
   useEffect(() => {
-    new CircleType(circleInstance.current).radius(500);
+    let circle1, circle2;
+    if (circleInstance.current) {
+      circle1 = new CircleType(circleInstance.current).radius(500);
+    }
+    if (circleInstance2.current) {
+      circle2 = new CircleType(circleInstance2.current).radius(500).dir(-1);
+    }
     actions.setSearchResults();
-  }, [searchParams]);
+    // Clean up on component unmount
+    return () => {
+      circle1 && circle1.destroy();
+      circle2 && circle2.destroy();
+    }
+  }, [searchParams, dropdownOpen]);
+
 
   useEffect(() => {
     if (place != undefined && place.bounds.ne.lat != undefined) {
@@ -219,24 +234,26 @@ const Home = () => {
                 </label>
               </div>
             </div>
+          </div>
+          {/* Filter by day */}
+          <div className="selection">
+            <div className="my-dropdown">
+              {!dropdownOpen &&
+                <button className="my-schedule-button"
+                  // type="button"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}>
 
-            {/* Filter by day */}
-            <div className="selection">
-              <div className="my-dropdown">
-                {!dropdownOpen &&
-                  <button className="my-schedule-button"
-                    // type="button"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}>
+                  <img className="left-arrow" src={arrow}></img>
 
-                    <img className="left-arrow" src={arrow}></img>
+                  Filter By Day
 
-                    Filter By Day
+                  <img className="right-arrow" src={arrow}></img>
+                </button>
+              }
+              <hr />
+              {dropdownOpen &&
+                <div className="what-type">
 
-                    <img className="right-arrow" src={arrow}></img>
-                  </button>
-                }
-                <hr />
-                {dropdownOpen &&
                   <div className="selection">
                     <div className="my-form-check">
                       <input
@@ -341,10 +358,13 @@ const Home = () => {
                         All
                       </label>
                     </div>
-
                   </div>
-                }
-              </div>
+                  <div className="question">
+                    <div className="circle-font when-do-you" ref={circleInstance2}>WHEN DO YOU NEED IT?</div>
+                  </div>
+                </div>
+              }
+              {/* </div> */}
             </div>
           </div>
 
@@ -372,7 +392,7 @@ const Home = () => {
         <div className="search-results-full">
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>
-              {store.searchResults.map((result, i) => {
+              {uniqueResults.map((result, i) => {
                 return (
                   <li key={i}>
                     <ResourceCard
