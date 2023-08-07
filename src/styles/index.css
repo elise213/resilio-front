@@ -1,3 +1,10 @@
+:root {
+  --coral: rgb(255, 144, 117);
+  --coral2: rgb(247, 123, 92);
+  --green: rgb(170, 255, 192);
+  --green2: rgb(48, 129, 69);
+}
+
 _____________________________________________________________RESOURCE INFO .resource-title {
   font-family: "Carme", sans-serif;
   font-size: xx-large;
@@ -43,8 +50,7 @@ _____________________________________________________________RESOURCE INFO .reso
   font-family: "Carme", sans-serif;
   font-size: medium;
   color: black;
-  width: 100%;
-  line-height: 1;
+  line-height: 1.5;
   text-decoration: none;
 }
 
@@ -79,6 +85,8 @@ _____________________________________________________________RESOURCE INFO .reso
   font-family: "Carme", sans-serif;
   line-height: 2;
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .description-div {
@@ -167,8 +175,9 @@ _____________________________________________________________RESOURCE INFO .reso
 }
 
 .card-icon {
-  color: darkgreen;
-  font-size: x-large;
+  color: var(--green2);
+  font-size: xx-large;
+  margin: 5px;
 }
 
 /* _____________________________________________________________NAVBAR / FOOTER*/
@@ -211,7 +220,7 @@ _____________________________________________________________RESOURCE INFO .reso
 }
 
 .navbar-logo {
-  width: 25vw;
+  width: 10vw;
   margin-left: 10px;
 }
 
@@ -222,10 +231,6 @@ _____________________________________________________________RESOURCE INFO .reso
 }
 
 /* _________________________________________MODAL */
-.my-input:checked {
-  border: 2px solid salmon !important;
-  background-color: salmon !important;
-}
 
 .my-dropdown {
   display: flex;
@@ -234,7 +239,6 @@ _____________________________________________________________RESOURCE INFO .reso
 .my-dropdown-menu {
   display: flex;
   justify-content: space-evenly;
-  /* align-items: center; */
   width: 100vw !important;
   flex-wrap: wrap;
 }
@@ -258,11 +262,10 @@ _____________________________________________________________RESOURCE INFO .reso
   background-color: transparent;
   align-self: flex-end;
   margin: 0;
-  color: salmon;
+  color: var(--coral);
   margin-right: 15px;
   margin-top: 10px;
   z-index: 1000;
-  ;
 }
 
 .x-close:hover {
@@ -441,7 +444,6 @@ body.modal-open {
 }
 
 .my-label {
-  /* margin-right: 10px; */
   font-family: "Urbanist", sans-serif !important;
   margin-right: 8px;
   font-size: medium;
@@ -458,6 +460,7 @@ body.modal-open {
   align-items: center;
   flex-direction: column;
   padding: 5px;
+  margin-top: 10px;
 }
 
 .question {
@@ -486,17 +489,6 @@ body.modal-open {
   letter-spacing: 1.3x;
 }
 
-/* Filter by day */
-.dropdown-toggle {
-  box-shadow: none !important;
-  font-family: "Urbanist", sans-serif !important;
-  font-size: 20px;
-}
-
-.dropdown-toggle::after {
-  color: salmon;
-  font-size: x-large;
-}
 
 .form-check {
   display: flex !important;
@@ -524,31 +516,12 @@ body.modal-open {
   letter-spacing: 1.4x;
 }
 
-input[type=checkbox]:checked {
-  background-color: rgb(136, 216, 169) !important;
-  color: salmon !important;
-}
 
-input[type='checkbox']:after {
-  box-shadow: none !important;
-}
 
 .circle-font {
   font-family: "Urbanist", sans-serif;
   font-weight: bolder;
 }
-
-/* .circle-font span {
-  text-shadow: 2px 1px 4px #ba9084;
-} */
-
-/* _____________________________________________________________Simple-Map Component */
-
-/* .map-and-cities {
-  width: 0%;
-  flex-grow: 1;
-  margin-top: 20px;
-} */
 
 /* _____________________________________________________________CONTACT PAGE */
 
@@ -564,127 +537,119 @@ input[type='checkbox']:after {
   width: 100%
 }
 
-/* _____________________________________________________________SIZE < 1500px */
-@media screen and (max-width: 1500px) {
-  .scroll-search-results li {
-    margin-bottom: 5px !important;
-  }
 
-  .resource-card-title-name {
-    font-size: medium;
-  }
-
-  .scroll-search-results {
-    display: flex;
-    flex-direction: row;
-    /* height: 30vh; */
-    width: 100%;
-    justify-content: center;
-    direction: unset;
-    margin-bottom: 10px;
-  }
-
-  .scroll-search-results ul {
-    overflow-x: auto;
-    overflow-y: hidden;
-    display: flex;
-    margin: 10px;
-  }
-
-  .nav-btn {
-    font-size: 25px;
-  }
-
-  .my-navbar-items {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-
-  .my-resource-card {
-    width: 200px;
-    height: 100%;
-    margin-left: 2px;
-    margin-right: 1px;
-  }
-
-  .card-img {
-    object-fit: cover;
-    max-height: 120px;
-  }
-
-  .card-icon {
-    font-size: medium;
-  }
-
-  .resource-card-title-name {
-    font-size: 12px;
-  }
-
-  .map-and-cities {
-    width: 100%;
-  }
-
-  .search-container {
-    margin-bottom: 20px;
-  }
-
-  .search-results-full {
-    flex-direction: column;
-    margin: 0;
-    width: 96vw;
-  }
-
-  .grand-container {
-    margin: 0;
-  }
-
-  /* .map-city-buttons {
-    display: flex;
-    overflow-y: auto;
-    overflow-x: scroll;
-    scroll-behavior: smooth;
-    display: flex;
-    height: 8vh;
-    width: 95vw;
-    gap: 2rem;
-    margin-top: 10px;
-  } */
-
-  .tell-us {
-    font-size: x-large;
-    margin-bottom: 30px;
-  }
-
-  .contact-page {
-    margin: 15px;
-    padding-top: 80px;
-  }
-
-  .carousel-description-div {
-    flex-direction: column;
-  }
-
-  .info-map-div {
-    flex-direction: column;
-  }
-
-  .modal-map {
-    width: 100% !important;
-  }
-
-  .details-div {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .description-div {
-    width: 100% !important;
-    padding: 20px;
-    text-align: justify;
-  }
+.scroll-search-results li {
+  margin-bottom: 5px !important;
 }
+
+.resource-card-title-name {
+  font-size: medium;
+}
+
+.scroll-search-results {
+  display: flex;
+  flex-direction: row;
+  /* height: 30vh; */
+  width: 100%;
+  justify-content: center;
+  direction: unset;
+  margin-bottom: 10px;
+}
+
+.scroll-search-results ul {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  margin: 10px;
+}
+
+.nav-btn {
+  font-size: 25px;
+}
+
+.my-navbar-items {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.my-resource-card {
+  width: 200px;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 1px;
+}
+
+.card-img {
+  object-fit: cover;
+  max-height: 120px;
+}
+
+.card-icon {
+  font-size: medium;
+}
+
+.resource-card-title-name {
+  font-size: 12px;
+}
+
+.map-and-cities {
+  width: 100%;
+}
+
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-results-full {
+  flex-direction: column;
+  margin: 0;
+  width: 96vw;
+}
+
+.grand-container {
+  margin: 0;
+}
+
+.tell-us {
+  font-size: x-large;
+  margin-bottom: 30px;
+}
+
+.contact-page {
+  margin: 15px;
+  padding-top: 80px;
+}
+
+.carousel-description-div {
+  flex-direction: column;
+}
+
+.info-map-div {
+  flex-direction: column;
+}
+
+.modal-map {
+  width: 100% !important;
+}
+
+.details-div {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.description-div {
+  width: 100% !important;
+  padding: 20px;
+  text-align: justify;
+}
+
+.info i {
+  margin-right: 10px;
+}
+
 
 /* ______________________________________________________________SIZE < 600px */
 
@@ -769,39 +734,22 @@ input[type='checkbox']:after {
 @media screen and (max-width: 420px) {
   .my-resource-card {
     min-width: 25vw !important;
-    /* height: auto; */
     height: 200px;
   }
-
 }
 
 /* ___________________________________________________________________GLOBAL */
 
-
-.submit {
+/* .submit {
   border: 1px solid black;
   font-family: "Carme", sans-serif;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   color: black;
-  background-color: lightgreen !important;
+  background-color: var(--green) !important;
   font-size: 20px;
   width: 100%;
   height: 30px;
-}
-
-.back-to-search {
-  text-decoration: none !important;
-  color: black;
-  font-size: large;
-  font-family: "Carme", sans-serif;
-  margin-top: 15px;
-  margin-bottom: 50px;
-}
-
-.back-to-search:hover {
-  color: lightgreen;
-  cursor: pointer;
-}
+} */
 
 .radio {
   border-radius: 2px !important;
@@ -824,7 +772,7 @@ input[type='checkbox']:after {
 }
 
 .marker-icon i {
-  color: rgb(249, 106, 66);
+  color: var(--coral2);
   font-size: x-large;
 }
 
@@ -833,7 +781,7 @@ input[type='checkbox']:after {
   z-index: 100;
   font-size: large;
   background-color: rgba(255, 255, 255, 0.8) !important;
-  border: 2px solid salmon !important;
+  border: 2px solid var(--coral) !important;
 }
 
 .marker-icon span {
@@ -895,12 +843,12 @@ input[type='checkbox']:after {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid salmon;
+  border: 1px solid var(--coral);
   background: #fff;
 }
 
 .my-input:checked+.my-label:before {
-  background: rgb(245, 145, 132);
+  background-color: var(--coral);
 }
 
 
@@ -923,12 +871,12 @@ input[type='checkbox']:after {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid green;
+  border: 1px solid var(--green2);
   background: #fff;
 }
 
 .my-input2:checked+.my-label:before {
-  background: rgb(164, 246, 164);
+  background-color: var(--green);
 }
 
 hr {
