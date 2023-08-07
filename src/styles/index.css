@@ -1,3 +1,9 @@
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+
 :root {
   --coral: rgb(254, 139, 121);
   --coral2: rgb(255, 109, 72);
@@ -6,12 +12,6 @@
 }
 
 /* _____________________________________________________________RESOURCE INFO  */
-
-
-.info {
-  margin-bottom: 20px;
-}
-
 .resource-name {
   display: flex;
   justify-content: center;
@@ -107,10 +107,10 @@
 }
 
 .card-img {
-  object-fit: cover;
   max-width: 92%;
-  max-height: 100%;
   margin-bottom: 20px;
+  object-fit: cover;
+  max-height: 120px;
 }
 
 .card-inner {
@@ -126,21 +126,22 @@
 }
 
 .my-resource-card {
-  align-items: center;
   border: 1px solid lightgray;
   justify-content: center;
   display: flex;
-  font-family: "Carme", sans-serif;
   font-family: sans-serif;
   background-color: #eeeeee;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
   margin-bottom: 10px;
-  width: 98%;
   align-items: center;
   padding: 4px;
   max-width: 250px;
   border-radius: 1%;
   min-height: 150px;
+  width: 200px;
+  height: 100%;
+  margin-left: 2px;
+  margin-right: 1px;
 }
 
 .resource-card-header {
@@ -171,7 +172,7 @@
 
 .card-icon {
   color: var(--green2);
-  font-size: xx-large;
+  font-size: large;
   margin: 5px;
 }
 
@@ -215,7 +216,8 @@
 }
 
 .navbar-logo {
-  width: 10vw;
+  display: none;
+  width: 15vw;
   margin-left: 10px;
 }
 
@@ -229,6 +231,7 @@
 
 .my-dropdown {
   display: flex;
+  margin-top: 10px;
 }
 
 .my-dropdown-menu {
@@ -286,9 +289,9 @@
   justify-content: space-between;
   color: #000;
   font-size: x-large;
-  border: 4px solid salmon !important;
-  background-color: #f5ba4d;
-  border-radius: 3px;
+  border: 4px solid var(--coral);
+  background-color: #ffc353;
+  border-radius: .3rem;
 }
 
 .modal-footer {
@@ -305,7 +308,7 @@
   margin: 20px;
   width: 85%;
   max-width: 850px;
-  outline: 4px solid salmon !important;
+  outline: 4px solid var(--coral);
   outline-offset: 5px;
 }
 
@@ -314,7 +317,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border: 3px solid rgb(250, 106, 103); */
   padding-bottom: 30px;
   border-radius: 4px;
   overflow: hidden;
@@ -367,6 +369,11 @@ body.modal-open {
 /* ---------------------------------------------------------------------SEARCH PAGE */
 .info {
   display: flex;
+  margin-bottom: 20px;
+}
+
+.info i {
+  margin-right: 10px;
 }
 
 .dropdown-menu {
@@ -393,11 +400,13 @@ body.modal-open {
 .scroll-search-results {
   display: flex;
   flex-direction: row;
-  /* height: 30vh; */
   width: 100%;
   justify-content: center;
   direction: unset;
   margin: 0 !important;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
 }
 
 .scroll-search-results ul {
@@ -405,22 +414,20 @@ body.modal-open {
   overflow-y: hidden;
   display: flex;
   gap: 1rem;
+  margin: 10px;
 }
 
 .scroll-search-results li {
-  /* padding-right: 15px; */
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 5px !important;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-.search-results-full {
-  display: flex;
-  width: 90%;
-  justify-content: center;
+.resource-card-title-name {
+  font-size: medium;
 }
 
 .grand-container {
@@ -431,17 +438,10 @@ body.modal-open {
 }
 
 /* _____________________________________________________________Selection-*/
-
 .my-form-check {
   display: flex;
   align-items: center;
   margin: 5px 0;
-}
-
-.my-label {
-  font-family: "Urbanist", sans-serif !important;
-  margin-right: 8px;
-  font-size: medium;
 }
 
 .my-schedule-button {
@@ -479,13 +479,16 @@ body.modal-open {
 }
 
 .my-label {
-  margin-right: 20px;
+  margin-right: 13px;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: medium;
 }
 
 .tell-us {
   font-family: "Urbanist", sans-serif;
   font-size: 35px;
   letter-spacing: 1.3x;
+  margin-bottom: 30px;
 }
 
 
@@ -503,10 +506,6 @@ body.modal-open {
   align-items: center;
 }
 
-.when-do-you {
-  margin-top: 15px;
-}
-
 .schedule {
   font-size: large !important;
   letter-spacing: 4px;
@@ -519,15 +518,12 @@ body.modal-open {
   letter-spacing: 1.4x;
 }
 
-
-
 .circle-font {
   font-family: "Urbanist", sans-serif;
   font-weight: bolder;
 }
 
 /* _____________________________________________________________CONTACT PAGE */
-
 .contact-page {
   margin: 80px;
   display: flex;
@@ -540,61 +536,11 @@ body.modal-open {
   width: 100%
 }
 
-
-.scroll-search-results li {
-  margin-bottom: 5px !important;
-}
-
-.resource-card-title-name {
-  font-size: medium;
-}
-
-.scroll-search-results {
-  display: flex;
-  flex-direction: row;
-  /* height: 30vh; */
-  width: 100%;
-  justify-content: center;
-  direction: unset;
-  margin-bottom: 10px;
-}
-
-.scroll-search-results ul {
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: flex;
-  margin: 10px;
-}
-
-.nav-btn {
-  font-size: 25px;
-}
-
 .my-navbar-items {
   display: flex;
   flex-direction: column;
   text-align: center;
   align-items: center;
-}
-
-.my-resource-card {
-  width: 200px;
-  height: 100%;
-  margin-left: 2px;
-  margin-right: 1px;
-}
-
-.card-img {
-  object-fit: cover;
-  max-height: 120px;
-}
-
-.card-icon {
-  font-size: medium;
-}
-
-.resource-card-title-name {
-  font-size: 12px;
 }
 
 .map-and-cities {
@@ -609,11 +555,6 @@ body.modal-open {
 
 .grand-container {
   margin: 0;
-}
-
-.tell-us {
-  font-size: x-large;
-  margin-bottom: 30px;
 }
 
 .contact-page {
@@ -645,13 +586,7 @@ body.modal-open {
   text-align: justify;
 }
 
-.info i {
-  margin-right: 10px;
-}
-
-
 /* ______________________________________________________________SIZE < 600px */
-
 @media screen and (max-width: 600px) {
   .x-close {
     color: red;
@@ -701,7 +636,6 @@ body.modal-open {
 
   .card-img {
     width: 100%;
-    /* height: 8vh !important; */
     object-fit: cover;
     max-height: 110px;
     margin-bottom: 8px;
@@ -739,16 +673,16 @@ body.modal-open {
 
 /* ___________________________________________________________________GLOBAL */
 
-/* .submit {
-  border: 1px solid black;
+.submit {
+  border: 1px solid var(--green2);
   font-family: "Carme", sans-serif;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  color: black;
+  color: var(--green2);
   background-color: var(--green) !important;
   font-size: 20px;
   width: 100%;
   height: 30px;
-} */
+}
 
 .radio {
   border-radius: 2px !important;
@@ -764,7 +698,6 @@ body.modal-open {
 }
 
 /* _____________________________________________________________MAP */
-
 .marker {
   position: relative;
   display: inline-block;
@@ -851,7 +784,6 @@ body.modal-open {
 .my-input:checked+.my-label:before {
   background-color: var(--coral);
 }
-
 
 .my-input2 {
   display: none;
