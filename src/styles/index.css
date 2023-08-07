@@ -79,7 +79,6 @@ body {
 .description {
   font-family: "Carme", sans-serif;
   line-height: 2;
-  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
@@ -173,6 +172,12 @@ body {
   color: var(--green2);
   font-size: large;
   margin: 5px;
+}
+
+.card-icon-2 {
+  color: var(--green2);
+  font-size: x-large;
+  margin-left: 20px;
 }
 
 /* _____________________________________________________________NAVBAR / FOOTER*/
@@ -295,7 +300,9 @@ body {
 
 .modal-footer {
   border: none;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  height: 80px;
 }
 
 .modal-title {
@@ -316,14 +323,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 30px;
   border-radius: 4px;
-  overflow: hidden;
-  height: auto;
   overflow-x: hidden;
   overflow-y: scroll !important;
   scroll-behavior: smooth;
-
 }
 
 .modal-div {
@@ -368,7 +371,7 @@ body.modal-open {
 /* ---------------------------------------------------------------------SEARCH PAGE */
 .info {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .info i {
