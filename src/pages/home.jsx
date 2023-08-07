@@ -368,9 +368,7 @@ const Home = () => {
               ></input>
             </form>
           </div> */}
-
         </div>
-
         <div className="search-results-full">
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>

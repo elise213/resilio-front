@@ -87,11 +87,11 @@ export const ResourceInfo = (props) => {
 
       <div className="info-map-div">
 
-        <div className="details-div d-flex w-50">
+        <div className="details-div">
           <div className="details-column">
             {/* ADDRESS */}
             <div className="info">
-              <i className="fa-solid fa-map-pin me-4"></i>
+              <i className="fa-solid fa-map-pin"></i>
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.res.address)}`}
                 target="_blank"
@@ -103,13 +103,13 @@ export const ResourceInfo = (props) => {
             </div>
             {/* WEBSITE */}
             <div className="info">
-              <i className="fa-solid fa-earth-americas me-4"></i>
+              <i className="fa-solid fa-earth-americas"></i>
               <a href={"https://www." + props.res.website} className="resource-card-text">{props.res.website}</a>
             </div>
 
             {/* SCHEDULE */}
             <div className="d-flex info">
-              <i className="fa-solid fa-calendar-check me-4"></i>
+              <i className="fa-solid fa-calendar-check"></i>
               <div className="sched-div">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
                   <p key={index} className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
