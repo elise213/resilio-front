@@ -11,7 +11,17 @@ const Modal = (props) => {
         props.closeModal();
     };
 
-    { console.log("ITEM", props.resource) }
+    let icon = "";
+    if (props.resource.category == "health") {
+        icon = "fa-solid fa-stethoscope";
+    } else if (props.resource.category == "food") {
+        icon = "fa-solid fa-bowl-rice";
+    } else if (props.resource.category == "hygiene") {
+        icon = "fa-solid fa-soap";
+    } else {
+        icon = "fa-solid fa-person-shelter";
+    }
+
     return (
         <div>
 
@@ -23,6 +33,7 @@ const Modal = (props) => {
                     <div className="modal-header">
                         <div className="modal-title-div">
                             <p>{props.resource.name}</p>
+                            <i className={`${icon} card-icon-2`} />
                         </div>
                     </div>
                     <div className="modal-body">
