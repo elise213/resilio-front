@@ -6,6 +6,16 @@ import arrow from "/assets/coralarrow.png";
 
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State to track the current image
+  const images = [
+    props.res.image,
+    props.res.image2,
+    props.res.image3,
+    props.res.image4,
+    props.res.image5
+  ].filter(Boolean); // This will remove any undefined or null values, giving us only the existing images
+
+  console.log("IMAGES", images)
 
   function filterNonNullValues(schedule) {
     const result = {};
@@ -26,8 +36,19 @@ export const ResourceInfo = (props) => {
   }
 
   function shiftLeft() {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    } else {
+      setCurrentImageIndex(images.length - 1); // wrap around to the last image
+    }
   }
+
   function shiftRight() {
+    if (currentImageIndex < images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    } else {
+      setCurrentImageIndex(0); // wrap around to the first image
+    }
   }
 
 
@@ -66,17 +87,23 @@ export const ResourceInfo = (props) => {
     }) : "";
 
   return (
-    <div className="offering-card m-4">
+    <div className="offering-card">
       <div className="carousel-description-div">
 
         {/* _______CAROUSEL_______ */}
 
         <div className='carousel'>
-          <button className="arrow-button" onClick={shiftLeft}><img className="left-arrow" src={arrow}></img></button>
-
-          <img className="carousel-image" src={props.res.image} alt="" />
-
-          <button className="arrow-button" onClick={shiftRight}><img className="right-arrow" src={arrow}></img></button>
+          {images.length > 1 && (
+            <button className="arrow-button" onClick={shiftLeft}>
+              <img className="left-arrow" src={arrow}></img>
+            </button>
+          )}
+          <img className="carousel-image" src={images[currentImageIndex]} alt="" />
+          {images.length > 1 && (
+            <button className="arrow-button" onClick={shiftRight}>
+              <img className="right-arrow" src={arrow}></img>
+            </button>
+          )}
         </div>
 
         {/* DESCRIPTION */}

@@ -1,11 +1,9 @@
 import React, { useState, useContext, useRef, useLayoutEffect, useEffect } from "react";
 import { Context } from "../store/appContext";
-// import { Link, useLocation } from "react-router-dom";
 import { SimpleMap } from "../component/SimpleMap";
 import { ResourceCard } from "../component/ResourceCard";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
-import axios from 'axios';
 import Modal from "../component/Modal"
 import arrow from "/assets/coralarrow.png";
 
@@ -17,6 +15,7 @@ const Home = () => {
   const [health, setHealth] = useState(false);
   const [hygiene, setHygiene] = useState(false);
   const [work, setWork] = useState(false);
+  const [bathroom, setBathroom] = useState(false);
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
   const [wednesday, setWednesday] = useState(false);
@@ -31,16 +30,14 @@ const Home = () => {
   const [swLat, setSwLat] = useState(0)
   const [swLng, setSwLng] = useState(0)
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  let url = window.location.search;
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedResource, setSelectedResource] = useState(null);
+  const [allKinds, setAllKinds] = useState(true);
 
   const circleInstance = useRef();
   const circleInstance2 = useRef();
 
   const uniqueResults = store.searchResults.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
-
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedResource, setSelectedResource] = useState(null);
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -52,6 +49,27 @@ const Home = () => {
     setModalIsOpen(false);
     console.log("CLOSE MODAL")
   };
+
+  const options = [
+    { id: "food", label: "Food", state: food, handler: setFood },
+    { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
+    { id: "health", label: "Health", state: health, handler: setHealth },
+    { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
+    { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
+    { id: "work", label: "Work", state: work, handler: setWork },
+  ];
+
+  const handleCheckbox = (id, checked) => {
+    if (id === "allKinds") {
+      setAllKinds(true);
+      options.forEach(opt => opt.handler(false)); // If allKinds is checked, uncheck others.
+    } else {
+      const option = options.find(opt => opt.id === id);
+      option && option.handler(checked);
+      setAllKinds(false);  // If any individual checkbox is checked or unchecked, uncheck allKinds.
+    }
+  };
+
 
   useEffect(() => {
     let circle1, circle2;
@@ -69,10 +87,13 @@ const Home = () => {
     }
   }, [searchParams, dropdownOpen]);
 
+  useEffect(() => {
+    actions.setSearchResults();
+  }, []);
+
 
   useEffect(() => {
     if (place != undefined && place.bounds.ne.lat != undefined) {
-      // console.log("PLACE bounds", place.bounds)
       setNeLat(place.bounds.ne.lat)
       setNeLng(place.bounds.ne.lng)
       setSwLat(place.bounds.sw.lat)
@@ -118,11 +139,37 @@ const Home = () => {
       setter(element.checked);
     };
   }
-  const handleFood = handleEvent(setFood);
-  const handleShelter = handleEvent(setShelter);
-  const handleHealth = handleEvent(setHealth);
-  const handleHygiene = handleEvent(setHygiene);
-  const handleWork = handleEvent(setWork);
+
+  function handleAllKinds(event) {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setFood(false);
+      setShelter(false);
+      setHealth(false);
+      setHygiene(false);
+      setWork(false);
+      setBathroom(false);
+    }
+    setAllKinds(isChecked);
+  }
+
+  function handleEvent(setter, isResourceType = false) {
+    return function (event) {
+      const isChecked = event.target.checked;
+      setter(isChecked);
+      if (isChecked && isResourceType) {
+        setAllKinds(false);
+      }
+    };
+  }
+
+  // const handleAllKinds = handleEvent(setAllKinds);
+  const handleFood = handleEvent(setFood, true);
+  const handleShelter = handleEvent(setShelter, true);
+  const handleHealth = handleEvent(setHealth, true);
+  const handleHygiene = handleEvent(setHygiene, true);
+  const handleWork = handleEvent(setWork, true);
+  const handleBathroom = handleEvent(setBathroom, true);
   const handleMonday = handleEvent(setMonday);
   const handleTuesday = handleEvent(setTuesday);
   const handleWednesday = handleEvent(setWednesday);
@@ -142,6 +189,26 @@ const Home = () => {
     setDropdownOpen(false);
   }
 
+  function handleAllKinds() {
+    setHealth(false);
+    setHygiene(false);
+    setWork(false);
+    setBathroom(false);
+    setShelter(false);
+    setFood(false);
+  }
+
+  function handleEvent(setter, isResourceType = false) {
+    return function (event) {
+      const element = event.target;
+      setter(element.checked);
+
+      if (isResourceType) {
+        setAllKinds(false); // Uncheck 'allKinds' if any resource type is clicked
+      }
+    };
+  }
+
   return (
     <div>
       <div className="grand-container">
@@ -154,83 +221,36 @@ const Home = () => {
             <div className="question">
               <div className="circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
             </div>
+
             <div className="selection">
+              {options.map((option) => (
+                <div className="my-form-check" key={option.id}>
+                  <input
+                    className="my-input"
+                    type="checkbox"
+                    id={option.id}
+                    value={option.id}
+                    name="selection"
+                    checked={option.state}
+                    onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                  />
+                  <label className="my-label" htmlFor={option.id}>
+                    {option.label}
+                  </label>
+                </div>
+              ))}
               <div className="my-form-check">
                 <input
                   className="my-input"
                   type="checkbox"
-                  id="food"
-                  value="food"
+                  id="allKinds"
+                  value="allKinds"
                   name="selection"
-                  onChange={handleFood}
+                  checked={allKinds}
+                  onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
                 />
-                <label className="my-label" htmlFor="food">
-                  Food
-                </label>
-              </div>
-              <div className="my-form-check">
-                <input
-                  className="my-input"
-                  type="checkbox"
-                  id="shelter"
-                  value="shelter"
-                  name="selection"
-                  onChange={handleShelter}
-                />
-                <label className="my-label" htmlFor="shelter">
-                  Shelter
-                </label>
-              </div>
-              <div className="my-form-check">
-                <input
-                  className="my-input"
-                  type="checkbox"
-                  id="health"
-                  value="health"
-                  name="selection"
-                  onChange={handleHealth}
-                />
-                <label className="my-label" htmlFor="health">
-                  Health
-                </label>
-              </div>
-              <div className="my-form-check">
-                <input
-                  className="my-input"
-                  type="checkbox"
-                  id="hygiene"
-                  value="hygiene"
-                  name="selection"
-                  onChange={handleHygiene}
-                />
-                <label className="my-label" htmlFor="hygiene">
-                  Shower
-                </label>
-              </div>
-              <div className="my-form-check">
-                <input
-                  className="my-input"
-                  type="checkbox"
-                  id="bathroom"
-                  value="bathroom"
-                  name="selection"
-                  onChange={handleHygiene}
-                />
-                <label className="my-label" htmlFor="bathroom">
-                  Bathroom
-                </label>
-              </div>
-              <div className="my-form-check">
-                <input
-                  className="my-input"
-                  type="checkbox"
-                  id="work"
-                  value="work"
-                  name="selection"
-                  onChange={handleWork}
-                />
-                <label className="my-label" htmlFor="work">
-                  Work
+                <label className="my-label" htmlFor="allKinds">
+                  All
                 </label>
               </div>
             </div>
@@ -360,7 +380,7 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="question">
-                    <div className="circle-font when-do-you" ref={circleInstance2}>WHEN DO YOU NEED IT?</div>
+                    <div className="circle-font" ref={circleInstance2}>WHEN DO YOU NEED IT?</div>
                   </div>
                 </div>
               }
@@ -392,6 +412,7 @@ const Home = () => {
         <div className="search-results-full">
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>
+              {console.log("ALL RESULTS", store.searchResults)}
               {uniqueResults.map((result, i) => {
                 return (
                   <li key={i}>
