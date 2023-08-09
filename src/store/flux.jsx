@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       favorites: [],
       favoriteOfferings: [],
       searchResults: [],
+      boundaryResults: [],
       offerings: [],
       checked: false,
       commentsList: [],
@@ -396,6 +397,24 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({ searchResults: data.data });
 
             // console.log("search results", getStore().searchResults);
+          })
+          .catch((error) => console.log(error));
+      },
+      setBoundaryResults: () => {
+        let controller = new AbortController();
+        let url = window.location.search;
+        fetch(getStore().current_back_url + "/api/getBoundaryResults" + url,
+          {
+            method: "GET",
+            headers: {
+              "access-control-allow-origin": "*",
+              "Content-Type": "application/json",
+            }
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            setStore({ boundaryResults: data.data });
           })
           .catch((error) => console.log(error));
       },
