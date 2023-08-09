@@ -13,9 +13,7 @@ export const ResourceInfo = (props) => {
     props.res.image3,
     props.res.image4,
     props.res.image5
-  ].filter(Boolean); // This will remove any undefined or null values, giving us only the existing images
-
-  console.log("IMAGES", images)
+  ].filter(Boolean); // remove any undefined or null values, giving us only the existing images
 
   function filterNonNullValues(schedule) {
     const result = {};
@@ -91,7 +89,6 @@ export const ResourceInfo = (props) => {
       <div className="carousel-description-div">
 
         {/* _______CAROUSEL_______ */}
-
         <div className='carousel'>
           {images.length > 1 && (
             <button className="arrow-button" onClick={shiftLeft}>
@@ -113,7 +110,6 @@ export const ResourceInfo = (props) => {
       </div>
 
       <div className="info-map-div">
-
         <div className="details-div">
           <div className="details-column">
             {/* ADDRESS */}
