@@ -8,6 +8,8 @@ body {
   --coral2: rgb(255, 109, 72);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 /* _____________________________________________________________RESOURCE INFO  */
@@ -49,10 +51,11 @@ body {
   text-decoration: none;
 }
 
+/* 
 .favorite-button-container {
   display: flex;
   justify-content: space-around;
-}
+} */
 
 .resource-image {
   border: 1px solid lime;
@@ -401,27 +404,25 @@ body.modal-open {
 
 .scroll-search-results {
   display: flex;
-  flex-direction: row;
   width: 100%;
   justify-content: center;
   direction: unset;
   margin: 0 !important;
-  flex-direction: row;
-  width: 100%;
-  justify-content: center;
 }
 
 .scroll-search-results ul {
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
-  gap: 1rem;
-  margin: 10px;
+  /* gap: 1rem; */
+  width: 100%;
 }
 
 .scroll-search-results li {
   width: 100%;
-  margin-bottom: 5px !important;
+  margin: 8px !important;
+  display: flex;
+  justify-content: center;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-track {
@@ -453,6 +454,33 @@ body.modal-open {
   font-size: 20px;
   letter-spacing: 2px;
   margin: 15px 0px;
+}
+
+.map-city-buttons {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 15px;
+}
+
+.zipcode-input-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 15px;
+}
+
+
+.geo-button {
+  border: 1px solid var(--green2);
+  width: auto;
+  color: var(--green2);
+  background-color: var(--green) !important;
+  font-size: 15px;
+  height: 30px;
+  margin-bottom: 10px;
 }
 
 .search-container {
@@ -547,12 +575,18 @@ body.modal-open {
 
 .map-and-cities {
   width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.map-info {
+  width: 95vw;
 }
 
 .search-results-full {
   flex-direction: column;
   margin: 0;
-  width: 96vw;
+  width: 100vw;
 }
 
 .grand-container {
@@ -818,4 +852,62 @@ hr {
   border: none;
   height: 2px;
   background-color: black;
+}
+
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  bottom: 4px;
+  left: 2px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked+.slider {
+  background-color: var(--coral);
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px var(--coral2);
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
