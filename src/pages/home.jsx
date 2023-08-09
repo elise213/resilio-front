@@ -154,15 +154,6 @@ const Home = () => {
     setDropdownOpen(false);
   }
 
-  function handleAllKinds() {
-    setHealth(false);
-    setHygiene(false);
-    setWork(false);
-    setBathroom(false);
-    setShelter(false);
-    setFood(false);
-  }
-
   function handleEvent(setter, isResourceType = false) {
     return function (event) {
       const element = event.target;

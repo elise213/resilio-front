@@ -4,9 +4,11 @@ import GoogleMapReact from "google-map-react";
 import { useNavigate } from "react-router-dom";
 
 export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, filterByBounds, setFilterByBounds }) => {
-  const { store, actions } = useContext(Context);
-  const [zipInput, setZipInput] = ("")
 
+  const apiKey = import.meta.env.VITE_GOOGLE;
+
+  const { store, actions } = useContext(Context);
+  const [zipInput, setZipInput] = useState("")
   const [city, setCity] = useState({
     // AUSTIN
     // center: { lat: 30.266666, lng: -97.733330 },
@@ -18,15 +20,32 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
     }
   });
 
-  const handleZipInputChange = (e) => {
+  const handleZipInputChange = async (e) => {
     const value = e.target.value;
+    { console.log(value) };
     if (value.length <= 5 && /^[0-9]*$/.test(value)) {
       setZipInput(value);
+
       if (value.length === 5) {
-        setZipCode(zipInput);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`);
+        const data = await response.json();
+
+        if (data && data.results && data.results[0] && data.results[0].geometry) {
+          const location = data.results[0].geometry.location;
+          const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport; // Fallback to viewport if bounds is not available.
+
+          setCity({
+            center: { lat: location.lat, lng: location.lng },
+            bounds: {
+              ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+              sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+            }
+          });
+        }
       }
     }
   };
+
 
   useEffect(() => {
     setPlace(city);
@@ -155,7 +174,7 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
 
       <div className="map-container" style={{ height: "73vh", width: "100%" }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyDOhqYOYIXvrk8lt2HQQLI8cS1O8FnZt9I" }}
+          bootstrapURLKeys={{ key: apiKey }}
           center={city.center}
           defaultZoom={11}
           onChange={handleBoundsChange}
