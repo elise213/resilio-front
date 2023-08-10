@@ -337,7 +337,7 @@ const Home = () => {
         <div className="search-results-full">
           <div className="scroll-search-results">
             <ul style={{ listStyleType: "none" }}>
-              {filterByBounds
+              {!filterByBounds
                 ? store.searchResults.map((result, i) => (
                   <li key={i}>
                     <ResourceCard
