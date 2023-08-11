@@ -22,7 +22,6 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
 
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
-    { console.log(value) };
     if (value.length <= 5 && /^[0-9]*$/.test(value)) {
       setZipInput(value);
 
@@ -71,7 +70,7 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
 
   const Marker = ({ text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const handleMouseEnter = () => {
       setIsHovered(true);
     };
@@ -101,19 +100,21 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
   };
 
   const handleBoundsChange = (data) => {
-    const center = city.center;
-    const ne = data.bounds.ne;
-    const sw = data.bounds.sw;
-    const bounds = {
-      ne: { lat: Math.max(ne.lat, center.lat), lng: Math.max(ne.lng, center.lng) },
-      sw: { lat: Math.min(sw.lat, center.lat), lng: Math.min(sw.lng, center.lng) },
-    };
-    setCity((prev) => ({
-      ...prev,
-      bounds: bounds,
-    }));
-    actions.setSearchResults();
-    actions.setBoundaryResults();
+    if (filterByBounds) {
+      const center = city.center;
+      const ne = data.bounds.ne;
+      const sw = data.bounds.sw;
+      const bounds = {
+        ne: { lat: Math.max(ne.lat, center.lat), lng: Math.max(ne.lng, center.lng) },
+        sw: { lat: Math.min(sw.lat, center.lat), lng: Math.min(sw.lng, center.lng) },
+      };
+      setCity((prev) => ({
+        ...prev,
+        bounds: bounds,
+      }));
+      actions.setSearchResults();
+      actions.setBoundaryResults();
+    }
   };
 
   const setBounds = (lati, longi) => {
