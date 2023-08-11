@@ -380,7 +380,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       setSearchResults: () => {
         // console.log("CURRENT BACK", getStore().current_back_url)
         let controller = new AbortController();
-
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getResources" + url,
           {
@@ -395,8 +394,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((data) => {
             setStore({ searchResults: data.data });
-
-            // console.log("search results", getStore().searchResults);
+            console.log("search results", getStore().searchResults);
           })
           .catch((error) => console.log(error));
       },
