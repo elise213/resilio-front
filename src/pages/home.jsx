@@ -23,7 +23,6 @@ const Home = () => {
   const [friday, setFriday] = useState(false);
   const [saturday, setSaturday] = useState(false);
   const [sunday, setSunday] = useState(false);
-  const [place, setPlace] = useState();
   const [neLat, setNeLat] = useState(0);
   const [neLng, setNeLng] = useState(0);
   const [swLat, setSwLat] = useState(0);
@@ -34,7 +33,17 @@ const Home = () => {
   const [allKinds, setAllKinds] = useState(true);
   const [filterByBounds, setFilterByBounds] = useState(true);
   const [zipCode, setZipCode] = useState("")
-
+  const [boundsData, setBoundsData] = useState();
+  const [city, setCity] = useState({
+    // AUSTIN
+    // center: { lat: 30.266666, lng: -97.733330 },
+    // LOS ANGELES
+    center: { lat: 34.0522, lng: -118.2437 },
+    bounds: {
+      ne: { lat: (34.0522 + 0.18866583325124964), lng: (-118.2437 + 0.44322967529295454) },
+      sw: { lat: (34.0522 - 0.18908662930897435), lng: (-118.2437 - 0.44322967529298296) }
+    }
+  });
   const circleInstance = useRef();
   const circleInstance2 = useRef();
 
@@ -76,26 +85,26 @@ const Home = () => {
     if (circleInstance2.current) {
       circle2 = new CircleType(circleInstance2.current).radius(500).dir(-1)
     }
-    actions.setSearchResults();
-    actions.setBoundaryResults();
+    // actions.setSearchResults();
+    // actions.setBoundaryResults(boundsData);
     return () => {
       circle1 && circle1.destroy();
       circle2 && circle2.destroy()
     };
   }, [searchParams, dropdownOpen]);
 
-  useEffect(() => {
-    actions.setSearchResults();
-    actions.setBoundaryResults();
-  }, [filterByBounds]);
+  console.log("BOUNDS DATA", boundsData);
 
   useEffect(() => {
-    if (place && place.bounds.ne.lat) {
-      setNeLat(place.bounds.ne.lat);
-      setNeLng(place.bounds.ne.lng);
-      setSwLat(place.bounds.sw.lat);
-      setSwLng(place.bounds.sw.lng);
-      setSearchParams({
+    if (boundsData) {
+      actions.setSearchResults();
+      actions.setBoundaryResults(boundsData);
+    }
+  }, [filterByBounds, boundsData]);
+
+  useEffect(() => {
+    const updateData = async () => {
+      await setSearchParams({
         food: food,
         shelter: shelter,
         health: health,
@@ -108,13 +117,15 @@ const Home = () => {
         friday: friday,
         saturday: saturday,
         sunday: sunday,
-        neLat: place.bounds.ne.lat,
-        neLng: place.bounds.ne.lng,
-        swLat: place.bounds.sw.lat,
-        swLng: place.bounds.sw.lng
       });
-    }
-  }, [monday, tuesday, wednesday, thursday, friday, saturday, sunday, food, health, hygiene, shelter, work, place, filterByBounds])
+
+      actions.setSearchResults();
+      actions.setBoundaryResults(boundsData);
+    };
+
+    updateData();
+
+  }, [monday, tuesday, wednesday, thursday, friday, saturday, sunday, food, health, hygiene, shelter, work, city, filterByBounds, boundsData]);
 
   function handleAllKinds(event) {
     const isChecked = event.target.checked;
@@ -369,12 +380,14 @@ const Home = () => {
             <SimpleMap
               ZipCode={zipCode}
               setZipCode={setZipCode}
-              setPlace={setPlace}
               openModal={openModal}
               closeModal={closeModal}
               selectedResource={selectedResource}
               setFilterByBounds={setFilterByBounds}
               filterByBounds={filterByBounds}
+              setBoundsData={setBoundsData}
+              city={city}
+              setCity={setCity}
             />
           </div>
         </div>
