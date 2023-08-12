@@ -3,22 +3,38 @@ import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import { useNavigate } from "react-router-dom";
 
-export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, filterByBounds, setFilterByBounds }) => {
+export const SimpleMap = ({ zipCode, setZipCode, openModal, filterByBounds, setFilterByBounds, setBoundsData, city, setCity }) => {
 
   const apiKey = import.meta.env.VITE_GOOGLE;
-
   const { store, actions } = useContext(Context);
-  const [zipInput, setZipInput] = useState("")
-  const [city, setCity] = useState({
-    // AUSTIN
-    // center: { lat: 30.266666, lng: -97.733330 },
-    // LOS ANGELES
-    center: { lat: 34.0522, lng: -118.2437 },
-    bounds: {
-      ne: { lat: (34.0522 + 0.18866583325124964), lng: (-118.2437 + 0.44322967529295454) },
-      sw: { lat: (34.0522 - 0.18908662930897435), lng: (-118.2437 - 0.44322967529298296) }
-    }
+  const [zipInput, setZipInput] = useState("");
+
+  const normalizeBounds = (bounds) => ({
+    ne: { lat: bounds.ne.lat || bounds.northeast.lat, lng: bounds.ne.lng || bounds.northeast.lng },
+    sw: { lat: bounds.sw.lat || bounds.southwest.lat, lng: bounds.sw.lng || bounds.southwest.lng }
   });
+
+  const fetchInitialBounds = async () => {
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${city.center.lat},${city.center.lng}&key=${apiKey}`);
+    const data = await response.json();
+
+    if (data && data.results && data.results[0] && data.results[0].geometry) {
+      const bounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
+
+      setCity(prev => ({
+        ...prev,
+        bounds: {
+          ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+          sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+        }
+      }));
+      setBoundsData(bounds);
+    }
+  };
+
+  useEffect(() => {
+    fetchInitialBounds();
+  }, []);
 
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
@@ -45,21 +61,29 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
     }
   };
 
-
-  useEffect(() => {
-    setPlace(city);
-  }, [city])
-
   function geoFindMe() {
+    async function updateCityCenterAndBounds(lat, lng) {
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
+      const data = await response.json();
+
+      if (data && data.results && data.results[0] && data.results[0].geometry) {
+        const location = data.results[0].geometry.location;
+        const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport;
+        setCity({
+          center: { lat: location.lat, lng: location.lng },
+          bounds: {
+            ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+            sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+          }
+        });
+      }
+    }
     function success(position) {
       let latitude = position.coords.latitude;
       let longitude = position.coords.longitude;
-
-      setBounds(latitude, longitude);
+      updateCityCenterAndBounds(latitude, longitude);
     }
-    function error() {
-      alert("Unable to retrieve your location");
-    }
+    function error() { alert("Unable to retrieve your location"); }
     if (!navigator.geolocation) {
       alert("Geolocation is not supported by your browser");
     } else {
@@ -70,19 +94,15 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
 
   const Marker = ({ text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
-    // const navigate = useNavigate();
     const handleMouseEnter = () => {
       setIsHovered(true);
     };
-
     const handleMouseLeave = () => {
       setIsHovered(false);
     };
-
     const handleMarkerClick = () => {
       openModal(result);
     };
-
     return (
       <div
         className="marker"
@@ -100,39 +120,23 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
   };
 
   const handleBoundsChange = (data) => {
+    console.log("Bounds Changed:", data.bounds);
     if (filterByBounds) {
-      const center = city.center;
-      const ne = data.bounds.ne;
-      const sw = data.bounds.sw;
-      const bounds = {
-        ne: { lat: Math.max(ne.lat, center.lat), lng: Math.max(ne.lng, center.lng) },
-        sw: { lat: Math.min(sw.lat, center.lat), lng: Math.min(sw.lng, center.lng) },
-      };
-      setCity((prev) => ({
+      setCity(prev => ({
         ...prev,
-        bounds: bounds,
+        bounds: {
+          ne: data.bounds.ne,
+          sw: data.bounds.sw
+        },
+        center: {
+          lat: data.center.lat,
+          lng: data.center.lng
+        }
       }));
-      actions.setSearchResults();
-      actions.setBoundaryResults();
+      setBoundsData(data.bounds);
+      actions.setBoundaryResults(data.bounds);
     }
   };
-
-  const setBounds = (lati, longi) => {
-    let neLat = (lati + 0.18866583325124964);
-    let swLat = (lati - 0.18908662930897435);
-    let neLng = (longi + 0.44322967529295454);
-    let swLng = (longi - 0.44322967529298296);
-
-    setCity({
-      center: { lat: lati, lng: longi },
-      bounds: {
-        ne: { lat: neLat, lng: neLng },
-        sw: { lat: swLat, lng: swLng }
-      }
-    })
-    actions.setSearchResults();
-    actions.setBoundaryResults();
-  }
 
   return (
     <div className="map-info">
@@ -161,7 +165,6 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
         </div>
 
         <div className="zipcode-input-container">
-          {/* <label htmlFor="zipcode"></label> */}
           <input
             type="text"
             id="zipcode"
@@ -173,13 +176,15 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
         </div>
       </div>
 
-      <div className="map-container" style={{ height: "73vh", width: "100%" }}>
+      <div className="map-container" style={{ height: "60vh", width: "100" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
           center={city.center}
+          bounds={city.bounds}
           defaultZoom={11}
           onChange={handleBoundsChange}
         >
+
           {filterByBounds ?
             store.boundaryResults.map((result, i) => {
               return (
@@ -208,7 +213,7 @@ export const SimpleMap = ({ zipCode, setZipCode, setPlace, place, openModal, fil
                   openModal={openModal}
                   result={result}
                 />
-              );
+              )
             })}
         </GoogleMapReact>
       </div>
