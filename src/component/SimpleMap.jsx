@@ -88,7 +88,7 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
   return (
     <div className="map-info">
 
-      <div className="map-container" style={{ height: "60vh", width: "60vw" }}>
+      <div className="map-container" style={{ height: "60vh", width: "95vw" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
           center={city.center}
