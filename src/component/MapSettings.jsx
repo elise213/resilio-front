@@ -42,14 +42,11 @@ const MapSettings = ({ setCity, handleZipInputChange, zipInput, filterByBounds, 
                 className="geo-button" style={{}}
                 onClick={() => {
                     geoFindMe()
-                    // console.log("GEO CITY CENTER", city.center)
                 }}
             >
                 Find my Location
             </button>
-
-
-
+            or
             <div className="zipcode-input-container">
                 <input
                     type="text"

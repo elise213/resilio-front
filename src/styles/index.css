@@ -563,10 +563,15 @@ body.modal-open {
   align-items: center;
 }
 
+.map-info {
+  display: flex;
+  justify-content: center;
+}
+
 .new-container {
   display: flex;
-  width: 100vw;
-  margin: 20px;
+  flex-direction: column;
+  /* padding: 20px; */
 }
 
 .map-settings-container {
