@@ -398,23 +398,34 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) => console.log(error));
       },
-      setBoundaryResults: () => {
+
+      setBoundaryResults: (bounds) => {
+        console.log("BOUNDS", bounds)
         let controller = new AbortController();
         let url = window.location.search;
-        fetch(getStore().current_back_url + "/api/getBoundaryResults" + url,
+        fetch(getStore().current_back_url + "/api/getBResults" + url,
           {
-            method: "GET",
+            method: "POST",
             headers: {
               "access-control-allow-origin": "*",
               "Content-Type": "application/json",
-            }
+            },
+            body: JSON.stringify({
+              neLat: bounds?.ne?.lat,
+              neLng: bounds?.ne?.lng,
+              swLat: bounds?.sw?.lat,
+              swLng: bounds?.sw?.lng
+
+            })
           }
         )
           .then((response) => response.json())
           .then((data) => {
             setStore({ boundaryResults: data.data });
           })
+          .then(data => console.log("boundary results", getStore().boundaryResults))
           .catch((error) => console.log(error));
+        console.log("BOUNDS", bounds)
       },
 
       createComment: async (resource_id, comment_cont, parentId) => {
