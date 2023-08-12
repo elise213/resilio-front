@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const SimpleMap = ({ zipCode, setZipCode, openModal, filterByBounds, setFilterByBounds, setBoundsData, city, setCity }) => {
 
   const apiKey = import.meta.env.VITE_GOOGLE;
+  console.log("APIKEY", apiKey)
   const { store, actions } = useContext(Context);
   const [zipInput, setZipInput] = useState("");
 
