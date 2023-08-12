@@ -393,6 +393,9 @@ const Home = () => {
           </div>
           <div className="new-container">
 
+            <div className="map-settings-container">
+              <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
+            </div>
             <div className="map-and-cities">
               <SimpleMap
                 ZipCode={zipCode}
@@ -408,9 +411,6 @@ const Home = () => {
                 zipInput={zipInput}
                 setZipInput={setZipInput}
               />
-            </div>
-            <div className="map-settings-container">
-              <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
           </div>
         </div>
