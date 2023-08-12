@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { SimpleMap } from "../component/SimpleMap";
 import { ResourceCard } from "../component/ResourceCard";
+import MapSettings from "../component/MapSettings";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
 import Modal from "../component/Modal";
@@ -23,10 +24,6 @@ const Home = () => {
   const [friday, setFriday] = useState(false);
   const [saturday, setSaturday] = useState(false);
   const [sunday, setSunday] = useState(false);
-  const [neLat, setNeLat] = useState(0);
-  const [neLng, setNeLng] = useState(0);
-  const [swLat, setSwLat] = useState(0);
-  const [swLng, setSwLng] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
@@ -34,6 +31,7 @@ const Home = () => {
   const [filterByBounds, setFilterByBounds] = useState(true);
   const [zipCode, setZipCode] = useState("")
   const [boundsData, setBoundsData] = useState();
+  const [zipInput, setZipInput] = useState();
   const [city, setCity] = useState({
     // AUSTIN
     // center: { lat: 30.266666, lng: -97.733330 },
@@ -66,6 +64,8 @@ const Home = () => {
     { id: "work", label: "Work", state: work, handler: setWork },
   ];
 
+  const apiKey = import.meta.env.VITE_GOOGLE;
+
   const handleCheckbox = (id, checked) => {
     if (id === "allKinds") {
       setAllKinds(true);
@@ -85,15 +85,11 @@ const Home = () => {
     if (circleInstance2.current) {
       circle2 = new CircleType(circleInstance2.current).radius(500).dir(-1)
     }
-    // actions.setSearchResults();
-    // actions.setBoundaryResults(boundsData);
     return () => {
       circle1 && circle1.destroy();
       circle2 && circle2.destroy()
     };
   }, [searchParams, dropdownOpen]);
-
-  console.log("BOUNDS DATA", boundsData);
 
   useEffect(() => {
     if (boundsData) {
@@ -140,12 +136,6 @@ const Home = () => {
     setAllKinds(isChecked);
   }
 
-  const handleFood = handleEvent(setFood, true);
-  const handleShelter = handleEvent(setShelter, true);
-  const handleHealth = handleEvent(setHealth, true);
-  const handleHygiene = handleEvent(setHygiene, true);
-  const handleWork = handleEvent(setWork, true);
-  const handleBathroom = handleEvent(setBathroom, true);
   const handleMonday = handleEvent(setMonday);
   const handleTuesday = handleEvent(setTuesday);
   const handleWednesday = handleEvent(setWednesday);
@@ -174,6 +164,31 @@ const Home = () => {
       };
     };
   }
+
+  const handleZipInputChange = async (e) => {
+    const value = e.target.value;
+    if (value.length <= 5 && /^[0-9]*$/.test(value)) {
+      setZipInput(value);
+
+      if (value.length === 5) {
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`);
+        const data = await response.json();
+
+        if (data && data.results && data.results[0] && data.results[0].geometry) {
+          const location = data.results[0].geometry.location;
+          const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport; // Fallback to viewport if bounds is not available.
+
+          setCity({
+            center: { lat: location.lat, lng: location.lng },
+            bounds: {
+              ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+              sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+            }
+          });
+        }
+      }
+    }
+  };
 
   return (
     <div>
@@ -376,19 +391,27 @@ const Home = () => {
               }
             </ul>
           </div>
-          <div className="map-and-cities">
-            <SimpleMap
-              ZipCode={zipCode}
-              setZipCode={setZipCode}
-              openModal={openModal}
-              closeModal={closeModal}
-              selectedResource={selectedResource}
-              setFilterByBounds={setFilterByBounds}
-              filterByBounds={filterByBounds}
-              setBoundsData={setBoundsData}
-              city={city}
-              setCity={setCity}
-            />
+          <div className="new-container">
+
+            <div className="map-and-cities">
+              <SimpleMap
+                ZipCode={zipCode}
+                setZipCode={setZipCode}
+                openModal={openModal}
+                closeModal={closeModal}
+                selectedResource={selectedResource}
+                setFilterByBounds={setFilterByBounds}
+                filterByBounds={filterByBounds}
+                setBoundsData={setBoundsData}
+                city={city}
+                setCity={setCity}
+                zipInput={zipInput}
+                setZipInput={setZipInput}
+              />
+            </div>
+            <div className="map-settings-container">
+              <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
+            </div>
           </div>
         </div>
       </div>

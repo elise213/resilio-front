@@ -6,6 +6,7 @@ body {
 :root {
   --coral: rgb(254, 139, 121);
   --coral2: rgb(255, 109, 72);
+  --peach: rgb(252, 223, 212);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   width: 100vw;
@@ -21,6 +22,7 @@ body {
 .res-map-container {
   width: 33%;
   height: 100%;
+  margin: 20px;
 }
 
 .res-map-container-2 {
@@ -50,12 +52,6 @@ body {
   line-height: 1.5;
   text-decoration: none;
 }
-
-/* 
-.favorite-button-container {
-  display: flex;
-  justify-content: space-around;
-} */
 
 .resource-image {
   border: 1px solid lime;
@@ -414,12 +410,10 @@ body.modal-open {
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
-  /* gap: 1rem; */
-  width: 100%;
+  margin-left: 0;
 }
 
 .scroll-search-results li {
-  width: 100%;
   margin: 8px !important;
   display: flex;
   justify-content: center;
@@ -456,14 +450,6 @@ body.modal-open {
   margin: 15px 0px;
 }
 
-.map-city-buttons {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Urbanist", sans-serif !important;
-  font-size: 15px;
-}
 
 .zipcode-input-container {
   margin-top: 10px;
@@ -472,15 +458,20 @@ body.modal-open {
   font-size: 15px;
 }
 
-
 .geo-button {
-  border: 1px solid var(--green2);
+  border: 1px solid var(--coral2);
   width: auto;
-  color: var(--green2);
-  background-color: var(--green) !important;
+  color: var(--coral2);
+  background-color: var(--peach) !important;
   font-size: 15px;
   height: 30px;
   margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.geo-button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
+  cursor: pointer;
 }
 
 .search-container {
@@ -528,7 +519,6 @@ body.modal-open {
   min-height: none !important;
 }
 
-/* WHAT */
 .what-type {
   display: flex;
   flex-direction: column;
@@ -573,14 +563,16 @@ body.modal-open {
   align-items: center;
 }
 
-.map-and-cities {
-  width: 100%;
+.new-container {
   display: flex;
-  justify-content: center;
+  width: 100vw;
+  margin: 20px;
 }
 
-.map-info {
-  width: 95vw;
+.map-settings-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .search-results-full {
@@ -854,8 +846,6 @@ hr {
   background-color: black;
 }
 
-
-
 .switch {
   position: relative;
   display: inline-block;
@@ -910,4 +900,12 @@ input:checked+.slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.map-settings {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
