@@ -35,7 +35,6 @@ const MapSettings = ({ setCity, handleZipInputChange, zipInput, filterByBounds, 
             navigator.geolocation.getCurrentPosition(success, error);
         }
     }
-
     return (
         <div className="map-settings">
             <button

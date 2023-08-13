@@ -24,7 +24,6 @@ const Modal = (props) => {
 
     return (
         <div>
-
             <div className="modal-div">
                 <div className="modal-close-div">
                     <p className="x-close" onClick={handleCloseClick}>X</p>
