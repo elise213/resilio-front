@@ -571,7 +571,6 @@ body.modal-open {
 .new-container {
   display: flex;
   flex-direction: column;
-  /* padding: 20px; */
 }
 
 .map-settings-container {

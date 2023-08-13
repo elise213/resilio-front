@@ -135,8 +135,11 @@ export const ResourceInfo = (props) => {
               <i className="fa-solid fa-calendar-check"></i>
               <div className="sched-div">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-                  <p key={index} className="resource-card-text">{day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}</p>
+                  <p key={index} className="resource-card-text" style={{ color: schedule !== 'Closed' ? 'lightgreen' : 'inherit' }}>
+                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
+                  </p>
                 ))}
+
               </div>
             </div>
           </div>

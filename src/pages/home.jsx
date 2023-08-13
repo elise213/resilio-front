@@ -106,6 +106,7 @@ const Home = () => {
         health: health,
         hygiene: hygiene,
         work: work,
+        bathroom: bathroom,
         monday: monday,
         tuesday: tuesday,
         wednesday: wednesday,
@@ -121,20 +122,20 @@ const Home = () => {
 
     updateData();
 
-  }, [monday, tuesday, wednesday, thursday, friday, saturday, sunday, food, health, hygiene, shelter, work, city, filterByBounds, boundsData]);
+  }, [monday, tuesday, wednesday, thursday, friday, saturday, sunday, food, health, hygiene, shelter, work, bathroom, city, filterByBounds, boundsData]);
 
-  function handleAllKinds(event) {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-      setFood(false);
-      setShelter(false);
-      setHealth(false);
-      setHygiene(false);
-      setWork(false);
-      setBathroom(false)
-    };
-    setAllKinds(isChecked);
-  }
+  // function handleAllKinds(event) {
+  //   const isChecked = event.target.checked;
+  //   if (isChecked) {
+  //     setFood(false);
+  //     setShelter(false);
+  //     setHealth(false);
+  //     setHygiene(false);
+  //     setWork(false);
+  //     setBathroom(false)
+  //   };
+  //   setAllKinds(isChecked);
+  // }
 
   const handleMonday = handleEvent(setMonday);
   const handleTuesday = handleEvent(setTuesday);
@@ -361,7 +362,12 @@ const Home = () => {
           </div>
         </div>
         <div className="search-results-full">
-          <div className="scroll-search-results">
+          <div
+            className="scroll-search-results"
+            style={{
+              display: filterByBounds && store.boundaryResults.length === 0 ? 'none' : 'block'
+            }}
+          >
             <ul style={{ listStyleType: "none" }}>
               {!filterByBounds
                 ? store.searchResults.map((result, i) => (
