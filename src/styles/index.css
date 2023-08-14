@@ -11,7 +11,6 @@ body {
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #ffc353;
-  /* --yellow: #ffd17d; */
   width: 100vw;
   overflow-x: hidden;
 }
@@ -522,15 +521,26 @@ body.modal-open {
   font-size: 15px;
 }
 
+#zipcode {
+  border: 1.5px solid var(--coral2);
+  border-radius: 3px;
+  text-align: center;
+  background-color: var(--yellow);
+  height: 30px;
+  margin: 5px;
+  width: 120px;
+}
+
 .geo-button {
   border: 1.5px solid var(--coral2);
   width: auto;
   background-color: var(--yellow) !important;
   font-size: 15px;
   height: 30px;
-  margin-bottom: 10px;
+  width: 120px;
   border-radius: 3px;
   font-family: "Urbanist", sans-serif !important;
+  margin: 5px;
 }
 
 .geo-button:hover {
@@ -846,13 +856,11 @@ body.modal-open {
   height: 15px;
   border-radius: 3px;
   border: 1px solid var(--green2);
-  /* Swapped from coral2 */
   background: #fff;
 }
 
 .my-input:checked+.my-label:before {
   background-color: var(--green);
-  /* Swapped from peach */
 }
 
 .my-input2 {
@@ -875,15 +883,12 @@ body.modal-open {
   height: 15px;
   border-radius: 3px;
   border: 1px solid var(--coral2);
-  /* Swapped from green2 */
   background: #fff;
 }
 
 .my-input2:checked+.my-label:before {
   background-color: var(--peach);
-  /* Swapped from green */
 }
-
 
 hr {
   border: none;
@@ -938,7 +943,6 @@ input:checked+.slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
@@ -950,7 +954,6 @@ input:checked+.slider:before {
 .map-settings {
   width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -960,12 +963,4 @@ input:checked+.slider:before {
   justify-content: center;
   width: 100%;
   margin: 10px;
-}
-
-#zipcode {
-  border: 1.5px solid var(--coral2);
-  border-radius: 3px;
-  text-align: center;
-  background-color: var(--peach);
-  height: 30px;
 }
