@@ -1,6 +1,7 @@
 body {
   width: 100vw;
   overflow-x: hidden;
+  background-color: #fcf5ed;
 }
 
 :root {
@@ -9,6 +10,8 @@ body {
   --peach: rgb(255, 183, 173);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
+  --yellow: #ffc353;
+  /* --yellow: #ffd17d; */
   width: 100vw;
   overflow-x: hidden;
 }
@@ -59,6 +62,16 @@ body {
   position: absolute;
 }
 
+.left-arrow-filter {
+  width: 20px;
+  transform: scaleX(-1);
+  margin-right: 5px;
+}
+
+.right-arrow-filter {
+  width: 20px;
+  margin-left: 5px;
+}
 
 /* _____________________________________________________________RESOURCE INFO  */
 .resource-name {
@@ -232,7 +245,7 @@ body {
   top: 0;
   padding: 10px;
   font-family: "Urbanist", sans-serif;
-  background-color: white;
+  background-color: transparent;
   color: black;
   margin-top: 20px;
 }
@@ -340,7 +353,7 @@ body {
   color: #000;
   font-size: x-large;
   border: 4px solid var(--coral);
-  background-color: #ffc353;
+  background-color: var(--yellow);
   border-radius: .3rem;
 }
 
@@ -498,6 +511,10 @@ body.modal-open {
   margin: 15px 0px;
 }
 
+.my-schedule-button:hover {
+  color: var(--coral2)
+}
+
 
 .zipcode-input-container {
   margin-top: 10px;
@@ -509,8 +526,8 @@ body.modal-open {
 .geo-button {
   border: 1px solid var(--coral2);
   width: auto;
-  color: var(--coral2);
-  background-color: var(--peach) !important;
+  /* color: var(--coral2); */
+  background-color: var(--yellow) !important;
   font-size: 15px;
   height: 30px;
   margin-bottom: 10px;
@@ -619,12 +636,6 @@ body.modal-open {
 .new-container {
   display: flex;
   flex-direction: column;
-}
-
-.map-settings-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
 }
 
 .search-results-full {
@@ -835,12 +846,14 @@ body.modal-open {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid var(--coral2);
+  border: 1px solid var(--green2);
+  /* Swapped from coral2 */
   background: #fff;
 }
 
 .my-input:checked+.my-label:before {
-  background-color: var(--peach);
+  background-color: var(--green);
+  /* Swapped from peach */
 }
 
 .my-input2 {
@@ -862,13 +875,16 @@ body.modal-open {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid var(--green2);
+  border: 1px solid var(--coral2);
+  /* Swapped from green2 */
   background: #fff;
 }
 
 .my-input2:checked+.my-label:before {
-  background-color: var(--green);
+  background-color: var(--peach);
+  /* Swapped from green */
 }
+
 
 hr {
   border: none;
@@ -938,4 +954,11 @@ input:checked+.slider:before {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.map-settings-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px;
 }
