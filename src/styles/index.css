@@ -5,13 +5,60 @@ body {
 
 :root {
   --coral: rgb(254, 139, 121);
-  --coral2: rgb(255, 109, 72);
-  --peach: rgb(252, 223, 212);
+  --coral2: rgb(249, 83, 41);
+  --peach: rgb(255, 183, 173);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   width: 100vw;
   overflow-x: hidden;
 }
+
+/* CAROUSEL */
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  max-width: 500px;
+  height: 400px;
+  overflow: hidden;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.arrow-button {
+  border: none;
+  padding: 15px;
+  background-color: transparent;
+  top: 50%;
+  z-index: 2;
+}
+
+.left-arrow {
+  width: 20px;
+  transform: scaleX(-1) translateY(-50%);
+  left: 0px;
+  position: absolute;
+}
+
+.right-arrow {
+  width: 20px;
+  transform: translateY(-50%);
+  right: 0px;
+  position: absolute;
+}
+
 
 /* _____________________________________________________________RESOURCE INFO  */
 .resource-name {
@@ -410,7 +457,8 @@ body.modal-open {
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
-  margin-left: 0;
+  justify-content: center;
+  padding-left: 0;
 }
 
 .scroll-search-results li {
@@ -768,28 +816,6 @@ body.modal-open {
   justify-content: space-between;
 }
 
-.carousel {
-  width: 100% !important;
-  display: flex;
-  justify-content: center;
-}
-
-.left-arrow {
-  width: 20px;
-  transform: scaleX(-1);
-  margin-right: 5px;
-}
-
-.right-arrow {
-  width: 20px;
-  margin-left: 5px;
-}
-
-.arrow-button {
-  border: none;
-  padding: 15px;
-  background-color: transparent;
-}
 
 .my-input {
   display: none;
@@ -809,12 +835,12 @@ body.modal-open {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid var(--coral);
+  border: 1px solid var(--coral2);
   background: #fff;
 }
 
 .my-input:checked+.my-label:before {
-  background-color: var(--coral);
+  background-color: var(--peach);
 }
 
 .my-input2 {
@@ -871,7 +897,7 @@ hr {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
+  transition: 0.2s;
 }
 
 .slider:before {
