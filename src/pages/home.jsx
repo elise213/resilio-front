@@ -241,9 +241,9 @@ const Home = () => {
               {!dropdownOpen &&
                 <button className="my-schedule-button"
                   onClick={() => setDropdownOpen(!dropdownOpen)}>
-                  <img className="left-arrow" src={arrow}></img>
+                  <img className="left-arrow-filter" src={arrow}></img>
                   Filter By Day
-                  <img className="right-arrow" src={arrow}></img>
+                  <img className="right-arrow-filter" src={arrow}></img>
                 </button>
               }
               {dropdownOpen &&
