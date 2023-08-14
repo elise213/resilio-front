@@ -33,20 +33,44 @@ export const ResourceInfo = (props) => {
     return result;
   }
 
+  // function shiftLeft() {
+  //   if (currentImageIndex > 0) {
+  //     setCurrentImageIndex(currentImageIndex - 1);
+  //   } else {
+  //     setCurrentImageIndex(images.length - 1); // wrap around to the last image
+  //   }
+  // }
+
+  // function shiftRight() {
+  //   if (currentImageIndex < images.length - 1) {
+  //     setCurrentImageIndex(currentImageIndex + 1);
+  //   } else {
+  //     setCurrentImageIndex(0); // wrap around to the first image
+  //   }
+  // }
+
+  function computeTranslateValue() {
+    return -currentImageIndex * 100; // percentage
+  }
+
+  function changeImage(newIndex) {
+    const imageElement = document.querySelector('.carousel-image');
+    imageElement.style.opacity = '0';
+
+    setTimeout(() => {
+      setCurrentImageIndex(newIndex);
+      imageElement.style.opacity = '1';
+    }, 500); // This duration should match the transition duration in the CSS
+  }
+
   function shiftLeft() {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    } else {
-      setCurrentImageIndex(images.length - 1); // wrap around to the last image
-    }
+    let newIndex = currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1;
+    changeImage(newIndex);
   }
 
   function shiftRight() {
-    if (currentImageIndex < images.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    } else {
-      setCurrentImageIndex(0); // wrap around to the first image
-    }
+    let newIndex = currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0;
+    changeImage(newIndex);
   }
 
 
@@ -85,28 +109,30 @@ export const ResourceInfo = (props) => {
     }) : "";
 
   return (
-    <div className="offering-card">
-      <div className="carousel-description-div">
+    <div className="">
+      <div className='carousel-container'>
 
-        {/* _______CAROUSEL_______ */}
+        {images.length > 1 && (
+          <button className="arrow-button" onClick={shiftLeft}>
+            <img className="left-arrow" src={arrow}></img>
+          </button>
+        )}
+
         <div className='carousel'>
-          {images.length > 1 && (
-            <button className="arrow-button" onClick={shiftLeft}>
-              <img className="left-arrow" src={arrow}></img>
-            </button>
-          )}
           <img className="carousel-image" src={images[currentImageIndex]} alt="" />
-          {images.length > 1 && (
-            <button className="arrow-button" onClick={shiftRight}>
-              <img className="right-arrow" src={arrow}></img>
-            </button>
-          )}
         </div>
 
-        {/* DESCRIPTION */}
-        <div className="description-div">
-          <p className="resource-card-text description">{props.res.description}</p>
-        </div>
+        {images.length > 1 && (
+          <button className="arrow-button" onClick={shiftRight}>
+            <img className="right-arrow" src={arrow}></img>
+          </button>
+        )}
+
+      </div>
+
+      {/* DESCRIPTION */}
+      <div className="description-div">
+        <p className="resource-card-text description">{props.res.description}</p>
       </div>
 
       <div className="info-map-div">
@@ -149,6 +175,6 @@ export const ResourceInfo = (props) => {
           <SimpleMap2 latitude={props.res.latitude} longitude={props.res.longitude} />
         </div>
       </div>
-    </div>
+    </div >
   );
 }
