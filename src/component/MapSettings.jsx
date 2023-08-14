@@ -53,7 +53,7 @@ const MapSettings = ({ setCity, handleZipInputChange, zipInput, filterByBounds, 
                     value={zipInput}
                     onChange={handleZipInputChange}
                     maxLength="5"
-                    placeholder="Enter Zipcode"
+                    placeholder="Enter Zip Code"
                 />
             </div>
             {/* 

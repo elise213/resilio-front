@@ -515,7 +515,6 @@ body.modal-open {
   color: var(--coral2)
 }
 
-
 .zipcode-input-container {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -524,14 +523,14 @@ body.modal-open {
 }
 
 .geo-button {
-  border: 1px solid var(--coral2);
+  border: 1.5px solid var(--coral2);
   width: auto;
-  /* color: var(--coral2); */
   background-color: var(--yellow) !important;
   font-size: 15px;
   height: 30px;
   margin-bottom: 10px;
   border-radius: 3px;
+  font-family: "Urbanist", sans-serif !important;
 }
 
 .geo-button:hover {
@@ -961,4 +960,12 @@ input:checked+.slider:before {
   justify-content: center;
   width: 100%;
   margin: 10px;
+}
+
+#zipcode {
+  border: 1.5px solid var(--coral2);
+  border-radius: 3px;
+  text-align: center;
+  background-color: var(--peach);
+  height: 30px;
 }
