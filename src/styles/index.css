@@ -1,16 +1,76 @@
 body {
   width: 100vw;
   overflow-x: hidden;
+  background-color: #fcf5ed;
 }
 
 :root {
   --coral: rgb(254, 139, 121);
-  --coral2: rgb(255, 109, 72);
-  --peach: rgb(252, 223, 212);
+  --coral2: rgb(249, 83, 41);
+  --peach: rgb(255, 183, 173);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
+  --yellow: #ffc353;
+  /* --yellow: #ffd17d; */
   width: 100vw;
   overflow-x: hidden;
+}
+
+/* CAROUSEL */
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  max-width: 500px;
+  height: 400px;
+  overflow: hidden;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.arrow-button {
+  border: none;
+  padding: 15px;
+  background-color: transparent;
+  top: 50%;
+  z-index: 2;
+}
+
+.left-arrow {
+  width: 20px;
+  transform: scaleX(-1) translateY(-50%);
+  left: 0px;
+  position: absolute;
+}
+
+.right-arrow {
+  width: 20px;
+  transform: translateY(-50%);
+  right: 0px;
+  position: absolute;
+}
+
+.left-arrow-filter {
+  width: 20px;
+  transform: scaleX(-1);
+  margin-right: 5px;
+}
+
+.right-arrow-filter {
+  width: 20px;
+  margin-left: 5px;
 }
 
 /* _____________________________________________________________RESOURCE INFO  */
@@ -185,7 +245,7 @@ body {
   top: 0;
   padding: 10px;
   font-family: "Urbanist", sans-serif;
-  background-color: white;
+  background-color: transparent;
   color: black;
   margin-top: 20px;
 }
@@ -293,7 +353,7 @@ body {
   color: #000;
   font-size: x-large;
   border: 4px solid var(--coral);
-  background-color: #ffc353;
+  background-color: var(--yellow);
   border-radius: .3rem;
 }
 
@@ -410,7 +470,8 @@ body.modal-open {
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
-  margin-left: 0;
+  justify-content: center;
+  padding-left: 0;
 }
 
 .scroll-search-results li {
@@ -450,6 +511,10 @@ body.modal-open {
   margin: 15px 0px;
 }
 
+.my-schedule-button:hover {
+  color: var(--coral2)
+}
+
 
 .zipcode-input-container {
   margin-top: 10px;
@@ -461,8 +526,8 @@ body.modal-open {
 .geo-button {
   border: 1px solid var(--coral2);
   width: auto;
-  color: var(--coral2);
-  background-color: var(--peach) !important;
+  /* color: var(--coral2); */
+  background-color: var(--yellow) !important;
   font-size: 15px;
   height: 30px;
   margin-bottom: 10px;
@@ -571,12 +636,6 @@ body.modal-open {
 .new-container {
   display: flex;
   flex-direction: column;
-}
-
-.map-settings-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
 }
 
 .search-results-full {
@@ -768,28 +827,6 @@ body.modal-open {
   justify-content: space-between;
 }
 
-.carousel {
-  width: 100% !important;
-  display: flex;
-  justify-content: center;
-}
-
-.left-arrow {
-  width: 20px;
-  transform: scaleX(-1);
-  margin-right: 5px;
-}
-
-.right-arrow {
-  width: 20px;
-  margin-left: 5px;
-}
-
-.arrow-button {
-  border: none;
-  padding: 15px;
-  background-color: transparent;
-}
 
 .my-input {
   display: none;
@@ -809,12 +846,14 @@ body.modal-open {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid var(--coral);
+  border: 1px solid var(--green2);
+  /* Swapped from coral2 */
   background: #fff;
 }
 
 .my-input:checked+.my-label:before {
-  background-color: var(--coral);
+  background-color: var(--green);
+  /* Swapped from peach */
 }
 
 .my-input2 {
@@ -836,13 +875,16 @@ body.modal-open {
   width: 15px;
   height: 15px;
   border-radius: 3px;
-  border: 1px solid var(--green2);
+  border: 1px solid var(--coral2);
+  /* Swapped from green2 */
   background: #fff;
 }
 
 .my-input2:checked+.my-label:before {
-  background-color: var(--green);
+  background-color: var(--peach);
+  /* Swapped from green */
 }
+
 
 hr {
   border: none;
@@ -871,7 +913,7 @@ hr {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
+  transition: 0.2s;
 }
 
 .slider:before {
@@ -912,4 +954,11 @@ input:checked+.slider:before {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.map-settings-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px;
 }
