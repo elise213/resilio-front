@@ -20,11 +20,11 @@ export const Navbar = () => {
 
   useEffect(() => {
     setActiveBtn();
-    window.addEventListener("popstate", setActiveBtn); // call setActiveBtn on URL change (back, forward)
+    window.addEventListener("popstate", setActiveBtn);
     return () => {
-      window.removeEventListener("popstate", setActiveBtn); // clean up event listener
+      window.removeEventListener("popstate", setActiveBtn);
     };
-  }, [location]); // include location as a dependency
+  }, [location]);
 
   const handleImageError = (e) => {
     e.target.src = "";
@@ -55,7 +55,6 @@ export const Navbar = () => {
           </span>
         </Link>
 
-        {/* Dynamic Navbar collapse-expand */}
         <button
           className="navbar-toggler"
           onClick={handleToggle}
