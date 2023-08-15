@@ -846,9 +846,13 @@ input:checked+.slider:before {
   }
 
   .my-label {
-    margin: 0px 8px !important;
+    margin: 0px 6px !important;
+    font-size: small !important;
   }
 
+  .checkbox-row {
+    margin: 0;
+  }
 
   .tell-us {
     font-size: 18px;
@@ -915,8 +919,6 @@ input:checked+.slider:before {
   }
 }
 
-
-
 /* _____________________________________________________________MAP */
 .marker {
   position: relative;
@@ -977,4 +979,10 @@ input:checked+.slider:before {
   display: flex;
   justify-content: center;
   margin-top: 10px;
+}
+
+.checkbox-row {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 10px;
 }
