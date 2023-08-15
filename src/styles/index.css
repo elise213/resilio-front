@@ -582,8 +582,9 @@ body.modal-open {
 
 .my-input+.my-label {
   position: relative;
-  padding-left: 21px;
+  padding-left: 25px;
   cursor: pointer;
+  padding-right: 7px;
 }
 
 .my-input+.my-label:before {
@@ -609,8 +610,9 @@ body.modal-open {
 
 .my-input2+.my-label {
   position: relative;
-  padding-left: 21px;
+  padding-left: 25px;
   cursor: pointer;
+  padding-right: 7px;
   margin-bottom: 4.5px;
 }
 
@@ -730,7 +732,7 @@ input:checked+.slider:before {
 
 .selection {
   min-width: 60vw !important;
-  padding: 15px 0px 10px 40px;
+  padding: 15px 0px;
 }
 
 .my-label {
