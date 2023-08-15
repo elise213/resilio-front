@@ -143,89 +143,87 @@ const getState = ({ getStore, getActions, setStore }) => {
     },
     actions: {
       // ________________________________________________________________LOGIN/TOKEN
-      login: async (email, password) => {
-        const current_back_url = getStore().current_back_url;
-        const opts = {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
-        };
-        try {
-          const response = await fetch(current_back_url + "/api/login", opts);
-          if (response.status !== 200) {
-            alert("There has been an error");
-            return false;
-          }
-          const data = await response.json();
-          // console.log("Yooooooo data =", data);
-          sessionStorage.setItem("token", data.access_token);
-          sessionStorage.setItem("is_org", data.is_org);
-          sessionStorage.setItem("name", data.name);
-          sessionStorage.setItem("avatar", parseInt(data.avatar));
-          // console.log("DATA FAVES", data.favorites)
-          console.log("HEYOOOO OFFERINGS", data.favoriteOffers, data.favoriteOfferings)
-          setStore({
-            token: data.access_token,
-            is_org: data.is_org,
-            avatarID: data.avatar,
-            name: data.name,
-            favorites: data.favorites,
-            favoriteOfferings: data.favoriteOfferings,
-          });
-          return true;
-        } catch (error) {
-          console.error(error);
-        }
-      },
-      createUser: async (is_org, name, email, password, userAvatar) => {
-        const current_back_url = getStore().current_back_url;
-        const opts = {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            is_org: is_org,
-            name: name,
-            email: email,
-            password: password,
-            userAvatar: userAvatar,
-          }),
-        };
-        try {
-          const response = await fetch(
-            current_back_url + "/api/createUser",
-            opts
-          );
-          if (response.status >= 400) {
-            alert("There has been an error");
-            return false;
-          }
-          const data = await response.json();
-          if (data.status == "true") {
-          }
-          return true;
-        } catch (error) {
-          console.error(error);
-        }
-      },
-      logout: () => {
-        const current_front_url = getStore().current_front_url;
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("is_org");
-        sessionStorage.removeItem("name");
-        setStore({ token: null, is_org: null, name: null });
-        window.location.href = current_front_url + "/";
-      },
+      // login: async (email, password) => {
+      //   const current_back_url = getStore().current_back_url;
+      //   const opts = {
+      //     method: "POST",
+      //     mode: "cors",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       "Access-Control-Allow-Origin": "*",
+      //     },
+      //     body: JSON.stringify({
+      //       email: email,
+      //       password: password,
+      //     }),
+      //   };
+      //   try {
+      //     const response = await fetch(current_back_url + "/api/login", opts);
+      //     if (response.status !== 200) {
+      //       alert("There has been an error");
+      //       return false;
+      //     }
+      //     const data = await response.json();
+      //     sessionStorage.setItem("token", data.access_token);
+      //     sessionStorage.setItem("is_org", data.is_org);
+      //     sessionStorage.setItem("name", data.name);
+      //     sessionStorage.setItem("avatar", parseInt(data.avatar));
+      //     console.log("HEYOOOO OFFERINGS", data.favoriteOffers, data.favoriteOfferings)
+      //     setStore({
+      //       token: data.access_token,
+      //       is_org: data.is_org,
+      //       avatarID: data.avatar,
+      //       name: data.name,
+      //       favorites: data.favorites,
+      //       favoriteOfferings: data.favoriteOfferings,
+      //     });
+      //     return true;
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // },
+      // createUser: async (is_org, name, email, password, userAvatar) => {
+      //   const current_back_url = getStore().current_back_url;
+      //   const opts = {
+      //     method: "POST",
+      //     mode: "cors",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       "Access-Control-Allow-Origin": "*",
+      //     },
+      //     body: JSON.stringify({
+      //       is_org: is_org,
+      //       name: name,
+      //       email: email,
+      //       password: password,
+      //       userAvatar: userAvatar,
+      //     }),
+      //   };
+      //   try {
+      //     const response = await fetch(
+      //       current_back_url + "/api/createUser",
+      //       opts
+      //     );
+      //     if (response.status >= 400) {
+      //       alert("There has been an error");
+      //       return false;
+      //     }
+      //     const data = await response.json();
+      //     if (data.status == "true") {
+      //     }
+      //     return true;
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // },
+      // logout: () => {
+      //   const current_front_url = getStore().current_front_url;
+      //   sessionStorage.removeItem("token");
+      //   sessionStorage.removeItem("is_org");
+      //   sessionStorage.removeItem("name");
+      //   setStore({ token: null, is_org: null, name: null });
+      //   window.location.href = current_front_url + "/";
+      // },
 
       // ________________________________________________________________RESOURCES
       createResource: async (
@@ -331,7 +329,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             .then((data) => {
               if (data.message == "okay") {
                 favorites.push(data.favorite);
-                // console.log("favorites from addfavorite", favorites);
                 setStore({ favorites: favorites });
               }
             });
@@ -370,7 +367,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return;
                   }
                 });
-                // console.log("favorites from removefavorite", favorites);
                 setStore({ favorites: favorites });
               }
             })
@@ -378,13 +374,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       setSearchResults: () => {
-        // console.log("CURRENT BACK", getStore().current_back_url)
         let controller = new AbortController();
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getResources" + url,
           {
             method: "GET",
-            // mode: "cors",
             headers: {
               "access-control-allow-origin": "*",
               "Content-Type": "application/json",
@@ -394,13 +388,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then((response) => response.json())
           .then((data) => {
             setStore({ searchResults: data.data });
-            console.log("search results", getStore().searchResults);
+            // console.log("search results", getStore().searchResults);
           })
           .catch((error) => console.log(error));
       },
 
       setBoundaryResults: (bounds) => {
-        console.log("BOUNDS", bounds)
         let controller = new AbortController();
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getBResults" + url,
@@ -425,7 +418,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .then(data => console.log("boundary results", getStore().boundaryResults))
           .catch((error) => console.log(error));
-        console.log("BOUNDS", bounds)
       },
 
       createComment: async (resource_id, comment_cont, parentId) => {
@@ -489,31 +481,31 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
-      removeFavoriteOffering: (offering) => {
-        console.log("offering from REMOVE FAVE OFFER FLUX", offering)
-        const current_back_url = getStore().current_back_url;
-        const token = sessionStorage.getItem("token")
-        if (token) {
-          fetch(`${current_back_url}/api/removeFavoriteOffering`, {
-            method: 'DELETE',
-            headers: {
-              Authorization: "Bearer " + sessionStorage.getItem("token"),
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ title: offering })
-          }).then(response => response.json())
-            .then(result => {
-              if (result.message == "okay") {
-                const favorites = getStore().favoriteOfferings.filter((fav) => fav.title !== offering);
-                setStore({ favoriteOfferings: favorites });
-                console.log("FAVE OFFERINGS FLUX", getStore().favoriteOfferings)
-              }
-            })
-            .catch(error => {
-              console.error('An error occurred while removing favorite offering:', error);
-            })
-        }
-      },
+      // removeFavoriteOffering: (offering) => {
+      //   console.log("offering from REMOVE FAVE OFFER FLUX", offering)
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token")
+      //   if (token) {
+      //     fetch(`${current_back_url}/api/removeFavoriteOffering`, {
+      //       method: 'DELETE',
+      //       headers: {
+      //         Authorization: "Bearer " + sessionStorage.getItem("token"),
+      //         "Content-Type": "application/json"
+      //       },
+      //       body: JSON.stringify({ title: offering })
+      //     }).then(response => response.json())
+      //       .then(result => {
+      //         if (result.message == "okay") {
+      //           const favorites = getStore().favoriteOfferings.filter((fav) => fav.title !== offering);
+      //           setStore({ favoriteOfferings: favorites });
+      //           console.log("FAVE OFFERINGS FLUX", getStore().favoriteOfferings)
+      //         }
+      //       })
+      //       .catch(error => {
+      //         console.error('An error occurred while removing favorite offering:', error);
+      //       })
+      //   }
+      // },
       setOfferings: () => {
         fetch(getStore().current_back_url + "/api/getOfferings")
           .then((response) => response.json())
