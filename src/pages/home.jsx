@@ -33,6 +33,9 @@ const Home = () => {
   const [zipCode, setZipCode] = useState("")
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState();
+  const [wifi, setWiFi] = useState(false);
+  const [substance, setSubstance] = useState(false);
+  const [crisis, setCrisis] = useState(false);
   const [city, setCity] = useState({
     // AUSTIN
     // center: { lat: 30.266666, lng: -97.733330 },
@@ -62,8 +65,11 @@ const Home = () => {
     { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
     { id: "health", label: "Health Care", state: health, handler: setHealth },
     { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
-    { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
-    { id: "work", label: "Work", state: work, handler: setWork },
+    { id: "bathroom", label: "Public Bathroom", state: bathroom, handler: setBathroom },
+    { id: "wifi", label: "Free WiFi", state: wifi, handler: setWiFi },
+    { id: "substance", label: "Substance Support", state: substance, handler: setSubstance },
+    { id: "crisis", label: "Crisis Support", state: crisis, handler: setCrisis },
+    { id: "work", label: "Work", state: work, handler: setWork }
   ];
 
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -113,6 +119,9 @@ const Home = () => {
         hygiene: hygiene,
         work: work,
         bathroom: bathroom,
+        wifi: wifi,
+        crisis: crisis,
+        substance: substance,
         monday: monday,
         tuesday: tuesday,
         wednesday: wednesday,
@@ -140,6 +149,7 @@ const Home = () => {
     shelter,
     work,
     bathroom,
+    wifi, crisis, substance,
     filterByBounds,
     boundsData,
     city]);
@@ -182,7 +192,6 @@ const Home = () => {
   }, [store.searchResults, store.boundaryResults]);
 
 
-
   return (
     <div>
       <div className="grand-container">
@@ -194,7 +203,7 @@ const Home = () => {
               <div className="circle-font" ref={circleInstance}>What do you need?</div>
             </div>
 
-            <div className="selection">
+            {/* <div className="selection">
               {options.map((option) => (
                 <div className="my-form-check" key={option.id}>
                   <input
@@ -225,7 +234,81 @@ const Home = () => {
                   All
                 </label>
               </div>
+            </div> */}
+            <div className="selection">
+              <div className="checkbox-row">
+                {options.slice(0, 4).map((option) => (
+                  <div className="my-form-check" key={option.id}>
+                    <input
+                      className="my-input"
+                      type="checkbox"
+                      id={option.id}
+                      value={option.id}
+                      name="selection"
+                      checked={option.state}
+                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                    />
+                    <label className="my-label" htmlFor={option.id}>
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              <div className="checkbox-row">
+                {options.slice(4, 8).map((option) => (
+                  <div className="my-form-check" key={option.id}>
+                    <input
+                      className="my-input"
+                      type="checkbox"
+                      id={option.id}
+                      value={option.id}
+                      name="selection"
+                      checked={option.state}
+                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                    />
+                    <label className="my-label" htmlFor={option.id}>
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              <div className="checkbox-row">
+                {options.slice(8).map((option) => (
+                  <div className="my-form-check" key={option.id}>
+                    <input
+                      className="my-input"
+                      type="checkbox"
+                      id={option.id}
+                      value={option.id}
+                      name="selection"
+                      checked={option.state}
+                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                    />
+                    <label className="my-label" htmlFor={option.id}>
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+                <div className="my-form-check">
+                  <input
+                    className="my-input"
+                    type="checkbox"
+                    id="allKinds"
+                    value="allKinds"
+                    name="selection"
+                    checked={allKinds}
+                    onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                  />
+                  <label className="my-label" htmlFor="allKinds">
+                    All
+                  </label>
+                </div>
+              </div>
             </div>
+
+
           </div>
 
           <div className="selection">
