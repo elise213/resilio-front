@@ -6,6 +6,7 @@ body {
 
 :root {
   --coral: rgb(255, 123, 116);
+  --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
   --peach: rgb(247, 122, 97);
   --green: rgb(170, 255, 200);
@@ -203,8 +204,8 @@ body {
   min-height: 150px;
   width: 200px;
   height: 100%;
-  margin-left: 2px;
-  margin-right: 1px;
+  margin: 10px 1px 0px 2px;
+
 }
 
 .resource-card-header {
@@ -458,8 +459,50 @@ body.modal-open {
   display: flex;
   width: 100%;
   justify-content: center;
+  align-items: center;
   direction: unset;
   margin: 0 !important;
+  position: relative !important;
+  z-index: 0;
+}
+
+.scroll-search-results::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 100%;
+  left: 50%;
+  width: 4px;
+  /* background: repeating-radial-gradient(circle,
+      var(--coral) 0,
+      var(--coral) 2px,
+      transparent 2px,
+      transparent 10px); */
+  background-clip: content-box;
+  /* Clip the background to the content area to make it seamless */
+  transform: translateY(-50%) translateX(-50%);
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.scroll-search-results::after {
+  content: "";
+  position: absolute;
+  bottom: 50%;
+  /* Start the dots from the middle of the container */
+  height: 80%;
+  /* Adjust the height to limit the dots up to the middle */
+  left: 50%;
+  width: 4px;
+  background-clip: content-box;
+  /* Clip the background to the content area to make it seamless */
+  transform: translateY(50%) translateX(-50%);
+  /* Centering the dots */
+  opacity: 0.3;
+  /* Starting the opacity */
+  z-index: -1;
+  pointer-events: none;
 }
 
 .scroll-search-results ul {
@@ -475,7 +518,7 @@ body.modal-open {
 .scroll-search-results li {
   display: flex;
   justify-content: center;
-  margin: 10px;
+  margin: 10px 5px 20px 10px;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-track {
@@ -553,6 +596,7 @@ body.modal-open {
   border-radius: 3px;
   border: 1px solid var(--green2);
   background: #fff;
+  margin: 5px;
 }
 
 .my-input:checked+.my-label:before {
@@ -580,6 +624,7 @@ body.modal-open {
   border-radius: 3px;
   border: 1px solid var(--coral2);
   background: #fff;
+  margin: 5px;
 }
 
 .my-input2:checked+.my-label:before {
@@ -684,12 +729,11 @@ input:checked+.slider:before {
 }
 
 .selection {
-  width: 97vw !important;
-  margin: 15px 0px 0px 0px;
+  min-width: 60vw !important;
+  padding: 15px 0px 10px 40px;
 }
 
 .my-label {
-  margin-right: 13px;
   font-family: "Urbanist", sans-serif !important;
   font-size: medium;
 }
@@ -811,6 +855,10 @@ input:checked+.slider:before {
 
 /* ______________________________________________________________SIZE < 600px */
 @media screen and (max-width: 600px) {
+
+  .scroll-search-results li {
+    margin: 10px 5px 9px 10px !important;
+  }
 
   .carousel {
     width: 95%;

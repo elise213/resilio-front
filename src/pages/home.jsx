@@ -273,7 +273,7 @@ const Home = () => {
                     onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
                   />
                   <label className="my-label" htmlFor="allKinds">
-                    All
+                    All Services
                   </label>
                 </div>
               </div>
