@@ -42,11 +42,11 @@ const Modal = (props) => {
     return (
         <div>
             <div className="modal-div" >
-                <div className="modal-close-div">
-                    <p className="x-close" onClick={handleCloseClick}>X</p>
-                </div>
                 <div className="modal-content" ref={modalContentRef}>
                     <div className="modal-header">
+                        <div className="modal-close-div">
+                            <p className="x-close" onClick={handleCloseClick}>X</p>
+                        </div>
                         <div className="modal-title-div">
                             <p>{props.resource.name}</p>
                             <i className={`${icon} card-icon-2`} />
