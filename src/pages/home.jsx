@@ -65,11 +65,11 @@ const Home = () => {
     { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
     { id: "health", label: "Health Care", state: health, handler: setHealth },
     { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
-    { id: "bathroom", label: "Public Bathroom", state: bathroom, handler: setBathroom },
-    { id: "wifi", label: "Free WiFi", state: wifi, handler: setWiFi },
+    { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
     { id: "substance", label: "Substance Support", state: substance, handler: setSubstance },
+    { id: "wifi", label: "Free WiFi", state: wifi, handler: setWiFi },
+    { id: "work", label: "Work", state: work, handler: setWork },
     { id: "crisis", label: "Crisis Support", state: crisis, handler: setCrisis },
-    { id: "work", label: "Work", state: work, handler: setWork }
   ];
 
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -203,41 +203,9 @@ const Home = () => {
               <div className="circle-font" ref={circleInstance}>What do you need?</div>
             </div>
 
-            {/* <div className="selection">
-              {options.map((option) => (
-                <div className="my-form-check" key={option.id}>
-                  <input
-                    className="my-input"
-                    type="checkbox"
-                    id={option.id}
-                    value={option.id}
-                    name="selection"
-                    checked={option.state}
-                    onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                  />
-                  <label className="my-label" htmlFor={option.id}>
-                    {option.label}
-                  </label>
-                </div>
-              ))}
-              <div className="my-form-check">
-                <input
-                  className="my-input"
-                  type="checkbox"
-                  id="allKinds"
-                  value="allKinds"
-                  name="selection"
-                  checked={allKinds}
-                  onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                />
-                <label className="my-label" htmlFor="allKinds">
-                  All
-                </label>
-              </div>
-            </div> */}
             <div className="selection">
-              <div className="checkbox-row">
-                {options.slice(0, 4).map((option) => (
+              <div className="day-column">
+                {options.slice(0, 3).map((option) => (
                   <div className="my-form-check" key={option.id}>
                     <input
                       className="my-input"
@@ -255,8 +223,8 @@ const Home = () => {
                 ))}
               </div>
 
-              <div className="checkbox-row">
-                {options.slice(4, 8).map((option) => (
+              <div className="day-column">
+                {options.slice(3, 6).map((option) => (
                   <div className="my-form-check" key={option.id}>
                     <input
                       className="my-input"
@@ -274,8 +242,8 @@ const Home = () => {
                 ))}
               </div>
 
-              <div className="checkbox-row">
-                {options.slice(8).map((option) => (
+              <div className="day-column">
+                {options.slice(6, 9).map((option) => (
                   <div className="my-form-check" key={option.id}>
                     <input
                       className="my-input"
@@ -291,6 +259,9 @@ const Home = () => {
                     </label>
                   </div>
                 ))}
+              </div>
+
+              <div className="day-column">
                 <div className="my-form-check">
                   <input
                     className="my-input"
@@ -307,36 +278,32 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
 
-          <div className="selection">
-            <div className="my-dropdown">
-              {!dropdownOpen &&
-                <button className="my-schedule-button"
-                  onClick={() => setDropdownOpen(!dropdownOpen)}>
-                  <img className="left-arrow-filter" src={arrow}></img>
-                  Filter By Day
-                  <img className="right-arrow-filter" src={arrow}></img>
-                </button>
-              }
-              {dropdownOpen &&
-                <DaySelection
-                  filterByBounds={filterByBounds}
-                  boundsData={boundsData}
-                  setMonday={setMonday}
-                  setTuesday={setTuesday}
-                  setWednesday={setWednesday}
-                  setThursday={setThursday}
-                  setFriday={setFriday}
-                  setSaturday={setSaturday}
-                  setSunday={setSunday}
-                  setDropdownOpen={setDropdownOpen}
-                />
-              }
-            </div>
-          </div>
+
+          {!dropdownOpen &&
+            <button className="my-schedule-button"
+              onClick={() => setDropdownOpen(!dropdownOpen)}>
+              <img className="left-arrow-filter" src={arrow}></img>
+              Filter By Day
+              <img className="right-arrow-filter" src={arrow}></img>
+            </button>
+          }
+          {dropdownOpen &&
+            <DaySelection
+              filterByBounds={filterByBounds}
+              boundsData={boundsData}
+              setMonday={setMonday}
+              setTuesday={setTuesday}
+              setWednesday={setWednesday}
+              setThursday={setThursday}
+              setFriday={setFriday}
+              setSaturday={setSaturday}
+              setSunday={setSunday}
+              setDropdownOpen={setDropdownOpen}
+            />
+          }
+
         </div>
         <div className="search-results-full">
           <div

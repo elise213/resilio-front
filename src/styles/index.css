@@ -297,10 +297,6 @@ body {
 
 /* _________________________________________MODAL */
 
-.my-dropdown {
-  display: flex;
-}
-
 .my-dropdown-menu {
   display: flex;
   justify-content: space-evenly;
@@ -654,7 +650,7 @@ input:checked+.slider:before {
 .my-form-check {
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  margin: 3px 0;
 }
 
 .my-schedule-button {
@@ -685,17 +681,11 @@ input:checked+.slider:before {
 .question {
   font-size: x-large;
   font-weight: bold;
-  margin-bottom: 15px;
-  width: 100vw;
 }
 
 .selection {
-  display: flex;
-  justify-content: center;
-  width: 100vw !important;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 0px 12px;
+  width: 97vw !important;
+  margin: 15px 0px 0px 0px;
 }
 
 .my-label {
@@ -715,13 +705,6 @@ input:checked+.slider:before {
   display: flex !important;
   margin: 10px;
   min-height: none !important;
-}
-
-.what-type {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .schedule {
@@ -836,13 +819,8 @@ input:checked+.slider:before {
   }
 
   .x-close {
-    color: red;
+    color: var(--coral2);
     top: 37px !important;
-  }
-
-  .selection {
-    justify-content: space-evenly !important;
-    padding: 0px 30px;
   }
 
   .my-label {
@@ -971,9 +949,10 @@ input:checked+.slider:before {
   justify-content: center;
 }
 
-/* .scroll-search-results ul::-webkit-scrollbar-thumb {
-  background-color: lightgreen;
-} */
+.scroll-search-results ul::-webkit-scrollbar-thumb {
+  /* background-color: lightgreen; */
+  display: hidden;
+}
 
 .circle-font {
   display: flex;
@@ -985,4 +964,14 @@ input:checked+.slider:before {
   display: flex;
   justify-content: start;
   margin-bottom: 10px;
+}
+
+.day-column {
+  min-width: 82px;
+}
+
+.selection,
+.DaySelectionComponentClass {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
