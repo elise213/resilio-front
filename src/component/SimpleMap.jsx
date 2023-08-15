@@ -9,10 +9,13 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
   const { store, actions } = useContext(Context);
 
 
-  const normalizeBounds = (bounds) => ({
-    ne: { lat: bounds.ne.lat || bounds.northeast.lat, lng: bounds.ne.lng || bounds.northeast.lng },
-    sw: { lat: bounds.sw.lat || bounds.southwest.lat, lng: bounds.sw.lng || bounds.southwest.lng }
-  });
+  const normalizeBounds = (bounds) => {
+    console.log("BOUNDS", bounds)
+    return ({
+      ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+      sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+    })
+  };
 
   const fetchInitialBounds = async () => {
     const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${city.center.lat},${city.center.lng}&key=${apiKey}`);
@@ -20,12 +23,13 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
 
     if (data && data.results[0] && data.results[0].geometry) {
       const bounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
+      console.log("BOUNDS 26!", bounds)
       if (bounds) {
         setCity(prev => ({
           ...prev,
           bounds: {
-            ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
-            sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+            ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+            sw: { lat: bounds.sw.lat, lng: bounds.sw.lng }
           }
         }));
         setBoundsData(bounds);
