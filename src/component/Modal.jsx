@@ -1,15 +1,11 @@
-import React, { useState, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useContext, useRef, useEffect } from "react"; import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { ResourceInfo } from "./ResourceInfo";
 
 const Modal = (props) => {
     const { store, actions } = useContext(Context);
+    const modalContentRef = useRef(null);
 
-    const handleCloseClick = (event) => {
-        event.stopPropagation();
-        props.closeModal();
-    };
 
     let icon = "";
     if (props.resource.category == "health") {
@@ -22,13 +18,34 @@ const Modal = (props) => {
         icon = "fa-solid fa-person-shelter";
     }
 
+    const handleCloseClick = (event) => {
+        event.stopPropagation();
+        props.closeModal();
+    };
+
+    useEffect(() => {
+        console.log("Inside useEffect: ", modalContentRef.current);
+
+        const handleOutsideClick = (event) => {
+            if (modalContentRef.current && !modalContentRef.current.contains(event.target)) {
+                console.log("Clicked outside the modal!");
+                props.closeModal();
+            }
+        };
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, []);
+
+
     return (
         <div>
-            <div className="modal-div">
+            <div className="modal-div" >
                 <div className="modal-close-div">
                     <p className="x-close" onClick={handleCloseClick}>X</p>
                 </div>
-                <div className="modal-content">
+                <div className="modal-content" ref={modalContentRef}>
                     <div className="modal-header">
                         <div className="modal-title-div">
                             <p>{props.resource.name}</p>

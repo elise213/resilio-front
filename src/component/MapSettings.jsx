@@ -45,7 +45,7 @@ const MapSettings = ({ setCity, handleZipInputChange, zipInput, filterByBounds, 
             >
                 Find Location
             </button>
-            {"  "} or {"  "}
+            <span className="or">  {"  "} or {"  "}</span>
             <div className="zipcode-input-container">
                 <input
                     type="text"

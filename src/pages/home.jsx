@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { SimpleMap } from "../component/SimpleMap";
 import { ResourceCard } from "../component/ResourceCard";
+import DaySelection from "../component/DaySelection";
 import MapSettings from "../component/MapSettings";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
@@ -44,6 +45,7 @@ const Home = () => {
   });
   const circleInstance = useRef();
   const circleInstance2 = useRef();
+  const circleInstance3 = useRef();
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -58,7 +60,7 @@ const Home = () => {
   const options = [
     { id: "food", label: "Food", state: food, handler: setFood },
     { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
-    { id: "health", label: "Health", state: health, handler: setHealth },
+    { id: "health", label: "Health Care", state: health, handler: setHealth },
     { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
     { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
     { id: "work", label: "Work", state: work, handler: setWork },
@@ -78,16 +80,20 @@ const Home = () => {
   };
 
   useEffect(() => {
-    let circle1, circle2;
+    let circle1, circle2, circle3;
     if (circleInstance.current) {
       circle1 = new CircleType(circleInstance.current).radius(500)
     };
     if (circleInstance2.current) {
-      circle2 = new CircleType(circleInstance2.current).radius(500).dir(-1)
+      circle2 = new CircleType(circleInstance2.current).radius(500).dir(1)
+    }
+    if (circleInstance3.current) {
+      circle3 = new CircleType(circleInstance3.current).radius(500).dir(1)
     }
     return () => {
       circle1 && circle1.destroy();
       circle2 && circle2.destroy()
+      circle3 && circle3.destroy()
     };
   }, [searchParams, dropdownOpen]);
 
@@ -115,56 +121,29 @@ const Home = () => {
         saturday: saturday,
         sunday: sunday,
       });
-
-      actions.setSearchResults();
-      actions.setBoundaryResults(boundsData);
+      actions.setSearchResults(); if (boundsData) {
+        actions.setBoundaryResults(boundsData);
+      }
     };
-
     updateData();
+  }, [
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday,
+    food,
+    health,
+    hygiene,
+    shelter,
+    work,
+    bathroom,
+    filterByBounds,
+    boundsData,
+    city]);
 
-  }, [monday, tuesday, wednesday, thursday, friday, saturday, sunday, food, health, hygiene, shelter, work, bathroom, city, filterByBounds, boundsData]);
-
-  // function handleAllKinds(event) {
-  //   const isChecked = event.target.checked;
-  //   if (isChecked) {
-  //     setFood(false);
-  //     setShelter(false);
-  //     setHealth(false);
-  //     setHygiene(false);
-  //     setWork(false);
-  //     setBathroom(false)
-  //   };
-  //   setAllKinds(isChecked);
-  // }
-
-  const handleMonday = handleEvent(setMonday);
-  const handleTuesday = handleEvent(setTuesday);
-  const handleWednesday = handleEvent(setWednesday);
-  const handleThursday = handleEvent(setThursday);
-  const handleFriday = handleEvent(setFriday);
-  const handleSaturday = handleEvent(setSaturday);
-  const handleSunday = handleEvent(setSunday);
-
-  function handleAll() {
-    setMonday(false);
-    setTuesday(false);
-    setWednesday(false);
-    setThursday(false);
-    setFriday(false);
-    setSaturday(false);
-    setSunday(false);
-    setDropdownOpen(false);
-  }
-
-  function handleEvent(setter, isResourceType = false) {
-    return function (event) {
-      const element = event.target;
-      setter(element.checked);
-      if (isResourceType) {
-        setAllKinds(false)
-      };
-    };
-  }
 
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
@@ -191,6 +170,19 @@ const Home = () => {
     }
   };
 
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const ulRef = useRef(null);
+
+  useEffect(() => {
+    if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
+      setIsOverflowing(true);
+    } else {
+      setIsOverflowing(false);
+    }
+  }, [store.searchResults, store.boundaryResults]);
+
+
+
   return (
     <div>
       <div className="grand-container">
@@ -199,7 +191,7 @@ const Home = () => {
 
           <div className="what-type">
             <div className="question">
-              <div className="circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
+              <div className="circle-font" ref={circleInstance}>What do you need?</div>
             </div>
 
             <div className="selection">
@@ -247,116 +239,18 @@ const Home = () => {
                 </button>
               }
               {dropdownOpen &&
-                <div className="what-type">
-                  <div className="selection">
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="monday"
-                        value="monday"
-                        onChange={handleMonday}
-                      />
-                      <label className="my-label" htmlFor="monday">
-                        Mon
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="tuesday"
-                        value="tuesday"
-                        onChange={handleTuesday}
-                      />
-                      <label className="my-label" htmlFor="tuesday">
-                        Tue
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="wednesday"
-                        value="wednesday"
-                        onChange={handleWednesday}
-                      />
-                      <label className="my-label" htmlFor="wednesday">
-                        Wed
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="thursday"
-                        value="thursday"
-                        onChange={handleThursday}
-                      />
-                      <label className="my-label" htmlFor="thursday">
-                        Thr
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="friday"
-                        value="friday"
-                        onChange={handleFriday}
-                      />
-                      <label className="my-label" htmlFor="friday">
-                        Fri
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="saturday"
-                        value="saturday"
-                        onChange={handleSaturday}
-                      />
-                      <label className="my-label" htmlFor="saturday">
-                        Sat
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="sunday"
-                        value="sunday"
-                        onChange={handleSunday}
-                      />
-                      <label className="my-label" htmlFor="sunday">
-                        Sun
-                      </label>
-                    </div>
-
-                    <div className="my-form-check">
-                      <input
-                        className="my-input2"
-                        type="checkbox"
-                        id="all"
-                        value="all"
-                        onChange={handleAll}
-                      />
-                      <label className="my-label" htmlFor="all">
-                        All
-                      </label>
-                    </div>
-                  </div>
-                  <div className="question">
-                    <div className="circle-font" ref={circleInstance2}>WHEN DO YOU NEED IT?</div>
-                  </div>
-                </div>
+                <DaySelection
+                  filterByBounds={filterByBounds}
+                  boundsData={boundsData}
+                  setMonday={setMonday}
+                  setTuesday={setTuesday}
+                  setWednesday={setWednesday}
+                  setThursday={setThursday}
+                  setFriday={setFriday}
+                  setSaturday={setSaturday}
+                  setSunday={setSunday}
+                  setDropdownOpen={setDropdownOpen}
+                />
               }
             </div>
           </div>
@@ -368,7 +262,7 @@ const Home = () => {
               display: filterByBounds && store.boundaryResults.length === 0 ? 'none' : 'block'
             }}
           >
-            <ul style={{ listStyleType: "none" }}>
+            <ul style={{ listStyleType: "none", justifyContent: isOverflowing ? 'flex-start' : 'center' }} ref={ulRef}>
               {!filterByBounds
                 ? store.searchResults.map((result, i) => (
                   <li key={i}>
@@ -398,14 +292,14 @@ const Home = () => {
             </ul>
           </div>
           <div className="new-container">
-
+            {/* <div className="question">
+              <div className="circle-font" ref={circleInstance3}>Where are you?</div>
+            </div> */}
             <div className="map-settings-container">
               <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
             <div className="map-and-cities">
               <SimpleMap
-                ZipCode={zipCode}
-                setZipCode={setZipCode}
                 openModal={openModal}
                 closeModal={closeModal}
                 selectedResource={selectedResource}
@@ -414,8 +308,6 @@ const Home = () => {
                 setBoundsData={setBoundsData}
                 city={city}
                 setCity={setCity}
-                zipInput={zipInput}
-                setZipInput={setZipInput}
               />
             </div>
           </div>
