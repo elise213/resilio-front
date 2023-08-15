@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import LogRegBtn from "./LogRegBtn";
-import AliveLogo from "/assets/RESILIO.png"
+import AliveLogo from "/assets/RESILIOO.png"
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -48,11 +48,10 @@ export const Navbar = () => {
   }
   return (
     <nav className="navbar" id="navbar">
-      {/* Navbar Brand Logo - Link to Home - Always Visible*/}
       <div className="">
         <Link to="/?food=false&shelter=false&health=false&hygiene=false&work=false&monday=false&tuesday=false&wednesday=false&thursday=false&friday=false&saturday=false&sunday=false&neLat=34.225370249395425&neLng=-117.95839879150392&swLat=33.89714807900816&swLng=-118.51801488037111">
           <span className="navbar-brand" >
-            {/* <img className="navbar-logo" src={AliveLogo}></img> */}
+            <img className="navbar-logo" src={AliveLogo}></img>
           </span>
         </Link>
 
