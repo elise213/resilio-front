@@ -5,17 +5,33 @@ body {
 }
 
 :root {
-  --coral: rgb(254, 139, 121);
-  --coral2: rgb(249, 83, 41);
-  --peach: rgb(255, 183, 173);
+  --coral: rgb(255, 123, 116);
+  --coral2: rgb(245, 112, 79);
+  --peach: rgb(247, 122, 97);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
-  --yellow: #ffc353;
+  --yellow: #f9cb57;
   width: 100vw;
   overflow-x: hidden;
 }
 
-/* CAROUSEL */
+.radio {
+  border-radius: 2px !important;
+  border: solid 1px lightgray;
+}
+
+.radio-label {
+  color: gray
+}
+
+/* ________________________HOME */
+
+.new-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ____________________________________________CAROUSEL */
 
 .carousel-container {
   display: flex;
@@ -36,7 +52,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .arrow-button {
@@ -59,17 +75,6 @@ body {
   transform: translateY(-50%);
   right: 0px;
   position: absolute;
-}
-
-.left-arrow-filter {
-  width: 20px;
-  transform: scaleX(-1);
-  margin-right: 5px;
-}
-
-.right-arrow-filter {
-  width: 20px;
-  margin-left: 5px;
 }
 
 /* _____________________________________________________________RESOURCE INFO  */
@@ -139,6 +144,7 @@ body {
   line-height: 2;
   display: flex;
   justify-content: center;
+  margin: 0;
 }
 
 .description-div {
@@ -163,10 +169,12 @@ body {
 }
 
 .card-img {
-  max-width: 92%;
+  max-width: 90%;
   margin-bottom: 20px;
   object-fit: cover;
-  max-height: 120px;
+  max-height: 100px;
+  /* 120px; */
+  margin-bottom: 5px;
 }
 
 .card-inner {
@@ -185,10 +193,9 @@ body {
   border: 1px solid lightgray;
   justify-content: center;
   display: flex;
-  font-family: sans-serif;
   background-color: #eeeeee;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
-  margin-bottom: 10px;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29); */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 0 2px 12px rgba(0, 0, 0, 0.2);
   align-items: center;
   padding: 4px;
   max-width: 250px;
@@ -246,7 +253,6 @@ body {
   font-family: "Urbanist", sans-serif;
   background-color: transparent;
   color: black;
-  margin-top: 20px;
 }
 
 .nav-btn {
@@ -278,9 +284,9 @@ body {
 }
 
 .navbar-logo {
-  display: none;
-  width: 15vw;
-  margin-left: 10px;
+  width: 30vw;
+  max-width: 220px;
+  margin: 15px 0px 0px 15px;
 }
 
 .nav-profile-icon {
@@ -293,7 +299,6 @@ body {
 
 .my-dropdown {
   display: flex;
-  margin-top: 10px;
 }
 
 .my-dropdown-menu {
@@ -422,10 +427,6 @@ body.modal-open {
   width: 90%;
 }
 
-.carousel-image {
-  width: 90%;
-}
-
 /* ---------------------------------------------------------------------SEARCH PAGE */
 .info {
   display: flex;
@@ -470,17 +471,23 @@ body.modal-open {
   overflow-y: hidden;
   display: flex;
   justify-content: center;
-  padding-left: 0;
+  padding: 0px !important;
+  margin: 0 !important;
+  width: 100%;
 }
 
 .scroll-search-results li {
-  margin: 8px !important;
   display: flex;
   justify-content: center;
+  margin: 10px;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+.scroll-search-results ul::-webkit-scrollbar {
+  color: orange;
 }
 
 .resource-card-title-name {
@@ -495,141 +502,6 @@ body.modal-open {
 }
 
 /* _____________________________________________________________Selection-*/
-.my-form-check {
-  display: flex;
-  align-items: center;
-  margin: 5px 0;
-}
-
-.my-schedule-button {
-  border: none;
-  background-color: transparent;
-  font-family: "Urbanist", sans-serif !important;
-  font-size: 20px;
-  letter-spacing: 2px;
-  margin: 15px 0px;
-}
-
-.my-schedule-button:hover {
-  color: var(--coral2)
-}
-
-.zipcode-input-container {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-family: "Urbanist", sans-serif !important;
-  font-size: 15px;
-}
-
-#zipcode {
-  border: 1.5px solid var(--coral2);
-  border-radius: 3px;
-  text-align: center;
-  background-color: var(--yellow);
-  height: 30px;
-  margin: 5px;
-  width: 120px;
-}
-
-.geo-button {
-  border: 1.5px solid var(--coral2);
-  width: auto;
-  background-color: var(--yellow) !important;
-  font-size: 15px;
-  height: 30px;
-  width: 120px;
-  border-radius: 3px;
-  font-family: "Urbanist", sans-serif !important;
-  margin: 5px;
-}
-
-.geo-button:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
-  cursor: pointer;
-}
-
-.search-container {
-  word-wrap: wrap;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 5px;
-  margin-top: 10px;
-}
-
-.question {
-  font-size: x-large;
-  font-weight: bold;
-  margin-bottom: 15px;
-  width: 100vw;
-}
-
-.selection {
-  display: flex;
-  justify-content: center;
-  width: 100vw !important;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 0 15px;
-}
-
-.my-label {
-  margin-right: 13px;
-  font-family: "Urbanist", sans-serif !important;
-  font-size: medium;
-}
-
-.tell-us {
-  font-family: "Urbanist", sans-serif;
-  font-size: 35px;
-  letter-spacing: 1.3x;
-  margin-bottom: 30px;
-}
-
-
-.form-check {
-  display: flex !important;
-  margin: 10px;
-  min-height: none !important;
-}
-
-.what-type {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.schedule {
-  font-size: large !important;
-  letter-spacing: 4px;
-  margin-top: 10px;
-}
-
-.form-check-label {
-  font-family: "Carme", sans-serif;
-  font-size: 18px;
-  letter-spacing: 1.4x;
-}
-
-.circle-font {
-  font-family: "Urbanist", sans-serif;
-  font-weight: bolder;
-}
-
-/* _____________________________________________________________CONTACT PAGE */
-.contact-page {
-  margin: 80px;
-  display: flex;
-  justify-content: center;
-}
-
-.contact-submit {
-  display: flex;
-  justify-content: center;
-  width: 100%
-}
-
 .my-navbar-items {
   display: flex;
   flex-direction: column;
@@ -637,15 +509,6 @@ body.modal-open {
   align-items: center;
 }
 
-.map-info {
-  display: flex;
-  justify-content: center;
-}
-
-.new-container {
-  display: flex;
-  flex-direction: column;
-}
 
 .search-results-full {
   flex-direction: column;
@@ -657,185 +520,22 @@ body.modal-open {
   margin: 0;
 }
 
-.contact-page {
-  margin: 15px;
-  padding-top: 80px;
-}
-
-.carousel-description-div {
-  flex-direction: column;
-}
-
-.info-map-div {
-  flex-direction: column;
-}
-
-.modal-map {
-  width: 100% !important;
-}
-
-.details-div {
-  width: 100%;
-  justify-content: center;
-  display: flex;
-}
-
-.description-div {
-  width: 100% !important;
-  padding: 20px;
-  text-align: justify;
-}
-
-/* ______________________________________________________________SIZE < 600px */
-@media screen and (max-width: 600px) {
-  .x-close {
-    color: red;
-    top: 37px !important;
-  }
-
-  .selection {
-    justify-content: space-evenly !important;
-  }
-
-  .my-label {
-    margin-right: 7px !important;
-  }
-
-  .tell-us {
-    font-size: 18px;
-  }
-
-  .question {
-    font-size: large;
-  }
-
-  .search-container {
-    margin-bottom: 0px;
-  }
-
-  .favorites-col {
-    width: 40vw;
-  }
-
-  .details {
-    width: 100% !important;
-  }
-
-  .my-resource-card {
-    min-width: 25vw !important;
-  }
-
-  .resource-title {
-    font-size: 13px !important;
-  }
-
-  .card-icon {
-    font-size: medium;
-    margin: 0;
-  }
-
-  .card-img {
-    width: 100%;
-    object-fit: cover;
-    max-height: 110px;
-    margin-bottom: 8px;
-  }
-
-  .scroll-search-results {
-    min-height: 47vmin;
-  }
-
-  .form-check-label {
-    font-size: 14px;
-  }
-
-  .fa-heart {
-    font-size: small;
-  }
-
-  .modal-footer p {
-    font-size: small;
-  }
-
-  .resource-card-text {
-    font-size: small;
-  }
-}
-
-/* ______________________________________________________________SIZE < 420px */
-
-@media screen and (max-width: 420px) {
-  .my-resource-card {
-    min-width: 25vw !important;
-    height: 200px;
-  }
-}
-
-/* ___________________________________________________________________GLOBAL */
-
-.submit {
-  border: 1px solid var(--green2);
-  font-family: "Carme", sans-serif;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  color: var(--green2);
-  background-color: var(--green) !important;
-  font-size: 20px;
-  width: 100%;
-  height: 30px;
-}
-
-.radio {
-  border-radius: 2px !important;
-  border: solid 1px lightgray;
-}
-
-.radio-label {
-  color: gray
-}
-
-.alert {
-  text-align: center;
-}
-
-/* _____________________________________________________________MAP */
-.marker {
-  position: relative;
-  display: inline-block;
-}
-
-.marker-icon i {
-  color: var(--coral2);
-  font-size: x-large;
-}
-
-.marker-text {
-  color: salmon(208, 87, 74);
-  z-index: 100;
-  font-size: large;
-  background-color: rgba(255, 255, 255, 0.8) !important;
-  border: 2px solid var(--coral) !important;
-}
-
-.marker-icon span {
-  position: absolute;
-  top: -26px;
-  left: -15px;
-  background-color: #fff;
-  padding: 4px;
-  border-radius: 4px;
-  white-space: nowrap;
-}
-
-.navbar-toggler {
-  display: none
-}
-
 .form-check-inline {
   display: flex;
   width: 200px;
   justify-content: space-between;
 }
 
+.left-arrow-filter {
+  width: 15px;
+  transform: scaleX(-1);
+  margin-right: 5px;
+}
+
+.right-arrow-filter {
+  width: 15px;
+  margin-left: 5px;
+}
 
 .my-input {
   display: none;
@@ -917,7 +617,7 @@ hr {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: 0.2s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -951,6 +651,305 @@ input:checked+.slider:before {
   border-radius: 50%;
 }
 
+.my-form-check {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.my-schedule-button {
+  border: none;
+  background-color: transparent;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin: 5px;
+}
+
+.my-schedule-button:hover {
+  color: var(--coral2)
+}
+
+.zipcode-input-container {
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 15px;
+}
+
+.search-container {
+  word-wrap: wrap;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.question {
+  font-size: x-large;
+  font-weight: bold;
+  margin-bottom: 15px;
+  width: 100vw;
+}
+
+.selection {
+  display: flex;
+  justify-content: center;
+  width: 100vw !important;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0px 12px;
+}
+
+.my-label {
+  margin-right: 13px;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: medium;
+}
+
+.tell-us {
+  font-family: "Urbanist", sans-serif;
+  font-size: 35px;
+  letter-spacing: 1.3x;
+  margin-bottom: 30px;
+}
+
+.form-check {
+  display: flex !important;
+  margin: 10px;
+  min-height: none !important;
+}
+
+.what-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule {
+  font-size: large !important;
+  letter-spacing: 4px;
+  margin-top: 10px;
+}
+
+.form-check-label {
+  font-family: "Carme", sans-serif;
+  font-size: 18px;
+  letter-spacing: 1.4x;
+}
+
+.circle-font {
+  font-family: "Urbanist", sans-serif;
+  font-weight: bolder;
+}
+
+/* ___________________________________________MAP SETTINGS */
+#zipcode {
+  border: 1.5px solid var(--coral2);
+  border-radius: 3px;
+  text-align: center;
+  background-color: var(--yellow);
+  height: 30px;
+  width: 120px;
+  padding: 0px;
+  margin: 5px;
+}
+
+#zipcode:focus {
+  outline: none;
+}
+
+.geo-button {
+  border: 1.5px solid var(--coral2);
+  width: auto;
+  background-color: var(--yellow) !important;
+  font-size: 15px;
+  height: 30px;
+  width: 120px;
+  border-radius: 3px;
+  font-family: "Urbanist", sans-serif !important;
+  margin: 5px;
+  padding: 0px;
+}
+
+.or {
+  margin: 5px;
+}
+
+.geo-button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
+  cursor: pointer;
+}
+
+/* _____________________________________________________________CONTACT PAGE */
+.contact-page {
+  margin: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.submit {
+  border: 1px solid var(--green2);
+  font-family: "Carme", sans-serif;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  color: var(--green2);
+  background-color: var(--green) !important;
+  font-size: 20px;
+  width: 100%;
+  height: 30px;
+}
+
+.contact-page {
+  margin: 15px;
+  padding-top: 80px;
+}
+
+.carousel-description-div {
+  flex-direction: column;
+}
+
+.info-map-div {
+  flex-direction: column;
+}
+
+.modal-map {
+  width: 100% !important;
+}
+
+.details-div {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.description-div {
+  width: 100% !important;
+  text-align: justify;
+  padding: 20px 35px;
+}
+
+/* ______________________________________________________________SIZE < 600px */
+@media screen and (max-width: 600px) {
+
+  .carousel {
+    width: 95%;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .x-close {
+    color: red;
+    top: 37px !important;
+  }
+
+  .selection {
+    justify-content: space-evenly !important;
+    padding: 0px 30px;
+  }
+
+  .my-label {
+    margin: 0px 8px !important;
+  }
+
+
+  .tell-us {
+    font-size: 18px;
+  }
+
+  .question {
+    font-size: large;
+  }
+
+  .search-container {
+    margin-bottom: 0px;
+  }
+
+  .favorites-col {
+    width: 40vw;
+  }
+
+  .details {
+    width: 100% !important;
+  }
+
+  .my-resource-card {
+    min-width: 25vw !important;
+  }
+
+  .resource-title {
+    font-size: 16px !important;
+  }
+
+  .card-icon {
+    font-size: large;
+    margin: 0;
+  }
+
+  .card-img {
+    width: 100%;
+    object-fit: cover;
+    max-height: 110px;
+  }
+
+  .form-check-label {
+    font-size: 14px;
+  }
+
+  .fa-heart {
+    font-size: small;
+  }
+
+  .modal-footer p {
+    font-size: small;
+  }
+
+  .resource-card-text {
+    font-size: small;
+  }
+}
+
+/* ______________________________________________________________SIZE < 420px */
+
+@media screen and (max-width: 420px) {
+  .my-resource-card {
+    min-width: 25vw !important;
+    height: 200px;
+  }
+}
+
+
+
+/* _____________________________________________________________MAP */
+.marker {
+  position: relative;
+  display: inline-block;
+}
+
+.marker-icon i {
+  color: var(--coral2);
+  font-size: x-large;
+}
+
+.marker-text {
+  color: salmon(208, 87, 74);
+  z-index: 100;
+  font-size: large;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border: 2px solid var(--coral) !important;
+}
+
+.marker-icon span {
+  position: absolute;
+  top: -26px;
+  left: -15px;
+  background-color: #fff;
+  padding: 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.navbar-toggler {
+  display: none
+}
+
 .map-settings {
   width: 100%;
   display: flex;
@@ -962,5 +961,20 @@ input:checked+.slider:before {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin: 10px;
+  margin-bottom: 12px;
+}
+
+.map-info {
+  display: flex;
+  justify-content: center;
+}
+
+/* .scroll-search-results ul::-webkit-scrollbar-thumb {
+  background-color: lightgreen;
+} */
+
+.circle-font {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }

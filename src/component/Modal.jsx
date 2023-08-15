@@ -22,35 +22,47 @@ const Modal = (props) => {
         icon = "fa-solid fa-person-shelter";
     }
 
+    const handleOuterClick = (event) => {
+        if (event.target === event.currentTarget) {
+            props.closeModal();
+        }
+    };
+
     return (
         <div>
-            <div className="modal-div">
+            {/* <div className="modal-div">
                 <div className="modal-close-div">
                     <p className="x-close" onClick={handleCloseClick}>X</p>
-                </div>
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <div className="modal-title-div">
-                            <p>{props.resource.name}</p>
-                            <i className={`${icon} card-icon-2`} />
+                </div> */}
+            <div onClick={handleOuterClick}>
+                <div className="modal-div">
+                    <div className="modal-close-div">
+                        <p className="x-close" onClick={handleCloseClick}>X</p>
+                    </div>
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <div className="modal-title-div">
+                                <p>{props.resource.name}</p>
+                                <i className={`${icon} card-icon-2`} />
+                            </div>
+                        </div>
+                        <div className="modal-body">
+                            <ResourceInfo
+                                id={props.resource.id}
+                                schedule={store.schedule}
+                                res={props.resource}
+                            />
+                            <div className="modal-footer">
+                                <p>
+                                    Is there a problem with this information? {""}
+                                    <Link to="/Contact">Let us know</Link>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div className="modal-body">
-                        <ResourceInfo
-                            id={props.resource.id}
-                            schedule={store.schedule}
-                            res={props.resource}
-                        />
-                        <div className="modal-footer">
-                            <p>
-                                Is there a problem with this information? {""}
-                                <Link to="/Contact">Let us know</Link>
-                            </p>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </div >
+            </div >
+        </div>
     );
 };
 

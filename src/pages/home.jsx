@@ -44,6 +44,7 @@ const Home = () => {
   });
   const circleInstance = useRef();
   const circleInstance2 = useRef();
+  const circleInstance3 = useRef();
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -58,7 +59,7 @@ const Home = () => {
   const options = [
     { id: "food", label: "Food", state: food, handler: setFood },
     { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
-    { id: "health", label: "Health", state: health, handler: setHealth },
+    { id: "health", label: "Health Care", state: health, handler: setHealth },
     { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
     { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
     { id: "work", label: "Work", state: work, handler: setWork },
@@ -78,16 +79,20 @@ const Home = () => {
   };
 
   useEffect(() => {
-    let circle1, circle2;
+    let circle1, circle2, circle3;
     if (circleInstance.current) {
       circle1 = new CircleType(circleInstance.current).radius(500)
     };
     if (circleInstance2.current) {
-      circle2 = new CircleType(circleInstance2.current).radius(500).dir(-1)
+      circle2 = new CircleType(circleInstance2.current).radius(500).dir(1)
+    }
+    if (circleInstance3.current) {
+      circle3 = new CircleType(circleInstance3.current).radius(500).dir(1)
     }
     return () => {
       circle1 && circle1.destroy();
       circle2 && circle2.destroy()
+      circle3 && circle3.destroy()
     };
   }, [searchParams, dropdownOpen]);
 
@@ -191,6 +196,17 @@ const Home = () => {
     }
   };
 
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const ulRef = useRef(null);
+
+  useEffect(() => {
+    if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
+      setIsOverflowing(true);
+    } else {
+      setIsOverflowing(false);
+    }
+  }, [store.searchResults, store.boundaryResults]);
+
   return (
     <div>
       <div className="grand-container">
@@ -199,7 +215,7 @@ const Home = () => {
 
           <div className="what-type">
             <div className="question">
-              <div className="circle-font" ref={circleInstance}>WHAT DO YOU NEED?</div>
+              <div className="circle-font" ref={circleInstance}>What do you need?</div>
             </div>
 
             <div className="selection">
@@ -249,6 +265,9 @@ const Home = () => {
               {dropdownOpen &&
                 <div className="what-type">
                   <div className="selection">
+                    {/* <div className="question">
+                      <div className="circle-font" ref={circleInstance2}>When do you need it?</div>
+                    </div> */}
                     <div className="my-form-check">
                       <input
                         className="my-input2"
@@ -349,13 +368,11 @@ const Home = () => {
                         onChange={handleAll}
                       />
                       <label className="my-label" htmlFor="all">
-                        All
+                        Any Day
                       </label>
                     </div>
                   </div>
-                  <div className="question">
-                    <div className="circle-font" ref={circleInstance2}>WHEN DO YOU NEED IT?</div>
-                  </div>
+
                 </div>
               }
             </div>
@@ -368,7 +385,7 @@ const Home = () => {
               display: filterByBounds && store.boundaryResults.length === 0 ? 'none' : 'block'
             }}
           >
-            <ul style={{ listStyleType: "none" }}>
+            <ul style={{ listStyleType: "none", justifyContent: isOverflowing ? 'flex-start' : 'center' }} ref={ulRef}>
               {!filterByBounds
                 ? store.searchResults.map((result, i) => (
                   <li key={i}>
@@ -398,7 +415,9 @@ const Home = () => {
             </ul>
           </div>
           <div className="new-container">
-
+            {/* <div className="question">
+              <div className="circle-font" ref={circleInstance3}>Where are you?</div>
+            </div> */}
             <div className="map-settings-container">
               <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
@@ -423,7 +442,7 @@ const Home = () => {
       </div>
       {modalIsOpen && (
         <div>
-          <div className="modal-overlay"></div>
+          <div className="modal-overlay" onClick={closeModal}></div>
           <div className="modal-div">
             <Modal
               resource={selectedResource}

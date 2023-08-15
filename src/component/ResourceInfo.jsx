@@ -33,22 +33,6 @@ export const ResourceInfo = (props) => {
     return result;
   }
 
-  // function shiftLeft() {
-  //   if (currentImageIndex > 0) {
-  //     setCurrentImageIndex(currentImageIndex - 1);
-  //   } else {
-  //     setCurrentImageIndex(images.length - 1); // wrap around to the last image
-  //   }
-  // }
-
-  // function shiftRight() {
-  //   if (currentImageIndex < images.length - 1) {
-  //     setCurrentImageIndex(currentImageIndex + 1);
-  //   } else {
-  //     setCurrentImageIndex(0); // wrap around to the first image
-  //   }
-  // }
-
   function computeTranslateValue() {
     return -currentImageIndex * 100; // percentage
   }
@@ -161,7 +145,7 @@ export const ResourceInfo = (props) => {
               <i className="fa-solid fa-calendar-check"></i>
               <div className="sched-div">
                 {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-                  <p key={index} className="resource-card-text" style={{ color: schedule !== 'Closed' ? 'lightgreen' : 'inherit' }}>
+                  <p key={index} className="resource-card-text" style={{ color: schedule !== 'Closed' ? 'green' : 'inherit' }}>
                     {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
                   </p>
                 ))}
