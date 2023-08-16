@@ -518,7 +518,7 @@ body.modal-open {
 .scroll-search-results li {
   display: flex;
   justify-content: center;
-  margin: 10px 5px 20px 10px;
+  margin: 10px 8px 20px 8px;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-track {
@@ -732,7 +732,7 @@ input:checked+.slider:before {
 
 .selection {
   min-width: 60vw !important;
-  padding: 15px 0px;
+  padding: 8px 16px;
 }
 
 .my-label {
@@ -859,7 +859,7 @@ input:checked+.slider:before {
 @media screen and (max-width: 600px) {
 
   .scroll-search-results li {
-    margin: 10px 5px 9px 10px !important;
+    margin: 10px 8px 15px 8px !important;
   }
 
   .carousel {
@@ -890,10 +890,6 @@ input:checked+.slider:before {
     font-size: large;
   }
 
-  .search-container {
-    margin-bottom: 0px;
-  }
-
   .favorites-col {
     width: 40vw;
   }
@@ -903,7 +899,7 @@ input:checked+.slider:before {
   }
 
   .my-resource-card {
-    min-width: 25vw !important;
+    min-width: 22vw !important;
   }
 
   .resource-title {
@@ -918,15 +914,11 @@ input:checked+.slider:before {
   .card-img {
     width: 100%;
     object-fit: cover;
-    max-height: 110px;
+    max-height: 100px;
   }
 
   .form-check-label {
     font-size: 14px;
-  }
-
-  .fa-heart {
-    font-size: small;
   }
 
   .modal-footer p {
@@ -936,6 +928,10 @@ input:checked+.slider:before {
   .resource-card-text {
     font-size: small;
   }
+
+  .day-column {
+    width: 105px !important;
+  }
 }
 
 /* ______________________________________________________________SIZE < 420px */
@@ -944,6 +940,10 @@ input:checked+.slider:before {
   .my-resource-card {
     min-width: 25vw !important;
     height: 200px;
+  }
+
+  .day-column {
+    width: 94px !important;
   }
 }
 
@@ -1017,7 +1017,7 @@ input:checked+.slider:before {
 }
 
 .day-column {
-  min-width: 82px;
+  width: 150px;
 }
 
 .selection,
