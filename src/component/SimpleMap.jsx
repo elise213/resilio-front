@@ -11,19 +11,21 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
 
   const normalizeBounds = (bounds) => {
     console.log("BOUNDS", bounds)
-    return ({
-      ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
-      sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
-    })
+    if (bounds) {
+      return ({
+        ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+        sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+      })
+    }
   };
 
   const fetchInitialBounds = async () => {
+    console.log("CITY", city)
     const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${city.center.lat},${city.center.lng}&key=${apiKey}`);
     const data = await response.json();
 
-    if (data && data.results[0] && data.results[0].geometry) {
-      const bounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
-      console.log("BOUNDS 26!", bounds)
+    if (data.results[0].geometry) {
+      const bounds = normalizeBounds(data.results[0].geometry.bounds);
       if (bounds) {
         setCity(prev => ({
           ...prev,
