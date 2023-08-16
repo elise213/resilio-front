@@ -697,20 +697,21 @@ input:checked+.slider:before {
 .my-form-check {
   display: flex;
   align-items: center;
-  margin: 3px 0;
+  margin: 3px 0px 0px 0px;
 }
 
 .my-schedule-button {
   border: none;
   background-color: transparent;
   font-family: "Urbanist", sans-serif !important;
-  font-size: 20px;
+  font-size: 18px;
   letter-spacing: 2px;
   margin: 5px;
+  color: var(--coral2)
 }
 
 .my-schedule-button:hover {
-  color: var(--coral2)
+  color: var(--green2)
 }
 
 .zipcode-input-container {
@@ -733,6 +734,12 @@ input:checked+.slider:before {
 .selection {
   min-width: 60vw !important;
   padding: 8px 16px;
+}
+
+.selection,
+.DaySelectionComponentClass {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .my-label {
@@ -874,7 +881,7 @@ input:checked+.slider:before {
   }
 
   .my-label {
-    margin: 0px 6px !important;
+    margin: 0px 0px 0px 6px !important;
     font-size: small !important;
   }
 
@@ -931,6 +938,10 @@ input:checked+.slider:before {
 
   .day-column {
     width: 105px !important;
+  }
+
+  .my-schedule-button {
+    font-size: 14px;
   }
 }
 
@@ -1017,11 +1028,5 @@ input:checked+.slider:before {
 }
 
 .day-column {
-  width: 150px;
-}
-
-.selection,
-.DaySelectionComponentClass {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  width: 170px;
 }
