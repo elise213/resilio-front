@@ -130,9 +130,11 @@ const Home = () => {
         saturday: saturday,
         sunday: sunday,
       });
-      actions.setSearchResults(); if (boundsData) {
+      actions.setSearchResults();
+      if (boundsData) {
         actions.setBoundaryResults(boundsData);
       }
+      console.log("BOOOOOOUNDS DATA", boundsData)
     };
     updateData();
   }, [
