@@ -394,7 +394,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setBoundaryResults: (bounds) => {
-        console.trace('setBoundaryResults called from:');
+        // console.trace('setBoundaryResults called from:');
 
         let controller = new AbortController();
         let url = window.location.search;
