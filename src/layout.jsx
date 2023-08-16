@@ -24,18 +24,9 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
-            {/* <Route element={<Offerings />} path="/offerings" />
-            <Route element={<Offering />} path="/offering/:id" /> */}
             <Route element={<Resource />} path="/resource/:id" />
             <Route element={<Contact />} path="/contact" />
             <Route element={<Donate />} path="/donate" />
-            {/* User Pages */}
-            {/* <Route element={<UserProfile />} path="/userProfile" />
-            <Route element={<OfferingPost />} path="/offeringPost" /> */}
-
-            {/* Organization Pages */}
-            {/* <Route element={<RegisterAsDrop />} path="/registerAsDrop" />
-            <Route element={<CreateResource />} path="/createResource" /> */}
 
           </Routes>
           {/* <Footer /> */}
