@@ -26,14 +26,12 @@ body {
 }
 
 /* ________________________HOME */
-
 .new-container {
   display: flex;
   flex-direction: column;
 }
 
 /* ____________________________________________CAROUSEL */
-
 .carousel-container {
   display: flex;
   justify-content: center;
@@ -196,7 +194,7 @@ body {
   display: flex;
   background-color: #eeeeee;
   /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29); */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 0 2px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 1px 2px 3px rgba(0, 0, 0, 0.2);
   align-items: center;
   padding: 4px;
   max-width: 250px;
@@ -466,44 +464,6 @@ body.modal-open {
   z-index: 0;
 }
 
-.scroll-search-results::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  height: 100%;
-  left: 50%;
-  width: 4px;
-  /* background: repeating-radial-gradient(circle,
-      var(--coral) 0,
-      var(--coral) 2px,
-      transparent 2px,
-      transparent 10px); */
-  background-clip: content-box;
-  /* Clip the background to the content area to make it seamless */
-  transform: translateY(-50%) translateX(-50%);
-  opacity: 0.5;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.scroll-search-results::after {
-  content: "";
-  position: absolute;
-  bottom: 50%;
-  /* Start the dots from the middle of the container */
-  height: 80%;
-  /* Adjust the height to limit the dots up to the middle */
-  left: 50%;
-  width: 4px;
-  background-clip: content-box;
-  /* Clip the background to the content area to make it seamless */
-  transform: translateY(50%) translateX(-50%);
-  /* Centering the dots */
-  opacity: 0.3;
-  /* Starting the opacity */
-  z-index: -1;
-  pointer-events: none;
-}
 
 .scroll-search-results ul {
   overflow-x: auto;
@@ -547,7 +507,6 @@ body.modal-open {
   text-align: center;
   align-items: center;
 }
-
 
 .search-results-full {
   flex-direction: column;
@@ -706,7 +665,7 @@ input:checked+.slider:before {
   font-family: "Urbanist", sans-serif !important;
   font-size: 18px;
   letter-spacing: 2px;
-  margin: 5px;
+  margin: 2px;
   color: var(--coral2)
 }
 
@@ -733,7 +692,7 @@ input:checked+.slider:before {
 
 .selection {
   min-width: 60vw !important;
-  padding: 8px 16px;
+  padding: 8px 0px 8px 60px;
 }
 
 .selection,
@@ -862,11 +821,11 @@ input:checked+.slider:before {
   padding: 20px 35px;
 }
 
-/* ______________________________________________________________SIZE < 600px */
-@media screen and (max-width: 600px) {
+/* ______________________________________________________________SIZE < 700px */
+@media screen and (max-width: 700px) {
 
   .scroll-search-results li {
-    margin: 10px 8px 15px 8px !important;
+    margin: 10px 8px 16px 8px !important;
   }
 
   .carousel {
@@ -891,10 +850,6 @@ input:checked+.slider:before {
 
   .tell-us {
     font-size: 18px;
-  }
-
-  .question {
-    font-size: large;
   }
 
   .favorites-col {
@@ -941,20 +896,33 @@ input:checked+.slider:before {
   }
 
   .my-schedule-button {
-    font-size: 14px;
+    font-size: 15px;
+  }
+
+  .selection {
+    padding: 8px 16px !important;
   }
 }
 
 /* ______________________________________________________________SIZE < 420px */
 
 @media screen and (max-width: 420px) {
+
+  .my-schedule-button {
+    font-size: 14px;
+  }
+
   .my-resource-card {
     min-width: 25vw !important;
     height: 200px;
   }
 
   .day-column {
-    width: 94px !important;
+    width: 90px !important;
+  }
+
+  .scroll-search-results li {
+    margin: 10px 8px 5px 8px !important;
   }
 }
 
@@ -1018,7 +986,7 @@ input:checked+.slider:before {
 .circle-font {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin: 12px 0px;
 }
 
 .checkbox-row {

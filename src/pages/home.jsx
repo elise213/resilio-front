@@ -65,7 +65,7 @@ const Home = () => {
     { id: "food", label: "Food", state: food, handler: setFood },
     { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
     { id: "health", label: "Health Care", state: health, handler: setHealth },
-    { id: "allKinds", label: "All Services", state: allKinds, handler: setAllKinds }
+    { id: "allKinds", label: "All Resources", state: allKinds, handler: setAllKinds }
   ];
 
   const otherOptions = [
@@ -85,10 +85,12 @@ const Home = () => {
   const handleCheckbox = (id, checked) => {
     if (id === "allKinds") {
       if (!checked) {
+        setMoreOpen(false);
         const anyOtherServiceChecked = options.some(opt => opt.id !== "allKinds" && opt.state);
         if (!anyOtherServiceChecked) return; // If trying to uncheck "All Services" and no other service is checked, prevent it.
       }
       setAllKinds(checked);
+      setMoreOpen(false);
       options.forEach(opt => opt.handler(false)); // Uncheck all other options when "All Services" is checked.
     } else {
       const option = options.find(opt => opt.id === id);
@@ -178,6 +180,17 @@ const Home = () => {
     filterByBounds,
     boundsData,
     city]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('Window resized!');
+      checkIfAllServicesShouldBeChecked();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
 
   const handleZipInputChange = async (e) => {
@@ -269,18 +282,18 @@ const Home = () => {
 
           {!moreOpen &&
             <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-              <img className="left-arrow-filter" src={arrow}></img>
-              More Resources
-              <img className="right-arrow-filter" src={arrow}></img>
+              {/* <img className="left-arrow-filter" src={arrow}></img> */}
+              See More Resources
+              {/* <img className="right-arrow-filter" src={arrow}></img> */}
             </button>
           }
 
           {!dropdownOpen &&
             <button className="my-schedule-button"
               onClick={() => setDropdownOpen(!dropdownOpen)}>
-              <img className="left-arrow-filter" src={arrow}></img>
+              {/* <img className="left-arrow-filter" src={arrow}></img> */}
               Filter By Day
-              <img className="right-arrow-filter" src={arrow}></img>
+              {/* <img className="right-arrow-filter" src={arrow}></img> */}
             </button>
           }
           {dropdownOpen &&
