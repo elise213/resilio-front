@@ -394,6 +394,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setBoundaryResults: (bounds) => {
+        console.trace('setBoundaryResults called from:');
+
         let controller = new AbortController();
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getBResults" + url,
@@ -408,7 +410,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               neLng: bounds?.ne?.lng,
               swLat: bounds?.sw?.lat,
               swLng: bounds?.sw?.lng
-
             })
           }
         )
