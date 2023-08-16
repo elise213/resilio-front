@@ -18,6 +18,9 @@ const Home = () => {
   const [hygiene, setHygiene] = useState(false);
   const [work, setWork] = useState(false);
   const [bathroom, setBathroom] = useState(false);
+  const [wifi, setWiFi] = useState(false);
+  const [substance, setSubstance] = useState(false);
+  const [crisis, setCrisis] = useState(false);
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
   const [wednesday, setWednesday] = useState(false);
@@ -26,16 +29,14 @@ const Home = () => {
   const [saturday, setSaturday] = useState(false);
   const [sunday, setSunday] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [allKinds, setAllKinds] = useState(true);
   const [filterByBounds, setFilterByBounds] = useState(true);
-  const [zipCode, setZipCode] = useState("")
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState();
-  const [wifi, setWiFi] = useState(false);
-  const [substance, setSubstance] = useState(false);
-  const [crisis, setCrisis] = useState(false);
+  const apiKey = import.meta.env.VITE_GOOGLE;
   const [city, setCity] = useState({
     // AUSTIN
     // center: { lat: 30.266666, lng: -97.733330 },
@@ -60,30 +61,52 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
-  const options = [
+  const alwaysVisibleOptions = [
     { id: "food", label: "Food", state: food, handler: setFood },
     { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
     { id: "health", label: "Health Care", state: health, handler: setHealth },
-    { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
-    { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
-    { id: "substance", label: "Substance Support", state: substance, handler: setSubstance },
-    { id: "wifi", label: "Free WiFi", state: wifi, handler: setWiFi },
-    { id: "work", label: "Work", state: work, handler: setWork },
-    { id: "crisis", label: "Crisis Support", state: crisis, handler: setCrisis },
+    { id: "allKinds", label: "All Services", state: allKinds, handler: setAllKinds }
   ];
 
-  const apiKey = import.meta.env.VITE_GOOGLE;
+  const otherOptions = [
+    { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
+    { id: "crisis", label: "Crisis Support", state: crisis, handler: setCrisis },
+    { id: "work", label: "Work", state: work, handler: setWork },
+    { id: "substance", label: "Substance Support", state: substance, handler: setSubstance },
+    { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
+    { id: "wifi", label: "WiFi", state: wifi, handler: setWiFi },
+  ];
+
+  const options = [
+    ...alwaysVisibleOptions,
+    ...otherOptions
+  ];
 
   const handleCheckbox = (id, checked) => {
     if (id === "allKinds") {
-      setAllKinds(true);
-      options.forEach(opt => opt.handler(false));
+      if (!checked) {
+        const anyOtherServiceChecked = options.some(opt => opt.id !== "allKinds" && opt.state);
+        if (!anyOtherServiceChecked) return; // If trying to uncheck "All Services" and no other service is checked, prevent it.
+      }
+      setAllKinds(checked);
+      options.forEach(opt => opt.handler(false)); // Uncheck all other options when "All Services" is checked.
     } else {
       const option = options.find(opt => opt.id === id);
       option && option.handler(checked);
+      checkIfAllServicesShouldBeChecked();
+    }
+  };
+
+
+  const checkIfAllServicesShouldBeChecked = () => {
+    const anyServiceChecked = options.some(opt => opt.state === true);
+    if (!anyServiceChecked) {
+      setAllKinds(true);
+    } else {
       setAllKinds(false);
     }
   };
+
 
   useEffect(() => {
     let circle1, circle2, circle3;
@@ -111,6 +134,7 @@ const Home = () => {
   }, [filterByBounds, boundsData]);
 
   useEffect(() => {
+    checkIfAllServicesShouldBeChecked();
     const updateData = async () => {
       await setSearchParams({
         food: food,
@@ -134,7 +158,6 @@ const Home = () => {
       if (boundsData) {
         actions.setBoundaryResults(boundsData);
       }
-      console.log("BOOOOOOUNDS DATA", boundsData)
     };
     updateData();
   }, [
@@ -206,8 +229,8 @@ const Home = () => {
             </div>
 
             <div className="selection">
-              <div className="day-column">
-                {options.slice(0, 3).map((option) => (
+              {alwaysVisibleOptions.map((option, idx) => (
+                <div className="day-column">
                   <div className="my-form-check" key={option.id}>
                     <input
                       className="my-input"
@@ -222,66 +245,35 @@ const Home = () => {
                       {option.label}
                     </label>
                   </div>
-                ))}
-              </div>
-
-              <div className="day-column">
-                {options.slice(3, 6).map((option) => (
-                  <div className="my-form-check" key={option.id}>
-                    <input
-                      className="my-input"
-                      type="checkbox"
-                      id={option.id}
-                      value={option.id}
-                      name="selection"
-                      checked={option.state}
-                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                    />
-                    <label className="my-label" htmlFor={option.id}>
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              <div className="day-column">
-                {options.slice(6, 9).map((option) => (
-                  <div className="my-form-check" key={option.id}>
-                    <input
-                      className="my-input"
-                      type="checkbox"
-                      id={option.id}
-                      value={option.id}
-                      name="selection"
-                      checked={option.state}
-                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                    />
-                    <label className="my-label" htmlFor={option.id}>
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              <div className="day-column">
-                <div className="my-form-check">
-                  <input
-                    className="my-input"
-                    type="checkbox"
-                    id="allKinds"
-                    value="allKinds"
-                    name="selection"
-                    checked={allKinds}
-                    onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                  />
-                  <label className="my-label" htmlFor="allKinds">
-                    All Services
-                  </label>
+                  {moreOpen && otherOptions.slice(idx * 2, idx * 2 + 2).map((subOption) => (
+                    <div className="my-form-check" key={subOption.id}>
+                      <input
+                        className="my-input"
+                        type="checkbox"
+                        id={subOption.id}
+                        value={subOption.id}
+                        name="selection"
+                        checked={subOption.state}
+                        onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                      />
+                      <label className="my-label" htmlFor={subOption.id}>
+                        {subOption.label}
+                      </label>
+                    </div>
+                  ))}
                 </div>
-              </div>
+              ))}
             </div>
+
           </div>
 
+          {!moreOpen &&
+            <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
+              <img className="left-arrow-filter" src={arrow}></img>
+              More Resources
+              <img className="right-arrow-filter" src={arrow}></img>
+            </button>
+          }
 
           {!dropdownOpen &&
             <button className="my-schedule-button"
