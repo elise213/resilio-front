@@ -25,10 +25,9 @@ const Home = () => {
   const [women, setWomen] = useState(false);
   const [seniors, setSeniors] = useState(false);
   const [mental, setMental] = useState(false);
-  const [sexual, setSexual] = useState(false);
+  const [sex, setSex] = useState(false);
   const [legal, setLegal] = useState(false);
   const [youth, setYouth] = useState(false);
-
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
   const [wednesday, setWednesday] = useState(false);
@@ -47,17 +46,15 @@ const Home = () => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [city, setCity] = useState({
     // AUSTIN
-    center: { lat: 30.266666, lng: -97.733330 },
+    // center: { lat: 30.266666, lng: -97.733330 },
     // LOS ANGELES
-    // center: { lat: 34.0522, lng: -118.2437 },
+    center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
       ne: { lat: (34.0522 + 0.18866583325124964), lng: (-118.2437 + 0.44322967529295454) },
       sw: { lat: (34.0522 - 0.18908662930897435), lng: (-118.2437 - 0.44322967529298296) }
     }
   });
   const circleInstance = useRef();
-  const circleInstance2 = useRef();
-  const circleInstance3 = useRef();
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -68,6 +65,7 @@ const Home = () => {
     setSelectedResource(null);
     setModalIsOpen(false);
   };
+
 
   const alwaysVisibleOptions = [
     { id: "food", label: "Food", state: food, handler: setFood },
@@ -84,7 +82,7 @@ const Home = () => {
     { id: "bathroom", label: "Public Bathrooms", state: bathroom, handler: setBathroom },
     { id: "wifi", label: "WiFi", state: wifi, handler: setWiFi },
     { id: "mental", label: "Mental Health", state: mental, handler: setMental },
-    { id: "sexual", label: "Sexual Health", state: sexual, handler: setSexual },
+    { id: "sex", label: "Sexual Health", state: sex, handler: setSex },
     { id: "legal", label: "Legal Support", state: legal, handler: setLegal },
     { id: "lgbtq", label: "LGBTQ+", state: lgbtq, handler: setLgbtq },
     { id: "women", label: "Women", state: women, handler: setWomen },
@@ -124,94 +122,54 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    setBoundsData(city.bounds);
+  }, [city]);
+
 
   useEffect(() => {
-    let circle1, circle2, circle3;
+    let circle1
     if (circleInstance.current) {
       circle1 = new CircleType(circleInstance.current).radius(500)
     };
-    if (circleInstance2.current) {
-      circle2 = new CircleType(circleInstance2.current).radius(500).dir(1)
-    }
-    if (circleInstance3.current) {
-      circle3 = new CircleType(circleInstance3.current).radius(500).dir(1)
-    }
+
     return () => {
       circle1 && circle1.destroy();
-      circle2 && circle2.destroy()
-      circle3 && circle3.destroy()
+
     };
   }, [searchParams, dropdownOpen]);
 
   useEffect(() => {
     if (boundsData) {
-      actions.setSearchResults();
       actions.setBoundaryResults(boundsData);
     }
-  }, [filterByBounds, boundsData]);
+  }, [filterByBounds, boundsData, zipInput]);
+
 
   useEffect(() => {
-    checkIfAllServicesShouldBeChecked();
     const updateData = async () => {
       await setSearchParams({
-        food: food,
-        shelter: shelter,
-        health: health,
-        hygiene: hygiene,
-        work: work,
-        bathroom: bathroom,
-        wifi: wifi,
-        crisis: crisis,
-        substance: substance,
-        monday: monday,
-        tuesday: tuesday,
-        wednesday: wednesday,
-        thursday: thursday,
-        friday: friday,
-        saturday: saturday,
-        sunday: sunday,
-        lgbtq: lgbtq,
-        women: women,
-        seniors: seniors,
-        mental: mental,
-        sexual: sexual,
-        legal: legal,
-        youth: youth,
+        monday, tuesday, wednesday, thursday, friday, saturday, sunday,
+        food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
+        lgbtq, women, seniors, mental, sex, legal, youth
       });
-      actions.setSearchResults();
       actions.setSchedules();
       if (boundsData) {
         actions.setBoundaryResults(boundsData);
       }
     };
+    const allCategories = [food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
+      lgbtq, women, seniors, mental, sex, legal, youth];
+
+    if (allCategories.every(category => !category)) {
+      setAllKinds(true);
+    }
     updateData();
   }, [
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday,
-    sunday,
-    food,
-    health,
-    hygiene,
-    shelter,
-    work,
-    bathroom,
-    wifi,
-    crisis,
-    substance,
-    lgbtq,
-    women,
-    seniors,
-    mental,
-    sexual,
-    legal,
-    youth,
-    filterByBounds,
-    boundsData,
-    city]);
+    monday, tuesday, wednesday, thursday, friday, saturday, sunday,
+    food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
+    lgbtq, women, seniors, mental, sex, legal, youth, boundsData
+  ]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -258,7 +216,7 @@ const Home = () => {
     } else {
       setIsOverflowing(false);
     }
-  }, [store.searchResults, store.boundaryResults]);
+  }, [store.boundaryResults]);
 
 
   return (
@@ -350,20 +308,22 @@ const Home = () => {
             }}
           >
             <ul style={{ listStyleType: "none", justifyContent: isOverflowing ? 'flex-start' : 'center' }} ref={ulRef}>
-              {!filterByBounds
-                ? store.searchResults.map((result, i) => (
-                  <li key={i}>
-                    <ResourceCard
-                      item={result}
-                      openModal={openModal}
-                      closeModal={closeModal}
-                      modalIsOpen={modalIsOpen}
-                      setModalIsOpen={setModalIsOpen}
-                      selectedResource={selectedResource}
-                    />
-                  </li>
-                ))
-                : store.boundaryResults.map((result, i) => (
+              {
+                // !filterByBounds
+                //   ? store.searchResults.map((result, i) => (
+                //     <li key={i}>
+                //       <ResourceCard
+                //         item={result}
+                //         openModal={openModal}
+                //         closeModal={closeModal}
+                //         modalIsOpen={modalIsOpen}
+                //         setModalIsOpen={setModalIsOpen}
+                //         selectedResource={selectedResource}
+                //       />
+                //     </li>
+                //   ))
+                //   : 
+                store.boundaryResults.map((result, i) => (
                   <li key={i}>
                     <ResourceCard
                       item={result}

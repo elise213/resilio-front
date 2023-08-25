@@ -6,16 +6,53 @@ const Modal = (props) => {
     const { store, actions } = useContext(Context);
     const modalContentRef = useRef(null);
 
+    console.log("PROPS", props)
 
     let icon = "";
-    if (props.resource.category == "health") {
+    let categories = props.resource.category;
+    if (typeof categories === "string" && categories.includes(",")) {
+        categories = categories.split(",").map(cat => cat.trim());
+    }
+    else if (typeof categories === "string") {
+        categories = [categories];
+    }
+    else if (!Array.isArray(categories)) {
+        categories = [];
+    }
+    if (categories.includes("health")) {
         icon = "fa-solid fa-stethoscope";
-    } else if (props.resource.category == "food") {
+    } else if (categories.includes("food")) {
         icon = "fa-solid fa-bowl-rice";
-    } else if (props.resource.category == "hygiene") {
+    } else if (categories.includes("hygiene")) {
         icon = "fa-solid fa-soap";
-    } else {
+    } else if (categories.includes("bathroom")) {
+        icon = "fa-solid fa-toilet";
+    } else if (categories.includes("work")) {
+        icon = "fa-solid fa-briefcase";
+    } else if (categories.includes("wifi")) {
+        icon = "fa-solid fa-wifi";
+    } else if (categories.includes("crisis")) {
+        icon = "fa-solid fa-exclamation-triangle";
+    } else if (categories.includes("substance")) {
+        icon = "fa-solid fa-pills";
+    } else if (categories.includes("legal")) {
+        icon = "fa-solid fa-gavel";
+    } else if (categories.includes("sex")) {
+        icon = "fa-solid fa-heart";
+    } else if (categories.includes("mental")) {
+        icon = "fa-solid fa-brain";
+    } else if (categories.includes("women")) {
+        icon = "fa-solid fa-female";
+    } else if (categories.includes("youth")) {
+        icon = "fa-solid fa-child";
+    } else if (categories.includes("seniors")) {
+        icon = "fa-solid fa-blind";
+    } else if (categories.includes("lgbtq")) {
+        icon = "fa-solid fa-rainbow";
+    } else if (categories.includes("shelter")) {
         icon = "fa-solid fa-person-shelter";
+    } else {
+        icon = "fa-solid fa-question";
     }
 
     const handleCloseClick = (event) => {
