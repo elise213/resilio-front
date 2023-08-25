@@ -1,11 +1,17 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    getLatLng,
+} from 'react-places-autocomplete';
+
 
 const Create = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    const apiKey = import.meta.env.VITE_GOOGLE;
 
     const categories = [
         { id: 'F', value: 'food', label: 'Food' },
@@ -29,7 +35,7 @@ const Create = () => {
         name: "",
         address: "",
         phone: "",
-        category: "",
+        category: [],
         website: "",
         description: "",
         latitude: "",
@@ -48,7 +54,17 @@ const Create = () => {
     });
 
     console.log("FORM DATA", formData)
-
+    const handleSelect = async address => {
+        handleChange("address", address);
+        try {
+            const results = await geocodeByAddress(address);
+            const latLng = await getLatLng(results[0]);
+            handleChange("latitude", latLng.lat.toString());
+            handleChange("longitude", latLng.lng.toString());
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
     function handleSubmit(e) {
         e.preventDefault();
         actions.createResource(formData);
@@ -57,9 +73,43 @@ const Create = () => {
         navigate("/");
     }
 
+    const handleAddressChange = async (address) => {
+
+        handleChange("address", address);
+        try {
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+            const data = await response.json();
+
+            if (data.results && data.results[0]) {
+                const location = data.results[0].geometry.location;
+                handleChange("latitude", location.lat.toString());
+                handleChange("longitude", location.lng.toString());
+            }
+        } catch (error) {
+            console.error("Failed to fetch coordinates:", error);
+        }
+    };
+
     const handleChange = (field, value) => {
         setFormData(prevData => ({ ...prevData, [field]: value }));
     };
+
+    const handleCategoryChange = (value) => {
+        setFormData(prevData => {
+            if (prevData.category.includes(value)) {
+                return {
+                    ...prevData,
+                    category: prevData.category.filter(category => category !== value)
+                };
+            } else {
+                return {
+                    ...prevData,
+                    category: [...prevData.category, value]
+                };
+            }
+        });
+    };
+
 
     const handleTimeChange = (day, timeType, value) => {
         setFormData(prevData => ({
@@ -109,15 +159,42 @@ const Create = () => {
 
                 <div className="input-group">
                     <label htmlFor="address">Address</label>
-                    <input
-                        className="geo-input"
-                        id="address"
-                        name="address"
-                        type="text"
+
+                    <PlacesAutocomplete
                         value={formData.address}
-                        onChange={(e) => handleChange("address", e.target.value)}
-                        placeholder="Resource Address"
-                    />
+                        onChange={handleAddressChange}
+                        onSelect={handleSelect}
+                    >
+                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                            <div>
+                                <input
+                                    {...getInputProps({
+                                        className: 'geo-input',
+                                        id: 'address',
+                                        placeholder: 'Resource Address',
+                                    })}
+                                />
+                                <div>
+                                    {loading ? <div>Loading...</div> : null}
+                                    {suggestions.map(suggestion => {
+                                        console.log(suggestions);
+                                        const className = suggestion.active
+                                            ? 'suggestion-item--active'
+                                            : 'suggestion-item';
+                                        return (
+                                            <div
+                                                {...getSuggestionItemProps(suggestion, {
+                                                    className,
+                                                })}
+                                            >
+                                                {suggestion.description}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </PlacesAutocomplete>
                 </div>
 
                 <div className="input-group">
@@ -159,14 +236,14 @@ const Create = () => {
 
                 <div className="input-group">
                     {categories.map(resource => (
-                        <div key={resource.id} className="radio-group">
+                        <div key={resource.id} className="checkbox-group">
                             <input
-                                type="radio"
+                                type="checkbox"
                                 name="category"
                                 id={`resource${resource.id}`}
                                 value={resource.value}
-                                checked={formData.category === resource.value}
-                                onChange={() => handleChange("category", resource.value)}
+                                checked={formData.category.includes(resource.value)}
+                                onChange={() => handleCategoryChange(resource.value)}
                             />
                             <label htmlFor={`resource${resource.id}`}>
                                 {resource.label}
@@ -174,6 +251,7 @@ const Create = () => {
                         </div>
                     ))}
                 </div>
+
 
                 {daysOfWeek.map(day => (
                     <div key={day} className="input-group time-group">
