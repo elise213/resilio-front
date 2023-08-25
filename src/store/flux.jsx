@@ -316,7 +316,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           .catch((error) => console.log(error));
       },
 
-
       setSchedules: () => {
         let controller = new AbortController();
         let url = getStore().current_back_url + `/api/getSchedules`;
@@ -332,7 +331,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           .then(response => response.json())
           .then(data => {
             setStore({ schedules: data });
-            console.log("schedules", getStore().schedules);
+            // console.log("schedules", getStore().schedules);
           })
           .catch(error => console.log(error));
 
