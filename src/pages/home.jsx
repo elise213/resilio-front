@@ -21,6 +21,14 @@ const Home = () => {
   const [wifi, setWiFi] = useState(false);
   const [substance, setSubstance] = useState(false);
   const [crisis, setCrisis] = useState(false);
+  const [lgbtq, setLgbtq] = useState(false);
+  const [women, setWomen] = useState(false);
+  const [seniors, setSeniors] = useState(false);
+  const [mental, setMental] = useState(false);
+  const [sexual, setSexual] = useState(false);
+  const [legal, setLegal] = useState(false);
+  const [youth, setYouth] = useState(false);
+
   const [monday, setMonday] = useState(false);
   const [tuesday, setTuesday] = useState(false);
   const [wednesday, setWednesday] = useState(false);
@@ -39,9 +47,9 @@ const Home = () => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [city, setCity] = useState({
     // AUSTIN
-    // center: { lat: 30.266666, lng: -97.733330 },
+    center: { lat: 30.266666, lng: -97.733330 },
     // LOS ANGELES
-    center: { lat: 34.0522, lng: -118.2437 },
+    // center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
       ne: { lat: (34.0522 + 0.18866583325124964), lng: (-118.2437 + 0.44322967529295454) },
       sw: { lat: (34.0522 - 0.18908662930897435), lng: (-118.2437 - 0.44322967529298296) }
@@ -69,12 +77,19 @@ const Home = () => {
   ];
 
   const otherOptions = [
-    { id: "hygiene", label: "Shower", state: hygiene, handler: setHygiene },
+    { id: "hygiene", label: "Showers", state: hygiene, handler: setHygiene },
     { id: "crisis", label: "Crisis Support", state: crisis, handler: setCrisis },
-    { id: "work", label: "Work", state: work, handler: setWork },
     { id: "substance", label: "Substance Support", state: substance, handler: setSubstance },
-    { id: "bathroom", label: "Bathroom", state: bathroom, handler: setBathroom },
+    { id: "work", label: "Work", state: work, handler: setWork },
+    { id: "bathroom", label: "Public Bathrooms", state: bathroom, handler: setBathroom },
     { id: "wifi", label: "WiFi", state: wifi, handler: setWiFi },
+    { id: "mental", label: "Mental Health", state: mental, handler: setMental },
+    { id: "sexual", label: "Sexual Health", state: sexual, handler: setSexual },
+    { id: "legal", label: "Legal Support", state: legal, handler: setLegal },
+    { id: "lgbtq", label: "LGBTQ+", state: lgbtq, handler: setLgbtq },
+    { id: "women", label: "Women", state: women, handler: setWomen },
+    { id: "seniors", label: "Seniors", state: seniors, handler: setSeniors },
+    { id: "youth", label: "Youth 18-24", state: youth, handler: setYouth },
   ];
 
   const options = [
@@ -91,7 +106,7 @@ const Home = () => {
       }
       setAllKinds(checked);
       setMoreOpen(false);
-      options.forEach(opt => opt.handler(false)); // Uncheck all other options when "All Services" is checked.
+      options.forEach(opt => opt.handler(false)); // 
     } else {
       const option = options.find(opt => opt.id === id);
       option && option.handler(checked);
@@ -155,8 +170,16 @@ const Home = () => {
         friday: friday,
         saturday: saturday,
         sunday: sunday,
+        lgbtq: lgbtq,
+        women: women,
+        seniors: seniors,
+        mental: mental,
+        sexual: sexual,
+        legal: legal,
+        youth: youth,
       });
       actions.setSearchResults();
+      actions.setSchedules();
       if (boundsData) {
         actions.setBoundaryResults(boundsData);
       }
@@ -176,7 +199,16 @@ const Home = () => {
     shelter,
     work,
     bathroom,
-    wifi, crisis, substance,
+    wifi,
+    crisis,
+    substance,
+    lgbtq,
+    women,
+    seniors,
+    mental,
+    sexual,
+    legal,
+    youth,
     filterByBounds,
     boundsData,
     city]);
@@ -191,7 +223,6 @@ const Home = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
 
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
@@ -242,9 +273,9 @@ const Home = () => {
             </div>
 
             <div className="selection">
-              {alwaysVisibleOptions.map((option, idx) => (
-                <div className="day-column">
-                  <div className="my-form-check" key={option.id}>
+              {alwaysVisibleOptions.map((option) => (
+                <div className="day-column" key={option.id}>
+                  <div className="my-form-check">
                     <input
                       className="my-input"
                       type="checkbox"
@@ -258,22 +289,25 @@ const Home = () => {
                       {option.label}
                     </label>
                   </div>
-                  {moreOpen && otherOptions.slice(idx * 2, idx * 2 + 2).map((subOption) => (
-                    <div className="my-form-check" key={subOption.id}>
-                      <input
-                        className="my-input"
-                        type="checkbox"
-                        id={subOption.id}
-                        value={subOption.id}
-                        name="selection"
-                        checked={subOption.state}
-                        onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                      />
-                      <label className="my-label" htmlFor={subOption.id}>
-                        {subOption.label}
-                      </label>
-                    </div>
-                  ))}
+                </div>
+              ))}
+
+              {moreOpen && otherOptions.map((subOption) => (
+                <div className="day-column" key={subOption.id}>
+                  <div className="my-form-check">
+                    <input
+                      className="my-input"
+                      type="checkbox"
+                      id={subOption.id}
+                      value={subOption.id}
+                      name="selection"
+                      checked={subOption.state}
+                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
+                    />
+                    <label className="my-label" htmlFor={subOption.id}>
+                      {subOption.label}
+                    </label>
+                  </div>
                 </div>
               ))}
             </div>
@@ -282,18 +316,14 @@ const Home = () => {
 
           {!moreOpen &&
             <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-              {/* <img className="left-arrow-filter" src={arrow}></img> */}
               See More Resources
-              {/* <img className="right-arrow-filter" src={arrow}></img> */}
             </button>
           }
 
           {!dropdownOpen &&
             <button className="my-schedule-button"
               onClick={() => setDropdownOpen(!dropdownOpen)}>
-              {/* <img className="left-arrow-filter" src={arrow}></img> */}
               Filter By Day
-              {/* <img className="right-arrow-filter" src={arrow}></img> */}
             </button>
           }
           {dropdownOpen &&
@@ -349,9 +379,6 @@ const Home = () => {
             </ul>
           </div>
           <div className="new-container">
-            {/* <div className="question">
-              <div className="circle-font" ref={circleInstance3}>Where are you?</div>
-            </div> */}
             <div className="map-settings-container">
               <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
