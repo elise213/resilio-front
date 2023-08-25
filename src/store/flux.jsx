@@ -29,117 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       categorySEarch: [],
       when: [],
       dummydata: [],
-      schedule: [
-        {
-          "mondayStart": "1:00",
-          "mondayEnd": "5:00",
-          "saturdayStart": "14:00",
-          "saturdayEnd": "20:00",
-          "resource_id": 1
-        },
-        {
-          "wednesdayStart": "13:00",
-          "wednesdayEnd": "16:00",
-          "fridayStart": "9:00",
-          "fridayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 2
-        },
-        {
-          "mondayStart": "1:00",
-          "mondayEnd": "5:00",
-          "saturdayStart": "14:00",
-          "saturdayEnd": "20:00",
-          "resource_id": 3
-        },
-        {
-          "wednesdayStart": "13:00",
-          "wednesdayEnd": "16:00",
-          "fridayStart": "9:00",
-          "fridayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 4
-        },
-        {
-          "tuesdayStart": "13:00",
-          "tuesdayEnd": "16:00",
-          "thursdayStart": "9:00",
-          "thursdayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 5
-        },
-        {
-          "tuesdayStart": "13:00",
-          "tuesdayEnd": "16:00",
-          "thursdayStart": "9:00",
-          "thursdayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 6
-        },
-        {
-          "tuesdayStart": "13:00",
-          "tuesdayEnd": "16:00",
-          "thursdayStart": "9:00",
-          "thursdayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 7
-        },
-        {
-          "mondayStart": "1:00",
-          "mondayEnd": "5:00",
-          "saturdayStart": "14:00",
-          "saturdayEnd": "20:00",
-          "resource_id": 8
-        },
-        {
-          "wednesdayStart": "13:00",
-          "wednesdayEnd": "16:00",
-          "fridayStart": "9:00",
-          "fridayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 9
-        },
-        {
-          "tuesdayStart": "13:00",
-          "tuesdayEnd": "16:00",
-          "thursdayStart": "9:00",
-          "thursdayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 10
-        },
-        {
-          "mondayStart": "1:00",
-          "mondayEnd": "5:00",
-          "saturdayStart": "14:00",
-          "saturdayEnd": "20:00",
-          "resource_id": 11
-        },
-        {
-          "wednesdayStart": "13:00",
-          "wednesdayEnd": "16:00",
-          "fridayStart": "9:00",
-          "fridayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 12
-        },
-        {
-          "tuesdayStart": "13:00",
-          "tuesdayEnd": "16:00",
-          "thursdayStart": "9:00",
-          "thursdayEnd": "13:00",
-          "sundayStart": "7:00",
-          "sundayEnd": "21:00",
-          "resource_id": 13
-        }
-      ]
+      schedules: []
     },
     actions: {
       // ________________________________________________________________LOGIN/TOKEN
@@ -226,6 +116,39 @@ const getState = ({ getStore, getActions, setStore }) => {
       // },
 
       // ________________________________________________________________RESOURCES
+
+      createResource: async (formData) => {
+        const { current_back_url, current_front_url } = getStore();
+        const token = sessionStorage.getItem("token");
+        const opts = {
+          method: "POST",
+          // mode: "cors",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            formData
+          ),
+        };
+
+        try {
+          const response = await fetch(current_back_url + "/api/createResource", opts);
+
+          if (response.status >= 400) {
+            alert("There has been an error");
+            return false;
+          }
+
+          const data = await response.json();
+          if (data.status === "true") {
+            navigate('/');  // Use 'navigate' from 'react-router-dom'
+          }
+        } catch (error) {
+          console.error("Error during resource creation:", error);
+        }
+      },
+
       // createResource: async (
       //   name,
       //   address,
@@ -392,6 +315,37 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) => console.log(error));
       },
+
+
+      setSchedules: () => {
+        let controller = new AbortController();
+        let url = getStore().current_back_url + `/api/getSchedules`;
+
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "access-control-allow-origin": "*",
+            "Content-Type": "application/json",
+          },
+          signal: controller.signal
+        })
+          .then(response => response.json())
+          .then(data => {
+            setStore({ schedules: data });
+            console.log("schedules", getStore().schedules);
+          })
+          .catch(error => console.log(error));
+
+        return () => {
+          // Abort any ongoing fetch operation on component unmount
+          controller.abort();
+        };
+      },
+
+
+
+
+
 
       setBoundaryResults: (bounds) => {
         // console.trace('setBoundaryResults called from:');
