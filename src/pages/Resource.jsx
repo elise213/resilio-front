@@ -8,9 +8,6 @@ const resource = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
 
-  console.log("pARAMS NAME", params.id)
-  console.log("search reslts", store.searchResults)
-
   let resourceId = params.id;
   let resourceData = store.searchResults.filter((elm) => {
     if (elm.id == resourceId) {
@@ -22,34 +19,17 @@ const resource = () => {
   return (
 
     <div className="offering-details-page">
+      {store.schedules}
+      {resourceData.map((items) => {
+        return (
+          <div className="details" key={items.id}>
+            <ResourceInfo
+              res={items}
+            />
+          </div>
+        );
+      })}
 
-      {resourceData.map((items) => (
-        <div className="details" key={items.id}>
-
-          <ResourceInfo
-            id={items.id}
-            name={items.name}
-            description={items.description}
-            address={items.address}
-            phone={items.phone}
-            category={items.category}
-            website={items.website}
-            picture={items.picture}
-            image={items.image}
-            image2={items.image2}
-            schedule={items.schedule}
-            latitude={items.latitude}
-            longitude={items.longitude}
-          />
-        </div>
-      ))}
-
-      {/* <div className="row mt-5">
-        <SimpleCommentList id={resourceData[0].id} />
-      </div>
-      <div className="row">
-        <SimpleCommentForm id={resourceData[0].id} />
-      </div> */}
     </div>
   );
 };
