@@ -6,9 +6,28 @@ const Modal = (props) => {
     const { store, actions } = useContext(Context);
     const modalContentRef = useRef(null);
 
-    console.log("PROPS", props)
+    const getIconForCategory = (category) => {
+        switch (category) {
+            case "health": return "fa-solid fa-stethoscope";
+            case "food": return "fa-solid fa-bowl-rice";
+            case "hygiene": return "fa-solid fa-soap";
+            case "bathroom": return "fa-solid fa-toilet";
+            case "work": return "fa-solid fa-briefcase";
+            case "wifi": return "fa-solid fa-wifi";
+            case "crisis": return "fa-solid fa-exclamation-triangle";
+            case "substance": return "fa-solid fa-pills";
+            case "legal": return "fa-solid fa-gavel";
+            case "sex": return "fa-solid fa-heart";
+            case "mental": return "fa-solid fa-brain";
+            case "women": return "fa-solid fa-female";
+            case "youth": return "fa-solid fa-child";
+            case "seniors": return "fa-solid fa-blind";
+            case "lgbtq": return "fa-solid fa-rainbow";
+            case "shelter": return "fa-solid fa-person-shelter";
+            default: return "fa-solid fa-question";
+        }
+    };
 
-    let icon = "";
     let categories = props.resource.category;
     if (typeof categories === "string" && categories.includes(",")) {
         categories = categories.split(",").map(cat => cat.trim());
@@ -19,41 +38,8 @@ const Modal = (props) => {
     else if (!Array.isArray(categories)) {
         categories = [];
     }
-    if (categories.includes("health")) {
-        icon = "fa-solid fa-stethoscope";
-    } else if (categories.includes("food")) {
-        icon = "fa-solid fa-bowl-rice";
-    } else if (categories.includes("hygiene")) {
-        icon = "fa-solid fa-soap";
-    } else if (categories.includes("bathroom")) {
-        icon = "fa-solid fa-toilet";
-    } else if (categories.includes("work")) {
-        icon = "fa-solid fa-briefcase";
-    } else if (categories.includes("wifi")) {
-        icon = "fa-solid fa-wifi";
-    } else if (categories.includes("crisis")) {
-        icon = "fa-solid fa-exclamation-triangle";
-    } else if (categories.includes("substance")) {
-        icon = "fa-solid fa-pills";
-    } else if (categories.includes("legal")) {
-        icon = "fa-solid fa-gavel";
-    } else if (categories.includes("sex")) {
-        icon = "fa-solid fa-heart";
-    } else if (categories.includes("mental")) {
-        icon = "fa-solid fa-brain";
-    } else if (categories.includes("women")) {
-        icon = "fa-solid fa-female";
-    } else if (categories.includes("youth")) {
-        icon = "fa-solid fa-child";
-    } else if (categories.includes("seniors")) {
-        icon = "fa-solid fa-blind";
-    } else if (categories.includes("lgbtq")) {
-        icon = "fa-solid fa-rainbow";
-    } else if (categories.includes("shelter")) {
-        icon = "fa-solid fa-person-shelter";
-    } else {
-        icon = "fa-solid fa-question";
-    }
+
+    const icons = categories.map(getIconForCategory);
 
     const handleCloseClick = (event) => {
         event.stopPropagation();
@@ -80,13 +66,22 @@ const Modal = (props) => {
         <div>
             <div className="modal-div" >
                 <div className="modal-content" ref={modalContentRef}>
-                    <div className="modal-header">
+                    {/* <div className="modal-header">
                         <div className="modal-close-div">
                             <p className="x-close" onClick={handleCloseClick}>X</p>
                         </div>
                         <div className="modal-title-div">
                             <p>{props.resource.name}</p>
                             <i className={`${icon} card-icon-2`} />
+                        </div>
+                    </div> */}
+                    <div className="modal-header">
+                        <div className="modal-close-div">
+                            <p className="x-close" onClick={handleCloseClick}>X</p>
+                        </div>
+                        <div className="modal-title-div">
+                            <p>{props.resource.name}</p>
+                            {icons.map((icon, index) => <i key={index} className={`${icon} card-icon-2`} />)}
                         </div>
                     </div>
                     <div className="modal-body">
