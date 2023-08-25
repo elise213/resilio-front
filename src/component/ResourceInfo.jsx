@@ -6,6 +6,7 @@ import arrow from "/assets/coralarrow.png";
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const images = [
     props.res.image,
     props.res.image2,
@@ -14,14 +15,12 @@ export const ResourceInfo = (props) => {
     props.res.image5
   ].filter(Boolean);
 
+
   const res = props.res || {};
 
   function filterNonNullValues(schedule) {
     const result = {};
     const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
-    console.log("schedule from function", schedule)
-
     daysOfWeek.forEach(day => {
       if (!schedule) return;
       const startKey = `${day}Start`;
@@ -35,10 +34,6 @@ export const ResourceInfo = (props) => {
       }
     });
     return result;
-  }
-
-  function computeTranslateValue() {
-    return -currentImageIndex * 100; // percentage
   }
 
   function changeImage(newIndex) {
@@ -81,19 +76,13 @@ export const ResourceInfo = (props) => {
     return formattedTime;
   }
 
-  const index = props.res.id;
-  console.log("index", index)
-  // const currentSchedule = props.schedule ? props.schedule[index] : null;
   const currentSchedule = store.schedules.find(each => each.resource_id === props.id) || null
-  // console.log("schedule:", schedule);
-  // console.log("current schedule", currentSchedule)
   const schedule2 = filterNonNullValues(currentSchedule);
-  // console.log("sched2", schedule2)
   const formattedSchedule = {};
 
   (schedule2 != undefined) ?
     Object.keys(schedule2).forEach(key => {
-      const day = key.replace(/End|Start/g, ''); // Extract the day from the key
+      const day = key.replace(/End|Start/g, '');
       const start = schedule2[`${day}Start`];
       const end = schedule2[`${day}End`];
       const formattedStart = formatTime(start);

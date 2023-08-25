@@ -10,7 +10,7 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
 
 
   const normalizeBounds = (bounds) => {
-    console.log("BOUNDS", bounds)
+    // console.log("BOUNDS", bounds)
     if (bounds) {
       return ({
         ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
@@ -20,7 +20,7 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
   };
 
   const fetchInitialBounds = async () => {
-    console.log("CITY", city)
+    // console.log("CITY", city)
     const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${city.center.lat},${city.center.lng}&key=${apiKey}`);
     const data = await response.json();
 
@@ -72,7 +72,7 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
   };
 
   const handleBoundsChange = (data) => {
-    console.log("Bounds Changed:", data.bounds);
+    // console.log("Bounds Changed:", data.bounds);
     if (filterByBounds) {
       setCity(prev => ({
         ...prev,
@@ -92,10 +92,7 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
 
   return (
     <div className="map-info">
-
       <div className="map-container" style={{ height: "60vh", width: "95vw" }}>
-
-
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
           center={city.center}
@@ -103,37 +100,21 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
           defaultZoom={11}
           onChange={handleBoundsChange}
         >
-
-          {filterByBounds ?
-            store.boundaryResults.map((result, i) => {
-              return (
-                <Marker
-                  lat={result.latitude}
-                  lng={result.longitude}
-                  text={result.name}
-                  key={i}
-                  category={result.category}
-                  id={result.id}
-                  openModal={openModal}
-                  result={result}
-                />
-              );
-            })
-            :
-            store.searchResults.map((result, i) => {
-              return (
-                <Marker
-                  lat={result.latitude}
-                  lng={result.longitude}
-                  text={result.name}
-                  key={i}
-                  category={result.category}
-                  id={result.id}
-                  openModal={openModal}
-                  result={result}
-                />
-              )
-            })}
+          {store.boundaryResults.map((result, i) => {
+            return (
+              <Marker
+                lat={result.latitude}
+                lng={result.longitude}
+                text={result.name}
+                key={i}
+                category={result.category}
+                id={result.id}
+                openModal={openModal}
+                result={result}
+              />
+            );
+          })
+          }
         </GoogleMapReact>
       </div>
     </div>
