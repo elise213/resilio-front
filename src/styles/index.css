@@ -8,7 +8,7 @@ body {
   --coral: rgb(255, 123, 116);
   --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
-  --peach: rgb(247, 122, 97);
+  --peach: rgb(255, 152, 132);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #f9cb57;
@@ -103,9 +103,9 @@ body {
 .info-map-div {
   display: flex;
   justify-content: center;
-  width: 100%;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
+  margin: 20px;
 }
 
 .resource-card-text {
@@ -147,10 +147,13 @@ body {
 }
 
 .description-div {
-  width: 50%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  width: 100% !important;
+  text-align: justify;
+  padding: 35px 41px 5px 41px;
+  ;
 }
 
 .description-heading {
@@ -292,6 +295,10 @@ body {
   font-size: xx-large;
   margin-left: 5px;
   color: black;
+}
+
+.footer {
+  padding: 20px;
 }
 
 /* _________________________________________MODAL */
@@ -556,7 +563,7 @@ body.modal-open {
   border-radius: 3px;
   border: 1px solid var(--green2);
   background: #fff;
-  margin: 5px;
+  margin: 3px 5px 0px 7px;
 }
 
 .my-input:checked+.my-label:before {
@@ -585,7 +592,7 @@ body.modal-open {
   border-radius: 3px;
   border: 1px solid var(--coral2);
   background: #fff;
-  margin: 5px;
+  margin: 3px 5px 0px 7px;
 }
 
 .my-input2:checked+.my-label:before {
@@ -801,10 +808,6 @@ input:checked+.slider:before {
   flex-direction: column;
 }
 
-.info-map-div {
-  flex-direction: column;
-}
-
 .modal-map {
   width: 100% !important;
 }
@@ -815,14 +818,13 @@ input:checked+.slider:before {
   display: flex;
 }
 
-.description-div {
-  width: 100% !important;
-  text-align: justify;
-  padding: 20px 35px;
-}
 
 /* ______________________________________________________________SIZE < 700px */
 @media screen and (max-width: 700px) {
+
+  .description-div {
+    padding: 30px 30px 0px 30px !important;
+  }
 
   .scroll-search-results li {
     margin: 10px 8px 16px 8px !important;
@@ -997,4 +999,34 @@ input:checked+.slider:before {
 
 .day-column {
   width: 170px;
+}
+
+.form-container {
+  width: 80%;
+  margin: 2em auto;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f7f7f7;
+}
+
+.geo-form .input-group {
+  margin-bottom: 1em;
+}
+
+.geo-input {
+  width: 100%;
+  padding: 0.8em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.geo-input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.input-group label {
+  margin: 5px 15px 3px 2px;
 }

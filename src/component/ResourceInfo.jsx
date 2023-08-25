@@ -1,25 +1,29 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { SimpleMap2 } from "./SimpleMap2";
 import arrow from "/assets/coralarrow.png";
 
-
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State to track the current image
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
     props.res.image,
     props.res.image2,
     props.res.image3,
     props.res.image4,
     props.res.image5
-  ].filter(Boolean); // remove any undefined or null values, giving us only the existing images
+  ].filter(Boolean);
+
+  const res = props.res || {};
 
   function filterNonNullValues(schedule) {
     const result = {};
     const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
+    console.log("schedule from function", schedule)
+
     daysOfWeek.forEach(day => {
+      if (!schedule) return;
       const startKey = `${day}Start`;
       const endKey = `${day}End`;
       if (schedule[startKey] !== null && schedule[endKey] !== null) {
@@ -77,9 +81,14 @@ export const ResourceInfo = (props) => {
     return formattedTime;
   }
 
-  const index = props.res.id - 1
-  const schedule2 = filterNonNullValues(props.schedule[index]);
-
+  const index = props.res.id;
+  console.log("index", index)
+  // const currentSchedule = props.schedule ? props.schedule[index] : null;
+  const currentSchedule = store.schedules.find(each => each.resource_id === props.id) || null
+  // console.log("schedule:", schedule);
+  // console.log("current schedule", currentSchedule)
+  const schedule2 = filterNonNullValues(currentSchedule);
+  // console.log("sched2", schedule2)
   const formattedSchedule = {};
 
   (schedule2 != undefined) ?
@@ -115,49 +124,58 @@ export const ResourceInfo = (props) => {
       </div>
 
       {/* DESCRIPTION */}
-      <div className="description-div">
-        <p className="resource-card-text description">{props.res.description}</p>
-      </div>
+      {res.description && (
+        <div className="description-div">
+          <p className="resource-card-text description">{res.description}</p>
+        </div>
+      )}
 
       <div className="info-map-div">
         <div className="details-div">
           <div className="details-column">
             {/* ADDRESS */}
-            <div className="info">
-              <i className="fa-solid fa-map-pin"></i>
-              <a
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(props.res.address)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="resource-card-text"
-              >
-                {props.res.address}
-              </a>
-            </div>
+            {res.address && (
+              <div className="info">
+                <i className="fa-solid fa-map-pin"></i>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(res.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="resource-card-text"
+                >
+                  {res.address}
+                </a>
+              </div>
+            )}
             {/* WEBSITE */}
-            <div className="info">
-              <i className="fa-solid fa-earth-americas"></i>
-              <a href={"https://www." + props.res.website} className="resource-card-text">{props.res.website}</a>
-            </div>
+            {res.website && (
+              <div className="info">
+                <i className="fa-solid fa-earth-americas"></i>
+                <a href={`https://www.${res.website}`} className="resource-card-text">{res.website}</a>
+              </div>
+            )}
 
             {/* SCHEDULE */}
-            <div className="d-flex info">
-              <i className="fa-solid fa-calendar-check"></i>
-              <div className="sched-div">
-                {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-                  <p key={index} className="resource-card-text" style={{ color: schedule !== 'Closed' ? 'green' : 'inherit' }}>
-                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-                  </p>
-                ))}
-
+            {Object.keys(formattedSchedule).length > 0 && (
+              <div className="d-flex info">
+                <i className="fa-solid fa-calendar-check"></i>
+                <div className="sched-div">
+                  {Object.entries(formattedSchedule).map(([day, schedule], index) => (
+                    <p key={index} className="resource-card-text" style={{ color: schedule !== 'Closed' ? 'green' : 'inherit' }}>
+                      {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         {/* MAP */}
-        <div className="modal-map">
-          <SimpleMap2 latitude={props.res.latitude} longitude={props.res.longitude} />
-        </div>
+        {res.latitude && res.longitude && (
+          <div className="modal-map">
+            <SimpleMap2 latitude={res.latitude} longitude={res.longitude} />
+          </div>
+        )}
       </div>
     </div >
   );
