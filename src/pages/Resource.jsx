@@ -1,17 +1,15 @@
-import React, { useState, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { ResourceInfo } from "../component/ResourceInfo.jsx";
-import { SimpleMap2 } from "../component/SimpleMap2.jsx";
 
-const resource = () => {
+const Resource = () => {
   const { store, actions } = useContext(Context);
   const params = useParams();
 
   let resourceId = params.id;
   let resourceData = store.searchResults.filter((elm) => {
-    if (elm.id == resourceId) {
-      console.log("elm", elm)
+    if (elm.id === resourceId) {
       return elm;
     }
   });
@@ -33,4 +31,4 @@ const resource = () => {
     </div>
   );
 };
-export default resource;
+export default Resource;
