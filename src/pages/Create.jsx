@@ -6,12 +6,14 @@ import PlacesAutocomplete, {
     getLatLng,
 } from 'react-places-autocomplete';
 
-
 const Create = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-    const apiKey = import.meta.env.VITE_GOOGLE;
+    const initialDaysState = daysOfWeek.reduce((acc, day) => {
+        acc[day] = { start: "", end: "" };
+        return acc;
+    }, {});
 
     const categories = [
         { id: 'F', value: 'food', label: 'Food' },
@@ -30,8 +32,7 @@ const Create = () => {
         { id: 'Sn', value: 'seniors', label: 'Seniors' },
         { id: 'Lg', value: 'lgbtq', label: 'LGBTQ' },
     ];
-
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         name: "",
         address: "",
         phone: "",
@@ -42,18 +43,9 @@ const Create = () => {
         longitude: "",
         image: "",
         image2: "",
-        days: {
-            monday: { start: "", end: "" },
-            tuesday: { start: "", end: "" },
-            wednesday: { start: "", end: "" },
-            thursday: { start: "", end: "" },
-            friday: { start: "", end: "" },
-            saturday: { start: "", end: "" },
-            sunday: { start: "", end: "" },
-        },
-    });
-
-    console.log("FORM DATA", formData)
+        days: initialDaysState,
+    };
+    const [formData, setFormData] = useState(initialFormData);
     const handleSelect = async address => {
         handleChange("address", address);
         try {
@@ -65,6 +57,7 @@ const Create = () => {
             console.error("Error:", error);
         }
     };
+
     function handleSubmit(e) {
         e.preventDefault();
         actions.createResource(formData);
@@ -73,43 +66,19 @@ const Create = () => {
         navigate("/");
     }
 
-    const handleAddressChange = async (address) => {
-
-        handleChange("address", address);
-        try {
-            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
-            const data = await response.json();
-
-            if (data.results && data.results[0]) {
-                const location = data.results[0].geometry.location;
-                handleChange("latitude", location.lat.toString());
-                handleChange("longitude", location.lng.toString());
-            }
-        } catch (error) {
-            console.error("Failed to fetch coordinates:", error);
-        }
-    };
-
     const handleChange = (field, value) => {
         setFormData(prevData => ({ ...prevData, [field]: value }));
     };
 
     const handleCategoryChange = (value) => {
         setFormData(prevData => {
-            if (prevData.category.includes(value)) {
-                return {
-                    ...prevData,
-                    category: prevData.category.filter(category => category !== value)
-                };
-            } else {
-                return {
-                    ...prevData,
-                    category: [...prevData.category, value]
-                };
-            }
+            const hasCategory = prevData.category.includes(value);
+            return {
+                ...prevData,
+                category: hasCategory ? prevData.category.filter(category => category !== value) : [...prevData.category, value]
+            };
         });
     };
-
 
     const handleTimeChange = (day, timeType, value) => {
         setFormData(prevData => ({
@@ -123,27 +92,12 @@ const Create = () => {
             }
         }));
     };
-
     const resetForm = () => {
-        setFormData({
-            ...formData,
-            name: "",
-            address: "",
-            phone: "",
-            category: "",
-            website: "",
-            description: "",
-            latitude: "",
-            longitude: "",
-            image: "",
-            image2: ""
-        });
+        setFormData(initialFormData);
     };
-
     return (
         <div className="form-container">
             <form className="geo-form" onSubmit={handleSubmit}>
-
                 <div className="input-group">
                     <label htmlFor="name">Name</label>
                     <input
@@ -162,7 +116,7 @@ const Create = () => {
 
                     <PlacesAutocomplete
                         value={formData.address}
-                        onChange={handleAddressChange}
+                        onChange={(address) => handleChange("address", address)}
                         onSelect={handleSelect}
                     >
                         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (

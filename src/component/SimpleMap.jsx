@@ -1,47 +1,56 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
-import { useNavigate } from "react-router-dom";
 
-export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setCity }) => {
-
+export const SimpleMap = ({
+  openModal,
+  filterByBounds,
+  setBoundsData,
+  city,
+  setCity,
+  zipInput,
+  clearZipInput
+}) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
 
-
-  const normalizeBounds = (bounds) => {
-    // console.log("BOUNDS", bounds)
-    if (bounds) {
-      return ({
-        ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
-        sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
-      })
-    }
+  const fetchFromAPI = async (endpoint) => {
+    const response = await fetch(`https://maps.googleapis.com/maps/api${endpoint}&key=${apiKey}`);
+    return await response.json();
   };
 
-  const fetchInitialBounds = async () => {
-    // console.log("CITY", city)
-    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${city.center.lat},${city.center.lng}&key=${apiKey}`);
-    const data = await response.json();
-
-    if (data.results[0].geometry) {
-      const bounds = normalizeBounds(data.results[0].geometry.bounds);
-      if (bounds) {
-        setCity(prev => ({
-          ...prev,
-          bounds: {
-            ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
-            sw: { lat: bounds.sw.lat, lng: bounds.sw.lng }
-          }
-        }));
-        setBoundsData(bounds);
-      }
-    }
+  const normalizeBounds = bounds => bounds && {
+    ne: bounds.northeast,
+    sw: bounds.southwest
   };
 
   useEffect(() => {
-    fetchInitialBounds();
-  }, []);
+    (async () => {
+      if (!city.center) return;
+
+      const data = await fetchFromAPI(`/geocode/json?address=${city.center.lat},${city.center.lng}`);
+      if (data.results[0]?.geometry) {
+        const newBounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
+        if (newBounds) {
+          setCity(prev => ({ ...prev, bounds: newBounds }));
+          setBoundsData(newBounds);
+        }
+      }
+
+      if (zipInput?.length === 5) {
+        const data = await fetchFromAPI(`/geocode/json?address=${zipInput}`);
+        if (data.results[0]?.geometry) {
+          const location = data.results[0].geometry.location;
+          const bounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
+          setCity({
+            center: location,
+            bounds
+          });
+          setBoundsData(bounds);
+        }
+      }
+    })();
+  }, [city.center, zipInput]);
 
 
   const Marker = ({ text, id, result }) => {
@@ -72,7 +81,9 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
   };
 
   const handleBoundsChange = (data) => {
-    // console.log("Bounds Changed:", data.bounds);
+    if (typeof clearZipInput === 'function') {
+      clearZipInput();
+    }
     if (filterByBounds) {
       setCity(prev => ({
         ...prev,

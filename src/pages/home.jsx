@@ -7,7 +7,6 @@ import MapSettings from "../component/MapSettings";
 import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
 import Modal from "../component/Modal";
-import arrow from "/assets/coralarrow.png";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -42,7 +41,7 @@ const Home = () => {
   const [allKinds, setAllKinds] = useState(true);
   const [filterByBounds, setFilterByBounds] = useState(true);
   const [boundsData, setBoundsData] = useState();
-  const [zipInput, setZipInput] = useState();
+  const [zipInput, setZipInput] = useState("");
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [city, setCity] = useState({
     // AUSTIN
@@ -97,21 +96,18 @@ const Home = () => {
 
   const handleCheckbox = (id, checked) => {
     if (id === "allKinds") {
-      if (!checked) {
-        setMoreOpen(false);
-        const anyOtherServiceChecked = options.some(opt => opt.id !== "allKinds" && opt.state);
-        if (!anyOtherServiceChecked) return; // If trying to uncheck "All Services" and no other service is checked, prevent it.
+      if (checked) {
+        setAllKinds(true);
+        options.forEach(opt => opt.handler(false));
+      } else {
+        setAllKinds(false);
       }
-      setAllKinds(checked);
-      setMoreOpen(false);
-      options.forEach(opt => opt.handler(false)); // 
     } else {
       const option = options.find(opt => opt.id === id);
       option && option.handler(checked);
       checkIfAllServicesShouldBeChecked();
     }
   };
-
 
   const checkIfAllServicesShouldBeChecked = () => {
     const anyServiceChecked = options.some(opt => opt.state === true);
@@ -139,12 +135,6 @@ const Home = () => {
     };
   }, [searchParams, dropdownOpen]);
 
-  useEffect(() => {
-    if (boundsData) {
-      actions.setBoundaryResults(boundsData);
-    }
-  }, [filterByBounds, boundsData, zipInput]);
-
 
   useEffect(() => {
     const updateData = async () => {
@@ -168,7 +158,7 @@ const Home = () => {
   }, [
     monday, tuesday, wednesday, thursday, friday, saturday, sunday,
     food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
-    lgbtq, women, seniors, mental, sex, legal, youth, boundsData
+    lgbtq, women, seniors, mental, sex, legal, youth
   ]);
 
   useEffect(() => {
@@ -182,26 +172,38 @@ const Home = () => {
     };
   }, []);
 
+
+  function clearZipInput() {
+    setZipInput('');
+  }
+
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
+
     if (value.length <= 5 && /^[0-9]*$/.test(value)) {
       setZipInput(value);
-
       if (value.length === 5) {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`);
-        const data = await response.json();
+        try {
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch data from Google Maps API");
+          }
+          const data = await response.json();
+          if (data && data.results && data.results[0] && data.results[0].geometry) {
+            const location = data.results[0].geometry.location;
+            const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport; // Fallback to viewport if bounds is not available.
 
-        if (data && data.results && data.results[0] && data.results[0].geometry) {
-          const location = data.results[0].geometry.location;
-          const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport; // Fallback to viewport if bounds is not available.
-
-          setCity({
-            center: { lat: location.lat, lng: location.lng },
-            bounds: {
-              ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
-              sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
-            }
-          });
+            setCity({
+              center: { lat: location.lat, lng: location.lng },
+              bounds: {
+                ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+                sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+              }
+            });
+          }
+        } catch (error) {
+          console.error("Error occurred while updating city center and bounds:", error.message);
+          alert("There was an issue fetching location data. Please try again later.");
         }
       }
     }
@@ -217,7 +219,6 @@ const Home = () => {
       setIsOverflowing(false);
     }
   }, [store.boundaryResults]);
-
 
   return (
     <div>
@@ -309,20 +310,6 @@ const Home = () => {
           >
             <ul style={{ listStyleType: "none", justifyContent: isOverflowing ? 'flex-start' : 'center' }} ref={ulRef}>
               {
-                // !filterByBounds
-                //   ? store.searchResults.map((result, i) => (
-                //     <li key={i}>
-                //       <ResourceCard
-                //         item={result}
-                //         openModal={openModal}
-                //         closeModal={closeModal}
-                //         modalIsOpen={modalIsOpen}
-                //         setModalIsOpen={setModalIsOpen}
-                //         selectedResource={selectedResource}
-                //       />
-                //     </li>
-                //   ))
-                //   : 
                 store.boundaryResults.map((result, i) => (
                   <li key={i}>
                     <ResourceCard
@@ -340,7 +327,7 @@ const Home = () => {
           </div>
           <div className="new-container">
             <div className="map-settings-container">
-              <MapSettings setCity={setCity} handleZipInputChange={handleZipInputChange} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
+              <MapSettings setCity={setCity} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} handleZipInputChange={handleZipInputChange} />
             </div>
             <div className="map-and-cities">
               <SimpleMap
@@ -352,6 +339,8 @@ const Home = () => {
                 setBoundsData={setBoundsData}
                 city={city}
                 setCity={setCity}
+                clearZipInput={clearZipInput}
+                zipInput={zipInput}
               />
             </div>
           </div>
