@@ -2,55 +2,64 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 
-export const SimpleMap = ({
-  openModal,
-  filterByBounds,
-  setBoundsData,
-  city,
-  setCity,
-  zipInput,
-  clearZipInput
-}) => {
+export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setCity, zipInput, clearZipInput }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-
-  const fetchFromAPI = async (endpoint) => {
-    const response = await fetch(`https://maps.googleapis.com/maps/api${endpoint}&key=${apiKey}`);
-    return await response.json();
+  const normalizeBounds = (bounds) => {
+    if (bounds) {
+      return ({
+        ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
+        sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+      })
+    }
   };
 
-  const normalizeBounds = bounds => bounds && {
-    ne: bounds.northeast,
-    sw: bounds.southwest
+  const fetchInitialBounds = async () => {
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${city.center.lat},${city.center.lng}&key=${apiKey}`);
+    const data = await response.json();
+
+    if (data.results[0].geometry) {
+      const bounds = normalizeBounds(data.results[0].geometry.bounds);
+      if (bounds) {
+        setCity(prev => ({
+          ...prev,
+          bounds: {
+            ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+            sw: { lat: bounds.sw.lat, lng: bounds.sw.lng }
+          }
+        }));
+        setBoundsData(bounds);
+      }
+    }
   };
 
   useEffect(() => {
-    (async () => {
-      if (!city.center) return;
+    fetchInitialBounds();
+  }, []);
 
-      const data = await fetchFromAPI(`/geocode/json?address=${city.center.lat},${city.center.lng}`);
-      if (data.results[0]?.geometry) {
-        const newBounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
-        if (newBounds) {
-          setCity(prev => ({ ...prev, bounds: newBounds }));
-          setBoundsData(newBounds);
+  useEffect(() => {
+    if (zipInput && zipInput.length === 5) {
+      async function fetchBoundsFromZip() {
+        try {
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${zipInput}&key=${apiKey}`);
+          const data = await response.json();
+          if (data.results[0] && data.results[0].geometry) {
+            const location = data.results[0].geometry.location;
+            const bounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
+
+            setCity({
+              center: { lat: location.lat, lng: location.lng },
+              bounds: bounds
+            });
+            setBoundsData(bounds);
+          }
+        } catch (error) {
+          console.error("Error fetching bounds from zip code:", error.message);
         }
       }
-
-      if (zipInput?.length === 5) {
-        const data = await fetchFromAPI(`/geocode/json?address=${zipInput}`);
-        if (data.results[0]?.geometry) {
-          const location = data.results[0].geometry.location;
-          const bounds = normalizeBounds(data.results[0].geometry.bounds || data.results[0].geometry.viewport);
-          setCity({
-            center: location,
-            bounds
-          });
-          setBoundsData(bounds);
-        }
-      }
-    })();
-  }, [city.center, zipInput]);
+      fetchBoundsFromZip();
+    }
+  }, [zipInput]);
 
 
   const Marker = ({ text, id, result }) => {
