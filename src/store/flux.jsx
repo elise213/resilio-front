@@ -149,89 +149,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // createResource: async (
-      //   name,
-      //   address,
-      //   phone,
-      //   resourceType,
-      //   website,
-      //   description,
-      //   latitude,
-      //   longitude,
-      //   picture,
-      //   picture2,
-      //   mondayStart,
-      //   mondayEnd,
-      //   tuesdayStart,
-      //   tuesdayEnd,
-      //   wednesdayStart,
-      //   wednesdayEnd,
-      //   thursdayStart,
-      //   thursdayEnd,
-      //   fridayStart,
-      //   fridayEnd,
-      //   saturdayStart,
-      //   saturdayEnd,
-      //   sundayStart,
-      //   sundayEnd
-      // ) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const current_front_url = getStore().current_front_url;
-      //   const token = sessionStorage.getItem("token");
-      //   const opts = {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //       "Content-Type": "application/json",
-      //       "Access-Control-Allow-Origin": "*",
-      //     },
-      //     body: JSON.stringify({
-      //       name: name,
-      //       address: address,
-      //       phone: phone,
-      //       category: resourceType,
-      //       website: website,
-      //       description: description,
-      //       latitude: latitude,
-      //       longitude: longitude,
-      //       picture: picture,
-      //       picture2: picture2,
-      //       mondayStart: mondayStart,
-      //       mondayEnd: mondayEnd,
-      //       tuesdayStart: tuesdayStart,
-      //       tuesdayEnd: tuesdayEnd,
-      //       wednesdayStart: wednesdayStart,
-      //       wednesdayEnd: wednesdayEnd,
-      //       thursdayStart: thursdayStart,
-      //       thursdayEnd: thursdayEnd,
-      //       fridayStart: fridayStart,
-      //       fridayEnd: fridayEnd,
-      //       saturdayStart: saturdayStart,
-      //       saturdayEnd: saturdayEnd,
-      //       sundayStart: sundayStart,
-      //       sundayEnd: sundayEnd,
-      //     }),
-      //   };
-      //   try {
-      //     const response = await fetch(
-      //       current_back_url + "/api/createResource",
-      //       opts
-      //     );
-      //     if (response.status >= 400) {
-      //       alert("There has been an error");
-      //       return false;
-      //     }
-      //     const data = await response.json();
-      //     if (data.status == "true") {
-      //       window.location.href = current_front_url + "/";
-      //     }
-      //     return true;
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // },
-
       // addFavorite: (resourceName) => {
       //   const current_back_url = getStore().current_back_url;
       //   const favorites = getStore().favorites;
@@ -319,7 +236,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       setSchedules: () => {
         let controller = new AbortController();
         let url = getStore().current_back_url + `/api/getSchedules`;
-
         fetch(url, {
           method: "GET",
           headers: {
@@ -334,21 +250,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             // console.log("schedules", getStore().schedules);
           })
           .catch(error => console.log(error));
-
         return () => {
-          // Abort any ongoing fetch operation on component unmount
           controller.abort();
         };
       },
 
-
-
-
-
-
       setBoundaryResults: (bounds) => {
         // console.trace('setBoundaryResults called from:');
-
         let controller = new AbortController();
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getBResults" + url,
@@ -366,11 +274,19 @@ const getState = ({ getStore, getActions, setStore }) => {
             })
           }
         )
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
           .then((data) => {
             setStore({ boundaryResults: data.data });
           })
-          // .then(data => console.log("boundary results", getStore().boundaryResults))
+          .then(data => {
+            console.log("boundary results", getStore().boundaryResults);
+            console.trace("Trace for boundary results");
+          })
           .catch((error) => console.log(error));
       },
 
