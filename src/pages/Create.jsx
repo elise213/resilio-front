@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PlacesAutocomplete, {
@@ -7,6 +7,23 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 
 const Create = () => {
+    const apiKey = import.meta.env.VITE_GOOGLE;
+    const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
+    useEffect(() => {
+        const loadGoogleMapsScript = () => {
+            if (!document.getElementById('google-maps')) {
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+                script.id = 'google-maps';
+                script.onload = () => setGoogleMapsLoaded(true);
+                document.body.appendChild(script);
+            } else {
+                setGoogleMapsLoaded(true);
+            }
+        };
+        loadGoogleMapsScript();
+    }, []);
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -14,6 +31,20 @@ const Create = () => {
         acc[day] = { start: "", end: "" };
         return acc;
     }, {});
+
+    useEffect(() => {
+        const loadGoogleMapsScript = () => {
+            if (!document.getElementById('google-maps')) {
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+                script.id = 'google-maps';
+                document.body.appendChild(script);
+            }
+        };
+
+        loadGoogleMapsScript();
+    }, []);
 
     const categories = [
         { id: 'F', value: 'food', label: 'Food' },
@@ -113,42 +144,42 @@ const Create = () => {
 
                 <div className="input-group">
                     <label htmlFor="address">Address</label>
-
-                    <PlacesAutocomplete
-                        value={formData.address}
-                        onChange={(address) => handleChange("address", address)}
-                        onSelect={handleSelect}
-                    >
-                        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-                            <div>
-                                <input
-                                    {...getInputProps({
-                                        className: 'geo-input',
-                                        id: 'address',
-                                        placeholder: 'Resource Address',
-                                    })}
-                                />
+                    {isGoogleMapsLoaded && (
+                        <PlacesAutocomplete
+                            value={formData.address}
+                            onChange={(address) => handleChange("address", address)}
+                            onSelect={handleSelect}
+                        >
+                            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                 <div>
-                                    {loading ? <div>Loading...</div> : null}
-                                    {suggestions.map(suggestion => {
-                                        console.log(suggestions);
-                                        const className = suggestion.active
-                                            ? 'suggestion-item--active'
-                                            : 'suggestion-item';
-                                        return (
-                                            <div
-                                                {...getSuggestionItemProps(suggestion, {
-                                                    className,
-                                                })}
-                                            >
-                                                {suggestion.description}
-                                            </div>
-                                        );
-                                    })}
+                                    <input
+                                        {...getInputProps({
+                                            className: 'geo-input',
+                                            id: 'address',
+                                            placeholder: 'Resource Address',
+                                        })}
+                                    />
+                                    <div>
+                                        {loading ? <div>Loading...</div> : null}
+                                        {suggestions.map(suggestion => {
+                                            console.log(suggestions);
+                                            const className = suggestion.active
+                                                ? 'suggestion-item--active'
+                                                : 'suggestion-item';
+                                            return (
+                                                <div
+                                                    {...getSuggestionItemProps(suggestion, {
+                                                        className,
+                                                    })}
+                                                >
+                                                    {suggestion.description}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </PlacesAutocomplete>
+                            )}
+                        </PlacesAutocomplete>)}
                 </div>
 
                 <div className="input-group">
