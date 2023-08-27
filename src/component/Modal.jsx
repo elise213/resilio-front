@@ -6,6 +6,8 @@ const Modal = (props) => {
     const { store, actions } = useContext(Context);
     const modalContentRef = useRef(null);
 
+    console.log("props from modal", props)
+
     const getIconForCategory = (category) => {
         switch (category) {
             case "health": return "fa-solid fa-stethoscope";
@@ -15,7 +17,7 @@ const Modal = (props) => {
             case "work": return "fa-solid fa-briefcase";
             case "wifi": return "fa-solid fa-wifi";
             case "crisis": return "fa-solid fa-exclamation-triangle";
-            case "substance": return "fa-solid fa-pills";
+            case "substance": return "fa-solid fa-capsules";
             case "legal": return "fa-solid fa-gavel";
             case "sex": return "fa-solid fa-heart";
             case "mental": return "fa-solid fa-brain";
@@ -47,8 +49,6 @@ const Modal = (props) => {
     };
 
     useEffect(() => {
-        console.log("Inside useEffect: ", modalContentRef.current);
-
         const handleOutsideClick = (event) => {
             if (modalContentRef.current && !modalContentRef.current.contains(event.target)) {
                 console.log("Clicked outside the modal!");
