@@ -43,14 +43,12 @@ const Home = () => {
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
   const apiKey = import.meta.env.VITE_GOOGLE;
+
   const [city, setCity] = useState({
-    // AUSTIN
-    // center: { lat: 30.266666, lng: -97.733330 },
-    // LOS ANGELES
-    center: { lat: 34.0522, lng: -118.2437 },
+    center: { lat: 30.266666, lng: -97.733330 },
     bounds: {
-      ne: { lat: (34.0522 + 0.18866583325124964), lng: (-118.2437 + 0.44322967529295454) },
-      sw: { lat: (34.0522 - 0.18908662930897435), lng: (-118.2437 - 0.44322967529298296) }
+      ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
+      sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
     }
   });
   const circleInstance = useRef();
@@ -64,7 +62,6 @@ const Home = () => {
     setSelectedResource(null);
     setModalIsOpen(false);
   };
-
 
   const alwaysVisibleOptions = [
     { id: "food", label: "Food", state: food, handler: setFood },
@@ -98,9 +95,13 @@ const Home = () => {
     if (id === "allKinds") {
       if (checked) {
         setAllKinds(true);
+        setDropdownOpen(false);
         options.forEach(opt => opt.handler(false));
       } else {
-        setAllKinds(false);
+        const anyServiceChecked = options.some(opt => opt.state === true);
+        if (!anyServiceChecked) {
+          setAllKinds(true);
+        }
       }
     } else {
       const option = options.find(opt => opt.id === id);
@@ -118,6 +119,7 @@ const Home = () => {
     }
   };
 
+
   useEffect(() => {
     setBoundsData(city.bounds);
   }, [city]);
@@ -128,12 +130,10 @@ const Home = () => {
     if (circleInstance.current) {
       circle1 = new CircleType(circleInstance.current).radius(500)
     };
-
     return () => {
       circle1 && circle1.destroy();
-
     };
-  }, [searchParams, dropdownOpen]);
+  }, []);
 
 
   useEffect(() => {
@@ -143,7 +143,9 @@ const Home = () => {
         food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
         lgbtq, women, seniors, mental, sex, legal, youth
       });
-      actions.setSchedules();
+      if (!store.schedule) {
+        actions.setSchedules();
+      }
       if (boundsData) {
         actions.setBoundaryResults(boundsData);
       }
@@ -158,7 +160,7 @@ const Home = () => {
   }, [
     monday, tuesday, wednesday, thursday, friday, saturday, sunday,
     food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
-    lgbtq, women, seniors, mental, sex, legal, youth
+    lgbtq, women, seniors, mental, sex, legal, youth,
   ]);
 
   useEffect(() => {

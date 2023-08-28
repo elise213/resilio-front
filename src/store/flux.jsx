@@ -213,25 +213,25 @@ const getState = ({ getStore, getActions, setStore }) => {
       //       .catch((error) => console.log(error));
       //   }
       // },
-      setSearchResults: () => {
-        let controller = new AbortController();
-        let url = window.location.search;
-        fetch(getStore().current_back_url + "/api/getResources" + url,
-          {
-            method: "GET",
-            headers: {
-              "access-control-allow-origin": "*",
-              "Content-Type": "application/json",
-            }
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            setStore({ searchResults: data.data });
-            // console.log("search results", getStore().searchResults);
-          })
-          .catch((error) => console.log(error));
-      },
+      // setSearchResults: () => {
+      //   let controller = new AbortController();
+      //   let url = window.location.search;
+      //   fetch(getStore().current_back_url + "/api/getResources" + url,
+      //     {
+      //       method: "GET",
+      //       headers: {
+      //         "access-control-allow-origin": "*",
+      //         "Content-Type": "application/json",
+      //       }
+      //     }
+      //   )
+      //     .then((response) => response.json())
+      //     .then((data) => {
+      //       setStore({ searchResults: data.data });
+      //       // console.log("search results", getStore().searchResults);
+      //     })
+      //     .catch((error) => console.log(error));
+      // },
 
       setSchedules: () => {
         let controller = new AbortController();
@@ -256,8 +256,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setBoundaryResults: (bounds) => {
-        // console.trace('setBoundaryResults called from:');
-        let controller = new AbortController();
+        console.trace('setBoundaryResults called from:');
         let url = window.location.search;
         fetch(getStore().current_back_url + "/api/getBResults" + url,
           {
