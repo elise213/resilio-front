@@ -8,7 +8,7 @@ export const Loading = () => {
                     <div className="card-title-div">
                         <p className="resource-title">Loading</p>
                         <div>
-                            <i className="fa-solid fa-magnifying-glass"></i>
+                            <i className="fa-solid fa-bullseye" />
                         </div>
                     </div>
                 </div>

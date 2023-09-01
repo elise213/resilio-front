@@ -41,11 +41,17 @@ const Home = () => {
     setDays(prev => ({ ...prev, [dayId]: !prev[dayId] }));
   };
   const [city, setCity] = useState({
-    center: { lat: 30.266666, lng: -97.733330 },
+    center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
-      ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
-      sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
+      ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
+      sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
     }
+
+    // center: { lat: 30.266666, lng: -97.733330 },
+    // bounds: {
+    //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
+    //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
+    // }
   });
   const circleInstance = useRef();
 
@@ -73,7 +79,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         if (currentFetchCount === fetchCounterRef.current) {
-          await actions.setBoundaryResults(boundsData, resources, abortController.signal);
+          await actions.setBoundaryResults(boundsData, resources, days);
         }
       } catch (error) {
       }
@@ -141,7 +147,7 @@ const Home = () => {
       actions.setSchedules();
     }
     if (boundsData) {
-      actions.setBoundaryResults(boundsData, resources);
+      actions.setBoundaryResults(boundsData, resources, days);
     }
     checkIfAllServicesShouldBeChecked();
   };
@@ -243,8 +249,9 @@ const Home = () => {
           </button>
         }
         {dropdownOpen &&
-          <DaySelection days={days} onToggleDay={toggleDay} />
+          <DaySelection days={days} onToggleDay={toggleDay} setDropdownOpen={setDropdownOpen} />
         }
+
         <div className="search-results-full">
           <div
             className="scroll-search-results"
@@ -252,7 +259,13 @@ const Home = () => {
               display: 'block'
             }}
           >
-            <ul style={{ listStyleType: "none", justifyContent: isOverflowing ? 'flex-start' : 'center' }} ref={ulRef}>
+            <ul
+              style={{
+                listStyleType: "none",
+                justifyContent: store.loading || store.boundaryResults.length === 0 ? 'center' : (isOverflowing ? 'flex-start' : 'center')
+              }}
+              ref={ulRef}
+            >
               {store.boundaryResults.length === 0 && !store.loading ? (<li><NoResults /></li>) : ''}
               {store.loading ? (<li><Loading /></li>) : ''}
               {!store.loading ? (
