@@ -1,6 +1,9 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { SimpleMap } from "../component/SimpleMap";
+import Selection from "../component/Selection";
+import { NoResults } from "../component/NoResults";
+import { Loading } from "../component/Loading";
 import { ResourceCard } from "../component/ResourceCard";
 import DaySelection from "../component/DaySelection";
 import MapSettings from "../component/MapSettings";
@@ -11,29 +14,14 @@ import Modal from "../component/Modal";
 const Home = () => {
   const { store, actions } = useContext(Context);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [food, setFood] = useState(false);
-  const [shelter, setShelter] = useState(false);
-  const [health, setHealth] = useState(false);
-  const [hygiene, setHygiene] = useState(false);
-  const [work, setWork] = useState(false);
-  const [bathroom, setBathroom] = useState(false);
-  const [wifi, setWiFi] = useState(false);
-  const [substance, setSubstance] = useState(false);
-  const [crisis, setCrisis] = useState(false);
-  const [lgbtq, setLgbtq] = useState(false);
-  const [women, setWomen] = useState(false);
-  const [seniors, setSeniors] = useState(false);
-  const [mental, setMental] = useState(false);
-  const [sex, setSex] = useState(false);
-  const [legal, setLegal] = useState(false);
-  const [youth, setYouth] = useState(false);
-  const [monday, setMonday] = useState(false);
-  const [tuesday, setTuesday] = useState(false);
-  const [wednesday, setWednesday] = useState(false);
-  const [thursday, setThursday] = useState(false);
-  const [friday, setFriday] = useState(false);
-  const [saturday, setSaturday] = useState(false);
-  const [sunday, setSunday] = useState(false);
+  const [resources, setResources] = useState(
+    store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
+  );
+  const [days, setDays] = useState(
+    store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
+  );
+  const fetchCounterRef = useRef(0);
+  const abortControllerRef = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -44,6 +32,14 @@ const Home = () => {
   const [zipInput, setZipInput] = useState("");
   const apiKey = import.meta.env.VITE_GOOGLE;
 
+  const toggleResource = (resourceId) => {
+    setResources(prev => ({ ...prev, [resourceId]: !prev[resourceId] }));
+    checkIfAllServicesShouldBeChecked()
+  };
+
+  const toggleDay = (dayId) => {
+    setDays(prev => ({ ...prev, [dayId]: !prev[dayId] }));
+  };
   const [city, setCity] = useState({
     center: { lat: 30.266666, lng: -97.733330 },
     bounds: {
@@ -63,104 +59,97 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
-  const alwaysVisibleOptions = [
-    { id: "food", label: "Food", state: food, handler: setFood },
-    { id: "shelter", label: "Shelter", state: shelter, handler: setShelter },
-    { id: "health", label: "Health Care", state: health, handler: setHealth },
-    { id: "allKinds", label: "All Resources", state: allKinds, handler: setAllKinds }
-  ];
+  const updateResourceState = (resourceId, newValue) => {
+    setResources(prevResources => ({
+      ...prevResources,
+      [resourceId]: newValue
+    }));
+  };
 
-  const otherOptions = [
-    { id: "hygiene", label: "Showers", state: hygiene, handler: setHygiene },
-    { id: "crisis", label: "Crisis Support", state: crisis, handler: setCrisis },
-    { id: "substance", label: "Substance Support", state: substance, handler: setSubstance },
-    { id: "work", label: "Work", state: work, handler: setWork },
-    { id: "bathroom", label: "Public Bathrooms", state: bathroom, handler: setBathroom },
-    { id: "wifi", label: "WiFi", state: wifi, handler: setWiFi },
-    { id: "mental", label: "Mental Health", state: mental, handler: setMental },
-    { id: "sex", label: "Sexual Health", state: sex, handler: setSex },
-    { id: "legal", label: "Legal Support", state: legal, handler: setLegal },
-    { id: "lgbtq", label: "LGBTQ+", state: lgbtq, handler: setLgbtq },
-    { id: "women", label: "Women", state: women, handler: setWomen },
-    { id: "seniors", label: "Seniors", state: seniors, handler: setSeniors },
-    { id: "youth", label: "Youth 18-24", state: youth, handler: setYouth },
-  ];
-
-  const options = [
-    ...alwaysVisibleOptions,
-    ...otherOptions
-  ];
-
-  const handleCheckbox = (id, checked) => {
-    if (id === "allKinds") {
-      if (checked) {
-        setAllKinds(true);
-        setDropdownOpen(false);
-        options.forEach(opt => opt.handler(false));
-      } else {
-        const anyServiceChecked = options.some(opt => opt.state === true);
-        if (!anyServiceChecked) {
-          setAllKinds(true);
+  useEffect(() => {
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
+    const currentFetchCount = ++fetchCounterRef.current;
+    const fetchData = async () => {
+      try {
+        if (currentFetchCount === fetchCounterRef.current) {
+          await actions.setBoundaryResults(boundsData, resources, abortController.signal);
         }
+      } catch (error) {
       }
-    } else {
-      const option = options.find(opt => opt.id === id);
-      option && option.handler(checked);
-      checkIfAllServicesShouldBeChecked();
+    };
+    fetchData();
+    return () => abortControllerRef.current?.abort();
+  }, [boundsData, resources]);
+
+  useEffect(() => {
+    const params = [...searchParams.entries()];
+    params.forEach(([key, value]) => {
+      const isResourceTrue = value === 'true';
+      switch (key) {
+        case 'health':
+        case 'hygiene':
+        case 'work':
+        case 'bathroom':
+        case 'wifi':
+        case 'crisis':
+        case 'substance':
+        case 'lgbtq':
+        case 'women':
+        case 'seniors':
+        case 'mental':
+        case 'sex':
+        case 'legal':
+        case 'youth':
+          updateResourceState(key, isResourceTrue);
+          break;
+        default:
+          break;
+      }
+    });
+    updateData();
+  }, []);
+
+  const handleAllKinds = () => {
+    if (allKinds) {
+      setMoreOpen(false);
     }
+    if (!allKinds) {
+      setAllKinds(prevAllKinds => !prevAllKinds);
+      const updatedResources = Object.keys(resources).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {});
+      setResources(updatedResources);
+    };
+    checkIfAllServicesShouldBeChecked();
   };
 
   const checkIfAllServicesShouldBeChecked = () => {
-    const anyServiceChecked = options.some(opt => opt.state === true);
-    if (!anyServiceChecked) {
-      setAllKinds(true);
-    } else {
-      setAllKinds(false);
-    }
+    const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
+    setAllKinds(!anyServiceChecked);
   };
-
 
   useEffect(() => {
     setBoundsData(city.bounds);
-  }, [city]);
+    checkIfAllServicesShouldBeChecked();
+  }, [city, resources]);
 
+  const updateData = async () => {
 
-  useEffect(() => {
-    let circle1
-    if (circleInstance.current) {
-      circle1 = new CircleType(circleInstance.current).radius(500)
-    };
-    return () => {
-      circle1 && circle1.destroy();
-    };
-  }, []);
-
-
-  useEffect(() => {
-    const updateData = async () => {
-      await setSearchParams({
-        monday, tuesday, wednesday, thursday, friday, saturday, sunday,
-        food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
-        lgbtq, women, seniors, mental, sex, legal, youth
-      });
-      if (!store.schedule) {
-        actions.setSchedules();
-      }
-      if (boundsData) {
-        actions.setBoundaryResults(boundsData);
-      }
-    };
-    const allCategories = [food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
-      lgbtq, women, seniors, mental, sex, legal, youth];
-
-    if (allCategories.every(category => !category)) {
-      setAllKinds(true);
+    if (!store.schedule) {
+      actions.setSchedules();
     }
+    if (boundsData) {
+      actions.setBoundaryResults(boundsData, resources);
+    }
+    checkIfAllServicesShouldBeChecked();
+  };
+
+  useEffect(() => {
     updateData();
   }, [
-    monday, tuesday, wednesday, thursday, friday, saturday, sunday,
-    food, shelter, health, hygiene, work, bathroom, wifi, crisis, substance,
-    lgbtq, women, seniors, mental, sex, legal, youth,
+    days, resources
   ]);
 
   useEffect(() => {
@@ -174,6 +163,15 @@ const Home = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let circle1
+    if (circleInstance.current) {
+      circle1 = new CircleType(circleInstance.current).radius(500)
+    };
+    return () => {
+      circle1 && circle1.destroy();
+    };
+  }, []);
 
   function clearZipInput() {
     setZipInput('');
@@ -181,20 +179,20 @@ const Home = () => {
 
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
-
-    if (value.length <= 5 && /^[0-9]*$/.test(value)) {
+    if (value.length <= 5 && /^[0-9]{0,5}$/.test(value)) {
       setZipInput(value);
       if (value.length === 5) {
         try {
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`);
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`,
+          );
           if (!response.ok) {
             throw new Error("Failed to fetch data from Google Maps API");
           }
           const data = await response.json();
           if (data && data.results && data.results[0] && data.results[0].geometry) {
             const location = data.results[0].geometry.location;
-            const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport; // Fallback to viewport if bounds is not available.
-
+            const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport;
             setCity({
               center: { lat: location.lat, lng: location.lng },
               bounds: {
@@ -204,8 +202,8 @@ const Home = () => {
             });
           }
         } catch (error) {
-          console.error("Error occurred while updating city center and bounds:", error.message);
-          alert("There was an issue fetching location data. Please try again later.");
+          console.error("Error while updating city center / bounds:", error.message);
+          alert("There was an issue fetching location data.");
         }
       }
     }
@@ -225,93 +223,39 @@ const Home = () => {
   return (
     <div>
       <div className="grand-container">
-
         <div className="search-container">
-
           <div className="what-type">
             <div className="question">
               <div className="circle-font" ref={circleInstance}>What do you need?</div>
             </div>
-
-            <div className="selection">
-              {alwaysVisibleOptions.map((option) => (
-                <div className="day-column" key={option.id}>
-                  <div className="my-form-check">
-                    <input
-                      className="my-input"
-                      type="checkbox"
-                      id={option.id}
-                      value={option.id}
-                      name="selection"
-                      checked={option.state}
-                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                    />
-                    <label className="my-label" htmlFor={option.id}>
-                      {option.label}
-                    </label>
-                  </div>
-                </div>
-              ))}
-
-              {moreOpen && otherOptions.map((subOption) => (
-                <div className="day-column" key={subOption.id}>
-                  <div className="my-form-check">
-                    <input
-                      className="my-input"
-                      type="checkbox"
-                      id={subOption.id}
-                      value={subOption.id}
-                      name="selection"
-                      checked={subOption.state}
-                      onChange={(e) => handleCheckbox(e.target.id, e.target.checked)}
-                    />
-                    <label className="my-label" htmlFor={subOption.id}>
-                      {subOption.label}
-                    </label>
-                  </div>
-                </div>
-              ))}
-            </div>
-
+            <Selection resources={resources} handleAllKinds={handleAllKinds} allKinds={allKinds} toggleResource={toggleResource} moreOpen={moreOpen} />
           </div>
-
-          {!moreOpen &&
-            <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-              See More Resources
-            </button>
-          }
-
-          {!dropdownOpen &&
-            <button className="my-schedule-button"
-              onClick={() => setDropdownOpen(!dropdownOpen)}>
-              Filter By Day
-            </button>
-          }
-          {dropdownOpen &&
-            <DaySelection
-              filterByBounds={filterByBounds}
-              boundsData={boundsData}
-              setMonday={setMonday}
-              setTuesday={setTuesday}
-              setWednesday={setWednesday}
-              setThursday={setThursday}
-              setFriday={setFriday}
-              setSaturday={setSaturday}
-              setSunday={setSunday}
-              setDropdownOpen={setDropdownOpen}
-            />
-          }
-
         </div>
+        {!moreOpen &&
+          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
+            See More Resources
+          </button>
+        }
+        {!dropdownOpen &&
+          <button className="my-schedule-button"
+            onClick={() => setDropdownOpen(!dropdownOpen)}>
+            Filter By Day
+          </button>
+        }
+        {dropdownOpen &&
+          <DaySelection days={days} onToggleDay={toggleDay} />
+        }
         <div className="search-results-full">
           <div
             className="scroll-search-results"
             style={{
-              display: filterByBounds && store.boundaryResults.length === 0 ? 'none' : 'block'
+              display: 'block'
             }}
           >
             <ul style={{ listStyleType: "none", justifyContent: isOverflowing ? 'flex-start' : 'center' }} ref={ulRef}>
-              {
+              {store.boundaryResults.length === 0 && !store.loading ? (<li><NoResults /></li>) : ''}
+              {store.loading ? (<li><Loading /></li>) : ''}
+              {!store.loading ? (
                 store.boundaryResults.map((result, i) => (
                   <li key={i}>
                     <ResourceCard
@@ -324,7 +268,7 @@ const Home = () => {
                     />
                   </li>
                 ))
-              }
+              ) : ''}
             </ul>
           </div>
           <div className="new-container">
@@ -343,11 +287,13 @@ const Home = () => {
                 setCity={setCity}
                 clearZipInput={clearZipInput}
                 zipInput={zipInput}
+                resources={resources}
               />
             </div>
           </div>
         </div>
       </div>
+
       {modalIsOpen && (
         <div>
           <div className="modal-overlay"></div>
@@ -360,8 +306,9 @@ const Home = () => {
             />
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

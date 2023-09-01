@@ -1,9 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Context } from "../store/appContext";
-// import Modal from "./Modal"
+import React, { useEffect } from "react";
 
 export const ResourceCard = (props) => {
-  const { store, actions } = useContext(Context);
 
   useEffect(() => {
     if (props.modalIsOpen) {
@@ -20,7 +17,6 @@ export const ResourceCard = (props) => {
 
   // Convert input to an array of strings
   let categories = props.item.category;
-
   // If it's a string that contains commas, split and trim
   if (typeof categories === "string" && categories.includes(",")) {
     categories = categories.split(",").map(cat => cat.trim());
@@ -34,7 +30,6 @@ export const ResourceCard = (props) => {
     categories = [];
   }
 
-  // Now we'll check the array for category matches
   if (categories.includes("health")) {
     icon = "fa-solid fa-stethoscope";
   } else if (categories.includes("food")) {
@@ -70,8 +65,6 @@ export const ResourceCard = (props) => {
   } else {
     icon = "fa-solid fa-question";
   }
-
-
 
   return (
     <div className="my-resource-card" onClick={() => props.openModal(props.item)} >

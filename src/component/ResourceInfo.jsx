@@ -15,7 +15,6 @@ export const ResourceInfo = (props) => {
     props.res.image5
   ].filter(Boolean);
 
-
   const res = props.res || {};
 
   function filterNonNullValues(schedule) {
