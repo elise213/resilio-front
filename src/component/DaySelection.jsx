@@ -1,34 +1,35 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 
-const DaySelection = ({ setDropdownOpen, ...setters }) => {
-  const { store, actions } = useContext(Context);
+const DaySelection = ({ days, onToggleDay, setDropdownOpen }) => {
+  const context = useContext(Context);
 
-  const daysColumns = [["monday", "tuesday"],
-  ["wednesday", "thursday"],
-  ["friday", "saturday"],
-  ["sunday", "all"]
+  const daysColumns = [
+    ["monday", "tuesday"],
+    ["wednesday", "thursday"],
+    ["friday", "saturday"],
+    ["sunday", "all"]
   ];
 
+  const handleEvent = (day) => () => {
+    if (day !== "all") {
+      onToggleDay(day);
+    } else {
+      handleAll();
+    }
+  };
 
-  function handleEvent(day) {
-    return function (event) {
-      const element = event.target;
-      if (day !== "all") {
-        setters[`set${day.charAt(0).toUpperCase() + day.slice(1)}`](element.checked);
-      } else {
-        handleAll();
+  const handleAll = () => {
+    daysColumns.flat().filter(day => day !== "all").forEach(day => {
+      const setter = `set${day.charAt(0).toUpperCase() + day.slice(1)}`;
+      if (typeof context[setter] === 'function') {
+        context[setter](false);
       }
-    };
-  }
-
-  function handleAll() {
-    daysColumns.flat().filter(day => day !== "all").forEach(day => setters[`set${day.charAt(0).toUpperCase() + day.slice(1)}`](false));
+    });
     setDropdownOpen(false);
-  }
+  };
 
   return (
-
     <div className="selection">
       {daysColumns.map((column, index) => (
         <div key={index} className="day-column">
@@ -40,6 +41,7 @@ const DaySelection = ({ setDropdownOpen, ...setters }) => {
                 id={day}
                 value={day}
                 onChange={handleEvent(day)}
+                checked={days[day]}
               />
               <label className="my-label" htmlFor={day}>
                 {day === "all" ? "Any Day" : day.charAt(0).toUpperCase() + day.slice(1)}
@@ -49,8 +51,7 @@ const DaySelection = ({ setDropdownOpen, ...setters }) => {
         </div>
       ))}
     </div>
-
-  )
-}
+  );
+};
 
 export default DaySelection;
