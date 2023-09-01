@@ -292,7 +292,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           controller.abort();
         };
       },
-      setBoundaryResults: async (bounds, resources) => {
+
+
+      setBoundaryResults: async (bounds, resources, days) => {
         const abortController = new AbortController();
         const url = getStore().current_back_url + "/api/getBResults";
         try {
@@ -307,7 +309,8 @@ const getState = ({ getStore, getActions, setStore }) => {
               neLng: bounds?.ne?.lng,
               swLat: bounds?.sw?.lat,
               swLng: bounds?.sw?.lng,
-              resources: resources
+              resources: resources,
+              days: days
             }),
             signal: abortController.signal,
           });
@@ -321,6 +324,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ loading: false });
           return data.data;
         } catch (error) {
+          setStore({ loading: false });
           if (error.name === 'AbortError') {
             console.log('Fetch aborted');
           } else {
