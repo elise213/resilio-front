@@ -85,13 +85,6 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
-  const updateResourceState = (resourceId, newValue) => {
-    setResources(prevResources => ({
-      ...prevResources,
-      [resourceId]: newValue
-    }));
-  };
-
   const handleAllKinds = () => {
     if (allKinds) {
       setMoreOpen(false);
@@ -111,7 +104,6 @@ const Home = () => {
     const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
     setAllKinds(!anyServiceChecked);
   };
-
 
   const updateData = async () => {
     if (!store.schedule) {
@@ -349,8 +341,7 @@ const Home = () => {
             />
           </div>
         </div>
-      )
-      }
+      )}
     </div >
   );
 };
