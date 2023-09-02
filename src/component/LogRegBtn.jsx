@@ -10,7 +10,6 @@ const LogRegBtn = () => {
   const [is_org, setIs_org] = useState("");
   const { store, actions } = useContext(Context);
 
-
   function handleLogin(e) {
     e.preventDefault();
     actions.login(email, password);
@@ -103,9 +102,6 @@ const LogRegBtn = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
-              {/* <div id="emailHelp" className="form-text">
-                We'll never share your email with anyone else.
-              </div> */}
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
@@ -257,7 +253,7 @@ const LogRegBtn = () => {
                   type="submit"
                   className="submit"
                   data-bs-dismiss="modal"
-                  // onClick={(e) => handleLogin(e)}
+                // onClick={(e) => handleLogin(e)}
                 >
                   Send recovery email
                 </button>

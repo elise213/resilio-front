@@ -1,9 +1,8 @@
-import React, { useState, useContext, useRef, useEffect } from "react"; import { Link, useParams } from "react-router-dom";
-import { Context } from "../store/appContext";
+import React, { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ResourceInfo } from "./ResourceInfo";
 
 const Modal = (props) => {
-    const { store, actions } = useContext(Context);
     const modalContentRef = useRef(null);
 
     console.log("props from modal", props)
@@ -61,7 +60,6 @@ const Modal = (props) => {
         };
     }, []);
 
-
     return (
         <div>
             <div className="modal-div" >
@@ -78,7 +76,7 @@ const Modal = (props) => {
                     <div className="modal-body">
                         <ResourceInfo
                             id={props.resource.id}
-                            schedule={store.schedule}
+                            schedule={props.resource.schedule}
                             res={props.resource}
                         />
                         <div className="modal-footer">

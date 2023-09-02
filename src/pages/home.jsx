@@ -27,26 +27,48 @@ const Home = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [allKinds, setAllKinds] = useState(true);
+  // const [allDays, setAllDays] = useState(true);
   const [filterByBounds, setFilterByBounds] = useState(true);
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
   const apiKey = import.meta.env.VITE_GOOGLE;
-
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const ulRef = useRef(null);
   const toggleResource = (resourceId) => {
     setResources(prev => ({ ...prev, [resourceId]: !prev[resourceId] }));
     checkIfAllServicesShouldBeChecked()
   };
 
   const toggleDay = (dayId) => {
-    setDays(prev => ({ ...prev, [dayId]: !prev[dayId] }));
+    setDays(prev => {
+      // If the clicked checkbox is "allDays"
+      if (dayId === 'allDays') {
+        return {
+          ...prev,
+          allDays: !prev.allDays,
+          // Reset all other days to false
+          ...store.DAY_OPTIONS.reduce((acc, currDay) => {
+            if (currDay.id !== 'allDays') acc[currDay.id] = false;
+            return acc;
+          }, {})
+        };
+      }
+      // If any other day is clicked
+      return {
+        ...prev,
+        allDays: false,  // Uncheck "allDays"
+        [dayId]: !prev[dayId]  // Toggle the clicked day
+      };
+    });
   };
+
+
   const [city, setCity] = useState({
     center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
       ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
       sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
     }
-
     // center: { lat: 30.266666, lng: -97.733330 },
     // bounds: {
     //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
@@ -79,9 +101,12 @@ const Home = () => {
     const fetchData = async () => {
       try {
         if (currentFetchCount === fetchCounterRef.current) {
-          await actions.setBoundaryResults(boundsData, resources, days);
+          if (days && boundsData) {
+            await actions.setBoundaryResults(boundsData, resources, days);
+          }
         }
       } catch (error) {
+        console.error("Error in fetching boundary results:", error);
       }
     };
     fetchData();
@@ -147,7 +172,21 @@ const Home = () => {
       actions.setSchedules();
     }
     if (boundsData) {
-      actions.setBoundaryResults(boundsData, resources, days);
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
+      const currentFetchCount = ++fetchCounterRef.current;
+      const fetchData = async () => {
+        try {
+          if (currentFetchCount === fetchCounterRef.current) {
+            if (days && boundsData) {
+              await actions.setBoundaryResults(boundsData, resources, days);
+            }
+          }
+        } catch (error) {
+        }
+      };
+      fetchData();
+      return () => abortControllerRef.current?.abort();
     }
     checkIfAllServicesShouldBeChecked();
   };
@@ -183,6 +222,24 @@ const Home = () => {
     setZipInput('');
   }
 
+  const handleEvent = (day) => {
+    if (day === "allDays") {
+      // Deselect all other days when "Any Day" is selected
+      Object.keys(days).forEach(d => {
+        if (days[d]) {
+          toggleDay(d); // This assumes toggleDay also handles deselection
+        }
+      });
+    } else {
+      // If any other day is selected while "Any Day" is already selected
+      // then deselect "Any Day"
+      if (days["allDays"]) {
+        toggleDay("allDays");
+      }
+      toggleDay(day);
+    }
+  };
+
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
     if (value.length <= 5 && /^[0-9]{0,5}$/.test(value)) {
@@ -215,9 +272,6 @@ const Home = () => {
     }
   };
 
-  const [isOverflowing, setIsOverflowing] = useState(false);
-  const ulRef = useRef(null);
-
   useEffect(() => {
     if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
       setIsOverflowing(true);
@@ -249,9 +303,15 @@ const Home = () => {
           </button>
         }
         {dropdownOpen &&
-          <DaySelection days={days} onToggleDay={toggleDay} setDropdownOpen={setDropdownOpen} />
+          <DaySelection
+            days={days}
+            toggleDay={toggleDay}
+            dropdownOpen={dropdownOpen}
+            setDropdownOpen={setDropdownOpen}
+            allDays={days.allDays}
+            handleEvent={handleEvent}
+          />
         }
-
         <div className="search-results-full">
           <div
             className="scroll-search-results"
@@ -315,7 +375,6 @@ const Home = () => {
               resource={selectedResource}
               modalIsOpen={modalIsOpen}
               closeModal={closeModal}
-              schedule={store.schedule}
             />
           </div>
         </div>
