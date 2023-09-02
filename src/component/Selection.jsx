@@ -20,7 +20,7 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
                                     onChange={handleAllKinds}
                                 />
                                 <label className="my-label" htmlFor="allKinds">
-                                    All Kinds
+                                    Everything
                                 </label>
                             </div>
                         </div>
