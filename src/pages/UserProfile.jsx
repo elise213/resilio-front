@@ -4,24 +4,13 @@ import { ResourceCard } from "../component/ResourceCard";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
-  const avatarId = sessionStorage.getItem("avatar");
-  const avatar = store.avatarImages[avatarId];
-
-  // const [favoriteResources, setFavoriteResources] = useState([]);
-  // const [favoriteOfferings, setFavoriteOfferings] = useState([]);
 
   useEffect(() => {
     actions.setOfferings();
   }, []);
 
-
-  // useEffect(() => {
-
-  // }, [favoriteOfferings, favoriteResources])
-
   return (
     <div className="profile-container">
-      {/* <span className={`${avatar} user-profile-avatar`}></span> */}
       <div className="user-profile-container">
         <div className="favorites-container">
           <p className="your-favorite-resources text-center">
@@ -29,7 +18,7 @@ const UserProfile = () => {
           </p>
           <div className="favorites-col">
             <ul className="favorites-list" style={{ listStyleType: "none" }}>
-              {/* {console.log("favorites", store.favorites)} */}
+
               {store.favorites.map((result, i) => (
                 <li key={i}>
                   <ResourceCard

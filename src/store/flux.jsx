@@ -45,6 +45,12 @@ const getState = ({ getStore, getActions, setStore }) => {
         "image2": "",
         "logo": ""
       },
+      daysColumns: [
+        ["monday", "tuesday"],
+        ["wednesday", "thursday"],
+        ["friday", "saturday"],
+        ["sunday", "allDays"]
+      ],
       RESOURCE_OPTIONS: [
         { id: "food", label: "Food" },
         { id: "shelter", label: "Shelter" },
@@ -315,7 +321,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             signal: abortController.signal,
           });
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const text = await response.text();
+            throw new Error(`Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`);
           }
           const data = await response.json();
           setStore({ boundaryResults: data.data });
@@ -333,72 +340,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         return abortController;
       },
-
-      // setBoundaryResults: async (bounds, resources, signal) => {
-      //   // console.trace('setBoundaryResults called from:');
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   try {
-      //     response = await fetch(url, {
-      //       method: 'POST',
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         neLat: bounds?.ne?.lat,
-      //         neLng: bounds?.ne?.lng,
-      //         swLat: bounds?.sw?.lat,
-      //         swLng: bounds?.sw?.lng,
-      //         resources: resources
-      //       }),
-      //       signal: signal,
-      //     });
-
-      //     if (!response.ok) {
-      //       throw new Error('Network response was not ok');
-      //     }
-      //     const data = await response.json();
-      //     setStore({ boundaryResults: data.data });
-      //     console.log("boundary results", data.data);
-      //     console.trace("Trace for boundary results");
-      //   } catch (error) {
-      //     if (error.name === 'AbortError') {
-      //       console.log('Fetch aborted');
-      //     } else {
-      //       console.error('Error fetching data:', error);
-      //     }
-      //   }
-      //   return () => abortController.abort();
-      // },
-
-      // setBoundaryResults: (bounds) => {
-      //   console.trace('setBoundaryResults called from:');
-      //   let url = window.location.search;
-      //   fetch(getStore().current_back_url + "/api/getBResults" + url, {
-      //     method: "POST",
-      //     headers: {
-      //       "access-control-allow-origin": "*",
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       neLat: bounds?.ne?.lat,
-      //       neLng: bounds?.ne?.lng,
-      //       swLat: bounds?.sw?.lat,
-      //       swLng: bounds?.sw?.lng
-      //     })
-      //   })
-      //     .then(response => {
-      //       if (!response.ok) {
-      //         throw new Error('Network response was not ok');
-      //       }
-      //       return response.json();
-      //     })
-      //     .then(data => {
-      //       setStore({ boundaryResults: data.data });
-      //       console.log("boundary results", getStore().boundaryResults);
-      //       console.trace("Trace for boundary results");
-      //     })
-      //     .catch(error => console.log(error));
-      // },
 
       // createComment: async (resource_id, comment_cont, parentId) => {
       //   const current_back_url = getStore().current_back_url;
