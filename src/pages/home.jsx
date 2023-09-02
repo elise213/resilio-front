@@ -7,38 +7,51 @@ import { Loading } from "../component/Loading";
 import { ResourceCard } from "../component/ResourceCard";
 import DaySelection from "../component/DaySelection";
 import MapSettings from "../component/MapSettings";
-import { useSearchParams } from "react-router-dom";
 import CircleType from "circletype";
 import Modal from "../component/Modal";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const apiKey = import.meta.env.VITE_GOOGLE;
+  const fetchCounterRef = useRef(0);
+  const abortControllerRef = useRef(null)
+  const ulRef = useRef(null);
+  const [city, setCity] = useState({
+    center: { lat: 34.0522, lng: -118.2437 },
+    bounds: {
+      ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
+      sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
+    }
+    // center: { lat: 30.266666, lng: -97.733330 },
+    // bounds: {
+    //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
+    //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
+    // }
+  });
+  const circleInstance = useRef();
+
+  // STATES
   const [resources, setResources] = useState(
     store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
   const [days, setDays] = useState(
     store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
-  const fetchCounterRef = useRef(0);
-  const abortControllerRef = useRef(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [allKinds, setAllKinds] = useState(true);
-  // const [allDays, setAllDays] = useState(true);
   const [filterByBounds, setFilterByBounds] = useState(true);
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
-  const apiKey = import.meta.env.VITE_GOOGLE;
   const [isOverflowing, setIsOverflowing] = useState(false);
-  const ulRef = useRef(null);
+
+  // FUNCTIONS
   const toggleResource = (resourceId) => {
     setResources(prev => ({ ...prev, [resourceId]: !prev[resourceId] }));
     checkIfAllServicesShouldBeChecked()
   };
-
   const toggleDay = (dayId) => {
     setDays(prev => {
       // If the clicked checkbox is "allDays"
@@ -62,21 +75,6 @@ const Home = () => {
     });
   };
 
-
-  const [city, setCity] = useState({
-    center: { lat: 34.0522, lng: -118.2437 },
-    bounds: {
-      ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
-      sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
-    }
-    // center: { lat: 30.266666, lng: -97.733330 },
-    // bounds: {
-    //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
-    //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
-    // }
-  });
-  const circleInstance = useRef();
-
   const openModal = (resource) => {
     setSelectedResource(resource);
     setModalIsOpen(true);
@@ -93,53 +91,6 @@ const Home = () => {
       [resourceId]: newValue
     }));
   };
-
-  useEffect(() => {
-    abortControllerRef.current?.abort();
-    abortControllerRef.current = new AbortController();
-    const currentFetchCount = ++fetchCounterRef.current;
-    const fetchData = async () => {
-      try {
-        if (currentFetchCount === fetchCounterRef.current) {
-          if (days && boundsData) {
-            await actions.setBoundaryResults(boundsData, resources, days);
-          }
-        }
-      } catch (error) {
-        console.error("Error in fetching boundary results:", error);
-      }
-    };
-    fetchData();
-    return () => abortControllerRef.current?.abort();
-  }, [boundsData, resources]);
-
-  useEffect(() => {
-    const params = [...searchParams.entries()];
-    params.forEach(([key, value]) => {
-      const isResourceTrue = value === 'true';
-      switch (key) {
-        case 'health':
-        case 'hygiene':
-        case 'work':
-        case 'bathroom':
-        case 'wifi':
-        case 'crisis':
-        case 'substance':
-        case 'lgbtq':
-        case 'women':
-        case 'seniors':
-        case 'mental':
-        case 'sex':
-        case 'legal':
-        case 'youth':
-          updateResourceState(key, isResourceTrue);
-          break;
-        default:
-          break;
-      }
-    });
-    updateData();
-  }, []);
 
   const handleAllKinds = () => {
     if (allKinds) {
@@ -161,13 +112,8 @@ const Home = () => {
     setAllKinds(!anyServiceChecked);
   };
 
-  useEffect(() => {
-    setBoundsData(city.bounds);
-    checkIfAllServicesShouldBeChecked();
-  }, [city, resources]);
 
   const updateData = async () => {
-
     if (!store.schedule) {
       actions.setSchedules();
     }
@@ -191,43 +137,15 @@ const Home = () => {
     checkIfAllServicesShouldBeChecked();
   };
 
-  useEffect(() => {
-    updateData();
-  }, [
-    days, resources
-  ]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      console.log('Window resized!');
-      checkIfAllServicesShouldBeChecked();
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    let circle1
-    if (circleInstance.current) {
-      circle1 = new CircleType(circleInstance.current).radius(500)
-    };
-    return () => {
-      circle1 && circle1.destroy();
-    };
-  }, []);
-
   function clearZipInput() {
     setZipInput('');
   }
 
   const handleEvent = (day) => {
     if (day === "allDays") {
-      // Deselect all other days when "Any Day" is selected
       Object.keys(days).forEach(d => {
         if (days[d]) {
-          toggleDay(d); // This assumes toggleDay also handles deselection
+          toggleDay(d);
         }
       });
     } else {
@@ -272,6 +190,58 @@ const Home = () => {
     }
   };
 
+  // USE EFFECTS
+  useEffect(() => {
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
+    const currentFetchCount = ++fetchCounterRef.current;
+    const fetchData = async () => {
+      try {
+        if (currentFetchCount === fetchCounterRef.current) {
+          if (days && boundsData) {
+            await actions.setBoundaryResults(boundsData, resources, days);
+          }
+        }
+      } catch (error) {
+        console.error("Error in fetching boundary results:", error);
+      }
+    };
+    fetchData();
+    return () => abortControllerRef.current?.abort();
+  }, [boundsData, resources, days]);
+
+  useEffect(() => {
+    setBoundsData(city.bounds);
+    checkIfAllServicesShouldBeChecked();
+  }, [city, resources]);
+
+  useEffect(() => {
+    updateData();
+  }, [
+    days, resources
+  ]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('Window resized!');
+      checkIfAllServicesShouldBeChecked();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    let circle1
+    if (circleInstance.current) {
+      circle1 = new CircleType(circleInstance.current).radius(500)
+    };
+    return () => {
+      circle1 && circle1.destroy();
+    };
+  }, []);
+
   useEffect(() => {
     if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
       setIsOverflowing(true);
@@ -303,6 +273,7 @@ const Home = () => {
           </button>
         }
         {dropdownOpen &&
+
           <DaySelection
             days={days}
             toggleDay={toggleDay}
