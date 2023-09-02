@@ -1,37 +1,13 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-
-const DaySelection = ({ days, onToggleDay, setDropdownOpen }) => {
-  const context = useContext(Context);
-
-  const daysColumns = [
-    ["monday", "tuesday"],
-    ["wednesday", "thursday"],
-    ["friday", "saturday"],
-    ["sunday", "all"]
-  ];
-
-  const handleEvent = (day) => () => {
-    if (day !== "all") {
-      onToggleDay(day);
-    } else {
-      handleAll();
-    }
-  };
-
-  const handleAll = () => {
-    daysColumns.flat().filter(day => day !== "all").forEach(day => {
-      const setter = `set${day.charAt(0).toUpperCase() + day.slice(1)}`;
-      if (typeof context[setter] === 'function') {
-        context[setter](false);
-      }
-    });
-    setDropdownOpen(false);
-  };
-
+const DaySelection = ({
+  days,
+  handleEvent
+}) => {
+  const { store, actions } = useContext(Context);
   return (
     <div className="selection">
-      {daysColumns.map((column, index) => (
+      {store.daysColumns.map((column, index) => (
         <div key={index} className="day-column">
           {column.map(day => (
             <div key={day} className="my-form-check">
@@ -40,11 +16,11 @@ const DaySelection = ({ days, onToggleDay, setDropdownOpen }) => {
                 type="checkbox"
                 id={day}
                 value={day}
-                onChange={handleEvent(day)}
-                checked={days[day]}
+                onChange={() => handleEvent(day)}
+                checked={day === "allDays" ? !Object.values(days).some(v => v) : !!days[day]}
               />
               <label className="my-label" htmlFor={day}>
-                {day === "all" ? "Any Day" : day.charAt(0).toUpperCase() + day.slice(1)}
+                {day === "allDays" ? "Any Day" : day.charAt(0).toUpperCase() + day.slice(1)}
               </label>
             </div>
           ))}
