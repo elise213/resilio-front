@@ -13,10 +13,15 @@ import Modal from "../component/Modal";
 const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
+
+  // REFS
+  const ulRef = useRef(null);
   const fetchCounterRef = useRef(0);
   const abortControllerRef = useRef(null)
-  const ulRef = useRef(null);
   const circleInstance = useRef();
+
+  // STATES
+  const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
   const [city, setCity] = useState({
     center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
@@ -29,8 +34,6 @@ const Home = () => {
     //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
     // }
   });
-
-  // STATES
   const [resources, setResources] = useState(
     store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
@@ -43,7 +46,6 @@ const Home = () => {
     youth: false,
     seniors: false,
   });
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -56,6 +58,22 @@ const Home = () => {
   const [filterByGroup, setFilterByGroup] = useState(false);
 
   // FUNCTIONS
+  const handleDontDemo = () => {
+    setFilterByGroup(!filterByGroup);
+
+    // Set all the demoIds in resources to false
+    setResources(prev => {
+      const updatedResources = { ...prev };
+      const demoIds = ["lgbtq", "women", "seniors", "youth"];
+
+      demoIds.forEach(id => {
+        updatedResources[id] = false;
+      });
+
+      return updatedResources;
+    });
+  };
+
   const toggleResource = (resourceId) => {
     setResources(prev => {
       const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
@@ -66,7 +84,6 @@ const Home = () => {
       return updatedResources;
     });
   };
-
   const toggleDay = (dayId) => {
     setDays(prev => {
       if (dayId === 'allDays') {
@@ -88,22 +105,17 @@ const Home = () => {
       };
     });
   };
-
   const toggleGroupFilter = (filterName) => {
     setGroupFilters((prev) => ({ ...prev, [filterName]: !prev[filterName] }));
   };
-
-
   const openModal = (resource) => {
     setSelectedResource(resource);
     setModalIsOpen(true);
   };
-
   const closeModal = () => {
     setSelectedResource(null);
     setModalIsOpen(false);
   };
-
   const handleAllKinds = () => {
     if (allKinds) {
       setMoreOpen(false);
@@ -118,12 +130,10 @@ const Home = () => {
     };
     checkIfAllServicesShouldBeChecked();
   };
-
   const checkIfAllServicesShouldBeChecked = () => {
     const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
     setAllKinds(!anyServiceChecked);
   };
-
   const updateData = async () => {
     if (!store.schedule) {
       actions.setSchedules();
@@ -147,11 +157,9 @@ const Home = () => {
     }
     checkIfAllServicesShouldBeChecked();
   };
-
   function clearZipInput() {
     setZipInput('');
   }
-
   const handleEvent = (day) => {
     if (day === "allDays") {
       setDropdownOpen(!dropdownOpen);
@@ -167,6 +175,11 @@ const Home = () => {
       }
       toggleDay(day);
     }
+  };
+
+  const handleDontFilterByDay = () => {
+    setDropdownOpen(!dropdownOpen);
+    handleEvent("allDays");
   };
 
   const handleZipInputChange = async (e) => {
@@ -220,18 +233,32 @@ const Home = () => {
     fetchData();
     return () => abortControllerRef.current?.abort();
   }, [boundsData, resources, days]);
-
+  useEffect(() => {
+    const handleScroll = () => {
+      if (ulRef.current) {
+        const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
+        const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10; // adjust the "10" as needed
+        setIsScrolledToEnd(atEndOfScroll);
+      }
+    };
+    if (ulRef.current) {
+      ulRef.current.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (ulRef.current) {
+        ulRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
   useEffect(() => {
     setBoundsData(city.bounds);
     checkIfAllServicesShouldBeChecked();
   }, [city, resources]);
-
   useEffect(() => {
     updateData();
   }, [
     days, resources
   ]);
-
   useEffect(() => {
     const handleResize = () => {
       console.log('Window resized!');
@@ -242,7 +269,6 @@ const Home = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
   useEffect(() => {
     let circle1
     if (circleInstance.current) {
@@ -252,7 +278,6 @@ const Home = () => {
       circle1 && circle1.destroy();
     };
   }, []);
-
   useEffect(() => {
     if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
       setIsOverflowing(true);
@@ -261,6 +286,7 @@ const Home = () => {
     }
   }, [store.boundaryResults]);
 
+  // RETURN
   return (
     <div>
       <div className="grand-container">
@@ -269,6 +295,7 @@ const Home = () => {
             <div className="question">
               <div className="circle-font" ref={circleInstance}>What Do You Need?</div>
             </div>
+            {/* SELECTION */}
             <Selection resources={resources} handleAllKinds={handleAllKinds} allKinds={allKinds} toggleResource={toggleResource} moreOpen={moreOpen} filterByGroup={filterByGroup} />
             {dropdownOpen &&
               <DaySelection
@@ -284,24 +311,29 @@ const Home = () => {
             }
           </div>
         </div>
+        {/* FILTER OPTIONS */}
         {!filterByGroup &&
           <button className="my-schedule-button" onClick={() => setFilterByGroup(!filterByGroup)}>
             Filter by Demographic
           </button>
         }
         {filterByGroup &&
-          <button className="my-schedule-button" onClick={() => setFilterByGroup(!filterByGroup)}>
+          <button className="my-schedule-button" onClick={() => handleDontDemo()
+          }>
             Don't Filter by Demographics
           </button>
         }
         {!moreOpen &&
           <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-            See More Categories
+            Filter By Category
           </button>
         }
         {moreOpen &&
-          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-            See Fewer Categories
+          <button className="my-schedule-button" onClick={() => {
+            setMoreOpen(!moreOpen);
+            handleAllKinds();
+          }}>
+            See All Categories
           </button>
         }
         {!dropdownOpen &&
@@ -312,19 +344,19 @@ const Home = () => {
         }
         {dropdownOpen &&
           <button className="my-schedule-button"
-            onClick={() => setDropdownOpen(!dropdownOpen)}>
+            onClick={handleDontFilterByDay}>
             Don't Filter By Day
           </button>
         }
         <div className="search-results-full">
-          {isOverflowing &&
-            <div className="scroll-warning">
+          {!isScrolledToEnd && isOverflowing ?
+            (<div className="scroll-warning">
               <span>
-                Scroll to see results
+                Scroll to see more
               </span>
               <i className="fa-solid fa-arrow-right"></i>
             </div>
-          }
+            ) : <p className="spacing-scroll-warning"></p>}
           <div
             className="scroll-search-results"
             style={{
@@ -356,6 +388,7 @@ const Home = () => {
               ) : ''}
             </ul>
           </div>
+          {/* MAP */}
           <div className="new-container">
             <div className="map-settings-container">
               <MapSettings setCity={setCity} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} handleZipInputChange={handleZipInputChange} />
@@ -393,5 +426,4 @@ const Home = () => {
     </div >
   );
 };
-
 export default Home;

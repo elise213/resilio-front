@@ -9,11 +9,10 @@ const DaySelection = ({
   const { store, actions } = useContext(Context);
   return (
     <div className="selection">
-      {store.daysColumns.map((column, index) => (
-        <div key={index} className="day-column">
-
-          {column.map(day => (
-            <div key={day} className="my-form-check">
+      {store.daysColumns.flatMap((column, index) =>
+        column.map(day => (
+          <div key={day} className="day-column">
+            <div className="my-form-check">
               <input
                 className="my-input2"
                 type="checkbox"
@@ -26,9 +25,9 @@ const DaySelection = ({
                 {day === "allDays" ? "Any Day" : day.charAt(0).toUpperCase() + day.slice(1)}
               </label>
             </div>
-          ))}
-        </div>
-      ))}
+          </div>
+        ))
+      )}
     </div>
   );
 };
