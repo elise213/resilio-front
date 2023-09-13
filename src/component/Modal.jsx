@@ -84,6 +84,12 @@ const Modal = (props) => {
                                 Is there a problem with this information? {""}
                                 <Link to="/Contact">Let us know</Link>
                             </p>
+                            <p>
+                                Click {""}
+                                <Link to="/create">here</Link>
+                                {""} to create a new resource listing.
+                            </p>
+
                         </div>
                     </div>
                 </div>

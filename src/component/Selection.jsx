@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Context } from "../store/appContext";
 
-const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resources }) => {
+const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resources, filterByGroup }) => {
     const { store, actions } = useContext(Context);
     return (
         <div className="selection">
@@ -28,11 +28,18 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
                 }
                 const moreOpenIds = [
                     "hygiene", "crisis", "substance", "work", "bathroom",
-                    "wifi", "mental", "sex", "legal", "lgbtq", "women", "seniors", "youth"
+                    "wifi", "mental", "sex", "legal"
+                    // , "lgbtq", "women", "seniors", "youth"
                 ];
                 if (moreOpenIds.includes(option.id) && !moreOpen) {
                     return null; // don't render the checkbox
                 }
+
+                const demoIds = ["lgbtq", "women", "seniors", "youth"];
+                if (demoIds.includes(option.id) && !filterByGroup) {
+                    return null; // don't render the checkbox
+                }
+
                 return (
                     <div className="day-column" key={option.id}>
                         <div className="my-form-check">
