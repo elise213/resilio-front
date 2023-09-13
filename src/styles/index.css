@@ -8,7 +8,7 @@ body {
   --coral: rgb(255, 123, 116);
   --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
-  --peach: rgb(253, 173, 157);
+  --peach: rgb(249, 183, 173);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #f9d783;
@@ -624,6 +624,40 @@ body.modal-open {
   background-color: var(--peach);
 }
 
+
+.my-input3 {
+  display: none;
+}
+
+.my-input3+.my-label {
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  padding-right: 7px;
+  margin-bottom: 4.5px;
+}
+
+.my-input3+.my-label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid rgb(102, 0, 255);
+  background: #fff;
+  margin: 3px 5px 0px 7px;
+}
+
+.my-input3:checked+.my-label:before {
+  background-color: rgb(193, 170, 193);
+}
+
+
+
+
+
 hr {
   border: none;
   height: 2px;
@@ -739,6 +773,7 @@ input:checked+.slider:before {
   font-weight: bold;
 }
 
+/* 
 .selection {
   min-width: 60vw !important;
   padding: 0px 0px 8px 60px;
@@ -748,6 +783,17 @@ input:checked+.slider:before {
 .DaySelectionComponentClass {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+} */
+
+.selection {
+  min-width: 60vw !important;
+  padding: 0px 0px 0px 60px;
+}
+
+.selection,
+.DaySelectionComponentClass {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .my-label {
@@ -964,7 +1010,7 @@ input:checked+.slider:before {
   }
 
   .day-column {
-    width: 90px !important;
+    width: 130px !important;
   }
 
   .scroll-search-results li {
@@ -1042,7 +1088,7 @@ input:checked+.slider:before {
 }
 
 .day-column {
-  width: 170px;
+  width: 225px;
 }
 
 .form-container {
@@ -1092,10 +1138,24 @@ input:checked+.slider:before {
   justify-content: center;
 }
 
+/* @keyframes breathe {
+  0% {
+    max-width: 120px;
+  }
+  50% {
+    max-width: 140px;
+  }
+  100% {
+    max-width: 120px;
+  }
+} */
+
 .footer-logo {
   max-width: 120px;
   margin: 50px 15px 15px 15px;
+  /* animation: breathe 35s infinite; */
 }
+
 
 .footer-insta {
   max-width: 50px;
@@ -1113,4 +1173,9 @@ input:checked+.slider:before {
   width: 200px;
   justify-content: space-around;
   margin-top: 10px;
+}
+
+/* ___ */
+.spacing-scroll-warning {
+  margin-top: 67px;
 }
