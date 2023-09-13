@@ -6,28 +6,34 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
     return (
         <div className="selection">
             {store.RESOURCE_OPTIONS.map(option => {
+
                 if (option.id === "allKinds") {
-                    return (
-                        <div className="day-column" key="allKinds">
-                            <div className="my-form-check">
-                                <input
-                                    className="my-input"
-                                    type="checkbox"
-                                    id="allKinds"
-                                    value="allKinds"
-                                    name="selection"
-                                    checked={allKinds}
-                                    onChange={handleAllKinds}
-                                />
-                                <label className="my-label" htmlFor="allKinds">
-                                    Everything
-                                </label>
+                    if (moreOpen) {
+                        return (
+                            <div className="day-column" key="allKinds">
+                                <div className="my-form-check">
+                                    <input
+                                        className="my-input"
+                                        type="checkbox"
+                                        id="allKinds"
+                                        value="allKinds"
+                                        name="selection"
+                                        checked={allKinds}
+                                        onChange={handleAllKinds}
+                                    />
+                                    <label className="my-label" htmlFor="allKinds">
+                                        Everything
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    );
+                        );
+                    } else {
+                        return null; // don't render the checkbox if moreOpen is false
+                    }
                 }
+
                 const moreOpenIds = [
-                    "hygiene", "crisis", "substance", "work", "bathroom",
+                    "allKinds", "food", "health", "shelter", "hygiene", "crisis", "substance", "work", "bathroom",
                     "wifi", "mental", "sex", "legal"
                     // , "lgbtq", "women", "seniors", "youth"
                 ];
@@ -44,7 +50,7 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
                     <div className="day-column" key={option.id}>
                         <div className="my-form-check">
                             <input
-                                className="my-input"
+                                className={demoIds.includes(option.id) ? "my-input3" : "my-input"}
                                 type="checkbox"
                                 id={option.id}
                                 value={option.id}
