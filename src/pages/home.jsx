@@ -37,6 +37,13 @@ const Home = () => {
   const [days, setDays] = useState(
     store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
+  const [groupFilters, setGroupFilters] = useState({
+    LGBTQ: false,
+    women: false,
+    youth: false,
+    seniors: false,
+  });
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -46,13 +53,9 @@ const Home = () => {
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [filterByGroup, setFilterByGroup] = useState(false);
 
   // FUNCTIONS
-  // const toggleResource = (resourceId) => {
-  //   setResources(prev => ({ ...prev, [resourceId]: !prev[resourceId] }));
-  //   checkIfAllServicesShouldBeChecked()
-  // };
-
   const toggleResource = (resourceId) => {
     setResources(prev => {
       const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
@@ -66,7 +69,6 @@ const Home = () => {
 
   const toggleDay = (dayId) => {
     setDays(prev => {
-      // If the clicked checkbox is "allDays"
       if (dayId === 'allDays') {
         return {
           ...prev,
@@ -82,10 +84,15 @@ const Home = () => {
       return {
         ...prev,
         allDays: false,  // Uncheck "allDays"
-        [dayId]: !prev[dayId]  // Toggle the clicked day
+        [dayId]: !prev[dayId]
       };
     });
   };
+
+  const toggleGroupFilter = (filterName) => {
+    setGroupFilters((prev) => ({ ...prev, [filterName]: !prev[filterName] }));
+  };
+
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -260,17 +267,43 @@ const Home = () => {
         <div className="search-container">
           <div className="what-type">
             <div className="question">
-              <div className="circle-font" ref={circleInstance}>What do you need?</div>
+              <div className="circle-font" ref={circleInstance}>What Do You Need?</div>
             </div>
-            <Selection resources={resources} handleAllKinds={handleAllKinds} allKinds={allKinds} toggleResource={toggleResource} moreOpen={moreOpen} />
+            <Selection resources={resources} handleAllKinds={handleAllKinds} allKinds={allKinds} toggleResource={toggleResource} moreOpen={moreOpen} filterByGroup={filterByGroup} />
+            {dropdownOpen &&
+              <DaySelection
+                days={days}
+                toggleDay={toggleDay}
+                dropdownOpen={dropdownOpen}
+                setDropdownOpen={setDropdownOpen}
+                allDays={days.allDays}
+                handleEvent={handleEvent}
+                setMoreOpen={setMoreOpen}
+                moreOpen={moreOpen}
+              />
+            }
           </div>
         </div>
-        {!moreOpen &&
-          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-            See More Choices
+        {!filterByGroup &&
+          <button className="my-schedule-button" onClick={() => setFilterByGroup(!filterByGroup)}>
+            Filter by Demographic
           </button>
         }
-
+        {filterByGroup &&
+          <button className="my-schedule-button" onClick={() => setFilterByGroup(!filterByGroup)}>
+            Don't Filter by Demographics
+          </button>
+        }
+        {!moreOpen &&
+          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
+            See More Categories
+          </button>
+        }
+        {moreOpen &&
+          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
+            See Fewer Categories
+          </button>
+        }
         {!dropdownOpen &&
           <button className="my-schedule-button"
             onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -278,23 +311,16 @@ const Home = () => {
           </button>
         }
         {dropdownOpen &&
-
-          <DaySelection
-            days={days}
-            toggleDay={toggleDay}
-            dropdownOpen={dropdownOpen}
-            setDropdownOpen={setDropdownOpen}
-            allDays={days.allDays}
-            handleEvent={handleEvent}
-            setMoreOpen={setMoreOpen}
-          />
+          <button className="my-schedule-button"
+            onClick={() => setDropdownOpen(!dropdownOpen)}>
+            Don't Filter By Day
+          </button>
         }
         <div className="search-results-full">
           {isOverflowing &&
-
             <div className="scroll-warning">
               <span>
-                Scroll to see more results
+                Scroll to see results
               </span>
               <i className="fa-solid fa-arrow-right"></i>
             </div>
@@ -352,7 +378,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
       {modalIsOpen && (
         <div>
           <div className="modal-overlay"></div>
