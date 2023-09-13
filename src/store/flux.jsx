@@ -326,8 +326,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
           const data = await response.json();
           setStore({ boundaryResults: data.data });
-          console.log("boundary results", data.data);
-          console.trace("Trace for boundary results");
+          // console.log("boundary results", data.data);
+          // console.trace("Trace for boundary results");
           setStore({ loading: false });
           return data.data;
         } catch (error) {
