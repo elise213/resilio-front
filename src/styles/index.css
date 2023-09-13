@@ -707,7 +707,7 @@ input:checked+.slider:before {
   font-family: "Urbanist", sans-serif !important;
   font-size: 15px;
   letter-spacing: 3px;
-  padding: 40px 10px 0px 0px;
+  padding: 40px 20px 0px 0px;
   margin: 2px;
   text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47), -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
@@ -747,6 +747,7 @@ input:checked+.slider:before {
 .my-label {
   font-family: "Urbanist", sans-serif !important;
   font-size: medium;
+  letter-spacing: 3px;
 }
 
 .tell-us {

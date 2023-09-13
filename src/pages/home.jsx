@@ -270,11 +270,7 @@ const Home = () => {
             See More Choices
           </button>
         }
-        {moreOpen &&
-          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-            See Fewer Choices
-          </button>
-        }
+
         {!dropdownOpen &&
           <button className="my-schedule-button"
             onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -290,6 +286,7 @@ const Home = () => {
             setDropdownOpen={setDropdownOpen}
             allDays={days.allDays}
             handleEvent={handleEvent}
+            setMoreOpen={setMoreOpen}
           />
         }
         <div className="search-results-full">
