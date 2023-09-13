@@ -73,7 +73,16 @@ const Home = () => {
       return updatedResources;
     });
   };
-
+  const clearAll = () => {
+    setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
+    setDays(store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
+    setGroupFilters({
+      LGBTQ: false,
+      women: false,
+      youth: false,
+      seniors: false
+    });
+  };
   const toggleResource = (resourceId) => {
     setResources(prev => {
       const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
@@ -182,37 +191,7 @@ const Home = () => {
     handleEvent("allDays");
   };
 
-  const handleZipInputChange = async (e) => {
-    const value = e.target.value;
-    if (value.length <= 5 && /^[0-9]{0,5}$/.test(value)) {
-      setZipInput(value);
-      if (value.length === 5) {
-        try {
-          const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`,
-          );
-          if (!response.ok) {
-            throw new Error("Failed to fetch data from Google Maps API");
-          }
-          const data = await response.json();
-          if (data && data.results && data.results[0] && data.results[0].geometry) {
-            const location = data.results[0].geometry.location;
-            const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport;
-            setCity({
-              center: { lat: location.lat, lng: location.lng },
-              bounds: {
-                ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
-                sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
-              }
-            });
-          }
-        } catch (error) {
-          console.error("Error while updating city center / bounds:", error.message);
-          alert("There was an issue fetching location data.");
-        }
-      }
-    }
-  };
+
 
   // USE EFFECTS
   useEffect(() => {
@@ -231,13 +210,15 @@ const Home = () => {
       }
     };
     fetchData();
+    updateData();
     return () => abortControllerRef.current?.abort();
   }, [boundsData, resources, days]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (ulRef.current) {
         const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
-        const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10; // adjust the "10" as needed
+        const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10;
         setIsScrolledToEnd(atEndOfScroll);
       }
     };
@@ -286,6 +267,10 @@ const Home = () => {
     }
   }, [store.boundaryResults]);
 
+  console.log("boundsData", boundsData);
+  console.log("resources", resources);
+  console.log("days", days);
+
   // RETURN
   return (
     <div>
@@ -333,7 +318,7 @@ const Home = () => {
             setMoreOpen(!moreOpen);
             handleAllKinds();
           }}>
-            See All Categories
+            Don't filter by Category
           </button>
         }
         {!dropdownOpen &&
@@ -391,7 +376,7 @@ const Home = () => {
           {/* MAP */}
           <div className="new-container">
             <div className="map-settings-container">
-              <MapSettings setCity={setCity} zipInput={zipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} handleZipInputChange={handleZipInputChange} />
+              <MapSettings clearAll={clearAll} updateData={updateData} setCity={setCity} zipInput={zipInput} setZipInput={setZipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
             <div className="map-and-cities">
               <SimpleMap
