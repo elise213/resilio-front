@@ -11,7 +11,7 @@ body {
   --peach: rgb(255, 152, 132);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
-  --yellow: #f9cb57;
+  --yellow: #f9d783;
   width: 100vw;
   overflow-x: hidden;
 }
@@ -471,6 +471,16 @@ body.modal-open {
   z-index: 0;
 }
 
+.scroll-warning {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: salmon;
+}
+
+.fa-arrow-right {
+  margin: 6px 0px 0px 10px;
+}
 
 .scroll-search-results ul {
   overflow-x: auto;
