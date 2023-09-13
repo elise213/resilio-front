@@ -16,6 +16,7 @@ const Home = () => {
   const fetchCounterRef = useRef(0);
   const abortControllerRef = useRef(null)
   const ulRef = useRef(null);
+  const circleInstance = useRef();
   const [city, setCity] = useState({
     center: { lat: 34.0522, lng: -118.2437 },
     bounds: {
@@ -28,7 +29,6 @@ const Home = () => {
     //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
     // }
   });
-  const circleInstance = useRef();
 
   // STATES
   const [resources, setResources] = useState(
@@ -48,10 +48,22 @@ const Home = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   // FUNCTIONS
+  // const toggleResource = (resourceId) => {
+  //   setResources(prev => ({ ...prev, [resourceId]: !prev[resourceId] }));
+  //   checkIfAllServicesShouldBeChecked()
+  // };
+
   const toggleResource = (resourceId) => {
-    setResources(prev => ({ ...prev, [resourceId]: !prev[resourceId] }));
-    checkIfAllServicesShouldBeChecked()
+    setResources(prev => {
+      const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
+      const checkIfAllServicesShouldBeChecked = (currentResources) => {
+        const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => currentResources[opt.id] && opt.id !== "allKinds");
+        setAllKinds(!anyServiceChecked);
+      };
+      return updatedResources;
+    });
   };
+
   const toggleDay = (dayId) => {
     setDays(prev => {
       // If the clicked checkbox is "allDays"
@@ -276,6 +288,16 @@ const Home = () => {
           />
         }
         <div className="search-results-full">
+          {isOverflowing ? (
+
+
+            <div className="scroll-warning">
+              <span>
+                Scroll to see more results
+              </span>
+              <i className="fa-solid fa-arrow-right"></i>
+            </div>
+          ) : ""}
           <div
             className="scroll-search-results"
             style={{
