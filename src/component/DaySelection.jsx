@@ -2,7 +2,8 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 const DaySelection = ({
   days,
-  handleEvent
+  handleEvent,
+  setMoreOpen
 }) => {
   const { store, actions } = useContext(Context);
   return (
@@ -19,6 +20,11 @@ const DaySelection = ({
                 onChange={() => handleEvent(day)}
                 checked={day === "allDays" ? !Object.values(days).some(v => v) : !!days[day]}
               />
+              {moreOpen &&
+                <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
+                  See Fewer Choices
+                </button>
+              }
               <label className="my-label" htmlFor={day}>
                 {day === "allDays" ? "Any Day" : day.charAt(0).toUpperCase() + day.slice(1)}
               </label>
