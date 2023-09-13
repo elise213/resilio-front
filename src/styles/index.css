@@ -8,7 +8,7 @@ body {
   --coral: rgb(255, 123, 116);
   --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
-  --peach: rgb(255, 152, 132);
+  --peach: rgb(253, 173, 157);
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #f9d783;
@@ -471,16 +471,29 @@ body.modal-open {
   z-index: 0;
 }
 
-.scroll-warning {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  color: salmon;
+@keyframes wiggle {
+  0% {
+    transform: translateX(-8px);
+  }
+
+  50% {
+    transform: translateX(6px);
+  }
+
+  100% {
+    transform: translateX(-8px);
+  }
 }
 
 .fa-arrow-right {
   margin: 6px 0px 0px 10px;
+  animation: wiggle 3s infinite;
+  /* Adjust the time (5s here) as per your preference */
 }
+
+/* .fa-arrow-right {
+  margin: 6px 0px 0px 10px;
+} */
 
 .scroll-search-results ul {
   overflow-x: auto;
@@ -680,10 +693,23 @@ input:checked+.slider:before {
   border: none;
   background-color: transparent;
   font-family: "Urbanist", sans-serif !important;
-  font-size: 18px;
+  font-size: 15px;
   letter-spacing: 2px;
   margin: 2px;
   color: var(--coral2)
+}
+
+.scroll-warning {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  color: var(--green);
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 15px;
+  letter-spacing: 3px;
+  padding: 40px 10px 0px 0px;
+  margin: 2px;
+  text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47), -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
 
 .my-schedule-button:hover {
@@ -832,6 +858,12 @@ input:checked+.slider:before {
 /* ______________________________________________________________SIZE < 700px */
 @media screen and (max-width: 700px) {
 
+
+  .scroll-warning {
+    justify-content: center !important;
+
+  }
+
   .description-div {
     padding: 30px 30px 0px 30px !important;
   }
@@ -907,7 +939,7 @@ input:checked+.slider:before {
     width: 105px !important;
   }
 
-  .my-schedule-button {
+  .my-schedule-button.scroll-warning {
     font-size: 15px;
   }
 
@@ -919,11 +951,6 @@ input:checked+.slider:before {
 /* ______________________________________________________________SIZE < 420px */
 
 @media screen and (max-width: 420px) {
-
-  .my-schedule-button {
-    font-size: 14px;
-  }
-
   .my-resource-card {
     min-width: 25vw !important;
     height: 200px;

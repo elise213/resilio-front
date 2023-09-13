@@ -147,14 +147,14 @@ const Home = () => {
 
   const handleEvent = (day) => {
     if (day === "allDays") {
+      setDropdownOpen(!dropdownOpen);
       Object.keys(days).forEach(d => {
         if (days[d]) {
           toggleDay(d);
         }
       });
     } else {
-      // If any other day is selected while "Any Day" is already selected
-      // then deselect "Any Day"
+      // If any other day is selected while "Any Day" is already selected, then deselect "Any Day"
       if (days["allDays"]) {
         toggleDay("allDays");
       }
@@ -267,7 +267,12 @@ const Home = () => {
         </div>
         {!moreOpen &&
           <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-            See More Resources
+            See More Choices
+          </button>
+        }
+        {moreOpen &&
+          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
+            See Fewer Choices
           </button>
         }
         {!dropdownOpen &&
@@ -288,8 +293,7 @@ const Home = () => {
           />
         }
         <div className="search-results-full">
-          {isOverflowing ? (
-
+          {isOverflowing &&
 
             <div className="scroll-warning">
               <span>
@@ -297,7 +301,7 @@ const Home = () => {
               </span>
               <i className="fa-solid fa-arrow-right"></i>
             </div>
-          ) : ""}
+          }
           <div
             className="scroll-search-results"
             style={{
