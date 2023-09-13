@@ -91,12 +91,10 @@ const Create = () => {
 
     function handleSubmit(e) {
         e.preventDefault();
-
         const modifiedFormData = {
             ...formData,
             category: formData.category.join(", ")
         };
-
         actions.createResource(modifiedFormData);
         alert("Resource Created");
         resetForm();
