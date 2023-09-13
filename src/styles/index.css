@@ -299,6 +299,9 @@ body {
 
 .footer {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* _________________________________________MODAL */
@@ -366,8 +369,12 @@ body {
 .modal-footer {
   border: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
   height: 80px;
+  width: 100%;
+  flex-wrap: nowrap;
+  margin-top: 40px;
 }
 
 .modal-title {
@@ -487,13 +494,8 @@ body.modal-open {
 
 .fa-arrow-right {
   margin: 6px 0px 0px 10px;
-  animation: wiggle 3s infinite;
-  /* Adjust the time (5s here) as per your preference */
+  animation: wiggle 5s infinite;
 }
-
-/* .fa-arrow-right {
-  margin: 6px 0px 0px 10px;
-} */
 
 .scroll-search-results ul {
   overflow-x: auto;
@@ -571,7 +573,7 @@ body.modal-open {
 
 .my-input+.my-label {
   position: relative;
-  padding-left: 25px;
+  padding-left: 30px;
   cursor: pointer;
   padding-right: 7px;
 }
@@ -599,7 +601,7 @@ body.modal-open {
 
 .my-input2+.my-label {
   position: relative;
-  padding-left: 25px;
+  padding-left: 30px;
   cursor: pointer;
   padding-right: 7px;
   margin-bottom: 4.5px;
@@ -707,7 +709,7 @@ input:checked+.slider:before {
   font-family: "Urbanist", sans-serif !important;
   font-size: 15px;
   letter-spacing: 3px;
-  padding: 40px 10px 0px 0px;
+  padding: 40px 20px 0px 0px;
   margin: 2px;
   text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47), -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
@@ -728,14 +730,18 @@ input:checked+.slider:before {
   flex-direction: column;
 }
 
+.gm-style-cc {
+  display: none;
+}
+
 .question {
-  font-size: x-large;
+  font-size: xx-large;
   font-weight: bold;
 }
 
 .selection {
   min-width: 60vw !important;
-  padding: 8px 0px 8px 60px;
+  padding: 0px 0px 8px 60px;
 }
 
 .selection,
@@ -747,6 +753,7 @@ input:checked+.slider:before {
 .my-label {
   font-family: "Urbanist", sans-serif !important;
   font-size: medium;
+  letter-spacing: 3px;
 }
 
 .tell-us {
@@ -928,7 +935,7 @@ input:checked+.slider:before {
   }
 
   .modal-footer p {
-    font-size: small;
+    font-size: medium;
   }
 
   .resource-card-text {
@@ -1075,4 +1082,35 @@ input:checked+.slider:before {
 .locating-message {
   color: var(--coral2);
   font-family: "Urbanist", sans-serif;
+}
+
+/* Footer */
+.legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-logo {
+  max-width: 120px;
+  margin: 50px 15px 15px 15px;
+}
+
+.footer-insta {
+  max-width: 50px;
+  margin: 10px 15px 0px 0px;
+}
+
+.footer-twitter {
+  max-width: 45px;
+  max-height: 45px;
+  margin: 10px 15px 0px 0px;
+}
+
+.socials {
+  display: flex;
+  width: 200px;
+  justify-content: space-around;
+  margin-top: 10px;
 }

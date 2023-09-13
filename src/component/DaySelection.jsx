@@ -2,13 +2,16 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 const DaySelection = ({
   days,
-  handleEvent
+  handleEvent,
+  setMoreOpen,
+  moreOpen
 }) => {
   const { store, actions } = useContext(Context);
   return (
     <div className="selection">
       {store.daysColumns.map((column, index) => (
         <div key={index} className="day-column">
+
           {column.map(day => (
             <div key={day} className="my-form-check">
               <input
