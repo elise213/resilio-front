@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export const ResourceCard = (props) => {
+const ResourceCard = (props) => {
 
   useEffect(() => {
     if (props.modalIsOpen) {
@@ -86,3 +86,5 @@ export const ResourceCard = (props) => {
     </div>
   );
 }
+
+export default ResourceCard;
