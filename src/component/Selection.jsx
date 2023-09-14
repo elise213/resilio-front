@@ -6,7 +6,6 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
     return (
         <div className="selection">
             {store.RESOURCE_OPTIONS.map(option => {
-
                 if (option.id === "allKinds") {
                     if (moreOpen) {
                         return (
@@ -35,15 +34,14 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
                 const moreOpenIds = [
                     "allKinds", "food", "health", "shelter", "hygiene", "crisis", "substance", "work", "bathroom",
                     "wifi", "mental", "sex", "legal"
-                    // , "lgbtq", "women", "seniors", "youth"
                 ];
                 if (moreOpenIds.includes(option.id) && !moreOpen) {
-                    return null; // don't render the checkbox
+                    return null;
                 }
 
                 const demoIds = ["lgbtq", "women", "seniors", "youth"];
                 if (demoIds.includes(option.id) && !filterByGroup) {
-                    return null; // don't render the checkbox
+                    return null;
                 }
 
                 return (

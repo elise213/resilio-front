@@ -31,20 +31,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       when: [],
       dummydata: [],
       schedules: [],
-      noResults: {
-        "id": 9999,
-        "name": "No Results",
-        "address": "",
-        "phone": "",
-        "category": "",
-        "website": "",
-        "description": "",
-        "latitude": "",
-        "longitude": "",
-        "image": "",
-        "image2": "",
-        "logo": ""
-      },
       daysColumns: [
         ["monday", "tuesday"],
         ["wednesday", "thursday"],
@@ -300,7 +286,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           controller.abort();
         };
       },
-
 
       setBoundaryResults: async (bounds, resources, days) => {
         const abortController = new AbortController();
