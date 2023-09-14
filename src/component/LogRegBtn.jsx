@@ -294,4 +294,5 @@ const LogRegBtn = () => {
     </div>
   );
 };
+
 export default LogRegBtn;

@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-import { Footer } from "./component/footer";
+import Footer from "./component/footer";
 import Resource from "./pages/Resource";
 import Home from "./pages/home";
 import Donate from "./pages/Donate";
-import { Contact } from "./pages/Contact";
+import Contact from "./pages/Contact";
 import Create from "./pages/Create";
 import injectContext from "./store/appContext";
-import { Navbar } from "./component/navbar";
+import Navbar from "./component/navbar";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";

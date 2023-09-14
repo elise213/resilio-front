@@ -1,14 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { SimpleMap } from "../component/SimpleMap";
-import Selection from "../component/Selection";
-import { NoResults } from "../component/NoResults";
-import { Loading } from "../component/Loading";
-import { ResourceCard } from "../component/ResourceCard";
-import DaySelection from "../component/DaySelection";
-import MapSettings from "../component/MapSettings";
+import { SimpleMap, Selection, Loading, ResourceCard, DaySelection, MapSettings, Modal } from "../component";
 import CircleType from "circletype";
-import Modal from "../component/Modal";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -21,6 +14,7 @@ const Home = () => {
   const circleInstance = useRef();
 
   // STATES
+  const [isLocating, setIsLocating] = useState(false);
   const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
   const [city, setCity] = useState({
     center: { lat: 34.0522, lng: -118.2437 },
@@ -73,6 +67,7 @@ const Home = () => {
       return updatedResources;
     });
   };
+
   const clearAll = () => {
     setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
     setDays(store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
@@ -83,16 +78,14 @@ const Home = () => {
       seniors: false
     });
   };
+
   const toggleResource = (resourceId) => {
     setResources(prev => {
       const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
-      const checkIfAllServicesShouldBeChecked = (currentResources) => {
-        const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => currentResources[opt.id] && opt.id !== "allKinds");
-        setAllKinds(!anyServiceChecked);
-      };
       return updatedResources;
     });
   };
+
   const toggleDay = (dayId) => {
     setDays(prev => {
       if (dayId === 'allDays') {
@@ -113,18 +106,23 @@ const Home = () => {
         [dayId]: !prev[dayId]
       };
     });
+    checkForAllServices();
   };
+
   const toggleGroupFilter = (filterName) => {
     setGroupFilters((prev) => ({ ...prev, [filterName]: !prev[filterName] }));
   };
+
   const openModal = (resource) => {
     setSelectedResource(resource);
     setModalIsOpen(true);
   };
+
   const closeModal = () => {
     setSelectedResource(null);
     setModalIsOpen(false);
   };
+
   const handleAllKinds = () => {
     if (allKinds) {
       setMoreOpen(false);
@@ -137,12 +135,14 @@ const Home = () => {
       }, {});
       setResources(updatedResources);
     };
-    checkIfAllServicesShouldBeChecked();
+    checkForAllServices();
   };
-  const checkIfAllServicesShouldBeChecked = () => {
+
+  const checkForAllServices = () => {
     const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
     setAllKinds(!anyServiceChecked);
   };
+
   const updateData = async () => {
     if (!store.schedule) {
       actions.setSchedules();
@@ -164,11 +164,14 @@ const Home = () => {
       fetchData();
       return () => abortControllerRef.current?.abort();
     }
-    checkIfAllServicesShouldBeChecked();
+    checkForAllServices();
   };
+
   function clearZipInput() {
     setZipInput('');
+    checkForAllServices();
   }
+
   const handleEvent = (day) => {
     if (day === "allDays") {
       setDropdownOpen(!dropdownOpen);
@@ -178,7 +181,6 @@ const Home = () => {
         }
       });
     } else {
-      // If any other day is selected while "Any Day" is already selected, then deselect "Any Day"
       if (days["allDays"]) {
         toggleDay("allDays");
       }
@@ -191,8 +193,6 @@ const Home = () => {
     handleEvent("allDays");
   };
 
-
-
   // USE EFFECTS
   useEffect(() => {
     abortControllerRef.current?.abort();
@@ -201,7 +201,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         if (currentFetchCount === fetchCounterRef.current) {
-          if (days && boundsData) {
+          if (resources && days && boundsData) {
             await actions.setBoundaryResults(boundsData, resources, days);
           }
         }
@@ -210,9 +210,9 @@ const Home = () => {
       }
     };
     fetchData();
-    updateData();
     return () => abortControllerRef.current?.abort();
-  }, [boundsData, resources, days]);
+  }, [boundsData, resources, days, city]);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -231,25 +231,29 @@ const Home = () => {
       }
     };
   }, []);
-  useEffect(() => {
-    setBoundsData(city.bounds);
-    checkIfAllServicesShouldBeChecked();
-  }, [city, resources]);
+
+
   useEffect(() => {
     updateData();
-  }, [
-    days, resources
-  ]);
+  }, [days, resources, city]);
+
+
+  useEffect(() => {
+    setBoundsData(city.bounds);
+  }, [boundsData]);
+
+
   useEffect(() => {
     const handleResize = () => {
       console.log('Window resized!');
-      checkIfAllServicesShouldBeChecked();
+      checkForAllServices();
     };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
   useEffect(() => {
     let circle1
     if (circleInstance.current) {
@@ -259,6 +263,7 @@ const Home = () => {
       circle1 && circle1.destroy();
     };
   }, []);
+
   useEffect(() => {
     if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
       setIsOverflowing(true);
@@ -267,9 +272,6 @@ const Home = () => {
     }
   }, [store.boundaryResults]);
 
-  console.log("boundsData", boundsData);
-  console.log("resources", resources);
-  console.log("days", days);
 
   // RETURN
   return (
@@ -355,9 +357,11 @@ const Home = () => {
               }}
               ref={ulRef}
             >
-              {store.boundaryResults.length === 0 && !store.loading ? (<li><NoResults /></li>) : ''}
-              {store.loading ? (<li><Loading /></li>) : ''}
-              {!store.loading ? (
+              {store.boundaryResults.length === 0 && !store.loading && !isLocating ? (<li><Loading name="none" /></li>) : ''}
+              {isLocating ? (<li><Loading name="locating" /></li>) : ""}
+              {store.loading ? (<li><Loading name="loading" /></li>) : ''}
+
+              {!store.loading && !isLocating ? (
                 store.boundaryResults.map((result, i) => (
                   <li key={i}>
                     <ResourceCard
@@ -376,7 +380,7 @@ const Home = () => {
           {/* MAP */}
           <div className="new-container">
             <div className="map-settings-container">
-              <MapSettings clearAll={clearAll} updateData={updateData} setCity={setCity} zipInput={zipInput} setZipInput={setZipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
+              <MapSettings setIsLocating={setIsLocating} checkForAllServices={checkForAllServices} city={city} clearAll={clearAll} updateData={updateData} setCity={setCity} zipInput={zipInput} setZipInput={setZipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
             <div className="map-and-cities">
               <SimpleMap

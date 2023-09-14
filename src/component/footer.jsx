@@ -4,7 +4,7 @@ import AliveLogo from "/assets/RESILIOO.png"
 import Insta from "/assets/insta.png"
 import Twitter from "/assets/twitter.png"
 
-export const Footer = () => (
+const Footer = () => (
   <footer className="footer">
     <img className="footer-logo" src={AliveLogo} alt="Resilio Logo" />
     {/* <div className="socials">
@@ -24,3 +24,4 @@ export const Footer = () => (
     </div>
   </footer >
 );
+export default Footer;

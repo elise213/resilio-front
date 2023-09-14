@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 // import LogRegBtn from "./LogRegBtn";
 import AliveLogo from "/assets/RESILIOO.png"
 
-export const Navbar = () => {
+const Navbar = () => {
   const { store, actions } = useContext(Context);
   // const token = sessionStorage.getItem("token");
   // let is_org = sessionStorage.getItem("is_org");
@@ -112,3 +112,5 @@ export const Navbar = () => {
     </nav >
   );
 };
+
+export default Navbar;
