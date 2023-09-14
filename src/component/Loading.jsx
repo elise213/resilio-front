@@ -9,13 +9,22 @@ const Loading = ({ name }) => {
             <div>
                 <div className="resource-card-header">
                     {name === "locating" ? (
-                        <div className="card-title-div">
-                            <i className="fa-solid fa-bullseye"></i> Locating <i className="fa-solid fa-bullseye"></i>
+                        <div className="">
+                            <p>
+                                <i className="fa-solid fa-bullseye"></i>
+                                Finding Your Location...
+                                {/* <i className="fa-solid fa-bullseye"></i> */}
+                            </p>
+                            <p>
+                                Please Wait
+                            </p>
                         </div>) : ""
                     }
                     {name === "loading" ? (
-                        <div className="card-title-div">
-                            ...Loading...
+                        <div className="">
+                            <p>
+                                Loading Resources...
+                            </p>
                         </div>) : ""
                     }
                     {name === "none" ? (
