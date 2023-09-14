@@ -2,9 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 
-export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setCity, zipInput, clearZipInput, resources }) => {
+const SimpleMap = ({
+  openModal,
+  filterByBounds,
+  setBoundsData,
+  city,
+  setCity,
+  zipInput,
+  clearZipInput,
+  resources
+}) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
+
   const normalizeBounds = (bounds) => {
     if (bounds) {
       return ({
@@ -140,3 +150,5 @@ export const SimpleMap = ({ openModal, filterByBounds, setBoundsData, city, setC
     </div>
   );
 };
+
+export default SimpleMap;

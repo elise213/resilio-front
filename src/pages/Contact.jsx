@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
-
-export const Contact = () => {
+const Contact = () => {
     const form = useRef();
     const SERVICE_ID = "service_0hip2bt";
     const TEMPLATE_ID = "template_u7nitmj";
@@ -101,13 +100,4 @@ export const Contact = () => {
     );
 };
 
-
-{/* <label>Email</label>
-            <input type="email" name="user_email" />
-            <label>Phone</label>
-            <input type="text" name="user_phone" />
-            <label>Message</label>
-            <textarea name="message" />
-            <input type="submit" value="Send" />
-        </form>
-    </div> */}
+export default Contact;
