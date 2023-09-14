@@ -67,6 +67,6 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
             })}
         </div>
     )
-}
+};
 
-export default Selection
+export default Selection;

@@ -1,8 +1,22 @@
 import React, { useState } from "react";
+const MapSettings = ({ setIsLocating, city, setCity, zipInput, updateData, clearAll, setZipInput, checkForAllServices }) => {
 
-const MapSettings = ({ setCity, zipInput, updateData, clearAll, setZipInput }) => {
-    const [isLocating, setIsLocating] = useState(false);
     const apiKey = import.meta.env.VITE_GOOGLE;
+
+    const fetchGeoData = async (url) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Failed to fetch data from Google Maps API");
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Error:", error.message);
+            alert("There was an issue fetching location data.");
+            throw error; // Re-throw to allow further catch blocks to handle it
+        }
+    };
+
     const handleZipInputChange = async (e) => {
         const value = e.target.value;
         if (value.length <= 5 && /^[0-9]{0,5}$/.test(value)) {
@@ -10,38 +24,31 @@ const MapSettings = ({ setCity, zipInput, updateData, clearAll, setZipInput }) =
             if (value.length === 5) {
                 clearAll();
                 try {
-                    const response = await fetch(
-                        `https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`,
-                    );
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch data from Google Maps API");
-                    }
-                    const data = await response.json();
-                    if (data && data.results && data.results[0] && data.results[0].geometry) {
-                        const location = data.results[0].geometry.location;
-                        const bounds = data.results[0].geometry.bounds || data.results[0].geometry.viewport;
+                    const data = await fetchGeoData(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${apiKey}`);
+                    const location = data?.results?.[0]?.geometry?.location;
+                    const bounds = data?.results?.[0]?.geometry?.bounds || data?.results?.[0]?.geometry?.viewport;
+
+                    if (location && bounds) {
                         setCity({
-                            center: { lat: location.lat, lng: location.lng },
+                            center: location,
                             bounds: {
-                                ne: { lat: bounds.northeast.lat, lng: bounds.northeast.lng },
-                                sw: { lat: bounds.southwest.lat, lng: bounds.southwest.lng }
+                                ne: bounds.northeast,
+                                sw: bounds.southwest
                             }
                         });
+                        checkForAllServices();
+                        updateData();
                     }
                 } catch (error) {
                     console.error("Error while updating city center / bounds:", error.message);
-                    alert("There was an issue fetching location data.");
                 }
-                // updateData();
             }
         }
     };
 
     const updateCityCenterAndBounds = async (lat, lng) => {
         try {
-            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
-            const data = await response.json();
-
+            const data = await fetchGeoData(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
             const location = data?.results?.[0]?.geometry?.location;
             const bounds = data?.results?.[0]?.geometry?.bounds || data?.results?.[0]?.geometry?.viewport;
 
@@ -64,8 +71,6 @@ const MapSettings = ({ setCity, zipInput, updateData, clearAll, setZipInput }) =
 
     const geoFindMe = async () => {
         setIsLocating(true);
-        clearAll();
-
         handleZipInputChange({ target: { value: '' } });
 
         const success = (position) => {
@@ -84,19 +89,10 @@ const MapSettings = ({ setCity, zipInput, updateData, clearAll, setZipInput }) =
         } else {
             navigator.geolocation.getCurrentPosition(success, error);
         }
-        // TEST
-        updateData();
     };
 
     return (
         <div className="map-settings">
-            <div>
-                {isLocating && (
-                    <div className="locating-message">
-                        <i className="fa-solid fa-bullseye"></i> Locating <i className="fa-solid fa-bullseye"></i>
-                    </div>
-                )}
-            </div>
             <div className="map-settings-buttons">
                 <button className="geo-button" onClick={geoFindMe}>
                     Find Location
@@ -116,5 +112,4 @@ const MapSettings = ({ setCity, zipInput, updateData, clearAll, setZipInput }) =
         </div>
     );
 };
-
 export default MapSettings;

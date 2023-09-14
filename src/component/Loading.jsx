@@ -1,19 +1,35 @@
 import React from "react";
-export const Loading = () => {
+
+const Loading = ({ name }) => {
+
+    console.log("name", name);
+
     return (
         <div className="my-resource-card" >
             <div>
                 <div className="resource-card-header">
-                    <div className="card-title-div">
-                        <p className="resource-title">Loading</p>
+                    {name === "locating" ? (
+                        <div className="card-title-div">
+                            <i className="fa-solid fa-bullseye"></i> Locating <i className="fa-solid fa-bullseye"></i>
+                        </div>) : ""
+                    }
+                    {name === "loading" ? (
+                        <div className="card-title-div">
+                            ...Loading...
+                        </div>) : ""
+                    }
+                    {name === "none" ? (
                         <div>
-                            <i className="fa-solid fa-bullseye" />
+                            <p>
+                                No Results
+                            </p>
                         </div>
-                    </div>
-                </div>
-                <div className="card-image-container">
+                    ) : ""
+                    }
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
+
+export default Loading;
