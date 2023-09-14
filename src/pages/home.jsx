@@ -205,6 +205,7 @@ const Home = () => {
       }
     };
     fetchData();
+
     return () => abortControllerRef.current?.abort();
   },
     // []);
