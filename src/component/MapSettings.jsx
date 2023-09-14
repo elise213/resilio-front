@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const MapSettings = ({ setIsLocating, city, setCity, zipInput, updateData, clearAll, setZipInput, checkForAllServices }) => {
+const MapSettings = ({ setIsLocating, setCity, zipInput, updateData, clearAll, setZipInput, }) => {
 
     const apiKey = import.meta.env.VITE_GOOGLE;
 
@@ -36,8 +36,6 @@ const MapSettings = ({ setIsLocating, city, setCity, zipInput, updateData, clear
                                 sw: bounds.southwest
                             }
                         });
-                        checkForAllServices();
-                        updateData();
                     }
                 } catch (error) {
                     console.error("Error while updating city center / bounds:", error.message);

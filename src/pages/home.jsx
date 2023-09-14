@@ -54,16 +54,12 @@ const Home = () => {
   // FUNCTIONS
   const handleDontDemo = () => {
     setFilterByGroup(!filterByGroup);
-
-    // Set all the demoIds in resources to false
     setResources(prev => {
       const updatedResources = { ...prev };
       const demoIds = ["lgbtq", "women", "seniors", "youth"];
-
       demoIds.forEach(id => {
         updatedResources[id] = false;
       });
-
       return updatedResources;
     });
   };
@@ -106,12 +102,11 @@ const Home = () => {
         [dayId]: !prev[dayId]
       };
     });
-    checkForAllServices();
   };
 
-  const toggleGroupFilter = (filterName) => {
-    setGroupFilters((prev) => ({ ...prev, [filterName]: !prev[filterName] }));
-  };
+  // const toggleGroupFilter = (filterName) => {
+  //   setGroupFilters((prev) => ({ ...prev, [filterName]: !prev[filterName] }));
+  // };
 
   const openModal = (resource) => {
     setSelectedResource(resource);
@@ -135,13 +130,9 @@ const Home = () => {
       }, {});
       setResources(updatedResources);
     };
-    checkForAllServices();
   };
 
-  const checkForAllServices = () => {
-    const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
-    setAllKinds(!anyServiceChecked);
-  };
+
 
   const updateData = async () => {
     if (!store.schedule) {
@@ -164,12 +155,10 @@ const Home = () => {
       fetchData();
       return () => abortControllerRef.current?.abort();
     }
-    checkForAllServices();
   };
 
   function clearZipInput() {
     setZipInput('');
-    checkForAllServices();
   }
 
   const handleEvent = (day) => {
@@ -195,6 +184,12 @@ const Home = () => {
 
   // USE EFFECTS
   useEffect(() => {
+    const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
+    setAllKinds(!anyServiceChecked);
+  }, [resources]);
+
+
+  useEffect(() => {
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
     const currentFetchCount = ++fetchCounterRef.current;
@@ -210,8 +205,11 @@ const Home = () => {
       }
     };
     fetchData();
+
     return () => abortControllerRef.current?.abort();
-  }, [boundsData, resources, days, city]);
+  },
+    // []);
+    [boundsData, resources, days, city]);
 
 
   useEffect(() => {
@@ -242,11 +240,9 @@ const Home = () => {
     setBoundsData(city.bounds);
   }, [boundsData]);
 
-
   useEffect(() => {
     const handleResize = () => {
       console.log('Window resized!');
-      checkForAllServices();
     };
     window.addEventListener('resize', handleResize);
     return () => {
@@ -380,7 +376,7 @@ const Home = () => {
           {/* MAP */}
           <div className="new-container">
             <div className="map-settings-container">
-              <MapSettings setIsLocating={setIsLocating} checkForAllServices={checkForAllServices} city={city} clearAll={clearAll} updateData={updateData} setCity={setCity} zipInput={zipInput} setZipInput={setZipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
+              <MapSettings setIsLocating={setIsLocating} clearAll={clearAll} updateData={updateData} setCity={setCity} zipInput={zipInput} setZipInput={setZipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
             </div>
             <div className="map-and-cities">
               <SimpleMap
