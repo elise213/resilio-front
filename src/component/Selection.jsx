@@ -21,7 +21,7 @@ const Selection = ({ handleAllKinds, allKinds, toggleResource, moreOpen, resourc
                                         onChange={handleAllKinds}
                                     />
                                     <label className="my-label" htmlFor="allKinds">
-                                        Everything
+                                        All Resources
                                     </label>
                                 </div>
                             </div>

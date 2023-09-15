@@ -1,40 +1,53 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { SimpleMap, Selection, Loading, ResourceCard, DaySelection, MapSettings, Modal } from "../component";
+import {
+  SimpleMap,
+  Selection,
+  Loading,
+  ResourceCard,
+  DaySelection,
+  MapSettings,
+  Modal
+} from "../component";
 import CircleType from "circletype";
+
+const INITIAL_CITY_STATE = {
+  center: { lat: 34.0522, lng: -118.2437 },
+  bounds: {
+    ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
+    sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
+  }
+};
+
+const INITIAL_RESOURCE_STATE = (RESOURCE_OPTIONS) =>
+  RESOURCE_OPTIONS.reduce((acc, curr) => {
+    return { ...acc, [curr.id]: false };
+  }, {});
+
+
+
+const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
+  DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
 const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
 
   // REFS
+  const wasAllKindsClickedRef = useRef(false);
   const ulRef = useRef(null);
   const fetchCounterRef = useRef(0);
-  const abortControllerRef = useRef(null)
+  const abortControllerRef = useRef(null);
   const circleInstance = useRef();
 
   // STATES
+  const [city, setCity] = useState(INITIAL_CITY_STATE);
+  const [resources, setResources] = useState(INITIAL_RESOURCE_STATE(store.RESOURCE_OPTIONS));
+  const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
   const [isLocating, setIsLocating] = useState(false);
   const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
-  const [city, setCity] = useState({
-    center: { lat: 34.0522, lng: -118.2437 },
-    bounds: {
-      ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
-      sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
-    }
-    // center: { lat: 30.266666, lng: -97.733330 },
-    // bounds: {
-    //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
-    //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
-    // }
-  });
-  const [resources, setResources] = useState(
-    store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
-  );
-  const [days, setDays] = useState(
-    store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
-  );
-  const [groupFilters, setGroupFilters] = useState({
+
+  const [demographics, setDemographics] = useState({
     LGBTQ: false,
     women: false,
     youth: false,
@@ -46,10 +59,10 @@ const Home = () => {
   const [selectedResource, setSelectedResource] = useState(null);
   const [allKinds, setAllKinds] = useState(true);
   const [filterByBounds, setFilterByBounds] = useState(true);
+  const [filterByGroup, setFilterByGroup] = useState(false);
   const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
   const [isOverflowing, setIsOverflowing] = useState(false);
-  const [filterByGroup, setFilterByGroup] = useState(false);
 
   // FUNCTIONS
   const handleDontDemo = () => {
@@ -67,7 +80,7 @@ const Home = () => {
   const clearAll = () => {
     setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
     setDays(store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
-    setGroupFilters({
+    setDemographics({
       LGBTQ: false,
       women: false,
       youth: false,
@@ -104,10 +117,6 @@ const Home = () => {
     });
   };
 
-  // const toggleGroupFilter = (filterName) => {
-  //   setGroupFilters((prev) => ({ ...prev, [filterName]: !prev[filterName] }));
-  // };
-
   const openModal = (resource) => {
     setSelectedResource(resource);
     setModalIsOpen(true);
@@ -119,19 +128,11 @@ const Home = () => {
   };
 
   const handleAllKinds = () => {
-    if (allKinds) {
-      setMoreOpen(false);
-    }
     if (!allKinds) {
       setAllKinds(prevAllKinds => !prevAllKinds);
-      const updatedResources = Object.keys(resources).reduce((acc, key) => {
-        acc[key] = false;
-        return acc;
-      }, {});
-      setResources(updatedResources);
+      setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
     };
   };
-
 
 
   const updateData = async () => {
@@ -183,6 +184,14 @@ const Home = () => {
   };
 
   // USE EFFECTS
+
+  // useEffect(() => {
+  //   const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
+  //   setAllKinds(!anyServiceChecked);
+  //   console.log('anyServiceChecked', anyServiceChecked);
+  //   console.log('resources', resources);
+  // }, [resources]);
+
   useEffect(() => {
     const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
     setAllKinds(!anyServiceChecked);
@@ -240,25 +249,15 @@ const Home = () => {
     setBoundsData(city.bounds);
   }, [boundsData]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      console.log('Window resized!');
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    let circle1
-    if (circleInstance.current) {
-      circle1 = new CircleType(circleInstance.current).radius(500)
-    };
-    return () => {
-      circle1 && circle1.destroy();
-    };
-  }, []);
+  // useEffect(() => {
+  //   let circle1
+  //   if (circleInstance.current) {
+  //     circle1 = new CircleType(circleInstance.current).radius(500)
+  //   };
+  //   return () => {
+  //     circle1 && circle1.destroy();
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
@@ -267,7 +266,6 @@ const Home = () => {
       setIsOverflowing(false);
     }
   }, [store.boundaryResults]);
-
 
   // RETURN
   return (
