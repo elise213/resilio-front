@@ -1,9 +1,6 @@
 import React from "react";
 
 const Loading = ({ name }) => {
-
-    console.log("name", name);
-
     return (
         <div className="my-resource-card" >
             <div>

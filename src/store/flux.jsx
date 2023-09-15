@@ -19,6 +19,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         "fas fa-user-secret",
         "fas fa-hippo",
       ],
+      austin: [
+        // center: { lat: 30.266666, lng: -97.733330 },
+        // bounds: {
+        //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
+        //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
+        // }
+      ],
       favorites: [],
       favoriteOfferings: [],
       searchResults: [],
@@ -38,7 +45,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         ["sunday", "allDays"]
       ],
       RESOURCE_OPTIONS: [
-        { id: "allKinds", label: "All Resources" },
         { id: "food", label: "Food" },
         { id: "health", label: "Medical Care" },
         { id: "shelter", label: "Shelter" },
@@ -314,6 +320,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           setStore({ boundaryResults: data.data });
           setStore({ loading: false });
+          console.log("bounds resources days", bounds, resources, days);
           console.log("boundary results", data.data);
           console.trace("Trace for boundary results");
           console.log("resources", resources);
