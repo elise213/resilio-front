@@ -12,6 +12,11 @@ import {
 import CircleType from "circletype";
 
 const INITIAL_CITY_STATE = {
+  // center: { lat: 24.681678475660995, lng: 84.99154781534179 },
+  // bounds: {
+  //   ne: { lat: 25.0, lng: 85.2 },
+  //   sw: { lat: 24.4, lng: 84.8 }
+  // }
   center: { lat: 34.0522, lng: -118.2437 },
   bounds: {
     ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
@@ -23,8 +28,6 @@ const INITIAL_RESOURCE_STATE = (RESOURCE_OPTIONS) =>
   RESOURCE_OPTIONS.reduce((acc, curr) => {
     return { ...acc, [curr.id]: false };
   }, {});
-
-
 
 const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
   DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
@@ -101,7 +104,6 @@ const Home = () => {
         return {
           ...prev,
           allDays: !prev.allDays,
-          // Reset all other days to false
           ...store.DAY_OPTIONS.reduce((acc, currDay) => {
             if (currDay.id !== 'allDays') acc[currDay.id] = false;
             return acc;
@@ -134,7 +136,6 @@ const Home = () => {
     };
   };
 
-
   const updateData = async () => {
     if (!store.schedule) {
       actions.setSchedules();
@@ -147,6 +148,7 @@ const Home = () => {
         try {
           if (currentFetchCount === fetchCounterRef.current) {
             if (days && boundsData) {
+              console.log("home setting boundary 150: ", resources);
               await actions.setBoundaryResults(boundsData, resources, days);
             }
           }
@@ -184,13 +186,6 @@ const Home = () => {
   };
 
   // USE EFFECTS
-
-  // useEffect(() => {
-  //   const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
-  //   setAllKinds(!anyServiceChecked);
-  //   console.log('anyServiceChecked', anyServiceChecked);
-  //   console.log('resources', resources);
-  // }, [resources]);
 
   useEffect(() => {
     const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");

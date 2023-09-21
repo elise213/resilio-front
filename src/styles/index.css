@@ -247,55 +247,7 @@ body {
   margin-left: 20px;
 }
 
-/* _____________________________________________________________NAVBAR / FOOTER*/
-.navbar {
-  width: 100%;
-  top: 0;
-  padding: 10px;
-  font-family: "Urbanist", sans-serif;
-  background-color: transparent;
-  color: black;
-}
-
-.nav-btn {
-  font-family: "Urbanist", sans-serif;
-  font-size: 20px;
-  color: black !important;
-}
-
-.navbar-toggler {
-  color: salmon;
-}
-
-.navbar-toggler-icon {
-  color: rgb(170, 255, 192);
-  font-size: xx-large;
-}
-
-.active {
-  text-decoration: underline wavy lightgreen !important;
-}
-
-.nav-btn:hover {
-  color: rgb(170, 255, 192);
-  cursor: pointer;
-}
-
-.navbar-logo:hover {
-  cursor: pointer;
-}
-
-.navbar-logo {
-  width: 30vw;
-  max-width: 220px;
-  margin: 15px 0px 0px 15px;
-}
-
-.nav-profile-icon {
-  font-size: xx-large;
-  margin-left: 5px;
-  color: black;
-}
+/* _____________________________________________________________FOOTER*/
 
 .footer {
   padding: 20px;
@@ -533,12 +485,7 @@ body.modal-open {
 }
 
 /* _____________________________________________________________Selection-*/
-.my-navbar-items {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-}
+
 
 .search-results-full {
   flex-direction: column;
@@ -653,10 +600,6 @@ body.modal-open {
 .my-input3:checked+.my-label:before {
   background-color: rgb(193, 170, 193);
 }
-
-
-
-
 
 hr {
   border: none;
@@ -1045,10 +988,6 @@ input:checked+.slider:before {
   padding: 4px;
   border-radius: 4px;
   white-space: nowrap;
-}
-
-.navbar-toggler {
-  display: none
 }
 
 .map-settings {

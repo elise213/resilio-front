@@ -1,5 +1,4 @@
 
-
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
@@ -159,6 +158,57 @@ const getState = ({ getStore, getActions, setStore }) => {
       // },
 
       // ________________________________________________________________RESOURCES
+
+      // Your action creators
+
+      editResource: async (resourceId, formData, navigate) => {
+        const { current_back_url, current_front_url } = getStore();
+        const token = sessionStorage.getItem("token");
+        const opts = {
+          method: "PUT",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        };
+        try {
+          const response = await fetch(current_back_url + `/api/editResource/${resourceId}`, opts);
+          if (response.status >= 400) {
+            alert("There has been an error");
+            return false;
+          }
+          const data = await response.json();
+          if (data.status === "true") {
+            navigate('/'); // Navigate to home or some other page
+          }
+        } catch (error) {
+          console.error("Error during resource editing:", error);
+        }
+      },
+
+      getResource: async (resourceId) => {
+        const { current_back_url, current_front_url } = getStore();
+        const token = sessionStorage.getItem("token");
+        const opts = {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        };
+        try {
+          const response = await fetch(current_back_url + `/api/getResource/${resourceId}`, opts);
+          if (response.status >= 400) {
+            alert("There has been an error");
+            return null;
+          }
+          const data = await response.json();
+          return data; // This will contain the resource data
+        } catch (error) {
+          console.error("Error fetching the resource:", error);
+          return null;
+        }
+      },
 
       createResource: async (formData) => {
         const { current_back_url, current_front_url } = getStore();
@@ -320,8 +370,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           setStore({ boundaryResults: data.data });
           setStore({ loading: false });
-          console.log("bounds resources days", bounds, resources, days);
-          console.log("boundary results", data.data);
+          // console.log("bounds resources days", bounds, resources, days);
+          // console.log("boundary results", data.data);
           console.trace("Trace for boundary results");
           console.log("resources", resources);
           return data.data;

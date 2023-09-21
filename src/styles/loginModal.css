@@ -1,0 +1,123 @@
+.loginModal-close-div {
+    display: flex;
+    justify-content: center;
+    align-items: start !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.loginModal-title-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.loginModal-title-div p {
+    margin: 0;
+}
+
+.loginModal-header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    color: #000;
+    font-size: x-large;
+    /* border: 4px solid var(--coral); */
+    background-color: white;
+}
+
+.loginModal-footer {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80px;
+    width: 100%;
+    flex-wrap: nowrap;
+    margin-top: 40px;
+}
+
+.loginModal-title {
+    font-family: "Urbanist", sans-serif;
+    font-size: xx-large;
+}
+
+.loginModal-content {
+    margin: 20px;
+    width: 85%;
+    max-width: 850px;
+    outline: 4px solid var(--coral);
+    outline-offset: 5px;
+    position: absolute;
+    z-index: 99999;
+}
+
+.loginModalBody {
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0 0 4px 4px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.formLabel {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.formControl {
+    margin-top: 12px;
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.loginModal-body {
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0 0 4px 4px;
+    overflow-x: hidden;
+    overflow-y: scroll !important;
+    scroll-behavior: smooth;
+}
+
+.loginModal-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    border: none;
+    background-color: transparent;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.loginModal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+body.loginModal-open {
+    overflow: hidden;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+}
