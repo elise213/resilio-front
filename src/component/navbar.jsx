@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
-// import LogRegBtn from "./LogRegBtn";
-import AliveLogo from "/assets/RESILIOO.png"
+import Login from "./Login";
+import AliveLogo from "/assets/RESILIOO.png";
+import styles from "../styles/navbar.css";
 
 const Navbar = () => {
   const { store, actions } = useContext(Context);
-  // const token = sessionStorage.getItem("token");
-  // let is_org = sessionStorage.getItem("is_org");
-  // let avatarId = sessionStorage.getItem("avatar");
-  // let avatar = store.avatarImages[avatarId];
+  const token = sessionStorage.getItem("token");
+  let is_org = sessionStorage.getItem("is_org");
+  let avatarId = sessionStorage.getItem("avatar");
+  let avatar = store.avatarImages[avatarId];
   const [isExpanded, setIsExpanded] = useState(false);
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -43,74 +44,98 @@ const Navbar = () => {
   //     }
   //   });
   // }
+
   return (
-    <nav className="navbar" id="navbar">
-      <div className="">
-        <span className="navbar-brand" onClick={() => {
+    <nav id="navbar">
+      <div>
+        <span onClick={() => {
           window.location.href = "/";
-          // window.location.reload();
-          // if (boundsData) {
-          //   actions.setBoundaryResults(boundsData);
-          // }
           actions.setBoundaryResults(null);
         }}>
           <img className="navbar-logo" src={AliveLogo} alt="Alive Logo" />
         </span>
-        <button
-          className="navbar-toggler"
-          onClick={handleToggle}
-        >
-          {!isExpanded ? <i className="fa-solid fa-bars navbar-toggler-icon"></i> : <span className="navbar-toggler-icon">X</span>}
-        </button>
-        <div
-          className="collapse navbar-collapse"
-          id="navbarSupportedContent"
-          style={{ flexGrow: "0" }}
-        >
+        <Login />
+        {/* <button onClick={handleToggle}>
+          {!isExpanded ? <i className="fa-solid fa-bars navbar-toggler-icon"></i> : <span>X</span>}
+        </button> */}
+        <div id="navbarSupportedContent">
 
           <div className="my-navbar-items">
-            {/* FREE STUFF - Always visible */}
-            {/* <Link to="/offerings" >
-              <span className="btn nav-btn">
-                FREE STUFF
-              </span>
-            </Link> */}
-            {/* <Link to="/contact">
-              <span className="btn nav-btn">
-                CONTACT
-              </span>
-            </Link> */}
-            {/* DONATE - Always visible */}
-            {/* <Link to="/donate">
-              <span className="btn nav-btn">
-                DONATE
-              </span>
-            </Link>
-            {/* Link to Create Resource - Only visible when logged in as an Organization */}
-            {/* Logout- Only visible when logged in, Login/ Register- Only visible when NOT logged in */}
-            {/* {token ? (
-              <span className="btn nav-btn" onClick={() => actions.logout()}>
-                LOGOUT
-              </span>
-            ) : (
-              <span className="btn nav-btn">
-                <LogRegBtn />
-              </span>
-            )} */}
-            {/* Link to profile page - Only visible when logged in r*/}
-
-            {/* {token ? (
-              <Link to="/userProfile">
-                <i
-                  className={`${avatar} nav-profile-icon`}
-                />
-              </Link>
-            ) : null} */}
           </div>
         </div>
       </div>
     </nav >
   );
+  // return (
+  //   <nav className="navbar" id="navbar">
+  //     <div className="">
+  //       <span className="navbar-brand" onClick={() => {
+  //         window.location.href = "/";
+  //         // window.location.reload();
+  //         // if (boundsData) {
+  //         //   actions.setBoundaryResults(boundsData);
+  //         // }
+  //         actions.setBoundaryResults(null);
+  //       }}>
+  //         <img className="navbar-logo" src={AliveLogo} alt="Alive Logo" />
+  //       </span>
+  //       <button
+  //         className="navbar-toggler"
+  //         onClick={handleToggle}
+  //       >
+  //         {!isExpanded ? <i className="fa-solid fa-bars navbar-toggler-icon"></i> : <span className="navbar-toggler-icon">X</span>}
+  //       </button>
+  //       <div
+  //         className="collapse navbar-collapse"
+  //         id="navbarSupportedContent"
+  //         style={{ flexGrow: "0" }}
+  //       >
+
+  //         <div className="my-navbar-items">
+  //           {/* FREE STUFF - Always visible */}
+  //           {/* <Link to="/offerings" >
+  //             <span className="btn nav-btn">
+  //               FREE STUFF
+  //             </span>
+  //           </Link> */}
+  //           {/* <Link to="/contact">
+  //             <span className="btn nav-btn">
+  //               CONTACT
+  //             </span>
+  //           </Link> */}
+  //           {/* DONATE - Always visible */}
+  //           {/* <Link to="/donate">
+  //             <span className="btn nav-btn">
+  //               DONATE
+  //             </span>
+  //           </Link>
+  //           {/* Link to Create Resource - Only visible when logged in as an Organization */}
+  //           {/* Logout- Only visible when logged in, Login/ Register- Only visible when NOT logged in */}
+  //           {/* {token ? (
+  //             <span className="btn nav-btn" onClick={() => actions.logout()}>
+  //               LOGOUT
+  //             </span>
+  //           ) : (
+  //             <span className="btn nav-btn">
+  //               <Login />
+  //             </span>
+  //           )} */}
+
+  //           <Login />
+  //           {/* Link to profile page - Only visible when logged in r*/}
+
+  //           {/* {token ? (
+  //             <Link to="/userProfile">
+  //               <i
+  //                 className={`${avatar} nav-profile-icon`}
+  //               />
+  //             </Link>
+  //           ) : null} */}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </nav >
+  // );
 };
 
 export default Navbar;

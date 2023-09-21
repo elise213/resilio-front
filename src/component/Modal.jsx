@@ -5,7 +5,7 @@ import { ResourceInfo } from "./ResourceInfo";
 const Modal = (props) => {
     const modalContentRef = useRef(null);
 
-    console.log("props from modal", props)
+    // console.log("PROPS", props.resource.id)
 
     const getIconForCategory = (category) => {
         switch (category) {
@@ -60,6 +60,8 @@ const Modal = (props) => {
         };
     }, []);
 
+    const resourceId = props.resource.id;
+
     return (
         <div>
             <div className="modal-div" >
@@ -89,7 +91,7 @@ const Modal = (props) => {
                                 <Link to="/create">here</Link>
                                 {""} to create a new resource listing.
                             </p>
-
+                            <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>
                         </div>
                     </div>
                 </div>
