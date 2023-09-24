@@ -62,6 +62,7 @@ const Edit = () => {
                         ...data,
                         category: data.category ? data.category.split(", ") : [], // Ensuring category is an array
                     }));
+                    console.log(formData)
                 } else {
                     console.error("Data is null");
                 }
@@ -72,7 +73,12 @@ const Edit = () => {
         fetchResourceData();
     }, [actions, id]);
 
-
+    useEffect(() => {
+        // This will run only if the address changes
+        if (formData.address) {
+            handleSelect(formData.address);
+        }
+    }, [formData.address]);
 
     const handleSelect = async address => {
         handleChange("address", address);
@@ -157,6 +163,7 @@ const Edit = () => {
             }
         }));
     };
+
     const resetForm = () => {
         setFormData(initialFormData);
     };
@@ -176,21 +183,6 @@ const Edit = () => {
             document.head.removeChild(script);
         };
     }, [apiKey]);
-
-    // useEffect(() => {
-    //     if (!isGoogleMapsLoaded) {
-    //         const script = document.createElement('script');
-    //         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    //         script.async = true;
-    //         script.defer = true;
-    //         script.onload = () => setGoogleMapsLoaded(true);
-    //         document.head.appendChild(script);
-
-    //         return () => {
-    //             document.head.removeChild(script);
-    //         };
-    //     }
-    // }, [apiKey, isGoogleMapsLoaded]);
 
     const formatTime = (time) => {
         if (time) {
@@ -268,6 +260,18 @@ const Edit = () => {
                         value={formData.description || ""}
                         onChange={(e) => handleChange("description", e.target.value)}
                     ></textarea>
+                </div>
+                <div className="input-group">
+                    <label htmlFor="website">Website</label>
+                    <input
+                        className="geo-input"
+                        id="website"
+                        name="website"
+                        type="text"
+                        value={formData.website || ""}
+                        onChange={(e) => handleChange("website", e.target.value)}
+                        placeholder="Resource Website URL"
+                    />
                 </div>
 
                 <div className="input-group">
@@ -348,28 +352,28 @@ const Edit = () => {
 export default Edit;
 
 
-{/* <div className="input-group">
-                    <label htmlFor="latitude">Latitude</label>
-                    <input
-                        className="geo-input"
-                        id="latitude"
-                        name="latitude"
-                        type="text"
-                        value={formData.latitude || ""}
-                        onChange={(e) => handleChange("latitude", e.target.value)}
-                        title="Provide the latitude"
-                    />
-                </div>
+// {/* <div className="input-group">
+//                     <label htmlFor="latitude">Latitude</label>
+//                     <input
+//                         className="geo-input"
+//                         id="latitude"
+//                         name="latitude"
+//                         type="text"
+//                         value={formData.latitude || ""}
+//                         onChange={(e) => handleChange("latitude", e.target.value)}
+//                         title="Provide the latitude"
+//                     />
+//                 </div>
 
-                <div className="input-group">
-                    <label htmlFor="longitude">Longitude</label>
-                    <input
-                        className="geo-input"
-                        id="longitude"
-                        name="longitude"
-                        type="text"
-                        value={formData.longitude || ""}
-                        onChange={(e) => handleChange("longitude", e.target.value)}
-                        title="Provide the longitude"
-                    />
-                </div> */}
+//                 <div className="input-group">
+//                     <label htmlFor="longitude">Longitude</label>
+//                     <input
+//                         className="geo-input"
+//                         id="longitude"
+//                         name="longitude"
+//                         type="text"
+//                         value={formData.longitude || ""}
+//                         onChange={(e) => handleChange("longitude", e.target.value)}
+//                         title="Provide the longitude"
+//                     />
+//                 </div> */}

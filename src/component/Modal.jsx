@@ -4,8 +4,7 @@ import { ResourceInfo } from "./ResourceInfo";
 
 const Modal = (props) => {
     const modalContentRef = useRef(null);
-
-    // console.log("PROPS", props.resource.id)
+    const tokenExists = sessionStorage.getItem('token');
 
     const getIconForCategory = (category) => {
         switch (category) {
@@ -91,7 +90,7 @@ const Modal = (props) => {
                                 <Link to="/create">here</Link>
                                 {""} to create a new resource listing.
                             </p>
-                            <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>
+                            {tokenExists && <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>}
                         </div>
                     </div>
                 </div>

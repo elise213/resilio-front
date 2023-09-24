@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import Login from "./Login";
-import AliveLogo from "/assets/RESILIOO.png";
+import Logo from "/assets/RESILIOO.png";
 import styles from "../styles/navbar.css";
 
 const Navbar = () => {
@@ -46,96 +46,17 @@ const Navbar = () => {
   // }
 
   return (
-    <nav id="navbar">
-      <div>
-        <span onClick={() => {
-          window.location.href = "/";
-          actions.setBoundaryResults(null);
-        }}>
-          <img className="navbar-logo" src={AliveLogo} alt="Alive Logo" />
-        </span>
-        <Login />
-        {/* <button onClick={handleToggle}>
-          {!isExpanded ? <i className="fa-solid fa-bars navbar-toggler-icon"></i> : <span>X</span>}
-        </button> */}
-        <div id="navbarSupportedContent">
+    <nav className="navbar">
 
-          <div className="my-navbar-items">
-          </div>
-        </div>
-      </div>
+      <span onClick={() => {
+        window.location.href = "/";
+        actions.setBoundaryResults(null);
+      }}>
+        {/* <img className="navbar-logo" src={Logo} alt="Alive Logo" /> */}
+      </span>
+      <Login />
     </nav >
   );
-  // return (
-  //   <nav className="navbar" id="navbar">
-  //     <div className="">
-  //       <span className="navbar-brand" onClick={() => {
-  //         window.location.href = "/";
-  //         // window.location.reload();
-  //         // if (boundsData) {
-  //         //   actions.setBoundaryResults(boundsData);
-  //         // }
-  //         actions.setBoundaryResults(null);
-  //       }}>
-  //         <img className="navbar-logo" src={AliveLogo} alt="Alive Logo" />
-  //       </span>
-  //       <button
-  //         className="navbar-toggler"
-  //         onClick={handleToggle}
-  //       >
-  //         {!isExpanded ? <i className="fa-solid fa-bars navbar-toggler-icon"></i> : <span className="navbar-toggler-icon">X</span>}
-  //       </button>
-  //       <div
-  //         className="collapse navbar-collapse"
-  //         id="navbarSupportedContent"
-  //         style={{ flexGrow: "0" }}
-  //       >
-
-  //         <div className="my-navbar-items">
-  //           {/* FREE STUFF - Always visible */}
-  //           {/* <Link to="/offerings" >
-  //             <span className="btn nav-btn">
-  //               FREE STUFF
-  //             </span>
-  //           </Link> */}
-  //           {/* <Link to="/contact">
-  //             <span className="btn nav-btn">
-  //               CONTACT
-  //             </span>
-  //           </Link> */}
-  //           {/* DONATE - Always visible */}
-  //           {/* <Link to="/donate">
-  //             <span className="btn nav-btn">
-  //               DONATE
-  //             </span>
-  //           </Link>
-  //           {/* Link to Create Resource - Only visible when logged in as an Organization */}
-  //           {/* Logout- Only visible when logged in, Login/ Register- Only visible when NOT logged in */}
-  //           {/* {token ? (
-  //             <span className="btn nav-btn" onClick={() => actions.logout()}>
-  //               LOGOUT
-  //             </span>
-  //           ) : (
-  //             <span className="btn nav-btn">
-  //               <Login />
-  //             </span>
-  //           )} */}
-
-  //           <Login />
-  //           {/* Link to profile page - Only visible when logged in r*/}
-
-  //           {/* {token ? (
-  //             <Link to="/userProfile">
-  //               <i
-  //                 className={`${avatar} nav-profile-icon`}
-  //               />
-  //             </Link>
-  //           ) : null} */}
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </nav >
-  // );
-};
+}
 
 export default Navbar;
