@@ -5,34 +5,21 @@
     font-family: "Urbanist", sans-serif;
     background-color: transparent;
     color: black;
+    display: flex;
+    justify-content: space-between;
+
 }
 
-.nav-btn {
-    font-family: "Urbanist", sans-serif;
-    font-size: 20px;
-    color: black !important;
-}
 
-.navbar-toggler {
-    color: salmon;
-}
-
-.navbar-toggler-icon {
+.navbar-toggler-icon,
+.nav-profile-icon {
     color: rgb(170, 255, 192);
     font-size: xx-large;
+    margin-left: 5px;
 }
 
 .active {
     text-decoration: underline wavy lightgreen !important;
-}
-
-.nav-btn:hover {
-    color: rgb(170, 255, 192);
-    cursor: pointer;
-}
-
-.navbar-logo:hover {
-    cursor: pointer;
 }
 
 .navbar-logo {
@@ -40,20 +27,6 @@
     max-width: 220px;
     margin: 15px 0px 0px 15px;
 }
-
-.nav-profile-icon {
-    font-size: xx-large;
-    margin-left: 5px;
-    color: black;
-}
-
-.my-navbar-items {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-}
-
 
 .navbar-toggler {
     display: none

@@ -1,0 +1,11 @@
+.loading {
+    box-shadow: none;
+    border: none;
+    width: auto;
+    height: auto !important;
+    background-color: transparent;
+}
+
+.resource-card-header {
+    background-color: transparent;
+}
