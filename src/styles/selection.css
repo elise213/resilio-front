@@ -1,0 +1,32 @@
+.center {
+    display: flex;
+    flex-direction: column;
+}
+
+.selection {
+    display: flex;
+    align-items: flex-end;
+    margin: 0px 10px;
+    min-width: 60vw !important;
+    width: 100% !important;
+}
+
+.selection,
+.DaySelectionComponentClass {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.more-open-ids,
+.demo-ids,
+.day-ids {
+    border: 4px double green;
+    border-radius: 5px;
+    margin: 10px;
+    background-color: whitesmoke;
+}
+
+.closed {
+    display: flex;
+    justify-content: flex-end;
+}

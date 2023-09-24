@@ -1,8 +1,9 @@
 import React from "react";
+import Styes from "../styles/loading.css";
 
 const Loading = ({ name }) => {
     return (
-        <div className="my-resource-card" >
+        <div className="my-resource-card loading" >
             <div>
                 <div className="resource-card-header">
                     {name === "locating" ? (
@@ -10,7 +11,6 @@ const Loading = ({ name }) => {
                             <p>
                                 <i className="fa-solid fa-bullseye"></i>
                                 Finding Your Location...
-                                {/* <i className="fa-solid fa-bullseye"></i> */}
                             </p>
                             <p>
                                 Please Wait

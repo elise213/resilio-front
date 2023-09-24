@@ -1,40 +1,43 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
+import Logo from "/assets/RESILIOO.png";
 import {
   SimpleMap,
   Selection,
   Loading,
   ResourceCard,
-  DaySelection,
   MapSettings,
   Modal
 } from "../component";
 import CircleType from "circletype";
 
-const INITIAL_CITY_STATE = {
-  center: { lat: 34.0522, lng: -118.2437 },
-  bounds: {
-    ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
-    sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
-  }
-};
-
-const INITIAL_RESOURCE_STATE = (RESOURCE_OPTIONS) =>
-  RESOURCE_OPTIONS.reduce((acc, curr) => {
-    return { ...acc, [curr.id]: false };
-  }, {});
-
-
-
-const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
-  DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
 const Home = () => {
+  const INITIAL_CITY_STATE = {
+    // 24.681678475660995  84.99154781534179
+    center: { lat: 24.681678475660995, lng: 84.99154781534179 },
+    bounds: {
+      ne: { lat: 25.0, lng: 85.2 },
+      sw: { lat: 24.4, lng: 84.8 }
+    }
+    // center: { lat: 34.0522, lng: -118.2437 },
+    // bounds: {
+    //   ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
+    //   sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
+    // }
+  };
+
+  const INITIAL_RESOURCE_STATE = (RESOURCE_OPTIONS) =>
+    RESOURCE_OPTIONS.reduce((acc, curr) => {
+      return { ...acc, [curr.id]: false };
+    }, {});
+
+  const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
+    DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
 
   // REFS
-  const wasAllKindsClickedRef = useRef(false);
   const ulRef = useRef(null);
   const fetchCounterRef = useRef(0);
   const abortControllerRef = useRef(null);
@@ -57,25 +60,123 @@ const Home = () => {
   const [moreOpen, setMoreOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
+
   const [allKinds, setAllKinds] = useState(true);
+  const [allGroups, setAllGroups] = useState(true);
+
   const [filterByBounds, setFilterByBounds] = useState(true);
   const [filterByGroup, setFilterByGroup] = useState(false);
-  const [boundsData, setBoundsData] = useState();
+  // const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   // FUNCTIONS
-  const handleDontDemo = () => {
-    setFilterByGroup(!filterByGroup);
-    setResources(prev => {
-      const updatedResources = { ...prev };
-      const demoIds = ["lgbtq", "women", "seniors", "youth"];
-      demoIds.forEach(id => {
-        updatedResources[id] = false;
-      });
-      return updatedResources;
-    });
+  const handleBoundsChange = (data) => {
+    console.log("CALLED HANDLE BOUNDS CHANGE", data)
+    setCity(prevState => ({
+      ...prevState,
+      bounds: data.bounds,
+      center: {
+        lat: data.center.lat,
+        lng: normalizeLongitude(data.center.lng),
+      }
+    }));
+  }
+
+  useEffect(() => {
+    if (city.bounds) {
+      console.log("NEW CITY INFO", city)
+      actions.setBoundaryResults(city.bounds, resources, days);
+    }
+  }, [city]);
+
+
+  const normalizeLongitude = (lng) => {
+    console.log("normalize long called")
+    if (lng > 180) {
+      return lng - 360;
+    }
+    if (lng < -180) {
+      return lng + 360;
+    }
+    return lng;
   };
+
+  const fetchBounds = async (query, isZip = false) => {
+    console.log("fetch bounds called")
+    let apiUrl;
+    if (isZip) {
+      apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
+    } else {
+      apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
+    }
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log('Raw API response:', JSON.stringify(data.results[0].geometry));
+
+    const location = data.results[0]?.geometry?.location;
+    let bounds = data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
+    console.log('Bounds:', bounds);
+    // Fallback logic
+    if (!bounds && location) {
+      const offset = 0.01; // Some arbitrary small number
+      bounds = {
+        ne: { lat: location.lat + offset, lng: normalizeLongitude(location.lng + offset) },
+        sw: { lat: location.lat - offset, lng: normalizeLongitude(location.lng - offset) },
+      };
+    }
+
+    console.log('Location:', location);
+    console.log('Bounds:', bounds);
+
+    return data;
+  };
+
+
+  const updateCityStateFromCoords = async (lat, lng) => {
+    try {
+      const data = await fetchBounds({ lat, lng });
+      const location = data.results[0]?.geometry?.location;
+      const bounds = data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
+      if (location && bounds) {
+        setCity({
+          ...city,
+          center: location,
+          bounds: bounds,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching bounds:", error.message);
+    }
+  };
+
+
+  const handleZipInputChange = async (e) => {
+    const value = e.target.value;
+    setZipInput(value);
+    if (value.length === 5) {
+      console.log("ZIPPPPPPINPUTCHANGE 5")
+      await updateCityStateFromZip(value);
+    }
+  };
+
+  const updateCityStateFromZip = async (zip) => {
+    try {
+      const data = await fetchBounds(zip, true);
+      const location = data.results[0]?.geometry?.location;
+      const bounds = data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
+      if (location && bounds) {
+        setCity({
+          ...city,
+          center: location,
+          bounds: bounds,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching bounds:", error.message);
+    }
+  };
+
 
   const clearAll = () => {
     setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
@@ -88,30 +189,21 @@ const Home = () => {
     });
   };
 
-  const toggleResource = (resourceId) => {
-    setResources(prev => {
-      const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
-      return updatedResources;
-    });
-  };
-
   const toggleDay = (dayId) => {
     setDays(prev => {
       if (dayId === 'allDays') {
         return {
           ...prev,
           allDays: !prev.allDays,
-          // Reset all other days to false
           ...store.DAY_OPTIONS.reduce((acc, currDay) => {
             if (currDay.id !== 'allDays') acc[currDay.id] = false;
             return acc;
           }, {})
         };
       }
-      // If any other day is clicked
       return {
         ...prev,
-        allDays: false,  // Uncheck "allDays"
+        allDays: false,
         [dayId]: !prev[dayId]
       };
     });
@@ -134,20 +226,20 @@ const Home = () => {
     };
   };
 
-
   const updateData = async () => {
+    console.log("update DATA function called")
     if (!store.schedule) {
       actions.setSchedules();
     }
-    if (boundsData) {
+    if (city.bounds) {
       abortControllerRef.current?.abort();
       abortControllerRef.current = new AbortController();
       const currentFetchCount = ++fetchCounterRef.current;
       const fetchData = async () => {
         try {
           if (currentFetchCount === fetchCounterRef.current) {
-            if (days && boundsData) {
-              await actions.setBoundaryResults(boundsData, resources, days);
+            if (resources && days && city?.bounds) {
+              actions.setBoundaryResults(city.bounds, resources, days);
             }
           }
         } catch (error) {
@@ -158,13 +250,9 @@ const Home = () => {
     }
   };
 
-  function clearZipInput() {
-    setZipInput('');
-  }
 
   const handleEvent = (day) => {
     if (day === "allDays") {
-      setDropdownOpen(!dropdownOpen);
       Object.keys(days).forEach(d => {
         if (days[d]) {
           toggleDay(d);
@@ -183,14 +271,44 @@ const Home = () => {
     handleEvent("allDays");
   };
 
+  const geoFindMe = async () => {
+    console.log("GEO FIND ME CALLED");
+    setIsLocating(true);
+    console.log(navigator.geolocation)
+    if (navigator.geolocation) {
+      console.log("Geolocation supported");
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          console.log("Got position", position);
+          setIsLocating(false);
+          await updateCityStateFromCoords(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.log("Error getting position", error);
+          setIsLocating(false);
+          alert("Unable to retrieve your location");
+        }
+      );
+    } else {
+      console.log("Geolocation not supported");
+      setIsLocating(false);
+      alert("Geolocation is not supported by your browser");
+    }
+  };
+
   // USE EFFECTS
 
-  // useEffect(() => {
-  //   const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
-  //   setAllKinds(!anyServiceChecked);
-  //   console.log('anyServiceChecked', anyServiceChecked);
-  //   console.log('resources', resources);
-  // }, [resources]);
+
+  useEffect(() => {
+    if (zipInput && zipInput.length === 5) {
+      updateCityStateFromZip(zipInput);
+    }
+  }, [zipInput]);
+
+  useEffect(() => {
+    console.log("CITY", city)
+  }, [city]);
+
 
   useEffect(() => {
     const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
@@ -205,8 +323,10 @@ const Home = () => {
     const fetchData = async () => {
       try {
         if (currentFetchCount === fetchCounterRef.current) {
-          if (resources && days && boundsData) {
-            await actions.setBoundaryResults(boundsData, resources, days);
+          if (resources && days && city.bounds) {
+            console.log("Sending boundsData to backend", city.bounds);
+            // actions.setBoundaryResults(boundsData, resources, days);
+            await actions.setBoundaryResults(city.bounds, resources, days);
           }
         }
       } catch (error) {
@@ -217,8 +337,7 @@ const Home = () => {
 
     return () => abortControllerRef.current?.abort();
   },
-    // []);
-    [boundsData, resources, days, city]);
+    [city.bounds, resources, days, city]);
 
 
   useEffect(() => {
@@ -239,15 +358,9 @@ const Home = () => {
     };
   }, []);
 
-
   useEffect(() => {
     updateData();
   }, [days, resources, city]);
-
-
-  useEffect(() => {
-    setBoundsData(city.bounds);
-  }, [boundsData]);
 
   // useEffect(() => {
   //   let circle1
@@ -267,77 +380,83 @@ const Home = () => {
     }
   }, [store.boundaryResults]);
 
+
+  useEffect(() => {
+    if (city)
+      console.log('City state has changed: ', city);
+  }, [city]);
+  const handleAllGroups = () => {
+    setDemographics({
+      LGBTQ: false,
+      women: false,
+      youth: false,
+      seniors: false,
+    });
+    setAllGroups(true);
+    setResources(prev => {
+      const updatedResources = { ...prev };
+      const demoIds = ["lgbtq", "women", "seniors", "youth"];
+      demoIds.forEach(id => {
+        updatedResources[id] = false;
+      });
+      return updatedResources;
+    });
+  };
+
+
+  const toggleResource = (resourceId) => {
+    setResources(prev => {
+      const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
+      if (["lgbtq", "women", "seniors", "youth"].includes(resourceId)) {
+        setAllGroups(false);
+      }
+      return updatedResources;
+    });
+  };
+
+
   // RETURN
   return (
     <div>
       <div className="grand-container">
         <div className="search-container">
           <div className="what-type">
-            <div className="question">
-              <div className="circle-font" ref={circleInstance}>What Do You Need?</div>
-            </div>
+
+            {/* <div className="circle-font" ref={circleInstance}>What Do You Need?</div> */}
+            <img className="home-logo" src={Logo} alt="Alive Logo" />
+
             {/* SELECTION */}
-            <Selection resources={resources} handleAllKinds={handleAllKinds} allKinds={allKinds} toggleResource={toggleResource} moreOpen={moreOpen} filterByGroup={filterByGroup} />
-            {dropdownOpen &&
-              <DaySelection
-                days={days}
-                toggleDay={toggleDay}
-                dropdownOpen={dropdownOpen}
-                setDropdownOpen={setDropdownOpen}
-                allDays={days.allDays}
-                handleEvent={handleEvent}
-                setMoreOpen={setMoreOpen}
-                moreOpen={moreOpen}
-              />
-            }
+            <Selection
+              allGroups={allGroups}
+              setAllGroups={setAllGroups}
+              handleAllKinds={handleAllKinds}
+              allKinds={allKinds}
+              toggleResource={toggleResource}
+              moreOpen={moreOpen}
+              resources={resources}
+              filterByGroup={filterByGroup}
+              days={days}
+              handleEvent={handleEvent}  // make sure to pass handleEvent here
+              setMoreOpen={setMoreOpen}
+              setFilterByGroup={setFilterByGroup}
+              setDropdownOpen={setDropdownOpen}
+              handleDontFilterByDay={handleDontFilterByDay}
+              dropdownOpen={dropdownOpen}
+              handleAllGroups={handleAllGroups}
+              allgroups={allGroups}
+            />
           </div>
         </div>
         {/* FILTER OPTIONS */}
-        {!filterByGroup &&
-          <button className="my-schedule-button" onClick={() => setFilterByGroup(!filterByGroup)}>
-            Filter by Demographic
-          </button>
-        }
-        {filterByGroup &&
-          <button className="my-schedule-button" onClick={() => handleDontDemo()
-          }>
-            Don't Filter by Demographics
-          </button>
-        }
-        {!moreOpen &&
-          <button className="my-schedule-button" onClick={() => setMoreOpen(!moreOpen)}>
-            Filter By Category
-          </button>
-        }
-        {moreOpen &&
-          <button className="my-schedule-button" onClick={() => {
-            setMoreOpen(!moreOpen);
-            handleAllKinds();
-          }}>
-            Don't filter by Category
-          </button>
-        }
-        {!dropdownOpen &&
-          <button className="my-schedule-button"
-            onClick={() => setDropdownOpen(!dropdownOpen)}>
-            Filter By Day
-          </button>
-        }
-        {dropdownOpen &&
-          <button className="my-schedule-button"
-            onClick={handleDontFilterByDay}>
-            Don't Filter By Day
-          </button>
-        }
         <div className="search-results-full">
-          {!isScrolledToEnd && isOverflowing ?
+          {/* {!isScrolledToEnd && isOverflowing ?
             (<div className="scroll-warning">
               <span>
                 Scroll to see more
               </span>
               <i className="fa-solid fa-arrow-right"></i>
             </div>
-            ) : <p className="spacing-scroll-warning"></p>}
+            ) : <p className="spacing-scroll-warning"></p>} */}
           <div
             className="scroll-search-results"
             style={{
@@ -356,39 +475,42 @@ const Home = () => {
               {store.loading ? (<li><Loading name="loading" /></li>) : ''}
 
               {!store.loading && !isLocating ? (
-                store.boundaryResults.map((result, i) => (
-                  <li key={i}>
-                    <ResourceCard
-                      item={result}
-                      openModal={openModal}
-                      closeModal={closeModal}
-                      modalIsOpen={modalIsOpen}
-                      setModalIsOpen={setModalIsOpen}
-                      selectedResource={selectedResource}
-                    />
-                  </li>
-                ))
+                store.boundaryResults.map((result, i) => {
+                  // if (result.latitude !== "24.681678475660995") { console.log("LATITUDE", result, result.latitude) };
+                  return (
+                    <li key={i}>
+                      <ResourceCard
+                        item={result}
+                        openModal={openModal}
+                        closeModal={closeModal}
+                        modalIsOpen={modalIsOpen}
+                        setModalIsOpen={setModalIsOpen}
+                        selectedResource={selectedResource}
+                      />
+                    </li>
+                  );
+                })
               ) : ''}
+
             </ul>
           </div>
           {/* MAP */}
           <div className="new-container">
             <div className="map-settings-container">
-              <MapSettings setIsLocating={setIsLocating} clearAll={clearAll} updateData={updateData} setCity={setCity} zipInput={zipInput} setZipInput={setZipInput} filterByBounds={filterByBounds} setFilterByBounds={setFilterByBounds} />
+              <MapSettings
+                geoFindMe={geoFindMe}
+                handleZipInputChange={handleZipInputChange}
+                zipInput={zipInput}
+
+              />
             </div>
+
             <div className="map-and-cities">
               <SimpleMap
+                handleBoundsChange={handleBoundsChange}
                 openModal={openModal}
-                closeModal={closeModal}
-                selectedResource={selectedResource}
-                setFilterByBounds={setFilterByBounds}
-                filterByBounds={filterByBounds}
-                setBoundsData={setBoundsData}
                 city={city}
-                setCity={setCity}
-                clearZipInput={clearZipInput}
-                zipInput={zipInput}
-                resources={resources}
+
               />
             </div>
           </div>
