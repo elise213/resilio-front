@@ -9,6 +9,7 @@ import Contact from "./pages/Contact";
 import Create from "./pages/Create";
 import injectContext from "./store/appContext";
 import Navbar from "./component/navbar";
+import Edit from "./pages/Edit"
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
@@ -23,6 +24,7 @@ const Layout = () => {
             <Route element={<Contact />} path="/contact" />
             <Route element={<Create />} path="/create" />
             <Route element={<Donate />} path="/donate" />
+            <Route element={<Edit />} path="/edit/:id" />
           </Routes>
           <Footer />
         </ScrollToTop>

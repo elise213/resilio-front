@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link, useLocation } from "react-router-dom";
-import AliveLogo from "/assets/RESILIOO.png"
-import Insta from "/assets/insta.png"
-import Twitter from "/assets/twitter.png"
+import AliveLogo from "/assets/RESILIOO.png";
+import Insta from "/assets/insta.png";
+import Twitter from "/assets/twitter.png";
+import Login from "./Login"
 
 const Footer = () => (
   <footer className="footer">
@@ -12,11 +13,6 @@ const Footer = () => (
       <img className="footer-twitter" src={Twitter} alt="Twitter Logo" />
     </div> */}
     <div className="legal">
-      {/* <div className="foot">
-        <p className="all-rights">
-          Privacy Policy
-          </p>
-          </div> */}
       <div className="foot">
         <p className="all-rights">
           ©2023 Resilio All Rights Reserved</p>
