@@ -167,8 +167,13 @@
   .modal-map {
     width: 100% !important;
   }
-  
+
   @media screen and (max-width: 700px) {
+
+    .resource-title {
+        font-size: 16px !important;
+      }
+    
 
     .description-div {
       width: 90% !important;
