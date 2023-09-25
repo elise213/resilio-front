@@ -48,6 +48,9 @@ const Selection = (props) => {
       </div>
     );
   };
+  const isAnyChecked = (stateObj, ids) => {
+    return ids.some((id) => stateObj[id]);
+  };
 
   const handleToggleAll = (setFn, stateObj, ids) => {
     console.log(
@@ -56,11 +59,14 @@ const Selection = (props) => {
       "and ids:",
       ids
     );
-    const newState = {};
-    ids.forEach((id) => {
-      newState[id] = false;
-    });
-    setFn(newState);
+
+    if (isAnyChecked(stateObj, ids)) {
+      const newState = {};
+      ids.forEach((id) => {
+        newState[id] = false;
+      });
+      setFn(newState);
+    }
   };
 
   const areAllUnchecked = (stateObj, ids) => {
@@ -86,12 +92,14 @@ const Selection = (props) => {
     console.log("Groups", props.groups);
   }, [props.categories, props.days, props.groups]);
 
-  const toggleAllCheckboxes = (setFn, ids) => {
-    const newState = {};
-    ids.forEach((id) => {
-      newState[id] = false;
-    });
-    setFn(newState);
+  const toggleAllCheckboxes = (setFn, stateObj, ids) => {
+    if (isAnyChecked(stateObj, ids)) {
+      const newState = {};
+      ids.forEach((id) => {
+        newState[id] = false;
+      });
+      setFn(newState);
+    }
   };
 
   return (
@@ -101,7 +109,11 @@ const Selection = (props) => {
           onClick={() => {
             setShowCategories(!showCategories);
             if (showCategories) {
-              toggleAllCheckboxes(props.setCategories, categoryIds);
+              toggleAllCheckboxes(
+                props.setCategories,
+                props.categories,
+                categoryIds
+              );
             }
           }}
           className={showCategories ? "open2" : "closed2"}
@@ -117,7 +129,7 @@ const Selection = (props) => {
           onClick={() => {
             setShowGroups(!showGroups);
             if (showGroups) {
-              toggleAllCheckboxes(props.setGroups, groupIds);
+              toggleAllCheckboxes(props.setGroups, props.groups, groupIds);
             }
           }}
           className={showGroups ? "open2" : "closed2"}
@@ -133,7 +145,7 @@ const Selection = (props) => {
           onClick={() => {
             setShowDays(!showDays);
             if (showDays) {
-              toggleAllCheckboxes(props.setDays, dayIds);
+              toggleAllCheckboxes(props.setDays, props.days, dayIds);
             }
           }}
           className={showDays ? "open2" : "closed2"}
