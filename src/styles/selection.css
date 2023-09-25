@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    /* position: relative !important; */
     z-index: 999;
 }
 
@@ -16,6 +15,7 @@
 
 .open2 {
     margin-left: 40px;
+    align-self: flex-end;
 }
 
 .closed2 {
@@ -23,10 +23,11 @@
 }
 
 .selection {
-    display: flex;
     align-items: flex-end;
     margin: 0px 10px;
     min-width: 80vw;
+    width: 100% !important;
+    min-height: 390px;
 }
 
 .selection,
@@ -144,24 +145,24 @@
     background-color: transparent;
 }
 
-.closed {
-    border: none;
-    background-color: transparent;
-    font-family: "Urbanist", sans-serif !important;
-    font-size: x-large;
-    color: var(--coral2);
-    z-index: 999;
-
-    position: absolute;
-    /* Absolute position within the .center div */
-    top: 3%;
-    /* Center vertically */
-    right: 3%;
-    /* Center horizontally */
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
-}
-
 .my-schedule-button:hover {
     color: var(--green2)
+}
+
+
+@media screen and (max-width: 900px) {
+    .closed2 {
+        color: rgb(255, 117, 102);
+      }
+   
+}
+
+@media screen and (max-width: 700px) {
+ .closed2 {
+        font-size: medium !important;
+        color: rgb(255, 117, 102);
+      }
+  .selection {
+  min-height: 92vh !important;
+  }
 }

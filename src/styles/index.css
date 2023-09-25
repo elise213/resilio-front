@@ -1,10 +1,12 @@
 body {
   width: 100vw;
   overflow-x: hidden;
+  overflow-y: hidden;
   background-color: #fcf5ed;
 }
 
 :root {
+  --peruish:  rgb(235, 189, 142);
   --coral: rgb(255, 123, 116);
   --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
@@ -124,7 +126,7 @@ body {
 }
 
 .resource-card-text {
-  font-family: "Carme", sans-serif;
+
   font-size: medium;
   color: black;
   line-height: 1.5;
@@ -165,10 +167,9 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 100% !important;
+  width: 70%;
   text-align: justify;
   padding: 35px 41px 5px 41px;
-  ;
 }
 
 .description-heading {
@@ -240,7 +241,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  /* margin-top: 8px; */
 }
 
 .resource-title {
@@ -248,6 +249,8 @@ body {
   font-family: "Urbanist", sans-serif;
   font-size: medium;
   font-weight: bolder;
+  margin: 0;
+  padding: 5px;
 }
 
 .card-icon {
@@ -285,17 +288,6 @@ body {
 
 /* _________________________________________MODAL */
 
-.my-dropdown-menu {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100vw !important;
-  flex-wrap: wrap;
-}
-
-.my-dropdown-menu div {
-  margin: 5px;
-}
-
 .modal-close-div {
   display: flex;
   justify-content: center;
@@ -303,22 +295,6 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-}
-
-.x-close {
-  font-size: xx-large;
-  border: none;
-  background-color: transparent;
-  align-self: flex-end;
-  margin: 0;
-  color: var(--coral);
-  margin-right: 15px;
-  margin-top: 10px;
-  z-index: 1000;
-}
-
-.x-close:hover {
-  cursor: pointer;
 }
 
 .modal-title-div {
@@ -340,8 +316,8 @@ body {
   justify-content: space-between;
   color: #000;
   font-size: x-large;
-  border: 4px solid var(--coral);
-  background-color: var(--yellow);
+  border: 4px solid rgb(6, 90, 6);
+  background-color: lightgreen;
   border-radius: .3rem;
 }
 
@@ -370,7 +346,7 @@ body {
 }
 
 .modal-body {
-  background-color: whitesmoke;
+  background-color: rgb(250, 233, 227);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -378,6 +354,15 @@ body {
   overflow-x: hidden;
   overflow-y: scroll !important;
   scroll-behavior: smooth;
+  padding-top: 40px;
+}
+
+.resource-info {
+  display: flex;
+  width: 100%;
+justify-content: center;
+flex-direction: column;
+align-items: center;
 }
 
 .modal-div {
@@ -425,14 +410,6 @@ body.modal-open {
   margin-right: 10px;
 }
 
-.dropdown-menu {
-  border: none !important;
-  padding: 0 !important;
-}
-
-#dropdownMenuButton1 {
-  border: none !important;
-}
 
 .form-check {
   display: flex;
@@ -523,7 +500,7 @@ body.modal-open {
   align-items: center;
   padding-bottom: 15px;
   /* background-color: rgb(208, 166, 124); great color */
-  background-color: rgb(235, 189, 142);
+  background-color: var(--peruish);
 
 }
 
@@ -626,8 +603,6 @@ input:checked+.slider:before {
   margin: 3px 0px 0px 0px;
 }
 
-
-
 .scroll-warning {
   width: 100%;
   display: flex;
@@ -639,13 +614,6 @@ input:checked+.slider:before {
   padding: 40px 20px 0px 0px;
   margin: 2px;
   text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47), -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
-}
-
-
-
-.zipcode-input-container {
-  font-family: "Urbanist", sans-serif !important;
-  font-size: 15px;
 }
 
 .search-container {
@@ -691,17 +659,6 @@ input:checked+.slider:before {
   letter-spacing: 1.4x;
 }
 
-.circle-font {
-  font-family: "Urbanist", sans-serif;
-  font-weight: bolder;
-  font-size: x-large;
-  color: green;
-}
-
-.circle-font div span {
-  margin: 10px;
-}
-
 /* ___________________________________________MAP SETTINGS */
 #zipcode {
   border: 1.5px solid var(--coral2);
@@ -718,18 +675,6 @@ input:checked+.slider:before {
   outline: none;
 }
 
-.geo-button {
-  border: 1.5px solid var(--coral2);
-  width: auto;
-  background-color: var(--yellow) !important;
-  font-size: 15px;
-  height: 30px;
-  width: 120px;
-  border-radius: 3px;
-  font-family: "Urbanist", sans-serif !important;
-  margin: 5px;
-  padding: 0px;
-}
 
 .or {
   margin: 5px;
@@ -756,7 +701,7 @@ input:checked+.slider:before {
   height: 30px;
   background-color: rgb(234, 153, 143);
   font-size: medium;
-  border: 1px solid lightgreen;
+  border: 1px solid rgb(164, 212, 164);
   cursor: pointer;
   transition: background-color 0.3s;
   letter-spacing: 1.1px;
@@ -791,6 +736,9 @@ input:checked+.slider:before {
 /* ______________________________________________________________SIZE < 700px */
 @media screen and (max-width: 700px) {
 
+  .description-div {
+    width: 90% !important
+  }
 
   .scroll-warning {
     justify-content: center !important;
@@ -807,13 +755,8 @@ input:checked+.slider:before {
 
   .carousel {
     width: 95%;
-    height: 200px;
+    height: 280px;
     overflow: hidden;
-  }
-
-  .x-close {
-    color: var(--coral2);
-    top: 37px !important;
   }
 
   .my-label {
@@ -860,12 +803,8 @@ input:checked+.slider:before {
     font-size: 14px;
   }
 
-  .modal-footer p {
-    font-size: medium;
-  }
-
   .resource-card-text {
-    font-size: small;
+    font-size: medium;
   }
 
   .my-schedule-button.scroll-warning {
@@ -916,20 +855,7 @@ input:checked+.slider:before {
   white-space: nowrap;
 }
 
-.map-settings {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
-.map-settings-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 12px;
-}
 
 .map-info {
   display: flex;
@@ -1026,4 +952,19 @@ input:checked+.slider:before {
 
 .spacing-scroll-warning {
   margin-top: 67px;
+}
+
+
+.icons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}
+
+.selection-head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
