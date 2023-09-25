@@ -480,31 +480,6 @@ input:checked + .slider:before {
   letter-spacing: 1.4x;
 }
 
-/* ___________________________________________MAP SETTINGS */
-#zipcode {
-  border: 1.5px solid var(--coral2);
-  border-radius: 3px;
-  text-align: center;
-  background-color: var(--yellow);
-  height: 30px;
-  width: 120px;
-  padding: 0px;
-  margin: 5px;
-}
-
-#zipcode:focus {
-  outline: none;
-}
-
-.or {
-  margin: 5px;
-}
-
-.geo-button:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
-  cursor: pointer;
-}
-
 /* _____________________________________________________________CONTACT PAGE */
 .contact-page {
   margin: 80px;
@@ -657,10 +632,6 @@ input:checked + .slider:before {
 
 .input-group label {
   margin: 5px 15px 3px 2px;
-}
-
-.map-settings-buttons {
-  display: flex;
 }
 
 /* Footer */
