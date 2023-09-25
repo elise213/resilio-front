@@ -16,6 +16,7 @@
 
 .open2 {
     margin-left: 40px;
+    align-self: flex-end;
 }
 
 .closed2 {

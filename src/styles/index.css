@@ -1,10 +1,12 @@
 body {
   width: 100vw;
   overflow-x: hidden;
+  overflow-y: hidden;
   background-color: #fcf5ed;
 }
 
 :root {
+  --peruish:  rgb(235, 189, 142);
   --coral: rgb(255, 123, 116);
   --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
@@ -124,7 +126,7 @@ body {
 }
 
 .resource-card-text {
-  font-family: "Carme", sans-serif;
+
   font-size: medium;
   color: black;
   line-height: 1.5;
@@ -165,10 +167,9 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 100% !important;
+  width: 70%;
   text-align: justify;
   padding: 35px 41px 5px 41px;
-  ;
 }
 
 .description-heading {
@@ -240,7 +241,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  /* margin-top: 8px; */
 }
 
 .resource-title {
@@ -248,6 +249,8 @@ body {
   font-family: "Urbanist", sans-serif;
   font-size: medium;
   font-weight: bolder;
+  margin: 0;
+  padding: 5px;
 }
 
 .card-icon {
@@ -340,8 +343,8 @@ body {
   justify-content: space-between;
   color: #000;
   font-size: x-large;
-  border: 4px solid var(--coral);
-  background-color: var(--yellow);
+  border: 4px solid rgb(6, 90, 6);
+  background-color: lightgreen;
   border-radius: .3rem;
 }
 
@@ -370,7 +373,7 @@ body {
 }
 
 .modal-body {
-  background-color: whitesmoke;
+  background-color: rgb(250, 233, 227);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -378,6 +381,15 @@ body {
   overflow-x: hidden;
   overflow-y: scroll !important;
   scroll-behavior: smooth;
+  padding-top: 40px;
+}
+
+.resource-info {
+  display: flex;
+  width: 100%;
+justify-content: center;
+flex-direction: column;
+align-items: center;
 }
 
 .modal-div {
@@ -523,7 +535,7 @@ body.modal-open {
   align-items: center;
   padding-bottom: 15px;
   /* background-color: rgb(208, 166, 124); great color */
-  background-color: rgb(235, 189, 142);
+  background-color: var(--peruish);
 
 }
 
@@ -756,7 +768,7 @@ input:checked+.slider:before {
   height: 30px;
   background-color: rgb(234, 153, 143);
   font-size: medium;
-  border: 1px solid lightgreen;
+  border: 1px solid rgb(164, 212, 164);
   cursor: pointer;
   transition: background-color 0.3s;
   letter-spacing: 1.1px;
@@ -791,6 +803,9 @@ input:checked+.slider:before {
 /* ______________________________________________________________SIZE < 700px */
 @media screen and (max-width: 700px) {
 
+  .description-div {
+    width: 90% !important
+  }
 
   .scroll-warning {
     justify-content: center !important;
@@ -807,7 +822,7 @@ input:checked+.slider:before {
 
   .carousel {
     width: 95%;
-    height: 200px;
+    height: 280px;
     overflow: hidden;
   }
 
@@ -860,12 +875,8 @@ input:checked+.slider:before {
     font-size: 14px;
   }
 
-  .modal-footer p {
-    font-size: medium;
-  }
-
   .resource-card-text {
-    font-size: small;
+    font-size: medium;
   }
 
   .my-schedule-button.scroll-warning {
@@ -1026,4 +1037,29 @@ input:checked+.slider:before {
 
 .spacing-scroll-warning {
   margin-top: 67px;
+}
+
+.geo-button,
+#zipcode {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* .map-container {
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2), inset 0 3px 6px rgba(0, 0, 0, 0.2) !important;
+  z-index: 999;
+  border: none;
+} */
+
+.icons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+}
+
+.selection-head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }

@@ -1,4 +1,3 @@
-
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
@@ -52,7 +51,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "mental", label: "Mental Health" },
         { id: "work", label: "Work" },
         { id: "bathroom", label: "Public Bathrooms" },
-        // { id: "wifi", label: "WiFi" },
+        { id: "wifi", label: "WiFi" },
         { id: "substance", label: "Substance Support" },
         { id: "sex", label: "Sexual Health" },
         { id: "legal", label: "Legal Support" },
@@ -74,13 +73,15 @@ const getState = ({ getStore, getActions, setStore }) => {
         // { id: "kids", label: "Kids < 18" },
         { id: "youth", label: "Youth 18-24" },
       ],
-      scraps: [{
-        center: { lat: 34.0522, lng: -118.2437 },
-        bounds: {
-          ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
-          sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
-        }
-      }]
+      scraps: [
+        {
+          center: { lat: 34.0522, lng: -118.2437 },
+          bounds: {
+            ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
+            sw: { lat: 33.86311337069103, lng: -118.68692967529368 },
+          },
+        },
+      ],
     },
     actions: {
       // ________________________________________________________________LOGIN/TOKEN
@@ -145,7 +146,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             Swal.fire({
               icon: "error",
               title: "",
-              text: "Incorrect email or password",  // Here is where you can say "Incorrect password"
+              text: "Incorrect email or password", // Here is where you can say "Incorrect password"
             });
             return false;
           }
@@ -170,7 +171,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Logged in Successfully",
           });
 
-          return true;  // Return true when login is successful
+          return true; // Return true when login is successful
         } catch (error) {
           console.error(error);
           Swal.fire({
@@ -179,7 +180,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             text: error.message,
           });
 
-          return false;  // Return false when login fails
+          return false; // Return false when login fails
         }
       },
       logout: () => {
@@ -192,13 +193,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           title: "Logged out Successfully",
           onClose: () => {
             window.location.href = "/";
-          }
+          },
         });
       },
-
-
-
-
 
       // login: async (email, password) => {
       //   try {
@@ -300,30 +297,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           body: JSON.stringify(formData),
         };
         try {
-          const response = await fetch(current_back_url + `/api/editResource/${resourceId}`, opts);
+          const response = await fetch(
+            current_back_url + `/api/editResource/${resourceId}`,
+            opts
+          );
           if (response.status >= 400) {
             Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'There has been an error while editing the resource.'
+              icon: "error",
+              title: "Oops...",
+              text: "There has been an error while editing the resource.",
             });
             return false;
           }
           const data = await response.json();
           if (data.status === "true") {
             Swal.fire({
-              icon: 'success',
-              title: 'Success',
-              text: 'Resource edited successfully!'
+              icon: "success",
+              title: "Success",
+              text: "Resource edited successfully!",
             });
-            navigate('/'); // Navigate to home or some other page
+            navigate("/"); // Navigate to home or some other page
           }
         } catch (error) {
           console.error("Error during resource editing:", error);
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: `An error occurred: ${error.message}`
+            icon: "error",
+            title: "Oops...",
+            text: `An error occurred: ${error.message}`,
           });
         }
       },
@@ -363,7 +363,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         };
         try {
-          const response = await fetch(current_back_url + `/api/getResource/${resourceId}`, opts);
+          const response = await fetch(
+            current_back_url + `/api/getResource/${resourceId}`,
+            opts
+          );
           if (response.status >= 400) {
             alert("There has been an error");
             return null;
@@ -385,19 +388,20 @@ const getState = ({ getStore, getActions, setStore }) => {
             Authorization: "Bearer " + token,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(
-            formData
-          ),
+          body: JSON.stringify(formData),
         };
         try {
-          const response = await fetch(current_back_url + "/api/createResource", opts);
+          const response = await fetch(
+            current_back_url + "/api/createResource",
+            opts
+          );
           if (response.status >= 400) {
             alert("There has been an error");
             return false;
           }
           const data = await response.json();
           if (data.status === "true") {
-            navigate('/');
+            navigate("/");
           }
         } catch (error) {
           console.error("Error during resource creation:", error);
@@ -429,7 +433,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     return null;
       //   }
       // },
-
 
       // addFavorite: (resourceName) => {
       //   const current_back_url = getStore().current_back_url;
@@ -524,13 +527,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             "access-control-allow-origin": "*",
             "Content-Type": "application/json",
           },
-          signal: controller.signal
+          signal: controller.signal,
         })
-          .then(response => response.json())
-          .then(data => {
+          .then((response) => response.json())
+          .then((data) => {
             setStore({ schedules: data });
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
         return () => {
           controller.abort();
         };
@@ -552,9 +555,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
 
         // Ensure the values are float
-        const neLat = parseFloat(bounds?.northeast?.lat || bounds?.ne?.lat || null);
+        const neLat = parseFloat(
+          bounds?.northeast?.lat || bounds?.ne?.lat || null
+        );
         neLng = parseFloat(neLng);
-        const swLat = parseFloat(bounds?.southwest?.lat || bounds?.sw?.lat || null);
+        const swLat = parseFloat(
+          bounds?.southwest?.lat || bounds?.sw?.lat || null
+        );
         swLng = parseFloat(swLng);
 
         // console.log("Normalized and casted bounds", { neLat, neLng, swLat, swLng });
@@ -562,14 +569,14 @@ const getState = ({ getStore, getActions, setStore }) => {
         const url = getStore().current_back_url + "/api/getBResults";
         const combinedResources = {
           ...resources,
-          ...groups
+          ...groups,
         };
 
         try {
           setStore({ loading: true });
 
           let response = await fetch(url, {
-            method: 'POST',
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
@@ -579,13 +586,15 @@ const getState = ({ getStore, getActions, setStore }) => {
               swLat,
               swLng,
               resources: combinedResources || null,
-              days: days || null
+              days: days || null,
             }),
           });
 
           if (!response.ok) {
             const text = await response.text();
-            throw new Error(`Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`);
+            throw new Error(
+              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+            );
           }
 
           const data = await response.json();
@@ -594,13 +603,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           // console.log("boundary results", data.data);
 
           return data.data;
-
         } catch (error) {
           setStore({ loading: false });
-          if (error.name === 'AbortError') {
-            console.log('Fetch aborted');
+          if (error.name === "AbortError") {
+            console.log("Fetch aborted");
           } else {
-            console.error('Error fetching data:', error);
+            console.error("Error fetching data:", error);
           }
         }
       },

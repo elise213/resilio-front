@@ -14,7 +14,7 @@ const MapSettings = ({
                 <button className="geo-button" onClick={() => geoFindMe()}>
                     Find Location
                 </button>
-                <span className="or">or</span>
+                {/* <span className="or">or</span> */}
                 <div className="zipcode-input-container">
                     <input
                         type="text"
