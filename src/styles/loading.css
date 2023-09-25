@@ -1,16 +1,16 @@
 .loading {
-    box-shadow: none;
-    border: none;
-    width: auto;
-    height: auto !important;
-    background-color: transparent;
+  box-shadow: none;
+  border: none;
+  width: auto;
+  height: auto !important;
+  background-color: transparent;
 }
 
 .resource-card-header {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .locating-message {
-    color: var(--coral2);
-    font-family: "Urbanist", sans-serif;
-  }
+  color: var(--coral2);
+  font-family: "Urbanist", sans-serif;
+}
