@@ -1,33 +1,31 @@
 .navbar {
-    width: 100%;
-    top: 0;
-    padding: 10px;
-    font-family: "Urbanist", sans-serif;
-    background-color: rgb(235, 189, 142);
-    color: black;
-    display: flex;
-    justify-content: space-between;
-
+  width: 100%;
+  top: 0;
+  padding: 10px;
+  font-family: "Urbanist", sans-serif;
+  background-color: rgb(235, 189, 142);
+  color: black;
+  display: flex;
+  justify-content: space-between;
 }
-
 
 .navbar-toggler-icon,
 .nav-profile-icon {
-    color: rgb(170, 255, 192);
-    font-size: xx-large;
-    margin-left: 5px;
+  color: rgb(170, 255, 192);
+  font-size: xx-large;
+  margin-left: 5px;
 }
 
 .active {
-    text-decoration: underline wavy lightgreen !important;
+  text-decoration: underline wavy lightgreen !important;
 }
 
 .navbar-logo {
-    width: 30vw;
-    max-width: 220px;
-    margin: 15px 0px 0px 15px;
+  width: 30vw;
+  max-width: 220px;
+  margin: 15px 0px 0px 15px;
 }
 
 .navbar-toggler {
-    display: none
+  display: none;
 }
