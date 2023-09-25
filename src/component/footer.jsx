@@ -7,7 +7,7 @@ import Login from "./Login"
 
 const Footer = () => (
   <footer className="footer">
-    <img className="footer-logo" src={AliveLogo} alt="Resilio Logo" />
+    {/* <img className="footer-logo" src={AliveLogo} alt="Resilio Logo" /> */}
     {/* <div className="socials">
       <img className="footer-insta" src={Insta} alt="Instagram Logo" />
       <img className="footer-twitter" src={Twitter} alt="Twitter Logo" />
