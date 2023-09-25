@@ -98,6 +98,15 @@
   flex-direction: column;
   align-items: center;
   }
+
+  .info {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .info i {
+    margin-right: 10px;
+  }
   
   ____________________________________________CAROUSEL */
 .carousel-container {
