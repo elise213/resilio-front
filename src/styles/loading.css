@@ -9,3 +9,8 @@
 .resource-card-header {
     background-color: transparent;
 }
+
+.locating-message {
+    color: var(--coral2);
+    font-family: "Urbanist", sans-serif;
+  }
