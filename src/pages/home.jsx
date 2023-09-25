@@ -9,26 +9,24 @@ import {
   MapSettings,
   Modal
 } from "../component";
-import CircleType from "circletype";
-
 
 const Home = () => {
+
   const INITIAL_CITY_STATE = {
-    // 24.681678475660995  84.99154781534179
     center: { lat: 24.681678475660995, lng: 84.99154781534179 },
     bounds: {
       ne: { lat: 25.0, lng: 85.2 },
       sw: { lat: 24.4, lng: 84.8 }
     }
-    // center: { lat: 34.0522, lng: -118.2437 },
-    // bounds: {
-    //   ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
-    //   sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
-    // }
   };
 
-  const INITIAL_RESOURCE_STATE = (RESOURCE_OPTIONS) =>
-    RESOURCE_OPTIONS.reduce((acc, curr) => {
+  const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
+    CATEGORY_OPTIONS.reduce((acc, curr) => {
+      return { ...acc, [curr.id]: false };
+    }, {});
+
+  const INITIAL_GROUP_STATE = (GROUP_OPTIONS) =>
+    GROUP_OPTIONS.reduce((acc, curr) => {
       return { ...acc, [curr.id]: false };
     }, {});
 
@@ -44,33 +42,33 @@ const Home = () => {
   const circleInstance = useRef();
 
   // STATES
-  const [city, setCity] = useState(INITIAL_CITY_STATE);
-  const [resources, setResources] = useState(INITIAL_RESOURCE_STATE(store.RESOURCE_OPTIONS));
+  const [categories, setCategories] = useState(INITIAL_CATEGORY_STATE(store.CATEGORY_OPTIONS));
   const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
+  const [groups, setGroups] = useState(INITIAL_GROUP_STATE(store.GROUP_OPTIONS));
+
+  const [allCategories, setAllCategories] = useState(true);
+  const [allGroups, setAllGroups] = useState(true);
+  const [allDays, setAllDays] = useState(true);
+
+
+
+  const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLocating, setIsLocating] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+
   const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
 
-  const [demographics, setDemographics] = useState({
-    LGBTQ: false,
-    women: false,
-    youth: false,
-    seniors: false,
-  });
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const [selectedResource, setSelectedResource] = useState(null);
 
-  const [allKinds, setAllKinds] = useState(true);
-  const [allGroups, setAllGroups] = useState(true);
-
-  const [filterByBounds, setFilterByBounds] = useState(true);
-  const [filterByGroup, setFilterByGroup] = useState(false);
-  // const [boundsData, setBoundsData] = useState();
   const [zipInput, setZipInput] = useState("");
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   // FUNCTIONS
+
+
   const handleBoundsChange = (data) => {
     console.log("CALLED HANDLE BOUNDS CHANGE", data)
     setCity(prevState => ({
@@ -86,7 +84,7 @@ const Home = () => {
   useEffect(() => {
     if (city.bounds) {
       console.log("NEW CITY INFO", city)
-      actions.setBoundaryResults(city.bounds, resources, days);
+      actions.setBoundaryResults(city.bounds, categories, days, groups);
     }
   }, [city]);
 
@@ -179,9 +177,9 @@ const Home = () => {
 
 
   const clearAll = () => {
-    setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
+    setCategories(store.CATEGORY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
     setDays(store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
-    setDemographics({
+    setGroups({
       LGBTQ: false,
       women: false,
       youth: false,
@@ -189,23 +187,23 @@ const Home = () => {
     });
   };
 
+
+  const handleAllCheckboxes = (setStateFunc, options, allFlagName) => {
+    const newState = {};
+    Object.keys(options).forEach(key => {
+      newState[key] = false;
+    });
+    newState[allFlagName] = true;
+    setStateFunc(newState);
+  };
+
   const toggleDay = (dayId) => {
     setDays(prev => {
       if (dayId === 'allDays') {
-        return {
-          ...prev,
-          allDays: !prev.allDays,
-          ...store.DAY_OPTIONS.reduce((acc, currDay) => {
-            if (currDay.id !== 'allDays') acc[currDay.id] = false;
-            return acc;
-          }, {})
-        };
+        handleAllCheckboxes(setDays, prev, 'allDays');
+      } else {
+        return { ...prev, allDays: false, [dayId]: !prev[dayId] };
       }
-      return {
-        ...prev,
-        allDays: false,
-        [dayId]: !prev[dayId]
-      };
     });
   };
 
@@ -219,12 +217,19 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
-  const handleAllKinds = () => {
-    if (!allKinds) {
-      setAllKinds(prevAllKinds => !prevAllKinds);
-      setResources(store.RESOURCE_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {}));
-    };
+
+  const handleAllCategories = () => {
+    handleAllCheckboxes(setCategories, categories, 'allCategories');
   };
+
+  const handleAllGroups = () => {
+    handleAllCheckboxes(setGroups, groups, 'allGroups');
+  };
+
+  const handleAllDays = () => {
+    handleAllCheckboxes(setDays, days, 'allDays');
+  };
+
 
   const updateData = async () => {
     console.log("update DATA function called")
@@ -238,8 +243,8 @@ const Home = () => {
       const fetchData = async () => {
         try {
           if (currentFetchCount === fetchCounterRef.current) {
-            if (resources && days && city?.bounds) {
-              actions.setBoundaryResults(city.bounds, resources, days);
+            if (categories && days && city?.bounds) {
+              actions.setBoundaryResults(city.bounds, categories, days, groups);
             }
           }
         } catch (error) {
@@ -250,26 +255,15 @@ const Home = () => {
     }
   };
 
-
-  const handleEvent = (day) => {
-    if (day === "allDays") {
-      Object.keys(days).forEach(d => {
-        if (days[d]) {
-          toggleDay(d);
-        }
-      });
+  const handleEvent = (dayId) => {
+    if (dayId === 'allDays') {
+      handleAllCheckboxes(setDays, days, 'allDays');
     } else {
-      if (days["allDays"]) {
-        toggleDay("allDays");
-      }
-      toggleDay(day);
+      setDays(prev => ({ ...prev, allDays: false, [dayId]: !prev[dayId] }));
     }
   };
 
-  const handleDontFilterByDay = () => {
-    setDropdownOpen(!dropdownOpen);
-    handleEvent("allDays");
-  };
+  // console.log("DAYS", days, "CATEGORIES", categories, "GROUPS", groups)
 
   const geoFindMe = async () => {
     console.log("GEO FIND ME CALLED");
@@ -311,9 +305,9 @@ const Home = () => {
 
 
   useEffect(() => {
-    const anyServiceChecked = store.RESOURCE_OPTIONS.some(opt => resources[opt.id] && opt.id !== "allKinds");
-    setAllKinds(!anyServiceChecked);
-  }, [resources]);
+    const anyServiceChecked = store.CATEGORY_OPTIONS.some(opt => categories[opt.id] && opt.id !== "allCategories");
+    setAllCategories(!anyServiceChecked);
+  }, [categories]);
 
 
   useEffect(() => {
@@ -323,10 +317,9 @@ const Home = () => {
     const fetchData = async () => {
       try {
         if (currentFetchCount === fetchCounterRef.current) {
-          if (resources && days && city.bounds) {
-            console.log("Sending boundsData to backend", city.bounds);
-            // actions.setBoundaryResults(boundsData, resources, days);
-            await actions.setBoundaryResults(city.bounds, resources, days);
+          if (categories && days && city.bounds) {
+            // console.log("Sending boundsData to backend", city.bounds);
+            await actions.setBoundaryResults(city.bounds, categories, days, groups);
           }
         }
       } catch (error) {
@@ -337,7 +330,7 @@ const Home = () => {
 
     return () => abortControllerRef.current?.abort();
   },
-    [city.bounds, resources, days, city]);
+    [city.bounds, categories, days, city, groups]);
 
 
   useEffect(() => {
@@ -360,17 +353,8 @@ const Home = () => {
 
   useEffect(() => {
     updateData();
-  }, [days, resources, city]);
+  }, [days, categories, city]);
 
-  // useEffect(() => {
-  //   let circle1
-  //   if (circleInstance.current) {
-  //     circle1 = new CircleType(circleInstance.current).radius(500)
-  //   };
-  //   return () => {
-  //     circle1 && circle1.destroy();
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (ulRef.current && ulRef.current.scrollWidth > ulRef.current.clientWidth) {
@@ -381,37 +365,12 @@ const Home = () => {
   }, [store.boundaryResults]);
 
 
-  useEffect(() => {
-    if (city)
-      console.log('City state has changed: ', city);
-  }, [city]);
-  const handleAllGroups = () => {
-    setDemographics({
-      LGBTQ: false,
-      women: false,
-      youth: false,
-      seniors: false,
+  const handleSetAll = (setFn, stateObj, value = true) => {
+    const newState = {};
+    Object.keys(stateObj).forEach(key => {
+      newState[key] = value;
     });
-    setAllGroups(true);
-    setResources(prev => {
-      const updatedResources = { ...prev };
-      const demoIds = ["lgbtq", "women", "seniors", "youth"];
-      demoIds.forEach(id => {
-        updatedResources[id] = false;
-      });
-      return updatedResources;
-    });
-  };
-
-
-  const toggleResource = (resourceId) => {
-    setResources(prev => {
-      const updatedResources = { ...prev, [resourceId]: !prev[resourceId] };
-      if (["lgbtq", "women", "seniors", "youth"].includes(resourceId)) {
-        setAllGroups(false);
-      }
-      return updatedResources;
-    });
+    setFn(newState);
   };
 
 
@@ -422,41 +381,39 @@ const Home = () => {
         <div className="search-container">
           <div className="what-type">
 
-            {/* <div className="circle-font" ref={circleInstance}>What Do You Need?</div> */}
             <img className="home-logo" src={Logo} alt="Alive Logo" />
 
-            {/* SELECTION */}
-            <Selection
-              allGroups={allGroups}
-              setAllGroups={setAllGroups}
-              handleAllKinds={handleAllKinds}
-              allKinds={allKinds}
-              toggleResource={toggleResource}
-              moreOpen={moreOpen}
-              resources={resources}
-              filterByGroup={filterByGroup}
-              days={days}
-              handleEvent={handleEvent}  // make sure to pass handleEvent here
-              setMoreOpen={setMoreOpen}
-              setFilterByGroup={setFilterByGroup}
-              setDropdownOpen={setDropdownOpen}
-              handleDontFilterByDay={handleDontFilterByDay}
-              dropdownOpen={dropdownOpen}
-              handleAllGroups={handleAllGroups}
-              allgroups={allGroups}
-            />
+
+            {store.CATEGORY_OPTIONS && store.DAY_OPTIONS && store.GROUP_OPTIONS && categories && days && groups ? (
+              <Selection
+                categories={categories}
+                setCategories={setCategories}
+                groups={groups}
+                setGroups={setGroups}
+                days={days}
+                setDays={setDays}
+                setIsOpen={setIsOpen}
+                isOpen={isOpen}
+                allGroups={allGroups}
+                setAllGroups={setAllGroups}
+                handleAllCategories={handleAllCategories}
+                handleAllGroups={handleAllGroups}
+                handleAllCheckboxes={handleAllCheckboxes}
+                allCategories={allCategories}
+                allDays={allDays}
+                handleSetAll={handleSetAll}
+                handleEvent={handleEvent}
+                handleAllDays={handleAllDays}
+                allgroups={allGroups}
+              />
+            ) : (
+              <p>Loading selection options...</p>
+            )}
+
           </div>
         </div>
         {/* FILTER OPTIONS */}
         <div className="search-results-full">
-          {/* {!isScrolledToEnd && isOverflowing ?
-            (<div className="scroll-warning">
-              <span>
-                Scroll to see more
-              </span>
-              <i className="fa-solid fa-arrow-right"></i>
-            </div>
-            ) : <p className="spacing-scroll-warning"></p>} */}
           <div
             className="scroll-search-results"
             style={{
@@ -476,7 +433,6 @@ const Home = () => {
 
               {!store.loading && !isLocating ? (
                 store.boundaryResults.map((result, i) => {
-                  // if (result.latitude !== "24.681678475660995") { console.log("LATITUDE", result, result.latitude) };
                   return (
                     <li key={i}>
                       <ResourceCard
@@ -530,5 +486,5 @@ const Home = () => {
       )}
     </div >
   );
-};
+}
 export default Home;

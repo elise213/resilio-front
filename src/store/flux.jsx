@@ -37,13 +37,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       when: [],
       dummydata: [],
       schedules: [],
-      daysColumns: [
-        ["monday", "tuesday"],
-        ["wednesday", "thursday"],
-        ["friday", "saturday"],
-        ["sunday", "allDays"]
-      ],
-      RESOURCE_OPTIONS: [
+      // daysColumns: [
+      //   ["monday", "tuesday"],
+      //   ["wednesday", "thursday"],
+      //   ["friday", "saturday"],
+      //   ["sunday", "allDays"]
+      // ],
+      CATEGORY_OPTIONS: [
         { id: "food", label: "Food" },
         { id: "health", label: "Medical Care" },
         { id: "shelter", label: "Shelter" },
@@ -56,6 +56,17 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "substance", label: "Substance Support" },
         { id: "sex", label: "Sexual Health" },
         { id: "legal", label: "Legal Support" },
+      ],
+      DAY_OPTIONS: [
+        { id: "monday", label: "Monday" },
+        { id: "tuesday", label: "Tuesday" },
+        { id: "wednesday", label: "Wednesday" },
+        { id: "thursday", label: "Thursday" },
+        { id: "friday", label: "Friday" },
+        { id: "saturday", label: "Saturday" },
+        { id: "sunday", label: "Sunday" },
+      ],
+      GROUP_OPTIONS: [
         { id: "lgbtq", label: "LGBTQ+" },
         { id: "women", label: "Women" },
         { id: "seniors", label: "Seniors" },
@@ -63,15 +74,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         // { id: "kids", label: "Kids < 18" },
         { id: "youth", label: "Youth 18-24" },
       ],
-      DAY_OPTIONS: [
-        { id: "monday", label: "Monday" },
-        { id: "tuesday", label: "Tuesday" },
-        { id: "wednesday", label: "Wednesday" },
-        { id: "thursday", label: "Thursday" },
-        { id: "Friday", label: "Friday" },
-        { id: "Saturday", label: "Saturday" },
-        { id: "sunday", label: "Sunday" },
-      ]
+      scraps: [{
+        center: { lat: 34.0522, lng: -118.2437 },
+        bounds: {
+          ne: { lat: 34.24086583325125, lng: -117.80047032470705 },
+          sw: { lat: 33.86311337069103, lng: -118.68692967529368 }
+        }
+      }]
     },
     actions: {
       // ________________________________________________________________LOGIN/TOKEN
@@ -527,7 +536,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
       },
 
-      setBoundaryResults: async (bounds, resources, days) => {
+      setBoundaryResults: async (bounds, resources, days, groups) => {
         // Normalize longitude
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
@@ -548,9 +557,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         const swLat = parseFloat(bounds?.southwest?.lat || bounds?.sw?.lat || null);
         swLng = parseFloat(swLng);
 
-        console.log("Normalized and casted bounds", { neLat, neLng, swLat, swLng });
+        // console.log("Normalized and casted bounds", { neLat, neLng, swLat, swLng });
 
         const url = getStore().current_back_url + "/api/getBResults";
+        const combinedResources = {
+          ...resources,
+          ...groups
+        };
 
         try {
           setStore({ loading: true });
@@ -565,7 +578,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               neLng,
               swLat,
               swLng,
-              resources: resources || null,
+              resources: combinedResources || null,
               days: days || null
             }),
           });
@@ -578,7 +591,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
           setStore({ boundaryResults: data.data, loading: false });
 
-          console.log("boundary results", data.data);
+          // console.log("boundary results", data.data);
 
           return data.data;
 
