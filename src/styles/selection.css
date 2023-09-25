@@ -9,17 +9,18 @@
 .closed2 {
     border: none;
     background-color: transparent;
-    color: salmon;
     font-size: x-large;
 }
 
 .open2 {
-    margin-left: 40px;
+    margin: 80px 40px 0 0;
     align-self: flex-end;
+    color: var(--newGreen);
 }
 
 .closed2 {
     font-family: "Urbanist", sans-serif !important;
+    color: salmon;
 }
 
 .selection {

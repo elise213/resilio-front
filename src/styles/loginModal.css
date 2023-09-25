@@ -182,11 +182,6 @@ body.loginModal-open {
     justify-content: center;
 }
 
-.btn-close {
-    margin: 15px 15px 0px 0px;
-    color: salmon !important;
-    opacity: 1;
-}
 
 .yes-or-no {
     display: flex;
@@ -198,5 +193,6 @@ body.loginModal-open {
 }
 
 .login-container span {
-    color: lightgreen;
+    /* color: lightgreen; */
+ color: var(--newGreen);
 }
