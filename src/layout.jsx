@@ -14,7 +14,7 @@ import Edit from "./pages/Edit"
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
   return (
-    <div>
+    <div className="new-container">
       <BrowserRouter basename={basename}>
         <ScrollToTop>
           <Navbar />
