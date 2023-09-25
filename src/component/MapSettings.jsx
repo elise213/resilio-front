@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/mapSettings.css";
+import styles from "../styles/mapSettings2.css";
 
 const MapSettings = ({ handleZipInputChange, zipInput, geoFindMe }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -8,7 +8,7 @@ const MapSettings = ({ handleZipInputChange, zipInput, geoFindMe }) => {
     <div className="map-settings">
       <div className="map-settings-buttons">
         <button className="geo-button" onClick={() => geoFindMe()}>
-          Find Location
+          geo-location
         </button>
         <div className="zipcode-input-container">
           <input
