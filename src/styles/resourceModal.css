@@ -1,114 +1,110 @@
-
 .modal-close-div {
-    display: flex;
-    justify-content: center;
-    align-items: start !important;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-  
-  .modal-title-div {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-  }
-  
-  .modal-title-div p {
-    margin: 0;
-  }
-  
-  .modal-header {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: space-between;
-    color: #000;
-    font-size: x-large;
-    border: 4px solid rgb(6, 90, 6);
-    background-color: lightgreen;
-    border-radius: .3rem;
-  }
-  
-  .modal-footer {
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 80px;
-    width: 100%;
-    flex-wrap: nowrap;
-    margin-top: 40px;
-  }
-  
-  .modal-title {
-    font-family: "Urbanist", sans-serif;
-    font-size: xx-large;
-  }
-  
-  .modal-content {
-    margin: 20px;
-    width: 85%;
-    max-width: 850px;
-    outline: 4px solid var(--coral);
-    outline-offset: 5px;
-  }
-  
-  .modal-body {
-    background-color: rgb(250, 233, 227);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 4px;
-    overflow-x: hidden;
-    overflow-y: scroll !important;
-    scroll-behavior: smooth;
-    padding-top: 40px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: start !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
+.modal-title-div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.modal-title-div p {
+  margin: 0;
+}
+
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  color: #000;
+  font-size: x-large;
+  border: 4px solid rgb(6, 90, 6);
+  background-color: lightgreen;
+  border-radius: 0.3rem;
+}
+
+.modal-footer {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  flex-wrap: nowrap;
+  margin-top: 40px;
+}
+
+.modal-title {
+  font-family: "Urbanist", sans-serif;
+  font-size: xx-large;
+}
+
+.modal-content {
+  margin: 20px;
+  width: 85%;
+  max-width: 850px;
+  outline: 4px solid var(--coral);
+  outline-offset: 5px;
+}
+
+.modal-body {
+  background-color: rgb(250, 233, 227);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+  overflow-x: hidden;
+  overflow-y: scroll !important;
+  scroll-behavior: smooth;
+  padding-top: 40px;
+}
 
 .modal-div {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    border: none;
-    background-color: transparent;
-    width: 100vw;
-    height: 100%;
-    display: flex;
-    justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  border: none;
+  background-color: transparent;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+body.modal-open {
+  overflow: hidden;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+}
 
-  }
-  body.modal-open {
-    overflow: hidden;
-    height: 100%;
-    position: fixed;
-    width: 100%;
-  }
-
-  .resource-info {
-    display: flex;
-    width: 100%;
+.resource-info {
+  display: flex;
+  width: 100%;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  }
+}
 
-  .info {
-    display: flex;
-    margin-bottom: 10px;
-  }
-  
-  .info i {
-    margin-right: 10px;
-  }
-  
-  ____________________________________________CAROUSEL */
+.info {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.info i {
+  margin-right: 10px;
+}
+
+/* ____________________________________________CAROUSEL  */
 .carousel-container {
   display: flex;
   justify-content: center;
@@ -125,8 +121,8 @@
 }
 
 .carousel-description-div {
-    flex-direction: column;
-  }  
+  flex-direction: column;
+}
 
 .carousel-image {
   width: 100%;
@@ -158,47 +154,42 @@
 }
 
 .resource-card-text {
+  font-size: medium;
+  color: black;
+  line-height: 1.5;
+  text-decoration: none;
+}
 
-    font-size: medium;
-    color: black;
-    line-height: 1.5;
-    text-decoration: none;
+.details-div {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.modal-map {
+  width: 100% !important;
+}
+
+@media screen and (max-width: 700px) {
+  .resource-title {
+    font-size: 16px !important;
   }
-  
 
-  .details-div {
-    width: 100%;
-    justify-content: center;
-    display: flex;
+  .description-div {
+    width: 90% !important;
+    padding: 30px 30px 0px 30px !important;
   }
-  
+  .carousel {
+    width: 95%;
+    height: 280px;
+    overflow: hidden;
+  }
 
-  .modal-map {
+  .details {
     width: 100% !important;
   }
 
-  @media screen and (max-width: 700px) {
-
-    .resource-title {
-        font-size: 16px !important;
-      }
-    
-
-    .description-div {
-      width: 90% !important;
-      padding: 30px 30px 0px 30px !important;
-    }
-    .carousel {
-        width: 95%;
-        height: 280px;
-        overflow: hidden;
-      }
-
-      .details {
-        width: 100% !important;
-      }
-
-      .resource-card-text {
-        font-size: medium;
-      }
-  }  
+  .resource-card-text {
+    font-size: medium;
+  }
+}
