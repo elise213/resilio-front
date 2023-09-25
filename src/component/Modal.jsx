@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ResourceInfo } from "./ResourceInfo";
+import styles from "../styles/resourceModal.css";
 
 const Modal = (props) => {
   const modalContentRef = useRef(null);

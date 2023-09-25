@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { SimpleMap2 } from "./SimpleMap2";
 import arrow from "/assets/coralarrow.png";
+import styles from "../styles/resourceModal.css";
 
 export const ResourceInfo = (props) => {
   const { store, actions } = useContext(Context);
@@ -172,7 +173,7 @@ export const ResourceInfo = (props) => {
 
             {/* SCHEDULE */}
             {Object.keys(formattedSchedule).length > 0 && (
-              <div className="d-flex info">
+              <div className=" info">
                 <i className="fa-solid fa-calendar-check"></i>
                 <div className="sched-div">
                   {Object.entries(formattedSchedule).map(

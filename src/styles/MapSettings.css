@@ -37,3 +37,21 @@
     font-family: "Urbanist", sans-serif !important;
     font-size: 15px;
   }
+
+
+.geo-form .input-group {
+  margin-bottom: 1em;
+}
+
+.geo-input {
+  width: 100%;
+  padding: 0.8em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.geo-input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
