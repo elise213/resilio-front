@@ -2,7 +2,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    /* position: relative !important; */
     z-index: 999;
 }
 
