@@ -26,11 +26,35 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
-#zipcode {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
 .zipcode-input-container {
   font-family: "Urbanist", sans-serif !important;
   font-size: 15px;
+}
+
+.or {
+  margin: 5px;
+}
+
+.map-settings-buttons {
+  display: flex;
+}
+
+#zipcode {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  border: 1.5px solid var(--coral2);
+  border-radius: 3px;
+  text-align: center;
+  background-color: var(--yellow);
+  height: 30px;
+  width: 120px;
+  padding: 0px;
+  margin: 5px;
+}
+
+#zipcode:focus {
+  outline: none;
+}
+.geo-button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
+  cursor: pointer;
 }
