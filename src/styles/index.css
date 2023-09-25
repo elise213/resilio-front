@@ -6,8 +6,8 @@ body {
 }
 
 :root {
-  --peruish:  rgb(235, 189, 142);
-  --newGreen : rgb(181, 239, 181);
+  --peruish: rgb(235, 189, 142);
+  --newGreen: rgb(181, 239, 181);
   --coral: rgb(255, 123, 116);
   --coral-rgb: rgb(255, 123, 116);
   --coral2: rgb(245, 112, 79);
@@ -25,7 +25,7 @@ body {
 }
 
 .radio-label {
-  color: gray
+  color: gray;
 }
 
 .what-type {
@@ -38,7 +38,6 @@ body {
 }
 
 /* ________________________HOME */
-
 
 .home-logo {
   width: 40%;
@@ -73,7 +72,6 @@ body {
   flex-direction: column;
   margin: 20px;
 }
-
 
 .resource-image {
   border: 1px solid lime;
@@ -161,7 +159,6 @@ body {
   width: 200px;
   height: 100%;
   margin: 10px 1px 0px 2px;
-
 }
 
 .resource-card-header {
@@ -213,7 +210,6 @@ body {
   flex-direction: column;
 }
 
-
 .footer {
   margin-top: auto;
   width: 100%;
@@ -224,9 +220,7 @@ body {
   background-color: rgb(235, 189, 142);
 }
 
-
 /* _________________________________________MODAL */
-
 
 .modal-overlay {
   position: fixed;
@@ -234,7 +228,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(.9, 0, 0, 0.8);
+  background-color: rgba(0.9, 0, 0, 0.8);
   z-index: 9998;
 }
 
@@ -291,7 +285,6 @@ body {
   overflow-y: hidden;
 }
 
-
 .scroll-search-results ul {
   overflow-x: auto;
   overflow-y: hidden;
@@ -302,7 +295,6 @@ body {
   margin: 0 !important;
   width: 100%;
   display: flex;
-
 }
 
 .scroll-search-results li {
@@ -332,18 +324,15 @@ body {
   padding-bottom: 15px;
   /* background-color: rgb(208, 166, 124); great color */
   background-color: var(--peruish);
-
 }
 
 /* _____________________________________________________________Selection-*/
-
 
 .search-results-full {
   flex-direction: column;
   margin: 0;
   width: 100vw;
   flex-direction: row;
-
 }
 
 .grand-container {
@@ -408,15 +397,15 @@ hr {
   transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: var(--coral);
 }
 
-input:focus+.slider {
+input:focus + .slider {
   box-shadow: 0 0 1px var(--coral2);
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(26px);
 }
 
@@ -444,7 +433,8 @@ input:checked+.slider:before {
   letter-spacing: 3px;
   padding: 40px 20px 0px 0px;
   margin: 2px;
-  text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47), -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
+  text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47),
+    -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
 
 .search-container {
@@ -506,7 +496,6 @@ input:checked+.slider:before {
   outline: none;
 }
 
-
 .or {
   margin: 5px;
 }
@@ -549,14 +538,10 @@ input:checked+.slider:before {
   padding-top: 80px;
 }
 
-
-
 /* ______________________________________________________________SIZE < 700px */
 @media screen and (max-width: 700px) {
-
   .scroll-warning {
     justify-content: center !important;
-
   }
 
   .scroll-search-results li {
@@ -584,7 +569,6 @@ input:checked+.slider:before {
     min-width: 22vw !important;
   }
 
- 
   .card-icon {
     font-size: large;
     margin: 0;
@@ -603,7 +587,6 @@ input:checked+.slider:before {
   .my-schedule-button.scroll-warning {
     font-size: 15px;
   }
-
 }
 
 /* ______________________________________________________________SIZE < 420px */
@@ -672,7 +655,6 @@ input:checked+.slider:before {
   background-color: #f7f7f7;
 }
 
-
 .input-group label {
   margin: 5px 15px 3px 2px;
 }
@@ -694,7 +676,6 @@ input:checked+.slider:before {
   margin: 50px 15px 15px 15px;
   /* animation: breathe 35s infinite; */
 }
-
 
 .footer-insta {
   max-width: 50px;
