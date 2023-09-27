@@ -519,7 +519,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       // },
 
       setSchedules: () => {
-        let controller = new AbortController();
+        // let controller = new AbortController();
         let url = getStore().current_back_url + `/api/getSchedules`;
         fetch(url, {
           method: "GET",
@@ -527,7 +527,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             "access-control-allow-origin": "*",
             "Content-Type": "application/json",
           },
-          signal: controller.signal,
+          // signal: controller.signal,
         })
           .then((response) => response.json())
           .then((data) => {
@@ -535,7 +535,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
           .catch((error) => console.log(error));
         return () => {
-          controller.abort();
+          // controller.abort();
         };
       },
 

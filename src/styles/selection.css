@@ -1,169 +1,169 @@
 .cent {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    z-index: 999;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  z-index: 999;
 }
 
 .open2,
 .closed2 {
-    border: none;
-    background-color: transparent;
-    font-size: x-large;
+  border: none;
+  background-color: transparent;
+  font-size: x-large;
 }
 
 .open2 {
-    margin: 80px 40px 0 0;
-    align-self: flex-end;
-    color: var(--newGreen);
+  margin: 80px 40px 0 0;
+  align-self: flex-end;
+  color: var(--newGreen);
 }
 
 .closed2 {
-    font-family: "Urbanist", sans-serif !important;
-    color: salmon;
+  font-family: "Urbanist", sans-serif !important;
+  color: salmon;
 }
 
 .selection {
-    align-items: flex-end;
-    margin: 0px 10px;
-    min-width: 80vw;
-    width: 100% !important;
-    min-height: 390px;
+  align-items: flex-end;
+  margin: 0px 10px;
+  min-width: 80vw;
+  width: 100% !important;
+  min-height: 390px;
+  padding: 0px 40px;
 }
 
 .selection,
 .DaySelectionComponentClass {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .more-open-ids,
 .demo-ids,
 .day-ids {
-    border: 4px double green;
-    border-radius: 5px;
-    margin: 0px 10px;
-    background-color: whitesmoke;
-    opacity: 0.9;
-    box-sizing: border-box;
-    z-index: 1;
+  border: 4px double green;
+  border-radius: 5px;
+  margin: 0px 10px;
+  background-color: whitesmoke;
+  opacity: 0.9;
+  box-sizing: border-box;
+  z-index: 1;
 }
 
 .my-input {
-    display: none;
+  display: none;
 }
 
-.my-input+.my-label {
-    position: relative;
-    padding-left: 30px;
-    cursor: pointer;
-    padding-right: 7px;
-    color: white;
+.my-input + .my-label {
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  padding-right: 7px;
+  color: white;
 }
 
-.my-input+.my-label:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    border: 1px solid var(--green2);
-    background: #fff;
-    margin: 3px 5px 0px 7px;
+.my-input + .my-label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid var(--green2);
+  background: #fff;
+  margin: 3px 5px 0px 7px;
 }
 
-.my-input:checked+.my-label:before {
-    background-color: rgb(144, 194, 144);
+.my-input:checked + .my-label:before {
+  background-color: rgb(144, 194, 144);
 }
 
 .my-input2 {
-    display: none;
+  display: none;
 }
 
-.my-input2+.my-label {
-    position: relative;
-    padding-left: 30px;
-    cursor: pointer;
-    padding-right: 7px;
-    margin-bottom: 4.5px;
+.my-input2 + .my-label {
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  padding-right: 7px;
+  margin-bottom: 4.5px;
 }
 
-.my-input2+.my-label:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    border: 1px solid var(--coral2);
-    background: #fff;
-    margin: 3px 5px 0px 7px;
+.my-input2 + .my-label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid var(--coral2);
+  background: #fff;
+  margin: 3px 5px 0px 7px;
 }
 
-.my-input2:checked+.my-label:before {
-    background-color: peru;
+.my-input2:checked + .my-label:before {
+  background-color: peru;
 }
-
 
 .my-input3 {
-    display: none;
+  display: none;
 }
 
-.my-input3+.my-label {
-    position: relative;
-    padding-left: 30px;
-    cursor: pointer;
-    padding-right: 7px;
-    margin-bottom: 4.5px;
+.my-input3 + .my-label {
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  padding-right: 7px;
+  margin-bottom: 4.5px;
 }
 
-.my-input3+.my-label:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    border: 1px solid rgb(111, 107, 119);
-    background: #fff;
-    margin: 3px 5px 0px 7px;
+.my-input3 + .my-label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  border: 1px solid rgb(111, 107, 119);
+  background: #fff;
+  margin: 3px 5px 0px 7px;
 }
 
-.my-input3:checked+.my-label:before {
-    background-color: rgb(114, 114, 131);
+.my-input3:checked + .my-label:before {
+  background-color: rgb(114, 114, 131);
 }
 
 .my-schedule-button {
-    font-family: "Urbanist", sans-serif !important;
-    font-size: large;
-    color: var(--coral2);
-    z-index: 999;
-    border: none;
-    background-color: transparent;
+  font-family: "Urbanist", sans-serif !important;
+  font-size: large;
+  color: var(--coral2);
+  z-index: 999;
+  border: none;
+  background-color: transparent;
 }
 
 .my-schedule-button:hover {
-    color: var(--green2)
+  color: var(--green2);
 }
 
-
 @media screen and (max-width: 900px) {
-    .closed2 {
-        color: rgb(255, 117, 102);
-      }
-   
+  .closed2 {
+    color: rgb(255, 117, 102);
+  }
 }
 
 @media screen and (max-width: 700px) {
- .closed2 {
-        font-size: medium !important;
-        color: rgb(255, 117, 102);
-      }
+  .closed2 {
+    font-size: medium !important;
+    color: rgb(255, 117, 102);
+  }
+
   .selection {
-  min-height: 92vh !important;
+    min-height: 92vh !important;
+    padding: 0px 15px !important;
   }
 }
