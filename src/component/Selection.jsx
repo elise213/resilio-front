@@ -12,6 +12,7 @@ const Selection = (props) => {
   const [showCategories, setShowCategories] = useState(false);
   const [showGroups, setShowGroups] = useState(false);
   const [showDays, setShowDays] = useState(false);
+  const [columnOpen, setColumnOpen] = useState(false);
 
   const renderCenterColumn = (type, state, setState) => {
     const ids =
@@ -86,12 +87,6 @@ const Selection = (props) => {
     });
   };
 
-  useEffect(() => {
-    console.log("Categories", props.categories);
-    console.log("Days", props.days);
-    console.log("Groups", props.groups);
-  }, [props.categories, props.days, props.groups]);
-
   const toggleAllCheckboxes = (setFn, stateObj, ids) => {
     if (isAnyChecked(stateObj, ids)) {
       const newState = {};
@@ -102,9 +97,27 @@ const Selection = (props) => {
     }
   };
 
+  useEffect(() => {
+    console.log("Categories", props.categories);
+    console.log("Days", props.days);
+    console.log("Groups", props.groups);
+  }, [props.categories, props.days, props.groups]);
+
+  useEffect(() => {
+    setColumnOpen(showGroups && showDays);
+  }, [showGroups, showDays]);
+
+  console.log("COL UPEN", columnOpen);
+
+  console.log("SHOW CAT", showCategories);
+
   return (
-    <div className="selection">
-      <div className="cent">
+    <div className={`selection three-columns}`}>
+      <div
+        className={`cent ${
+          showCategories ? "cat-grid-adjust" : "cat-grid-move"
+        }`}
+      >
         <button
           onClick={() => {
             setShowCategories(!showCategories);
@@ -120,11 +133,16 @@ const Selection = (props) => {
         >
           {showCategories ? "X" : "Filter By Category"}
         </button>
+
         {showCategories &&
           renderCenterColumn("category", props.categories, props.setCategories)}
       </div>
 
-      <div className="cent">
+      <div
+        className={`cent ${
+          columnOpen ? "group-grid-adjust" : "group-grid-move"
+        }`}
+      >
         <button
           onClick={() => {
             setShowGroups(!showGroups);
@@ -136,11 +154,14 @@ const Selection = (props) => {
         >
           {showGroups ? "X" : "Filter By Group"}
         </button>
+
         {showGroups &&
           renderCenterColumn("group", props.groups, props.setGroups)}
       </div>
 
-      <div className="cent">
+      <div
+        className={`cent ${columnOpen ? "days-grid-adjust" : "days-grid-move"}`}
+      >
         <button
           onClick={() => {
             setShowDays(!showDays);
@@ -152,6 +173,7 @@ const Selection = (props) => {
         >
           {showDays ? "X" : "Filter By Day"}
         </button>
+
         {showDays && renderCenterColumn("day", props.days, props.setDays)}
       </div>
     </div>

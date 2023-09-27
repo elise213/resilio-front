@@ -3,6 +3,7 @@
   align-items: center;
   flex-direction: column;
   z-index: 999;
+  justify-content: flex-start;
 }
 
 .open2,
@@ -16,7 +17,10 @@
 .open2 {
   align-self: flex-end;
   color: var(--newGreen);
-  transform: translate(-50px, 15px);
+  transform: translate(0px, 30px);
+  align-self: center;
+  margin: 0;
+  padding: 0;
 }
 
 .closed2 {
@@ -26,8 +30,8 @@
 
 .selection {
   align-items: flex-end;
-  width: 100% !important;
-  padding: 0px 0px 0px 20px;
+  /* width: 100% !important; */
+  padding: 0 0 20px 20px;
 }
 
 .selection div {
@@ -63,7 +67,7 @@
   padding-left: 30px;
   cursor: pointer;
   padding-right: 7px;
-  color: white;
+  /* color: white; */
 }
 
 .what-type {
@@ -176,8 +180,7 @@
   }
 
   .selection {
-    min-height: 92vh !important;
-    padding: 0px 15px !important;
+    padding: 0 20px 20px 20px !important;
   }
 
   .my-label {
@@ -186,28 +189,66 @@
   }
 }
 
-.selection,
-.DaySelectionComponentClass {
+.selection {
   display: grid;
-  grid-template-columns: 3fr 3fr; /* This will create two columns each of equal width */
-  grid-gap: 10px; /* Optional: Add some gap between the grid items */
-}
-
-.cent:nth-child(1) {
-  grid-row: 2; /* This will place Item 3 in the second row of the second column */
-}
-
-.cent:nth-child(2),
-.cent:nth-child(3) {
-  grid-column: 2; /* This will place both Item 2 and Item 3 in the second column */
-}
-
-.cent:nth-child(3) {
-  grid-row: 2; /* This will place Item 3 in the second row of the second column */
 }
 
 .center {
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
   position: static;
+  font-size: 14px;
+  margin: 0 15px;
 }
+
+.three-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+}
+
+.cent:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.cent:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.cent:nth-child(3) {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+@media screen and (max-width: 800px) {
+  .cent:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .cent:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .cent:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .center {
+    width: auto;
+  }
+
+  .open2 {
+    align-self: flex-end !important;
+    transform: translate(0px, 30px);
+  }
+}
+
+/* .days-grid-move {
+  grid-column: 3;
+  /* grid-row: 3; */

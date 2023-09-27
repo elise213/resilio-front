@@ -415,16 +415,13 @@ const Home = () => {
             <p>Loading selection options...</p>
           )}
 
-          <MapSettings
-            geoFindMe={geoFindMe}
-            handleZipInputChange={handleZipInputChange}
-            zipInput={zipInput}
-          />
-
           <SimpleMap
             handleBoundsChange={handleBoundsChange}
             openModal={openModal}
             city={city}
+            geoFindMe={geoFindMe}
+            handleZipInputChange={handleZipInputChange}
+            zipInput={zipInput}
           />
         </div>
       </div>
