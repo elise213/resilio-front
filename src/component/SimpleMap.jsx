@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
-import Styles from "../styles/simpleMap2.css";
+import Styles from "../styles/simplemap.css";
 
 const SimpleMap = ({ openModal, handleBoundsChange, city }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
