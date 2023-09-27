@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { useNavigate } from "react-router-dom";
-import Styles from "../styles/simpleMap.css";
+import Styles from "../styles/simpleMap2.css";
 
 export const ModalMap = (props) => {
   let lat = parseFloat(props.latitude);
@@ -13,10 +13,13 @@ export const ModalMap = (props) => {
 
   const Marker = ({ lat, lng, color, text, category }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const navigate = useNavigate(); //
+
+    const navigate = useNavigate();
+
     const handleMouseEnter = () => {
       setIsHovered(true);
     };
+
     const handleMouseLeave = () => {
       setIsHovered(false);
     };
@@ -30,6 +33,7 @@ export const ModalMap = (props) => {
         window.open(url, "_blank");
       }
     };
+
     return (
       <div
         className="marker"
