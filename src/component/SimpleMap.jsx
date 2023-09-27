@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
-import Styles from "../styles/simpleMap.css";
+import Styles from "../styles/simpleMap2.css";
 import MapSettings from "./MapSettings";
 
 const SimpleMap = ({
