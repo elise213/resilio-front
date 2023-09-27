@@ -1,5 +1,4 @@
 .map-settings {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,7 +35,11 @@
 }
 
 .map-settings-buttons {
-  display: flex;
+  position: absolute;
+  z-index: 999;
+  flex-direction: column;
+  right: 25px;
+  bottom: -40px;
 }
 
 #zipcode {

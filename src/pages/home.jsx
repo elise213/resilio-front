@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Logo from "/assets/RESILIOO.png";
+import Styles from "../styles/home.css";
 import {
   SimpleMap,
   Selection,
@@ -302,116 +303,129 @@ const Home = () => {
 
   // RETURN
   return (
-    <div>
-      <div className="grand-container">
-        <div className="search-container">
-          <div className="what-type">
-            <img className="home-logo" src={Logo} alt="Alive Logo" />
-
-            {store.CATEGORY_OPTIONS &&
-            store.DAY_OPTIONS &&
-            store.GROUP_OPTIONS &&
-            categories &&
-            days &&
-            groups ? (
-              <Selection
-                categories={categories}
-                setCategories={setCategories}
-                groups={groups}
-                setGroups={setGroups}
-                days={days}
-                setDays={setDays}
-              />
-            ) : (
-              <p>Loading selection options...</p>
-            )}
-          </div>
+    <div className="grand-container">
+      <div className="search-container">
+        <img className="home-logo" src={Logo} alt="Alive Logo" />
+        <div className="what-type">
+          {/* {store.CATEGORY_OPTIONS &&
+          store.DAY_OPTIONS &&
+          store.GROUP_OPTIONS &&
+          categories &&
+          days &&
+          groups ? (
+            <Selection
+              categories={categories}
+              setCategories={setCategories}
+              groups={groups}
+              setGroups={setGroups}
+              days={days}
+              setDays={setDays}
+            />
+          ) : (
+            <p>Loading selection options...</p>
+          )} */}
         </div>
-        {/* FILTER OPTIONS */}
-        <div className="search-results-full">
-          <div
-            className="scroll-search-results"
-            style={{
-              display: "block",
-            }}
-          >
-            {/* <div className="results-message">
+      </div>
+      {/* FILTER OPTIONS */}
+      <div className="search-results-full">
+        <div
+          className="scroll-search-results"
+          style={{
+            display: "block",
+          }}
+        >
+          {store.boundaryResults[0] && (
+            <div className="results-message">
               <p>Free Resources In Your Community</p>
-            </div> */}
-            <ul
-              style={{
-                listStyleType: "none",
-                justifyContent:
-                  store.loading ||
-                  isLocating ||
-                  store.boundaryResults.length === 0
-                    ? "center"
-                    : isOverflowing
-                    ? "flex-start"
-                    : "center",
-              }}
-              ref={ulRef}
-            >
-              {store.boundaryResults.length === 0 &&
-              !store.loading &&
-              !isLocating ? (
-                <li>
-                  <Loading name="none" />
-                </li>
-              ) : (
-                ""
-              )}
-              {isLocating ? (
-                <li>
-                  <Loading name="locating" />
-                </li>
-              ) : (
-                ""
-              )}
-              {store.loading ? (
-                <li>
-                  <Loading name="loading" />
-                </li>
-              ) : (
-                ""
-              )}
-
-              {!store.loading && !isLocating
-                ? store.boundaryResults.map((result, i) => {
-                    return (
-                      <li key={i}>
-                        <ResourceCard
-                          item={result}
-                          openModal={openModal}
-                          closeModal={closeModal}
-                          modalIsOpen={modalIsOpen}
-                          setModalIsOpen={setModalIsOpen}
-                          selectedResource={selectedResource}
-                        />
-                      </li>
-                    );
-                  })
-                : ""}
-            </ul>
-          </div>
-          {/* MAP */}
-          <div className="new-container">
-            <div className="map-settings-container">
-              <MapSettings
-                geoFindMe={geoFindMe}
-                handleZipInputChange={handleZipInputChange}
-                zipInput={zipInput}
-              />
             </div>
+          )}
+          <ul
+            style={{
+              listStyleType: "none",
+              justifyContent:
+                store.loading ||
+                isLocating ||
+                store.boundaryResults.length === 0
+                  ? "center"
+                  : isOverflowing
+                  ? "flex-start"
+                  : "center",
+            }}
+            ref={ulRef}
+          >
+            {store.boundaryResults.length === 0 &&
+            !store.loading &&
+            !isLocating ? (
+              <li>
+                <Loading name="none" />
+              </li>
+            ) : (
+              ""
+            )}
+            {isLocating ? (
+              <li>
+                <Loading name="locating" />
+              </li>
+            ) : (
+              ""
+            )}
+            {store.loading ? (
+              <li>
+                <Loading name="loading" />
+              </li>
+            ) : (
+              ""
+            )}
 
-            <div className="map-and-cities">
-              <SimpleMap
-                handleBoundsChange={handleBoundsChange}
-                openModal={openModal}
-                city={city}
-              />
-            </div>
-          </div>
+            {!store.loading && !isLocating
+              ? store.boundaryResults.map((result, i) => {
+                  return (
+                    <li key={i}>
+                      <ResourceCard
+                        item={result}
+                        openModal={openModal}
+                        closeModal={closeModal}
+                        modalIsOpen={modalIsOpen}
+                        setModalIsOpen={setModalIsOpen}
+                        selectedResource={selectedResource}
+                      />
+                    </li>
+                  );
+                })
+              : ""}
+          </ul>
+        </div>
+        {/* MAP */}
+        <div className="new-container">
+          {store.CATEGORY_OPTIONS &&
+          store.DAY_OPTIONS &&
+          store.GROUP_OPTIONS &&
+          categories &&
+          days &&
+          groups ? (
+            <Selection
+              categories={categories}
+              setCategories={setCategories}
+              groups={groups}
+              setGroups={setGroups}
+              days={days}
+              setDays={setDays}
+            />
+          ) : (
+            <p>Loading selection options...</p>
+          )}
+
+          <MapSettings
+            geoFindMe={geoFindMe}
+            handleZipInputChange={handleZipInputChange}
+            zipInput={zipInput}
+          />
+
+          <SimpleMap
+            handleBoundsChange={handleBoundsChange}
+            openModal={openModal}
+            city={city}
+          />
         </div>
       </div>
       {modalIsOpen && (

@@ -3,9 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import AliveLogo from "/assets/RESILIOO.png";
 import Insta from "/assets/insta.png";
 import Twitter from "/assets/twitter.png";
-import Login from "./Login"
+import Login from "./Login";
+import Styles from "../styles/footer.css";
 
-const Footer = () => (
+const Footer2 = () => (
   <footer className="footer">
     {/* <img className="footer-logo" src={AliveLogo} alt="Resilio Logo" /> */}
     {/* <div className="socials">
@@ -14,10 +15,9 @@ const Footer = () => (
     </div> */}
     <div className="legal">
       <div className="foot">
-        <p className="all-rights">
-          ©2023 Resilio All Rights Reserved</p>
+        <p className="all-rights">©2023 RESILIO All Rights Reserved</p>
       </div>
     </div>
-  </footer >
+  </footer>
 );
-export default Footer;
+export default Footer2;

@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { SimpleMap2 } from "./SimpleMap2";
+import { ModalMap } from "./ModalMap";
 import arrow from "/assets/coralarrow.png";
 import styles from "../styles/resourceModal.css";
 
-export const ResourceInfo = (props) => {
+export const ModalInfo = (props) => {
   const { store, actions } = useContext(Context);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -197,7 +197,7 @@ export const ResourceInfo = (props) => {
         {/* MAP */}
         {res.latitude && res.longitude && (
           <div className="modal-map">
-            <SimpleMap2 latitude={res.latitude} longitude={res.longitude} />
+            <ModalMap latitude={res.latitude} longitude={res.longitude} />
           </div>
         )}
       </div>

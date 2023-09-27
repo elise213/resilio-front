@@ -9,33 +9,37 @@
 .closed2 {
   border: none;
   background-color: transparent;
-  font-size: x-large;
+  font-size: large;
+  z-index: 999;
 }
 
 .open2 {
-  margin: 80px 40px 0 0;
   align-self: flex-end;
   color: var(--newGreen);
+  transform: translate(-50px, 15px);
 }
 
 .closed2 {
   font-family: "Urbanist", sans-serif !important;
-  color: salmon;
+  color: brown;
 }
 
 .selection {
   align-items: flex-end;
-  margin: 0px 10px;
-  min-width: 80vw;
   width: 100% !important;
-  min-height: 390px;
-  padding: 0px 40px;
+  padding: 0px 0px 0px 20px;
 }
 
-.selection,
-.DaySelectionComponentClass {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.selection div {
+  display: flex;
+  justify-content: center;
+}
+
+.selection-head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .more-open-ids,
@@ -60,6 +64,15 @@
   cursor: pointer;
   padding-right: 7px;
   color: white;
+}
+
+.what-type {
+  min-height: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .my-input + .my-label:before {
@@ -166,4 +179,35 @@
     min-height: 92vh !important;
     padding: 0px 15px !important;
   }
+
+  .my-label {
+    margin: 0px 0px 0px 6px !important;
+    font-size: small !important;
+  }
+}
+
+.selection,
+.DaySelectionComponentClass {
+  display: grid;
+  grid-template-columns: 3fr 3fr; /* This will create two columns each of equal width */
+  grid-gap: 10px; /* Optional: Add some gap between the grid items */
+}
+
+.cent:nth-child(1) {
+  grid-row: 2; /* This will place Item 3 in the second row of the second column */
+}
+
+.cent:nth-child(2),
+.cent:nth-child(3) {
+  grid-column: 2; /* This will place both Item 2 and Item 3 in the second column */
+}
+
+.cent:nth-child(3) {
+  grid-row: 2; /* This will place Item 3 in the second row of the second column */
+}
+
+.center {
+  flex-direction: column;
+  align-items: flex-start;
+  position: static;
 }
