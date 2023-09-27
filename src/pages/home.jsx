@@ -50,7 +50,7 @@ const Home = () => {
 
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLocating, setIsLocating] = useState(false);
-  const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
+  // const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [zipInput, setZipInput] = useState("");
@@ -267,23 +267,23 @@ const Home = () => {
     return () => abortControllerRef.current?.abort();
   }, [city.bounds, categories, days, city, groups]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (ulRef.current) {
-        const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
-        const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10;
-        setIsScrolledToEnd(atEndOfScroll);
-      }
-    };
-    if (ulRef.current) {
-      ulRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (ulRef.current) {
-        ulRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (ulRef.current) {
+  //       const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
+  //       const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10;
+  //       setIsScrolledToEnd(atEndOfScroll);
+  //     }
+  //   };
+  //   if (ulRef.current) {
+  //     ulRef.current.addEventListener("scroll", handleScroll);
+  //   }
+  //   return () => {
+  //     if (ulRef.current) {
+  //       ulRef.current.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, []);
 
   useEffect(() => {
     updateData();
@@ -335,11 +335,16 @@ const Home = () => {
               display: "block",
             }}
           >
+            {/* <div className="results-message">
+              <p>Free Resources In Your Community</p>
+            </div> */}
             <ul
               style={{
                 listStyleType: "none",
                 justifyContent:
-                  store.loading || store.boundaryResults.length === 0
+                  store.loading ||
+                  isLocating ||
+                  store.boundaryResults.length === 0
                     ? "center"
                     : isOverflowing
                     ? "flex-start"
