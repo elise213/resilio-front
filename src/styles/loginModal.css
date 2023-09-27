@@ -1,9 +1,18 @@
+.login-container {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
 .centered {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 .login-modal-header {
@@ -20,7 +29,8 @@
   align-items: center;
   justify-content: center;
   background-color: whitesmoke;
-  padding: 20px;
+  padding: 10px 20px;
+  font-size: small;
 }
 
 .header-div {
@@ -38,19 +48,10 @@
   width: 100%;
 }
 
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .loginModal-close-div {
   display: flex;
   justify-content: center;
   align-items: start !important;
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .loginModal-title-div {
@@ -100,7 +101,7 @@
 
 .form-label {
   font-family: "Urbanist", sans-serif;
-  letter-spacing: 1.1;
+  letter-spacing: 1.2px;
   margin: 20px 0 0 0;
   font-size: medium;
   display: block;
@@ -111,14 +112,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border-radius: 4px 4px 0 0; */
   overflow-x: hidden;
   overflow-y: scroll !important;
   scroll-behavior: smooth;
   height: 100%;
-  min-height: 30vh;
   justify-content: center;
-  padding: 20px;
+  padding: 0px 10px;
 }
 
 .loginModal-div {
@@ -141,7 +140,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   z-index: 9998;
 }
 
@@ -192,4 +191,23 @@ body.loginModal-open {
 .login-container span {
   /* color: lightgreen; */
   color: var(--newGreen);
+}
+
+.login-logout {
+  margin: 20px;
+  font-size: large !important;
+  position: absolute;
+  right: 30px;
+}
+
+.margin-cancel {
+  margin-top: 0 !important;
+}
+
+.btn-close {
+  color: green !important;
+}
+
+.open {
+  height: auto !important;
 }

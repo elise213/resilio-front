@@ -13,19 +13,15 @@ const Login = () => {
   const [is_org, setIs_org] = useState("");
   const { store, actions } = useContext(Context);
 
-
   const hasToken = store.token;
-
 
   async function handleLogin(e) {
     e.preventDefault();
     const loginSuccessful = await actions.login(email, password);
     if (loginSuccessful) {
-      setOpenLoginModal(false);  // Close the modal if login is successful
+      setOpenLoginModal(false);
     }
   }
-
-
 
   function handleLogout() {
     actions.logout();
@@ -49,19 +45,20 @@ const Login = () => {
 
   useEffect(() => {
     if (openLoginModal) {
-      document.body.classList.add('loginModal-open');
+      document.body.classList.add("loginModal-open");
     } else {
-      document.body.classList.remove('loginModal-open');
+      document.body.classList.remove("loginModal-open");
     }
   }, [openLoginModal]);
 
   return (
-    <div className="login-container">
+    <div className={`login-container ${!openLoginModal ? "open" : ""}`}>
       <span
+        className="login-logout"
         type="button"
-        onClick={() => hasToken ? handleLogout() : setOpenLoginModal(true)}
+        onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
       >
-        {hasToken ? "Logout" : "Login"}
+        {!openLoginModal && (hasToken ? "Logout" : "Login")}
       </span>
       {openLoginModal && (
         <>
@@ -86,8 +83,6 @@ const Login = () => {
       )}
     </div>
   );
-
 };
 
 export default Login;
-

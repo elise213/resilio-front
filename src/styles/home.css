@@ -1,0 +1,148 @@
+.scroll-search-results {
+  display: grid !important;
+  width: 100%;
+  margin: 10px 0px 15px 0px;
+  border: 1px solid pink;
+  background-color: rgb(195, 188, 199);
+  position: relative !important;
+  z-index: 0;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.scroll-search-results ul {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 0 0 0 10px !important;
+  margin: 0 !important;
+  width: 100%;
+  display: flex;
+}
+
+.scroll-search-results li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 10px 1px 10px;
+  flex: 0 0 auto;
+}
+
+.home-logo {
+  width: 40%;
+  height: auto;
+  position: absolute;
+  z-index: 0;
+  top: 200px;
+  opacity: 0.9;
+}
+.scroll-search-results ul::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-search-results ul::-webkit-scrollbar {
+  color: orange;
+}
+
+.search-results-full {
+  flex-direction: column;
+  margin: 0;
+  width: 100vw;
+  flex-direction: row;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.scroll-search-results ul::-webkit-scrollbar-thumb {
+  display: hidden;
+}
+
+.spacing-scroll-warning {f
+  margin-top: 67px;
+}
+
+.results-message {
+  position: absolute;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--yellow);
+  border: 1.5px solid var(--coral2);
+  font-size: 20px;
+  display: flex;
+  font-family: "Urbanist", sans-serif !important;
+  padding: 0 5px;
+  margin: 20px 0 0 0;
+  z-index: -1;
+  letter-spacing: 1.1px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 1px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.results-message p {
+  margin: 0;
+}
+
+.new-container {
+  margin-top: 40px;
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.scroll-warning {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  color: var(--green);
+  font-family: "Urbanist", sans-serif !important;
+  font-size: 15px;
+  letter-spacing: 3px;
+  padding: 40px 20px 0px 0px;
+  margin: 2px;
+  text-shadow: -1px -1px 0 rgb(38, 127, 47), 1px -1px 0 rgb(38, 127, 47),
+    -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
+}
+
+@media screen and (max-width: 700px) {
+  .scroll-warning {
+    justify-content: center !important;
+  }
+
+  .scroll-search-results li {
+    margin: 10px 8px 16px 8px !important;
+  }
+
+  .my-resource-card {
+    min-width: 22vw !important;
+  }
+
+  .card-icon {
+    font-size: large;
+    margin: 0;
+  }
+
+  .card-img {
+    width: 100%;
+    object-fit: cover;
+    max-height: 100px;
+  }
+}
+
+/* ______________________________________________________________SIZE < 420px */
+
+@media screen and (max-width: 440px) {
+  .my-resource-card {
+    min-width: 25vw !important;
+    height: 200px;
+  }
+
+  .scroll-search-results li {
+    margin: 10px 8px 5px 8px !important;
+  }
+}
