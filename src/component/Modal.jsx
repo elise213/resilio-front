@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ResourceInfo } from "./ResourceInfo";
+import { ModalInfo } from "./ModalInfo";
 import styles from "../styles/resourceModal.css";
 
 const Modal = (props) => {
@@ -85,37 +85,37 @@ const Modal = (props) => {
       <div className="modal-div">
         <div className="modal-content" ref={modalContentRef}>
           <div className="modal-header">
-            <div className="modal-close-div">
-              <p className="x-close" onClick={handleCloseClick}>
-                X
-              </p>
-            </div>
             <div className="modal-title-div">
-              <p>{props.resource.name}</p>
               {icons.map((icon, index) => (
                 <i key={index} className={`${icon} card-icon-2`} />
               ))}
+              <span>{props.resource.name}</span>
+            </div>
+            <div className="modal-close-div">
+              <p className="x-close btn-close" onClick={handleCloseClick}></p>
             </div>
           </div>
           <div className="modal-body">
-            <ResourceInfo
+            <ModalInfo
               id={props.resource.id}
               schedule={props.resource.schedule}
               res={props.resource}
             />
             <div className="modal-footer">
-              <p className="resource-card-text">
+              <p className="">
                 Is there a problem with this information? {""}
                 <Link to="/Contact">Let us know</Link>
               </p>
-              <p className="resource-card-text">
+              <p className="">
                 Click {""}
                 <Link to="/create">here</Link>
                 {""} to create a new resource listing.
               </p>
-              {tokenExists && (
-                <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>
-              )}
+              <p>
+                {tokenExists && (
+                  <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>
+                )}
+              </p>
             </div>
           </div>
         </div>

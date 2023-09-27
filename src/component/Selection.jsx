@@ -104,7 +104,7 @@ const Selection = (props) => {
 
   return (
     <div className="selection">
-      <div className="selection-head">
+      <div className="cent">
         <button
           onClick={() => {
             setShowCategories(!showCategories);

@@ -1,0 +1,58 @@
+/* _____________________________________________________________MAP */
+.marker {
+  position: relative;
+  display: inline-block;
+}
+
+.marker-icon i {
+  color: var(--coral2);
+  font-size: x-large;
+}
+
+.marker-text {
+  color: salmon(208, 87, 74);
+  z-index: 100;
+  font-size: large;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border: 2px solid var(--coral) !important;
+}
+
+.marker-icon span {
+  position: absolute;
+  top: -26px;
+  left: -15px;
+  background-color: #fff;
+  padding: 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.map-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.map-container {
+  margin: 0 20px 0 0;
+  min-width: 400px;
+}
+
+@media screen and (max-width: 900px) {
+  .map-container {
+    margin: 0 20px 0 0;
+    min-width: 300px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .map-container {
+    margin: 0 20px 0 0;
+    min-width: 250px;
+  }
+}
+
+.gm-control-active,
+.gmnoprint {
+  display: none;
+}
