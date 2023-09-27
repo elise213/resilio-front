@@ -45,7 +45,7 @@ export const ModalMap = (props) => {
         <div className="marker-icon">
           <i className="fa-solid fa-map-pin"></i>
 
-          {isHovered && text && <span>Click for Directions</span>}
+          {isHovered && text && <span>Click for Directions.</span>}
         </div>
       </div>
     );
