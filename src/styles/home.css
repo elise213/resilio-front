@@ -90,9 +90,8 @@
 }
 
 .new-container {
-  margin-top: 40px;
+  margin: 0;
   display: flex;
-  /* flex-direction: column; */
 }
 
 .scroll-warning {
@@ -109,13 +108,16 @@
     -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
 
-@media screen and (max-width: 700px) {
-  .scroll-warning {
+@media screen and (max-width: 800px) {
+  /* .scroll-warning {
     justify-content: center !important;
-  }
+  } */
 
-  .scroll-search-results li {
+  /* .scroll-search-results li {
     margin: 10px 8px 16px 8px !important;
+  } */
+  .new-container {
+    flex-direction: column !important;
   }
 
   .my-resource-card {
