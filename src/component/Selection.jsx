@@ -36,21 +36,27 @@ const Selection = (props) => {
 
         {ids.map((id) => {
           const option = options.find((o) => o.id === id);
+          const colorStyle =
+            type !== "day" ? actions.getColorForCategory(id) : null;
           return option ? (
-            <MyCheckbox
-              key={id}
-              id={id}
-              label={option.label}
-              isChecked={state[id]}
-              handleToggle={() => handleToggle(setState, state, id)}
-            />
+            <div key={id} style={{ display: "flex", alignItems: "center" }}>
+              <MyCheckbox
+                id={id}
+                label={option.label}
+                isChecked={state[id]}
+                handleToggle={() => handleToggle(setState, state, id)}
+              />
+              {type !== "day" && (
+                <span
+                  className={actions.getIconForCategory(id)}
+                  style={colorStyle ? colorStyle : {}}
+                ></span>
+              )}
+            </div>
           ) : null;
         })}
       </div>
     );
-  };
-  const isAnyChecked = (stateObj, ids) => {
-    return ids.some((id) => stateObj[id]);
   };
 
   const handleToggleAll = (setFn, stateObj, ids) => {

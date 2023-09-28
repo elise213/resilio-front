@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Report from "../component/Report";
+import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
 import Styles from "../styles/home.css";
 import {
@@ -306,25 +307,7 @@ const Home = () => {
     <div className="grand-container">
       <div className="search-container">
         <img className="home-logo" src={Logo} alt="Alive Logo" />
-        <div className="what-type">
-          {/* {store.CATEGORY_OPTIONS &&
-          store.DAY_OPTIONS &&
-          store.GROUP_OPTIONS &&
-          categories &&
-          days &&
-          groups ? (
-            <Selection
-              categories={categories}
-              setCategories={setCategories}
-              groups={groups}
-              setGroups={setGroups}
-              days={days}
-              setDays={setDays}
-            />
-          ) : (
-            <p>Loading selection options...</p>
-          )} */}
-        </div>
+        <div className="what-type"></div>
       </div>
       {/* FILTER OPTIONS */}
       <div className="search-results-full">
@@ -408,27 +391,31 @@ const Home = () => {
             categories &&
             days &&
             groups ? (
-              <Selection
-                categories={categories}
-                setCategories={setCategories}
-                groups={groups}
-                setGroups={setGroups}
-                days={days}
-                setDays={setDays}
-              />
+              <ErrorBoundary>
+                <Selection
+                  categories={categories}
+                  setCategories={setCategories}
+                  groups={groups}
+                  setGroups={setGroups}
+                  days={days}
+                  setDays={setDays}
+                  areAll
+                />
+              </ErrorBoundary>
             ) : (
               <p>Loading selection options...</p>
             )}
           </div>
-
-          <SimpleMap
-            handleBoundsChange={handleBoundsChange}
-            openModal={openModal}
-            city={city}
-            geoFindMe={geoFindMe}
-            handleZipInputChange={handleZipInputChange}
-            zipInput={zipInput}
-          />
+          <ErrorBoundary>
+            <SimpleMap
+              handleBoundsChange={handleBoundsChange}
+              openModal={openModal}
+              city={city}
+              geoFindMe={geoFindMe}
+              handleZipInputChange={handleZipInputChange}
+              zipInput={zipInput}
+            />
+          </ErrorBoundary>
         </div>
       </div>
       {modalIsOpen && (

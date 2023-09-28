@@ -17,16 +17,23 @@ const SimpleMap = ({
 
   const Marker = ({ text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
+
+    const iconClass = actions.getIconForCategory(result.category);
+    console.log("ICON CLASS", iconClass);
+    const color = actions.getColorForCategory(result.category).color; // Extract color property
+    console.log("COLORRRR", color);
+
     return (
       <div
         className="marker"
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer" }} // Remove color style from here
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => openModal(result)}
       >
         <div className="marker-icon">
-          <i className="fa-solid fa-map-pin"></i>
+          <i className={iconClass} style={{ color: color }}></i>{" "}
+          {/* Apply color style here */}
           {isHovered && text && <span className="marker-text">{text}</span>}
         </div>
       </div>

@@ -1,50 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
+import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { ModalInfo } from "./ModalInfo";
 import styles from "../styles/resourceModal.css";
 
 const Modal = (props) => {
+  const { actions, store } = useContext(Context);
   const modalContentRef = useRef(null);
   const tokenExists = sessionStorage.getItem("token");
-
-  const getIconForCategory = (category) => {
-    switch (category) {
-      case "health":
-        return "fa-solid fa-stethoscope";
-      case "food":
-        return "fa-solid fa-bowl-rice";
-      case "hygiene":
-        return "fa-solid fa-soap";
-      case "bathroom":
-        return "fa-solid fa-toilet";
-      case "work":
-        return "fa-solid fa-briefcase";
-      case "wifi":
-        return "fa-solid fa-wifi";
-      case "crisis":
-        return "fa-solid fa-exclamation-triangle";
-      case "substance":
-        return "fa-solid fa-capsules";
-      case "legal":
-        return "fa-solid fa-gavel";
-      case "sex":
-        return "fa-solid fa-heart";
-      case "mental":
-        return "fa-solid fa-brain";
-      case "women":
-        return "fa-solid fa-female";
-      case "youth":
-        return "fa-solid fa-child";
-      case "seniors":
-        return "fa-solid fa-blind";
-      case "lgbtq":
-        return "fa-solid fa-rainbow";
-      case "shelter":
-        return "fa-solid fa-person-shelter";
-      default:
-        return "fa-solid fa-question";
-    }
-  };
 
   let categories = props.resource.category;
   if (typeof categories === "string" && categories.includes(",")) {
@@ -54,8 +17,6 @@ const Modal = (props) => {
   } else if (!Array.isArray(categories)) {
     categories = [];
   }
-
-  const icons = categories.map(getIconForCategory);
 
   const handleCloseClick = (event) => {
     event.stopPropagation();
@@ -87,9 +48,18 @@ const Modal = (props) => {
           <div className="modal-header">
             <div className="modal-title-div">
               <div className="icon-box">
-                {icons.map((icon, index) => (
-                  <i key={index} className={`${icon} card-icon-2`} />
-                ))}
+                {categories.map((category, index) => {
+                  const colorStyle = actions.getColorForCategory(category);
+                  return (
+                    <i
+                      key={index}
+                      className={`${actions.getIconForCategory(
+                        category
+                      )} card-icon`}
+                      style={colorStyle ? colorStyle : {}}
+                    />
+                  );
+                })}
               </div>
               <div className="title-box">
                 <span>{props.resource.name}</span>
@@ -118,7 +88,9 @@ const Modal = (props) => {
 
               {tokenExists && (
                 <p className="edit-text">
-                  <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>
+                  Click {""}
+                  <Link to={`/edit/${resourceId}`}>here</Link>
+                  {""} to edit this resource
                 </p>
               )}
             </div>

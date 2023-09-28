@@ -135,18 +135,6 @@ body {
   padding: 5px;
 }
 
-.card-icon {
-  color: var(--green2);
-  font-size: large;
-  margin: 5px;
-}
-
-.card-icon-2 {
-  color: var(--green2);
-  font-size: x-large;
-  margin-left: 20px;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;

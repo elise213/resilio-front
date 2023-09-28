@@ -53,18 +53,23 @@ const Report = () => {
   return (
     <div className="report-container">
       <div className="grid-container">
-        {Object.entries(report).map(([key, value], index) => (
-          <div className="grid-item" key={index}>
-            <div>
-              <span
-                className={`report-icon ${actions.getIconForCategory(key)}`}
-                style={actions.getColorForCategory(key)}
-              ></span>
-              <span>{key}: </span>
-              <span>{value}</span>
+        {Object.entries(report).map(([key, value], index) => {
+          console.log(actions.getIconForCategory(key));
+          console.log(actions.getColorForCategory(key));
+          const colorStyle = actions.getColorForCategory(key);
+          return (
+            <div className="grid-item" key={index}>
+              <div>
+                <span
+                  className={`report-icon ${actions.getIconForCategory(key)}`}
+                  style={colorStyle ? colorStyle : {}}
+                ></span>
+                <span>{key}: </span>
+                <span>{value}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
