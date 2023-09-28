@@ -29,19 +29,24 @@
 
 .map-info {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
 .map-container {
-  margin-right: 40px !important;
-  min-width: 400px;
+  margin: 0 !important;
+  min-width: 300px;
+  transform: translate(-30px, -15px);
 }
 
 @media screen and (max-width: 800px) {
   .map-container {
     margin: 0 !important;
     width: 90vw !important;
+  }
+
+  .map-wrapper {
+    margin-left: 55px !important;
   }
 }
 

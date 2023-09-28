@@ -90,8 +90,9 @@
 }
 
 .new-container {
-  margin: 0;
+  margin-top: 50px;
   display: flex;
+  justify-content: center;
 }
 
 .scroll-warning {
@@ -134,6 +135,18 @@
     object-fit: cover;
     max-height: 100px;
   }
+
+  .selection-container-home {
+    margin-bottom: 50px;
+  }
+
+  .what-type {
+    min-height: 95vh !important;
+  }
+
+  .results-message {
+    display: none;
+  }
 }
 
 /* ______________________________________________________________SIZE < 420px */
@@ -147,4 +160,10 @@
   .scroll-search-results li {
     margin: 10px 8px 5px 8px !important;
   }
+}
+
+.selection-container-home {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
