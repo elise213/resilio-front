@@ -39,6 +39,11 @@
   transform: translate(-30px, -15px);
 }
 
+.map-container-modal {
+  /* margin: 0 !important; */
+  min-width: 300px;
+}
+
 @media screen and (max-width: 800px) {
   .map-container {
     margin: 0 !important;
@@ -53,4 +58,8 @@
 .gm-control-active,
 .gmnoprint .gm-style-cc button {
   display: none;
+}
+
+.info-map-div {
+  margin: 0px;
 }

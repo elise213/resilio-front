@@ -1,0 +1,27 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  background-color: whitesmoke;
+  margin: 20px 20px 0 20px;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.grid-item {
+  /* padding: 5px; */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.report-icon {
+  padding: 0 10px;
+}
+
+.report-container {
+  display: flex;
+  justify-content: center;
+  width: auto;
+}
