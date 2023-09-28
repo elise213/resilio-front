@@ -1,5 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
+import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
   const { actions, store } = useContext(Context);
