@@ -1,3 +1,26 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0.9, 0, 0, 0.8);
+  z-index: 9998;
+}
+
+.modal-div {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  border: none;
+  background-color: transparent;
+  min-width: 90%;
+  display: flex;
+  justify-content: center;
+}
+
 .scroll-search-results {
   display: grid !important;
   width: 100%;
@@ -26,7 +49,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 40px 10px 1px 10px;
+  margin: 0px 10px;
   flex: 0 0 auto;
 }
 
@@ -69,14 +92,13 @@
 }
 
 .results-message {
-  position: absolute;
-  justify-self: center;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: var(--yellow);
   border: 1.5px solid var(--coral2);
   font-size: 20px;
-  display: flex;
   font-family: "Urbanist", sans-serif !important;
   padding: 0 5px;
   margin: 20px 0 0 0;
@@ -86,11 +108,15 @@
 }
 
 .results-message p {
-  margin: 0;
+  margin: 20px 0 0 0;
+}
+
+.grid-item p {
+  margin: 0 !important;
 }
 
 .new-container {
-  margin-top: 50px;
+  /* margin-top: 50px; */
   display: flex;
   justify-content: center;
 }
@@ -165,5 +191,9 @@
 .selection-container-home {
   display: flex;
   justify-content: center;
+  width: 100%;
+}
+
+.scroll-headers {
   width: 100%;
 }
