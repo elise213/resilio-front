@@ -139,6 +139,14 @@
   .selection-container-home {
     margin-bottom: 50px;
   }
+
+  .what-type {
+    min-height: 95vh !important;
+  }
+
+  .results-message {
+    display: none;
+  }
 }
 
 /* ______________________________________________________________SIZE < 420px */
