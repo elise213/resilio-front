@@ -52,7 +52,7 @@ const Login = () => {
   }, [openLoginModal]);
 
   return (
-    <div className={`login-container ${!openLoginModal ? "open" : ""}`}>
+    <div className={`login-container ${openLoginModal ? "open" : ""}`}>
       <span
         className="login-logout"
         type="button"

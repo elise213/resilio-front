@@ -21,11 +21,20 @@
 }
 
 .navbar-logo {
-  width: 30vw;
+  width: 50px;
+  height: 70px;
   max-width: 220px;
   margin: 15px 0px 0px 15px;
+  background-color: transparent;
 }
 
 .navbar-toggler {
   display: none;
+}
+
+.home-navbar {
+  color: var(--newGreen);
+  font-family: "Urbanist", sans-serif;
+  font-size: large;
+  text-decoration: none;
 }

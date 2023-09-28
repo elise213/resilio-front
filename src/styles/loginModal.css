@@ -1,7 +1,6 @@
 .login-container {
   display: grid;
-  justify-content: center;
-  align-content: center;
+
   width: 100vw;
   height: 100vh;
 }
@@ -194,10 +193,10 @@ body.loginModal-open {
 }
 
 .login-logout {
-  margin: 20px;
-  font-size: large !important;
-  position: absolute;
-  right: 30px;
+  /* margin: 20px; */
+  font-size: large;
+  /* position: absolute; */
+  /* right: 30px; */
 }
 
 .margin-cancel {
@@ -210,4 +209,7 @@ body.loginModal-open {
 
 .open {
   height: auto !important;
+  justify-content: center;
+  align-content: center;
+  height: 100vh !important;
 }
