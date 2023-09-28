@@ -72,6 +72,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         // { id: "babies", label: "Babies and Toddlers" },
         // { id: "kids", label: "Kids < 18" },
         { id: "youth", label: "Youth 18-24" },
+        { id: "vets", label: "Veterans" },
       ],
       scraps: [
         {
