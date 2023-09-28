@@ -25,8 +25,9 @@
 }
 
 .closed2 {
+  margin-top: 20px;
   font-family: "Urbanist", sans-serif !important;
-  color: var(--newGreen) !important;
+  /* color: var(--newGreen) !important; */
 }
 
 .selection {
@@ -166,12 +167,6 @@
 
 .my-schedule-button:hover {
   color: var(--green2);
-}
-
-@media screen and (max-width: 900px) {
-  .closed2 {
-    color: rgb(255, 117, 102);
-  }
 }
 
 @media screen and (max-width: 700px) {

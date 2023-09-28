@@ -135,6 +135,11 @@
     -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
 
+.card-icon {
+  font-size: large;
+  margin: 5px;
+}
+
 @media screen and (max-width: 800px) {
   /* .scroll-warning {
     justify-content: center !important;
