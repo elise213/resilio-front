@@ -1,11 +1,13 @@
 .footer {
-  margin-top: auto;
+  padding-top: 20px;
   width: 100%;
-  padding: 20px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: centr;
   background-color: rgb(235, 189, 142);
+  min-height: 150px;
+  justify-content: flex-end;
 }
 
 /* Footer */
@@ -20,6 +22,7 @@
   /* color: var(--newGreen); */
   letter-spacing: 1.6px;
   font-size: medium;
+  margin-top: 20px;
 }
 
 .footer-logo {

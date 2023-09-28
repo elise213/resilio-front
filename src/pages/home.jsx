@@ -397,23 +397,25 @@ const Home = () => {
         </div>
         {/* MAP */}
         <div className="new-container">
-          {store.CATEGORY_OPTIONS &&
-          store.DAY_OPTIONS &&
-          store.GROUP_OPTIONS &&
-          categories &&
-          days &&
-          groups ? (
-            <Selection
-              categories={categories}
-              setCategories={setCategories}
-              groups={groups}
-              setGroups={setGroups}
-              days={days}
-              setDays={setDays}
-            />
-          ) : (
-            <p>Loading selection options...</p>
-          )}
+          <div className="selection-container-home">
+            {store.CATEGORY_OPTIONS &&
+            store.DAY_OPTIONS &&
+            store.GROUP_OPTIONS &&
+            categories &&
+            days &&
+            groups ? (
+              <Selection
+                categories={categories}
+                setCategories={setCategories}
+                groups={groups}
+                setGroups={setGroups}
+                days={days}
+                setDays={setDays}
+              />
+            ) : (
+              <p>Loading selection options...</p>
+            )}
+          </div>
 
           <SimpleMap
             handleBoundsChange={handleBoundsChange}
