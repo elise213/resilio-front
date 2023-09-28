@@ -82,13 +82,27 @@ const getState = ({ getStore, getActions, setStore }) => {
     actions: {
       getColorForCategory: (category) => {
         const colors = {
-          food: "orange",
-          health: "black",
-          hygiene: "blue",
-          clothing: "red",
-          shelter: "green",
-          work: "grey",
-          wifi: "green",
+          food: "DarkGoldenRod",
+          health: "Orange",
+          hygiene: "CornflowerBlue",
+          clothing: "Salmon",
+          shelter: "Maroon",
+          work: "Grey",
+          wifi: "BlueViolet",
+          lgbtq: "RosyBrown",
+          crisis: "Red",
+          legal: "Green",
+          bathroom: "SlateGrey",
+          substance: "Peru",
+          sex: "Tomato",
+          babies: "RosyBrown",
+          kids: "Salmon",
+          youth: "IndianRed",
+          women: "DarkRed",
+          seniors: "Teal",
+          mental: "Coral",
+          migrant: "DarkGreen",
+          vets: "Olive",
         };
         if (colors[category]) {
           return { color: colors[category] };
@@ -99,6 +113,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         switch (category) {
           case "health":
             return "fa-solid fa-stethoscope";
+          // return "fa-solid fa-user-doctor";
           case "food":
             return "fa-solid fa-bowl-rice";
           case "hygiene":
@@ -106,7 +121,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           case "bathroom":
             return "fa-solid fa-toilet";
           case "work":
-            return "fa-solid fa-briefcase";
+            return "fa-solid fa-people-carry-box";
+          // return "fa-solid fa-briefcase";
           case "wifi":
             return "fa-solid fa-wifi";
           case "crisis":
@@ -121,16 +137,24 @@ const getState = ({ getStore, getActions, setStore }) => {
             return "fa-solid fa-brain";
           case "women":
             return "fa-solid fa-female";
-          case "youth":
+          case "kids":
             return "fa-solid fa-child";
+          case "youth":
+            return "fa-solid fa-person-rays";
           case "seniors":
-            return "fa-solid fa-blind";
+            return "fa-solid fa-person-cane";
           case "lgbtq":
             return "fa-solid fa-rainbow";
           case "shelter":
             return "fa-solid fa-person-shelter";
           case "clothing":
             return "fa-solid fa-shirt";
+          case "babies":
+            return "fa-solid fa-baby";
+          case "migrant":
+            return "fa-solid fa-users";
+          case "vets":
+            return "fa-solid fa-person-military-rifle";
           default:
             return "fa-solid fa-question";
         }
