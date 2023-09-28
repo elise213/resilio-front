@@ -53,15 +53,15 @@
 .map-settings {
   grid-column: 1;
   grid-row: 1;
-  justify-self: end; /* Aligns the buttons to the right */
-  align-self: start; /* Aligns the buttons to the top */
+  justify-self: end;
+  align-self: start;
   z-index: 1;
 }
 
 .map-container {
   grid-column: 1;
   grid-row: 1;
-  z-index: 0; /* Ensures the map is below the buttons */
+  z-index: 0;
 }
 
 #zipcode {
