@@ -5,8 +5,9 @@
 }
 
 .marker-icon i {
-  color: var(--coral2);
-  font-size: x-large;
+  font-size: medium;
+  text-shadow: 0 0 5px #f1e3e3, 0 0 10px #e9d3d3, 0 0 15px #e7d0d0,
+    0 0 20px #eecdcd;
 }
 
 .marker-text {
@@ -30,13 +31,22 @@
 .map-info {
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .map-container {
   margin: 0 !important;
   min-width: 300px;
-  transform: translate(-30px, -15px);
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 0;
+  transform: translate(-30px, 15px);
+  /* test*/
+  display: inline-block;
+  border: 10px solid #753c12;
+  border-radius: 10px;
+  box-shadow: 0 0 5px #a66c2c, 4px 4px 5px #5d2c0e, 8px 8px 3px #753c12;
+  overflow: hidden;
 }
 
 .map-container-modal {

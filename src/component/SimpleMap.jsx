@@ -15,25 +15,81 @@ const SimpleMap = ({
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
 
+  const createMapOptions = () => {
+    return {
+      styles: [
+        {
+          featureType: "all",
+          elementType: "geometry",
+          stylers: [{ lightness: -30 }, { gamma: 0.8 }, { saturation: -70 }],
+        },
+        {
+          featureType: "poi",
+          elementType: "labels",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "poi.business",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "transit",
+          elementType: "labels.icon",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.icon",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.fill",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.stroke",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "administrative.locality",
+          elementType: "labels",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "administrative.neighborhood",
+          elementType: "labels.text.stroke",
+          stylers: [{ color: "#ffffff" }, { weight: 0.1 }],
+        },
+        {
+          featureType: "administrative.neighborhood",
+          elementType: "labels.text.fill",
+          stylers: [{ color: "#0000" }],
+        },
+        {
+          featureType: "water",
+          elementType: "labels",
+          stylers: [{ visibility: "off" }],
+        },
+      ],
+    };
+  };
+
   const Marker = ({ text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
-
     const iconClass = actions.getIconForCategory(result.category);
-    console.log("ICON CLASS", iconClass);
-    const color = actions.getColorForCategory(result.category).color; // Extract color property
-    console.log("COLORRRR", color);
-
+    const color = actions.getColorForCategory(result.category).color;
     return (
       <div
         className="marker"
-        style={{ cursor: "pointer" }} // Remove color style from here
+        style={{ cursor: "pointer" }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => openModal(result)}
       >
         <div className="marker-icon">
           <i className={iconClass} style={{ color: color }}></i>{" "}
-          {/* Apply color style here */}
           {isHovered && text && <span className="marker-text">{text}</span>}
         </div>
       </div>
@@ -58,6 +114,7 @@ const SimpleMap = ({
             bounds={city.bounds}
             defaultZoom={11}
             onChange={(e) => handleBoundsChange(e)}
+            options={createMapOptions}
           >
             {store.boundaryResults.map((result, i) => (
               <Marker
