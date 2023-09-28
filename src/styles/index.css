@@ -39,7 +39,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 20px;
+  /* margin: 20px; */
 }
 
 .resource-image {
@@ -62,28 +62,6 @@ body {
 
 .details-column div {
   padding-top: 10px;
-}
-
-.description {
-  font-family: "Carme", sans-serif;
-  line-height: 2;
-  display: flex;
-  justify-content: center;
-  margin: 0;
-}
-
-.description-div {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 70%;
-  text-align: justify;
-  padding: 35px 41px 5px 41px;
-}
-
-.description-heading {
-  font-weight: bolder;
-  font-size: 23px;
 }
 
 /* _____________________________________________________________CARD */
@@ -205,10 +183,10 @@ body {
   }
 }
 
-.fa-arrow-right {
+/* .fa-arrow-right {
   margin: 6px 0px 0px 10px;
   animation: wiggle 5s infinite;
-}
+} */
 
 .resource-card-title-name {
   font-size: medium;

@@ -86,10 +86,14 @@ const Modal = (props) => {
         <div className="modal-content" ref={modalContentRef}>
           <div className="modal-header">
             <div className="modal-title-div">
-              {icons.map((icon, index) => (
-                <i key={index} className={`${icon} card-icon-2`} />
-              ))}
-              <span>{props.resource.name}</span>
+              <div className="icon-box">
+                {icons.map((icon, index) => (
+                  <i key={index} className={`${icon} card-icon-2`} />
+                ))}
+              </div>
+              <div className="title-box">
+                <span>{props.resource.name}</span>
+              </div>
             </div>
             <div className="modal-close-div">
               <p className="x-close btn-close" onClick={handleCloseClick}></p>
@@ -102,20 +106,21 @@ const Modal = (props) => {
               res={props.resource}
             />
             <div className="modal-footer">
-              <p className="">
+              <p className="problem">
                 Is there a problem with this information? {""}
                 <Link to="/Contact">Let us know</Link>
               </p>
-              <p className="">
+              <p className="create">
                 Click {""}
                 <Link to="/create">here</Link>
                 {""} to create a new resource listing.
               </p>
-              <p>
-                {tokenExists && (
+
+              {tokenExists && (
+                <p className="edit-text">
                   <Link to={`/edit/${resourceId}`}>Edit This Resource</Link>
-                )}
-              </p>
+                </p>
+              )}
             </div>
           </div>
         </div>

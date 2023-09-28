@@ -36,12 +36,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       when: [],
       dummydata: [],
       schedules: [],
-      // daysColumns: [
-      //   ["monday", "tuesday"],
-      //   ["wednesday", "thursday"],
-      //   ["friday", "saturday"],
-      //   ["sunday", "allDays"]
-      // ],
       CATEGORY_OPTIONS: [
         { id: "food", label: "Food" },
         { id: "health", label: "Medical Care" },
@@ -69,10 +63,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "lgbtq", label: "LGBTQ+" },
         { id: "women", label: "Women" },
         { id: "seniors", label: "Seniors" },
-        // { id: "babies", label: "Babies and Toddlers" },
-        // { id: "kids", label: "Kids < 18" },
+        { id: "babies", label: "Babies and Toddlers" },
+        { id: "kids", label: "Youth < 18" },
         { id: "youth", label: "Youth 18-24" },
         { id: "vets", label: "Veterans" },
+        { id: "migrant", label: "Refugees & Migrants" },
       ],
       scraps: [
         {
@@ -85,6 +80,62 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
     },
     actions: {
+      getColorForCategory: (category) => {
+        const colors = {
+          food: "orange",
+          health: "black",
+          hygiene: "blue",
+          clothing: "red",
+          shelter: "green",
+          work: "grey",
+          wifi: "green",
+        };
+        if (colors[category]) {
+          return { color: colors[category] };
+        } else return { color: "black" };
+      },
+
+      getIconForCategory: (category) => {
+        switch (category) {
+          case "health":
+            return "fa-solid fa-stethoscope";
+          case "food":
+            return "fa-solid fa-bowl-rice";
+          case "hygiene":
+            return "fa-solid fa-soap";
+          case "bathroom":
+            return "fa-solid fa-toilet";
+          case "work":
+            return "fa-solid fa-briefcase";
+          case "wifi":
+            return "fa-solid fa-wifi";
+          case "crisis":
+            return "fa-solid fa-exclamation-triangle";
+          case "substance":
+            return "fa-solid fa-capsules";
+          case "legal":
+            return "fa-solid fa-gavel";
+          case "sex":
+            return "fa-solid fa-heart";
+          case "mental":
+            return "fa-solid fa-brain";
+          case "women":
+            return "fa-solid fa-female";
+          case "youth":
+            return "fa-solid fa-child";
+          case "seniors":
+            return "fa-solid fa-blind";
+          case "lgbtq":
+            return "fa-solid fa-rainbow";
+          case "shelter":
+            return "fa-solid fa-person-shelter";
+          case "clothing":
+            return "fa-solid fa-shirt";
+          default:
+            return "fa-solid fa-question";
+        }
+      },
+
       // ________________________________________________________________LOGIN/TOKEN
       // login: async (email, password) => {
       //   try {

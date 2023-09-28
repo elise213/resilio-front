@@ -1,5 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
+import Report from "../component/Report";
 import Logo from "/assets/RESILIOO.png";
 import Styles from "../styles/home.css";
 import {
@@ -7,7 +8,6 @@ import {
   Selection,
   Loading,
   ResourceCard,
-  MapSettings,
   Modal,
 } from "../component";
 
@@ -335,8 +335,12 @@ const Home = () => {
           }}
         >
           {store.boundaryResults[0] && (
-            <div className="results-message">
-              <p>Free Resources In Your Community</p>
+            <div className="scroll-headers">
+              <div className="results-message">
+                <p>Free Resources In Your Area</p>
+                <div className="report"></div>
+              </div>
+              <Report />
             </div>
           )}
           <ul

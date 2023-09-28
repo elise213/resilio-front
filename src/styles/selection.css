@@ -26,12 +26,12 @@
 
 .closed2 {
   font-family: "Urbanist", sans-serif !important;
-  color: brown;
+  color: var(--newGreen) !important;
 }
 
 .selection {
   align-items: flex-end;
-  margin: 30px;
+  /* margin: 30px; */
   width: 100%;
 }
 
