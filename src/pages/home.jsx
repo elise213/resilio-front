@@ -13,13 +13,9 @@ import {
 } from "../component";
 
 const Home = () => {
-  const INITIAL_CITY_STATE = {
-    center: { lat: 24.681678475660995, lng: 84.99154781534179 },
-    bounds: {
-      ne: { lat: 25.0, lng: 85.2 },
-      sw: { lat: 24.4, lng: 84.8 },
-    },
-  };
+  const { store, actions } = useContext(Context);
+  const apiKey = import.meta.env.VITE_GOOGLE;
+  const INITIAL_CITY_STATE = store.austin[0];
 
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
@@ -33,8 +29,6 @@ const Home = () => {
 
   const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
-  const { store, actions } = useContext(Context);
-  const apiKey = import.meta.env.VITE_GOOGLE;
 
   // REFS
   const ulRef = useRef(null);

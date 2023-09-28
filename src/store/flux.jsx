@@ -18,12 +18,15 @@ const getState = ({ getStore, getActions, setStore }) => {
         "fas fa-hippo",
       ],
       austin: [
-        // center: { lat: 30.266666, lng: -97.733330 },
-        // bounds: {
-        //   ne: { lat: (30.266666 + 0.18866583325124964), lng: (-97.733330 + 0.44322967529295454) },
-        //   sw: { lat: (30.266666 - 0.18908662930897435), lng: (-97.733330 - 0.44322967529298296) }
-        // }
+        {
+          center: { lat: 30.2672, lng: -97.7431 },
+          bounds: {
+            ne: { lat: 30.516862, lng: -97.568419 },
+            sw: { lat: 30.098658, lng: -98.015328 },
+          },
+        },
       ],
+
       favorites: [],
       favoriteOfferings: [],
       searchResults: [],
@@ -69,7 +72,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "vets", label: "Veterans" },
         { id: "migrant", label: "Refugees & Migrants" },
       ],
-      scraps: [
+      losAngeles: [
         {
           center: { lat: 34.0522, lng: -118.2437 },
           bounds: {
@@ -78,35 +81,44 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         },
       ],
+      bodhGaya: [
+        {
+          center: { lat: 24.681678475660995, lng: 84.99154781534179 },
+          bounds: {
+            ne: { lat: 25.0, lng: 85.2 },
+            sw: { lat: 24.4, lng: 84.8 },
+          },
+        },
+      ],
     },
     actions: {
       getColorForCategory: (category) => {
         const colors = {
-          food: "DarkGoldenRod",
-          health: "Orange",
+          food: "DarkOrange",
+          health: "Green",
           hygiene: "CornflowerBlue",
           clothing: "Salmon",
           shelter: "Maroon",
-          work: "Grey",
-          wifi: "BlueViolet",
-          lgbtq: "RosyBrown",
+          work: "Indigo",
+          wifi: "Orchid",
           crisis: "Red",
-          legal: "Green",
+          legal: "Peru",
           bathroom: "SlateGrey",
-          substance: "Peru",
+          mental: "Coral",
+          substance: "DarkRed",
           sex: "Tomato",
-          babies: "RosyBrown",
+          babies: "Purple",
+          lgbtq: "RosyBrown",
           kids: "Salmon",
           youth: "IndianRed",
           women: "DarkRed",
           seniors: "Teal",
-          mental: "Coral",
           migrant: "DarkGreen",
           vets: "Olive",
         };
         if (colors[category]) {
           return { color: colors[category] };
-        } else return { color: "black" };
+        } else return { color: "red" };
       },
 
       getIconForCategory: (category) => {
@@ -142,7 +154,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           case "youth":
             return "fa-solid fa-person-rays";
           case "seniors":
-            return "fa-solid fa-person-cane";
+            // return "fa-solid fa-person-cane";
+            return "fa-solid fa-user-plus";
           case "lgbtq":
             return "fa-solid fa-rainbow";
           case "shelter":

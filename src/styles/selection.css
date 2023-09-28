@@ -27,13 +27,23 @@
 .closed2 {
   margin-top: 20px;
   font-family: "Urbanist", sans-serif !important;
-  /* color: var(--newGreen) !important; */
+  font-size: 18px;
+  color: rgb(59, 20, 20);
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3); /* Added text shadow */
+  transition: color 0.3s, font-size 0.3s;
+}
+
+.closed2:hover {
+  color: rgb(250, 152, 16);
+  font-size: xx-large;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 .selection {
   align-items: flex-end;
-  /* margin: 30px; */
   width: 100%;
+  margin: 0 20px;
 }
 
 .selection div {
@@ -194,7 +204,7 @@
   align-items: flex-start;
   width: 100%;
   position: static;
-  font-size: 14px;
+  font-size: 18px;
   margin: 0 15px;
 }
 
@@ -217,6 +227,12 @@
 .cent:nth-child(3) {
   grid-column: 1;
   grid-row: 3;
+}
+
+@media screen and (max-width: 1000px) {
+  .center {
+    font-size: 14px;
+  }
 }
 
 @media screen and (max-width: 800px) {
@@ -250,7 +266,3 @@
     margin-bottom: 0 !important;
   }
 }
-
-/* .days-grid-move {
-  grid-column: 3;
-  /* grid-row: 3; */
