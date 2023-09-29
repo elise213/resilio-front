@@ -5,10 +5,14 @@
 }
 
 .marker-icon i {
-  font-size: medium;
-  text-shadow: 0 0 5px #f1e3e3, 0 0 10px #e9d3d3, 0 0 15px #e7d0d0,
-    0 0 20px #eecdcd;
+  font-size: 25px;
+  text-shadow: 1px 2px 10px #faf3f3, 1px 2px 20px #edccaa, 1px 5px 30px #e9baba,
+    1px 5px 40px #eecdcd;
   z-index: 999999999;
+}
+
+.marker-icon i:hover {
+  font-size: 25px;
 }
 
 .marker-text {
@@ -34,6 +38,16 @@
   justify-content: center;
 }
 
+.map-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  position: relative;
+  height: 60vh;
+  width: 66vw;
+  justify-content: center;
+}
+
 .map-container {
   margin: 0 !important;
   min-width: 300px;
@@ -41,12 +55,16 @@
   grid-row: 1;
   transform: translate(-30px, 15px);
   display: inline-block;
-  border: 10px solid transparent;
-  border-radius: 50px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border: 15px solid transparent;
+  border-radius: 20px;
+  box-shadow: 2px 4px 8px 10px rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
   overflow: hidden;
   z-index: 9999;
   position: relative;
+  border-image: url("https://images.pexels.com/photos/129733/pexels-photo-129733.jpeg")
+    30 round;
+  border-image-width: 20px;
 }
 
 .marker-text {

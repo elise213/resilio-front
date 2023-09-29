@@ -40,16 +40,6 @@
   margin: 30px 50px 0 0;
 }
 
-.map-wrapper {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  position: relative;
-  height: 60vh;
-  width: 66vw;
-  justify-content: center;
-}
-
 .map-settings {
   grid-column: 1;
   grid-row: 1;
