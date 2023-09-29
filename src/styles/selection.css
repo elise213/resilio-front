@@ -6,6 +6,12 @@
   justify-content: flex-start;
 }
 
+.closed-icons {
+  margin: 5px;
+  font-size: 22px;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 .open2,
 .closed2 {
   border: none;
@@ -27,17 +33,16 @@
 .closed2 {
   margin-top: 20px;
   font-family: "Urbanist", sans-serif !important;
-  font-size: 18px;
+  font-size: 20px;
   color: rgb(59, 20, 20);
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3); /* Added text shadow */
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
   transition: color 0.3s, font-size 0.3s;
 }
 
 .closed2:hover {
-  color: rgb(250, 152, 16);
+  color: rgb(112, 101, 119);
   font-size: xx-large;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
-    1px 1px 0 #000;
+  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .selection {

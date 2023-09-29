@@ -139,6 +139,30 @@ const Selection = (props) => {
         >
           {showCategories ? "X" : "Filter By Category"}
         </button>
+        {!showCategories && (
+          <div>
+            <i
+              className={`${actions.getIconForCategory("food")} closed-icons`}
+              style={actions.getColorForCategory("food")}
+            ></i>
+            <i
+              className={`${actions.getIconForCategory(
+                "clothing"
+              )} closed-icons`}
+              style={actions.getColorForCategory("clothing")}
+            ></i>
+            <i
+              className={`${actions.getIconForCategory("health")} closed-icons`}
+              style={actions.getColorForCategory("health")}
+            ></i>
+            <i
+              className={`${actions.getIconForCategory(
+                "hygiene"
+              )} closed-icons`}
+              style={actions.getColorForCategory("hygiene")}
+            ></i>
+          </div>
+        )}
 
         {showCategories &&
           renderCenterColumn("category", props.categories, props.setCategories)}
@@ -152,7 +176,7 @@ const Selection = (props) => {
         <button
           onClick={() => {
             setShowGroups(!showGroups);
-            if (showGroups) {
+            if (!showGroups) {
               toggleAllCheckboxes(props.setGroups, props.groups, groupIds);
             }
           }}
@@ -160,6 +184,32 @@ const Selection = (props) => {
         >
           {showGroups ? "X" : "Filter By Group"}
         </button>
+        {!showGroups && (
+          <div>
+            <i
+              className={`${actions.getIconForCategory("babies")} closed-icons`}
+              style={actions.getColorForCategory("babies")}
+            ></i>{" "}
+            <i
+              className={`${actions.getIconForCategory(
+                "migrant"
+              )} closed-icons`}
+              style={actions.getColorForCategory("migrant")}
+            ></i>
+            <i
+              className={`${actions.getIconForCategory("women")} closed-icons`}
+              style={actions.getColorForCategory("women")}
+            ></i>
+            <i
+              className={`${actions.getIconForCategory("vets")} closed-icons`}
+              style={actions.getColorForCategory("vets")}
+            ></i>
+            <i
+              className={`${actions.getIconForCategory("lgbtq")} closed-icons`}
+              style={actions.getColorForCategory("lgbtq")}
+            ></i>
+          </div>
+        )}
 
         {showGroups &&
           renderCenterColumn("group", props.groups, props.setGroups)}
