@@ -47,11 +47,11 @@ const SimpleMap = ({
           elementType: "labels.text.fill",
           stylers: [{ visibility: "off" }],
         },
-        {
-          featureType: "road",
-          elementType: "labels.text.stroke",
-          stylers: [{ visibility: "off" }],
-        },
+        // {
+        //   featureType: "road",
+        //   elementType: "labels.text.stroke",
+        //   stylers: [{ visibility: "off" }],
+        // },
         {
           featureType: "administrative.locality",
           elementType: "labels",
@@ -60,12 +60,14 @@ const SimpleMap = ({
         {
           featureType: "administrative.neighborhood",
           elementType: "labels.text.stroke",
-          stylers: [{ color: "#ffffff" }, { weight: 0.1 }],
+          // stylers: [{ color: "lightGray" }, { weight: 0.01 }],
+          stylers: [{ visibility: "off" }],
         },
         {
           featureType: "administrative.neighborhood",
           elementType: "labels.text.fill",
-          stylers: [{ color: "#0000" }],
+          // stylers: [{ color: "white" }],
+          stylers: [{ visibility: "off" }],
         },
         {
           featureType: "water",
