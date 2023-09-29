@@ -200,10 +200,10 @@ const Selection = (props) => {
               className={`${actions.getIconForCategory("women")} closed-icons`}
               style={actions.getColorForCategory("women")}
             ></i>
-            <i
+            {/* <i
               className={`${actions.getIconForCategory("vets")} closed-icons`}
               style={actions.getColorForCategory("vets")}
-            ></i>
+            ></i> */}
             <i
               className={`${actions.getIconForCategory("lgbtq")} closed-icons`}
               style={actions.getColorForCategory("lgbtq")}
@@ -225,7 +225,7 @@ const Selection = (props) => {
               toggleAllCheckboxes(props.setDays, props.days, dayIds);
             }
           }}
-          className={showDays ? "open2" : "closed2"}
+          className={showDays ? "open2" : "closed2 closed-days"}
         >
           {showDays ? "X" : "Filter By Day"}
         </button>
