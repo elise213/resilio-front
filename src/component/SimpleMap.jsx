@@ -21,7 +21,7 @@ const SimpleMap = ({
         {
           featureType: "all",
           elementType: "geometry",
-          stylers: [{ lightness: -30 }, { gamma: 0.8 }, { saturation: -70 }],
+          stylers: [{ lightness: -10 }, { gamma: 0.7 }, { saturation: -70 }],
         },
         {
           featureType: "poi",
