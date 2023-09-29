@@ -2,7 +2,8 @@ body {
   width: 100vw;
   overflow-x: hidden;
   overflow-y: hidden;
-  background-color: #fcf5ed;
+  /* background-color: #fcf5ed; */
+  background-color: rgb(244, 238, 231);
 }
 
 :root {
@@ -133,8 +134,9 @@ body {
   align-items: center;
   padding-bottom: 15px;
   /* background-color: rgb(208, 166, 124); great color */
-  background-color: var(--peruish);
+  /* background-color: var(--peruish); */
   /* background-color: rgb(137, 102, 90); */
+  /* background-color: rgb(244, 238, 231); */
 }
 
 /* _____________________________________________________________Selection-*/
@@ -247,11 +249,4 @@ body {
   display: flex;
   justify-content: start;
   margin-bottom: 10px;
-}
-
-.icons-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  padding: 5px;
 }
