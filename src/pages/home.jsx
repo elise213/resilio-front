@@ -313,11 +313,11 @@ const Home = () => {
         >
           {store.boundaryResults[0] && (
             <div className="scroll-headers">
+              <Report />
               <div className="results-message">
                 <p>Free Resources In Your Area</p>
                 <div className="report"></div>
               </div>
-              <Report />
             </div>
           )}
           <ul

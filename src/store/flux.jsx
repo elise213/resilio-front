@@ -111,7 +111,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           lgbtq: "RosyBrown",
           kids: "Salmon",
           youth: "IndianRed",
-          women: "DarkRed",
+          women: "DarkSalmon",
           seniors: "Teal",
           migrant: "DarkGreen",
           vets: "Olive",
