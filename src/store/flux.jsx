@@ -92,6 +92,18 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
     },
     actions: {
+      processCategory: (category) => {
+        let categories = category;
+        if (typeof categories === "string" && categories.includes(",")) {
+          categories = categories.split(",").map((cat) => cat.trim());
+        } else if (typeof categories === "string") {
+          categories = [categories];
+        } else if (!Array.isArray(categories)) {
+          categories = [];
+        }
+        return categories;
+      },
+
       getColorForCategory: (category) => {
         const colors = {
           food: "DarkOrange",
@@ -235,7 +247,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             Swal.fire({
               icon: "error",
               title: "",
-              text: "Incorrect email or password", // Here is where you can say "Incorrect password"
+              text: "Incorrect email or password",
             });
             return false;
           }
@@ -260,7 +272,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Logged in Successfully",
           });
 
-          return true; // Return true when login is successful
+          return true;
         } catch (error) {
           console.error(error);
           Swal.fire({
@@ -269,7 +281,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             text: error.message,
           });
 
-          return false; // Return false when login fails
+          return false;
         }
       },
       logout: () => {
@@ -285,56 +297,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         });
       },
-
-      // login: async (email, password) => {
-      //   try {
-      //     const current_back_url = getStore().current_back_url;
-      //     const opts = {
-      //       method: "POST",
-      //       mode: "cors", // CORS handled by server
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         email: email,
-      //         password: password,
-      //       }),
-      //     };
-      //     const response = await fetch(`${current_back_url}/api/login`, opts);
-      //     if (response.status !== 200) {
-      //       Swal.fire({
-      //         icon: "error",
-      //         title: "Ooops, something went wrong",
-      //         text: error.message,
-      //       });
-      //       return false;
-      //     }
-      //     const data = await response.json();
-      //     sessionStorage.setItem("token", data.access_token);
-      //     sessionStorage.setItem("is_org", data.is_org);
-      //     sessionStorage.setItem("name", data.name);
-      //     sessionStorage.setItem("avatar", parseInt(data.avatar));
-
-      //     setStore({
-      //       token: data.access_token,
-      //       is_org: data.is_org,
-      //       avatarID: data.avatar,
-      //       name: data.name,
-      //     });
-      //     Swal.fire({
-      //       icon: "success",
-      //       title: "Logged in Successfully",
-      //     });
-      //     return true;
-      //   } catch (error) {
-      //     console.error(error);
-      //     Swal.fire({
-      //       icon: "error",
-      //       title: "Ooops, something went wrong",
-      //       text: error.message,
-      //     });
-      //   }
-      // },
 
       createUser: async (is_org, name, email, password, userAvatar) => {
         const current_back_url = getStore().current_back_url;
@@ -359,21 +321,80 @@ const getState = ({ getStore, getActions, setStore }) => {
             opts
           );
           if (response.status >= 400) {
-            alert("There has been an error");
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "There has been an error while creating the user.",
+            });
             return false;
           }
           const data = await response.json();
           if (data.status == "true") {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "User created successfully!",
+            });
           }
           return true;
         } catch (error) {
           console.error(error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `An error occurred: ${error.message}`,
+          });
         }
       },
 
+      // convertLatLon: async () => {
+      //   const current_back_url = getStore().current_back_url;
+
+      //   const opts = {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   };
+
+      //   try {
+      //     const response = await fetch(
+      //       current_back_url + "/api/convertLatLon",
+      //       opts
+      //     );
+
+      //     if (!response.ok) {
+      //       console.error("Error status: ", response.status);
+      //       Swal.fire({
+      //         icon: "error",
+      //         title: "Oops...",
+      //         text: "There has been an error while converting latitude and longitude.",
+      //       });
+      //       return false;
+      //     }
+
+      //     const data = await response.json();
+      //     Swal.fire({
+      //       icon: "success",
+      //       title: "Success",
+      //       text: data.message,
+      //     });
+      //     return true;
+      //   } catch (error) {
+      //     console.error(
+      //       "Error during latitude and longitude conversion:",
+      //       error
+      //     );
+      //     Swal.fire({
+      //       icon: "error",
+      //       title: "Oops...",
+      //       text: `An error occurred: ${error.message}`,
+      //     });
+      //   }
+      // },
+
       // ________________________________________________________________RESOURCES
 
-      // Your action creators
       editResource: async (resourceId, formData, navigate) => {
         const { current_back_url, current_front_url } = getStore();
         const token = sessionStorage.getItem("token");
@@ -405,7 +426,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               title: "Success",
               text: "Resource edited successfully!",
             });
-            navigate("/"); // Navigate to home or some other page
+            navigate("/");
           }
         } catch (error) {
           console.error("Error during resource editing:", error);
@@ -416,31 +437,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
         }
       },
-      // editResource: async (resourceId, formData, navigate) => {
-      //   const { current_back_url, current_front_url } = getStore();
-      //   const token = sessionStorage.getItem("token");
-      //   const opts = {
-      //     method: "PUT",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(formData),
-      //   };
-      //   try {
-      //     const response = await fetch(current_back_url + `/api/editResource/${resourceId}`, opts);
-      //     if (response.status >= 400) {
-      //       alert("There has been an error");
-      //       return false;
-      //     }
-      //     const data = await response.json();
-      //     if (data.status === "true") {
-      //       navigate('/'); // Navigate to home or some other page
-      //     }
-      //   } catch (error) {
-      //     console.error("Error during resource editing:", error);
-      //   }
-      // },
 
       getResource: async (resourceId) => {
         const { current_back_url, current_front_url } = getStore();
@@ -461,14 +457,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             return null;
           }
           const data = await response.json();
-          return data; // This will contain the resource data
+          return data;
         } catch (error) {
           console.error("Error fetching the resource:", error);
           return null;
         }
       },
-
-      createResource: async (formData) => {
+      createResource: async (formData, navigate) => {
         const { current_back_url, current_front_url } = getStore();
         const token = sessionStorage.getItem("token");
         const opts = {
@@ -484,44 +479,119 @@ const getState = ({ getStore, getActions, setStore }) => {
             current_back_url + "/api/createResource",
             opts
           );
-          if (response.status >= 400) {
-            alert("There has been an error");
+          console.log("Error Swal triggered");
+          const data = await response.json();
+
+          console.log("Response data:", data);
+
+          if (response.status >= 400 || data.status === "error") {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: data.message,
+            });
+            console.log("Success Swal triggered");
             return false;
           }
-          const data = await response.json();
-          if (data.status === "true") {
+
+          if (data.status === "success") {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Resource created successfully!",
+            });
             navigate("/");
           }
         } catch (error) {
           console.error("Error during resource creation:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `An error occurred: ${error.message}`,
+          });
+          console.log("Catch block Swal triggered");
         }
       },
 
-      // checkInvalidCoordinates: async () => {
-      //   console.log("CHECK INVALID COORDINATES")
-      //   const { current_back_url, current_front_url } = getStore();
-      //   const token = sessionStorage.getItem("token");
-      //   const opts = {
-      //     method: "GET",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //     },
-      //   };
-      //   try {
-      //     const response = await fetch(current_back_url + "/api/checkInvalidCoordinates", opts);
-      //     if (response.status >= 400) {
-      //       alert("There has been an error");
-      //       return null;
-      //     }
-      //     const data = await response.json();
-      //     // data.invalid_resources will contain the list of resources with invalid latitude or longitude
-      //     console.log("Invalid resources:", data.invalid_resources);
-      //     return data; // This will contain the invalid resources data
-      //   } catch (error) {
-      //     console.error("Error fetching the invalid resources:", error);
-      //     return null;
-      //   }
-      // },
+      setSchedules: () => {
+        // let controller = new AbortController();
+        let url = getStore().current_back_url + `/api/getSchedules`;
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "access-control-allow-origin": "*",
+            "Content-Type": "application/json",
+          },
+          // signal: controller.signal,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setStore({ schedules: data });
+          })
+          .catch((error) => console.log(error));
+        return () => {
+          // controller.abort();
+        };
+      },
+
+      setBoundaryResults: async (bounds, resources, days, groups) => {
+        // Normalize longitude
+        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+        neLng = neLng % 360;
+        if (neLng > 180) {
+          neLng -= 360;
+        }
+
+        swLng = swLng % 360;
+        if (swLng > 180) {
+          swLng -= 360;
+        }
+
+        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+
+        const url = getStore().current_back_url + "/api/getBResults";
+        const combinedResources = {
+          ...resources,
+          ...groups,
+        };
+
+        try {
+          setStore({ loading: true });
+
+          let response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              neLat,
+              neLng,
+              swLat,
+              swLng,
+              resources: combinedResources || null,
+              days: days || null,
+            }),
+          });
+
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(
+              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+            );
+          }
+
+          const data = await response.json();
+          setStore({ boundaryResults: data.data, loading: false });
+
+          return data.data;
+        } catch (error) {
+          setStore({ loading: false });
+          console.error("Error fetching data:", error);
+        }
+      },
 
       // addFavorite: (resourceName) => {
       //   const current_back_url = getStore().current_back_url;
@@ -587,199 +657,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       //       .catch((error) => console.log(error));
       //   }
       // },
-      // setSearchResults: () => {
-      //   let controller = new AbortController();
-      //   let url = window.location.search;
-      //   fetch(getStore().current_back_url + "/api/getResources" + url,
-      //     {
-      //       method: "GET",
-      //       headers: {
-      //         "access-control-allow-origin": "*",
-      //         "Content-Type": "application/json",
-      //       }
-      //     }
-      //   )
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       setStore({ searchResults: data.data });
-      //       // console.log("search results", getStore().searchResults);
-      //     })
-      //     .catch((error) => console.log(error));
-      // },
-
-      setSchedules: () => {
-        // let controller = new AbortController();
-        let url = getStore().current_back_url + `/api/getSchedules`;
-        fetch(url, {
-          method: "GET",
-          headers: {
-            "access-control-allow-origin": "*",
-            "Content-Type": "application/json",
-          },
-          // signal: controller.signal,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setStore({ schedules: data });
-          })
-          .catch((error) => console.log(error));
-        return () => {
-          // controller.abort();
-        };
-      },
-
-      setBoundaryResults: async (bounds, resources, days, groups) => {
-        // Normalize longitude
-        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-        neLng = neLng % 360;
-        if (neLng > 180) {
-          neLng -= 360;
-        }
-
-        swLng = swLng % 360;
-        if (swLng > 180) {
-          swLng -= 360;
-        }
-
-        // Ensure the values are float
-        const neLat = parseFloat(
-          bounds?.northeast?.lat || bounds?.ne?.lat || null
-        );
-        neLng = parseFloat(neLng);
-        const swLat = parseFloat(
-          bounds?.southwest?.lat || bounds?.sw?.lat || null
-        );
-        swLng = parseFloat(swLng);
-
-        // console.log("Normalized and casted bounds", { neLat, neLng, swLat, swLng });
-
-        const url = getStore().current_back_url + "/api/getBResults";
-        const combinedResources = {
-          ...resources,
-          ...groups,
-        };
-
-        try {
-          setStore({ loading: true });
-
-          let response = await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              neLat,
-              neLng,
-              swLat,
-              swLng,
-              resources: combinedResources || null,
-              days: days || null,
-            }),
-          });
-
-          if (!response.ok) {
-            const text = await response.text();
-            throw new Error(
-              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-            );
-          }
-
-          const data = await response.json();
-          setStore({ boundaryResults: data.data, loading: false });
-
-          // console.log("boundary results", data.data);
-
-          return data.data;
-        } catch (error) {
-          setStore({ loading: false });
-          if (error.name === "AbortError") {
-            console.log("Fetch aborted");
-          } else {
-            console.error("Error fetching data:", error);
-          }
-        }
-      },
-
-      // setBoundaryResults: async (bounds, resources, days) => {
-      //   // const abortController = new AbortController();
-      //   console.log("bounds resources days", bounds, resources, days);
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   try {
-      //     setStore({ loading: true });
-      //     let response = await fetch(url, {
-      //       method: 'POST',
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         neLat: bounds?.northeast?.lat || bounds?.ne?.lat || null,
-      //         neLng: bounds?.northeast?.lng || bounds?.ne?.lng || null,
-      //         swLat: bounds?.southwest?.lat || bounds?.sw?.lat || null,
-      //         swLng: bounds?.southwest?.lng || bounds?.sw?.lng || null,
-      //         resources: resources || null,
-      //         days: days || null
-      //       }),
-      //       // signal: abortController.signal,
-      //     });
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(`Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`);
-      //     }
-      //     const data = await response.json();
-      //     // console.log("Received Data:", data.data);
-      //     setStore({ boundaryResults: data.data });
-      //     setStore({ loading: false });
-
-      //     console.log("boundary results", data.data);
-      //     // console.trace("Trace for boundary results");
-      //     // console.log("resources", resources);
-      //     return data.data;
-      //   } catch (error) {
-      //     setStore({ loading: false });
-      //     if (error.name === 'AbortError') {
-      //       console.log('Fetch aborted');
-      //     } else {
-      //       console.error('Error fetching data:', error);
-      //     }
-      //   }
-      //   // return abortController;
-      // },
-
-      // createComment: async (resource_id, comment_cont, parentId) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = getStore().token;
-      //   const opts = {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //       "Content-Type": "application/json",
-      //       "Access-Control-Allow-Origin": "*",
-      //     },
-      //     body: JSON.stringify({
-      //       resource_id: resource_id,
-      //       comment_cont: comment_cont,
-      //       parentId: parentId,
-      //     }),
-      //   };
-      //   try {
-      //     const response = await fetch(
-      //       current_back_url + "/api/createComment",
-      //       opts
-      //     );
-      //     if (response.status >= 400) {
-      //       alert("There has been an error");
-      //       return false;
-      //     }
-      //     const data = await response.json();
-      //     return true;
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // },
-
       // ________________________________________________________________OFFERINGS
       // addFavoriteOffering: (offering) => {
       //   console.log(offering);

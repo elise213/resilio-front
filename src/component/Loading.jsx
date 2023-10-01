@@ -4,33 +4,21 @@ import Styes from "../styles/loading.css";
 const Loading = ({ name }) => {
   return (
     <div className="my-resource-card loading">
-      <div>
-        <div className="resource-card-header">
-          {name === "locating" ? (
-            <div className="">
-              <p>
-                <i className="fa-solid fa-bullseye"></i>
-                Finding Your Location...
-              </p>
-            </div>
-          ) : (
-            ""
-          )}
-          {name === "loading" ? (
-            <div className="">
-              <p>Loading Resources...</p>
-            </div>
-          ) : (
-            ""
-          )}
-          {name === "none" ? (
-            <div>
-              <p>No Results</p>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
+      <div className="resource-card-header">
+        {name === "locating" ? (
+          <p className="loading-text">
+            <i className="fa-solid fa-bullseye"></i>
+            Finding Your Location...
+          </p>
+        ) : (
+          ""
+        )}
+        {name === "loading" ? (
+          <p className="loading-text">Loading Resources...</p>
+        ) : (
+          ""
+        )}
+        {name === "none" ? <p className="loading-text">No Results </p> : ""}
       </div>
     </div>
   );
