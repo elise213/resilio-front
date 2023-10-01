@@ -9,14 +9,7 @@ const Modal = (props) => {
   const modalContentRef = useRef(null);
   const tokenExists = sessionStorage.getItem("token");
 
-  let categories = props.resource.category;
-  if (typeof categories === "string" && categories.includes(",")) {
-    categories = categories.split(",").map((cat) => cat.trim());
-  } else if (typeof categories === "string") {
-    categories = [categories];
-  } else if (!Array.isArray(categories)) {
-    categories = [];
-  }
+  let categories = actions.processCategory(props.resource.category);
 
   const handleCloseClick = (event) => {
     event.stopPropagation();
@@ -40,6 +33,7 @@ const Modal = (props) => {
   }, []);
 
   const resourceId = props.resource.id;
+  console.log("CATS", categories);
 
   return (
     <div>

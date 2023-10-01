@@ -313,6 +313,7 @@ const Home = () => {
         >
           {store.boundaryResults[0] && (
             <div className="scroll-headers">
+              {/* <img className="home-log2" src={Logo} alt="Alive Logo" /> */}
               <Report />
               <div className="results-message">
                 <p>Free Resources In Your Area</p>

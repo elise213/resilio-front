@@ -109,10 +109,10 @@
 .home-logo {
   width: 40%;
   height: auto;
-  position: absolute;
   z-index: 0;
   top: 200px;
   opacity: 0.9;
+  /* margin-bottom: 50px; */
 }
 .scroll-search-results ul::-webkit-scrollbar-track {
   background-color: transparent;
@@ -145,6 +145,7 @@
 }
 
 .results-message {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -162,14 +163,6 @@
 
 .results-message p {
   margin: 20px 0;
-}
-
-.grid-container {
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2), 1px 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.grid-item p {
-  margin: 0 !important;
 }
 
 .new-container {
@@ -225,4 +218,13 @@
 
 .scroll-headers {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.home-log2 {
+  height: 100px;
+  width: 300px;
 }

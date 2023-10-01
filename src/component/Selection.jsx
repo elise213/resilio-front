@@ -60,13 +60,6 @@ const Selection = (props) => {
   };
 
   const handleToggleAll = (setFn, stateObj, ids) => {
-    console.log(
-      "handleToggleAll called with stateObj:",
-      stateObj,
-      "and ids:",
-      ids
-    );
-
     if (isAnyChecked(stateObj, ids)) {
       const newState = {};
       ids.forEach((id) => {
@@ -76,13 +69,11 @@ const Selection = (props) => {
     }
   };
 
+  const isAnyChecked = (stateObj, ids) => {
+    return ids.some((id) => stateObj[id]);
+  };
+
   const areAllUnchecked = (stateObj, ids) => {
-    console.log(
-      "areAllUnchecked called with stateObj:",
-      stateObj,
-      "and ids:",
-      ids
-    );
     return ids.every((id) => !stateObj[id]);
   };
 
@@ -104,18 +95,14 @@ const Selection = (props) => {
   };
 
   useEffect(() => {
-    console.log("Categories", props.categories);
-    console.log("Days", props.days);
-    console.log("Groups", props.groups);
+    // console.log("Categories", props.categories);
+    // console.log("Days", props.days);
+    // console.log("Groups", props.groups);
   }, [props.categories, props.days, props.groups]);
 
   useEffect(() => {
     setColumnOpen(showGroups && showDays);
   }, [showGroups, showDays]);
-
-  console.log("COL UPEN", columnOpen);
-
-  console.log("SHOW CAT", showCategories);
 
   return (
     <div className={`selection three-columns}`}>
@@ -225,10 +212,18 @@ const Selection = (props) => {
               toggleAllCheckboxes(props.setDays, props.days, dayIds);
             }
           }}
-          className={showDays ? "open2" : "closed2 closed-days"}
+          className={showDays ? "open2" : "closed2 "}
         >
           {showDays ? "X" : "Filter By Day"}
         </button>
+        {!showDays && (
+          <div>
+            <i
+              className="fa-solid fa-calendar-days closed-icons"
+              style={{ color: "cornflowerBlue" }}
+            ></i>
+          </div>
+        )}
 
         {showDays && renderCenterColumn("day", props.days, props.setDays)}
       </div>
