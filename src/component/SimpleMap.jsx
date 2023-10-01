@@ -21,7 +21,7 @@ const SimpleMap = ({
         {
           featureType: "all",
           elementType: "geometry",
-          stylers: [{ lightness: -10 }, { gamma: 0.7 }, { saturation: -70 }],
+          stylers: [{ lightness: -5 }, { gamma: 0.8 }, { saturation: -30 }],
         },
         {
           featureType: "poi",
@@ -80,7 +80,8 @@ const SimpleMap = ({
 
   const Marker = ({ text, id, result }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const iconClass = actions.getIconForCategory(result.category);
+    const singleCategory = actions.processCategory(result.category)[0];
+    const iconClass = actions.getIconForCategory(singleCategory);
     const color = actions.getColorForCategory(result.category).color;
     return (
       <div

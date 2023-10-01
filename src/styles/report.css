@@ -2,14 +2,29 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 5px;
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
   margin: 20px 20px 0 20px;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 3px;
+  box-shadow: none !important;
+}
+
+.report-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2), 1px 2px 6px rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  padding: 10px;
+}
+
+.grid-item p {
+  margin: 0 !important;
 }
 
 .grid-item {
-  /* padding: 5px; */
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -18,10 +33,4 @@
 
 .report-icon {
   padding: 0 10px;
-}
-
-.report-container {
-  display: flex;
-  justify-content: center;
-  width: auto;
 }
