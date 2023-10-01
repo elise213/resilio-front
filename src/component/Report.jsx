@@ -37,6 +37,10 @@ const Report = () => {
         "shelter",
         "work",
         "wifi",
+        "mental",
+        "substance",
+        "wifi",
+        "crisis",
       ];
       const filteredScore = Object.keys(score)
         .filter((key) => validCategories.includes(key.toLowerCase()))
@@ -45,17 +49,15 @@ const Report = () => {
           return obj;
         }, {});
 
-      console.log("FILTERED SCORE", filteredScore);
       setReport(filteredScore);
     }
   }, [store?.boundaryResults, store?.GROUP_OPTIONS]);
 
   return (
     <div className="report-container">
+      Open today in your area:
       <div className="grid-container">
         {Object.entries(report).map(([key, value], index) => {
-          console.log(actions.getIconForCategory(key));
-          console.log(actions.getColorForCategory(key));
           const colorStyle = actions.getColorForCategory(key);
           return (
             <div className="grid-item" key={index}>

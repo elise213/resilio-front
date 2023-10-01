@@ -57,7 +57,7 @@
   display: inline-block;
   border: 15px solid transparent;
   border-radius: 20px;
-  box-shadow: 2px 4px 8px 10px rgba(0, 0, 0, 0.2),
+  box-shadow: 2px 4px 8px 6px rgba(0, 0, 0, 0.1),
     0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
   overflow: hidden;
   z-index: 9999;

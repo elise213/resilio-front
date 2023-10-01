@@ -24,10 +24,14 @@
 .open2 {
   align-self: flex-end;
   color: var(--newGreen);
-  transform: translate(0px, 30px);
+  transform: translate(40px, 0px);
   align-self: center;
   margin: 0;
   padding: 0;
+}
+
+.open2:hover {
+  color: "red" !important;
 }
 
 .closed2 {
@@ -88,7 +92,7 @@
 }
 
 .what-type {
-  min-height: 480px;
+  /* min-height: 480px; */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -113,7 +117,7 @@
   background-color: rgb(144, 194, 144);
 }
 
-.my-input2 {
+/* .my-input2 {
   display: none;
 }
 
@@ -169,7 +173,7 @@
 
 .my-input3:checked + .my-label:before {
   background-color: rgb(114, 114, 131);
-}
+} */
 
 .my-schedule-button {
   font-family: "Urbanist", sans-serif !important;
@@ -274,8 +278,4 @@
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
-}
-
-.closed-days {
-  margin-bottom: 32px;
 }
