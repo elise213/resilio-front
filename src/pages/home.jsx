@@ -1,9 +1,12 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Report from "../component/Report";
+import { MapSettings } from "../component";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
 import Styles from "../styles/home.css";
+// import Styles from "../styles/home.css?inline";
+
 import {
   SimpleMap,
   Selection,
@@ -32,10 +35,16 @@ const Home = () => {
 
   // REFS
   const ulRef = useRef(null);
+  const resultsRef = useRef(null);
   const fetchCounterRef = useRef(0);
   const abortControllerRef = useRef(null);
 
   // STATES
+  const [message1Open, setMessage1Open] = useState(true);
+  const [message2Open, setMessage2Open] = useState(false);
+  const [message3Open, setMessage3Open] = useState(false);
+  const [searchingToday, setSearchingToday] = useState(false);
+
   const [categories, setCategories] = useState(
     INITIAL_CATEGORY_STATE(store.CATEGORY_OPTIONS)
   );
@@ -46,7 +55,7 @@ const Home = () => {
 
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLocating, setIsLocating] = useState(false);
-  // const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
+  const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [zipInput, setZipInput] = useState("");
@@ -55,7 +64,6 @@ const Home = () => {
   // FUNCTIONS
 
   const handleBoundsChange = (data) => {
-    console.log("CALLED HANDLE BOUNDS CHANGE", data);
     setCity((prevState) => ({
       ...prevState,
       bounds: data.bounds,
@@ -66,8 +74,32 @@ const Home = () => {
     }));
   };
 
+  const getTrueCategories = () => {
+    // Getting the category IDs that are true
+    const trueCategoryIds = Object.keys(categories).filter(
+      (key) => categories[key]
+    );
+
+    if (trueCategoryIds.length === 0) {
+      return "";
+    }
+
+    // Mapping IDs to their respective labels
+    const trueCategoryLabels = trueCategoryIds.map(
+      (id) => store.CATEGORY_OPTIONS.find((cat) => cat.id === id)?.label
+    );
+
+    if (trueCategoryLabels.length === 1) {
+      return trueCategoryLabels[0];
+    } else if (trueCategoryLabels.length === 2) {
+      return trueCategoryLabels.join(" and ");
+    } else {
+      const lastCategory = trueCategoryLabels.pop();
+      return `${trueCategoryLabels.join(", ")}, and ${lastCategory}`;
+    }
+  };
+
   const normalizeLongitude = (lng) => {
-    console.log("normalize long called");
     if (lng > 180) {
       return lng - 360;
     }
@@ -78,7 +110,7 @@ const Home = () => {
   };
 
   const fetchBounds = async (query, isZip = false) => {
-    console.log("fetch bounds called");
+    // console.log("fetch bounds called");
     let apiUrl;
     if (isZip) {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
@@ -171,29 +203,6 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
-  const updateData = async () => {
-    console.log("update DATA function called");
-    if (!store.schedule) {
-      actions.setSchedules();
-    }
-    if (city.bounds) {
-      abortControllerRef.current?.abort();
-      abortControllerRef.current = new AbortController();
-      const currentFetchCount = ++fetchCounterRef.current;
-      const fetchData = async () => {
-        try {
-          if (currentFetchCount === fetchCounterRef.current) {
-            if (categories && days && city?.bounds) {
-              actions.setBoundaryResults(city.bounds, categories, days, groups);
-            }
-          }
-        } catch (error) {}
-      };
-      fetchData();
-      return () => abortControllerRef.current?.abort();
-    }
-  };
-
   const geoFindMe = async () => {
     console.log("GEO FIND ME CALLED");
     setIsLocating(true);
@@ -225,194 +234,350 @@ const Home = () => {
   // USE EFFECTS
 
   useEffect(() => {
+    actions.setSchedules();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (city.bounds) {
+          await actions.setMapResults(city.bounds);
+        }
+      } catch (error) {
+        console.error("Error in fetching map results:", error);
+      }
+    };
+    fetchData();
+  }, [city.bounds]);
+
+  // useEffect(() => {
+  //   console.log("MESSAGE OPEN?", message1Open, message2Open, message3Open);
+  // }, [message1Open, message2Open, message3Open]);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (resultsRef.current) {
+        const { scrollWidth, clientWidth } = resultsRef.current;
+        setIsOverflowing(scrollWidth > clientWidth); // Set isOverflowing to true if content is overflowing
+      }
+    };
+
+    checkOverflow();
+
+    window.addEventListener("resize", checkOverflow); // Call whenever the window is resized
+
+    return () => {
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [store.boundaryResults]);
+
+  useEffect(() => {
     if (zipInput && zipInput.length === 5) {
       updateCityStateFromZip(zipInput);
     }
   }, [zipInput]);
 
   useEffect(() => {
-    if (city.bounds) {
-      console.log("NEW CITY INFO", city);
-      actions.setBoundaryResults(city.bounds, categories, days, groups);
-    }
-  }, [city]);
-
-  useEffect(() => {
-    abortControllerRef.current?.abort();
-    abortControllerRef.current = new AbortController();
-    const currentFetchCount = ++fetchCounterRef.current;
     const fetchData = async () => {
       try {
-        if (currentFetchCount === fetchCounterRef.current) {
-          if (categories && days && city.bounds) {
-            // console.log("Sending boundsData to backend", city.bounds);
-            await actions.setBoundaryResults(
-              city.bounds,
-              categories,
-              days,
-              groups
-            );
-          }
+        if (categories && days && city.bounds) {
+          await actions.setBoundaryResults(
+            city.bounds,
+            categories,
+            days,
+            groups
+          );
         }
+        // }
       } catch (error) {
         console.error("Error in fetching boundary results:", error);
       }
     };
     fetchData();
-
-    return () => abortControllerRef.current?.abort();
-  }, [city.bounds, categories, days, city, groups]);
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (ulRef.current) {
-  //       const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
-  //       const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10;
-  //       setIsScrolledToEnd(atEndOfScroll);
-  //     }
-  //   };
-  //   if (ulRef.current) {
-  //     ulRef.current.addEventListener("scroll", handleScroll);
-  //   }
-  //   return () => {
-  //     if (ulRef.current) {
-  //       ulRef.current.removeEventListener("scroll", handleScroll);
-  //     }
-  //   };
-  // }, []);
+  }, [categories, days, city, groups, searchingToday]);
 
   useEffect(() => {
-    updateData();
-  }, [days, categories, city]);
-
-  useEffect(() => {
-    if (
-      ulRef.current &&
-      ulRef.current.scrollWidth > ulRef.current.clientWidth
-    ) {
-      setIsOverflowing(true);
-    } else {
-      setIsOverflowing(false);
+    const handleScroll = () => {
+      if (ulRef.current) {
+        const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
+        const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10;
+        setIsScrolledToEnd(atEndOfScroll);
+      }
+    };
+    if (ulRef.current) {
+      ulRef.current.addEventListener("scroll", handleScroll);
     }
-  }, [store.boundaryResults]);
+    return () => {
+      if (ulRef.current) {
+        ulRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
-  // RETURN
   return (
     <div className="grand-container">
       <div className="search-container">
-        <img className="home-logo" src={Logo} alt="Alive Logo" />
-        <div className="what-type"></div>
-      </div>
-      {/* FILTER OPTIONS */}
-      <div className="search-results-full">
-        <div
-          className="scroll-search-results"
-          style={{
-            display: "block",
-          }}
-        >
-          {store.boundaryResults[0] && (
-            <div className="scroll-headers">
-              {/* <img className="home-log2" src={Logo} alt="Alive Logo" /> */}
-              <Report />
-              <div className="results-message">
-                <p>Free Resources In Your Area</p>
-                <div className="report"></div>
+        {" "}
+        <div className="results-message">
+          <p
+            onClick={() => {
+              setMessage1Open(true);
+              setMessage2Open(false);
+            }}
+          >
+            Tell us where you are, and we will show you the goods
+          </p>
+        </div>
+        {message1Open && (
+          <>
+            <div className="step-1">
+              <div className="group-div">
+                <div className="step1-text">
+                  <div className="step-text">
+                    <p>Hit this button </p>
+                    <i className="fa-solid fa-arrow-right-long"></i>
+                  </div>
+                  <div className="step-text">
+                    <p>Or enter your zip code here </p>
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </div>
+                </div>
+                <MapSettings
+                  geoFindMe={geoFindMe}
+                  handleZipInputChange={handleZipInputChange}
+                  zipInput={zipInput}
+                />
+              </div>
+              {store.boundaryResults[0] && (
+                <div className="scroll-headers">
+                  <Report />
+                </div>
+              )}
+            </div>
+            <ErrorBoundary>
+              <SimpleMap
+                handleBoundsChange={handleBoundsChange}
+                openModal={openModal}
+                city={city}
+                geoFindMe={geoFindMe}
+                handleZipInputChange={handleZipInputChange}
+                zipInput={zipInput}
+              />
+            </ErrorBoundary>
+
+            <div className="search-results-full">
+              <div className="message-1">
+                <p>
+                  There are {store.mapResults ? store.mapResults.length : 0}{" "}
+                  free resources in your area
+                </p>
+              </div>
+
+              <div
+                className="scroll-search-results"
+                ref={resultsRef}
+                style={{
+                  display: "block",
+                }}
+              >
+                <ul
+                  style={{
+                    listStyleType: "none",
+                    justifyContent:
+                      store.loading ||
+                      isLocating ||
+                      store.boundaryResults.length === 0
+                        ? "center"
+                        : "flex-start",
+                  }}
+                  ref={ulRef}
+                >
+                  {store.mapResults.length === 0 &&
+                  !store.loading &&
+                  !isLocating ? (
+                    <li>
+                      <Loading name="none" />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+                  {isLocating ? (
+                    <li>
+                      <Loading name="locating" />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+                  {store.loading ? (
+                    <li>
+                      <Loading name="loading" />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+
+                  {!store.loading && !isLocating
+                    ? store.mapResults.map((result, i) => {
+                        return (
+                          <li key={i}>
+                            <ResourceCard
+                              item={result}
+                              openModal={openModal}
+                              closeModal={closeModal}
+                              modalIsOpen={modalIsOpen}
+                              setModalIsOpen={setModalIsOpen}
+                              selectedResource={selectedResource}
+                            />
+                          </li>
+                        );
+                      })
+                    : ""}
+                </ul>
               </div>
             </div>
-          )}
-          <ul
-            style={{
-              listStyleType: "none",
-              justifyContent:
-                store.loading ||
-                isLocating ||
-                store.boundaryResults.length === 0
-                  ? "center"
-                  : isOverflowing
-                  ? "flex-start"
-                  : "center",
+          </>
+        )}
+        <div className="results-message">
+          <p
+            onClick={() => {
+              setMessage2Open(!message2Open);
+              setMessage1Open(!message1Open);
             }}
-            ref={ulRef}
           >
-            {store.boundaryResults.length === 0 &&
-            !store.loading &&
-            !isLocating ? (
-              <li>
-                <Loading name="none" />
-              </li>
-            ) : (
-              ""
-            )}
-            {isLocating ? (
-              <li>
-                <Loading name="locating" />
-              </li>
-            ) : (
-              ""
-            )}
-            {store.loading ? (
-              <li>
-                <Loading name="loading" />
-              </li>
-            ) : (
-              ""
-            )}
-
-            {!store.loading && !isLocating
-              ? store.boundaryResults.map((result, i) => {
-                  return (
-                    <li key={i}>
-                      <ResourceCard
-                        item={result}
-                        openModal={openModal}
-                        closeModal={closeModal}
-                        modalIsOpen={modalIsOpen}
-                        setModalIsOpen={setModalIsOpen}
-                        selectedResource={selectedResource}
-                      />
-                    </li>
-                  );
-                })
-              : ""}
-          </ul>
+            Get More Specific
+          </p>
         </div>
-        {/* MAP */}
-        <div className="new-container">
-          <div className="selection-container-home">
-            {store.CATEGORY_OPTIONS &&
-            store.DAY_OPTIONS &&
-            store.GROUP_OPTIONS &&
-            categories &&
-            days &&
-            groups ? (
-              <ErrorBoundary>
-                <Selection
-                  categories={categories}
-                  setCategories={setCategories}
-                  groups={groups}
-                  setGroups={setGroups}
-                  days={days}
-                  setDays={setDays}
-                  areAll
+        {message2Open && (
+          <>
+            <ErrorBoundary>
+              {/* {store.boundaryResults[0] && (
+                <div className="scroll-headers">
+                  <Report />
+                </div>
+              )} */}
+              <div className="flex">
+                <SimpleMap
+                  handleBoundsChange={handleBoundsChange}
+                  openModal={openModal}
+                  city={city}
+                  geoFindMe={geoFindMe}
+                  handleZipInputChange={handleZipInputChange}
+                  zipInput={zipInput}
                 />
-              </ErrorBoundary>
-            ) : (
-              <p>Loading selection options...</p>
-            )}
-          </div>
-          <ErrorBoundary>
-            <SimpleMap
-              handleBoundsChange={handleBoundsChange}
-              openModal={openModal}
-              city={city}
-              geoFindMe={geoFindMe}
-              handleZipInputChange={handleZipInputChange}
-              zipInput={zipInput}
-            />
-          </ErrorBoundary>
+                <div className="side-car">
+                  {store.CATEGORY_OPTIONS &&
+                  store.DAY_OPTIONS &&
+                  store.GROUP_OPTIONS &&
+                  categories &&
+                  days &&
+                  groups ? (
+                    <ErrorBoundary>
+                      <Selection
+                        categories={categories}
+                        setCategories={setCategories}
+                        groups={groups}
+                        setGroups={setGroups}
+                        days={days}
+                        setDays={setDays}
+                        searchingToday={searchingToday}
+                        setSearchingToday={setSearchingToday}
+                        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                      />
+                    </ErrorBoundary>
+                  ) : (
+                    message2Open && <p>Loading selection options...</p>
+                  )}
+                </div>
+              </div>
+            </ErrorBoundary>
+
+            {/* RESULTS #2 */}
+
+            <div className="search-results-full">
+              <div className="message-1">
+                <p>
+                  {/* Scroll right to see all{" "} */}
+                  There are{" "}
+                  {store.boundaryResults
+                    ? store.boundaryResults.length
+                    : 0}{" "}
+                  resources in your area{" "}
+                  {getTrueCategories().length > 0
+                    ? `offering free ${getTrueCategories()}`
+                    : ""}
+                  {"!"}
+                </p>
+              </div>
+
+              <div
+                className="scroll-search-results"
+                ref={resultsRef}
+                style={{
+                  display: "block",
+                }}
+              >
+                <ul
+                  style={{
+                    listStyleType: "none",
+                    justifyContent:
+                      store.loading ||
+                      isLocating ||
+                      store.boundaryResults.length === 0
+                        ? "center"
+                        : isOverflowing
+                        ? "flex-start"
+                        : "center",
+                  }}
+                  ref={ulRef}
+                >
+                  {store.boundaryResults.length === 0 &&
+                  !store.loading &&
+                  !isLocating ? (
+                    <li>
+                      <Loading name="none" />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+                  {isLocating ? (
+                    <li>
+                      <Loading name="locating" />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+                  {store.loading ? (
+                    <li>
+                      <Loading name="loading" />
+                    </li>
+                  ) : (
+                    ""
+                  )}
+
+                  {!store.loading && !isLocating
+                    ? store.boundaryResults.map((result, i) => (
+                        <li key={i}>
+                          <ResourceCard
+                            item={result}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResource={selectedResource}
+                          />
+                        </li>
+                      ))
+                    : ""}
+                </ul>{" "}
+              </div>
+            </div>
+          </>
+        )}
+        <div className="results-message message-4">
+          <p> Give me my Hidden City Map</p>
         </div>
       </div>
+
       {modalIsOpen && (
         <div>
           <div className="modal-overlay"></div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { useNavigate } from "react-router-dom";
-import Styles from "../styles/simpleMap2.css";
+import Styles from "../styles/simple_map.css";
 
 export const ModalMap = (props) => {
   let lat = parseFloat(props.latitude);

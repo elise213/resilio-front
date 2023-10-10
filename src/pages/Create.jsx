@@ -87,13 +87,26 @@ const Create = () => {
     days: initialDaysState,
   };
   const [formData, setFormData] = useState(initialFormData);
+
+  // const handleSelect = async (address) => {
+  //   handleChange("address", address);
+  //   try {
+  //     const results = await geocodeByAddress(address);
+  //     const latLng = await getLatLng(results[0]);
+  //     handleChange("latitude", latLng.lat.toString());
+  //     handleChange("longitude", latLng.lng.toString());
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
+
   const handleSelect = async (address) => {
     handleChange("address", address);
     try {
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
-      handleChange("latitude", latLng.lat.toString());
-      handleChange("longitude", latLng.lng.toString());
+      handleChange("latitude", latLng.lat);
+      handleChange("longitude", latLng.lng);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -106,7 +119,6 @@ const Create = () => {
       category: formData.category.join(", "),
     };
     actions.createResource(modifiedFormData, navigate);
-    alert("Resource Created");
     resetForm();
     navigate("/");
   }
@@ -288,6 +300,35 @@ const Create = () => {
             className="geo-input"
             id="latitude"
             name="latitude"
+            type="number"
+            value={formData.latitude}
+            onChange={(e) =>
+              handleChange("latitude", parseFloat(e.target.value))
+            } // Added parseFloat
+            title="Provide the latitude"
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="longitude">Longitude</label>
+          <input
+            className="geo-input"
+            id="longitude"
+            name="longitude"
+            type="number"
+            value={formData.longitude}
+            onChange={(e) =>
+              handleChange("longitude", parseFloat(e.target.value))
+            } // Added parseFloat
+            title="Provide the longitude"
+          />
+        </div>
+        {/* <div className="input-group">
+          <label htmlFor="latitude">Latitude</label>
+          <input
+            className="geo-input"
+            id="latitude"
+            name="latitude"
             type="text"
             value={formData.latitude}
             onChange={(e) => handleChange("latitude", e.target.value)}
@@ -306,7 +347,7 @@ const Create = () => {
             onChange={(e) => handleChange("longitude", e.target.value)}
             title="Provide the longitude"
           />
-        </div>
+        </div> */}
 
         <button className="geo-button" type="submit">
           Submit

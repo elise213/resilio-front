@@ -6,24 +6,46 @@ const Report = () => {
   const { actions, store } = useContext(Context);
   const [report, setReport] = useState({});
 
-  useEffect(() => {
-    Object.keys(store.GROUP_OPTIONS || {}).forEach((key) => {
-      console.log(key);
-    });
-  }, []);
+  const getLabelForCategory = (categoryId) => {
+    const category = store.CATEGORY_OPTIONS.find(
+      (cat) => cat.id === categoryId
+    );
+    return category ? category.label : categoryId; // Return ID as fallback if no label is found
+  };
 
   useEffect(() => {
-    let score = {};
+    let categoryCounts = {};
 
-    if (store?.boundaryResults?.length > 0) {
-      store.boundaryResults.forEach((result) => {
+    let dayCounts = {
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+      sunday: 0,
+    };
+
+    if (store?.mapResults?.length > 0) {
+      store.mapResults.forEach((result) => {
         if (typeof result.category === "string") {
           let categories = result.category.split(",").map((cat) => cat.trim());
           categories.forEach((cat) => {
-            if (score.hasOwnProperty(cat)) {
-              score[cat] += 1;
-            } else {
-              score[cat] = 1;
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+          });
+        }
+
+        const schedule = store.schedules.find(
+          (sched) => sched.resource_id === result.id
+        );
+
+        if (schedule) {
+          Object.keys(dayCounts).forEach((day) => {
+            if (
+              schedule[`${day}Start`] !== "closed" &&
+              schedule[`${day}End`] !== "closed"
+            ) {
+              dayCounts[day]++;
             }
           });
         }
@@ -39,35 +61,47 @@ const Report = () => {
         "wifi",
         "mental",
         "substance",
-        "wifi",
         "crisis",
+        "bathroom",
+        "youth",
+        "sex",
+        "women",
+        "lgbtq",
+        "babies",
+        "migrants",
       ];
-      const filteredScore = Object.keys(score)
+
+      const filteredCategoryCounts = Object.keys(categoryCounts)
         .filter((key) => validCategories.includes(key.toLowerCase()))
         .reduce((obj, key) => {
-          obj[key] = score[key];
+          obj[key] = categoryCounts[key];
           return obj;
         }, {});
 
-      setReport(filteredScore);
+      console.log("categoryCounts:", categoryCounts);
+      console.log("filteredCategoryCounts:", filteredCategoryCounts);
+
+      setReport(filteredCategoryCounts);
+      actions.setCategoryCounts(filteredCategoryCounts);
+      actions.setDayCounts(dayCounts);
     }
-  }, [store?.boundaryResults, store?.GROUP_OPTIONS]);
+  }, [store?.mapResults, store?.schedules]);
 
   return (
     <div className="report-container">
-      Open today in your area:
+      In your area:
       <div className="grid-container">
         {Object.entries(report).map(([key, value], index) => {
           const colorStyle = actions.getColorForCategory(key);
           return (
             <div className="grid-item" key={index}>
               <div>
+                <span>{value}</span>
                 <span
                   className={`report-icon ${actions.getIconForCategory(key)}`}
                   style={colorStyle ? colorStyle : {}}
                 ></span>
-                <span>{key}: </span>
-                <span>{value}</span>
+                <span>{getLabelForCategory(key)} </span>
               </div>
             </div>
           );
