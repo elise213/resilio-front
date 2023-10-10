@@ -3,7 +3,17 @@ import { Context } from "../store/appContext";
 import styles from "../styles/selection.css";
 import MyCheckbox from "./MyCheckbox";
 
-const Selection = (props) => {
+const Selection = ({
+  groups,
+  setGroups,
+  categories,
+  setCategories,
+  days,
+  setDays,
+  searchingToday,
+  setSearchingToday,
+  INITIAL_DAY_STATE,
+}) => {
   const { store, actions } = useContext(Context);
   const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
@@ -12,7 +22,161 @@ const Selection = (props) => {
   const [showCategories, setShowCategories] = useState(false);
   const [showGroups, setShowGroups] = useState(false);
   const [showDays, setShowDays] = useState(false);
-  const [columnOpen, setColumnOpen] = useState(false);
+  const [activeCategoryIds, setActiveCategoryIds] = useState([]);
+  const [visibleGroupCount, setVisibleGroupCount] = useState(0);
+  const [visibleDaysCounts, setVisibleDaysCounts] = useState({
+    monday: 0,
+    tuesday: 0,
+    wednesday: 0,
+    thursday: 0,
+    friday: 0,
+    saturday: 0,
+    sunday: 0,
+  });
+  const [allCategories, setAllCategories] = useState([]);
+
+  const categoryCounts = store.categoryCounts || {};
+  const dayCounts = store.dayCounts || {};
+
+  useEffect(() => {
+    if (searchingToday) {
+      const today = new Date().getDay(); // get today's day as a number (0 = Sunday, 1 = Monday, etc.)
+      const updatedDays = { ...INITIAL_DAY_STATE(store.DAY_OPTIONS) }; // reset all days to false
+      switch (today) {
+        case 0:
+          updatedDays.sunday = true;
+          break;
+        case 1:
+          updatedDays.monday = true;
+          break;
+        case 2:
+          updatedDays.tuesday = true;
+          break;
+        case 3:
+          updatedDays.wednesday = true;
+          break;
+        case 4:
+          updatedDays.thursday = true;
+          break;
+        case 5:
+          updatedDays.friday = true;
+          break;
+        case 6:
+          updatedDays.saturday = true;
+          break;
+        default:
+          break;
+      }
+      setDays(updatedDays);
+    } else {
+      const updatedDays = { ...INITIAL_DAY_STATE(store.DAY_OPTIONS) };
+      setDays(updatedDays);
+    }
+  }, [searchingToday]);
+
+  useEffect(() => {
+    const today = new Date().getDay();
+    let todayKey = "";
+
+    switch (today) {
+      case 0:
+        todayKey = "sunday";
+        break;
+      case 1:
+        todayKey = "monday";
+        break;
+      case 2:
+        todayKey = "tuesday";
+        break;
+      case 3:
+        todayKey = "wednesday";
+        break;
+      case 4:
+        todayKey = "thursday";
+        break;
+      case 5:
+        todayKey = "friday";
+        break;
+      case 6:
+        todayKey = "saturday";
+        break;
+      default:
+        break;
+    }
+
+    if (!days[todayKey]) {
+      setSearchingToday(false);
+    }
+  }, [days]);
+
+  useEffect(() => {
+    const uniqueCategories = getUniqueCategoriesFromResults();
+    setActiveCategoryIds(uniqueCategories);
+    const allCats = uniqueCategories.flatMap((category) =>
+      category.split(",").map((c) => c.trim())
+    );
+    setAllCategories(allCats);
+    console.log("Categories Updated", allCats);
+  }, [store.mapResults]);
+
+  useEffect(() => {
+    if (allCategories.length > 0) {
+      const visibleGroups = groupIds.filter((id) => allCategories.includes(id));
+      setVisibleGroupCount(visibleGroups.length);
+      console.log("Visible Groups", visibleGroups.length);
+    }
+  }, [allCategories, store.mapResults]);
+
+  useEffect(() => {
+    const daysOfWeek = [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ];
+
+    const visibleDaysCounts = {
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+      sunday: 0,
+    };
+
+    store.mapResults.forEach((item) => {
+      const schedule = store.schedules.find(
+        (schedule) => schedule.resource_id === item.id
+      );
+      if (schedule) {
+        daysOfWeek.forEach((day) => {
+          if (
+            schedule[`${day}Start`] !== null &&
+            schedule[`${day}End`] !== null &&
+            schedule[`${day}Start`] !== "closed" &&
+            schedule[`${day}End`] !== "closed"
+          ) {
+            visibleDaysCounts[day]++;
+          }
+        });
+      }
+    });
+
+    setVisibleDaysCounts(visibleDaysCounts);
+    actions.setDayCounts(visibleDaysCounts);
+    console.log("Visible Days Counts", visibleDaysCounts);
+  }, [store.mapResults, store.schedules]);
+
+  const getUniqueCategoriesFromResults = () => {
+    const categorySet = new Set();
+    store.mapResults.forEach((item) => categorySet.add(item.category));
+    console.log("array", Array.from(categorySet));
+    return Array.from(categorySet);
+  };
 
   const renderCenterColumn = (type, state, setState) => {
     const ids =
@@ -33,16 +197,24 @@ const Selection = (props) => {
           isChecked={areAllUnchecked(state, ids)}
           handleToggle={() => handleToggleAll(setState, state, ids)}
         />
-
         {ids.map((id) => {
           const option = options.find((o) => o.id === id);
           const colorStyle =
             type !== "day" ? actions.getColorForCategory(id) : null;
-          return option ? (
+          const count =
+            type === "day"
+              ? dayCounts[id]
+              : categoryCounts
+              ? categoryCounts[id]
+              : 0;
+
+          return option &&
+            (type !== "category" || allCategories.includes(id)) &&
+            (type !== "group" || allCategories.includes(id)) ? (
             <div key={id} style={{ display: "flex", alignItems: "center" }}>
               <MyCheckbox
                 id={id}
-                label={option.label}
+                label={`${option.label} (${count})`}
                 isChecked={state[id]}
                 handleToggle={() => handleToggle(setState, state, id)}
               />
@@ -94,139 +266,90 @@ const Selection = (props) => {
     }
   };
 
-  useEffect(() => {
-    // console.log("Categories", props.categories);
-    // console.log("Days", props.days);
-    // console.log("Groups", props.groups);
-  }, [props.categories, props.days, props.groups]);
-
-  useEffect(() => {
-    setColumnOpen(showGroups && showDays);
-  }, [showGroups, showDays]);
-
   return (
-    <div className={`selection three-columns}`}>
-      <div
-        className={`cent ${
-          showCategories ? "cat-grid-adjust" : "cat-grid-move"
-        }`}
-      >
-        <button
-          onClick={() => {
-            setShowCategories(!showCategories);
-            if (showCategories) {
-              toggleAllCheckboxes(
-                props.setCategories,
-                props.categories,
-                categoryIds
-              );
-            }
-          }}
-          className={showCategories ? "open2" : "closed2"}
-        >
-          {showCategories ? "X" : "Filter By Category"}
-        </button>
-        {!showCategories && (
-          <div>
-            <i
-              className={`${actions.getIconForCategory("food")} closed-icons`}
-              style={actions.getColorForCategory("food")}
-            ></i>
-            <i
-              className={`${actions.getIconForCategory(
-                "clothing"
-              )} closed-icons`}
-              style={actions.getColorForCategory("clothing")}
-            ></i>
-            <i
-              className={`${actions.getIconForCategory("health")} closed-icons`}
-              style={actions.getColorForCategory("health")}
-            ></i>
-            <i
-              className={`${actions.getIconForCategory(
-                "hygiene"
-              )} closed-icons`}
-              style={actions.getColorForCategory("hygiene")}
-            ></i>
-          </div>
-        )}
+    <div className={"selection"}>
+      <div className={"cent"}>
+        <div className={`select-header ${showCategories ? "header-open" : ""}`}>
+          {showCategories && <p>Filter by Category</p>}
+          <button
+            onClick={() => {
+              setShowCategories(!showCategories);
+              if (showCategories) {
+                toggleAllCheckboxes(setCategories, categories, categoryIds);
+              }
+            }}
+            className={showCategories ? "open2" : "closed2"}
+          >
+            {showCategories ? "X" : "Filter By Category"}
+          </button>
+        </div>
 
         {showCategories &&
-          renderCenterColumn("category", props.categories, props.setCategories)}
+          renderCenterColumn("category", categories, setCategories)}
       </div>
 
-      <div
-        className={`cent ${
-          columnOpen ? "group-grid-adjust" : "group-grid-move"
-        }`}
-      >
-        <button
-          onClick={() => {
-            setShowGroups(!showGroups);
-            if (!showGroups) {
-              toggleAllCheckboxes(props.setGroups, props.groups, groupIds);
-            }
-          }}
-          className={showGroups ? "open2" : "closed2"}
-        >
-          {showGroups ? "X" : "Filter By Group"}
-        </button>
-        {!showGroups && (
-          <div>
-            <i
-              className={`${actions.getIconForCategory("babies")} closed-icons`}
-              style={actions.getColorForCategory("babies")}
-            ></i>{" "}
-            <i
-              className={`${actions.getIconForCategory(
-                "migrant"
-              )} closed-icons`}
-              style={actions.getColorForCategory("migrant")}
-            ></i>
-            <i
-              className={`${actions.getIconForCategory("women")} closed-icons`}
-              style={actions.getColorForCategory("women")}
-            ></i>
-            {/* <i
-              className={`${actions.getIconForCategory("vets")} closed-icons`}
-              style={actions.getColorForCategory("vets")}
-            ></i> */}
-            <i
-              className={`${actions.getIconForCategory("lgbtq")} closed-icons`}
-              style={actions.getColorForCategory("lgbtq")}
-            ></i>
+      {visibleGroupCount > 0 && (
+        <div className={"cent"}>
+          <div className={`select-header ${showGroups ? "header-open" : ""}`}>
+            {showGroups && <p>Filter by Group</p>}
+            <button
+              onClick={() => {
+                setShowGroups(!showGroups);
+                if (!showGroups) {
+                  toggleAllCheckboxes(setGroups, groups, groupIds);
+                }
+              }}
+              className={showGroups ? "open2" : "closed2"}
+            >
+              {showGroups ? "X" : "Filter By Group"}
+            </button>
           </div>
-        )}
+          {showGroups && renderCenterColumn("group", groups, setGroups)}
+        </div>
+      )}
 
-        {showGroups &&
-          renderCenterColumn("group", props.groups, props.setGroups)}
-      </div>
-
-      <div
-        className={`cent ${columnOpen ? "days-grid-adjust" : "days-grid-move"}`}
-      >
-        <button
-          onClick={() => {
-            setShowDays(!showDays);
-            if (showDays) {
-              toggleAllCheckboxes(props.setDays, props.days, dayIds);
-            }
-          }}
-          className={showDays ? "open2" : "closed2 "}
-        >
-          {showDays ? "X" : "Filter By Day"}
-        </button>
-        {!showDays && (
-          <div>
-            <i
-              className="fa-solid fa-calendar-days closed-icons"
-              style={{ color: "cornflowerBlue" }}
-            ></i>
+      {Object.values(visibleDaysCounts).some((count) => count > 0) && (
+        <div className={"cent"}>
+          <div className="results-message message-3">
+            <p>Do you need it today? </p>
+            <div className="need-today-option">
+              <label>
+                <input
+                  type="radio"
+                  value="yes"
+                  checked={searchingToday === true}
+                  onChange={() => setSearchingToday(true)}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="no"
+                  checked={searchingToday === false}
+                  onChange={() => setSearchingToday(false)}
+                />
+                No
+              </label>
+            </div>
           </div>
-        )}
-
-        {showDays && renderCenterColumn("day", props.days, props.setDays)}
-      </div>
+          <div className={`select-header ${showDays ? "header-open" : ""}`}>
+            {showDays && <p>Filter by Day</p>}
+            <button
+              onClick={() => {
+                setShowDays(!showDays);
+                if (showDays) {
+                  toggleAllCheckboxes(setDays, days, dayIds);
+                }
+              }}
+              className={showDays ? "open2" : "closed2"}
+            >
+              {showDays ? "X" : "Filter By Day"}
+            </button>
+          </div>
+          {showDays && renderCenterColumn("day", days, setDays)}
+        </div>
+      )}
     </div>
   );
 };

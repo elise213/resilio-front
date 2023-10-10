@@ -93,8 +93,10 @@ const Edit = () => {
     try {
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
-      handleChange("latitude", latLng.lat ? latLng.lat.toString() : null);
-      handleChange("longitude", latLng.lng ? latLng.lng.toString() : null);
+      // handleChange("latitude", latLng.lat ? latLng.lat.toString() : null);
+      // handleChange("longitude", latLng.lng ? latLng.lng.toString() : null);
+      handleChange("latitude", latLng.lat || null);
+      handleChange("longitude", latLng.lng || null);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -134,7 +136,6 @@ const Edit = () => {
     console.log("Submitting with id: ", id);
     try {
       await actions.editResource(id, modifiedFormData, navigate);
-      alert("Resource Updated");
       resetForm();
       navigate("/");
     } catch (error) {

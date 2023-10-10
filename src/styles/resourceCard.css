@@ -20,14 +20,12 @@
   /* height: 100%; */
 }
 
+.my-resource-card:hover {
+  cursor: pointer;
+}
+
 .resource-card-header {
-  background-color: #eeeeee;
-  padding: 2px;
-  margin: 3%;
-  border: none;
-  min-height: 20%;
   display: flex;
-  justify-content: between;
 }
 
 .card-title-div {
@@ -36,7 +34,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-top: 8px; */
 }
 
 .resource-title {
@@ -83,9 +80,9 @@
 }
 
 @media screen and (max-width: 800px) {
-  .my-resource-card {
+  /* .my-resource-card {
     min-width: 22vw !important;
-  }
+  } */
 
   .card-icon {
     font-size: large;
@@ -100,10 +97,10 @@
 }
 
 @media screen and (max-width: 440px) {
-  .my-resource-card {
+  /* .my-resource-card {
     min-width: 25vw !important;
     height: 200px;
-  }
+  } */
 }
 
 .my-resource-card div {
