@@ -5,6 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       current_front_url: import.meta.env.VITE_FRONTEND_URL,
       current_back_url: import.meta.env.VITE_BACKEND_URL,
       latitude: null,
+      abortController: null,
+      abortController2: null,
       longitude: null,
       is_org: null,
       name: null,
@@ -31,6 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       favoriteOfferings: [],
       searchResults: [],
       boundaryResults: [],
+      mapResults: [],
       offerings: [],
       checked: false,
       loading: false,
@@ -90,8 +93,23 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         },
       ],
+      categoryCounts: {},
+      dayCounts: {},
     },
     actions: {
+      setCategoryCounts: (categoryCounts) => {
+        console.log("Setting categoryCounts:", categoryCounts); // Add this line
+        setStore({
+          categoryCounts: categoryCounts,
+        });
+      },
+      setDayCounts: (dayCounts) => {
+        console.log("Setting dayCounts:", dayCounts); // Logging the dayCounts to the console
+        setStore({
+          dayCounts: dayCounts, // Updating the store with the new dayCounts
+        });
+      },
+
       processCategory: (category) => {
         let categories = category;
         if (typeof categories === "string" && categories.includes(",")) {
@@ -226,6 +244,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     console.error(error);
       //   }
       // },
+      getToken: () => {
+        const token = sessionStorage.getItem("token");
+        if (token && token.length) {
+          setStore({ token: token });
+        }
+      },
 
       login: async (email, password) => {
         try {
@@ -463,6 +487,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return null;
         }
       },
+
       createResource: async (formData, navigate) => {
         const { current_back_url, current_front_url } = getStore();
         const token = sessionStorage.getItem("token");
@@ -513,6 +538,72 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      checkResourceCoordinates: async () => {
+        const url = "/api/getAllResources"; // Update with your actual endpoint
+        let resourcesWithInvalidCoordinates = false;
+
+        try {
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+          });
+
+          console.log("Response Status:", response.status); // Log the response status for debugging
+
+          if (!response.ok) {
+            console.error("Server responded with status:", response.status);
+            const contentType = response.headers.get("content-type");
+
+            if (contentType && contentType.includes("text/html")) {
+              const text = await response.text();
+              console.error("HTML response received:", text);
+            } else if (
+              contentType &&
+              contentType.includes("application/json")
+            ) {
+              const data = await response.json();
+              console.error("JSON error data received:", data);
+            } else {
+              console.error("Unexpected response received.");
+            }
+
+            return false;
+          }
+
+          const contentType = response.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            console.error("Invalid content type:", contentType);
+            const text = await response.text();
+            console.log("Response text:", text); // Print out the entire response
+            return false;
+          }
+
+          const resources = await response.json();
+          resources.forEach((resource) => {
+            const { latitude, longitude } = resource;
+            if (typeof latitude === "string" || typeof longitude === "string") {
+              console.error(
+                "Resource with invalid coordinates found:",
+                resource
+              );
+              resourcesWithInvalidCoordinates = true;
+            }
+          });
+
+          if (!resourcesWithInvalidCoordinates) {
+            console.log("All resources have valid coordinates");
+          }
+
+          return resourcesWithInvalidCoordinates;
+        } catch (error) {
+          console.error("An error occurred while checking resources:", error);
+          return false;
+        }
+      },
+
       setSchedules: () => {
         // let controller = new AbortController();
         let url = getStore().current_back_url + `/api/getSchedules`;
@@ -534,7 +625,121 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
       },
 
+      setMapResults: async (bounds) => {
+        const store = getStore();
+        console.log("SetMapResults was called !!!!!!!!!!!!!!!!!");
+        // If there's an ongoing request, abort it
+        if (store.abortController2) {
+          store.abortController2.abort();
+        }
+
+        // Create a new abort controller for the new request
+        const newAbortController = new AbortController(); // AbortC
+        setStore({ abortController2: newAbortController });
+
+        // Normalize longitude
+        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+        neLng = neLng % 360;
+        if (neLng > 180) {
+          neLng -= 360;
+        }
+
+        swLng = swLng % 360;
+        if (swLng > 180) {
+          swLng -= 360;
+        }
+
+        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+        const resources = {
+          food: false,
+          health: false,
+          shelter: false,
+          hygiene: false,
+          crisis: false,
+          mental: false,
+          work: false,
+          bathroom: false,
+          wifi: false,
+          substance: false,
+          sex: false,
+          legal: false,
+          lgbtq: false,
+          women: false,
+          seniors: false,
+          babies: false,
+          kids: false,
+          youth: false,
+          vets: false,
+          migrant: false,
+        };
+
+        const days = {
+          monday: false,
+          tuesday: false,
+          wednesday: false,
+          thursday: false,
+          friday: false,
+          saturday: false,
+          sunday: false,
+        };
+
+        const url = getStore().current_back_url + "/api/getBResults";
+
+        try {
+          setStore({ loading: true });
+          let response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              neLat,
+              neLng,
+              swLat,
+              swLng,
+              resources,
+              days,
+            }),
+            signal: newAbortController.signal,
+          });
+
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(
+              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+            );
+          }
+
+          const data = await response.json();
+          setStore({ mapResults: data.data, loading: false });
+
+          return data.data;
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log("Fetch aborted");
+          } else {
+            setStore({ loading: false });
+            console.error("Error fetching data:", error);
+          }
+        }
+      },
+
       setBoundaryResults: async (bounds, resources, days, groups) => {
+        console.trace("setBoundaryResults called from:");
+        const store = getStore();
+
+        // If there's an ongoing request, abort it
+        if (store.abortController) {
+          store.abortController.abort();
+        }
+
+        // Create a new abort controller for the new request
+        const newAbortController = new AbortController(); // AbortC
+        setStore({ abortController: newAbortController });
+
         // Normalize longitude
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
@@ -574,6 +779,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               resources: combinedResources || null,
               days: days || null,
             }),
+            signal: newAbortController.signal, // Use the new abort controller's signal
           });
 
           if (!response.ok) {
@@ -588,8 +794,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           return data.data;
         } catch (error) {
-          setStore({ loading: false });
-          console.error("Error fetching data:", error);
+          if (error.name === "AbortError") {
+            console.log("Fetch aborted");
+          } else {
+            setStore({ loading: false });
+            console.error("Error fetching data:", error);
+          }
         }
       },
 
