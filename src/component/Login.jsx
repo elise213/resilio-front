@@ -54,7 +54,7 @@ const Login = () => {
   return (
     <div className={`login-container ${openLoginModal ? "open" : ""}`}>
       <span
-        className="login-logout"
+        className={`login-container ${openLoginModal ? "open-2" : ""}`}
         type="button"
         onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
       >

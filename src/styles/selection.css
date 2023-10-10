@@ -1,9 +1,53 @@
+.selection {
+  display: flex; /* Changed from align-items: flex-end; */
+  flex-direction: column; /* Added to stack child elements vertically */
+  width: 100%;
+}
+
+.need-today-option {
+  flex-direction: row !important;
+}
+
+.selection div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.selection-head {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 .cent {
+  display: flex; /* Ensures content within .cent is displayed in a line */
+  flex-direction: column; /* Stacks content vertically */
+  align-items: center; /* Centers content */
+  margin-bottom: 20px;
+}
+
+.center {
   display: flex;
   align-items: center;
-  flex-direction: column;
-  z-index: 999;
-  justify-content: flex-start;
+  font-size: 18px;
+  /* margin: 0 55px 0 0; */
+  width: 100%;
+}
+
+.center div {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+.day-row {
+  padding: 5px;
+  font-size: 14px;
 }
 
 .closed-icons {
@@ -12,59 +56,42 @@
   text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+.select-header {
+  flex-direction: row !important;
+  width: 100%;
+  justify-content: center;
+  padding: 10px 0 0 10px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.header-open {
+  justify-content: space-between !important;
+}
+
+.select-header p {
+  padding: 0;
+  margin: 0;
+  font-weight: bolder;
+}
+
 .open2,
 .closed2 {
   border: none;
   background-color: transparent;
-  font-size: large;
   z-index: 999;
   letter-spacing: 1.2px;
 }
 
 .open2 {
-  align-self: flex-end;
-  color: var(--newGreen);
-  transform: translate(40px, 0px);
-  align-self: center;
-  margin: 0;
-  padding: 0;
-}
-
-.open2:hover {
-  color: "red" !important;
+  color: red;
 }
 
 .closed2 {
   margin-top: 20px;
   font-family: "Urbanist", sans-serif !important;
-  font-size: 20px;
-  color: rgb(59, 20, 20);
   text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
   transition: color 0.3s, font-size 0.3s;
-}
-
-.closed2:hover {
-  color: rgb(112, 101, 119);
-  font-size: xx-large;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.selection {
-  align-items: flex-end;
-  width: 100%;
-  margin: 0 20px;
-}
-
-.selection div {
-  display: flex;
-  justify-content: center;
-}
-
-.selection-head {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
 }
 
 .more-open-ids,
@@ -81,6 +108,11 @@
 
 .my-input {
   display: none;
+}
+
+.my-form-check {
+  display: flex;
+  justify-content: flex-start !important;
 }
 
 .my-input + .my-label {
@@ -117,64 +149,6 @@
   background-color: rgb(144, 194, 144);
 }
 
-/* .my-input2 {
-  display: none;
-}
-
-.my-input2 + .my-label {
-  position: relative;
-  padding-left: 30px;
-  cursor: pointer;
-  padding-right: 7px;
-  margin-bottom: 4.5px;
-}
-
-.my-input2 + .my-label:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 15px;
-  height: 15px;
-  border-radius: 3px;
-  border: 1px solid var(--coral2);
-  background: #fff;
-  margin: 3px 5px 0px 7px;
-}
-
-.my-input2:checked + .my-label:before {
-  background-color: peru;
-}
-
-.my-input3 {
-  display: none;
-}
-
-.my-input3 + .my-label {
-  position: relative;
-  padding-left: 30px;
-  cursor: pointer;
-  padding-right: 7px;
-  margin-bottom: 4.5px;
-}
-
-.my-input3 + .my-label:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 15px;
-  height: 15px;
-  border-radius: 3px;
-  border: 1px solid rgb(111, 107, 119);
-  background: #fff;
-  margin: 3px 5px 0px 7px;
-}
-
-.my-input3:checked + .my-label:before {
-  background-color: rgb(114, 114, 131);
-} */
-
 .my-schedule-button {
   font-family: "Urbanist", sans-serif !important;
   font-size: large;
@@ -208,40 +182,6 @@
   }
 }
 
-.selection {
-  display: grid;
-}
-
-.center {
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  position: static;
-  font-size: 18px;
-  margin: 0 15px;
-}
-
-.three-columns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto;
-}
-
-.cent:nth-child(1) {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.cent:nth-child(2) {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.cent:nth-child(3) {
-  grid-column: 1;
-  grid-row: 3;
-}
-
 @media screen and (max-width: 1000px) {
   .center {
     font-size: 14px;
@@ -249,33 +189,12 @@
 }
 
 @media screen and (max-width: 800px) {
-  .cent:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .cent:nth-child(2) {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .cent:nth-child(3) {
-    grid-column: 3;
-    grid-row: 1;
-  }
-
-  .center {
-    width: auto;
+  .selection {
+    width: 100%;
   }
 
   .open2 {
     align-self: flex-end !important;
     transform: translate(0px, 30px);
-  }
-
-  .selection {
-    width: 100%;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
   }
 }

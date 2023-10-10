@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import Login from "./Login";
-import RESR from "/assets/RESILIOR.png";
+import RESR from "/assets/hiddencity.png";
 import styles from "../styles/navbar.css";
 
 const Navbar = () => {
@@ -23,17 +23,15 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link
-        to="/"
-        className="home-navbar"
-        onClick={() => {
-          actions.setBoundaryResults(null);
-        }}
-      >
+      {/* <Link to="/" className="home-navbar">
         Home
-        {/* <img className="navbar-logo" src={RESR} alt="Alive Logo" /> */}
-      </Link>
-      <Login />
+      </Link> */}
+      <div className="login-div">
+        <Login />
+      </div>
+      <div className="logo-div">
+        <img className="navbar-logo" src={RESR} alt="Alive Logo" />
+      </div>
     </nav>
   );
 };
