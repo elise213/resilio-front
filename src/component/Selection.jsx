@@ -333,21 +333,25 @@ const Selection = ({
               </label>
             </div>
           </div>
-          <div className={`select-header ${showDays ? "header-open" : ""}`}>
-            {showDays && <p>Filter by Day</p>}
-            <button
-              onClick={() => {
-                setShowDays(!showDays);
-                if (showDays) {
-                  toggleAllCheckboxes(setDays, days, dayIds);
-                }
-              }}
-              className={showDays ? "open2" : "closed2"}
-            >
-              {showDays ? "X" : "Filter By Day"}
-            </button>
-          </div>
-          {showDays && renderCenterColumn("day", days, setDays)}
+          {!searchingToday && (
+            <div>
+              <div className={`select-header ${showDays ? "header-open" : ""}`}>
+                {showDays && <p>Filter by Schedule</p>}
+                <button
+                  onClick={() => {
+                    setShowDays(!showDays);
+                    if (showDays) {
+                      toggleAllCheckboxes(setDays, days, dayIds);
+                    }
+                  }}
+                  className={showDays ? "open2" : "closed2"}
+                >
+                  {showDays ? "X" : "Filter By Schedule"}
+                </button>
+              </div>
+              {showDays && renderCenterColumn("day", days, setDays)}
+            </div>
+          )}
         </div>
       )}
     </div>

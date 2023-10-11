@@ -73,6 +73,7 @@
 
 .message-3 {
   padding: 10px !important;
+  margin-bottom: 20px;
 }
 
 .message-3 p {
@@ -158,23 +159,8 @@
   justify-content: space-between;
 }
 
-.resource-title {
-  color: black;
-  font-family: "Urbanist", sans-serif;
-  font-size: medium;
-  font-weight: bolder;
-  margin: 0;
-  padding: 5px;
-}
-
 .scroll-search-results {
-  /* display: grid !important; */
   width: 100%;
-  /* margin: 10px 0px 15px 0px; */
-  /* border: 1px solid pink; */
-  /* background-color: rgb(195, 188, 199); */
-  /* position: relative !important; */
-  /* z-index: 0; */
   background-color: transparent;
   overflow-x: auto;
   overflow-y: hidden;
@@ -240,7 +226,6 @@
 }
 
 .new-container {
-  /* margin-top: 50px; */
   display: flex;
   justify-content: center;
 }
@@ -259,20 +244,6 @@
     -1px 1px 0 rgb(38, 127, 47), 1px 1px 0 rgb(38, 127, 47);
 }
 
-@media screen and (max-width: 800px) {
-  .new-container {
-    flex-direction: column !important;
-  }
-}
-
-/* ______________________________________________________________SIZE < 420px */
-
-@media screen and (max-width: 440px) {
-  .scroll-search-results li {
-    margin: 10px 8px 5px 8px !important;
-  }
-}
-
 .scroll-headers {
   display: flex;
   justify-content: center;
@@ -283,4 +254,39 @@
 .home-log2 {
   height: 100px;
   width: 300px;
+}
+
+@media screen and (max-width: 900px) {
+  .new-container {
+    flex-direction: column !important;
+  }
+
+  .side-car {
+    height: auto !important;
+    margin: 0 !important;
+  }
+
+  .step-1 {
+    flex-direction: column !important;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .map-container {
+    max-height: 700px !important;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .scroll-search-results li {
+    margin: 10px 8px 5px 8px !important;
+  }
+
+  .results-message {
+    font-size: 12px;
+  }
+
+  .map-container {
+    max-height: 700px !important;
+  }
 }

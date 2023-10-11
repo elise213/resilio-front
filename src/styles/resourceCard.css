@@ -17,7 +17,6 @@
   border-radius: 1%;
   min-height: 150px;
   width: 200px;
-  /* height: 100%; */
 }
 
 .my-resource-card:hover {
@@ -55,15 +54,6 @@
   justify-content: between;
 }
 
-.resource-title {
-  color: black;
-  font-family: "Urbanist", sans-serif;
-  font-size: medium;
-  font-weight: bolder;
-  margin: 0;
-  padding: 5px;
-}
-
 .icons-container {
   width: 100%;
   display: flex;
@@ -79,11 +69,7 @@
   justify-content: space-between;
 }
 
-@media screen and (max-width: 800px) {
-  /* .my-resource-card {
-    min-width: 22vw !important;
-  } */
-
+@media screen and (max-width: 900px) {
   .card-icon {
     font-size: large;
     margin: 0;
@@ -96,11 +82,10 @@
   }
 }
 
-@media screen and (max-width: 440px) {
-  /* .my-resource-card {
-    min-width: 25vw !important;
-    height: 200px;
-  } */
+@media screen and (max-width: 500px) {
+  .resource-title {
+    font-size: 12px !important;
+  }
 }
 
 .my-resource-card div {
