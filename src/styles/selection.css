@@ -53,7 +53,6 @@
 .closed-icons {
   margin: 5px;
   font-size: 22px;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .select-header {
@@ -62,7 +61,6 @@
   justify-content: center;
   padding: 10px 0 0 10px;
   align-items: center;
-  margin-top: 20px;
 }
 
 .header-open {
@@ -90,7 +88,7 @@
 .closed2 {
   margin-top: 20px;
   font-family: "Urbanist", sans-serif !important;
-  text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+  /* text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3); */
   transition: color 0.3s, font-size 0.3s;
 }
 
@@ -188,13 +186,12 @@
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
   .selection {
     width: 100%;
   }
 
-  .open2 {
-    align-self: flex-end !important;
-    transform: translate(0px, 30px);
+  .header-open {
+    justify-content: center !important;
   }
 }

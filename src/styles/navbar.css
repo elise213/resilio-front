@@ -41,3 +41,10 @@
   font-size: large;
   text-decoration: none;
 }
+
+@media screen and (max-width: 900px) {
+  .navbar-logo {
+    width: 330px;
+    height: 60px;
+  }
+}

@@ -62,3 +62,15 @@
 .info-map-div {
   margin: 0px;
 }
+
+@media screen and (max-width: 900px) {
+  .map-container {
+    border: 90px solid transparent !important;
+    border-image: url(/assets/scroll.png) 120 round !important;
+    width: 100% !important;
+  }
+
+  .flex {
+    flex-direction: column !important;
+  }
+}
