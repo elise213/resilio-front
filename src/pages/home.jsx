@@ -496,16 +496,17 @@ const Home = () => {
             <div className="search-results-full">
               <div className="message-1">
                 <p>
-                  {/* Scroll right to see all{" "} */}
-                  There are{" "}
-                  {store.boundaryResults
-                    ? store.boundaryResults.length
-                    : 0}{" "}
-                  resources in your area{" "}
-                  {getTrueCategories().length > 0
-                    ? `offering free ${getTrueCategories()}`
-                    : ""}
-                  {"!"}
+                  {store.boundaryResults && store.boundaryResults.length > 0
+                    ? store.boundaryResults.length === 1
+                      ? "There is one resource that matches your search! " +
+                        (getTrueCategories().length > 0
+                          ? `offering free ${getTrueCategories()}!`
+                          : "")
+                      : `${store.boundaryResults.length} resources match your search! ` +
+                        (getTrueCategories().length > 0
+                          ? `offering free ${getTrueCategories()}!`
+                          : "")
+                    : "Sorry, there are no resources that match your search."}
                 </p>
               </div>
 
@@ -574,7 +575,7 @@ const Home = () => {
           </>
         )}
         <div className="results-message message-4">
-          <p> Give me my Hidden City Map</p>
+          <p> Please Build my Personalized Hidden City Map</p>
         </div>
       </div>
 
