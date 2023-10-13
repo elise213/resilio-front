@@ -43,6 +43,9 @@ const Home = () => {
   const [message1Open, setMessage1Open] = useState(true);
   const [message2Open, setMessage2Open] = useState(false);
   const [message3Open, setMessage3Open] = useState(false);
+
+  const [showFront, setShowFront] = useState(true);
+
   const [searchingToday, setSearchingToday] = useState(false);
 
   const [categories, setCategories] = useState(
@@ -75,20 +78,15 @@ const Home = () => {
   };
 
   const getTrueCategories = () => {
-    // Getting the category IDs that are true
     const trueCategoryIds = Object.keys(categories).filter(
       (key) => categories[key]
     );
-
     if (trueCategoryIds.length === 0) {
       return "";
     }
-
-    // Mapping IDs to their respective labels
     const trueCategoryLabels = trueCategoryIds.map(
       (id) => store.CATEGORY_OPTIONS.find((cat) => cat.id === id)?.label
     );
-
     if (trueCategoryLabels.length === 1) {
       return trueCategoryLabels[0];
     } else if (trueCategoryLabels.length === 2) {
@@ -110,7 +108,6 @@ const Home = () => {
   };
 
   const fetchBounds = async (query, isZip = false) => {
-    // console.log("fetch bounds called");
     let apiUrl;
     if (isZip) {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
@@ -139,10 +136,8 @@ const Home = () => {
         },
       };
     }
-
     console.log("Location:", location);
     console.log("Bounds:", bounds);
-
     return data;
   };
 
@@ -232,7 +227,6 @@ const Home = () => {
   };
 
   // USE EFFECTS
-
   useEffect(() => {
     actions.setSchedules();
   }, []);
@@ -250,10 +244,6 @@ const Home = () => {
     fetchData();
   }, [city.bounds]);
 
-  // useEffect(() => {
-  //   console.log("MESSAGE OPEN?", message1Open, message2Open, message3Open);
-  // }, [message1Open, message2Open, message3Open]);
-
   useEffect(() => {
     const checkOverflow = () => {
       if (resultsRef.current) {
@@ -261,11 +251,8 @@ const Home = () => {
         setIsOverflowing(scrollWidth > clientWidth); // Set isOverflowing to true if content is overflowing
       }
     };
-
     checkOverflow();
-
     window.addEventListener("resize", checkOverflow); // Call whenever the window is resized
-
     return () => {
       window.removeEventListener("resize", checkOverflow);
     };
@@ -288,7 +275,6 @@ const Home = () => {
             groups
           );
         }
-        // }
       } catch (error) {
         console.error("Error in fetching boundary results:", error);
       }
@@ -318,7 +304,7 @@ const Home = () => {
     <div className="grand-container">
       <div className="search-container">
         {" "}
-        <div className="results-message">
+        {/* <div className="results-message">
           <p
             onClick={() => {
               setMessage1Open(true);
@@ -327,33 +313,9 @@ const Home = () => {
           >
             Tell us where you are, and we will show you the goods
           </p>
-        </div>
+        </div> */}
         {message1Open && (
           <>
-            <div className="step-1">
-              <div className="group-div">
-                <div className="step1-text">
-                  <div className="step-text">
-                    <p>Hit this button </p>
-                    <i className="fa-solid fa-arrow-right-long"></i>
-                  </div>
-                  <div className="step-text">
-                    <p>Or enter your zip code here </p>
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </div>
-                </div>
-                <MapSettings
-                  geoFindMe={geoFindMe}
-                  handleZipInputChange={handleZipInputChange}
-                  zipInput={zipInput}
-                />
-              </div>
-              {store.boundaryResults[0] && (
-                <div className="scroll-headers">
-                  <Report />
-                </div>
-              )}
-            </div>
             <ErrorBoundary>
               <SimpleMap
                 handleBoundsChange={handleBoundsChange}
@@ -362,6 +324,15 @@ const Home = () => {
                 geoFindMe={geoFindMe}
                 handleZipInputChange={handleZipInputChange}
                 zipInput={zipInput}
+                categories={categories}
+                days={days}
+                groups={groups}
+                setCategories={setCategories}
+                setGroups={setGroups}
+                setDays={setDays}
+                searchingToday={searchingToday}
+                setSearchingToday={setSearchingToday}
+                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
               />
             </ErrorBoundary>
 
@@ -373,7 +344,7 @@ const Home = () => {
                 </p>
               </div>
 
-              <div
+              {/* <div
                 className="scroll-search-results"
                 ref={resultsRef}
                 style={{
@@ -433,7 +404,7 @@ const Home = () => {
                       })
                     : ""}
                 </ul>
-              </div>
+              </div> */}
             </div>
           </>
         )}
@@ -464,7 +435,7 @@ const Home = () => {
                   handleZipInputChange={handleZipInputChange}
                   zipInput={zipInput}
                 />
-                <div className="side-car">
+                {/* <div className="side-car">
                   {store.CATEGORY_OPTIONS &&
                   store.DAY_OPTIONS &&
                   store.GROUP_OPTIONS &&
@@ -487,7 +458,7 @@ const Home = () => {
                   ) : (
                     message2Open && <p>Loading selection options...</p>
                   )}
-                </div>
+                </div> */}
               </div>
             </ErrorBoundary>
 

@@ -11,7 +11,8 @@
   font-size: 20px;
   text-shadow: 1px 2px 10px #faf3f3, 1px 2px 20px #edccaa, 1px 5px 30px #e9baba,
     1px 5px 40px #eecdcd;
-  z-index: 999999999;
+  z-index: 999;
+  margin: 0 5px !important;
 }
 
 .marker-icon i:hover {
@@ -20,7 +21,7 @@
 
 .marker-text {
   color: rgb(208, 87, 74);
-  z-index: 100;
+  z-index: 99999;
   font-size: small;
   background-color: rgba(255, 255, 255, 0.8) !important;
   border: 2px solid var(--coral) !important;
@@ -37,12 +38,23 @@
   white-space: nowrap;
 }
 
-.map-container {
-  max-width: 1100px !important;
+.map-frame {
+  max-width: 1300px !important;
+  width: 100%;
   border: 180px solid transparent;
   overflow: hidden;
   border-image: url(/assets/scroll.png) 160 round;
   z-index: 0;
+  background-color: transparent !important;
+  display: flex;
+}
+
+.map-container {
+  z-index: 999;
+  /* height: 100%; */
+  width: 80% !important;
+  position: relative;
+  z-index: 1;
 }
 
 .marker-text {
@@ -63,11 +75,18 @@
   margin: 0px;
 }
 
+.simple-map {
+  width: 100%;
+  height: 100%;
+}
+
 @media screen and (max-width: 900px) {
-  .map-container {
+  .map-frame {
     border: 90px solid transparent !important;
     border-image: url(/assets/scroll.png) 120 round !important;
     width: 100% !important;
+    max-height: 700px;
+    width: 90vw;
   }
 
   .flex {
