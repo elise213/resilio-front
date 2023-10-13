@@ -17,7 +17,7 @@ const MapSettings = ({ handleZipInputChange, zipInput, geoFindMe }) => {
             value={zipInput}
             onChange={handleZipInputChange}
             maxLength="5"
-            placeholder="Enter Zip Code"
+            placeholder="Zip Code"
           />
         </div>
       </div>

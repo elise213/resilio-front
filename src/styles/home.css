@@ -89,14 +89,14 @@
 
 .step-1 {
   display: flex;
-  width: 100%;
-  padding: 30px 30px 0 30px;
   font-family: "Urbanist", sans-serif;
   font-size: medium;
   font-weight: bolder;
   display: flex;
-  justify-content: space-around;
   align-items: center;
+  background-color: transparent;
+  z-index: 9999;
+  flex-direction: column;
 }
 
 .step-text {
@@ -266,9 +266,9 @@
     margin: 0 !important;
   }
 
-  .step-1 {
+  /* .step-1 {
     flex-direction: column !important;
-  }
+  } */
 }
 
 @media screen and (max-width: 700px) {

@@ -29,9 +29,9 @@ const Navbar = () => {
       <div className="login-div">
         <Login />
       </div>
-      <div className="logo-div">
+      {/* <div className="logo-div">
         <img className="navbar-logo" src={RESR} alt="Alive Logo" />
-      </div>
+      </div> */}
     </nav>
   );
 };
