@@ -10,9 +10,8 @@
 
 .side-car {
   height: 90vh;
-  /* height should be same as map when on desktop */
+  width: 100%;
   align-items: center;
-  margin: 0 35px 0 0;
   display: flex;
 }
 
@@ -92,11 +91,27 @@
   font-family: "Urbanist", sans-serif;
   font-size: medium;
   font-weight: bolder;
-  display: flex;
   align-items: center;
   background-color: transparent;
   z-index: 9999;
   flex-direction: column;
+  padding: 35px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.backside {
+  display: flex;
+  font-family: "Urbanist", sans-serif;
+  font-size: medium;
+  font-weight: bolder;
+  align-items: center;
+  background-color: transparent;
+  z-index: 9999;
+  flex-direction: column;
+  padding: 35px;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 
 .step-text {
