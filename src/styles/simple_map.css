@@ -7,6 +7,15 @@
   display: flex;
 }
 
+.flip-button {
+  background-color: var(--coral);
+}
+
+.map-frame.flipped {
+  transform: rotateY(180deg);
+  transition: transform 0.6s;
+}
+
 .marker-icon i {
   font-size: 20px;
   text-shadow: 1px 2px 10px #faf3f3, 1px 2px 20px #edccaa, 1px 5px 30px #e9baba,
@@ -41,12 +50,25 @@
 .map-frame {
   max-width: 1300px !important;
   width: 100%;
-  border: 180px solid transparent;
+  max-height: 1000px;
+  border: 120px solid transparent;
   overflow: hidden;
-  border-image: url(/assets/scroll.png) 160 round;
+  border-image: url(/assets/scroll.png) 120 round;
   z-index: 0;
   background-color: transparent !important;
   display: flex;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 0.6s;
+}
+
+.map-frame.flipped {
+  transform: rotateY(180deg);
+}
+
+.flipped > div {
+  transform: rotateY(180deg);
+  transition: transform 0.6s;
 }
 
 .map-container {
