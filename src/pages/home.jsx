@@ -43,6 +43,9 @@ const Home = () => {
   const [message1Open, setMessage1Open] = useState(true);
   const [message2Open, setMessage2Open] = useState(false);
   const [message3Open, setMessage3Open] = useState(false);
+
+  const [showFront, setShowFront] = useState(true);
+
   const [searchingToday, setSearchingToday] = useState(false);
 
   const [categories, setCategories] = useState(
@@ -75,20 +78,15 @@ const Home = () => {
   };
 
   const getTrueCategories = () => {
-    // Getting the category IDs that are true
     const trueCategoryIds = Object.keys(categories).filter(
       (key) => categories[key]
     );
-
     if (trueCategoryIds.length === 0) {
       return "";
     }
-
-    // Mapping IDs to their respective labels
     const trueCategoryLabels = trueCategoryIds.map(
       (id) => store.CATEGORY_OPTIONS.find((cat) => cat.id === id)?.label
     );
-
     if (trueCategoryLabels.length === 1) {
       return trueCategoryLabels[0];
     } else if (trueCategoryLabels.length === 2) {
@@ -110,7 +108,6 @@ const Home = () => {
   };
 
   const fetchBounds = async (query, isZip = false) => {
-    // console.log("fetch bounds called");
     let apiUrl;
     if (isZip) {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
@@ -139,10 +136,8 @@ const Home = () => {
         },
       };
     }
-
     console.log("Location:", location);
     console.log("Bounds:", bounds);
-
     return data;
   };
 
@@ -203,36 +198,63 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
+  // const geoFindMe = async () => {
+  //   console.log("GEO FIND ME CALLED");
+  //   setIsLocating(true);
+  //   console.log(navigator.geolocation);
+  //   if (navigator.geolocation) {
+  //     console.log("Geolocation supported");
+  //     navigator.geolocation.getCurrentPosition(
+  //       async (position) => {
+  //         console.log("Got position", position);
+  //         setIsLocating(false);
+  //         await updateCityStateFromCoords(
+  //           position.coords.latitude,
+  //           position.coords.longitude
+  //         );
+  //       },
+  //       (error) => {
+  //         console.log("Error getting position", error);
+  //         setIsLocating(false);
+  //         alert("Unable to retrieve your location");
+  //       }
+  //     );
+  //   } else {
+  //     console.log("Geolocation not supported");
+  //     setIsLocating(false);
+  //     alert("Geolocation is not supported by your browser");
+  //   }
+  // };
+  const [userLocation, setUserLocation] = useState(null);
+
   const geoFindMe = async () => {
-    console.log("GEO FIND ME CALLED");
-    setIsLocating(true);
-    console.log(navigator.geolocation);
     if (navigator.geolocation) {
-      console.log("Geolocation supported");
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          console.log("Got position", position);
-          setIsLocating(false);
-          await updateCityStateFromCoords(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          updateCityStateFromCoords(
             position.coords.latitude,
             position.coords.longitude
           );
         },
         (error) => {
           console.log("Error getting position", error);
-          setIsLocating(false);
           alert("Unable to retrieve your location");
         }
       );
     } else {
-      console.log("Geolocation not supported");
-      setIsLocating(false);
       alert("Geolocation is not supported by your browser");
     }
   };
 
-  // USE EFFECTS
+  useEffect(() => {
+    geoFindMe();
+  }, []);
 
+  // USE EFFECTS
   useEffect(() => {
     actions.setSchedules();
   }, []);
@@ -250,10 +272,6 @@ const Home = () => {
     fetchData();
   }, [city.bounds]);
 
-  // useEffect(() => {
-  //   console.log("MESSAGE OPEN?", message1Open, message2Open, message3Open);
-  // }, [message1Open, message2Open, message3Open]);
-
   useEffect(() => {
     const checkOverflow = () => {
       if (resultsRef.current) {
@@ -261,11 +279,8 @@ const Home = () => {
         setIsOverflowing(scrollWidth > clientWidth); // Set isOverflowing to true if content is overflowing
       }
     };
-
     checkOverflow();
-
     window.addEventListener("resize", checkOverflow); // Call whenever the window is resized
-
     return () => {
       window.removeEventListener("resize", checkOverflow);
     };
@@ -288,7 +303,6 @@ const Home = () => {
             groups
           );
         }
-        // }
       } catch (error) {
         console.error("Error in fetching boundary results:", error);
       }
@@ -318,7 +332,7 @@ const Home = () => {
     <div className="grand-container">
       <div className="search-container">
         {" "}
-        <div className="results-message">
+        {/* <div className="results-message">
           <p
             onClick={() => {
               setMessage1Open(true);
@@ -327,33 +341,9 @@ const Home = () => {
           >
             Tell us where you are, and we will show you the goods
           </p>
-        </div>
+        </div> */}
         {message1Open && (
           <>
-            <div className="step-1">
-              <div className="group-div">
-                <div className="step1-text">
-                  <div className="step-text">
-                    <p>Hit this button </p>
-                    <i className="fa-solid fa-arrow-right-long"></i>
-                  </div>
-                  <div className="step-text">
-                    <p>Or enter your zip code here </p>
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </div>
-                </div>
-                <MapSettings
-                  geoFindMe={geoFindMe}
-                  handleZipInputChange={handleZipInputChange}
-                  zipInput={zipInput}
-                />
-              </div>
-              {store.boundaryResults[0] && (
-                <div className="scroll-headers">
-                  <Report />
-                </div>
-              )}
-            </div>
             <ErrorBoundary>
               <SimpleMap
                 handleBoundsChange={handleBoundsChange}
@@ -362,18 +352,31 @@ const Home = () => {
                 geoFindMe={geoFindMe}
                 handleZipInputChange={handleZipInputChange}
                 zipInput={zipInput}
+                categories={categories}
+                days={days}
+                groups={groups}
+                setCategories={setCategories}
+                setGroups={setGroups}
+                setDays={setDays}
+                searchingToday={searchingToday}
+                setSearchingToday={setSearchingToday}
+                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                closeModal={closeModal}
+                modalIsOpen={modalIsOpen}
+                setModalIsOpen={setModalIsOpen}
+                selectedResource={selectedResource}
               />
             </ErrorBoundary>
 
             <div className="search-results-full">
-              <div className="message-1">
+              {/* <div className="message-1">
                 <p>
                   There are {store.mapResults ? store.mapResults.length : 0}{" "}
                   free resources in your area
                 </p>
-              </div>
+              </div> */}
 
-              <div
+              {/* <div
                 className="scroll-search-results"
                 ref={resultsRef}
                 style={{
@@ -433,150 +436,13 @@ const Home = () => {
                       })
                     : ""}
                 </ul>
-              </div>
+              </div> */}
             </div>
           </>
         )}
-        <div className="results-message">
-          <p
-            onClick={() => {
-              setMessage2Open(!message2Open);
-              setMessage1Open(!message1Open);
-            }}
-          >
-            Get More Specific
-          </p>
-        </div>
-        {message2Open && (
-          <>
-            <ErrorBoundary>
-              {/* {store.boundaryResults[0] && (
-                <div className="scroll-headers">
-                  <Report />
-                </div>
-              )} */}
-              <div className="flex">
-                <SimpleMap
-                  handleBoundsChange={handleBoundsChange}
-                  openModal={openModal}
-                  city={city}
-                  geoFindMe={geoFindMe}
-                  handleZipInputChange={handleZipInputChange}
-                  zipInput={zipInput}
-                />
-                <div className="side-car">
-                  {store.CATEGORY_OPTIONS &&
-                  store.DAY_OPTIONS &&
-                  store.GROUP_OPTIONS &&
-                  categories &&
-                  days &&
-                  groups ? (
-                    <ErrorBoundary>
-                      <Selection
-                        categories={categories}
-                        setCategories={setCategories}
-                        groups={groups}
-                        setGroups={setGroups}
-                        days={days}
-                        setDays={setDays}
-                        searchingToday={searchingToday}
-                        setSearchingToday={setSearchingToday}
-                        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                      />
-                    </ErrorBoundary>
-                  ) : (
-                    message2Open && <p>Loading selection options...</p>
-                  )}
-                </div>
-              </div>
-            </ErrorBoundary>
-
-            {/* RESULTS #2 */}
-
-            <div className="search-results-full">
-              <div className="message-1">
-                <p>
-                  {store.boundaryResults && store.boundaryResults.length > 0
-                    ? store.boundaryResults.length === 1
-                      ? "There is one resource that matches your search! " +
-                        (getTrueCategories().length > 0
-                          ? `offering free ${getTrueCategories()}!`
-                          : "")
-                      : `${store.boundaryResults.length} resources match your search! ` +
-                        (getTrueCategories().length > 0
-                          ? `offering free ${getTrueCategories()}!`
-                          : "")
-                    : "Sorry, there are no resources that match your search."}
-                </p>
-              </div>
-
-              <div
-                className="scroll-search-results"
-                ref={resultsRef}
-                style={{
-                  display: "block",
-                }}
-              >
-                <ul
-                  style={{
-                    listStyleType: "none",
-                    justifyContent:
-                      store.loading ||
-                      isLocating ||
-                      store.boundaryResults.length === 0
-                        ? "center"
-                        : isOverflowing
-                        ? "flex-start"
-                        : "center",
-                  }}
-                  ref={ulRef}
-                >
-                  {store.boundaryResults.length === 0 &&
-                  !store.loading &&
-                  !isLocating ? (
-                    <li>
-                      <Loading name="none" />
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  {isLocating ? (
-                    <li>
-                      <Loading name="locating" />
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  {store.loading ? (
-                    <li>
-                      <Loading name="loading" />
-                    </li>
-                  ) : (
-                    ""
-                  )}
-
-                  {!store.loading && !isLocating
-                    ? store.boundaryResults.map((result, i) => (
-                        <li key={i}>
-                          <ResourceCard
-                            item={result}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResource={selectedResource}
-                          />
-                        </li>
-                      ))
-                    : ""}
-                </ul>{" "}
-              </div>
-            </div>
-          </>
-        )}
-        <div className="results-message message-4">
+        {/* <div className="results-message message-4">
           <p> Please Build my Personalized Hidden City Map</p>
-        </div>
+        </div> */}
       </div>
 
       {modalIsOpen && (

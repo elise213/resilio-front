@@ -310,7 +310,7 @@ const Selection = ({
 
       {Object.values(visibleDaysCounts).some((count) => count > 0) && (
         <div className={"cent"}>
-          <div className="results-message message-3">
+          {/* <div className="results-message message-3">
             <p>Do you need it today? </p>
             <div className="need-today-option">
               <label>
@@ -332,9 +332,9 @@ const Selection = ({
                 No
               </label>
             </div>
-          </div>
+          </div> */}
           {!searchingToday && (
-            <div>
+            <div style={{ width: "100%" }}>
               <div className={`select-header ${showDays ? "header-open" : ""}`}>
                 {showDays && <p>Filter by Schedule</p>}
                 <button
