@@ -365,6 +365,7 @@ const Home = () => {
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}
                 selectedResource={selectedResource}
+                setSelectedResource={setSelectedResource}
               />
             </ErrorBoundary>
 

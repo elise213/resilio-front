@@ -4,6 +4,10 @@
   align-items: start !important;
 }
 
+.modal-open {
+  overflow: hidden;
+}
+
 .modal-title-div {
   display: flex;
   width: 100%;

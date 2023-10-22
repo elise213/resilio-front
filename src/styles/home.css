@@ -8,13 +8,6 @@
   z-index: 9998;
 }
 
-.side-car {
-  height: 90vh;
-  width: 100%;
-  align-items: center;
-  display: flex;
-}
-
 .group-div {
   display: flex;
 }
@@ -100,20 +93,6 @@
   overflow-x: hidden;
 }
 
-.backside {
-  display: flex;
-  font-family: "Urbanist", sans-serif;
-  font-size: medium;
-  font-weight: bolder;
-  align-items: center;
-  background-color: transparent;
-  z-index: 9999;
-  flex-direction: column;
-  padding: 35px;
-  /* overflow-y: scroll;
-  overflow-x: hidden; */
-}
-
 .step-text {
   display: flex;
   align-items: center;
@@ -174,34 +153,6 @@
   justify-content: space-between;
 }
 
-.scroll-search-results {
-  width: 100%;
-  background-color: transparent;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-behavior: smooth;
-}
-
-.scroll-search-results ul {
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: flex;
-  justify-content: flex-start;
-  margin: 0 20px;
-  width: 100%;
-  display: flex;
-}
-
-.scroll-search-results li {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 15px;
-  margin-top: 20px;
-  flex: 0 0 auto;
-  padding-bottom: 10px;
-}
-
 .home-logo {
   width: 40%;
   height: auto;
@@ -210,20 +161,12 @@
   opacity: 0.9;
 }
 
-.scroll-search-results ul::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.scroll-search-results ul::-webkit-scrollbar {
-  color: orange;
-}
-
-.search-results-full {
+/* .search-results-full {
   flex-direction: column;
   margin: 0;
   width: 100vw;
   flex-direction: row;
-}
+} */
 
 .search-container {
   display: flex;
@@ -275,15 +218,6 @@
   .new-container {
     flex-direction: column !important;
   }
-
-  .side-car {
-    height: auto !important;
-    margin: 0 !important;
-  }
-
-  /* .step-1 {
-    flex-direction: column !important;
-  } */
 }
 
 @media screen and (max-width: 700px) {

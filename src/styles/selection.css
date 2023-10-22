@@ -1,7 +1,8 @@
 .selection {
-  display: flex; /* Changed from align-items: flex-end; */
-  flex-direction: column; /* Added to stack child elements vertically */
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  margin: 0 20px;
 }
 
 .need-today-option {
@@ -59,7 +60,6 @@
   flex-direction: row !important;
   width: 100%;
   justify-content: center;
-  padding: 10px 0 0 10px;
   align-items: center;
 }
 
@@ -86,9 +86,8 @@
 }
 
 .closed2 {
-  margin-top: 20px;
+  margin-top: 10px;
   font-family: "Urbanist", sans-serif !important;
-  /* text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3); */
   transition: color 0.3s, font-size 0.3s;
 }
 
@@ -160,6 +159,24 @@
   color: var(--green2);
 }
 
+.side-car {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+@media screen and (max-width: 1000px) {
+  .center {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .side-car {
+    height: auto !important;
+  }
+}
+
 @media screen and (max-width: 700px) {
   .closed-icons {
     margin: 5px;
@@ -180,10 +197,7 @@
   }
 }
 
-@media screen and (max-width: 1000px) {
-  .center {
-    font-size: 14px;
-  }
+@media screen and (max-width: 700px) {
 }
 
 @media screen and (max-width: 900px) {
