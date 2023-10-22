@@ -57,6 +57,7 @@ const ResourceCard = (props) => {
             );
           })}
         </div>
+        <button className="add-favorite">Add to Favorites</button>
       </div>
     </div>
   );

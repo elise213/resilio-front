@@ -1,12 +1,13 @@
 .navbar {
   width: 100%;
+  min-height: 150px;
   top: 0;
   padding: 10px;
   font-family: "Urbanist", sans-serif;
   color: black;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
+  justify-content: flex-start;
 }
 
 .logo-div {
