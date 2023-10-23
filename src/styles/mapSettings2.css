@@ -1,11 +1,10 @@
 .map-settings {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  position: absolute;
-  height: 100%;
-  z-index: 1;
+  z-index: 99999;
+  position: fixed;
+  top: 420px;
+  left: 0;
+  height: 150px;
 }
 
 .map-settings-container {
@@ -63,14 +62,8 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 900px) {
+/* @media screen and (max-width: 900px) {
   .map-settings {
-    bottom: 490px;
+    top: 400px;
   }
-}
-
-@media screen and (max-width: 900px) {
-  .map-settings {
-    bottom: 490px;
-  }
-}
+} */

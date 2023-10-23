@@ -9,7 +9,7 @@
 
 .flip-button {
   background-color: var(--coral);
-  /* margin: 20px 0; */
+  width: 150px;
 }
 
 .map-frame.flipped {
@@ -110,6 +110,9 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   max-height: 600px;
+}
+
+.favorites-scroll {
   direction: rtl;
 }
 
@@ -143,24 +146,27 @@
   font-family: "Urbanist", sans-serif;
   font-size: medium;
   font-weight: bolder;
-  align-items: center;
   background-color: transparent;
   z-index: 9999;
   padding: 15px;
-}
-
-@media screen and (max-width: 600px) {
-  .map-frame {
-    border: 48px solid transparent !important;
-    border-image: url(/assets/scroll.png) 200 round !important;
-    width: 95% !important;
-  }
-
-  .flex {
-    flex-direction: column !important;
-  }
+  justify-content: space-around;
 }
 
 .gm-control-active {
   display: none;
+}
+
+.search-container {
+  width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .map-frame {
+    border: 60px solid transparent !important;
+    border-image: url(/assets/scroll.png) 160 round !important;
+    width: 95vw !important;
+  }
+  .flex {
+    flex-direction: column !important;
+  }
 }

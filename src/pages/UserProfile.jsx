@@ -1,13 +1,14 @@
+"use client";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { ResourceCard } from "../component/ResourceCard";
+import ResourceCard from "../component/ResourceCard.jsx";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
 
-  useEffect(() => {
-    actions.setOfferings();
-  }, []);
+  // useEffect(() => {
+  //   actions.setOfferings();
+  // }, []);
 
   return (
     <div className="profile-container">
@@ -18,7 +19,6 @@ const UserProfile = () => {
           </p>
           <div className="favorites-col">
             <ul className="favorites-list" style={{ listStyleType: "none" }}>
-
               {store.favorites.map((result, i) => (
                 <li key={i}>
                   <ResourceCard
@@ -29,15 +29,13 @@ const UserProfile = () => {
                     image={result.image}
                     description={result.description}
                     id={result.id}
-                    link={"/resource/" + result.resource_id}
-                    type="resource"
                   />
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <div className="favorites-container">
+        {/* <div className="favorites-container">
           <p className="your-favorite-resources text-center">
             Your Favorite Free Things
           </p>
@@ -57,7 +55,7 @@ const UserProfile = () => {
               ))}
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

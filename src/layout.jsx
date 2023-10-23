@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./component/navbar";
 import Home from "./pages/home";
+import UserProfile from "./pages/UserProfile";
 import Donate from "./pages/Donate";
 import Contact from "./pages/Contact";
 import Create from "./pages/Create";
@@ -19,6 +20,7 @@ const Layout = () => {
         <Navbar />
         <Routes>
           <Route element={<Home />} path="/" />
+          <Route element={<UserProfile />} path="/profile" />
           <Route element={<Contact />} path="/contact" />
           <Route element={<Create />} path="/create" />
           <Route element={<Donate />} path="/donate" />
