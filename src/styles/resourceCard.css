@@ -10,6 +10,8 @@
   border-radius: 1%;
   min-height: 150px;
   width: 200px;
+  z-index: 99999;
+  position: static;
 }
 
 .add-favorite {
@@ -69,7 +71,7 @@
 
 @media screen and (max-width: 900px) {
   .card-icon {
-    font-size: large;
+    font-size: medium;
     margin: 0;
   }
 
@@ -78,11 +80,15 @@
     object-fit: cover;
     max-height: 100px;
   }
+
+  .my-resource-card {
+    width: 150px !important;
+  }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
   .resource-title {
-    font-size: 12px !important;
+    font-size: small !important;
   }
 }
 
