@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import Selection from "./Selection";
+import ResourceCard from "./ResourceCard";
 import ErrorBoundary from "./ErrorBoundary";
 import MapSettings from "./MapSettings";
 import Report from "./Report";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
-// import MapSettings from "./MapSettings";
 
 const SimpleMap = ({
   openModal,
@@ -29,10 +29,20 @@ const SimpleMap = ({
   modalIsOpen,
   setModalIsOpen,
   selectedResource,
+  setSelectedResource,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
   const [backSide, setBackSide] = useState(false);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(sessionStorage.getItem("favorites")) || []
+  );
+
+  useEffect(() => {
+    if (favorites) {
+      console.log("favs", favorites);
+    }
+  }, [favorites]);
 
   const createMapOptions = () => {
     return {
@@ -66,11 +76,7 @@ const SimpleMap = ({
           elementType: "labels.text.fill",
           stylers: [{ visibility: "off" }],
         },
-        // {
-        //   featureType: "road",
-        //   elementType: "labels.text.stroke",
-        //   stylers: [{ visibility: "off" }],
-        // },
+
         {
           featureType: "administrative.locality",
           elementType: "labels",
@@ -79,13 +85,11 @@ const SimpleMap = ({
         {
           featureType: "administrative.neighborhood",
           elementType: "labels.text.stroke",
-          // stylers: [{ color: "lightGray" }, { weight: 0.01 }],
           stylers: [{ visibility: "off" }],
         },
         {
           featureType: "administrative.neighborhood",
           elementType: "labels.text.fill",
-          // stylers: [{ color: "white" }],
           stylers: [{ visibility: "off" }],
         },
         {
@@ -97,52 +101,17 @@ const SimpleMap = ({
     };
   };
 
-  // const Marker = ({ text, id, result, color }) => {
-  //   const [isHovered, setIsHovered] = useState(false);
-  //   const markerColor =
-  //     color || actions.getColorForCategory(result.category).color;
-  //   const categories = actions.processCategory(result.category);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
-  //   const icons = categories.map((category, index) => {
-  //     const iconClass = actions.getIconForCategory(category);
-  //     const color = actions.getColorForCategory(category).color;
-  //     return <i key={index} className={iconClass} style={{ color }}></i>;
-  //   });
-
-  //   const color = actions.getColorForCategory(result.category).color;
-  //   const singleCategory = categories[0];
-  //   const iconClass = actions.getIconForCategory(singleCategory);
-
-  //   return (
-  //     <div
-  //       className="marker"
-  //       style={{ cursor: "pointer", color: markerColor }}
-  //       onMouseEnter={() => setIsHovered(true)}
-  //       onMouseLeave={() => setIsHovered(false)}
-  //       onClick={() => openModal(result)}
-  //     >
-  //       <div className="marker-icon">
-  //         <i className={iconClass} style={{ color }}></i>
-  //         {isHovered && text && (
-  //           <span className="marker-text">
-  //             {text}
-  //             {icons}
-  //           </span>
-  //         )}
-  //       </div>
-  //     </div>
-  //   );
-  // };
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
 
-    // This will handle when result is undefined
     const color = result
       ? markerColor || actions.getColorForCategory(result.category).color
-      : markerColor || "red"; // red as default if no color is provided
+      : markerColor || "red";
 
     let icons = [];
-    let iconClass = "default-icon-class"; // Add your default icon class here
+    let iconClass = "default-icon-class";
 
     // Process category icons if result is defined
     if (result) {
@@ -160,51 +129,188 @@ const SimpleMap = ({
     return (
       <div
         className="marker"
-        style={{ cursor: "pointer", color }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        style={{ cursor: "pointer", color, position: "relative" }} // Make sure the marker's position is set to 'relative'
+        onMouseEnter={() => {
+          setIsHovered(true);
+          setHoveredItem(result);
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setHoveredItem(null);
+        }}
         onClick={result ? () => openModal(result) : undefined}
       >
+        {/* {isHovered && result && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "100%",
+              width: "300px",
+              zIndex: 99999,
+            }}
+          >
+            <ResourceCard
+              item={result}
+              openModal={openModal}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+            />
+          </div>
+        )} */}
+
+        {isHovered && result && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: "100%",
+              width: "300px",
+              zIndex: 99999,
+            }}
+          >
+            <ResourceCard
+              key={result.name}
+              item={result}
+              openModal={openModal}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+            />
+          </div>
+        )}
+
         <div className="marker-icon">
           <i className={iconClass} style={{ color }}></i>
-          {isHovered && text && (
+          {/* {isHovered && text && (
             <span className="marker-text">
               {text}
               {icons}
             </span>
-          )}
+          )} */}
         </div>
       </div>
     );
   };
 
+  useEffect(() => {
+    console.log("Checking if favorites is updated", store.favorites);
+    actions.popFavorites();
+  }, [store.favorites]);
+
+  // useEffect(() => {
+  //   const updateFavorites = () => {
+  //     setFavorites(JSON.parse(sessionStorage.getItem("favorites")) || []);
+  //   };
+  //   window.addEventListener("storage", updateFavorites);
+  //   return () => window.removeEventListener("storage", updateFavorites);
+  // }, []);
+
+  // useEffect(() => {
+  //   const updateFavorites = () => {
+  //     setFavorites(JSON.parse(sessionStorage.getItem("favorites")) || []);
+  //   };
+
+  //   window.addEventListener("storage", updateFavorites);
+
+  //   // Call updateFavorites to immediately sync the state with sessionStorage
+  //   updateFavorites();
+
+  //   return () => window.removeEventListener("storage", updateFavorites);
+  // }, [favorites]); // Add favorites to the dependency array
+
   return (
     <div className={`map-frame ${backSide ? "flipped" : ""}`}>
       {backSide ? (
         // New view when backSide is true
-        <div className="backside">
-          {store.favorites && store.favorites.length > 0 && (
-            <div>
-              {store.favorites.map((result, i) => (
-                <li key={i}>
-                  <ResourceCard
-                    item={result}
-                    openModal={openModal}
-                    closeModal={closeModal}
-                    modalIsOpen={modalIsOpen}
-                    setModalIsOpen={setModalIsOpen}
-                    selectedResource={selectedResource}
-                  />
-                </li>
-              ))}
-            </div>
+        <div>
+          {hoveredItem && !backSide && (
+            <ResourceCard
+              item={hoveredItem}
+              openModal={openModal}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+              setFavorites={setFavorites}
+            />
           )}
+          <div className="backside">
+            {favorites && favorites.length > 0 && (
+              <div>
+                <p>FAVORITES</p>
+                <div className="scroll-search-results favorites-scroll">
+                  <ul>
+                    {favorites.map((result, i) => (
+                      <li key={i}>
+                        <ResourceCard
+                          item={result}
+                          openModal={openModal}
+                          closeModal={closeModal}
+                          modalIsOpen={modalIsOpen}
+                          setModalIsOpen={setModalIsOpen}
+                          selectedResource={selectedResource}
+                          setFavorites={setFavorites}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+            {/* {store.favorites && store.favorites.length > 0 && (
+              <div>
+                <p>FAVORITES</p>
+                <div className="scroll-search-results">
+                  <ul>
+                    {store.favorites.map((result, i) => (
+                      <li key={i}>
+                        <ResourceCard
+                          item={result}
+                          openModal={openModal}
+                          closeModal={closeModal}
+                          modalIsOpen={modalIsOpen}
+                          setModalIsOpen={setModalIsOpen}
+                          selectedResource={selectedResource}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )} */}
 
-          {store.boundaryResults[0] && (
-            <div className="scroll-headers">
-              <Report />
-            </div>
-          )}
+            {store.boundaryResults && store.boundaryResults.length > 0 && (
+              <div>
+                <p>RESOURCES IN YOUR AREA</p>
+                <div className="scroll-search-results">
+                  <ul>
+                    {store.boundaryResults.map((result, i) => (
+                      <li key={i}>
+                        <ResourceCard
+                          item={result}
+                          openModal={openModal}
+                          closeModal={closeModal}
+                          modalIsOpen={modalIsOpen}
+                          setModalIsOpen={setModalIsOpen}
+                          selectedResource={selectedResource}
+                          setFavorites={setFavorites}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* {store.boundaryResults[0] && (
+              <div className="scroll-headers">
+                <Report />
+              </div>
+            )} */}
+          </div>
+
           <button
             className="flip-button"
             onClick={() => setBackSide(!backSide)}
@@ -215,46 +321,6 @@ const SimpleMap = ({
       ) : (
         // View when backSide is false
         <>
-          <div className="step-1">
-            <div className="group-div">
-              <div className="step1-text"></div>
-              <MapSettings
-                geoFindMe={geoFindMe}
-                handleZipInputChange={handleZipInputChange}
-                zipInput={zipInput}
-              />
-            </div>
-            <div className="side-car">
-              {store.CATEGORY_OPTIONS &&
-              store.DAY_OPTIONS &&
-              store.GROUP_OPTIONS &&
-              categories &&
-              days &&
-              groups ? (
-                <ErrorBoundary>
-                  <Selection
-                    categories={categories}
-                    setCategories={setCategories}
-                    groups={groups}
-                    setGroups={setGroups}
-                    days={days}
-                    setDays={setDays}
-                    searchingToday={searchingToday}
-                    setSearchingToday={setSearchingToday}
-                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                  />
-                </ErrorBoundary>
-              ) : (
-                message2Open && <p>Loading selection options...</p>
-              )}
-            </div>
-            <button
-              className="flip-button"
-              onClick={() => setBackSide(!backSide)}
-            >
-              Flip The Map
-            </button>
-          </div>
           <div
             className="map-container"
             style={{ height: "80vh", width: "60vw" }}
@@ -289,6 +355,42 @@ const SimpleMap = ({
               )}
             </GoogleMapReact>
           </div>
+
+          <MapSettings
+            geoFindMe={geoFindMe}
+            handleZipInputChange={handleZipInputChange}
+            zipInput={zipInput}
+          />
+          {store.CATEGORY_OPTIONS &&
+          store.DAY_OPTIONS &&
+          store.GROUP_OPTIONS &&
+          categories &&
+          days &&
+          groups ? (
+            <ErrorBoundary>
+              <div className="side-car">
+                <Selection
+                  categories={categories}
+                  setCategories={setCategories}
+                  groups={groups}
+                  setGroups={setGroups}
+                  days={days}
+                  setDays={setDays}
+                  searchingToday={searchingToday}
+                  setSearchingToday={setSearchingToday}
+                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                />
+              </div>
+              <button
+                className="flip-button"
+                onClick={() => setBackSide(!backSide)}
+              >
+                Flip The Map
+              </button>
+            </ErrorBoundary>
+          ) : (
+            message2Open && <p>Loading selection options...</p>
+          )}
         </>
       )}
     </div>

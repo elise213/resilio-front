@@ -1,9 +1,20 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
   const { actions, store } = useContext(Context);
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(
+      sessionStorage.getItem("favorites") || "[]"
+    );
+    const isItemFavorited = storedFavorites.some(
+      (favorite) => favorite.name === props.item.name
+    );
+    setIsFavorited(isItemFavorited);
+  }, []);
 
   useEffect(() => {
     if (props.modalIsOpen) {
@@ -24,6 +35,19 @@ const ResourceCard = (props) => {
   } else if (!Array.isArray(categories)) {
     categories = [];
   }
+
+  const toggleFavorite = (event) => {
+    event.stopPropagation();
+
+    // Toggle the isFavorited state immediately
+    setIsFavorited(!isFavorited);
+
+    if (isFavorited) {
+      actions.removeFavorite(props.item.name, props.setFavorites);
+    } else {
+      actions.addFavorite(props.item.name, props.setFavorites);
+    }
+  };
 
   return (
     <div
@@ -57,6 +81,12 @@ const ResourceCard = (props) => {
             );
           })}
         </div>
+        <button
+          className="add-favorite"
+          onClick={(event) => toggleFavorite(event)}
+        >
+          {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+        </button>
       </div>
     </div>
   );

@@ -41,11 +41,9 @@ const Home = () => {
 
   // STATES
   const [message1Open, setMessage1Open] = useState(true);
-  const [message2Open, setMessage2Open] = useState(false);
-  const [message3Open, setMessage3Open] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
-  const [showFront, setShowFront] = useState(true);
-
+  // const [showFront, setShowFront] = useState(true);
   const [searchingToday, setSearchingToday] = useState(false);
 
   const [categories, setCategories] = useState(
@@ -116,12 +114,12 @@ const Home = () => {
     }
     const response = await fetch(apiUrl);
     const data = await response.json();
-    console.log("Raw API response:", JSON.stringify(data.results[0].geometry));
+    // console.log("Raw API response:", JSON.stringify(data.results[0].geometry));
 
     const location = data.results[0]?.geometry?.location;
     let bounds =
       data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
-    console.log("Bounds:", bounds);
+
     // Fallback logic
     if (!bounds && location) {
       const offset = 0.01;
@@ -136,8 +134,8 @@ const Home = () => {
         },
       };
     }
-    console.log("Location:", location);
-    console.log("Bounds:", bounds);
+    // console.log("Location:", location);
+    // console.log("Bounds:", bounds);
     return data;
   };
 
@@ -164,7 +162,6 @@ const Home = () => {
     const value = e.target.value;
     setZipInput(value);
     if (value.length === 5) {
-      console.log("ZIPPPPPPINPUTCHANGE 5");
       await updateCityStateFromZip(value);
     }
   };
@@ -197,35 +194,6 @@ const Home = () => {
     setSelectedResource(null);
     setModalIsOpen(false);
   };
-
-  // const geoFindMe = async () => {
-  //   console.log("GEO FIND ME CALLED");
-  //   setIsLocating(true);
-  //   console.log(navigator.geolocation);
-  //   if (navigator.geolocation) {
-  //     console.log("Geolocation supported");
-  //     navigator.geolocation.getCurrentPosition(
-  //       async (position) => {
-  //         console.log("Got position", position);
-  //         setIsLocating(false);
-  //         await updateCityStateFromCoords(
-  //           position.coords.latitude,
-  //           position.coords.longitude
-  //         );
-  //       },
-  //       (error) => {
-  //         console.log("Error getting position", error);
-  //         setIsLocating(false);
-  //         alert("Unable to retrieve your location");
-  //       }
-  //     );
-  //   } else {
-  //     console.log("Geolocation not supported");
-  //     setIsLocating(false);
-  //     alert("Geolocation is not supported by your browser");
-  //   }
-  // };
-  const [userLocation, setUserLocation] = useState(null);
 
   const geoFindMe = async () => {
     if (navigator.geolocation) {
@@ -332,16 +300,6 @@ const Home = () => {
     <div className="grand-container">
       <div className="search-container">
         {" "}
-        {/* <div className="results-message">
-          <p
-            onClick={() => {
-              setMessage1Open(true);
-              setMessage2Open(false);
-            }}
-          >
-            Tell us where you are, and we will show you the goods
-          </p>
-        </div> */}
         {message1Open && (
           <>
             <ErrorBoundary>
@@ -365,84 +323,13 @@ const Home = () => {
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}
                 selectedResource={selectedResource}
+                setSelectedResource={setSelectedResource}
               />
             </ErrorBoundary>
 
-            <div className="search-results-full">
-              {/* <div className="message-1">
-                <p>
-                  There are {store.mapResults ? store.mapResults.length : 0}{" "}
-                  free resources in your area
-                </p>
-              </div> */}
-
-              {/* <div
-                className="scroll-search-results"
-                ref={resultsRef}
-                style={{
-                  display: "block",
-                }}
-              >
-                <ul
-                  style={{
-                    listStyleType: "none",
-                    justifyContent:
-                      store.loading ||
-                      isLocating ||
-                      store.boundaryResults.length === 0
-                        ? "center"
-                        : "flex-start",
-                  }}
-                  ref={ulRef}
-                >
-                  {store.mapResults.length === 0 &&
-                  !store.loading &&
-                  !isLocating ? (
-                    <li>
-                      <Loading name="none" />
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  {isLocating ? (
-                    <li>
-                      <Loading name="locating" />
-                    </li>
-                  ) : (
-                    ""
-                  )}
-                  {store.loading ? (
-                    <li>
-                      <Loading name="loading" />
-                    </li>
-                  ) : (
-                    ""
-                  )}
-
-                  {!store.loading && !isLocating
-                    ? store.mapResults.map((result, i) => {
-                        return (
-                          <li key={i}>
-                            <ResourceCard
-                              item={result}
-                              openModal={openModal}
-                              closeModal={closeModal}
-                              modalIsOpen={modalIsOpen}
-                              setModalIsOpen={setModalIsOpen}
-                              selectedResource={selectedResource}
-                            />
-                          </li>
-                        );
-                      })
-                    : ""}
-                </ul>
-              </div> */}
-            </div>
+            <div className="search-results-full"></div>
           </>
         )}
-        {/* <div className="results-message message-4">
-          <p> Please Build my Personalized Hidden City Map</p>
-        </div> */}
       </div>
 
       {modalIsOpen && (
