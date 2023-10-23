@@ -9,6 +9,7 @@
 
 .flip-button {
   background-color: var(--coral);
+  width: 150px;
 }
 
 .map-frame.flipped {
@@ -48,14 +49,14 @@
 }
 
 .map-frame {
+  flex-direction: column;
   max-width: 1050px !important;
-  width: 100%;
-  max-height: 1000px;
+  width: 100vw;
   border: 120px solid transparent;
   overflow: hidden;
   border-image: url(/assets/scroll.png) 120 round;
   z-index: 0;
-  background-color: transparent !important;
+  background-color: transparent;
   display: flex;
   transform-style: preserve-3d;
   transform: rotateY(0deg);
@@ -73,10 +74,10 @@
 
 .map-container {
   z-index: 999;
-  /* height: 100%; */
-  width: 80% !important;
+  width: 100% !important;
   position: relative;
   z-index: 1;
+  height: 50vh !important;
 }
 
 .marker-text {
@@ -102,15 +103,69 @@
   height: 100%;
 }
 
-@media screen and (max-width: 900px) {
-  .map-frame {
-    border: 90px solid transparent !important;
-    border-image: url(/assets/scroll.png) 120 round !important;
-    width: 100% !important;
-    max-height: 700px;
-    width: 90vw;
-  }
+.scroll-search-results {
+  /* width: 100%; */
+  background-color: transparent;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  max-height: 600px;
+}
 
+.favorites-scroll {
+  direction: rtl;
+}
+
+.scroll-search-results ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  display: flex;
+  padding: 0;
+}
+
+.scroll-search-results li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  padding-bottom: 10px;
+}
+
+.scroll-search-results ul::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-search-results ul::-webkit-scrollbar {
+  color: orange;
+}
+
+.backside {
+  display: flex;
+  font-family: "Urbanist", sans-serif;
+  font-size: medium;
+  font-weight: bolder;
+  background-color: transparent;
+  z-index: 9999;
+  padding: 15px;
+  justify-content: space-around;
+}
+
+.gm-control-active {
+  display: none;
+}
+
+.search-container {
+  width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .map-frame {
+    border: 60px solid transparent !important;
+    border-image: url(/assets/scroll.png) 160 round !important;
+    width: 95vw !important;
+  }
   .flex {
     flex-direction: column !important;
   }

@@ -116,14 +116,14 @@ const Selection = ({
       category.split(",").map((c) => c.trim())
     );
     setAllCategories(allCats);
-    console.log("Categories Updated", allCats);
+    // console.log("Categories Updated", allCats);
   }, [store.mapResults]);
 
   useEffect(() => {
     if (allCategories.length > 0) {
       const visibleGroups = groupIds.filter((id) => allCategories.includes(id));
       setVisibleGroupCount(visibleGroups.length);
-      console.log("Visible Groups", visibleGroups.length);
+      // console.log("Visible Groups", visibleGroups.length);
     }
   }, [allCategories, store.mapResults]);
 
@@ -168,13 +168,13 @@ const Selection = ({
 
     setVisibleDaysCounts(visibleDaysCounts);
     actions.setDayCounts(visibleDaysCounts);
-    console.log("Visible Days Counts", visibleDaysCounts);
+    // console.log("Visible Days Counts", visibleDaysCounts);
   }, [store.mapResults, store.schedules]);
 
   const getUniqueCategoriesFromResults = () => {
     const categorySet = new Set();
     store.mapResults.forEach((item) => categorySet.add(item.category));
-    console.log("array", Array.from(categorySet));
+    // console.log("array", Array.from(categorySet));
     return Array.from(categorySet);
   };
 

@@ -21,7 +21,6 @@ const LoginModal = ({
 }) => {
   const { store, actions } = useContext(Context);
 
-  console.log("LOG", log);
   let field = null;
   if (log == "2") {
     field = (
