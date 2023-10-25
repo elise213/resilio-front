@@ -10,6 +10,7 @@
 .flip-button {
   background-color: var(--coral);
   width: 150px;
+  margin-bottom: 100px;
 }
 
 .map-frame-wrapper.flipped {
@@ -73,7 +74,7 @@
   background-image: url(/assets/scroll.png);
   background-repeat: no-repeat;
   background-size: 100%;
-  padding: 100px 80px;
+  padding: 120px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -83,7 +84,7 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   background-color: transparent;
-  /* max-width: 1050px !important; */
+  background-size: 100% 100%;
 }
 
 .map-frame {
@@ -182,10 +183,8 @@
   font-weight: bolder;
   background-color: transparent;
   z-index: 9999;
-  padding: 15px;
+  padding: 100px 0px 50px;
   justify-content: space-around;
-  padding-top: 100px;
-  padding-bottom: 150px;
 }
 
 .list-title {
