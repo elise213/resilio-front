@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import Login from "./Login";
-import RESR from "/assets/RESILIOO.png";
+
 import styles from "../styles/navbar.css";
 
 const Navbar = () => {
@@ -28,9 +28,6 @@ const Navbar = () => {
       </Link> */}
       <div className="login-div">
         <Login />
-      </div>
-      <div className="logo-div">
-        <img className="navbar-logo" src={RESR} alt="Alive Logo" />
       </div>
     </nav>
   );
