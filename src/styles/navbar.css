@@ -1,6 +1,6 @@
 .navbar {
   width: 100%;
-  min-height: 150px;
+  /* min-height: 150px; */
   top: 0;
   padding: 10px;
   font-family: "Urbanist", sans-serif;
@@ -8,12 +8,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-}
-
-.logo-div {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 15px;
 }
 
 .login-div {

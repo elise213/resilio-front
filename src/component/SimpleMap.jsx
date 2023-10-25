@@ -7,6 +7,7 @@ import MapSettings from "./MapSettings";
 import Report from "./Report";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
+import RESR from "/assets/RESILIOO.png";
 
 const SimpleMap = ({
   openModal,
@@ -183,12 +184,6 @@ const SimpleMap = ({
 
         <div className="marker-icon">
           <i className={iconClass} style={{ color }}></i>
-          {/* {isHovered && text && (
-            <span className="marker-text">
-              {text}
-              {icons}
-            </span>
-          )} */}
         </div>
       </div>
     );
@@ -199,67 +194,47 @@ const SimpleMap = ({
     actions.popFavorites();
   }, [store.favorites]);
 
-  // useEffect(() => {
-  //   const updateFavorites = () => {
-  //     setFavorites(JSON.parse(sessionStorage.getItem("favorites")) || []);
-  //   };
-  //   window.addEventListener("storage", updateFavorites);
-  //   return () => window.removeEventListener("storage", updateFavorites);
-  // }, []);
-
-  // useEffect(() => {
-  //   const updateFavorites = () => {
-  //     setFavorites(JSON.parse(sessionStorage.getItem("favorites")) || []);
-  //   };
-
-  //   window.addEventListener("storage", updateFavorites);
-
-  //   // Call updateFavorites to immediately sync the state with sessionStorage
-  //   updateFavorites();
-
-  //   return () => window.removeEventListener("storage", updateFavorites);
-  // }, [favorites]); // Add favorites to the dependency array
-
   return (
-    <div className={`map-frame ${backSide ? "flipped" : ""}`}>
-      {backSide ? (
-        // New view when backSide is true
-        <div>
-          {hoveredItem && !backSide && (
-            <ResourceCard
-              item={hoveredItem}
-              openModal={openModal}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-              setFavorites={setFavorites}
-            />
-          )}
-          <div className="backside">
-            {favorites && favorites.length > 0 && (
-              <div>
-                <p>FAVORITES</p>
-                <div className="scroll-search-results favorites-scroll">
-                  <ul>
-                    {favorites.map((result, i) => (
-                      <li key={i}>
-                        <ResourceCard
-                          item={result}
-                          openModal={openModal}
-                          closeModal={closeModal}
-                          modalIsOpen={modalIsOpen}
-                          setModalIsOpen={setModalIsOpen}
-                          selectedResource={selectedResource}
-                          setFavorites={setFavorites}
-                        />
-                      </li>
-                    ))}
-                  </ul>
+    <div class={`map-frame-wrapper ${backSide ? "flipped" : ""}`}>
+      <div className={`map-frame`}>
+        {backSide ? (
+          // New view when backSide is true
+          <div>
+            <div className="backside">
+              {hoveredItem && !backSide && (
+                <ResourceCard
+                  item={hoveredItem}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResource={selectedResource}
+                  setFavorites={setFavorites}
+                />
+              )}
+              {favorites && favorites.length > 0 && (
+                <div>
+                  <p className="list-title">FAVORITES</p>
+                  <div className="scroll-search-results favorites-scroll">
+                    <ul>
+                      {favorites.map((result, i) => (
+                        <li key={i}>
+                          <ResourceCard
+                            item={result}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResource={selectedResource}
+                            setFavorites={setFavorites}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            )}
-            {/* {store.favorites && store.favorites.length > 0 && (
+              )}
+              {/* {store.favorites && store.favorites.length > 0 && (
               <div>
                 <p>FAVORITES</p>
                 <div className="scroll-search-results">
@@ -281,118 +256,116 @@ const SimpleMap = ({
               </div>
             )} */}
 
-            {store.boundaryResults && store.boundaryResults.length > 0 && (
-              <div>
-                <p>RESOURCES IN YOUR AREA</p>
-                <div className="scroll-search-results">
-                  <ul>
-                    {store.boundaryResults.map((result, i) => (
-                      <li key={i}>
-                        <ResourceCard
-                          item={result}
-                          openModal={openModal}
-                          closeModal={closeModal}
-                          modalIsOpen={modalIsOpen}
-                          setModalIsOpen={setModalIsOpen}
-                          selectedResource={selectedResource}
-                          setFavorites={setFavorites}
-                        />
-                      </li>
-                    ))}
-                  </ul>
+              {store.boundaryResults && store.boundaryResults.length > 0 && (
+                <div>
+                  <p className="list-title">RESOURCES IN YOUR AREA</p>
+                  <div className="scroll-search-results">
+                    <ul>
+                      {store.boundaryResults.map((result, i) => (
+                        <li key={i}>
+                          <ResourceCard
+                            item={result}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResource={selectedResource}
+                            setFavorites={setFavorites}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            )}
-
-            {/* {store.boundaryResults[0] && (
-              <div className="scroll-headers">
-                <Report />
-              </div>
-            )} */}
-          </div>
-
-          <button
-            className="flip-button"
-            onClick={() => setBackSide(!backSide)}
-          >
-            Flip The Map
-          </button>
-        </div>
-      ) : (
-        // View when backSide is false
-        <>
-          <div
-            className="map-container"
-            style={{ height: "80vh", width: "60vw" }}
-          >
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: apiKey }}
-              center={city.center}
-              bounds={city.bounds}
-              defaultZoom={11}
-              onChange={(e) => handleBoundsChange(e)}
-              options={createMapOptions}
-            >
-              {store.boundaryResults.map((result, i) => (
-                <Marker
-                  lat={result.latitude}
-                  lng={result.longitude}
-                  text={result.name}
-                  key={i}
-                  id={result.id}
-                  openModal={openModal}
-                  result={result}
-                />
-              ))}
-
-              {userLocation && (
-                <Marker
-                  lat={userLocation.lat}
-                  lng={userLocation.lng}
-                  text="You are here!"
-                  color="red" // Or any other color to distinguish the user marker
-                />
               )}
-            </GoogleMapReact>
-          </div>
+            </div>
 
-          <MapSettings
-            geoFindMe={geoFindMe}
-            handleZipInputChange={handleZipInputChange}
-            zipInput={zipInput}
-          />
-          {store.CATEGORY_OPTIONS &&
-          store.DAY_OPTIONS &&
-          store.GROUP_OPTIONS &&
-          categories &&
-          days &&
-          groups ? (
-            <ErrorBoundary>
-              <div className="side-car">
-                <Selection
-                  categories={categories}
-                  setCategories={setCategories}
-                  groups={groups}
-                  setGroups={setGroups}
-                  days={days}
-                  setDays={setDays}
-                  searchingToday={searchingToday}
-                  setSearchingToday={setSearchingToday}
-                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                />
-              </div>
-              <button
-                className="flip-button"
-                onClick={() => setBackSide(!backSide)}
+            <button
+              className="flip-button"
+              onClick={() => setBackSide(!backSide)}
+            >
+              Flip The Map
+            </button>
+          </div>
+        ) : (
+          // View when backSide is false
+          <>
+            <div className="logo-div">
+              <img className="navbar-logo" src={RESR} alt="Alive Logo" />
+            </div>
+            <div
+              className="map-container"
+              style={{ height: "80vh", width: "60vw" }}
+            >
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: apiKey }}
+                center={city.center}
+                bounds={city.bounds}
+                defaultZoom={11}
+                onChange={(e) => handleBoundsChange(e)}
+                options={createMapOptions}
               >
-                Flip The Map
-              </button>
-            </ErrorBoundary>
-          ) : (
-            message2Open && <p>Loading selection options...</p>
-          )}
-        </>
-      )}
+                {store.boundaryResults.map((result, i) => (
+                  <Marker
+                    lat={result.latitude}
+                    lng={result.longitude}
+                    text={result.name}
+                    key={i}
+                    id={result.id}
+                    openModal={openModal}
+                    result={result}
+                  />
+                ))}
+
+                {userLocation && (
+                  <Marker
+                    lat={userLocation.lat}
+                    lng={userLocation.lng}
+                    text="You are here!"
+                    color="red" // Or any other color to distinguish the user marker
+                  />
+                )}
+              </GoogleMapReact>
+            </div>
+
+            <MapSettings
+              geoFindMe={geoFindMe}
+              handleZipInputChange={handleZipInputChange}
+              zipInput={zipInput}
+            />
+            {store.CATEGORY_OPTIONS &&
+            store.DAY_OPTIONS &&
+            store.GROUP_OPTIONS &&
+            categories &&
+            days &&
+            groups ? (
+              <ErrorBoundary>
+                <div className="side-car">
+                  <Selection
+                    categories={categories}
+                    setCategories={setCategories}
+                    groups={groups}
+                    setGroups={setGroups}
+                    days={days}
+                    setDays={setDays}
+                    searchingToday={searchingToday}
+                    setSearchingToday={setSearchingToday}
+                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                  />
+                </div>
+                <button
+                  className="flip-button"
+                  onClick={() => setBackSide(!backSide)}
+                >
+                  Flip The Map
+                </button>
+              </ErrorBoundary>
+            ) : (
+              message2Open && <p>Loading selection options...</p>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
