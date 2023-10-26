@@ -199,7 +199,7 @@ const SimpleMap = ({
       <div className={`map-frame`}>
         {backSide ? (
           // New view when backSide is true
-          <div>
+          <>
             <div className="backside">
               {hoveredItem && !backSide && (
                 <ResourceCard
@@ -258,14 +258,13 @@ const SimpleMap = ({
                 </div>
               )}
             </div>
-
             <button
               className="flip-button"
               onClick={() => setBackSide(!backSide)}
             >
               Flip The Map
             </button>
-          </div>
+          </>
         ) : (
           // View when backSide is false
           <>
