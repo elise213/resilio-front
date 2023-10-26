@@ -10,6 +10,7 @@
 .flip-button {
   background-color: var(--coral);
   width: 150px;
+  margin-bottom: 100px;
 }
 
 .map-frame-wrapper.flipped {
@@ -48,21 +49,6 @@
   white-space: nowrap;
 }
 
-/* .map-frame {
-  flex-direction: column;
-  max-width: 1050px !important;
-  width: 100vw;
-  border: 120px solid transparent;
-  overflow: hidden;
-  border-image: url(/assets/scroll.png) 120 round;
-  z-index: 0;
-  background-color: transparent;
-  display: flex;
-  transform-style: preserve-3d;
-  transform: rotateY(0deg);
-  transition: transform 0.6s;
-} */
-
 .logo-div {
   display: flex;
   justify-content: center;
@@ -73,7 +59,7 @@
   background-image: url(/assets/scroll.png);
   background-repeat: no-repeat;
   background-size: 100%;
-  padding: 100px 80px;
+  padding: 120px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -83,7 +69,7 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   background-color: transparent;
-  /* max-width: 1050px !important; */
+  background-size: 100% 100%;
 }
 
 .map-frame {
@@ -138,16 +124,12 @@
 }
 
 .scroll-search-results {
-  /* width: 100%; */
   background-color: transparent;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
   max-height: 600px;
-}
-
-.favorites-scroll {
-  direction: rtl;
+  width: 250px;
 }
 
 .scroll-search-results ul {
@@ -182,10 +164,8 @@
   font-weight: bolder;
   background-color: transparent;
   z-index: 9999;
-  padding: 15px;
+  padding: 100px 0px 50px;
   justify-content: space-around;
-  padding-top: 100px;
-  padding-bottom: 150px;
 }
 
 .list-title {
@@ -206,12 +186,13 @@
 }
 
 @media screen and (max-width: 600px) {
-  /* .map-frame {
-    border: 60px solid transparent !important;
-    border-image: url(/assets/scroll.png) 160 round !important;
-    width: 95vw !important;
-  } */
   .flex {
     flex-direction: column !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .scroll-search-results {
+    width: 200px;
   }
 }

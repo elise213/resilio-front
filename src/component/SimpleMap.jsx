@@ -215,7 +215,7 @@ const SimpleMap = ({
               {favorites && favorites.length > 0 && (
                 <div>
                   <p className="list-title">FAVORITES</p>
-                  <div className="scroll-search-results favorites-scroll">
+                  <div className="scroll-search-results">
                     <ul>
                       {favorites.map((result, i) => (
                         <li key={i}>
@@ -234,31 +234,10 @@ const SimpleMap = ({
                   </div>
                 </div>
               )}
-              {/* {store.favorites && store.favorites.length > 0 && (
-              <div>
-                <p>FAVORITES</p>
-                <div className="scroll-search-results">
-                  <ul>
-                    {store.favorites.map((result, i) => (
-                      <li key={i}>
-                        <ResourceCard
-                          item={result}
-                          openModal={openModal}
-                          closeModal={closeModal}
-                          modalIsOpen={modalIsOpen}
-                          setModalIsOpen={setModalIsOpen}
-                          selectedResource={selectedResource}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )} */}
 
               {store.boundaryResults && store.boundaryResults.length > 0 && (
                 <div>
-                  <p className="list-title">RESOURCES IN YOUR AREA</p>
+                  <p className="list-title">YOUR AREA</p>
                   <div className="scroll-search-results">
                     <ul>
                       {store.boundaryResults.map((result, i) => (
