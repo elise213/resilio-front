@@ -62,8 +62,9 @@
   cursor: pointer;
 }
 
-/* @media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
   .map-settings {
-    top: 400px;
+    top: 620px !important;
+    left: 50px !important;
   }
-} */
+}
