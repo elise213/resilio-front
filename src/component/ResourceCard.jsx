@@ -4,7 +4,33 @@ import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
   const { actions, store } = useContext(Context);
+  const selectedResources = props.selectedResources || [];
   const [isFavorited, setIsFavorited] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+
+  useEffect(() => {
+    const sessionSelectedResources = actions.getSessionSelectedResources();
+    setIsSelected(sessionSelectedResources.some((r) => r.id === props.item.id));
+  }, [props.item.id, actions]);
+
+  const handleSelectResource = (resource) => {
+    actions.addSelectedResource(resource);
+    setIsSelected(true); // Update state to reflect the new selection
+  };
+
+  const handleDeselectResource = (resourceId) => {
+    actions.removeSelectedResource(resourceId);
+    setIsSelected(false); // Update state to reflect the item removal
+  };
+
+  const handleToggleSelectResource = (event) => {
+    event.stopPropagation(); // Prevent the card's onClick from firing
+    if (isSelected) {
+      handleDeselectResource(props.item.id);
+    } else {
+      handleSelectResource(props.item);
+    }
+  };
 
   useEffect(() => {
     const storedFavorites = JSON.parse(
@@ -86,6 +112,13 @@ const ResourceCard = (props) => {
           onClick={(event) => toggleFavorite(event)}
         >
           {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+        </button>
+
+        <button
+          className="toggle-selected"
+          onClick={handleToggleSelectResource}
+        >
+          {isSelected ? "Remove from Selected" : "Add to Selected"}
         </button>
       </div>
     </div>
