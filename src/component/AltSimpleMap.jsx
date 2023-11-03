@@ -42,6 +42,7 @@ const AltSimpleMap = ({
   const [initialOffset, setInitialOffset] = useState(null);
   const [currentOffset, setCurrentOffset] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
 
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
@@ -214,8 +215,13 @@ const AltSimpleMap = ({
   }, [store.favorites]);
 
   return (
-    <div className={`map-frame-wrapper ${backSide ? "flipped" : ""}`}>
-      <div className={`map-frame`}>
+    <div
+      className={`map-frame-wrapper ${backSide ? "flipped" : ""} ${
+        isGeneratedMapModalOpen ? "noPadding" : ""
+      }`}
+    >
+      <div className={`map-frame `}>
+        {/* <div className={`map-frame`}> */}
         {backSide ? (
           <>
             <DragDropContext
@@ -241,6 +247,8 @@ const AltSimpleMap = ({
                 onBeforeCapture={onBeforeCapture}
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
+                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
               />
             </DragDropContext>
           </>

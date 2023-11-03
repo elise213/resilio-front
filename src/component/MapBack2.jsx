@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ResourceCard from "./ResourceCard";
+import GeneratedTreasureMap from "./GeneratedTreasureMap";
+
+const DRAGGABLE_ITEM_CLASS = "draggable-item";
 
 const MapBack = ({
   hoveredItem,
@@ -17,14 +20,124 @@ const MapBack = ({
   setBackSide,
   backSide,
   setDraggingItem,
-  selectedResources,
-  setSelectedResources,
+  isGeneratedMapModalOpen,
+  setIsGeneratedMapModalOpen,
 }) => {
-  const { actions, store } = useContext(Context);
+  const {
+    actions,
+    store: { boundaryResults },
+  } = useContext(Context);
+
+  const [selectedResources, setSelectedResources] = useState(() => {
+    // Get the initial state from sessionStorage or default to an empty array
+    const storedResources = sessionStorage.getItem("selectedResources");
+    return storedResources ? JSON.parse(storedResources) : [];
+  });
 
   const onBeforeCapture = (start) => {
     setDraggingItem(start.draggableId);
   };
+
+  const handleCreateMyPathClick = () => {
+    setIsGeneratedMapModalOpen(true);
+  };
+
+  const setSelectedResourcesEvent = new Event("setSelectedResources");
+
+  const addSelectedResource = (resource) => {
+    setSelectedResources((prevResources) => {
+      if (!prevResources.find((r) => r.id === resource.id)) {
+        const updatedResources = [...prevResources, resource];
+        sessionStorage.setItem(
+          "selectedResources",
+          JSON.stringify(updatedResources)
+        );
+        return updatedResources;
+      }
+      return prevResources;
+    });
+  };
+
+  // Function to remove a resource from the selected resources
+  const removeSelectedResource = (resourceId) => {
+    setSelectedResources((prevResources) => {
+      const updatedResources = prevResources.filter((r) => r.id !== resourceId);
+      sessionStorage.setItem(
+        "selectedResources",
+        JSON.stringify(updatedResources)
+      );
+      return updatedResources;
+    });
+  };
+
+  useEffect(() => {
+    const handleSetSelectedResources = () => {
+      const storedResources = actions.getSessionSelectedResources();
+      setSelectedResources(storedResources);
+    };
+
+    document.addEventListener(
+      "setSelectedResources",
+      handleSetSelectedResources
+    );
+
+    // Don't forget to remove the event listener on component unmount
+    return () => {
+      document.removeEventListener(
+        "setSelectedResources",
+        handleSetSelectedResources
+      );
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
+  const renderDraggable = (result, index) => {
+    if (!result || result.id == null) {
+      console.error(
+        "Error: result is undefined or does not have an id",
+        result
+      );
+      return null;
+    }
+    return (
+      <Draggable
+        key={`draggable-${result.id}`}
+        draggableId={`draggable-${result.id.toString()}`}
+        index={index}
+      >
+        {(provided) => (
+          <li
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <ResourceCard
+              item={result}
+              openModal={openModal}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+              setFavorites={setFavorites}
+              selectedResources={selectedResources}
+              addSelectedResource={addSelectedResource}
+            />
+          </li>
+        )}
+      </Draggable>
+    );
+  };
+
+  useEffect(() => {
+    console.log(selectedResources);
+  }, [selectedResources]);
+
+  useEffect(() => {
+    const storedResources = actions.getSessionSelectedResources();
+    if (JSON.stringify(storedResources) !== JSON.stringify(selectedResources)) {
+      // If they are not equal, update the context
+      setSelectedResources(storedResources);
+    }
+  }, []);
 
   return (
     <>
@@ -42,15 +155,11 @@ const MapBack = ({
             setModalIsOpen={setModalIsOpen}
             selectedResource={selectedResource}
             setFavorites={setFavorites}
-            handleSelectResource={handleSelectResource}
-            handleDeselectResource={handleDeselectResource}
             selectedResources={selectedResources}
           />
         )}
 
-        {/* favorites goes here from scraps */}
-
-        {store.boundaryResults && store.boundaryResults.length > 0 && (
+        {boundaryResults && boundaryResults.length > 0 && (
           <DragDropContext
             onDragEnd={onDragEnd}
             onDragStart={onDragStart}
@@ -58,51 +167,16 @@ const MapBack = ({
             onBeforeCapture={onBeforeCapture}
           >
             <Droppable droppableId="areaDroppable">
-              {(provided) => (
+              {(provided, snapshot) => (
                 <div
-                  className="scroll-search-results"
                   ref={provided.innerRef}
+                  className="scroll-search-results"
+                  {...provided.droppableProps}
                   {...provided.droppableProps}
                 >
-                  <ul>
-                    {store.boundaryResults.map((result, index) => {
-                      // Check if the id is null, undefined, or not set
-                      if (result.id === undefined || result.id === null) {
-                        console.error(
-                          "Error: result does not have an id",
-                          result
-                        );
-                        return null; // Skip rendering this item
-                      }
-                      return (
-                        <Draggable
-                          key={result.id}
-                          draggableId={result.id.toString()}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <li
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <ResourceCard
-                                item={result}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResource={selectedResource}
-                                setFavorites={setFavorites}
-                                selectedResources={selectedResources}
-                              />
-                            </li>
-                          )}
-                        </Draggable>
-                      );
-                    })}
-                    {provided.placeholder}
-                  </ul>
+                  <ul>{boundaryResults.map(renderDraggable)}</ul>
+
+                  {provided.placeholder}
                 </div>
               )}
             </Droppable>
@@ -111,7 +185,6 @@ const MapBack = ({
       </div>
 
       <div className="treasureMapDiv">
-        {/* <img className="treasureMap" src="/assets/tmap.png"></img> */}
         <DragDropContext
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
@@ -121,62 +194,30 @@ const MapBack = ({
           <Droppable droppableId="mapAreaDroppable">
             {(provided, snapshot) => (
               <div
-                className={`droppable-map-area ${
-                  snapshot.isDragging
-                    ? "draggable-item dragging"
-                    : "draggable-item"
-                }`} // 'dragging' className when item is being dragged
+                className={`${DRAGGABLE_ITEM_CLASS} ${
+                  snapshot.isDragging ? "dragging" : ""
+                }`}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 {...provided.dragHandleProps}
               >
                 <img className="treasureMap" src="/assets/tmap.png"></img>
-                {/* <div> */}
-                <ul className="ul">
-                  {store.selectedResources.map((result, index) => {
-                    if (!result || result.id == null) {
-                      console.error(
-                        "Error: result is undefined or does not have an id",
-                        result
-                      );
-                      return null;
-                    }
-                    return (
-                      <Draggable
-                        key={result.id}
-                        draggableId={result.id.toString()}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <li
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <ResourceCard
-                              item={result}
-                              openModal={openModal}
-                              closeModal={closeModal}
-                              modalIsOpen={modalIsOpen}
-                              setModalIsOpen={setModalIsOpen}
-                              selectedResource={selectedResource}
-                              setFavorites={setFavorites}
-                              selectedResources={selectedResources}
-                            />
-                          </li>
-                        )}
-                      </Draggable>
-                    );
-                  })}
-                </ul>
-                {/* </div> */}
+                <ul className="ul">{selectedResources.map(renderDraggable)}</ul>
                 {provided.placeholder}
               </div>
             )}
           </Droppable>
         </DragDropContext>
-        <button className="createMyPath">Create my Path</button>
+        <button className="createMyPath" onClick={handleCreateMyPathClick}>
+          Create my Path
+        </button>
       </div>
+      {isGeneratedMapModalOpen && (
+        <GeneratedTreasureMap
+          closeModal={() => setIsGeneratedMapModalOpen(false)}
+          selectedResources={selectedResources}
+        />
+      )}
     </>
   );
 };

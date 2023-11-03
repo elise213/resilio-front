@@ -150,38 +150,47 @@ const getState = ({ getStore, getActions, setStore }) => {
           return { color: colors[category] };
         } else return { color: "red" };
       },
+      // Define the event outside of the store functions so it is not re-created every time the function runs
+      setSelectedResourcesEvent: new Event("setSelectedResources"),
+
       getSessionSelectedResources: () => {
         return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
       },
-      addSelectedResource: (resource) => {
-        const getSessionSelectedResources = () => {
-          return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
-        };
-        const selectedResources = getSessionSelectedResources();
-        if (!selectedResources.find((r) => r.id === resource.id)) {
-          const updatedSelectedResources = [...selectedResources, resource];
-          sessionStorage.setItem(
-            "selectedResources",
-            JSON.stringify(updatedSelectedResources)
-          );
-          setStore({ selectedResources: updatedSelectedResources });
-        }
-      },
+      // selectedResources: context.storeFunctions.getSessionSelectedResources(),
 
-      removeSelectedResource: (resourceId) => {
-        const getSessionSelectedResources = () => {
-          return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
-        };
-        const selectedResources = getSessionSelectedResources();
-        const updatedSelectedResources = selectedResources.filter(
-          (r) => r.id !== resourceId
-        );
-        sessionStorage.setItem(
-          "selectedResources",
-          JSON.stringify(updatedSelectedResources)
-        );
-        setStore({ selectedResources: updatedSelectedResources });
-      },
+      // addSelectedResource: (resource) => {
+      //   const getSessionSelectedResources =
+      //     storeFunctions.getSessionSelectedResources;
+      //   const selectedResources = getSessionSelectedResources();
+      //   if (!selectedResources.find((r) => r.id === resource.id)) {
+      //     const updatedSelectedResources = [...selectedResources, resource];
+      //     sessionStorage.setItem(
+      //       "selectedResources",
+      //       JSON.stringify(updatedSelectedResources)
+      //     );
+
+      //     document.dispatchEvent(setSelectedResourcesEvent);
+
+      //     setStore({ selectedResources: updatedSelectedResources });
+      //   }
+      // },
+
+      // removeSelectedResource: (resourceId) => {
+      //   const getSessionSelectedResources =
+      //     storeFunctions.getSessionSelectedResources;
+      //   const selectedResources = getSessionSelectedResources();
+      //   const updatedSelectedResources = selectedResources.filter(
+      //     (r) => r.id !== resourceId
+      //   );
+      //   sessionStorage.setItem(
+      //     "selectedResources",
+      //     JSON.stringify(updatedSelectedResources)
+      //   );
+
+      //   document.dispatchEvent(setSelectedResourcesEvent);
+
+      //   setStore({ selectedResources: updatedSelectedResources });
+      // },
 
       getIconForCategory: (category) => {
         switch (category) {
