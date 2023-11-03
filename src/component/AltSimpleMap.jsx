@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Context } from "../store/appContext";
+import MapBack from "./MapBack2";
 import Selection from "./Selection";
 import ResourceCard from "./ResourceCard";
 import ErrorBoundary from "./ErrorBoundary";
@@ -9,7 +11,7 @@ import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
 import RESR from "/assets/RESILIOO.png";
 
-const SimpleMap = ({
+const AltSimpleMap = ({
   openModal,
   handleBoundsChange,
   INITIAL_DAY_STATE,
@@ -34,75 +36,112 @@ const SimpleMap = ({
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
+  const [selectedResources, setSelectedResources] = useState([]);
   const [backSide, setBackSide] = useState(false);
+  const [draggingItem, setDraggingItem] = useState(null);
+  const [initialOffset, setInitialOffset] = useState(null);
+  const [currentOffset, setCurrentOffset] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
   );
 
-  useEffect(() => {
-    if (favorites) {
-      console.log("favs", favorites);
-    }
-  }, [favorites]);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
-  const createMapOptions = () => {
-    return {
-      styles: [
-        {
-          featureType: "all",
-          elementType: "geometry",
-          stylers: [{ lightness: -5 }, { gamma: 0.8 }, { saturation: -30 }],
-        },
-        {
-          featureType: "poi",
-          elementType: "labels",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "poi.business",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "transit",
-          elementType: "labels.icon",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "road",
-          elementType: "labels.icon",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "road",
-          elementType: "labels.text.fill",
-          stylers: [{ visibility: "off" }],
-        },
-
-        {
-          featureType: "administrative.locality",
-          elementType: "labels",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "administrative.neighborhood",
-          elementType: "labels.text.stroke",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "administrative.neighborhood",
-          elementType: "labels.text.fill",
-          stylers: [{ visibility: "off" }],
-        },
-        {
-          featureType: "water",
-          elementType: "labels",
-          stylers: [{ visibility: "off" }],
-        },
-      ],
-    };
+  const onBeforeCapture = (start) => {
+    setDraggingItem(start.draggableId);
   };
 
-  const [hoveredItem, setHoveredItem] = useState(null);
+  const onDragEnd = (result) => {
+    console.log("onDragEnd", result);
+    const { destination, source } = result;
+
+    // If dropped outside the list
+    if (!destination) {
+      return;
+    }
+
+    // If the position has not changed
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // Handling the case when the source and destination are the same
+    // In this case, you just reorder the list
+    if (destination.droppableId === source.droppableId) {
+      const newSelectedResources = Array.from(selectedResources);
+      const [removed] = newSelectedResources.splice(source.index, 1);
+      newSelectedResources.splice(destination.index, 0, removed);
+
+      setSelectedResources(newSelectedResources);
+    } else {
+      // Handle the case when the source and destination are different
+      // Here, you add the item to the destination list without removing it from the source
+      const sourceList = store[source.droppableId]; // Assuming you have your source items stored in the 'store' state
+      const destinationList = selectedResources;
+      const item = sourceList[source.index]; // Get the dragged item
+
+      // Add the item to the destination list
+      const newDestinationList = Array.from(destinationList);
+      newDestinationList.splice(destination.index, 0, item);
+
+      setSelectedResources(newDestinationList);
+
+      // Optionally, if you need to perform any additional state updates, do it here
+      // For example, if you need to update something in your store state
+      // actions.updateStoreWithNewState(...);
+    }
+
+    setIsDragging(false);
+    setDraggingItem(null);
+    setInitialOffset(null);
+    setCurrentOffset(null);
+  };
+
+  const onDragStart = (start) => {
+    setIsDragging(true);
+  };
+
+  const onDragUpdate = (update) => {
+    if (update.initial && update.initial.source) {
+      setInitialOffset(update.initial.source.clientOffset);
+    }
+    if (update.source) {
+      setCurrentOffset(update.source.clientOffset);
+    }
+  };
+
+  const createPath = () => {
+    // Use selectedResources to create a path
+    console.log("Selected Resources for path:", selectedResources);
+  };
+
+  const getDragLayerStyles = (initialOffset, currentOffset) => {
+    if (!initialOffset || !currentOffset) {
+      return {
+        display: "none",
+      };
+    }
+
+    const { x, y } = currentOffset;
+    const transform = `translate(${x}px, ${y}px)`;
+
+    return {
+      transform,
+      WebkitTransform: transform,
+      // Set touch-action to none to prevent default touch behaviors like scrolling.
+      touchAction: "none",
+      position: "fixed",
+      pointerEvents: "none",
+      zIndex: 100,
+      left: 0,
+      top: 0,
+    };
+  };
 
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -141,26 +180,6 @@ const SimpleMap = ({
         }}
         onClick={result ? () => openModal(result) : undefined}
       >
-        {/* {isHovered && result && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "100%",
-              width: "300px",
-              zIndex: 99999,
-            }}
-          >
-            <ResourceCard
-              item={result}
-              openModal={openModal}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-            />
-          </div>
-        )} */}
-
         {isHovered && result && (
           <div
             style={{
@@ -195,80 +214,35 @@ const SimpleMap = ({
   }, [store.favorites]);
 
   return (
-    <div class={`map-frame-wrapper ${backSide ? "flipped" : ""}`}>
+    <div className={`map-frame-wrapper ${backSide ? "flipped" : ""}`}>
       <div className={`map-frame`}>
         {backSide ? (
-          // New view when backSide is true
           <>
-            <button
-              className="flip-button"
-              onClick={() => setBackSide(!backSide)}
+            <DragDropContext
+              onDragEnd={onDragEnd}
+              onDragStart={onDragStart}
+              onDragUpdate={onDragUpdate}
+              onBeforeCapture={onBeforeCapture}
             >
-              Flip The Map
-            </button>
-            <div className="backside">
-              {hoveredItem && !backSide && (
-                <ResourceCard
-                  item={hoveredItem}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  modalIsOpen={modalIsOpen}
-                  setModalIsOpen={setModalIsOpen}
-                  selectedResource={selectedResource}
-                  setFavorites={setFavorites}
-                />
-              )}
-              {favorites && favorites.length > 0 && (
-                <div>
-                  <p className="list-title">FAVORITES</p>
-                  <div className="scroll-search-results">
-                    <ul>
-                      {favorites.map((result, i) => (
-                        <li key={i}>
-                          <ResourceCard
-                            item={result}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResource={selectedResource}
-                            setFavorites={setFavorites}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {store.boundaryResults && store.boundaryResults.length > 0 && (
-                <div>
-                  <p className="list-title">YOUR AREA</p>
-                  <div className="scroll-search-results">
-                    <ul>
-                      {store.boundaryResults.map((result, i) => (
-                        <li key={i}>
-                          <ResourceCard
-                            item={result}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResource={selectedResource}
-                            setFavorites={setFavorites}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="treasureMapDiv">
-              <img className="treasureMap" src="/assets/tmap.png"></img>
-              <button className="createMyPath">Create my Path</button>
-            </div>
+              <MapBack
+                hoveredItem={hoveredItem}
+                openModal={openModal}
+                closeModal={closeModal}
+                modalIsOpen={modalIsOpen}
+                setModalIsOpen={setModalIsOpen}
+                selectedResource={selectedResource}
+                setFavorites={setFavorites}
+                onDragEnd={onDragEnd}
+                onDragStart={onDragStart}
+                onDragUpdate={onDragUpdate}
+                setBackSide={setBackSide}
+                backSide={backSide}
+                setDraggingItem={setDraggingItem}
+                onBeforeCapture={onBeforeCapture}
+                selectedResources={selectedResources}
+                setSelectedResources={setSelectedResources}
+              />
+            </DragDropContext>
           </>
         ) : (
           <>
@@ -291,7 +265,7 @@ const SimpleMap = ({
                 bounds={city.bounds}
                 defaultZoom={11}
                 onChange={(e) => handleBoundsChange(e)}
-                options={createMapOptions}
+                // options={createMapOptions}
               >
                 {store.boundaryResults.map((result, i) => (
                   <Marker
@@ -352,4 +326,4 @@ const SimpleMap = ({
   );
 };
 
-export default SimpleMap;
+export default AltSimpleMap;
