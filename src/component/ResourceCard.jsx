@@ -6,30 +6,15 @@ const ResourceCard = (props) => {
   const { actions, store } = useContext(Context);
   const selectedResources = props.selectedResources || [];
   const [isFavorited, setIsFavorited] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
 
-  useEffect(() => {
-    const sessionSelectedResources = actions.getSessionSelectedResources();
-    setIsSelected(sessionSelectedResources.some((r) => r.id === props.item.id));
-  }, [props.item.id, actions]);
-
+  // Replace the handleSelectResource function
   const handleSelectResource = (resource) => {
-    actions.addSelectedResource(resource);
-    setIsSelected(true); // Update state to reflect the new selection
+    props.addSelectedResource(resource);
   };
 
+  // Replace the handleDeselectResource function
   const handleDeselectResource = (resourceId) => {
     actions.removeSelectedResource(resourceId);
-    setIsSelected(false); // Update state to reflect the item removal
-  };
-
-  const handleToggleSelectResource = (event) => {
-    event.stopPropagation(); // Prevent the card's onClick from firing
-    if (isSelected) {
-      handleDeselectResource(props.item.id);
-    } else {
-      handleSelectResource(props.item);
-    }
   };
 
   useEffect(() => {
@@ -72,6 +57,20 @@ const ResourceCard = (props) => {
       actions.removeFavorite(props.item.name, props.setFavorites);
     } else {
       actions.addFavorite(props.item.name, props.setFavorites);
+    }
+  };
+
+  const isSelected = props.selectedResources.some(
+    (resource) => resource.id === props.item.id
+  );
+
+  const handleToggleSelectResource = (event) => {
+    event.stopPropagation(); // Prevent the card's onClick from firing
+    if (isSelected) {
+      // Pass only the id if that's what the store action expects
+      handleDeselectResource(props.item.id);
+    } else {
+      handleSelectResource(props.item);
     }
   };
 

@@ -196,7 +196,7 @@
   font-weight: bolder;
   background-color: transparent;
   z-index: 9999;
-  padding: 30px 0px 50px;
+  padding: 30px 0 0;
   justify-content: space-around;
 }
 
@@ -279,4 +279,66 @@
 .ul {
   display: flex;
   overflow-x: auto;
+}
+
+li {
+  margin: 0 10px;
+}
+
+.draggable-item {
+  width: 100%;
+}
+
+.modal-overlay-treasure {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal-content-treasure {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  top: 10vh;
+  width: 80%;
+  height: 80vh;
+}
+
+.modal-close-treasure {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+/* Add styles for the button if it is hovered or focused for accessibility */
+.modal-close-treasure:hover,
+.modal-close-treasure:focus {
+  color: #ff0000;
+}
+
+.text-area {
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+
+.noPadding {
+  padding: 0 !important;
 }
