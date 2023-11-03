@@ -32,7 +32,7 @@
 .flip-button {
   background-color: var(--coral);
   width: 150px;
-  margin-bottom: 100px;
+  margin-top: 100px;
 }
 
 .map-frame-wrapper.flipped {
@@ -279,10 +279,11 @@
 .ul {
   display: flex;
   overflow-x: auto;
+  list-style: none;
 }
 
 li {
-  margin: 0 10px;
+  margin: 10px;
 }
 
 .draggable-item {
@@ -300,21 +301,23 @@ li {
   justify-content: center;
   align-items: center;
   z-index: 10000;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content-treasure {
-  position: relative;
+  position: fixed; /* Changed from absolute to fixed */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* Centers the div */
   width: 80%;
-  height: 80%;
+  height: 80vh;
   background: white;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   overflow-x: hidden;
-  position: absolute;
-  top: 10vh;
-  width: 80%;
-  height: 80vh;
+  z-index: 100000000; /* Ensure it's above other elements */
 }
 
 .modal-close-treasure {
@@ -327,7 +330,6 @@ li {
   cursor: pointer;
 }
 
-/* Add styles for the button if it is hovered or focused for accessibility */
 .modal-close-treasure:hover,
 .modal-close-treasure:focus {
   color: #ff0000;
@@ -341,4 +343,9 @@ li {
 
 .noPadding {
   padding: 0 !important;
+}
+
+.body-no-scroll {
+  overflow: hidden;
+  height: 100%;
 }

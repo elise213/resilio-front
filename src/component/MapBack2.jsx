@@ -44,6 +44,19 @@ const MapBack = ({
 
   const setSelectedResourcesEvent = new Event("setSelectedResources");
 
+  useEffect(() => {
+    const body = document.body;
+    const originalStyle = window.getComputedStyle(body).overflow;
+
+    if (isGeneratedMapModalOpen) {
+      body.style.overflow = "hidden";
+    }
+
+    return () => {
+      body.style.overflow = originalStyle;
+    };
+  }, [isGeneratedMapModalOpen]);
+
   const addSelectedResource = (resource) => {
     setSelectedResources((prevResources) => {
       if (!prevResources.find((r) => r.id === resource.id)) {
