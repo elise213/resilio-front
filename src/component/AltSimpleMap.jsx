@@ -134,7 +134,6 @@ const AltSimpleMap = ({
     return {
       transform,
       WebkitTransform: transform,
-      // Set touch-action to none to prevent default touch behaviors like scrolling.
       touchAction: "none",
       position: "fixed",
       pointerEvents: "none",
@@ -221,7 +220,6 @@ const AltSimpleMap = ({
       }`}
     >
       <div className={`map-frame `}>
-        {/* <div className={`map-frame`}> */}
         {backSide ? (
           <>
             <DragDropContext
@@ -273,7 +271,6 @@ const AltSimpleMap = ({
                 bounds={city.bounds}
                 defaultZoom={11}
                 onChange={(e) => handleBoundsChange(e)}
-                // options={createMapOptions}
               >
                 {store.boundaryResults.map((result, i) => (
                   <Marker
