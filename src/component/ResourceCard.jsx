@@ -3,8 +3,23 @@ import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
+  // Before the return statement, check if the `item` prop exists
+  if (!props.item) {
+    console.error("ResourceCard component was rendered without an item prop.");
+    return null;
+  }
+
   const { actions, store } = useContext(Context);
+  const selectedResources = props.selectedResources || [];
   const [isFavorited, setIsFavorited] = useState(false);
+
+  const handleSelectResource = (resource) => {
+    props.addSelectedResource(resource);
+  };
+
+  const handleDeselectResource = (resourceId) => {
+    actions.removeSelectedResource(resourceId);
+  };
 
   useEffect(() => {
     const storedFavorites = JSON.parse(
@@ -38,8 +53,6 @@ const ResourceCard = (props) => {
 
   const toggleFavorite = (event) => {
     event.stopPropagation();
-
-    // Toggle the isFavorited state immediately
     setIsFavorited(!isFavorited);
 
     if (isFavorited) {
@@ -49,12 +62,38 @@ const ResourceCard = (props) => {
     }
   };
 
+  const isSelected =
+    Array.isArray(props.selectedResources) &&
+    props.selectedResources.some((resource) => resource.id === props.item.id);
+
+  const handleToggleSelectResource = (event) => {
+    event.stopPropagation(); // Prevent the card's onClick from firing
+    if (isSelected) {
+      // Pass only the id if that's what the store action expects
+      handleDeselectResource(props.item.id);
+    } else {
+      handleSelectResource(props.item);
+    }
+  };
+
   return (
     <div
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
       <div className="">
+        <div className="icons-container">
+          {categories.map((category, index) => {
+            const colorStyle = actions.getColorForCategory(category);
+            return (
+              <i
+                key={index}
+                className={`card-icon ${actions.getIconForCategory(category)}`}
+                style={colorStyle ? colorStyle : {}}
+              />
+            );
+          })}
+        </div>
         <div className="resource-card-header">
           <div className="card-title-div">
             <p className="resource-title">{props.item.name}</p>
@@ -69,23 +108,19 @@ const ResourceCard = (props) => {
             />
           </div>
         )}
-        <div className="icons-container">
-          {categories.map((category, index) => {
-            const colorStyle = actions.getColorForCategory(category);
-            return (
-              <i
-                key={index}
-                className={`card-icon ${actions.getIconForCategory(category)}`}
-                style={colorStyle ? colorStyle : {}}
-              />
-            );
-          })}
-        </div>
+
         <button
           className="add-favorite"
           onClick={(event) => toggleFavorite(event)}
         >
           {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+        </button>
+
+        <button
+          className="toggle-selected"
+          onClick={handleToggleSelectResource}
+        >
+          {isSelected ? "Remove from Path" : "Add to Path"}
         </button>
       </div>
     </div>

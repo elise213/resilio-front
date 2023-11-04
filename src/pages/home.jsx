@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Report from "../component/Report";
 import { MapSettings } from "../component";
+import AltSimpleMap from "../component/AltSimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
 import Styles from "../styles/home.css";
@@ -303,7 +304,8 @@ const Home = () => {
         {message1Open && (
           <>
             <ErrorBoundary>
-              <SimpleMap
+              {/* <SimpleMap */}
+              <AltSimpleMap
                 handleBoundsChange={handleBoundsChange}
                 openModal={openModal}
                 city={city}

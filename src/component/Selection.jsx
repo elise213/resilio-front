@@ -116,14 +116,12 @@ const Selection = ({
       category.split(",").map((c) => c.trim())
     );
     setAllCategories(allCats);
-    // console.log("Categories Updated", allCats);
   }, [store.mapResults]);
 
   useEffect(() => {
     if (allCategories.length > 0) {
       const visibleGroups = groupIds.filter((id) => allCategories.includes(id));
       setVisibleGroupCount(visibleGroups.length);
-      // console.log("Visible Groups", visibleGroups.length);
     }
   }, [allCategories, store.mapResults]);
 
@@ -268,25 +266,29 @@ const Selection = ({
 
   return (
     <div className={"selection"}>
-      <div className={"cent"}>
-        <div className={`select-header ${showCategories ? "header-open" : ""}`}>
-          {showCategories && <p>Filter by Category</p>}
-          <button
-            onClick={() => {
-              setShowCategories(!showCategories);
-              if (showCategories) {
-                toggleAllCheckboxes(setCategories, categories, categoryIds);
-              }
-            }}
-            className={showCategories ? "open2" : "closed2"}
+      {allCategories.length > 0 && (
+        <div className={"cent"}>
+          <div
+            className={`select-header ${showCategories ? "header-open" : ""}`}
           >
-            {showCategories ? "X" : "Filter By Category"}
-          </button>
-        </div>
+            {showCategories && <p>Filter by Category</p>}
+            <button
+              onClick={() => {
+                setShowCategories(!showCategories);
+                if (showCategories) {
+                  toggleAllCheckboxes(setCategories, categories, categoryIds);
+                }
+              }}
+              className={showCategories ? "open2" : "closed2"}
+            >
+              {showCategories ? "X" : "Filter By Category"}
+            </button>
+          </div>
 
-        {showCategories &&
-          renderCenterColumn("category", categories, setCategories)}
-      </div>
+          {showCategories &&
+            renderCenterColumn("category", categories, setCategories)}
+        </div>
+      )}
 
       {visibleGroupCount > 0 && (
         <div className={"cent"}>

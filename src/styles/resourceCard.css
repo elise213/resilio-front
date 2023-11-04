@@ -5,13 +5,16 @@
   background-color: #eeeeee;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 1px 2px 3px rgba(0, 0, 0, 0.2);
   align-items: center;
-  padding: 4px;
-  /* max-width: 250px; */
-  border-radius: 1%;
+  padding: 6px;
+  font-size: small;
+  border-radius: 2%;
   min-height: 150px;
   width: 200px;
-  z-index: 99999 !important;
+  z-index: 9999999 !important;
   position: static;
+  user-select: none; /* Prevents text selection during drag */
+  /* position: absolute; */
+  margin: 10px;
 }
 
 .add-favorite {
@@ -27,14 +30,6 @@
   display: flex;
 }
 
-.card-title-div {
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .resource-title {
   color: black;
   font-family: "Urbanist", sans-serif;
@@ -42,6 +37,9 @@
   font-weight: bolder;
   margin: 0;
   padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
 }
 
 .resource-card-header {
@@ -57,13 +55,12 @@
 .icons-container {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  padding: 5px;
+  justify-content: center;
+  margin: 0;
 }
 
 .card-title-div {
   width: 100%;
-  height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,7 +79,7 @@
   }
 
   .my-resource-card {
-    width: 150px !important;
+    width: 200px !important;
   }
 }
 
@@ -92,7 +89,7 @@
   }
 
   .my-resource-card {
-    width: 150px !important;
+    width: 180px !important;
   }
 }
 

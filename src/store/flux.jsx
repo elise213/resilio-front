@@ -42,6 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       when: [],
       dummydata: [],
       schedules: [],
+      selectedResources: [],
       CATEGORY_OPTIONS: [
         { id: "food", label: "Food" },
         { id: "health", label: "Medical Care" },
@@ -149,6 +150,47 @@ const getState = ({ getStore, getActions, setStore }) => {
           return { color: colors[category] };
         } else return { color: "red" };
       },
+      // Define the event outside of the store functions so it is not re-created every time the function runs
+      setSelectedResourcesEvent: new Event("setSelectedResources"),
+
+      getSessionSelectedResources: () => {
+        return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
+      },
+      // selectedResources: context.storeFunctions.getSessionSelectedResources(),
+
+      // addSelectedResource: (resource) => {
+      //   const getSessionSelectedResources =
+      //     storeFunctions.getSessionSelectedResources;
+      //   const selectedResources = getSessionSelectedResources();
+      //   if (!selectedResources.find((r) => r.id === resource.id)) {
+      //     const updatedSelectedResources = [...selectedResources, resource];
+      //     sessionStorage.setItem(
+      //       "selectedResources",
+      //       JSON.stringify(updatedSelectedResources)
+      //     );
+
+      //     document.dispatchEvent(setSelectedResourcesEvent);
+
+      //     setStore({ selectedResources: updatedSelectedResources });
+      //   }
+      // },
+
+      // removeSelectedResource: (resourceId) => {
+      //   const getSessionSelectedResources =
+      //     storeFunctions.getSessionSelectedResources;
+      //   const selectedResources = getSessionSelectedResources();
+      //   const updatedSelectedResources = selectedResources.filter(
+      //     (r) => r.id !== resourceId
+      //   );
+      //   sessionStorage.setItem(
+      //     "selectedResources",
+      //     JSON.stringify(updatedSelectedResources)
+      //   );
+
+      //   document.dispatchEvent(setSelectedResourcesEvent);
+
+      //   setStore({ selectedResources: updatedSelectedResources });
+      // },
 
       getIconForCategory: (category) => {
         switch (category) {
