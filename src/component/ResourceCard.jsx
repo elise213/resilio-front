@@ -3,16 +3,20 @@ import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
+  // Before the return statement, check if the `item` prop exists
+  if (!props.item) {
+    console.error("ResourceCard component was rendered without an item prop.");
+    return null;
+  }
+
   const { actions, store } = useContext(Context);
   const selectedResources = props.selectedResources || [];
   const [isFavorited, setIsFavorited] = useState(false);
 
-  // Replace the handleSelectResource function
   const handleSelectResource = (resource) => {
     props.addSelectedResource(resource);
   };
 
-  // Replace the handleDeselectResource function
   const handleDeselectResource = (resourceId) => {
     actions.removeSelectedResource(resourceId);
   };
@@ -49,8 +53,6 @@ const ResourceCard = (props) => {
 
   const toggleFavorite = (event) => {
     event.stopPropagation();
-
-    // Toggle the isFavorited state immediately
     setIsFavorited(!isFavorited);
 
     if (isFavorited) {
@@ -60,9 +62,9 @@ const ResourceCard = (props) => {
     }
   };
 
-  const isSelected = props.selectedResources.some(
-    (resource) => resource.id === props.item.id
-  );
+  const isSelected =
+    Array.isArray(props.selectedResources) &&
+    props.selectedResources.some((resource) => resource.id === props.item.id);
 
   const handleToggleSelectResource = (event) => {
     event.stopPropagation(); // Prevent the card's onClick from firing
@@ -80,6 +82,18 @@ const ResourceCard = (props) => {
       onClick={() => props.openModal(props.item)}
     >
       <div className="">
+        <div className="icons-container">
+          {categories.map((category, index) => {
+            const colorStyle = actions.getColorForCategory(category);
+            return (
+              <i
+                key={index}
+                className={`card-icon ${actions.getIconForCategory(category)}`}
+                style={colorStyle ? colorStyle : {}}
+              />
+            );
+          })}
+        </div>
         <div className="resource-card-header">
           <div className="card-title-div">
             <p className="resource-title">{props.item.name}</p>
@@ -94,18 +108,7 @@ const ResourceCard = (props) => {
             />
           </div>
         )}
-        <div className="icons-container">
-          {categories.map((category, index) => {
-            const colorStyle = actions.getColorForCategory(category);
-            return (
-              <i
-                key={index}
-                className={`card-icon ${actions.getIconForCategory(category)}`}
-                style={colorStyle ? colorStyle : {}}
-              />
-            );
-          })}
-        </div>
+
         <button
           className="add-favorite"
           onClick={(event) => toggleFavorite(event)}
@@ -117,7 +120,7 @@ const ResourceCard = (props) => {
           className="toggle-selected"
           onClick={handleToggleSelectResource}
         >
-          {isSelected ? "Remove from Selected" : "Add to Selected"}
+          {isSelected ? "Remove from Path" : "Add to Path"}
         </button>
       </div>
     </div>

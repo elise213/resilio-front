@@ -22,7 +22,8 @@
 .createMyPath {
   z-index: 999999;
   width: 180px;
-  height: 70px;
+  height: 40px;
+  background-color: lightgreen;
 }
 
 .marker-icon {
@@ -176,7 +177,7 @@
 }
 
 .scroll-search-results::-webkit-scrollbar {
-  width: 7px; /* You can adjust this to the desired width */
+  width: 7px;
 }
 
 .scroll-search-results::-webkit-scrollbar-thumb {
@@ -198,13 +199,6 @@
   z-index: 9999;
   padding: 30px 0 0;
   justify-content: space-around;
-}
-
-.list-title {
-  font-family: "AwsumSans", sans-serif;
-  text-align: center;
-  color: white;
-  border-bottom: 1px solid white;
 }
 
 .gm-control-active {
@@ -290,62 +284,20 @@ li {
   width: 100%;
 }
 
-.modal-overlay-treasure {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+.scroll-title {
+  font-family: "AwsumSans", sans-serif;
+  text-align: center;
+
+  border-bottom: 3px solid black;
+  font-size: 30px;
+}
+
+.map-area-droppable {
+  background-color: red;
+}
+
+.back-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content-treasure {
-  position: fixed; /* Changed from absolute to fixed */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%); /* Centers the div */
-  width: 80%;
-  height: 80vh;
-  background: white;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 100000000; /* Ensure it's above other elements */
-}
-
-.modal-close-treasure {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  background: none;
-  font-size: 1.5em;
-  cursor: pointer;
-}
-
-.modal-close-treasure:hover,
-.modal-close-treasure:focus {
-  color: #ff0000;
-}
-
-.text-area {
-  height: 100%;
   width: 100%;
-  border: none;
-}
-
-.noPadding {
-  padding: 0 !important;
-}
-
-.body-no-scroll {
-  overflow: hidden;
-  height: 100%;
+  justify-content: space-around;
 }

@@ -68,3 +68,8 @@
     left: 50px !important;
   }
 }
+
+.scroll-title {
+  display: flex;
+  justify-content: center;
+}

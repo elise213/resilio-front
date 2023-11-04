@@ -133,29 +133,13 @@ export const ModalInfo = (props) => {
       {/* DESCRIPTION */}
       {res.description && (
         <div className="description-div">
-          <p className="resource-card-text description">{res.description}</p>
+          <p className="modal-text description">{res.description}</p>
         </div>
       )}
 
       <div className="info-map-div">
         <div className="details-div">
           <div className="details-column">
-            {/* ADDRESS */}
-            {res.address && (
-              <div className="info">
-                <i className="fa-solid fa-map-pin"></i>
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                    res.address
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="resource-card-text"
-                >
-                  {res.address}
-                </a>
-              </div>
-            )}
             {/* WEBSITE */}
             {res.website && (
               <div className="info">
@@ -164,7 +148,7 @@ export const ModalInfo = (props) => {
                   href={`https://www.${res.website}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="resource-card-text"
+                  className="modal-text"
                 >
                   Visit Website
                 </a>
@@ -180,7 +164,7 @@ export const ModalInfo = (props) => {
                     ([day, schedule], index) => (
                       <p
                         key={index}
-                        className="resource-card-text"
+                        className="modal-text modal-center"
                         style={{
                           color: schedule !== "Closed" ? "green" : "inherit",
                         }}
@@ -190,6 +174,23 @@ export const ModalInfo = (props) => {
                     )
                   )}
                 </div>
+              </div>
+            )}
+
+            {/* ADDRESS */}
+            {res.address && (
+              <div className="info">
+                <i className="fa-solid fa-map-pin"></i>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    res.address
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="modal-text"
+                >
+                  {res.address}
+                </a>
               </div>
             )}
           </div>
