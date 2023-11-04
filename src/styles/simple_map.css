@@ -3,6 +3,29 @@
   display: inline-block;
 }
 
+.treasureMap {
+  width: 100%;
+}
+.droppable-map-area {
+  width: 100%;
+}
+
+.treasureMapDiv {
+  margin-bottom: 170px;
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.createMyPath {
+  z-index: 999999;
+  width: 180px;
+  height: 40px;
+  background-color: lightgreen;
+}
+
 .marker-icon {
   display: flex;
 }
@@ -10,7 +33,7 @@
 .flip-button {
   background-color: var(--coral);
   width: 150px;
-  margin-bottom: 100px;
+  margin-top: 100px;
 }
 
 .map-frame-wrapper.flipped {
@@ -52,7 +75,7 @@
 .logo-div {
   display: flex;
   justify-content: center;
-  margin: 80px 0 20px 0;
+  margin: 0 0 20px 0;
 }
 
 .map-frame-wrapper {
@@ -77,7 +100,7 @@
   width: 100%;
   overflow: hidden;
   background-color: transparent;
-  margin: 0px 30px;
+  /* margin: 0px 30px; */
   display: flex;
   z-index: 0;
   box-sizing: border-box;
@@ -154,7 +177,7 @@
 }
 
 .scroll-search-results::-webkit-scrollbar {
-  width: 7px; /* You can adjust this to the desired width */
+  width: 7px;
 }
 
 .scroll-search-results::-webkit-scrollbar-thumb {
@@ -174,15 +197,8 @@
   font-weight: bolder;
   background-color: transparent;
   z-index: 9999;
-  padding: 100px 0px 50px;
+  padding: 30px 0 0;
   justify-content: space-around;
-}
-
-.list-title {
-  font-family: "AwsumSans", sans-serif;
-  text-align: center;
-  color: white;
-  border-bottom: 1px solid white;
 }
 
 .gm-control-active {
@@ -218,9 +234,9 @@
     padding: 100px 50px !important;
   }
 
-  .map-frame {
+  /* .map-frame {
     margin: 0px 30px !important;
-  }
+  } */
 
   .scroll-search-results {
     width: 180px !important;
@@ -235,4 +251,53 @@
   .scroll-search-results {
     width: 150px !important;
   }
+}
+
+.droppable-map-area {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow-x: auto;
+  gap: 10px;
+  background-color: red;
+}
+
+.dragging {
+  background: lightgreen;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}
+
+.ul {
+  display: flex;
+  overflow-x: auto;
+  list-style: none;
+}
+
+li {
+  margin: 10px;
+}
+
+.draggable-item {
+  width: 100%;
+}
+
+.scroll-title {
+  font-family: "AwsumSans", sans-serif;
+  text-align: center;
+
+  border-bottom: 3px solid black;
+  font-size: 30px;
+}
+
+.map-area-droppable {
+  background-color: red;
+}
+
+.back-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
 }
