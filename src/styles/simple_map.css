@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .marker {
   position: relative;
   display: inline-block;
@@ -190,17 +198,6 @@
   background-color: darkgreen;
 }
 
-.backside {
-  display: flex;
-  font-family: "Urbanist", sans-serif;
-  font-size: medium;
-  font-weight: bolder;
-  background-color: transparent;
-  z-index: 9999;
-  padding: 30px 0 0;
-  justify-content: space-around;
-}
-
 .gm-control-active {
   display: none;
 }
@@ -209,15 +206,6 @@
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-@media screen and (max-width: 800px) {
-  .scroll-search-results {
-    width: 200px;
-  }
-  .cent {
-    padding: 10px !important;
-  }
 }
 
 @media screen and (max-width: 700px) {
@@ -233,14 +221,6 @@
   .map-frame-wrapper {
     padding: 100px 50px !important;
   }
-
-  /* .map-frame {
-    margin: 0px 30px !important;
-  } */
-
-  .scroll-search-results {
-    width: 180px !important;
-  }
 }
 
 @media screen and (max-width: 500px) {
@@ -253,51 +233,10 @@
   }
 }
 
-.droppable-map-area {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  overflow-x: auto;
-  gap: 10px;
-  background-color: red;
-}
-
-.dragging {
-  background: lightgreen;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: absolute !important;
-  top: 0;
-  right: 0;
-}
-
-.ul {
-  display: flex;
-  overflow-x: auto;
-  list-style: none;
-}
-
-li {
-  margin: 10px;
-}
-
-.draggable-item {
-  width: 100%;
-}
-
 .scroll-title {
   font-family: "AwsumSans", sans-serif;
   text-align: center;
 
   border-bottom: 3px solid black;
   font-size: 30px;
-}
-
-.map-area-droppable {
-  background-color: red;
-}
-
-.back-container {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
 }

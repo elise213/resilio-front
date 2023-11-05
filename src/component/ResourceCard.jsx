@@ -18,7 +18,7 @@ const ResourceCard = (props) => {
   };
 
   const handleDeselectResource = (resourceId) => {
-    actions.removeSelectedResource(resourceId);
+    props.removeSelectedResource(resourceId);
   };
 
   useEffect(() => {

@@ -1,76 +1,63 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import arrow from "/assets/coralarrow.png"; // Make sure the path is correct
+import arrow from "/assets/coralarrow.png";
 import { ModalInfo } from "./ModalInfo";
 import Styles from "../styles/generatedTreasureMap.css";
 
 const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
   const { store, actions } = useContext(Context);
 
-  const getFormattedSchedule = (schedule) => {
-    const formattedSchedule = {};
-    Object.keys(schedule).forEach((day) => {
-      // Check if the day's schedule exists and is not null before accessing start and end
-      if (schedule[day] && schedule[day].start && schedule[day].end) {
-        const start = formatTime(schedule[day].start);
-        const end = formatTime(schedule[day].end);
-        formattedSchedule[day] = `${start} - ${end}`;
-      } else {
-        // If the day's schedule doesn't exist or start/end is null, set to "Closed"
-        formattedSchedule[day] = "Closed";
-      }
-    });
-    return formattedSchedule;
-  };
-
-  // A utility function to format the time into a 12-hour format with AM/PM
-  const formatTime = (time) => {
-    if (!time || time.toLowerCase() === "closed") {
-      return "Closed";
+  const handleOverlayClick = (e) => {
+    // If the clicked element is the same as the overlay, close the modal
+    if (e.target === e.currentTarget) {
+      closeModal();
     }
-    const [hour, minute] = time.split(":");
-    const hourInt = parseInt(hour, 10);
-    const isPM = hourInt >= 12;
-    const formattedHour = isPM
-      ? hourInt > 12
-        ? hourInt - 12
-        : hourInt
-      : hourInt === 0
-      ? 12
-      : hourInt;
-    return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
   };
 
-  const renderCarousel = (images, currentImageIndex, shiftLeft, shiftRight) => {
-    // Assuming shiftLeft and shiftRight functions are defined within the context where this function is called
-    return (
-      <div className="carousel-container">
-        {images.length > 1 && (
-          <button className="arrow-button" onClick={shiftLeft}>
-            <img className="left-arrow" src={arrow}></img>
-          </button>
-        )}
+  // add an event listener to the document when the modal is open
+  // and remove it when the modal is closed
+  useEffect(() => {
+    //  disable scroll on the body when the modal is open
+    document.body.style.overflow = "hidden";
 
-        <div className="carousel">
-          <img
-            className="carousel-image"
-            src={images[currentImageIndex]}
-            alt=""
-          />
-        </div>
+    // Cleanup to re-enable scrolling and remove event listener
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
 
-        {images.length > 1 && (
-          <button className="arrow-button" onClick={shiftRight}>
-            <img className="right-arrow" src={arrow}></img>
-          </button>
-        )}
-      </div>
-    );
-  };
+  useEffect(() => {
+    // Disable scroll on the body when the modal is open
+    document.body.classList.add("no-scroll");
+    // re-enable scrolling when the modal is closed
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
+  useEffect(() => {
+    // Get a reference to the root element (usually the <html> element)
+    const rootElement = document.documentElement;
+
+    // Store the original value of the overflow property so it can be restored later
+    const originalOverflow = rootElement.style.overflow;
+
+    // Disable scrolling on the root element
+    rootElement.style.overflow = "hidden";
+
+    // Cleanup function to re-enable scrolling when the modal is closed
+    return () => {
+      // Restore the original overflow value
+      rootElement.style.overflow = originalOverflow;
+    };
+  }, []);
 
   return (
-    <div className="modal-overlay-treasure">
-      <div className="modal-content-treasure">
+    <div className="modal-overlay-treasure" onClick={handleOverlayClick}>
+      {/* Prevent the click from propagating to the overlay when it's inside the modal */}
+      <div
+        className="modal-content-treasure"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="modal-close-treasure" onClick={closeModal}>
           X
         </button>
@@ -79,8 +66,6 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
             const processedCategories = actions.processCategory(
               resource.category
             );
-
-            console.log(processedCategories, "prosscat");
 
             return (
               <div key={resource.id} className="modaContainer">
@@ -125,9 +110,12 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
             );
           })}
         </div>
-        <p className="option">Download your Path</p>
-        <p className="option">Send Path to my phone</p>
-        <p className="option">Print Path</p>
+        <div className="options">
+          <p className="option">Download Path</p>
+          <p className="option">Send Path to Phone</p>
+          <p className="option">Send Path to Email</p>
+          <p className="option">Print Path</p>
+        </div>
       </div>
     </div>
   );

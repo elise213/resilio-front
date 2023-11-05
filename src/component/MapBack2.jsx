@@ -9,16 +9,15 @@ import Styles from "../styles/mapBack.css";
 const MapBack = ({
   setBackSide,
   backSide,
-  onDragEnd,
-  onDragStart,
-  onDragUpdate,
   setIsGeneratedMapModalOpen,
   isGeneratedMapModalOpen,
+  openModal,
+  closeModal,
+  hoveredItem,
+  modalIsOpen,
+  setModalIsOpen,
+  setFavorites,
 }) => {
-  // const {
-  //   actions,
-  //   store: { boundaryResults, favorites },
-  // } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
 
   const defaultMapCenter = { lat: 34.0522, lng: -118.2437 };
@@ -163,13 +162,15 @@ const MapBack = ({
             }}
           >
             <ResourceCard
-              key={result.name}
+              key={result.id}
               item={result}
               openModal={openModal}
               closeModal={closeModal}
               modalIsOpen={modalIsOpen}
               setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
+              selectedResources={selectedResources}
+              addSelectedResource={addSelectedResource}
+              removeSelectedResource={removeSelectedResource}
             />
           </div>
         )}
@@ -232,7 +233,17 @@ const MapBack = ({
             </div>
             <ul>
               {store.boundaryResults.map((resource, index) => (
-                <ResourceCard key={resource.id} item={resource} index={index} />
+                <ResourceCard
+                  key={resource.id}
+                  item={resource}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResources={selectedResources}
+                  addSelectedResource={addSelectedResource}
+                  removeSelectedResource={removeSelectedResource}
+                />
               ))}
             </ul>
           </div>
@@ -244,7 +255,17 @@ const MapBack = ({
             </div>
             <ul>
               {store.favorites.map((resource, index) => (
-                <ResourceCard key={resource.id} item={resource} index={index} />
+                <ResourceCard
+                  key={resource.id}
+                  item={resource}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResources={selectedResources}
+                  addSelectedResource={addSelectedResource}
+                  removeSelectedResource={removeSelectedResource}
+                />
               ))}
             </ul>
           </div>
