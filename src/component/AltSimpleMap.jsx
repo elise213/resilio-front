@@ -236,15 +236,10 @@ const AltSimpleMap = ({
                 setModalIsOpen={setModalIsOpen}
                 selectedResource={selectedResource}
                 setFavorites={setFavorites}
-                onDragEnd={onDragEnd}
-                onDragStart={onDragStart}
-                onDragUpdate={onDragUpdate}
                 setBackSide={setBackSide}
                 backSide={backSide}
                 setDraggingItem={setDraggingItem}
                 onBeforeCapture={onBeforeCapture}
-                selectedResources={selectedResources}
-                setSelectedResources={setSelectedResources}
                 isGeneratedMapModalOpen={isGeneratedMapModalOpen}
                 setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
               />

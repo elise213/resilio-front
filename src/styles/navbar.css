@@ -1,6 +1,6 @@
 .navbar {
   width: 100%;
-  /* min-height: 150px; */
+  position: fixed;
   top: 0;
   padding: 10px;
   font-family: "Urbanist", sans-serif;

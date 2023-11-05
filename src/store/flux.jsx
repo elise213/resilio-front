@@ -156,6 +156,41 @@ const getState = ({ getStore, getActions, setStore }) => {
       getSessionSelectedResources: () => {
         return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
       },
+
+      getFormattedSchedule: (schedule) => {
+        const formattedSchedule = {};
+        Object.keys(schedule).forEach((day) => {
+          // Check if the day's schedule exists and is not null before accessing start and end
+          if (schedule[day] && schedule[day].start && schedule[day].end) {
+            const start = formatTime(schedule[day].start);
+            const end = formatTime(schedule[day].end);
+            formattedSchedule[day] = `${start} - ${end}`;
+          } else {
+            // If the day's schedule doesn't exist or start/end is null, set to "Closed"
+            formattedSchedule[day] = "Closed";
+          }
+        });
+        return formattedSchedule;
+      },
+
+      // A utility function to format the time into a 12-hour format with AM/PM
+      formatTime: (time) => {
+        if (!time || time.toLowerCase() === "closed") {
+          return "Closed";
+        }
+        const [hour, minute] = time.split(":");
+        const hourInt = parseInt(hour, 10);
+        const isPM = hourInt >= 12;
+        const formattedHour = isPM
+          ? hourInt > 12
+            ? hourInt - 12
+            : hourInt
+          : hourInt === 0
+          ? 12
+          : hourInt;
+        return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
+      },
+
       // selectedResources: context.storeFunctions.getSessionSelectedResources(),
 
       // addSelectedResource: (resource) => {

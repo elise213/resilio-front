@@ -8,6 +8,15 @@
   z-index: 9998;
 }
 
+.search-results-full {
+  overflow: hidden;
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+
 .group-div {
   display: flex;
 }
