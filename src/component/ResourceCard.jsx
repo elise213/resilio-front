@@ -3,14 +3,12 @@ import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
-  // Before the return statement, check if the `item` prop exists
   if (!props.item) {
     console.error("ResourceCard component was rendered without an item prop.");
     return null;
   }
 
   const { actions, store } = useContext(Context);
-  const selectedResources = props.selectedResources || [];
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleSelectResource = (resource) => {
@@ -69,7 +67,6 @@ const ResourceCard = (props) => {
   const handleToggleSelectResource = (event) => {
     event.stopPropagation(); // Prevent the card's onClick from firing
     if (isSelected) {
-      // Pass only the id if that's what the store action expects
       handleDeselectResource(props.item.id);
     } else {
       handleSelectResource(props.item);

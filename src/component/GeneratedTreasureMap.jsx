@@ -14,8 +14,7 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
     }
   };
 
-  // add an event listener to the document when the modal is open
-  // and remove it when the modal is closed
+  // add an event listener to the document when the modal is open and remove it when the modal is closed
   useEffect(() => {
     //  disable scroll on the body when the modal is open
     document.body.style.overflow = "hidden";
@@ -82,6 +81,7 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
                         />
                       );
                     })}
+                  <hr></hr>
                 </div>
 
                 <ModalInfo
