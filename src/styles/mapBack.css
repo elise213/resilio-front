@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 ul {
   margin-top: 0;
   /* margin-bottom: 1rem; */
@@ -16,31 +24,35 @@ ul {
   justify-content: space-around;
 }
 
-/* .droppable-map-area {
+.selected-resources {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  overflow-x: auto;
-  gap: 10px;
-  background-color: red;
+  align-items: center;
 }
 
-.dragging {
-  background: lightgreen;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: absolute !important;
-  top: 0;
-  right: 0;
+.path {
+  display: flex;
+  align-items: center;
+  /* background-color: white; */
 }
 
-.map-area-droppable {
-  background-color: red;
-} */
+.selected-item {
+  color: white;
+  font-family: "AwsumSans";
+  font-size: 20px;
+  width: 100%;
+  display: flex;
+}
 
 .back-container {
   display: flex;
   width: 100%;
   justify-content: space-around;
+}
+
+.path-icons {
+  margin-right: 10px;
 }
 
 .ul {
@@ -51,6 +63,18 @@ ul {
 
 li {
   margin: 10px;
+}
+
+.selected-item-content {
+  width: 100%;
+}
+
+.createMyPath {
+  z-index: 999999;
+  width: 180px;
+  height: 40px;
+  font-size: 15px;
+  background-color: lightgreen;
 }
 
 @media screen and (max-width: 800px) {
