@@ -5,9 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: centr;
-  /* background-color: rgb(235, 189, 142); */
   min-height: 150px;
   justify-content: flex-end;
+  position: fixed;
 }
 
 /* Footer */
@@ -19,7 +19,6 @@
 }
 
 .all-rights {
-  /* color: var(--newGreen); */
   letter-spacing: 1.6px;
   font-size: medium;
   margin-top: 20px;
@@ -28,7 +27,6 @@
 .footer-logo {
   max-width: 120px;
   margin: 50px 15px 15px 15px;
-  /* animation: breathe 35s infinite; */
 }
 
 .footer-insta {

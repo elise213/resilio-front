@@ -1,9 +1,9 @@
 .map-settings {
   justify-content: center;
   z-index: 99999;
-  position: fixed;
+  /* position: fixed;
   top: 420px;
-  left: 100px;
+  left: 100px; */
   height: 150px;
 }
 
@@ -62,12 +62,12 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 800px) {
+/* @media screen and (max-width: 800px) {
   .map-settings {
     top: 620px !important;
     left: 50px !important;
   }
-}
+} */
 
 .scroll-title {
   display: flex;
