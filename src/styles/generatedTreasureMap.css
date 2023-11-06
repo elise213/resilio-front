@@ -11,6 +11,7 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .modal-overlay-treasure {
@@ -22,8 +23,8 @@
   background-color: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 10000000000000;
+  /* align-items: center; */
+  z-index: 99999;
 }
 
 hr {
@@ -105,6 +106,7 @@ hr {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .number-box {
@@ -112,6 +114,7 @@ hr {
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
   width: 100%;
+  margin-left: 20px;
 }
 .resource-category-icons {
   display: flex;

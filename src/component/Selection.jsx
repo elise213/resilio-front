@@ -110,12 +110,14 @@ const Selection = ({
   }, [days]);
 
   useEffect(() => {
-    const uniqueCategories = getUniqueCategoriesFromResults();
-    setActiveCategoryIds(uniqueCategories);
-    const allCats = uniqueCategories.flatMap((category) =>
-      category.split(",").map((c) => c.trim())
-    );
-    setAllCategories(allCats);
+    if (Array.isArray(store.mapResults)) {
+      const uniqueCategories = getUniqueCategoriesFromResults();
+      setActiveCategoryIds(uniqueCategories);
+      const allCats = uniqueCategories.flatMap((category) =>
+        category.split(",").map((c) => c.trim())
+      );
+      setAllCategories(allCats);
+    }
   }, [store.mapResults]);
 
   useEffect(() => {
@@ -166,13 +168,13 @@ const Selection = ({
 
     setVisibleDaysCounts(visibleDaysCounts);
     actions.setDayCounts(visibleDaysCounts);
-    // console.log("Visible Days Counts", visibleDaysCounts);
   }, [store.mapResults, store.schedules]);
 
   const getUniqueCategoriesFromResults = () => {
     const categorySet = new Set();
-    store.mapResults.forEach((item) => categorySet.add(item.category));
-    // console.log("array", Array.from(categorySet));
+    if (Array.isArray(store.mapResults)) {
+      store.mapResults.forEach((item) => categorySet.add(item.category));
+    }
     return Array.from(categorySet);
   };
 
@@ -312,29 +314,6 @@ const Selection = ({
 
       {Object.values(visibleDaysCounts).some((count) => count > 0) && (
         <div className={"cent"}>
-          {/* <div className="results-message message-3">
-            <p>Do you need it today? </p>
-            <div className="need-today-option">
-              <label>
-                <input
-                  type="radio"
-                  value="yes"
-                  checked={searchingToday === true}
-                  onChange={() => setSearchingToday(true)}
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="no"
-                  checked={searchingToday === false}
-                  onChange={() => setSearchingToday(false)}
-                />
-                No
-              </label>
-            </div>
-          </div> */}
           {!searchingToday && (
             <div style={{ width: "100%" }}>
               <div className={`select-header ${showDays ? "header-open" : ""}`}>
