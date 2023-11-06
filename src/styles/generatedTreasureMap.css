@@ -6,6 +6,13 @@
   font-style: normal;
 }
 
+.modalContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
 .modal-overlay-treasure {
   position: fixed;
   top: 0;
@@ -27,16 +34,14 @@ hr {
 
 .modal-content-treasure {
   position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 0px;
   width: 80%;
   height: 100%;
   background: white;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  z-index: 100000000;
+  z-index: 999;
 }
 
 .modal-close-treasure {
@@ -95,10 +100,18 @@ hr {
   height: 100%;
 }
 
+.resources-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .number-box {
   font-size: 30px;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
+  width: 100%;
 }
 .resource-category-icons {
   display: flex;

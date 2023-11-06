@@ -36,12 +36,7 @@ const AltSimpleMap = ({
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-  const [selectedResources, setSelectedResources] = useState([]);
   const [backSide, setBackSide] = useState(false);
-  const [draggingItem, setDraggingItem] = useState(null);
-  const [initialOffset, setInitialOffset] = useState(null);
-  const [currentOffset, setCurrentOffset] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
 
   const [favorites, setFavorites] = useState(
@@ -49,99 +44,6 @@ const AltSimpleMap = ({
   );
 
   const [hoveredItem, setHoveredItem] = useState(null);
-
-  const onBeforeCapture = (start) => {
-    setDraggingItem(start.draggableId);
-  };
-
-  const onDragEnd = (result) => {
-    console.log("onDragEnd", result);
-    const { destination, source } = result;
-
-    // If dropped outside the list
-    if (!destination) {
-      return;
-    }
-
-    // If the position has not changed
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    // Handling the case when the source and destination are the same
-    // In this case, you just reorder the list
-    if (destination.droppableId === source.droppableId) {
-      const newSelectedResources = Array.from(selectedResources);
-      const [removed] = newSelectedResources.splice(source.index, 1);
-      newSelectedResources.splice(destination.index, 0, removed);
-
-      setSelectedResources(newSelectedResources);
-    } else {
-      // Handle the case when the source and destination are different
-      // Here, you add the item to the destination list without removing it from the source
-      const sourceList = store[source.droppableId]; // Assuming you have your source items stored in the 'store' state
-      const destinationList = selectedResources;
-      const item = sourceList[source.index]; // Get the dragged item
-
-      // Add the item to the destination list
-      const newDestinationList = Array.from(destinationList);
-      newDestinationList.splice(destination.index, 0, item);
-
-      setSelectedResources(newDestinationList);
-
-      // Optionally, if you need to perform any additional state updates, do it here
-      // For example, if you need to update something in your store state
-      // actions.updateStoreWithNewState(...);
-    }
-
-    setIsDragging(false);
-    setDraggingItem(null);
-    setInitialOffset(null);
-    setCurrentOffset(null);
-  };
-
-  const onDragStart = (start) => {
-    setIsDragging(true);
-  };
-
-  const onDragUpdate = (update) => {
-    if (update.initial && update.initial.source) {
-      setInitialOffset(update.initial.source.clientOffset);
-    }
-    if (update.source) {
-      setCurrentOffset(update.source.clientOffset);
-    }
-  };
-
-  const createPath = () => {
-    // Use selectedResources to create a path
-    console.log("Selected Resources for path:", selectedResources);
-  };
-
-  const getDragLayerStyles = (initialOffset, currentOffset) => {
-    if (!initialOffset || !currentOffset) {
-      return {
-        display: "none",
-      };
-    }
-
-    const { x, y } = currentOffset;
-    const transform = `translate(${x}px, ${y}px)`;
-
-    return {
-      transform,
-      WebkitTransform: transform,
-      touchAction: "none",
-      position: "fixed",
-      pointerEvents: "none",
-      zIndex: 100,
-      left: 0,
-      top: 0,
-    };
-  };
 
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -151,7 +53,7 @@ const AltSimpleMap = ({
       : markerColor || "red";
 
     let icons = [];
-    let iconClass = "default-icon-class";
+    let iconClass = "fa-solid fa-map-pin";
 
     // Process category icons if result is defined
     if (result) {
@@ -169,7 +71,7 @@ const AltSimpleMap = ({
     return (
       <div
         className="marker"
-        style={{ cursor: "pointer", color, position: "relative" }} // Make sure the marker's position is set to 'relative'
+        style={{ cursor: "pointer", color, position: "relative" }}
         onMouseEnter={() => {
           setIsHovered(true);
           setHoveredItem(result);
@@ -222,28 +124,21 @@ const AltSimpleMap = ({
       <div className={`map-frame `}>
         {backSide ? (
           <>
-            <DragDropContext
-              onDragEnd={onDragEnd}
-              onDragStart={onDragStart}
-              onDragUpdate={onDragUpdate}
-              onBeforeCapture={onBeforeCapture}
-            >
-              <MapBack
-                hoveredItem={hoveredItem}
-                openModal={openModal}
-                closeModal={closeModal}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                selectedResource={selectedResource}
-                setFavorites={setFavorites}
-                setBackSide={setBackSide}
-                backSide={backSide}
-                setDraggingItem={setDraggingItem}
-                onBeforeCapture={onBeforeCapture}
-                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-              />
-            </DragDropContext>
+            <MapBack
+              hoveredItem={hoveredItem}
+              setHoveredItem={setHoveredItem}
+              openModal={openModal}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+              setFavorites={setFavorites}
+              setBackSide={setBackSide}
+              backSide={backSide}
+              isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+              setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+              city={city}
+            />
           </>
         ) : (
           <>

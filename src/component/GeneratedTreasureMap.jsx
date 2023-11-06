@@ -27,15 +27,6 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
   }, []);
 
   useEffect(() => {
-    // Disable scroll on the body when the modal is open
-    document.body.classList.add("no-scroll");
-    // re-enable scrolling when the modal is closed
-    return () => {
-      document.body.classList.remove("no-scroll");
-    };
-  }, []);
-  useEffect(() => {
-    // Get a reference to the root element (usually the <html> element)
     const rootElement = document.documentElement;
 
     // Store the original value of the overflow property so it can be restored later
@@ -44,7 +35,7 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
     // Disable scrolling on the root element
     rootElement.style.overflow = "hidden";
 
-    // Cleanup function to re-enable scrolling when the modal is closed
+    // re-enable scrolling when the modal is closed
     return () => {
       // Restore the original overflow value
       rootElement.style.overflow = originalOverflow;
@@ -68,7 +59,7 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
             );
 
             return (
-              <div key={resource.id} className="modaContainer">
+              <div key={resource.id} className="modalContainer">
                 <div className="number-box">
                   <span>{index + 1}</span>
                 </div>
@@ -80,15 +71,9 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
                     processedCategories.map((category, index) => {
                       const iconClassName =
                         actions.getIconForCategory(category);
-                      console.log(
-                        `Icon Class Name for category ${category}: `,
-                        iconClassName
-                      ); //debug
+
                       const colorStyle = actions.getColorForCategory(category);
-                      console.log(
-                        `Color Style for category ${category}: `,
-                        colorStyle
-                      ); //  debug
+
                       return (
                         <i
                           key={index}
@@ -109,12 +94,12 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
               </div>
             );
           })}
-        </div>
-        <div className="options">
-          <p className="option">Download Path</p>
-          <p className="option">Send Path to Phone</p>
-          <p className="option">Send Path to Email</p>
-          <p className="option">Print Path</p>
+          <div className="options">
+            <p className="option">Download Path</p>
+            <p className="option">Send Path to Phone</p>
+            <p className="option">Send Path to Email</p>
+            <p className="option">Print Path</p>
+          </div>
         </div>
       </div>
     </div>
