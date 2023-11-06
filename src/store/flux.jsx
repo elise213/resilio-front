@@ -37,10 +37,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       offerings: [],
       checked: false,
       loading: false,
-      commentsList: [],
+      // commentsList: [],
       categorySEarch: [],
-      when: [],
-      dummydata: [],
+      // when: [],
       schedules: [],
       selectedResources: [],
       CATEGORY_OPTIONS: [
@@ -150,47 +149,44 @@ const getState = ({ getStore, getActions, setStore }) => {
           return { color: colors[category] };
         } else return { color: "red" };
       },
-      // Define the event outside of the store functions so it is not re-created every time the function runs
-      setSelectedResourcesEvent: new Event("setSelectedResources"),
 
       getSessionSelectedResources: () => {
         return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
       },
-      // selectedResources: context.storeFunctions.getSessionSelectedResources(),
 
-      // addSelectedResource: (resource) => {
-      //   const getSessionSelectedResources =
-      //     storeFunctions.getSessionSelectedResources;
-      //   const selectedResources = getSessionSelectedResources();
-      //   if (!selectedResources.find((r) => r.id === resource.id)) {
-      //     const updatedSelectedResources = [...selectedResources, resource];
-      //     sessionStorage.setItem(
-      //       "selectedResources",
-      //       JSON.stringify(updatedSelectedResources)
-      //     );
+      getFormattedSchedule: (schedule) => {
+        const formattedSchedule = {};
+        Object.keys(schedule).forEach((day) => {
+          // Check if the day's schedule exists and is not null before accessing start and end
+          if (schedule[day] && schedule[day].start && schedule[day].end) {
+            const start = formatTime(schedule[day].start);
+            const end = formatTime(schedule[day].end);
+            formattedSchedule[day] = `${start} - ${end}`;
+          } else {
+            // If the day's schedule doesn't exist or start/end is null, set to "Closed"
+            formattedSchedule[day] = "Closed";
+          }
+        });
+        return formattedSchedule;
+      },
 
-      //     document.dispatchEvent(setSelectedResourcesEvent);
-
-      //     setStore({ selectedResources: updatedSelectedResources });
-      //   }
-      // },
-
-      // removeSelectedResource: (resourceId) => {
-      //   const getSessionSelectedResources =
-      //     storeFunctions.getSessionSelectedResources;
-      //   const selectedResources = getSessionSelectedResources();
-      //   const updatedSelectedResources = selectedResources.filter(
-      //     (r) => r.id !== resourceId
-      //   );
-      //   sessionStorage.setItem(
-      //     "selectedResources",
-      //     JSON.stringify(updatedSelectedResources)
-      //   );
-
-      //   document.dispatchEvent(setSelectedResourcesEvent);
-
-      //   setStore({ selectedResources: updatedSelectedResources });
-      // },
+      // A utility function to format the time into a 12-hour format with AM/PM
+      formatTime: (time) => {
+        if (!time || time.toLowerCase() === "closed") {
+          return "Closed";
+        }
+        const [hour, minute] = time.split(":");
+        const hourInt = parseInt(hour, 10);
+        const isPM = hourInt >= 12;
+        const formattedHour = isPM
+          ? hourInt > 12
+            ? hourInt - 12
+            : hourInt
+          : hourInt === 0
+          ? 12
+          : hourInt;
+        return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
+      },
 
       getIconForCategory: (category) => {
         switch (category) {
@@ -284,6 +280,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           sessionStorage.setItem("is_org", data.is_org);
           sessionStorage.setItem("name", data.name);
           sessionStorage.setItem("avatar", parseInt(data.avatar));
+          // sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
           sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
 
           setStore({
@@ -291,7 +288,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             is_org: data.is_org,
             avatarID: data.avatar,
             name: data.name,
-            favorites: data.favorites,
+            // favorites: data.favorites,
+            favorites: data.favorites.map((fav) => fav.resource),
             //       // favoriteOfferings: data.favoriteOfferings,
           });
 
@@ -316,7 +314,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("is_org");
         sessionStorage.removeItem("name");
-        setStore({ token: null, is_org: null, name: null });
+        sessionStorage.removeItem("favorites");
+        sessionStorage.removeItem("selectedResources");
+        setStore({ token: null, is_org: null, name: null, favorites: null });
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
@@ -497,7 +497,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       checkResourceCoordinates: async () => {
-        const url = "/api/getAllResources"; // Update with your actual endpoint
+        const url = "/api/getAllResources";
         let resourcesWithInvalidCoordinates = false;
 
         try {
@@ -757,7 +757,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         }
       },
-
       addFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
@@ -772,31 +771,83 @@ const getState = ({ getStore, getActions, setStore }) => {
               name: resourceName,
             }),
           };
-          fetch(current_back_url + "/api/addFavorite", opts)
+          fetch(`${current_back_url}/api/addFavorite`, opts)
             .then((response) => response.json())
             .then((data) => {
               if (data.message === "okay") {
-                const updatedFavorites = [
-                  ...JSON.parse(sessionStorage.getItem("favorites") || "[]"),
-                  data.favorite,
-                ];
-                sessionStorage.setItem(
-                  "favorites",
-                  JSON.stringify(updatedFavorites)
-                );
-                setStore((prevState) => ({
-                  ...prevState,
-                  favorites: updatedFavorites,
-                }));
-
-                // Update the local state if the setFavorites function is provided
-                if (setFavorites) {
-                  setFavorites(updatedFavorites);
-                }
+                // Refetch favorites to update session and store
+                fetch(`${current_back_url}/api/getFavorites`, {
+                  headers: {
+                    Authorization: "Bearer " + token,
+                  },
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    const favorites = data.favorites.map((fav) => fav.resource);
+                    sessionStorage.setItem(
+                      "favorites",
+                      JSON.stringify(favorites)
+                    );
+                    setStore((prevState) => ({
+                      ...prevState,
+                      favorites: favorites,
+                    }));
+                    if (setFavorites) {
+                      setFavorites(favorites);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error fetching updated favorites:", error);
+                    // Handle the error for fetching favorites here if needed
+                  });
               }
+            })
+            .catch((error) => {
+              console.error("Error adding favorite:", error);
+              // Handle the error for adding favorite here if needed
             });
         }
       },
+
+      // addFavorite: (resourceName, setFavorites) => {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+      //   if (token) {
+      //     const opts = {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //         "Content-Type": "application/json",
+      //       },
+      //       method: "POST",
+      //       body: JSON.stringify({
+      //         name: resourceName,
+      //       }),
+      //     };
+      //     fetch(current_back_url + "/api/addFavorite", opts)
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         if (data.message === "okay") {
+      //           const updatedFavorites = [
+      //             ...JSON.parse(sessionStorage.getItem("favorites") || "[]"),
+      //             data.favorite,
+      //           ];
+      //           sessionStorage.setItem(
+      //             "favorites",
+      //             JSON.stringify(updatedFavorites)
+      //           );
+      //           setStore((prevState) => ({
+      //             ...prevState,
+      //             favorites: updatedFavorites,
+      //           }));
+
+      //           // Update the local state if the setFavorites function is provided
+      //           if (setFavorites) {
+      //             setFavorites(updatedFavorites);
+      //           }
+      //         }
+      //       });
+      //   }
+      // },
       popFavorites: (faveList, faveOffers) => {
         if (faveList && faveList.length) {
           setStore({ favorites: faveList });
@@ -805,42 +856,87 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ favoriteOfferings: faveOffers });
         }
       },
-      removeFavorite: (resource, setFavorites) => {
+      // removeFavorite: (resource, setFavorites) => {
+      //   const current_back_url = getStore().current_back_url;
+      //   if (sessionStorage.getItem("token")) {
+      //     const opts = {
+      //       headers: {
+      //         Authorization: "Bearer " + sessionStorage.getItem("token"),
+      //         "Content-Type": "application/json",
+      //       },
+      //       method: "DELETE",
+      //       body: JSON.stringify({
+      //         name: resource,
+      //       }),
+      //     };
+      //     fetch(current_back_url + "/api/removeFavorite", opts)
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         if (data.message === "okay") {
+      //           const updatedFavorites = JSON.parse(
+      //             sessionStorage.getItem("favorites") || "[]"
+      //           ).filter((favorite) => favorite.name !== resource);
+      //           sessionStorage.setItem(
+      //             "favorites",
+      //             JSON.stringify(updatedFavorites)
+      //           );
+      //           setStore((prevState) => ({
+      //             ...prevState,
+      //             favorites: updatedFavorites,
+      //           }));
+
+      //           // Update the local state if the setFavorites function is provided
+      //           if (setFavorites) {
+      //             setFavorites(updatedFavorites);
+      //           }
+      //         }
+      //       })
+      //       .catch((error) => console.log(error));
+      //   }
+      // },
+
+      removeFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
-        if (sessionStorage.getItem("token")) {
+        const token = sessionStorage.getItem("token");
+        if (token) {
           const opts = {
             headers: {
-              Authorization: "Bearer " + sessionStorage.getItem("token"),
+              Authorization: "Bearer " + token,
               "Content-Type": "application/json",
             },
             method: "DELETE",
             body: JSON.stringify({
-              name: resource,
+              name: resourceName,
             }),
           };
-          fetch(current_back_url + "/api/removeFavorite", opts)
+          fetch(`${current_back_url}/api/removeFavorite`, opts)
             .then((response) => response.json())
             .then((data) => {
               if (data.message === "okay") {
-                const updatedFavorites = JSON.parse(
-                  sessionStorage.getItem("favorites") || "[]"
-                ).filter((favorite) => favorite.name !== resource);
-                sessionStorage.setItem(
-                  "favorites",
-                  JSON.stringify(updatedFavorites)
-                );
-                setStore((prevState) => ({
-                  ...prevState,
-                  favorites: updatedFavorites,
-                }));
-
-                // Update the local state if the setFavorites function is provided
-                if (setFavorites) {
-                  setFavorites(updatedFavorites);
-                }
+                // Refetch favorites to update session and store
+                fetch(`${current_back_url}/api/getFavorites`, {
+                  headers: {
+                    Authorization: "Bearer " + token,
+                  },
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    const favorites = data.favorites.map((fav) => fav.resource);
+                    sessionStorage.setItem(
+                      "favorites",
+                      JSON.stringify(favorites)
+                    );
+                    setStore((prevState) => ({
+                      ...prevState,
+                      favorites: favorites,
+                    }));
+                    if (setFavorites) {
+                      setFavorites(favorites);
+                    }
+                  });
               }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
         }
       },
 
