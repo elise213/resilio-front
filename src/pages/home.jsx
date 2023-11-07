@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
-import Report from "../component/Report";
-import { MapSettings } from "../component";
+import GeneratedTreasureMap from "./GeneratedTreasureMap";
+// import { MapSettings } from "../component";
 import AltSimpleMap from "../component/AltSimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
@@ -43,6 +43,7 @@ const Home = () => {
   // STATES
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
+  const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
 
   // const [showFront, setShowFront] = useState(true);
   const [searchingToday, setSearchingToday] = useState(false);
@@ -327,6 +328,8 @@ const Home = () => {
                 setModalIsOpen={setModalIsOpen}
                 selectedResource={selectedResource}
                 setSelectedResource={setSelectedResource}
+                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
               />
             </ErrorBoundary>
 
@@ -346,6 +349,13 @@ const Home = () => {
             />
           </div>
         </div>
+      )}
+
+      {isGeneratedMapModalOpen && (
+        <GeneratedTreasureMap
+          closeModal={() => setIsGeneratedMapModalOpen(false)}
+          selectedResources={selectedResources}
+        />
       )}
     </div>
   );

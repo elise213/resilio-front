@@ -7,9 +7,11 @@
   align-items: center;
   /* min-height: 150px; */
   justify-content: flex-end;
-  position: fixed;
+  position: static;
   bottom: 0;
   z-index: -1;
+  /* display: none; */
+  margin-top: 30px;
 }
 
 /* Footer */

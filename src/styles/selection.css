@@ -90,7 +90,7 @@
 }
 
 .closed2 {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   font-family: "Urbanist", sans-serif !important;
   transition: color 0.3s, font-size 0.3s;
 }

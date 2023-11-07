@@ -35,11 +35,12 @@ const AltSimpleMap = ({
   setModalIsOpen,
   selectedResource,
   setSelectedResource,
+  isGeneratedMapModalOpen,
+  setIsGeneratedMapModalOpen,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
   const [backSide, setBackSide] = useState(false);
-  const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
 
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
@@ -109,11 +110,11 @@ const AltSimpleMap = ({
       }`}
     >
       <div className={`map-frame `}>
-        <div className="logo-div">
-          <img className="navbar-logo" src={RESR} alt="Alive Logo" />
-        </div>
+        {/* <div className="logo-div"> */}
+        {/* </div> */}
         <div className="map-head">
           <Login />
+          <img className="navbar-logo" src={RESR} alt="Alive Logo" />
           <button
             className="flip-button"
             onClick={() => setBackSide(!backSide)}

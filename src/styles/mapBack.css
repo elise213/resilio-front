@@ -55,7 +55,7 @@ li {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  /* background-color: rgba(0, 0, 0, 0.3); */
   padding: 10px;
   /* margin: 5px; */
 }
@@ -64,8 +64,6 @@ li {
   display: flex;
   align-items: center;
   width: 100%;
-  border: 10px double lightgreen;
-  margin-top: 30px;
 }
 
 .path-item {
@@ -82,13 +80,15 @@ li {
 .path-icon {
   font-size: medium;
   margin: 3px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); */
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .path-name {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); */
   font-size: 18px;
   color: lightgreen;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
 }
 
 .flip-horizontal {
@@ -114,7 +114,7 @@ li {
   display: flex;
   width: 100%;
   justify-content: space-around;
-  margin: 30px 0 100px 0;
+  margin: 130px 0 0 0;
 }
 
 .selected-item-content {
