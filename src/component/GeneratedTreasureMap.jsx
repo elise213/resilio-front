@@ -13,6 +13,9 @@ const GeneratedTreasureMap = ({
 }) => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  console.log("IsLS", isLargeScreen);
 
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -97,6 +100,10 @@ const GeneratedTreasureMap = ({
     };
   }, []);
 
+  useEffect(() => {
+    setIsLargeScreen(store.isLargeScreen);
+  }, [store.isLargeScreen]);
+
   return (
     <div className="modal-overlay-treasure" onClick={handleOverlayClick}>
       {/* Prevent the click from propagating to the overlay when it's inside the modal */}
@@ -105,40 +112,42 @@ const GeneratedTreasureMap = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="options-path-map">
-          <div
-            className="map-container-treasure"
-            style={{ height: "20vh", width: "100%" }}
-          >
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: apiKey }}
-              defaultZoom={11}
-              center={city.center}
+          {isLargeScreen && (
+            <div
+              className="map-container-treasure"
+              style={{ height: "20vh", width: "100%" }}
             >
-              {selectedResources.map((resource, index) => {
-                console.log(resource);
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: apiKey }}
+                defaultZoom={11}
+                center={city.center}
+              >
+                {selectedResources.map((resource, index) => {
+                  console.log(resource);
 
-                if (!resource.latitude || !resource.longitude) {
-                  console.error(
-                    "Resource is missing latitude or longitude",
-                    resource.id
+                  if (!resource.latitude || !resource.longitude) {
+                    console.error(
+                      "Resource is missing latitude or longitude",
+                      resource.id
+                    );
+                    return null;
+                  }
+
+                  return (
+                    <Marker
+                      lat={resource.latitude}
+                      lng={resource.longitude}
+                      text={resource.name}
+                      key={resource.id}
+                      id={resource.id}
+                      openModal={openModal}
+                      resource={resource}
+                    />
                   );
-                  return null;
-                }
-
-                return (
-                  <Marker
-                    lat={resource.latitude}
-                    lng={resource.longitude}
-                    text={resource.name}
-                    key={resource.id}
-                    id={resource.id}
-                    openModal={openModal}
-                    resource={resource}
-                  />
-                );
-              })}
-            </GoogleMapReact>
-          </div>
+                })}
+              </GoogleMapReact>
+            </div>
+          )}
           <div className="options">
             <p className="option">Download Path</p>
             <p className="option">Send Path to Phone</p>
