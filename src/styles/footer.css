@@ -1,31 +1,11 @@
-.footer {
-  padding-top: 20px;
-  width: 100%;
-  padding: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* min-height: 150px; */
-  justify-content: flex-end;
-  position: static;
-  bottom: 0;
-  z-index: -1;
-  /* display: none; */
-  margin-top: 30px;
-}
-
 .foot {
-  position: fixed;
+  position: sticky;
   bottom: 0;
+  display: flex;
+  justify-content: center;
 }
 
 /* Footer */
-.legal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
 .all-rights {
   letter-spacing: 1.6px;

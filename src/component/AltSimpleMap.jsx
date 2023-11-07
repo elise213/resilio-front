@@ -50,6 +50,49 @@ const AltSimpleMap = ({
 
   const [hoveredItem, setHoveredItem] = useState(null);
 
+  const addSelectedResource = (resource) => {
+    console.log("Adding resource", resource);
+
+    // Check if the resource has latitude and longitude
+    if (
+      typeof resource.latitude === "undefined" ||
+      typeof resource.longitude === "undefined"
+    ) {
+      console.error(
+        "Attempted to add resource without latitude or longitude",
+        resource
+      );
+      return;
+    }
+
+    setSelectedResources((prevResources) => {
+      if (prevResources.length >= 3) {
+        // Display an alert if the limit is reached
+        Swal.fire({
+          icon: "error",
+          title: "Please limit the path to 3 resources at a time",
+        });
+        return prevResources;
+      }
+
+      if (!prevResources.some((r) => r.id === resource.id)) {
+        const updatedResources = [...prevResources, resource];
+        console.log("Updated Resources", updatedResources);
+        updateSessionStorage(updatedResources);
+        return updatedResources;
+      }
+      return prevResources;
+    });
+  };
+
+  const removeSelectedResource = (resourceId) => {
+    setSelectedResources((prevResources) => {
+      const updatedResources = prevResources.filter((r) => r.id !== resourceId);
+      updateSessionStorage(updatedResources);
+      return updatedResources;
+    });
+  };
+
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -106,114 +149,135 @@ const AltSimpleMap = ({
   }, [store.favorites]);
 
   return (
-    <div
-      className={`map-frame-wrapper ${backSide ? "flipped" : ""} ${
-        isGeneratedMapModalOpen ? "noPadding" : ""
-      }`}
-    >
-      <div className={`map-frame `}>
-        {/* <div className="logo-div"> */}
-        {/* </div> */}
-        <div className="map-head">
-          {/* {!backSide && (
-            <img className="navbar-logo" src={RESR} alt="Alive Logo" />
-          )} */}
-        </div>
+    <>
+      <div
+        className={`map-frame-wrapper ${backSide ? "flipped" : ""} ${
+          isGeneratedMapModalOpen ? "noPadding" : ""
+        }`}
+      >
+        <div className={`map-frame `}>
+          <div className="map-head"></div>
 
-        {backSide ? (
-          <>
-            <MapBack
-              hoveredItem={hoveredItem}
-              setHoveredItem={setHoveredItem}
-              openModal={openModal}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-              setFavorites={setFavorites}
-              setBackSide={setBackSide}
-              backSide={backSide}
-              isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-              setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-              city={city}
-              selectedResources={selectedResources}
-              setSelectedResources={setSelectedResources}
-            />
-          </>
-        ) : (
-          <>
-            <Login />
-            <div
-              className="map-container"
-              style={{ height: "40vh", width: "60vw" }}
-            >
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: apiKey }}
-                center={city.center}
-                bounds={city.bounds}
-                defaultZoom={11}
-                onChange={(e) => handleBoundsChange(e)}
-              >
-                {store.boundaryResults.map((result, i) => (
-                  <Marker
-                    lat={result.latitude}
-                    lng={result.longitude}
-                    text={result.name}
-                    key={i}
-                    id={result.id}
-                    openModal={openModal}
-                    result={result}
-                  />
-                ))}
-
-                {userLocation && (
-                  <Marker
-                    lat={userLocation.lat}
-                    lng={userLocation.lng}
-                    text="You are here!"
-                    color="red"
-                  />
-                )}
-              </GoogleMapReact>
-            </div>
-            <div className="simple-selection">
-              {store.CATEGORY_OPTIONS &&
-              store.DAY_OPTIONS &&
-              store.GROUP_OPTIONS &&
-              categories &&
-              days &&
-              groups ? (
-                <ErrorBoundary>
-                  <div className="side-car">
-                    <Selection
-                      categories={categories}
-                      setCategories={setCategories}
-                      groups={groups}
-                      setGroups={setGroups}
-                      days={days}
-                      setDays={setDays}
-                      searchingToday={searchingToday}
-                      setSearchingToday={setSearchingToday}
-                      INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                    />
-                  </div>
-                </ErrorBoundary>
-              ) : (
-                message2Open && <p>Loading selection options...</p>
-              )}
-
-              <MapSettings
-                geoFindMe={geoFindMe}
-                handleZipInputChange={handleZipInputChange}
-                zipInput={zipInput}
-                backSide={backSide}
+          {backSide ? (
+            <>
+              <MapBack
+                hoveredItem={hoveredItem}
+                setHoveredItem={setHoveredItem}
+                openModal={openModal}
+                closeModal={closeModal}
+                modalIsOpen={modalIsOpen}
+                setModalIsOpen={setModalIsOpen}
+                selectedResource={selectedResource}
+                setFavorites={setFavorites}
                 setBackSide={setBackSide}
+                backSide={backSide}
+                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+                city={city}
+                selectedResources={selectedResources}
+                setSelectedResources={setSelectedResources}
               />
+            </>
+          ) : (
+            <>
+              <Login />
+              <div className="map-container-container">
+                <div
+                  className="map-container"
+                  style={{ height: "40vh", width: "60vw" }}
+                >
+                  <GoogleMapReact
+                    bootstrapURLKeys={{ key: apiKey }}
+                    center={city.center}
+                    bounds={city.bounds}
+                    defaultZoom={11}
+                    onChange={(e) => handleBoundsChange(e)}
+                  >
+                    {store.boundaryResults.map((result, i) => (
+                      <Marker
+                        lat={result.latitude}
+                        lng={result.longitude}
+                        text={result.name}
+                        key={i}
+                        id={result.id}
+                        openModal={openModal}
+                        result={result}
+                      />
+                    ))}
+
+                    {userLocation && (
+                      <Marker
+                        lat={userLocation.lat}
+                        lng={userLocation.lng}
+                        text="You are here!"
+                        color="red"
+                      />
+                    )}
+                  </GoogleMapReact>
+                </div>
+              </div>
+              <div className="simple-selection">
+                <MapSettings
+                  geoFindMe={geoFindMe}
+                  handleZipInputChange={handleZipInputChange}
+                  zipInput={zipInput}
+                  backSide={backSide}
+                  setBackSide={setBackSide}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="back-container">
+        {store.boundaryResults && store.boundaryResults.length > 0 && (
+          <div className="list-container">
+            <div className="scroll-title">
+              <span>In your Area</span>
             </div>
-          </>
+            <ul className="all-ul">
+              {store.boundaryResults.map((resource, index) => (
+                <ResourceCard
+                  key={resource.id}
+                  item={resource}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResources={selectedResources}
+                  addSelectedResource={addSelectedResource}
+                  removeSelectedResource={removeSelectedResource}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
+        {store.favorites && store.favorites.length > 0 ? (
+          <div className="list-container">
+            <div className="scroll-title">
+              <span>Liked Resources</span>
+            </div>
+            <ul>
+              {store.favorites.map((resource, index) => (
+                <ResourceCard
+                  key={resource.id}
+                  item={resource}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResources={selectedResources}
+                  addSelectedResource={addSelectedResource}
+                  removeSelectedResource={removeSelectedResource}
+                />
+              ))}
+            </ul>
+          </div>
+        ) : (
+          "Log in to see favorites"
         )}
       </div>
-    </div>
+    </>
   );
 };
 

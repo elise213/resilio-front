@@ -31,6 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       favorites: [],
       favoriteOfferings: [],
+      isLargeScreen: false,
       searchResults: [],
       boundaryResults: [],
       mapResults: [],
@@ -810,45 +811,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // addFavorite: (resourceName, setFavorites) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify({
-      //         name: resourceName,
-      //       }),
-      //     };
-      //     fetch(current_back_url + "/api/addFavorite", opts)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         if (data.message === "okay") {
-      //           const updatedFavorites = [
-      //             ...JSON.parse(sessionStorage.getItem("favorites") || "[]"),
-      //             data.favorite,
-      //           ];
-      //           sessionStorage.setItem(
-      //             "favorites",
-      //             JSON.stringify(updatedFavorites)
-      //           );
-      //           setStore((prevState) => ({
-      //             ...prevState,
-      //             favorites: updatedFavorites,
-      //           }));
+      initializeScreenSize: () => {
+        setStore({
+          isLargeScreen: window.innerWidth > 1000,
+          isClient: true,
+          windowWidth: window.innerWidth,
+        });
+      },
 
-      //           // Update the local state if the setFavorites function is provided
-      //           if (setFavorites) {
-      //             setFavorites(updatedFavorites);
-      //           }
-      //         }
-      //       });
-      //   }
-      // },
+      updateScreenSize: () => {
+        setStore({
+          isLargeScreen: window.innerWidth > 1000,
+          windowWidth: window.innerWidth,
+        });
+      },
+
       popFavorites: (faveList, faveOffers) => {
         if (faveList && faveList.length) {
           setStore({ favorites: faveList });

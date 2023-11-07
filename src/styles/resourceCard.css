@@ -71,6 +71,11 @@
   margin: 0;
 }
 
+.add-favorite {
+  border: none;
+  font-size: 20px;
+}
+
 @media screen and (max-width: 900px) {
   .card-icon {
     font-size: medium;

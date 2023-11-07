@@ -27,6 +27,11 @@
   /* border: 5px solid yellow; */
 }
 
+.options-path-map {
+  display: flex;
+  margin-bottom: 20px;
+}
+
 hr {
   height: 5px;
   color: purple;
