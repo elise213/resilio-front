@@ -1,10 +1,6 @@
 .map-settings {
   justify-content: center;
   z-index: 99999;
-  /* position: fixed;
-  top: 420px;
-  left: 100px; */
-  height: 150px;
 }
 
 .map-settings-container {
@@ -61,13 +57,6 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
   cursor: pointer;
 }
-
-/* @media screen and (max-width: 800px) {
-  .map-settings {
-    top: 620px !important;
-    left: 50px !important;
-  }
-} */
 
 .scroll-title {
   display: flex;

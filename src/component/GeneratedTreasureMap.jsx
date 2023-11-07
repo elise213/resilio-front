@@ -8,7 +8,6 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
   const { store, actions } = useContext(Context);
 
   const handleOverlayClick = (e) => {
-    // If the clicked element is the same as the overlay, close the modal
     if (e.target === e.currentTarget) {
       closeModal();
     }
@@ -19,7 +18,7 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
     //  disable scroll on the body when the modal is open
     document.body.style.overflow = "hidden";
 
-    // Cleanup to re-enable scrolling and remove event listener
+    //re-enable scrolling and remove event listener
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -81,7 +80,6 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
                         />
                       );
                     })}
-                  <hr></hr>
                 </div>
 
                 <ModalInfo
@@ -89,8 +87,7 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
                   schedule={resource.schedule}
                   res={resource}
                 />
-                {selectedResources.indexOf(resource) <
-                  selectedResources.length - 1 && <hr />}
+                {index < selectedResources.length - 1 && <hr />}
               </div>
             );
           })}

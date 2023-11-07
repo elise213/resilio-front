@@ -12,11 +12,11 @@
 }
 
 body {
-  width: 100vw;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  /* background-color: #fcf5ed; */
+  /* overflow-x: hidden;
+  overflow-y: hidden; */
   background-color: rgb(244, 238, 231);
+  /* height: 100%;
+  width: 100%; */
 }
 
 :root {
