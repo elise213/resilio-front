@@ -108,7 +108,12 @@ const ResourceCard = (props) => {
             className="add-favorite"
             onClick={(event) => toggleFavorite(event)}
           >
-            {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+            {/* {isFavorited ? "Remove from Favorites" : "Add to Favorites"} */}
+            {isFavorited ? (
+              <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
+            ) : (
+              <i className="fa-regular fa-heart"></i>
+            )}
           </button>
         )}
 

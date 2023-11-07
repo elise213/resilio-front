@@ -106,114 +106,93 @@ const AltSimpleMap = ({
   }, [store.favorites]);
 
   return (
-    <div
-      className={`map-frame-wrapper ${backSide ? "flipped" : ""} ${
-        isGeneratedMapModalOpen ? "noPadding" : ""
-      }`}
-    >
-      <div className={`map-frame `}>
-        {/* <div className="logo-div"> */}
-        {/* </div> */}
-        <div className="map-head">
-          {/* {!backSide && (
+    <>
+      <div
+        className={`map-frame-wrapper ${backSide ? "flipped" : ""} ${
+          isGeneratedMapModalOpen ? "noPadding" : ""
+        }`}
+      >
+        <div className={`map-frame `}>
+          {/* <div className="logo-div"> */}
+          {/* </div> */}
+          <div className="map-head">
+            {/* {!backSide && (
             <img className="navbar-logo" src={RESR} alt="Alive Logo" />
           )} */}
-        </div>
+          </div>
 
-        {backSide ? (
-          <>
-            <MapBack
-              hoveredItem={hoveredItem}
-              setHoveredItem={setHoveredItem}
-              openModal={openModal}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-              setFavorites={setFavorites}
-              setBackSide={setBackSide}
-              backSide={backSide}
-              isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-              setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-              city={city}
-              selectedResources={selectedResources}
-              setSelectedResources={setSelectedResources}
-            />
-          </>
-        ) : (
-          <>
-            <Login />
-            <div
-              className="map-container"
-              style={{ height: "40vh", width: "60vw" }}
-            >
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: apiKey }}
-                center={city.center}
-                bounds={city.bounds}
-                defaultZoom={11}
-                onChange={(e) => handleBoundsChange(e)}
-              >
-                {store.boundaryResults.map((result, i) => (
-                  <Marker
-                    lat={result.latitude}
-                    lng={result.longitude}
-                    text={result.name}
-                    key={i}
-                    id={result.id}
-                    openModal={openModal}
-                    result={result}
-                  />
-                ))}
-
-                {userLocation && (
-                  <Marker
-                    lat={userLocation.lat}
-                    lng={userLocation.lng}
-                    text="You are here!"
-                    color="red"
-                  />
-                )}
-              </GoogleMapReact>
-            </div>
-            <div className="simple-selection">
-              {store.CATEGORY_OPTIONS &&
-              store.DAY_OPTIONS &&
-              store.GROUP_OPTIONS &&
-              categories &&
-              days &&
-              groups ? (
-                <ErrorBoundary>
-                  <div className="side-car">
-                    <Selection
-                      categories={categories}
-                      setCategories={setCategories}
-                      groups={groups}
-                      setGroups={setGroups}
-                      days={days}
-                      setDays={setDays}
-                      searchingToday={searchingToday}
-                      setSearchingToday={setSearchingToday}
-                      INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                    />
-                  </div>
-                </ErrorBoundary>
-              ) : (
-                message2Open && <p>Loading selection options...</p>
-              )}
-
-              <MapSettings
-                geoFindMe={geoFindMe}
-                handleZipInputChange={handleZipInputChange}
-                zipInput={zipInput}
-                backSide={backSide}
+          {backSide ? (
+            <>
+              <MapBack
+                hoveredItem={hoveredItem}
+                setHoveredItem={setHoveredItem}
+                openModal={openModal}
+                closeModal={closeModal}
+                modalIsOpen={modalIsOpen}
+                setModalIsOpen={setModalIsOpen}
+                selectedResource={selectedResource}
+                setFavorites={setFavorites}
                 setBackSide={setBackSide}
+                backSide={backSide}
+                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+                city={city}
+                selectedResources={selectedResources}
+                setSelectedResources={setSelectedResources}
               />
-            </div>
-          </>
-        )}
+            </>
+          ) : (
+            <>
+              <Login />
+              <div className="map-container-container">
+                <div
+                  className="map-container"
+                  style={{ height: "40vh", width: "60vw" }}
+                >
+                  <GoogleMapReact
+                    bootstrapURLKeys={{ key: apiKey }}
+                    center={city.center}
+                    bounds={city.bounds}
+                    defaultZoom={11}
+                    onChange={(e) => handleBoundsChange(e)}
+                  >
+                    {store.boundaryResults.map((result, i) => (
+                      <Marker
+                        lat={result.latitude}
+                        lng={result.longitude}
+                        text={result.name}
+                        key={i}
+                        id={result.id}
+                        openModal={openModal}
+                        result={result}
+                      />
+                    ))}
+
+                    {userLocation && (
+                      <Marker
+                        lat={userLocation.lat}
+                        lng={userLocation.lng}
+                        text="You are here!"
+                        color="red"
+                      />
+                    )}
+                  </GoogleMapReact>
+                </div>
+              </div>
+              <div className="simple-selection">
+                <MapSettings
+                  geoFindMe={geoFindMe}
+                  handleZipInputChange={handleZipInputChange}
+                  zipInput={zipInput}
+                  backSide={backSide}
+                  setBackSide={setBackSide}
+                />
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
