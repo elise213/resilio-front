@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .centered {
   display: flex;
   justify-content: center;
@@ -181,9 +189,14 @@ body.loginModal-open {
 }
 
 .login-container span {
-  /* color: lightgreen; */
-  /* color: var(--newGreen); */
-  color: black;
+  color: lightgreen;
+  font-size: 40px;
+  font-family: "AwsumSans";
+  margin-left: 10px;
+}
+
+.login-container {
+  width: 100%;
 }
 
 .login-logout {

@@ -1,8 +1,7 @@
 .selection {
   display: flex;
-  flex-direction: column;
   width: 100%;
-  margin: 20px;
+  /* margin: 20px; */
 }
 
 .need-today-option {
@@ -26,11 +25,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-  border: 1px solid black;
-  padding: 20px;
+  margin: 12px;
+  border: 1px solid salmon;
+  padding: 10px;
   border-radius: 4px;
   background-color: white;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .center {
@@ -90,7 +90,7 @@
 }
 
 .closed2 {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   font-family: "Urbanist", sans-serif !important;
   transition: color 0.3s, font-size 0.3s;
 }
@@ -164,11 +164,12 @@
 }
 
 .side-car {
-  width: 100%;
+  /* width: 100%; */
   align-items: center;
   display: flex;
   justify-content: center;
 }
+
 @media screen and (max-width: 1000px) {
   .center {
     font-size: 14px;
@@ -201,7 +202,7 @@
 
 @media screen and (max-width: 900px) {
   .selection {
-    width: 100%;
+    flex-direction: column !important;
   }
 
   .header-open {

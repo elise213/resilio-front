@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import ResourceCard from "./ResourceCard";
-import GeneratedTreasureMap from "./GeneratedTreasureMap";
+
 import "../styles/mapBack.css";
+import Swal from "sweetalert2";
 
 const MapBack = ({
   setBackSide,
@@ -16,16 +17,12 @@ const MapBack = ({
   setHoveredItem,
   modalIsOpen,
   setModalIsOpen,
+  selectedResources,
+  setSelectedResources,
   city,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-
-  // State to manage selected resources
-  const [selectedResources, setSelectedResources] = useState(() => {
-    const storedResources = actions.getSessionSelectedResources();
-    return storedResources;
-  });
 
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
@@ -69,6 +66,15 @@ const MapBack = ({
     }
 
     setSelectedResources((prevResources) => {
+      if (prevResources.length >= 5) {
+        // Display an alert if the limit is reached
+        Swal.fire({
+          icon: "error",
+          title: "Please limit the path to five resources at a time",
+        });
+        return prevResources;
+      }
+
       if (!prevResources.some((r) => r.id === resource.id)) {
         const updatedResources = [...prevResources, resource];
         console.log("Updated Resources", updatedResources);
@@ -109,14 +115,14 @@ const MapBack = ({
       return (
         <i
           key={index}
-          className={`card-icon ${actions.getIconForCategory(category)}`}
+          className={`path-icon ${actions.getIconForCategory(category)}`}
           style={colorStyle ? colorStyle : {}}
         />
       );
     });
   };
 
-  // useEffect to control scrolling when modal is open
+  // control scrolling when modal is open
   useEffect(() => {
     const body = document.body;
     const grandContainer = document.querySelector(".grand-container");
@@ -156,25 +162,8 @@ const MapBack = ({
     const [isHovered, setIsHovered] = useState(false);
 
     const color = "red";
-    // const color = resource
-    //   ? markerColor || actions.getColorForCategory(resource.category).color
-    //   : markerColor || "red";
 
-    // let icons = [];
-    // let iconClass = "fa-solid fa-map-pin";
     let icons = <i className="fa-solid fa-map-pin"></i>;
-
-    // if (resource) {
-    //   const categories = actions.processCategory(resource.category);
-    //   icons = categories.map((category, index) => {
-    //     const iconClass = actions.getIconForCategory(category);
-    //     const color = actions.getColorForCategory(category).color;
-    //     return <i key={index} className={iconClass} style={{ color }}></i>;
-    //   });
-
-    //   const singleCategory = categories[0];
-    //   iconClass = actions.getIconForCategory(singleCategory);
-    // }
 
     return (
       <div
@@ -219,24 +208,41 @@ const MapBack = ({
 
   return (
     <>
-      <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        Flip The Map
-      </button>
-
       {selectedResources[0] ? (
         <div className="path">
           <div className="selected-resources">
-            {selectedResources.map((resource) => (
-              <div key={resource.id} className="selected-item">
-                <img src={imagePath} />
-                <div className="path-icons">
-                  {renderCategoryIcons(resource.category)}
+            <img className="path-img flip-horizontal" src={imagePath} />
+
+            {selectedResources.map((resource, index) => (
+              <React.Fragment key={resource.id}>
+                <div
+                  className="selected-item"
+                  onClick={() => openModal(resource)}
+                >
+                  <div className="path-item">
+                    <div className="path-icons">
+                      {renderCategoryIcons(resource.category)}
+                    </div>
+                    <span className="path-name">{resource.name}</span>
+                  </div>
+                  <button
+                    className="add-favorite"
+                    onClick={() => removeSelectedResource(resource.id)}
+                  >
+                    Remove from Path
+                  </button>
+                  {/* flip-horizontal class for every other image based on index */}
+                  <img
+                    className={`path-img ${index % 2 ? "flip-horizontal" : ""}`}
+                    src={imagePath}
+                    alt={`Path to ${resource.name}`}
+                  />
                 </div>
-                <span>{resource.name}</span>
-              </div>
+              </React.Fragment>
             ))}
+
             <button className="createMyPath" onClick={handleCreateMyPathClick}>
-              Create my Path
+              Create your Path !
             </button>
           </div>
 
@@ -278,14 +284,18 @@ const MapBack = ({
       ) : (
         <p>Add Resources to Your Path! </p>
       )}
-
+      <div className="flip-div">
+        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+          Flip The Map
+        </button>
+      </div>
       <div className="back-container">
         {store.boundaryResults && store.boundaryResults.length > 0 && (
           <div className="list-container">
             <div className="scroll-title">
               <span>In your Area</span>
             </div>
-            <ul>
+            <ul className="all-ul">
               {store.boundaryResults.map((resource, index) => (
                 <ResourceCard
                   key={resource.id}
@@ -305,7 +315,7 @@ const MapBack = ({
         {store.favorites && store.favorites.length > 0 && (
           <div className="list-container">
             <div className="scroll-title">
-              <span>Your Favorites</span>
+              <span>Liked Resources</span>
             </div>
             <ul>
               {store.favorites.map((resource, index) => (
@@ -325,13 +335,6 @@ const MapBack = ({
           </div>
         )}
       </div>
-
-      {isGeneratedMapModalOpen && (
-        <GeneratedTreasureMap
-          closeModal={() => setIsGeneratedMapModalOpen(false)}
-          selectedResources={selectedResources}
-        />
-      )}
     </>
   );
 };

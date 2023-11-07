@@ -1,7 +1,13 @@
 import React from "react";
 import styles from "../styles/mapSettings2.css";
 
-const MapSettings = ({ handleZipInputChange, zipInput, geoFindMe }) => {
+const MapSettings = ({
+  handleZipInputChange,
+  zipInput,
+  geoFindMe,
+  backSide,
+  setBackSide,
+}) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
 
   return (
@@ -20,6 +26,9 @@ const MapSettings = ({ handleZipInputChange, zipInput, geoFindMe }) => {
             placeholder="Zip Code"
           />
         </div>
+        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+          Flip The Map
+        </button>
       </div>
     </div>
   );

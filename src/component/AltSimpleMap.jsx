@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Context } from "../store/appContext";
 import MapBack from "./MapBack2";
+import Login from "../component/Login.jsx";
+
 import Selection from "./Selection";
 import ResourceCard from "./ResourceCard";
 import ErrorBoundary from "./ErrorBoundary";
@@ -33,11 +35,14 @@ const AltSimpleMap = ({
   setModalIsOpen,
   selectedResource,
   setSelectedResource,
+  isGeneratedMapModalOpen,
+  setIsGeneratedMapModalOpen,
+  selectedResources,
+  setSelectedResources,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
   const [backSide, setBackSide] = useState(false);
-  const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
 
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
@@ -48,25 +53,10 @@ const AltSimpleMap = ({
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
 
-    const color = result
-      ? markerColor || actions.getColorForCategory(result.category).color
-      : markerColor || "red";
+    const color = "red";
 
-    let icons = [];
+    let icons = [<i className="fa-solid fa-map-pin"></i>];
     let iconClass = "fa-solid fa-map-pin";
-
-    // Process category icons if result is defined
-    if (result) {
-      const categories = actions.processCategory(result.category);
-      icons = categories.map((category, index) => {
-        const iconClass = actions.getIconForCategory(category);
-        const color = actions.getColorForCategory(category).color;
-        return <i key={index} className={iconClass} style={{ color }}></i>;
-      });
-
-      const singleCategory = categories[0];
-      iconClass = actions.getIconForCategory(singleCategory);
-    }
 
     return (
       <div
@@ -122,6 +112,14 @@ const AltSimpleMap = ({
       }`}
     >
       <div className={`map-frame `}>
+        {/* <div className="logo-div"> */}
+        {/* </div> */}
+        <div className="map-head">
+          {/* {!backSide && (
+            <img className="navbar-logo" src={RESR} alt="Alive Logo" />
+          )} */}
+        </div>
+
         {backSide ? (
           <>
             <MapBack
@@ -138,22 +136,16 @@ const AltSimpleMap = ({
               isGeneratedMapModalOpen={isGeneratedMapModalOpen}
               setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
               city={city}
+              selectedResources={selectedResources}
+              setSelectedResources={setSelectedResources}
             />
           </>
         ) : (
           <>
-            <button
-              className="flip-button"
-              onClick={() => setBackSide(!backSide)}
-            >
-              Flip The Map
-            </button>
-            <div className="logo-div">
-              <img className="navbar-logo" src={RESR} alt="Alive Logo" />
-            </div>
+            <Login />
             <div
               className="map-container"
-              style={{ height: "80vh", width: "60vw" }}
+              style={{ height: "40vh", width: "60vw" }}
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: apiKey }}
@@ -184,36 +176,40 @@ const AltSimpleMap = ({
                 )}
               </GoogleMapReact>
             </div>
+            <div className="simple-selection">
+              {store.CATEGORY_OPTIONS &&
+              store.DAY_OPTIONS &&
+              store.GROUP_OPTIONS &&
+              categories &&
+              days &&
+              groups ? (
+                <ErrorBoundary>
+                  <div className="side-car">
+                    <Selection
+                      categories={categories}
+                      setCategories={setCategories}
+                      groups={groups}
+                      setGroups={setGroups}
+                      days={days}
+                      setDays={setDays}
+                      searchingToday={searchingToday}
+                      setSearchingToday={setSearchingToday}
+                      INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                    />
+                  </div>
+                </ErrorBoundary>
+              ) : (
+                message2Open && <p>Loading selection options...</p>
+              )}
 
-            <MapSettings
-              geoFindMe={geoFindMe}
-              handleZipInputChange={handleZipInputChange}
-              zipInput={zipInput}
-            />
-            {store.CATEGORY_OPTIONS &&
-            store.DAY_OPTIONS &&
-            store.GROUP_OPTIONS &&
-            categories &&
-            days &&
-            groups ? (
-              <ErrorBoundary>
-                <div className="side-car">
-                  <Selection
-                    categories={categories}
-                    setCategories={setCategories}
-                    groups={groups}
-                    setGroups={setGroups}
-                    days={days}
-                    setDays={setDays}
-                    searchingToday={searchingToday}
-                    setSearchingToday={setSearchingToday}
-                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                  />
-                </div>
-              </ErrorBoundary>
-            ) : (
-              message2Open && <p>Loading selection options...</p>
-            )}
+              <MapSettings
+                geoFindMe={geoFindMe}
+                handleZipInputChange={handleZipInputChange}
+                zipInput={zipInput}
+                backSide={backSide}
+                setBackSide={setBackSide}
+              />
+            </div>
           </>
         )}
       </div>

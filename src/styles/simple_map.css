@@ -33,16 +33,21 @@
 
 .flip-button {
   background-color: var(--coral);
-  width: 90px;
-  height: 90px;
-  font-size: 15px;
-  margin-top: 30px;
+  width: 70px;
+  min-height: 70px;
+  font-size: 13px;
   border-radius: 100%;
+  margin: 10px;
 }
 
-.map-frame-wrapper.flipped {
+.map-frame-wrapper.flipped:before {
   transform: rotateY(180deg);
   transition: transform 0.6s;
+  background-image: url(/assets/scroll3.png) !important;
+  /* width: 100%; */
+  background-repeat: no-repeat;
+  /* background-size: contain !important; */
+  background-size: 100% !important;
 }
 
 .marker-icon i {
@@ -79,35 +84,72 @@
 .logo-div {
   display: flex;
   justify-content: center;
-  margin: 0 0 20px 0;
+  /* margin: 0 0 20px 0; */
+  width: 100%;
 }
 
-.map-frame-wrapper {
-  background-image: url(/assets/scroll.png);
+/* .map-frame-wrapper {
+  background-image: url(/assets/scroll2.png);
   background-repeat: no-repeat;
   background-size: 100%;
-  padding: 120px;
+  filter: brightness(50%);
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  align-items: center;
   transform-style: preserve-3d;
   transform: rotateY(0deg);
   transition: transform 0.6s;
-  background-color: transparent;
-  background-size: 100% 100%;
+  max-width: 900px;
+  padding: 100px 85px 190px;
+} */
+
+.map-frame-wrapper {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 0.6s;
+  max-width: 900px;
+  width: 100%;
+  padding: 150px 85px 320px;
+  overflow: hidden;
+}
+
+.map-frame-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/assets/scroll2.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(70%);
+  z-index: -1;
+}
+
+.map-frame-wrapper.flipped {
+  transform: rotateY(180deg);
+}
+
+.map-head {
+  display: flex;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .map-frame {
   flex-direction: column;
   width: 100%;
-  overflow: hidden;
-  background-color: transparent;
-  align-items: flex-end;
   display: flex;
   z-index: 0;
-  box-sizing: border-box;
 }
 
 .map-frame.flipped {
@@ -121,10 +163,11 @@
 
 .map-container {
   z-index: 999;
-  width: 100% !important;
+  width: 50% !important;
   position: relative;
   z-index: 1;
-  height: 50vh !important;
+  min-height: 40vh !important;
+  overflow: visible;
 }
 
 .marker-text {
@@ -153,7 +196,7 @@
 .scroll-search-results {
   background-color: transparent;
   overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   scroll-behavior: smooth;
   max-height: 600px;
   width: 250px;
@@ -206,7 +249,22 @@
 
 @media screen and (max-width: 700px) {
   .map-frame-wrapper {
-    padding: 80px !important;
+    padding: 20px 80px !important;
+  }
+
+  .map-frame {
+    margin: 0 !important;
+  }
+  .map-head {
+    flex-direction: column;
+    align-items: flex-end !important;
+  }
+
+  .flip-button {
+    width: 70px !important;
+    height: 60px !important;
+    font-size: small !important;
+    min-height: 0 !important;
   }
 }
 
@@ -215,24 +273,38 @@
     flex-direction: column !important;
   }
   .map-frame-wrapper {
-    padding: 100px 50px !important;
+    padding: 80px 30px !important;
   }
 }
 
 @media screen and (max-width: 500px) {
   .map-frame-wrapper {
-    padding: 90px 40px !important;
+    padding: 0 !important;
   }
 
   .scroll-search-results {
     width: 150px !important;
+  }
+
+  .map-frame-wrapper {
+    padding: 60px 30px 0 !important;
+  }
+
+  .map-container {
+    width: 85% !important;
   }
 }
 
 .scroll-title {
   font-family: "AwsumSans", sans-serif;
   text-align: center;
-
   border-bottom: 3px solid black;
-  font-size: 30px;
+  font-size: 20px;
+}
+
+.simple-selection {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  max-width: 600px;
 }

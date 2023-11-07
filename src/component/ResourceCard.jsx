@@ -78,45 +78,41 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
-      <div className="">
-        <div className="icons-container">
-          {categories.map((category, index) => {
-            const colorStyle = actions.getColorForCategory(category);
-            return (
-              <i
-                key={index}
-                className={`card-icon ${actions.getIconForCategory(category)}`}
-                style={colorStyle ? colorStyle : {}}
-              />
-            );
-          })}
-        </div>
-        <div className="resource-card-header">
-          <div className="card-title-div">
-            <p className="resource-title">{props.item.name}</p>
-          </div>
-        </div>
-        {props.item.image && (
-          <div className="card-image-container">
-            <img
-              className="card-img"
-              src={props.item.image}
-              alt="profile picture"
+      <div className="icons-container">
+        {categories.map((category, index) => {
+          const colorStyle = actions.getColorForCategory(category);
+          return (
+            <i
+              key={index}
+              className={`card-icon ${actions.getIconForCategory(category)}`}
+              style={colorStyle ? colorStyle : {}}
             />
-          </div>
+          );
+        })}
+      </div>
+      <div className="resource-card-header">
+        <p className="resource-title">{props.item.name}</p>
+      </div>
+      {props.item.image && (
+        <div className="card-image-container">
+          <img
+            className="card-img"
+            src={props.item.image}
+            alt="profile picture"
+          />
+        </div>
+      )}
+      <div className="button-container">
+        {store.token && (
+          <button
+            className="add-favorite"
+            onClick={(event) => toggleFavorite(event)}
+          >
+            {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
+          </button>
         )}
 
-        <button
-          className="add-favorite"
-          onClick={(event) => toggleFavorite(event)}
-        >
-          {isFavorited ? "Remove from Favorites" : "Add to Favorites"}
-        </button>
-
-        <button
-          className="toggle-selected"
-          onClick={handleToggleSelectResource}
-        >
+        <button className="add-path" onClick={handleToggleSelectResource}>
           {isSelected ? "Remove from Path" : "Add to Path"}
         </button>
       </div>
