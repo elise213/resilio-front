@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import ResourceCard from "./ResourceCard";
-import GeneratedTreasureMap from "./GeneratedTreasureMap";
+
 import "../styles/mapBack.css";
 import Swal from "sweetalert2";
 
@@ -339,13 +339,6 @@ const MapBack = ({
           </div>
         )}
       </div>
-
-      {isGeneratedMapModalOpen && (
-        <GeneratedTreasureMap
-          closeModal={() => setIsGeneratedMapModalOpen(false)}
-          selectedResources={selectedResources}
-        />
-      )}
     </>
   );
 };
