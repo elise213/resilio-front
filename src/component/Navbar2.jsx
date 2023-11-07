@@ -71,7 +71,7 @@ const Navbar2 = ({
       return (
       <>
         <div className="nav-container">
-          <nav className={`new-navbar ${isNavOpen ? "open" : ""}`}>
+          <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
             {!isLargeScreen && (
               <div className="menu-icon" onClick={toggleNav}>
                 <div
@@ -80,7 +80,9 @@ const Navbar2 = ({
                 >
                   <i className="fas fa-bars"></i>
                 </div>
-                <div className={`close-icon-nav ${isNavOpen ? "open" : ""}`}>
+                <div
+                  className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}
+                >
                   {/* <span className="navbar-toggler"> */}
                   <i className="fa-solid fa-x"></i>
                   {/* </span> */}
@@ -88,7 +90,7 @@ const Navbar2 = ({
               </div>
             )}
 
-            <div className={`navbar-content ${isNavOpen ? "open" : ""}`}>
+            <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
               {!isLargeScreen && (
                 <img
                   src="/assets/RESILIOO.png"
