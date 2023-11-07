@@ -23,6 +23,13 @@ const MapBack = ({
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
+  const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
+
+  console.log("IsLS", isLargeScreen);
+
+  useEffect(() => {
+    setIsLargeScreen(store.isLargeScreen);
+  }, [store.isLargeScreen]);
 
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
@@ -49,49 +56,6 @@ const MapBack = ({
       );
     };
   }, [actions]); // No need to listen to selectedResources here
-
-  const addSelectedResource = (resource) => {
-    console.log("Adding resource", resource);
-
-    // Check if the resource has latitude and longitude
-    if (
-      typeof resource.latitude === "undefined" ||
-      typeof resource.longitude === "undefined"
-    ) {
-      console.error(
-        "Attempted to add resource without latitude or longitude",
-        resource
-      );
-      return;
-    }
-
-    setSelectedResources((prevResources) => {
-      if (prevResources.length >= 3) {
-        // Display an alert if the limit is reached
-        Swal.fire({
-          icon: "error",
-          title: "Please limit the path to 3 resources at a time",
-        });
-        return prevResources;
-      }
-
-      if (!prevResources.some((r) => r.id === resource.id)) {
-        const updatedResources = [...prevResources, resource];
-        console.log("Updated Resources", updatedResources);
-        updateSessionStorage(updatedResources);
-        return updatedResources;
-      }
-      return prevResources;
-    });
-  };
-
-  const removeSelectedResource = (resourceId) => {
-    setSelectedResources((prevResources) => {
-      const updatedResources = prevResources.filter((r) => r.id !== resourceId);
-      updateSessionStorage(updatedResources);
-      return updatedResources;
-    });
-  };
 
   const imagePath = "/assets/path1.png";
   const handleCreateMyPathClick = () => {
@@ -248,41 +212,42 @@ const MapBack = ({
               Create your Path
             </button>
           </div>
-
-          <div
-            className="map-container"
-            style={{ height: "160px", width: "100%" }}
-          >
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: apiKey }}
-              defaultZoom={11}
-              center={city.center}
+          {isLargeScreen && (
+            <div
+              className="map-container"
+              style={{ height: "160px", width: "100%" }}
             >
-              {selectedResources.map((resource, index) => {
-                console.log(resource);
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: apiKey }}
+                defaultZoom={11}
+                center={city.center}
+              >
+                {selectedResources.map((resource, index) => {
+                  console.log(resource);
 
-                if (!resource.latitude || !resource.longitude) {
-                  console.error(
-                    "Resource is missing latitude or longitude",
-                    resource.id
+                  if (!resource.latitude || !resource.longitude) {
+                    console.error(
+                      "Resource is missing latitude or longitude",
+                      resource.id
+                    );
+                    return null;
+                  }
+
+                  return (
+                    <Marker
+                      lat={resource.latitude}
+                      lng={resource.longitude}
+                      text={resource.name}
+                      key={resource.id}
+                      id={resource.id}
+                      openModal={openModal}
+                      resource={resource}
+                    />
                   );
-                  return null;
-                }
-
-                return (
-                  <Marker
-                    lat={resource.latitude}
-                    lng={resource.longitude}
-                    text={resource.name}
-                    key={resource.id}
-                    id={resource.id}
-                    openModal={openModal}
-                    resource={resource}
-                  />
-                );
-              })}
-            </GoogleMapReact>
-          </div>
+                })}
+              </GoogleMapReact>
+            </div>
+          )}
         </div>
       ) : (
         <p>Add Resources to Your Path! </p>
@@ -291,52 +256,6 @@ const MapBack = ({
         <button className="flip-button" onClick={() => setBackSide(!backSide)}>
           Flip The Map
         </button>
-      </div>
-      <div className="back-container">
-        {store.boundaryResults && store.boundaryResults.length > 0 && (
-          <div className="list-container">
-            <div className="scroll-title">
-              <span>In your Area</span>
-            </div>
-            <ul className="all-ul">
-              {store.boundaryResults.map((resource, index) => (
-                <ResourceCard
-                  key={resource.id}
-                  item={resource}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  modalIsOpen={modalIsOpen}
-                  setModalIsOpen={setModalIsOpen}
-                  selectedResources={selectedResources}
-                  addSelectedResource={addSelectedResource}
-                  removeSelectedResource={removeSelectedResource}
-                />
-              ))}
-            </ul>
-          </div>
-        )}
-        {store.favorites && store.favorites.length > 0 && (
-          <div className="list-container">
-            <div className="scroll-title">
-              <span>Liked Resources</span>
-            </div>
-            <ul>
-              {store.favorites.map((resource, index) => (
-                <ResourceCard
-                  key={resource.id}
-                  item={resource}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  modalIsOpen={modalIsOpen}
-                  setModalIsOpen={setModalIsOpen}
-                  selectedResources={selectedResources}
-                  addSelectedResource={addSelectedResource}
-                  removeSelectedResource={removeSelectedResource}
-                />
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </>
   );

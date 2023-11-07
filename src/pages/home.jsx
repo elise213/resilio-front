@@ -344,12 +344,10 @@ const Home = () => {
       />
 
       <div className="grand-container">
-        {/* <div className="search-container"> */}{" "}
+        {/* <div className="search-container"> */}
         {message1Open && (
           <>
             <ErrorBoundary>
-              {/* <SimpleMap */}
-
               <AltSimpleMap
                 handleBoundsChange={handleBoundsChange}
                 openModal={openModal}
