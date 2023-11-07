@@ -19,9 +19,9 @@ const Selection = ({
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
-  const [showCategories, setShowCategories] = useState(false);
-  const [showGroups, setShowGroups] = useState(false);
-  const [showDays, setShowDays] = useState(false);
+  const [showCategories, setShowCategories] = useState(true);
+  const [showGroups, setShowGroups] = useState(true);
+  const [showDays, setShowDays] = useState(true);
   const [activeCategoryIds, setActiveCategoryIds] = useState([]);
   const [visibleGroupCount, setVisibleGroupCount] = useState(0);
   const [visibleDaysCounts, setVisibleDaysCounts] = useState({

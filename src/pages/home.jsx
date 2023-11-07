@@ -15,6 +15,7 @@ import {
   ResourceCard,
   Modal,
 } from "../component";
+import ToolBox from "../component/ToolBox";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -319,6 +320,18 @@ const Home = () => {
   return (
     <>
       <Navbar2
+        categories={categories}
+        setCategories={setCategories}
+        groups={groups}
+        setGroups={setGroups}
+        days={days}
+        setDays={setDays}
+        searchingToday={searchingToday}
+        setSearchingToday={setSearchingToday}
+        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+      />
+
+      <ToolBox
         categories={categories}
         setCategories={setCategories}
         groups={groups}
