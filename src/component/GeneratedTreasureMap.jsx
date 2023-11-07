@@ -47,6 +47,12 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
         className="modal-content-treasure"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="options">
+          <p className="option">Download Path</p>
+          <p className="option">Send Path to Phone</p>
+          <p className="option">Send Path to Email</p>
+          <p className="option">Print Path</p>
+        </div>
         <button className="modal-close-treasure" onClick={closeModal}>
           X
         </button>
@@ -56,47 +62,97 @@ const GeneratedTreasureMap = ({ closeModal, selectedResources }) => {
               resource.category
             );
 
+            // Return a React.Fragment with a key instead of the shorthand fragment
+            // This is important for React's rendering of lists
             return (
-              <div key={resource.id} className="modalContainer">
-                <div className="number-box">
-                  <span>{index + 1}</span>
-                </div>
-                <div className="title-box">
-                  <span>{resource.name}</span>
-                </div>
-                <div className="resource-category-icons">
-                  {processedCategories &&
-                    processedCategories.map((category, index) => {
-                      const iconClassName =
-                        actions.getIconForCategory(category);
+              <React.Fragment key={resource.id}>
+                <div className="modalContainer">
+                  <div className="number-box">
+                    <span>{index + 1}</span>
+                  </div>
+                  <div className="title-box">
+                    <span>{resource.name}</span>
+                  </div>
+                  <div className="resource-category-icons">
+                    {processedCategories &&
+                      processedCategories.map((category, categoryIndex) => {
+                        const iconClassName =
+                          actions.getIconForCategory(category);
+                        const colorStyle =
+                          actions.getColorForCategory(category);
 
-                      const colorStyle = actions.getColorForCategory(category);
+                        // Use a different key for each category to avoid key conflicts
+                        return (
+                          <i
+                            key={`${resource.id}-${categoryIndex}`}
+                            className={`${iconClassName} card-icon`}
+                            style={colorStyle || {}}
+                          />
+                        );
+                      })}
+                  </div>
 
-                      return (
-                        <i
-                          key={index}
-                          className={`${iconClassName} card-icon`}
-                          style={colorStyle || {}}
-                        />
-                      );
-                    })}
+                  <ModalInfo
+                    id={resource.id}
+                    schedule={resource.schedule}
+                    res={resource}
+                  />
                 </div>
-
-                <ModalInfo
-                  id={resource.id}
-                  schedule={resource.schedule}
-                  res={resource}
-                />
+                {/* Ensure that the <hr /> is not commented out and is displayed between resources */}
                 {index < selectedResources.length - 1 && <hr />}
-              </div>
+              </React.Fragment>
             );
           })}
-          <div className="options">
-            <p className="option">Download Path</p>
-            <p className="option">Send Path to Phone</p>
-            <p className="option">Send Path to Email</p>
-            <p className="option">Print Path</p>
-          </div>
+
+          {/* {selectedResources.map((resource, index) => {
+            const processedCategories = actions.processCategory(
+              resource.category
+            );
+
+            return (
+              <>
+                <div key={resource.id} className="modalContainer">
+                  <div className="options">
+                    <p className="option">Download Path</p>
+                    <p className="option">Send Path to Phone</p>
+                    <p className="option">Send Path to Email</p>
+                    <p className="option">Print Path</p>
+                  </div>
+                  <div className="number-box">
+                    <span>{index + 1}</span>
+                  </div>
+                  <div className="title-box">
+                    <span>{resource.name}</span>
+                  </div>
+                  <div className="resource-category-icons">
+                    {processedCategories &&
+                      processedCategories.map((category, index) => {
+                        const iconClassName =
+                          actions.getIconForCategory(category);
+
+                        const colorStyle =
+                          actions.getColorForCategory(category);
+
+                        return (
+                          <i
+                            key={index}
+                            className={`${iconClassName} card-icon`}
+                            style={colorStyle || {}}
+                          />
+                        );
+                      })}
+                  </div>
+
+                  <ModalInfo
+                    id={resource.id}
+                    schedule={resource.schedule}
+                    res={resource}
+                  />
+                </div>
+                {index < selectedResources.length - 1 && <hr />}
+              </>
+            );
+          })} */}
         </div>
       </div>
     </div>

@@ -24,13 +24,14 @@
   display: flex;
   justify-content: center;
   z-index: 9999;
-  border: 5px solid yellow;
+  /* border: 5px solid yellow; */
 }
 
 hr {
   height: 5px;
   color: purple;
   margin: 25px;
+  width: 100%;
 }
 
 .modal-content-treasure {
@@ -40,17 +41,17 @@ hr {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-y: scroll;
   z-index: 999;
-  /* border: 5px solid green; */
 }
 
 .modal-close-treasure {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 100px;
   border: none;
   background: none;
-  font-size: 1.5em;
+  font-size: 50px;
   cursor: pointer;
+  color: salmon;
 }
 
 .modal-close-treasure:hover,
@@ -90,9 +91,10 @@ hr {
 
 .title-box {
   display: flex;
-  font-size: 30px;
+  font-size: 25px;
   justify-content: center;
   font-family: "AwsumSans", sans-serif;
+  margin: 20px 0;
 }
 
 .no-scroll {
@@ -112,8 +114,14 @@ hr {
   font-size: 30px;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
-  width: 100%;
+  /* color: blue; */
+  width: 50px;
+  justify-content: center;
+  display: flex;
+  background-color: rgb(246, 134, 68);
   margin-left: 20px;
+  border: 1px solid blue;
+  border-radius: 100%;
 }
 .resource-category-icons {
   display: flex;

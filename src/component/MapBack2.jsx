@@ -17,16 +17,12 @@ const MapBack = ({
   setHoveredItem,
   modalIsOpen,
   setModalIsOpen,
+  selectedResources,
+  setSelectedResources,
   city,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-
-  // State to manage selected resources
-  const [selectedResources, setSelectedResources] = useState(() => {
-    const storedResources = actions.getSessionSelectedResources();
-    return storedResources;
-  });
 
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
@@ -292,7 +288,9 @@ const MapBack = ({
       ) : (
         <p>Add Resources to Your Path! </p>
       )}
-
+      <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+        Flip The Map
+      </button>
       <div className="back-container">
         {store.boundaryResults && store.boundaryResults.length > 0 && (
           <div className="list-container">

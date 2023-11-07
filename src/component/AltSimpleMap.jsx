@@ -37,6 +37,8 @@ const AltSimpleMap = ({
   setSelectedResource,
   isGeneratedMapModalOpen,
   setIsGeneratedMapModalOpen,
+  selectedResources,
+  setSelectedResources,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -113,14 +115,9 @@ const AltSimpleMap = ({
         {/* <div className="logo-div"> */}
         {/* </div> */}
         <div className="map-head">
-          <Login />
-          <img className="navbar-logo" src={RESR} alt="Alive Logo" />
-          <button
-            className="flip-button"
-            onClick={() => setBackSide(!backSide)}
-          >
-            Flip The Map
-          </button>
+          {/* {!backSide && (
+            <img className="navbar-logo" src={RESR} alt="Alive Logo" />
+          )} */}
         </div>
 
         {backSide ? (
@@ -139,13 +136,16 @@ const AltSimpleMap = ({
               isGeneratedMapModalOpen={isGeneratedMapModalOpen}
               setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
               city={city}
+              selectedResources={selectedResources}
+              setSelectedResources={setSelectedResources}
             />
           </>
         ) : (
           <>
+            <Login />
             <div
               className="map-container"
-              style={{ height: "40vh", width: "0vw" }}
+              style={{ height: "40vh", width: "60vw" }}
             >
               <GoogleMapReact
                 bootstrapURLKeys={{ key: apiKey }}
@@ -206,6 +206,8 @@ const AltSimpleMap = ({
                 geoFindMe={geoFindMe}
                 handleZipInputChange={handleZipInputChange}
                 zipInput={zipInput}
+                backSide={backSide}
+                setBackSide={setBackSide}
               />
             </div>
           </>
