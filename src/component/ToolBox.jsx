@@ -111,7 +111,7 @@ const ToolBox = ({
               </div>
             </ErrorBoundary>
           ) : (
-            message2Open && <p>Loading selection options...</p>
+            <p>Loading selection options...</p>
           )}
         </div>
       </div>
