@@ -44,10 +44,8 @@
   transform: rotateY(180deg);
   transition: transform 0.6s;
   background-image: url(/assets/scroll3.png) !important;
-  /* width: 100%; */
   background-repeat: no-repeat;
-  /* background-size: contain !important; */
-  background-size: 100% !important;
+  background-size: 100%;
 }
 
 .marker-icon i {
@@ -98,7 +96,7 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   max-width: 900px;
-  width: 100%;
+  /* width: 100%; */
   padding: 150px 85px 320px;
   overflow: hidden;
   min-height: 100vh;
@@ -272,7 +270,7 @@
     flex-direction: column !important;
   }
   .map-frame-wrapper {
-    padding: 80px 30px !important;
+    padding: 40px 30px 0 30px !important;
   }
 }
 
