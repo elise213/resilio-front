@@ -34,10 +34,10 @@
 .flip-button {
   background-color: var(--coral);
   width: 90px;
-  height: 90px;
+  min-height: 90px;
   font-size: 15px;
-  margin-top: 30px;
   border-radius: 100%;
+  margin: 10px;
 }
 
 .map-frame-wrapper.flipped {
@@ -85,8 +85,8 @@
 .map-frame-wrapper {
   background-image: url(/assets/scroll.png);
   background-repeat: no-repeat;
-  background-size: 100%;
-  padding: 120px;
+  background-size: cover;
+  padding: 50px 85px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -95,19 +95,27 @@
   transform-style: preserve-3d;
   transform: rotateY(0deg);
   transition: transform 0.6s;
-  background-color: transparent;
-  background-size: 100% 100%;
+  max-width: 900px;
+}
+
+.map-head {
+  display: flex;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .map-frame {
   flex-direction: column;
   width: 100%;
-  overflow: hidden;
+  position: relative;
   background-color: transparent;
   align-items: flex-end;
   display: flex;
   z-index: 0;
   box-sizing: border-box;
+  margin-bottom: 60px;
+  padding: 0 10px;
 }
 
 .map-frame.flipped {
@@ -124,7 +132,8 @@
   width: 100% !important;
   position: relative;
   z-index: 1;
-  height: 50vh !important;
+  min-height: 40vh !important;
+  overflow: visible;
 }
 
 .marker-text {
@@ -153,7 +162,7 @@
 .scroll-search-results {
   background-color: transparent;
   overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   scroll-behavior: smooth;
   max-height: 600px;
   width: 250px;
@@ -215,7 +224,7 @@
     flex-direction: column !important;
   }
   .map-frame-wrapper {
-    padding: 100px 50px !important;
+    padding: 80px 50px !important;
   }
 }
 
@@ -232,7 +241,13 @@
 .scroll-title {
   font-family: "AwsumSans", sans-serif;
   text-align: center;
-
   border-bottom: 3px solid black;
-  font-size: 30px;
+  font-size: 20px;
+}
+
+.simple-selection {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  max-width: 600px;
 }

@@ -23,8 +23,8 @@
   background-color: rgba(0, 0, 0, 0.9);
   display: flex;
   justify-content: center;
-  /* align-items: center; */
-  z-index: 99999;
+  z-index: 9999;
+  border: 5px solid yellow;
 }
 
 hr {
@@ -34,15 +34,13 @@ hr {
 }
 
 .modal-content-treasure {
-  position: fixed;
-  top: 0px;
-  width: 80%;
   height: 100%;
   background: white;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  overflow-y: scroll;
   z-index: 999;
+  /* border: 5px solid green; */
 }
 
 .modal-close-treasure {
@@ -81,12 +79,13 @@ hr {
 }
 
 .options {
-  color: rgb(242, 78, 59);
+  color: salmon;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   font-size: large;
   margin-top: 20px;
+  width: 100%;
 }
 
 .title-box {

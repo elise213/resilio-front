@@ -1,8 +1,6 @@
 .navbar {
   width: 100%;
-  position: fixed;
   top: 0;
-  padding: 10px;
   font-family: "Urbanist", sans-serif;
   color: black;
   display: flex;
@@ -22,8 +20,8 @@
 }
 
 .navbar-logo {
-  width: 300px;
-  height: 80px;
+  width: 250px;
+  height: 60px;
   margin: 20px 20px 0 0;
   background-color: transparent;
 }

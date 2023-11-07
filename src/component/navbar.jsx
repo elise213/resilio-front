@@ -26,9 +26,7 @@ const Navbar = () => {
       {/* <Link to="/" className="home-navbar">
         Home
       </Link> */}
-      <div className="login-div">
-        <Login />
-      </div>
+      <div className="login-div">{/* <Login /> */}</div>
     </nav>
   );
 };

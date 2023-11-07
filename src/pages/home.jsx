@@ -305,6 +305,7 @@ const Home = () => {
           <>
             <ErrorBoundary>
               {/* <SimpleMap */}
+
               <AltSimpleMap
                 handleBoundsChange={handleBoundsChange}
                 openModal={openModal}

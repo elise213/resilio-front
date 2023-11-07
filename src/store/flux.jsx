@@ -683,7 +683,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setBoundaryResults: async (bounds, resources, days, groups) => {
-        // console.trace("setBoundaryResults called from:");
+        console.trace("setBoundaryResults called from:");
         const store = getStore();
 
         // If there's an ongoing request, abort it
@@ -757,6 +757,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         }
       },
+
       addFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
