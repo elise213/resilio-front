@@ -40,11 +40,14 @@
   margin: 10px;
 }
 
-.map-frame-wrapper.flipped {
+.map-frame-wrapper.flipped:before {
   transform: rotateY(180deg);
   transition: transform 0.6s;
   background-image: url(/assets/scroll3.png) !important;
-  width: 100%;
+  /* width: 100%; */
+  background-repeat: no-repeat;
+  /* background-size: contain !important; */
+  background-size: 100% !important;
 }
 
 .marker-icon i {
@@ -102,7 +105,7 @@
 } */
 
 .map-frame-wrapper {
-  position: relative; /* Ensure the pseudo-element is positioned relative to this container */
+  position: relative;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -111,8 +114,9 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   max-width: 900px;
-  padding: 80px 85px 320px;
-  overflow: hidden; /* Prevent any pseudo-element from overflowing */
+  width: 100%;
+  padding: 150px 85px 320px;
+  overflow: hidden;
 }
 
 .map-frame-wrapper::before {
@@ -124,9 +128,13 @@
   height: 100%;
   background-image: url(/assets/scroll2.png);
   background-repeat: no-repeat;
-  background-size: cover; /* Use cover to ensure full coverage of the element */
-  filter: brightness(70%); /* Apply filter here */
-  z-index: -1; /* Position it behind the content */
+  background-size: cover;
+  filter: brightness(70%);
+  z-index: -1;
+}
+
+.map-frame-wrapper.flipped {
+  transform: rotateY(180deg);
 }
 
 .map-head {
@@ -140,14 +148,8 @@
 .map-frame {
   flex-direction: column;
   width: 100%;
-  position: relative;
-  background-color: transparent;
-  align-items: flex-end;
   display: flex;
   z-index: 0;
-  box-sizing: border-box;
-  /* margin: 30px 0 80px 0; */
-  padding: 0 10px;
 }
 
 .map-frame.flipped {
@@ -161,7 +163,7 @@
 
 .map-container {
   z-index: 999;
-  /* width: 100% !important; */
+  width: 50% !important;
   position: relative;
   z-index: 1;
   min-height: 40vh !important;
@@ -253,7 +255,6 @@
   .map-frame {
     margin: 0 !important;
   }
-
   .map-head {
     flex-direction: column;
     align-items: flex-end !important;
@@ -265,10 +266,6 @@
     font-size: small !important;
     min-height: 0 !important;
   }
-
-  .map-frame {
-    margin: 0 !important;
-  }
 }
 
 @media screen and (max-width: 600px) {
@@ -276,17 +273,25 @@
     flex-direction: column !important;
   }
   .map-frame-wrapper {
-    padding: 0 30px !important;
+    padding: 80px 30px !important;
   }
 }
 
 @media screen and (max-width: 500px) {
   .map-frame-wrapper {
-    padding: 90px 40px !important;
+    padding: 0 !important;
   }
 
   .scroll-search-results {
     width: 150px !important;
+  }
+
+  .map-frame-wrapper {
+    padding: 60px 30px 0 !important;
+  }
+
+  .map-container {
+    width: 85% !important;
   }
 }
 

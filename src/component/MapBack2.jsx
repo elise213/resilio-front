@@ -208,10 +208,6 @@ const MapBack = ({
 
   return (
     <>
-      {/* <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        Flip The Map
-      </button> */}
-
       {selectedResources[0] ? (
         <div className="path">
           <div className="selected-resources">
@@ -288,9 +284,11 @@ const MapBack = ({
       ) : (
         <p>Add Resources to Your Path! </p>
       )}
-      <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        Flip The Map
-      </button>
+      <div className="flip-div">
+        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+          Flip The Map
+        </button>
+      </div>
       <div className="back-container">
         {store.boundaryResults && store.boundaryResults.length > 0 && (
           <div className="list-container">

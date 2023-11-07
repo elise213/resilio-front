@@ -1,7 +1,7 @@
 .selection {
   display: flex;
   width: 100%;
-  margin: 20px;
+  /* margin: 20px; */
 }
 
 .need-today-option {
