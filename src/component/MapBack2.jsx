@@ -31,11 +31,6 @@ const MapBack = ({
     setIsLargeScreen(store.isLargeScreen);
   }, [store.isLargeScreen]);
 
-  // Function to update session storage whenever selectedResources changes
-  const updateSessionStorage = (resources) => {
-    sessionStorage.setItem("selectedResources", JSON.stringify(resources));
-  };
-
   // Event listener for selected resources
   useEffect(() => {
     const handleSetSelectedResources = () => {

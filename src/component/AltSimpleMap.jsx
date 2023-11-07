@@ -93,6 +93,11 @@ const AltSimpleMap = ({
     });
   };
 
+  // Function to update session storage whenever selectedResources changes
+  const updateSessionStorage = (resources) => {
+    sessionStorage.setItem("selectedResources", JSON.stringify(resources));
+  };
+
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
 
