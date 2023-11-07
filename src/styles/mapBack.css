@@ -9,12 +9,18 @@
 ul {
   margin-top: 0;
   padding: 0;
-  height: 50vh;
+  height: 40vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   list-style: none;
+}
+
+.flip-div {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .all-ul::-webkit-scrollbar-track {
@@ -156,5 +162,9 @@ li {
 
   .selected-resources {
     width: 100% !important;
+  }
+
+  .map-container {
+    margin-top: 25px;
   }
 }

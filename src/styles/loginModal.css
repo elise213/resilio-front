@@ -192,6 +192,11 @@ body.loginModal-open {
   color: lightgreen;
   font-size: 40px;
   font-family: "AwsumSans";
+  margin-left: 10px;
+}
+
+.login-container {
+  width: 100%;
 }
 
 .login-logout {
