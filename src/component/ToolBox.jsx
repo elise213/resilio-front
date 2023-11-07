@@ -63,62 +63,58 @@ const ToolBox = ({
 
   return (
     <>
-      return (
-      <>
-        <div className="toolnav-container">
-          <div
-            className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
-          >
-            {!isLargeScreen && (
-              <div className="toolmenu-icon" onClick={toggleNav}>
-                <div
-                  className={`toolopen-icon-nav ${
-                    !isToolBoxOpen ? "toolclosed" : ""
-                  }`}
-                  onClick={() => setIsToolBoxOpen(true)}
-                >
-                  {/* <i className="fas fa-bars"></i> */}
-                  <i class="fa-solid fa-toolbox"></i>
-                </div>
-                <div
-                  className={`toolclose-icon-nav ${
-                    isToolBoxOpen ? "toolopen-nav" : ""
-                  }`}
-                >
-                  <i className="fa-solid fa-x"></i>
-                </div>
+      <div className="toolnav-container">
+        <div
+          className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
+        >
+          {!isLargeScreen && (
+            <div className="toolmenu-icon" onClick={toggleNav}>
+              <div
+                className={`toolopen-icon-nav ${
+                  !isToolBoxOpen ? "toolclosed" : ""
+                }`}
+                onClick={() => setIsToolBoxOpen(true)}
+              >
+                {/* <i className="fas fa-bars"></i> */}
+                <i class="fa-solid fa-toolbox"></i>
               </div>
-            )}
+              <div
+                className={`toolclose-icon-nav ${
+                  isToolBoxOpen ? "toolopen-nav" : ""
+                }`}
+              >
+                <i className="fa-solid fa-x"></i>
+              </div>
+            </div>
+          )}
 
-            {!store.isLargeScreen &&
-            store.CATEGORY_OPTIONS &&
-            store.DAY_OPTIONS &&
-            store.GROUP_OPTIONS &&
-            categories &&
-            days &&
-            groups ? (
-              <ErrorBoundary>
-                <div className="side-car">
-                  <Selection
-                    categories={categories}
-                    setCategories={setCategories}
-                    groups={groups}
-                    setGroups={setGroups}
-                    days={days}
-                    setDays={setDays}
-                    searchingToday={searchingToday}
-                    setSearchingToday={setSearchingToday}
-                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                  />
-                </div>
-              </ErrorBoundary>
-            ) : (
-              message2Open && <p>Loading selection options...</p>
-            )}
-          </div>
+          {!store.isLargeScreen &&
+          store.CATEGORY_OPTIONS &&
+          store.DAY_OPTIONS &&
+          store.GROUP_OPTIONS &&
+          categories &&
+          days &&
+          groups ? (
+            <ErrorBoundary>
+              <div className="side-car">
+                <Selection
+                  categories={categories}
+                  setCategories={setCategories}
+                  groups={groups}
+                  setGroups={setGroups}
+                  days={days}
+                  setDays={setDays}
+                  searchingToday={searchingToday}
+                  setSearchingToday={setSearchingToday}
+                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                />
+              </div>
+            </ErrorBoundary>
+          ) : (
+            message2Open && <p>Loading selection options...</p>
+          )}
         </div>
-      </>
-      );
+      </div>
     </>
   );
 };

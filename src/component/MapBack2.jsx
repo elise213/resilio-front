@@ -66,11 +66,11 @@ const MapBack = ({
     }
 
     setSelectedResources((prevResources) => {
-      if (prevResources.length >= 5) {
+      if (prevResources.length >= 3) {
         // Display an alert if the limit is reached
         Swal.fire({
           icon: "error",
-          title: "Please limit the path to five resources at a time",
+          title: "Please limit the path to 3 resources at a time",
         });
         return prevResources;
       }
@@ -227,7 +227,10 @@ const MapBack = ({
                   </div>
                   <button
                     className="remove-path"
-                    onClick={() => removeSelectedResource(resource.id)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      removeSelectedResource(resource.id);
+                    }}
                   >
                     Remove from Path
                   </button>
@@ -242,13 +245,13 @@ const MapBack = ({
             ))}
 
             <button className="createMyPath" onClick={handleCreateMyPathClick}>
-              Create your Path !
+              Create your Path
             </button>
           </div>
 
           <div
             className="map-container"
-            style={{ height: "20vh", width: "30vw" }}
+            style={{ height: "160px", width: "100%" }}
           >
             <GoogleMapReact
               bootstrapURLKeys={{ key: apiKey }}

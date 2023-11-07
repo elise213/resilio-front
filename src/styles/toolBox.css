@@ -283,11 +283,11 @@
   }
 
   .toolclose-icon-nav.toolopen-nav {
-    right: 235px !important;
+    right: 275px !important;
   }
 
   .toolopen-icon-nav.toolclosed {
-    right: 300px !important;
+    right: 340px !important;
   }
 }
 

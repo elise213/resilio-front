@@ -32,7 +32,7 @@
 }
 
 .flip-button {
-  background-color: var(--coral);
+  background-color: lightgreen;
   width: 70px;
   min-height: 70px;
   font-size: 13px;
@@ -88,28 +88,12 @@
   width: 100%;
 }
 
-/* .map-frame-wrapper {
-  background-image: url(/assets/scroll2.png);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  filter: brightness(50%);
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-style: preserve-3d;
-  transform: rotateY(0deg);
-  transition: transform 0.6s;
-  max-width: 900px;
-  padding: 100px 85px 190px;
-} */
-
 .map-frame-wrapper {
   position: relative;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   transform-style: preserve-3d;
   transform: rotateY(0deg);
   transition: transform 0.6s;
@@ -132,6 +116,7 @@
   background-size: cover;
   filter: brightness(70%);
   z-index: -1;
+  margin-top: 80px;
 }
 
 .map-frame-wrapper.flipped {
@@ -152,6 +137,7 @@
   width: 100%;
   display: flex;
   z-index: 0;
+  margin: 80px 0 0 0 !important;
 }
 
 .map-frame.flipped {
@@ -168,7 +154,7 @@
   width: 100%;
   position: relative;
   z-index: 1;
-  min-height: 40vh !important;
+  min-height: 23vh !important;
   overflow: visible;
 }
 
@@ -261,7 +247,6 @@
   }
 
   .map-frame {
-    margin: 0 !important;
     padding: 0 25px 30px 25px !important;
   }
 
