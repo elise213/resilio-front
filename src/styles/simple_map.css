@@ -117,6 +117,7 @@
   width: 100%;
   padding: 150px 85px 320px;
   overflow: hidden;
+  min-height: 100vh;
 }
 
 .map-frame-wrapper::before {
@@ -147,6 +148,7 @@
 
 .map-frame {
   flex-direction: column;
+  align-items: center;
   width: 100%;
   display: flex;
   z-index: 0;
@@ -247,6 +249,12 @@
   justify-content: center;
 }
 
+.map-container-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 @media screen and (max-width: 700px) {
   .map-frame-wrapper {
     padding: 20px 80px !important;
@@ -299,7 +307,8 @@
   font-family: "AwsumSans", sans-serif;
   text-align: center;
   border-bottom: 3px solid black;
-  font-size: 20px;
+  font-size: 25px;
+  color: lightgreen;
 }
 
 .simple-selection {

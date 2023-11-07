@@ -17,6 +17,12 @@ ul {
   list-style: none;
 }
 
+.remove-path {
+  font-size: 12px;
+  border-radius: 3px;
+  color: brown;
+}
+
 .flip-div {
   width: 100%;
   display: flex;
@@ -128,7 +134,7 @@ li {
 .createMyPath {
   z-index: 9998;
   border-radius: 3px;
-  font-size: 15px;
+  font-size: 25px;
   background-color: salmon;
   margin: 5px;
 }

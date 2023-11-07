@@ -226,7 +226,7 @@ const MapBack = ({
                     <span className="path-name">{resource.name}</span>
                   </div>
                   <button
-                    className="add-favorite"
+                    className="remove-path"
                     onClick={() => removeSelectedResource(resource.id)}
                   >
                     Remove from Path

@@ -13,10 +13,8 @@ const Footer2 = () => (
       <img className="footer-insta" src={Insta} alt="Instagram Logo" />
       <img className="footer-twitter" src={Twitter} alt="Twitter Logo" />
     </div> */}
-    <div className="legal">
-      <div className="foot">
-        <p className="all-rights">©2023 RESILIO All Rights Reserved</p>
-      </div>
+    <div className="foot">
+      <p className="all-rights">©2023 RESILIO All Rights Reserved</p>
     </div>
   </footer>
 );
