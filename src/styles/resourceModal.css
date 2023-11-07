@@ -102,6 +102,8 @@ body.modal-open {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 30px;
+  border-bottom: 2px solid blue;
 }
 
 .info {
