@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .my-resource-card {
   border: 1px solid lightgray;
   justify-content: center;
@@ -8,18 +16,25 @@
   padding: 6px;
   font-size: small;
   border-radius: 2%;
-  min-height: 150px;
+  /* min-height: auto; */
   width: 200px;
-  z-index: 9999999 !important;
+  z-index: 9997 !important;
   position: static;
-  user-select: none; /* Prevents text selection during drag */
-  /* position: absolute; */
+  user-select: none;
+  flex-direction: column;
   margin: 10px;
+  border: 2px solid salmon;
 }
 
-.add-favorite {
+.button-container {
+  display: flex;
+}
+
+.add-favorite,
+.add-path {
   font-size: 12px;
   border-radius: 4px;
+  margin: 3px;
 }
 
 .my-resource-card:hover {
@@ -36,7 +51,6 @@
   font-size: medium;
   font-weight: bolder;
   margin: 0;
-  padding: 5px;
   text-align: center;
   font-weight: bold;
   width: 100%;
@@ -44,10 +58,8 @@
 
 .resource-card-header {
   background-color: #eeeeee;
-  padding: 2px;
-  margin: 3%;
+  padding: 3px;
   border: none;
-  min-height: 20%;
   display: flex;
   justify-content: between;
 }
@@ -57,13 +69,6 @@
   display: flex;
   justify-content: center;
   margin: 0;
-}
-
-.card-title-div {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 @media screen and (max-width: 900px) {
@@ -90,6 +95,12 @@
 
   .my-resource-card {
     width: 180px !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .my-resource-card {
+    width: 150px !important;
   }
 }
 

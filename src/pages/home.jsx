@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
-import Report from "../component/Report";
-import { MapSettings } from "../component";
+import GeneratedTreasureMap from "../component/GeneratedTreasureMap";
+// import { MapSettings } from "../component";
 import AltSimpleMap from "../component/AltSimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
@@ -20,6 +20,12 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const INITIAL_CITY_STATE = store.austin[0];
+
+  // State to manage selected resources
+  const [selectedResources, setSelectedResources] = useState(() => {
+    const storedResources = actions.getSessionSelectedResources();
+    return storedResources;
+  });
 
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
@@ -43,6 +49,7 @@ const Home = () => {
   // STATES
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
+  const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
 
   // const [showFront, setShowFront] = useState(true);
   const [searchingToday, setSearchingToday] = useState(false);
@@ -299,41 +306,44 @@ const Home = () => {
 
   return (
     <div className="grand-container">
-      <div className="search-container">
-        {" "}
-        {message1Open && (
-          <>
-            <ErrorBoundary>
-              {/* <SimpleMap */}
-              <AltSimpleMap
-                handleBoundsChange={handleBoundsChange}
-                openModal={openModal}
-                city={city}
-                geoFindMe={geoFindMe}
-                handleZipInputChange={handleZipInputChange}
-                zipInput={zipInput}
-                categories={categories}
-                days={days}
-                groups={groups}
-                setCategories={setCategories}
-                setGroups={setGroups}
-                setDays={setDays}
-                searchingToday={searchingToday}
-                setSearchingToday={setSearchingToday}
-                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                closeModal={closeModal}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                selectedResource={selectedResource}
-                setSelectedResource={setSelectedResource}
-              />
-            </ErrorBoundary>
+      {/* <div className="search-container"> */}{" "}
+      {message1Open && (
+        <>
+          <ErrorBoundary>
+            {/* <SimpleMap */}
 
-            <div className="search-results-full"></div>
-          </>
-        )}
-      </div>
+            <AltSimpleMap
+              handleBoundsChange={handleBoundsChange}
+              openModal={openModal}
+              city={city}
+              geoFindMe={geoFindMe}
+              handleZipInputChange={handleZipInputChange}
+              zipInput={zipInput}
+              categories={categories}
+              days={days}
+              groups={groups}
+              setCategories={setCategories}
+              setGroups={setGroups}
+              setDays={setDays}
+              searchingToday={searchingToday}
+              setSearchingToday={setSearchingToday}
+              INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+              setSelectedResource={setSelectedResource}
+              isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+              setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+              selectedResources={selectedResources}
+              setSelectedResources={setSelectedResources}
+            />
+          </ErrorBoundary>
 
+          <div className="search-results-full"></div>
+        </>
+      )}
+      {/* </div> */}
       {modalIsOpen && (
         <div>
           <div className="modal-overlay"></div>
@@ -345,6 +355,12 @@ const Home = () => {
             />
           </div>
         </div>
+      )}
+      {isGeneratedMapModalOpen && (
+        <GeneratedTreasureMap
+          closeModal={() => setIsGeneratedMapModalOpen(false)}
+          selectedResources={selectedResources}
+        />
       )}
     </div>
   );

@@ -73,7 +73,7 @@
   max-width: 850px;
   outline: 4px solid var(--coral);
   outline-offset: 5px;
-  height: 75vh;
+  height: 85vh;
 }
 
 .modal-body {
