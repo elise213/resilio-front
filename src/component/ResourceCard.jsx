@@ -3,12 +3,13 @@ import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
 
 const ResourceCard = (props) => {
+  const { actions, store } = useContext(Context);
+
   if (!props.item) {
     console.error("ResourceCard component was rendered without an item prop.");
     return null;
   }
 
-  const { actions, store } = useContext(Context);
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleSelectResource = (resource) => {
@@ -108,7 +109,6 @@ const ResourceCard = (props) => {
             className="add-favorite"
             onClick={(event) => toggleFavorite(event)}
           >
-            {/* {isFavorited ? "Remove from Favorites" : "Add to Favorites"} */}
             {isFavorited ? (
               <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
             ) : (

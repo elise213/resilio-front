@@ -29,7 +29,7 @@ const MapSettings = ({
           </div>
         </div>
         <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-          Flip The Map
+          Build your Path
         </button>
       </div>
     </div>

@@ -16,9 +16,9 @@
   padding: 6px;
   font-size: small;
   border-radius: 2%;
-  /* min-height: auto; */
+  border: 1px solid salmon;
   width: 200px;
-  z-index: 995 !important;
+  z-index: 993;
   position: static;
   user-select: none;
   flex-direction: column;
