@@ -1,23 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/navbar2.css";
 import { Context } from "../store/appContext";
+import Contact from "../component/Contact";
 import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
 
-const Navbar2 = ({
-  categories,
-  setCategories,
-  groups,
-  setGroups,
-  days,
-  setDays,
-  searchingToday,
-  setSearchingToday,
-  INITIAL_DAY_STATE,
-}) => {
+const Navbar2 = (
+  {
+    // categories,
+    // setCategories,
+    // groups,
+    // setGroups,
+    // days,
+    // setDays,
+    // searchingToday,
+    // setSearchingToday,
+    // INITIAL_DAY_STATE,
+  }
+) => {
   const { store, actions } = useContext(Context);
-  const [isNavOpen, setIsNavOpen] = useState(true);
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
 
@@ -91,11 +94,11 @@ const Navbar2 = ({
                 className="navbar-logo"
               />
             )}
-            <span className="nav-item" onClick={() => setIsNavOpen(false)}>
+            {/* <span className="nav-item" onClick={() => setIsNavOpen(false)}>
               <a href="/" passHref className="nav-item">
                 HOME
               </a>
-            </span>
+            </span> */}
             <span
               className="nav-item"
               onClick={() => {

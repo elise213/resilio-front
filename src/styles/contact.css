@@ -1,0 +1,109 @@
+.contact-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 120px;
+}
+
+.close {
+  padding: 0;
+  margin: 0;
+  font-size: xx-large;
+  border: none;
+  background-color: transparent;
+  align-self: flex-end;
+  color: salmon;
+  position: absolute;
+  right: 10vw;
+}
+
+.close:hover {
+  color: "brown" !important;
+  cursor: pointer;
+}
+
+.contact-call {
+  display: flex;
+  justify-content: center;
+}
+
+.label {
+  font-family: "Urbanist", sans-serif;
+  color: purple;
+}
+
+.form-control,
+.send-button {
+  border: 1px solid var(--color1);
+  border-radius: 2px;
+  width: 100%;
+  padding: 10px;
+  font-family: "Urbanist", sans-serif;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.form-col {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.form-col-full {
+  width: 100%;
+  padding: 10px;
+  flex: 1;
+}
+
+.contact-form-div {
+  display: flex;
+}
+
+.contact-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 25px 20px 10px;
+  position: relative;
+}
+
+.message {
+  height: 80px;
+}
+
+/* .contact-sticker {
+    position: absolute;
+    top: 230px;
+    right: 9px;
+    z-index: 5;
+} */
+
+.circle-font {
+  font-size: 30px;
+  font-family: "Urbanist", sans-serif;
+  color: var(--color4);
+}
+
+input textarea {
+  font-size: large;
+}
+
+@media screen and (max-width: 800px) {
+  .contact-sticker {
+    top: 180px !important;
+    right: 9px;
+  }
+
+  .contact-form {
+    padding: 20px 45px 20px 30px !important;
+  }
+
+  .send-button {
+    font-size: small;
+  }
+}
