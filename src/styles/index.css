@@ -146,7 +146,7 @@ body {
 
 .fake-navbar {
   position: fixed;
-  z-index: 996;
+  z-index: 994;
   background-color: rgba(0, 0, 0, 0.3);
   height: 80px;
   width: 100%;
