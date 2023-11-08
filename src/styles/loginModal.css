@@ -9,10 +9,12 @@
 .centered {
   display: flex;
   justify-content: center;
-  height: 100%;
   width: 100%;
-  margin: 0;
   position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  z-index: 99999;
 }
 
 .login-modal-header {
@@ -196,7 +198,11 @@ body.loginModal-open {
 }
 
 .login-container {
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 998;
 }
 
 .login-logout {

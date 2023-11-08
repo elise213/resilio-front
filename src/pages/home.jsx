@@ -6,6 +6,7 @@ import AltSimpleMap from "../component/AltSimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
 import Styles from "../styles/home.css";
+import Login from "../component/Login";
 // import Styles from "../styles/home.css?inline";
 
 import {
@@ -342,6 +343,10 @@ const Home = () => {
         setSearchingToday={setSearchingToday}
         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
       />
+
+      <Login />
+
+      <div className="fake-navbar"></div>
 
       <div className="grand-container">
         {/* <div className="search-container"> */}
