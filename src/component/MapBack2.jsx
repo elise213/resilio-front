@@ -16,6 +16,7 @@ const MapBack = ({
   setHoveredItem,
   modalIsOpen,
   setModalIsOpen,
+  removeSelectedResource,
   selectedResources,
   setSelectedResources,
   city,
