@@ -202,7 +202,7 @@ body.loginModal-open {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 998;
+  z-index: 995;
 }
 
 .login-logout {

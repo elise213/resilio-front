@@ -66,11 +66,11 @@ const AltSimpleMap = ({
     }
 
     setSelectedResources((prevResources) => {
-      if (prevResources.length >= 3) {
+      if (prevResources.length >= 4) {
         // Display an alert if the limit is reached
         Swal.fire({
           icon: "error",
-          title: "Please limit the path to 3 resources at a time",
+          title: "Please limit the path to 4 resources at a time",
         });
         return prevResources;
       }
@@ -130,13 +130,16 @@ const AltSimpleMap = ({
             }}
           >
             <ResourceCard
-              key={result.name}
+              key={result.id}
               item={result}
               openModal={openModal}
               closeModal={closeModal}
               modalIsOpen={modalIsOpen}
               setModalIsOpen={setModalIsOpen}
               selectedResource={selectedResource}
+              selectedResources={selectedResources}
+              addSelectedResource={addSelectedResource}
+              removeSelectedResource={removeSelectedResource}
             />
           </div>
         )}
@@ -160,7 +163,7 @@ const AltSimpleMap = ({
           isGeneratedMapModalOpen ? "noPadding" : ""
         }`}
       >
-        <div className={`map-frame `}>
+        <div className={`map-frame ${backSide ? "alsoFlipped" : ""}`}>
           <div className="map-head"></div>
 
           {backSide ? (
