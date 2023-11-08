@@ -13,6 +13,11 @@
   display: flex;
   justify-content: space-between;
   transition: left 0.3s ease;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 996;
+  position: fixed;
 }
 
 .new-navbar.open-nav {
@@ -139,26 +144,12 @@
   cursor: pointer;
 }
 
-/* MAX WIDTH */
-@media screen and (min-width: 900px) {
-  .new-navbar {
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 995;
-    background-color: rgb(228, 244, 222);
-  }
-}
-
 /* MIN WIDTH */
 @media screen and (max-width: 1000px) {
   .new-navbar {
     width: 275px !important;
-    position: fixed;
-    top: 0;
     left: -275px !important;
     height: 100%;
-    z-index: 995;
     display: flex;
     justify-content: flex-start;
     transition: left 0.3s ease;
