@@ -230,6 +230,6 @@
   }
 
   .map-container {
-    max-height: 700px !important;
+    height: 30vh !important;
   }
 }

@@ -91,6 +91,7 @@
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  align-items: center;
   transform-style: preserve-3d;
   transform: rotateY(0deg);
   transition: transform 0.6s;
@@ -133,7 +134,7 @@
   width: 100%;
   display: flex;
   z-index: 0;
-  margin: 140px 0 0 0 !important;
+  margin: 70px 0 0 0 !important;
 }
 
 .map-frame.flipped {
@@ -237,22 +238,26 @@
   width: 100%;
 }
 
+.list-container {
+  width: 50%;
+  margin: 10px;
+}
+
 @media screen and (max-width: 700px) {
   .map-frame-wrapper {
     padding: 20px 30px 50px !important;
-    min-width: 80%;
+    min-width: 90%;
   }
 
   .map-frame {
     padding: 0 25px 30px 25px !important;
-    margin: 180px 0 0 0 !important;
+    margin: 75px 0 0 0 !important;
   }
 
   .flip-button {
     width: 70px !important;
     height: 60px !important;
     font-size: small !important;
-    /* min-height: 0 !important; */
   }
 
   .map-frame-wrapper::before {
@@ -261,27 +266,26 @@
 }
 
 @media screen and (max-width: 600px) {
-  /* .flex {
-    flex-direction: column !important;
-  } */
+  .map-frame {
+    margin: 0 !important;
+  }
   .map-frame-wrapper {
-    padding: 40px 30px 0 30px !important;
+    padding: 0 20px !important;
     max-width: 98% !important;
   }
-}
 
-@media screen and (max-width: 500px) {
-  .map-frame-wrapper {
-    padding: 0 !important;
-    min-width: 90% !important;
+  .scroll-title {
+    font-size: 14px;
   }
-
+}
+@media screen and (max-width: 500px) {
   .scroll-search-results {
     width: 150px !important;
   }
 
   .map-frame-wrapper {
-    padding: 60px 30px 0 !important;
+    padding: 0 25px !important;
+    min-width: 97%;
   }
 
   .map-container {
@@ -289,17 +293,8 @@
   }
 }
 
-.scroll-title {
-  font-family: "AwsumSans", sans-serif;
-  text-align: center;
-  border-bottom: 3px solid black;
-  font-size: 25px;
-  color: lightgreen;
-}
-
-.simple-selection {
-  display: flex;
-  width: 100%;
-  justify-content: space-evenly;
-  max-width: 600px;
+@media screen and (max-width: 450px) {
+  .map-frame-wrapper:before {
+    margin-top: 150px !important;
+  }
 }
