@@ -136,3 +136,9 @@ hr {
 .resource-category-icons i {
   margin: 15px;
 }
+
+@media screen and (max-width: 1000px) {
+  .modal-content-treasure {
+    width: 80%;
+  }
+}

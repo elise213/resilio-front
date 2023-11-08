@@ -185,7 +185,6 @@ const AltSimpleMap = ({
             </>
           ) : (
             <>
-              <Login />
               <div className="map-container-container">
                 <div
                   className="map-container"

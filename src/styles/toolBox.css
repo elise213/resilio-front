@@ -82,9 +82,9 @@
 .toolopen-icon-nav {
   position: absolute;
   right: -40px;
-  top: 30px;
+  top: 10px;
   transition: 0tool3s ease !important;
-  z-index: 100001;
+  z-index: 999;
   color: salmon;
 }
 
@@ -155,7 +155,7 @@
     top: 0;
     right: -315px !important; /* Changed from right to right */
     height: 100%;
-    z-index: 10000;
+    z-index: 999;
     display: flex;
     justify-content: flex-start;
     transition: right 0.3s ease; /* Changed from right to right */
@@ -171,9 +171,9 @@
   .toolclose-icon-nav,
   .toolopen-icon-nav {
     right: -40px; /* Changed from right to right */
-    top: 30px;
+    top: 10px;
     transition: right 0.3s ease !important; /* Changed from right to right */
-    z-index: 100001;
+    z-index: 999;
     color: salmon;
   }
 
