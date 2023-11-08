@@ -84,7 +84,7 @@
   right: -40px;
   top: 10px;
   transition: 0tool3s ease !important;
-  z-index: 999;
+  z-index: 995;
   color: salmon;
 }
 
@@ -143,46 +143,43 @@
   top: 0;
   right: 0;
   width: 100%;
-  z-index: 10001;
+  z-index: 995;
   background-color: rgb(228, 244, 222);
+  position: fixed;
 }
 
 /* MIN WIDTH */
 @media screen and (max-width: 1000px) {
   .toolnew-navbar {
     width: 315px !important;
-    position: fixed;
-    top: 0;
-    right: -315px !important; /* Changed from right to right */
+    right: -315px !important;
     height: 100%;
-    z-index: 999;
     display: flex;
     justify-content: flex-start;
-    transition: right 0.3s ease; /* Changed from right to right */
+    transition: right 0.3s ease;
   }
 
   .toolnew-navbar.toolopen-nav {
     background-color: #464646;
-    right: 0 !important; /* Changed from right to right */
-    transition: right 0.3s ease; /* Changed from right to right */
+    right: 0 !important;
+    transition: right 0.3s ease;
   }
 
-  /* Adjust the icon positioning from the right to the right */
   .toolclose-icon-nav,
   .toolopen-icon-nav {
-    right: -40px; /* Changed from right to right */
+    right: -40px;
     top: 10px;
-    transition: right 0.3s ease !important; /* Changed from right to right */
-    z-index: 999;
+    transition: right 0.3s ease !important;
+    z-index: 995;
     color: salmon;
   }
 
   .toolclose-icon-nav.toolopen-nav {
-    right: 235px; /* Adjust this value to where you want your close icon to be when the nav is open */
+    right: 235px;
   }
 
   .toolopen-icon-nav.toolclosed {
-    right: 300px; /* Adjust this value to where you want your open icon to be when the nav is closed */
+    right: 300px;
   }
 
   .toolnavbar-content {
