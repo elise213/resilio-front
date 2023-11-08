@@ -82,9 +82,9 @@
 .open-icon-nav {
   position: absolute;
   left: -40px;
-  top: 30px;
+  top: 10px;
   transition: 0.3s ease !important;
-  z-index: 100001;
+  z-index: 999;
   color: salmon;
 }
 
@@ -158,7 +158,7 @@
     top: 0;
     left: -275px !important;
     height: 100%;
-    z-index: 10000;
+    z-index: 999;
     display: flex;
     justify-content: flex-start;
     transition: left 0.3s ease;
