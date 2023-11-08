@@ -278,7 +278,11 @@ const AltSimpleMap = ({
             </ul>
           </div>
         ) : (
-          "Log in to see favorites"
+          <div className="list-container">
+            <div className="scroll-title">
+              <span>Log in to see favorites</span>
+            </div>
+          </div>
         )}
       </div>
     </>

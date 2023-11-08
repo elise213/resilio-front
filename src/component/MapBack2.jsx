@@ -4,7 +4,6 @@ import GoogleMapReact from "google-map-react";
 import ResourceCard from "./ResourceCard";
 
 import "../styles/mapBack.css";
-import Swal from "sweetalert2";
 
 const MapBack = ({
   setBackSide,
