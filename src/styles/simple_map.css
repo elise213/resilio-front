@@ -91,14 +91,11 @@
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   transform-style: preserve-3d;
   transform: rotateY(0deg);
   transition: transform 0.6s;
   max-width: 900px;
-  /* width: 100%; */
   padding: 150px 85px 320px;
-  overflow: hidden;
   min-height: 100vh;
 }
 
@@ -111,10 +108,10 @@
   height: 100%;
   background-image: url(/assets/scroll2.png);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   filter: brightness(70%);
   z-index: -1;
-  margin-top: 80px;
+  margin-top: 100px;
 }
 
 .map-frame-wrapper.flipped {
@@ -132,10 +129,11 @@
 .map-frame {
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
   display: flex;
   z-index: 0;
-  margin: 80px 0 0 0 !important;
+  margin: 140px 0 0 0 !important;
 }
 
 .map-frame.flipped {
@@ -241,23 +239,20 @@
 
 @media screen and (max-width: 700px) {
   .map-frame-wrapper {
-    padding: 20px 80px !important;
+    padding: 20px 30px 50px !important;
+    min-width: 80%;
   }
 
   .map-frame {
     padding: 0 25px 30px 25px !important;
-  }
-
-  .map-head {
-    flex-direction: column;
-    align-items: flex-end !important;
+    margin: 180px 0 0 0 !important;
   }
 
   .flip-button {
     width: 70px !important;
     height: 60px !important;
     font-size: small !important;
-    min-height: 0 !important;
+    /* min-height: 0 !important; */
   }
 
   .map-frame-wrapper::before {
@@ -266,17 +261,19 @@
 }
 
 @media screen and (max-width: 600px) {
-  .flex {
+  /* .flex {
     flex-direction: column !important;
-  }
+  } */
   .map-frame-wrapper {
     padding: 40px 30px 0 30px !important;
+    max-width: 98% !important;
   }
 }
 
 @media screen and (max-width: 500px) {
   .map-frame-wrapper {
     padding: 0 !important;
+    min-width: 90% !important;
   }
 
   .scroll-search-results {

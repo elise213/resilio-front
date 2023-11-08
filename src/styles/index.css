@@ -142,10 +142,15 @@ body {
   flex-direction: column;
   align-items: center;
   padding-bottom: 15px;
-  /* background-color: rgb(208, 166, 124); great color */
-  /* background-color: var(--peruish); */
-  /* background-color: rgb(137, 102, 90); */
-  /* background-color: rgb(244, 238, 231); */
+}
+
+.fake-navbar {
+  position: fixed;
+  z-index: 996;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 80px;
+  width: 100%;
+  top: 0;
 }
 
 /* _____________________________________________________________Selection-*/

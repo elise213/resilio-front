@@ -54,7 +54,7 @@ const Login = () => {
   return (
     <div className={`login-container ${openLoginModal ? "open" : ""}`}>
       <span
-        className={`login-container ${openLoginModal ? "open-2" : ""}`}
+        className="login-trigger"
         type="button"
         onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
       >
@@ -62,7 +62,10 @@ const Login = () => {
       </span>
       {openLoginModal && (
         <>
-          <div className="loginModal-overlay"></div>
+          <div
+            className="loginModal-overlay"
+            onClick={() => setOpenLoginModal(false)}
+          ></div>
           <LoginModal
             setOpenLoginModal={setOpenLoginModal}
             log={log}

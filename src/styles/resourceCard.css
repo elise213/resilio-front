@@ -18,7 +18,7 @@
   border-radius: 2%;
   /* min-height: auto; */
   width: 200px;
-  z-index: 9997 !important;
+  z-index: 995 !important;
   position: static;
   user-select: none;
   flex-direction: column;
