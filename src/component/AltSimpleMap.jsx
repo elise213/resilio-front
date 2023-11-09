@@ -39,6 +39,8 @@ const AltSimpleMap = ({
   setIsGeneratedMapModalOpen,
   selectedResources,
   setSelectedResources,
+  hoveredItem,
+  setHoveredItem,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -47,8 +49,6 @@ const AltSimpleMap = ({
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
   );
-
-  const [hoveredItem, setHoveredItem] = useState(null);
 
   const addSelectedResource = (resource) => {
     console.log("Adding resource", resource);
@@ -184,6 +184,7 @@ const AltSimpleMap = ({
                 city={city}
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
+                removeSelectedResource={removeSelectedResource}
               />
             </>
           ) : (
