@@ -52,6 +52,7 @@ const Home = () => {
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
   // const [showFront, setShowFront] = useState(true);
   const [searchingToday, setSearchingToday] = useState(false);
@@ -354,6 +355,8 @@ const Home = () => {
           <>
             <ErrorBoundary>
               <AltSimpleMap
+                hoveredItem={hoveredItem}
+                setHoveredItem={setHoveredItem}
                 handleBoundsChange={handleBoundsChange}
                 openModal={openModal}
                 city={city}
@@ -403,6 +406,8 @@ const Home = () => {
             selectedResources={selectedResources}
             city={city}
             openModal={openModal}
+            hoveredItem={hoveredItem}
+            setHoveredItem={setHoveredItem}
           />
         )}
       </div>

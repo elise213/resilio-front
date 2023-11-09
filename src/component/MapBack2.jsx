@@ -148,7 +148,8 @@ const MapBack = ({
             }}
           >
             <ResourceCard
-              key={resource.id}
+              key={resource.name}
+              // key={`resource-${resource.id}-${index}`}
               item={resource}
               openModal={openModal}
               closeModal={closeModal}

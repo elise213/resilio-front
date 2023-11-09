@@ -249,9 +249,9 @@
 }
 
 .scroll-title {
-  font-size: 20px;
+  font-size: 25px;
   font-family: "AwsumSans", sans-serif;
-  color: green;
+  color: lightgreen;
 }
 
 @media screen and (max-width: 700px) {
@@ -281,6 +281,9 @@
 }
 
 @media screen and (max-width: 600px) {
+  .scroll-title {
+    font-size: 20px;
+  }
   .map-frame {
     margin: 0 !important;
   }
@@ -301,6 +304,10 @@
 
   .map-container {
     width: 85% !important;
+  }
+
+  .scroll-title {
+    font-size: 15px;
   }
 }
 
