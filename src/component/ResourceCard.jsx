@@ -104,6 +104,9 @@ const ResourceCard = (props) => {
         </div>
       )}
       <div className="button-container">
+        <button className="add-path" onClick={handleToggleSelectResource}>
+          {isSelected ? "Remove from Path" : "Add to Path"}
+        </button>
         {store.token && (
           <button
             className="add-favorite"
@@ -116,10 +119,6 @@ const ResourceCard = (props) => {
             )}
           </button>
         )}
-
-        <button className="add-path" onClick={handleToggleSelectResource}>
-          {isSelected ? "Remove from Path" : "Add to Path"}
-        </button>
       </div>
     </div>
   );

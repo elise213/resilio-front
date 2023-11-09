@@ -34,11 +34,19 @@
 
 .flip-button {
   background-color: lightgreen;
-  width: 70px;
-  min-height: 70px;
+  height: 100%;
   font-size: 13px;
-  border-radius: 100%;
-  margin: 10px;
+  height: 82%;
+  border-radius: 3px;
+}
+
+.flip-button-flipped {
+  background-color: lightgreen;
+  height: 100%;
+  font-size: 13px;
+  height: 82%;
+  border-radius: 3px;
+  margin-top: 80px;
 }
 
 .map-frame-wrapper.flipped:before {
@@ -119,6 +127,8 @@
 
 .map-frame-wrapper.flipped {
   transform: rotateY(180deg);
+  position: sticky;
+  top: 50px;
 }
 
 .map-head {
@@ -164,16 +174,14 @@
 
 .map-container-modal {
   min-width: 300px;
+  border: 2px solid salmon;
+  border-radius: 3px;
 }
 
 .gm-control-active,
 .gmnoprint,
 .gm-style-cc button {
   size: small;
-}
-
-.info-map-div {
-  margin: 0px;
 }
 
 .simple-map {
@@ -265,13 +273,6 @@
     padding: 0 25px 30px 25px !important;
     margin: 75px 0 0 0 !important;
   }
-
-  .flip-button {
-    width: 70px !important;
-    height: 60px !important;
-    font-size: small !important;
-  }
-
   .map-frame-wrapper::before {
     background-size: 100% !important;
   }

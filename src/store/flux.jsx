@@ -208,11 +208,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           case "crisis":
             return "fa-solid fa-exclamation-triangle";
           case "substance":
-            return "fa-solid fa-capsules";
+            return "fa-solid fa-wine-bottle";
           case "legal":
             return "fa-solid fa-gavel";
           case "sex":
-            return "fa-solid fa-heart";
+            return "fa-solid fa-people-arrows";
           case "mental":
             return "fa-solid fa-brain";
           case "women":
