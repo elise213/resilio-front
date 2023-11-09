@@ -12,7 +12,8 @@
 }
 
 body {
-  background-color: rgb(244, 238, 231);
+  /* background-color: rgb(244, 238, 231); */
+  background-color: rgb(106, 103, 103);
 }
 
 :root {
@@ -124,10 +125,10 @@ body {
   }
 }
 
-/* .fa-arrow-right {
+.fa-arrow-right {
   margin: 6px 0px 0px 10px;
   animation: wiggle 5s infinite;
-} */
+}
 
 .resource-card-title-name {
   font-size: medium;
