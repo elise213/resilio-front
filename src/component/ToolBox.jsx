@@ -20,8 +20,6 @@ const ToolBox = ({
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(true);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
-  console.log("IsLS", isLargeScreen);
-
   useEffect(() => {
     // If large screen, open the navbar by default
     setIsToolBoxOpen(isLargeScreen);

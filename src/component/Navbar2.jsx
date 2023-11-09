@@ -12,8 +12,6 @@ const Navbar2 = ({}) => {
   const [showContactModal, setShowContactModal] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
 
-  console.log("IsLS", isLargeScreen);
-
   useEffect(() => {
     setIsLargeScreen(store.isLargeScreen);
   }, [store.isLargeScreen]);
