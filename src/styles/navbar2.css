@@ -200,15 +200,10 @@
   .navbar-logo {
     margin: 40px 10px !important;
   }
-}
-
-@media screen and (max-width: 1000px) {
   .open-icon-nav {
     font-size: 40px;
   }
-}
 
-@media screen and (max-width: 1000px) {
   .nav-container {
     height: 100vh;
     position: absolute;
