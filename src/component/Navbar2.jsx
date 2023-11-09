@@ -6,19 +6,7 @@ import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
 
-const Navbar2 = (
-  {
-    // categories,
-    // setCategories,
-    // groups,
-    // setGroups,
-    // days,
-    // setDays,
-    // searchingToday,
-    // setSearchingToday,
-    // INITIAL_DAY_STATE,
-  }
-) => {
+const Navbar2 = ({}) => {
   const { store, actions } = useContext(Context);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
@@ -94,11 +82,6 @@ const Navbar2 = (
                 className="navbar-logo"
               />
             )}
-            {/* <span className="nav-item" onClick={() => setIsNavOpen(false)}>
-              <a href="/" passHref className="nav-item">
-                HOME
-              </a>
-            </span> */}
             <span
               className="nav-item"
               onClick={() => {
@@ -108,6 +91,16 @@ const Navbar2 = (
             >
               CONTACT
             </span>
+
+            <span
+              className="nav-item"
+              onClick={() => {
+                setIsNavOpen(false);
+                // toggleContactModal();
+              }}
+            >
+              DONATE
+            </span>
             {!isLargeScreen && <EmailList />}
           </div>
         </nav>
@@ -115,7 +108,7 @@ const Navbar2 = (
         {showContactModal && (
           <div className="modal-contact">
             <div className="modal-content-contact">
-              <span className="close" onClick={toggleContactModal}>
+              <span className="close-contact" onClick={toggleContactModal}>
                 <i className="fa-solid fa-x"></i>
               </span>
               <Contact />

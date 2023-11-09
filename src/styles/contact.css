@@ -6,19 +6,20 @@
   margin-bottom: 120px;
 }
 
-.close {
+.close-contact {
   padding: 0;
   margin: 0;
   font-size: xx-large;
   border: none;
   background-color: transparent;
   align-self: flex-end;
-  color: salmon;
+  color: black;
   position: absolute;
   right: 10vw;
+  top: 200px;
 }
 
-.close:hover {
+.close-contact:hover {
   color: "brown" !important;
   cursor: pointer;
 }
