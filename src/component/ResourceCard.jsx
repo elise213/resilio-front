@@ -66,7 +66,7 @@ const ResourceCard = (props) => {
     props.selectedResources.some((resource) => resource.id === props.item.id);
 
   const handleToggleSelectResource = (event) => {
-    event.stopPropagation(); // Prevent the card's onClick from firing
+    event.stopPropagation();
     if (isSelected) {
       handleDeselectResource(props.item.id);
     } else {
@@ -104,7 +104,10 @@ const ResourceCard = (props) => {
         </div>
       )}
       <div className="button-container">
-        <button className="add-path" onClick={handleToggleSelectResource}>
+        <button
+          className={isSelected ? "remove-path" : "add-path"}
+          onClick={handleToggleSelectResource}
+        >
           {isSelected ? "Remove from Path" : "Add to Path"}
         </button>
         {store.token && (

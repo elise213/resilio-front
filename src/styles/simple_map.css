@@ -151,7 +151,7 @@
 
 .map-frame.alsoFlipped {
   transform: rotateY(180deg);
-  margin-top: 0 !important;
+  margin-top: 60px !important;
 }
 
 .flipped > div {
@@ -263,7 +263,17 @@
   color: lightgreen;
 }
 
+@media screen and (max-width: 800px) {
+  .map-frame-wrapper.flipped {
+    min-width: 60%;
+  }
+}
+
 @media screen and (max-width: 700px) {
+  .map-frame-wrapper.flipped {
+    min-width: 60%;
+  }
+
   .map-frame-wrapper {
     padding: 20px 30px 50px !important;
     min-width: 90%;
@@ -278,7 +288,7 @@
   }
 
   .map-frame.alsoFlipped {
-    max-width: 60% !important;
+    margin-top: 125px !important;
   }
 }
 
@@ -293,7 +303,12 @@
     padding: 0 20px !important;
     max-width: 98% !important;
   }
+
+  .map-frame-wrapper.flipped {
+    min-width: 65%;
+  }
 }
+
 @media screen and (max-width: 500px) {
   .scroll-search-results {
     width: 150px !important;

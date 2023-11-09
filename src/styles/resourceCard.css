@@ -77,24 +77,27 @@
 }
 
 .add-favorite,
-.add-path {
+.add-path,
+.remove-path {
   font-size: 12px;
   border-radius: 4px;
-  margin: 3px;
+  margin: 5px;
+}
+
+.remove-path {
+  border: 2px solid brown;
+  background-color: #d8ccb7;
 }
 
 .add-path {
-  border: 1px solid green;
+  border: 2px solid brown;
   background-color: #b7d8c6;
-  margin: 5px;
 }
 
 .resource-title {
   color: black;
   font-size: medium;
   font-weight: bolder;
-  margin: 0;
-  text-align: center;
   font-weight: bold;
   width: 100%;
   margin: 8px 0;
@@ -103,7 +106,6 @@
 .resource-card-header {
   border: none;
   display: flex;
-  justify-content: between;
   margin: 0;
   padding: 0;
 }

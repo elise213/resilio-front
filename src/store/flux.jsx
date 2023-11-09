@@ -104,7 +104,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
       setDayCounts: (dayCounts) => {
-        // console.log("Setting dayCounts:", dayCounts);
         setStore({
           dayCounts: dayCounts,
         });
@@ -794,9 +793,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                       ...prevState,
                       favorites: favorites,
                     }));
-                    if (setFavorites) {
-                      setFavorites(favorites);
-                    }
+                  })
+                  .then((favorites) => {
+                    setFavorites([favorites]);
                   })
                   .catch((error) => {
                     console.error("Error fetching updated favorites:", error);
@@ -811,21 +810,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      initializeScreenSize: () => {
-        setStore({
-          isLargeScreen: window.innerWidth > 1000,
-          isClient: true,
-          windowWidth: window.innerWidth,
-        });
-      },
-
-      updateScreenSize: () => {
-        setStore({
-          isLargeScreen: window.innerWidth > 1000,
-          windowWidth: window.innerWidth,
-        });
-      },
-
       popFavorites: (faveList, faveOffers) => {
         if (faveList && faveList.length) {
           setStore({ favorites: faveList });
@@ -834,44 +818,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ favoriteOfferings: faveOffers });
         }
       },
-      // removeFavorite: (resource, setFavorites) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   if (sessionStorage.getItem("token")) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + sessionStorage.getItem("token"),
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "DELETE",
-      //       body: JSON.stringify({
-      //         name: resource,
-      //       }),
-      //     };
-      //     fetch(current_back_url + "/api/removeFavorite", opts)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         if (data.message === "okay") {
-      //           const updatedFavorites = JSON.parse(
-      //             sessionStorage.getItem("favorites") || "[]"
-      //           ).filter((favorite) => favorite.name !== resource);
-      //           sessionStorage.setItem(
-      //             "favorites",
-      //             JSON.stringify(updatedFavorites)
-      //           );
-      //           setStore((prevState) => ({
-      //             ...prevState,
-      //             favorites: updatedFavorites,
-      //           }));
-
-      //           // Update the local state if the setFavorites function is provided
-      //           if (setFavorites) {
-      //             setFavorites(updatedFavorites);
-      //           }
-      //         }
-      //       })
-      //       .catch((error) => console.log(error));
-      //   }
-      // },
 
       removeFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
@@ -916,6 +862,21 @@ const getState = ({ getStore, getActions, setStore }) => {
             })
             .catch((error) => console.error(error));
         }
+      },
+
+      initializeScreenSize: () => {
+        setStore({
+          isLargeScreen: window.innerWidth > 1000,
+          isClient: true,
+          windowWidth: window.innerWidth,
+        });
+      },
+
+      updateScreenSize: () => {
+        setStore({
+          isLargeScreen: window.innerWidth > 1000,
+          windowWidth: window.innerWidth,
+        });
       },
 
       // ________________________________________________________________OFFERINGS

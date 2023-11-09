@@ -93,6 +93,11 @@ const AltSimpleMap = ({
     });
   };
 
+  useEffect(() => {
+    // Update local state when store.favorites changes
+    setFavorites(store.favorites);
+  }, [store.favorites]);
+
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
@@ -255,6 +260,7 @@ const AltSimpleMap = ({
                   selectedResources={selectedResources}
                   addSelectedResource={addSelectedResource}
                   removeSelectedResource={removeSelectedResource}
+                  setFavorites={setFavorites}
                 />
               ))}
             </ul>
@@ -277,6 +283,7 @@ const AltSimpleMap = ({
                   selectedResources={selectedResources}
                   addSelectedResource={addSelectedResource}
                   removeSelectedResource={removeSelectedResource}
+                  setFavorites={setFavorites}
                 />
               ))}
             </ul>
