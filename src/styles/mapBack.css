@@ -71,7 +71,7 @@ li {
 
 .path {
   display: flex;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100%;
   align-items: center;
 }
@@ -124,6 +124,7 @@ li {
   display: flex;
   width: 100vw;
   justify-content: space-around;
+  margin-top: 80px;
 }
 
 .selected-item-content {
@@ -154,22 +155,18 @@ li {
     font-size: 14px !important;
   }
 
-  .path {
-    margin: 0 !important;
-  }
-
   .createMyPath {
     font-size: 18px;
   }
 
-  .map-container {
+  /* .map-container {
     margin-top: 10px !important;
-  }
+  } */
 }
 
 @media screen and (max-width: 700px) {
   .back-container {
-    margin-top: 100px;
+    margin-top: 10px;
   }
   .selected-resources {
     margin-top: 100px;
@@ -190,7 +187,7 @@ li {
   }
 
   .back-container {
-    margin-top: 50px !important;
+    margin-top: 0 !important;
   }
 
   .selected-resources {

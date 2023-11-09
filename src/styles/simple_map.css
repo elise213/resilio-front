@@ -98,7 +98,7 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   max-width: 900px;
-  padding: 150px 85px 320px;
+  padding: 10px 85px 20px;
   min-height: 100vh;
 }
 
@@ -139,8 +139,9 @@
   margin: 70px 0 0 0 !important;
 }
 
-.map-frame.flipped {
+.map-frame.alsoFlipped {
   transform: rotateY(180deg);
+  margin-top: 0 !important;
 }
 
 .flipped > div {
