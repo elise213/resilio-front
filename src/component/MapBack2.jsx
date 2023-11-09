@@ -16,6 +16,7 @@ const MapBack = ({
   setHoveredItem,
   modalIsOpen,
   setModalIsOpen,
+  addSelectedResource,
   removeSelectedResource,
   selectedResources,
   setSelectedResources,
@@ -249,7 +250,10 @@ const MapBack = ({
         <p>Add Resources to Your Path! </p>
       )}
       <div className="flip-div">
-        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+        <button
+          className="flip-button-flipped"
+          onClick={() => setBackSide(!backSide)}
+        >
           Flip The Map
         </button>
       </div>
