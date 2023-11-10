@@ -61,8 +61,7 @@
 /* Icons */
 .toolclose-icon-nav,
 .toolopen-icon-nav {
-  position: fixed;
-
+  position: fixed !important;
   top: 10px;
   font-size: 40px;
   color: salmon;
