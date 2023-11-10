@@ -117,7 +117,7 @@ const GeneratedTreasureMap = ({
           {/* {isLargeScreen && ( */}
           <div
             className="map-container-treasure"
-            style={{ height: "20vh", width: "100%" }}
+            style={{ height: "25vh", width: "100%" }}
           >
             <GoogleMapReact
               bootstrapURLKeys={{ key: apiKey }}
