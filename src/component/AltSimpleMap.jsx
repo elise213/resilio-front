@@ -53,18 +53,6 @@ const AltSimpleMap = ({
   const addSelectedResource = (resource) => {
     console.log("Adding resource", resource);
 
-    // Check if the resource has latitude and longitude
-    if (
-      typeof resource.latitude === "undefined" ||
-      typeof resource.longitude === "undefined"
-    ) {
-      console.error(
-        "Attempted to add resource without latitude or longitude",
-        resource
-      );
-      return;
-    }
-
     setSelectedResources((prevResources) => {
       if (prevResources.length >= 4) {
         // Display an alert if the limit is reached
@@ -96,12 +84,20 @@ const AltSimpleMap = ({
   useEffect(() => {
     // Update local state when store.favorites changes
     setFavorites(store.favorites);
+    console.log("store favoritres updated!");
   }, [store.favorites]);
 
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
   };
+
+  useEffect(() => {
+    console.log("local favorites updated!");
+    console.log("state favorites", favorites);
+
+    console.log("STOREFAV", store.favorites);
+  }, [favorites]);
 
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -157,8 +153,8 @@ const AltSimpleMap = ({
   };
 
   useEffect(() => {
-    console.log("Checking if favorites is updated", store.favorites);
-    actions.popFavorites();
+    // console.log("Checking if favorites is updated", store.favorites);
+    actions.popFavorites(setFavorites);
   }, [store.favorites]);
 
   return (
@@ -249,20 +245,21 @@ const AltSimpleMap = ({
               <span>In your Area</span>
             </div>
             <ul className="all-ul">
-              {store.boundaryResults.map((resource, index) => (
-                <ResourceCard
-                  key={resource.id}
-                  item={resource}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  modalIsOpen={modalIsOpen}
-                  setModalIsOpen={setModalIsOpen}
-                  selectedResources={selectedResources}
-                  addSelectedResource={addSelectedResource}
-                  removeSelectedResource={removeSelectedResource}
-                  setFavorites={setFavorites}
-                />
-              ))}
+              {Array.isArray(store.mapResults) &&
+                store.mapResults.map((resource, index) => (
+                  <ResourceCard
+                    key={resource.id}
+                    item={resource}
+                    openModal={openModal}
+                    closeModal={closeModal}
+                    modalIsOpen={modalIsOpen}
+                    setModalIsOpen={setModalIsOpen}
+                    selectedResources={selectedResources}
+                    addSelectedResource={addSelectedResource}
+                    removeSelectedResource={removeSelectedResource}
+                    setFavorites={setFavorites}
+                  />
+                ))}
             </ul>
           </div>
         )}
@@ -272,7 +269,7 @@ const AltSimpleMap = ({
               <span>Liked Resources</span>
             </div>
             <ul>
-              {store.favorites.map((resource, index) => (
+              {favorites.map((resource, index) => (
                 <ResourceCard
                   key={resource.id}
                   item={resource}

@@ -74,7 +74,7 @@ const ToolBox = ({
                 onClick={() => setIsToolBoxOpen(true)}
               >
                 {/* <i className="fas fa-bars"></i> */}
-                <i class="fa-solid fa-toolbox"></i>
+                <i className="fa-solid fa-toolbox"></i>
               </div>
               <div
                 className={`toolclose-icon-nav ${
