@@ -55,11 +55,14 @@
   color: lightgreen;
 }
 
+.toolopen-icon-nav {
+  right: -40px;
+}
 /* Icons */
 .toolclose-icon-nav,
 .toolopen-icon-nav {
   position: fixed;
-  right: -40px;
+
   top: 10px;
   font-size: 40px;
   color: salmon;
