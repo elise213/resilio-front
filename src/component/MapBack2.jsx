@@ -177,21 +177,22 @@ const MapBack = ({
                   className="selected-item"
                   onClick={() => openModal(resource)}
                 >
-                  <div className="path-item">
-                    <div className="path-icons">
-                      {renderCategoryIcons(resource.category)}
-                    </div>
-                    <span className="path-name">{resource.name}</span>
+                  <div className="path-icons">
+                    {renderCategoryIcons(resource.category)}
                   </div>
-                  <button
-                    className="remove-path"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      removeSelectedResource(resource.id);
-                    }}
-                  >
-                    Remove from Path
-                  </button>
+                  <div className="path-item">
+                    <span className="path-name">{resource.name}</span>
+                    <button
+                      className="remove-path"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        removeSelectedResource(resource.id);
+                      }}
+                    >
+                      {/* Remove from Path */}{" "}
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
                   {/* flip-horizontal class for every other image based on index */}
                   <img
                     className={`path-img ${index % 2 ? "flip-horizontal" : ""}`}
@@ -251,7 +252,8 @@ const MapBack = ({
           className="flip-button-flipped"
           onClick={() => setBackSide(!backSide)}
         >
-          Flip The Map
+          Flip <br />
+          The Map
         </button>
       </div>
     </>
