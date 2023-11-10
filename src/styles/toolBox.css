@@ -5,8 +5,8 @@
 
 .toolnav-container {
   width: 100%;
-  height: 100vh; /* Match navbar height */
-  position: absolute; /* Same as navbar */
+  height: 100vh;
+  position: absolute;
 }
 
 .toolnew-navbar {
@@ -14,18 +14,18 @@
   justify-content: center;
   overflow-y: auto;
   top: 0;
-  right: -290px; /* Initially hidden on the right */
-  width: 290px; /* Width of the toolbox */
+  right: -290px;
+  width: 290px;
   height: 100%;
   z-index: 996;
   position: fixed;
   background-color: #464646;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: right 0.3s ease; /* Transition for moving toolbox */
+  transition: right 0.3s ease;
 }
 
 .toolnew-navbar.toolopen-nav {
-  right: 0; /* Position when the toolbox is open */
+  right: 0;
 }
 
 .toolnavbar-content {
@@ -76,5 +76,9 @@
 }
 
 .toolopen-icon-nav.toolclosed {
-  right: 40px; /* Adjust for closed state */
+  right: 40px;
+}
+
+.fa-toolbox {
+  z-index: 999999999 !important;
 }
