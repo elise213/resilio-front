@@ -205,3 +205,7 @@
     justify-content: center !important;
   }
 }
+
+.report-container {
+  display: none !important;
+}

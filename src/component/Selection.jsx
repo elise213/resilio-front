@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import styles from "../styles/selection.css";
 import MyCheckbox from "./MyCheckbox";
+import Report from "./Report";
 
 const Selection = ({
   groups,
@@ -203,9 +204,9 @@ const Selection = ({
             type !== "day" ? actions.getColorForCategory(id) : null;
           const count =
             type === "day"
-              ? dayCounts[id]
-              : categoryCounts
-              ? categoryCounts[id]
+              ? dayCounts[id] || ""
+              : categoryCounts || ""
+              ? categoryCounts[id] || ""
               : 0;
 
           return option &&
@@ -266,15 +267,27 @@ const Selection = ({
     }
   };
 
+  // DEBUG
+  useEffect(() => {
+    console.log("Category Counts:", store.categoryCounts);
+    console.log("Day Counts:", store.dayCounts);
+  }, [store.categoryCounts, store.dayCounts]);
+
+  // DEBUG
+  useEffect(() => {
+    console.log("Map Results:", store.mapResults);
+  }, [store.mapResults]);
+
   return (
     <div className={"selection"}>
+      <Report />
       {allCategories.length > 0 && (
         <div className={"cent"}>
           <div
             className={`select-header ${showCategories ? "header-open" : ""}`}
           >
             {showCategories && <p>Filter by Category</p>}
-            <button
+            {/* <button
               onClick={() => {
                 setShowCategories(!showCategories);
                 if (showCategories) {
@@ -284,7 +297,7 @@ const Selection = ({
               className={showCategories ? "open2" : "closed2"}
             >
               {showCategories ? "X" : "Filter By Category"}
-            </button>
+            </button> */}
           </div>
 
           {showCategories &&
@@ -296,7 +309,7 @@ const Selection = ({
         <div className={"cent"}>
           <div className={`select-header ${showGroups ? "header-open" : ""}`}>
             {showGroups && <p>Filter by Group</p>}
-            <button
+            {/* <button
               onClick={() => {
                 setShowGroups(!showGroups);
                 if (!showGroups) {
@@ -306,7 +319,7 @@ const Selection = ({
               className={showGroups ? "open2" : "closed2"}
             >
               {showGroups ? "X" : "Filter By Group"}
-            </button>
+            </button> */}
           </div>
           {showGroups && renderCenterColumn("group", groups, setGroups)}
         </div>
@@ -318,7 +331,7 @@ const Selection = ({
             <div style={{ width: "100%" }}>
               <div className={`select-header ${showDays ? "header-open" : ""}`}>
                 {showDays && <p>Filter by Schedule</p>}
-                <button
+                {/* <button
                   onClick={() => {
                     setShowDays(!showDays);
                     if (showDays) {
@@ -328,7 +341,7 @@ const Selection = ({
                   className={showDays ? "open2" : "closed2"}
                 >
                   {showDays ? "X" : "Filter By Schedule"}
-                </button>
+                </button> */}
               </div>
               {showDays && renderCenterColumn("day", days, setDays)}
             </div>

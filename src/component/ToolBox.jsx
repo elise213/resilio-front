@@ -20,8 +20,6 @@ const ToolBox = ({
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(true);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
-  console.log("IsLS", isLargeScreen);
-
   useEffect(() => {
     // If large screen, open the navbar by default
     setIsToolBoxOpen(isLargeScreen);
@@ -76,7 +74,7 @@ const ToolBox = ({
                 onClick={() => setIsToolBoxOpen(true)}
               >
                 {/* <i className="fas fa-bars"></i> */}
-                <i class="fa-solid fa-toolbox"></i>
+                <i className="fa-solid fa-toolbox"></i>
               </div>
               <div
                 className={`toolclose-icon-nav ${

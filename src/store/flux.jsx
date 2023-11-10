@@ -104,7 +104,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
       setDayCounts: (dayCounts) => {
-        // console.log("Setting dayCounts:", dayCounts);
         setStore({
           dayCounts: dayCounts,
         });
@@ -208,11 +207,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           case "crisis":
             return "fa-solid fa-exclamation-triangle";
           case "substance":
-            return "fa-solid fa-capsules";
+            return "fa-solid fa-wine-bottle";
           case "legal":
             return "fa-solid fa-gavel";
           case "sex":
-            return "fa-solid fa-heart";
+            return "fa-solid fa-people-arrows";
           case "mental":
             return "fa-solid fa-brain";
           case "women":
@@ -778,55 +777,34 @@ const getState = ({ getStore, getActions, setStore }) => {
             .then((data) => {
               if (data.message === "okay") {
                 // Refetch favorites to update session and store
-                fetch(`${current_back_url}/api/getFavorites`, {
+                return fetch(`${current_back_url}/api/getFavorites`, {
                   headers: {
                     Authorization: "Bearer " + token,
                   },
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    const favorites = data.favorites.map((fav) => fav.resource);
-                    sessionStorage.setItem(
-                      "favorites",
-                      JSON.stringify(favorites)
-                    );
-                    setStore((prevState) => ({
-                      ...prevState,
-                      favorites: favorites,
-                    }));
-                    if (setFavorites) {
-                      setFavorites(favorites);
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("Error fetching updated favorites:", error);
-                    // Handle the error for fetching favorites here if needed
-                  });
+                });
+              } else {
+                throw new Error("Failed to add favorite");
               }
             })
+            .then((response) => response.json())
+            .then((data) => {
+              const favorites = data.favorites.map((fav) => fav.resource);
+              sessionStorage.setItem("favorites", JSON.stringify(favorites));
+              setStore((prevState) => ({
+                ...prevState,
+                favorites: favorites,
+              }));
+              return favorites; // Return the favorites array for the next .then()
+            })
+            .then((favorites) => {
+              setFavorites([...favorites]);
+            })
             .catch((error) => {
-              console.error("Error adding favorite:", error);
-              // Handle the error for adding favorite here if needed
+              console.error("Error fetching updated favorites:", error);
             });
         }
       },
-
-      initializeScreenSize: () => {
-        setStore({
-          isLargeScreen: window.innerWidth > 1000,
-          isClient: true,
-          windowWidth: window.innerWidth,
-        });
-      },
-
-      updateScreenSize: () => {
-        setStore({
-          isLargeScreen: window.innerWidth > 1000,
-          windowWidth: window.innerWidth,
-        });
-      },
-
-      popFavorites: (faveList, faveOffers) => {
+      popFavorites: (setFavorites, faveList, faveOffers) => {
         if (faveList && faveList.length) {
           setStore({ favorites: faveList });
         }
@@ -834,44 +812,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ favoriteOfferings: faveOffers });
         }
       },
-      // removeFavorite: (resource, setFavorites) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   if (sessionStorage.getItem("token")) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + sessionStorage.getItem("token"),
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "DELETE",
-      //       body: JSON.stringify({
-      //         name: resource,
-      //       }),
-      //     };
-      //     fetch(current_back_url + "/api/removeFavorite", opts)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         if (data.message === "okay") {
-      //           const updatedFavorites = JSON.parse(
-      //             sessionStorage.getItem("favorites") || "[]"
-      //           ).filter((favorite) => favorite.name !== resource);
-      //           sessionStorage.setItem(
-      //             "favorites",
-      //             JSON.stringify(updatedFavorites)
-      //           );
-      //           setStore((prevState) => ({
-      //             ...prevState,
-      //             favorites: updatedFavorites,
-      //           }));
-
-      //           // Update the local state if the setFavorites function is provided
-      //           if (setFavorites) {
-      //             setFavorites(updatedFavorites);
-      //           }
-      //         }
-      //       })
-      //       .catch((error) => console.log(error));
-      //   }
-      // },
 
       removeFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
@@ -916,6 +856,21 @@ const getState = ({ getStore, getActions, setStore }) => {
             })
             .catch((error) => console.error(error));
         }
+      },
+
+      initializeScreenSize: () => {
+        setStore({
+          isLargeScreen: window.innerWidth > 1000,
+          isClient: true,
+          windowWidth: window.innerWidth,
+        });
+      },
+
+      updateScreenSize: () => {
+        setStore({
+          isLargeScreen: window.innerWidth > 1000,
+          windowWidth: window.innerWidth,
+        });
       },
 
       // ________________________________________________________________OFFERINGS

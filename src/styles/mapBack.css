@@ -17,33 +17,27 @@ ul {
   list-style: none;
 }
 
-.remove-path {
-  font-size: 12px;
-  border-radius: 3px;
-  color: brown;
-}
-
 .flip-div {
   width: 100%;
   display: flex;
   justify-content: flex-end;
 }
 
-.all-ul::-webkit-scrollbar-track {
+.modal-body::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-.all-ul::-webkit-scrollbar {
+.modal-body::-webkit-scrollbar {
   width: 7px;
 }
 
-.all-ul::-webkit-scrollbar-thumb {
+.modal-body::-webkit-scrollbar-thumb {
   background-color: lightgreen;
   border-radius: 4px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.all-ul::-webkit-scrollbar-thumb:hover {
+.modal-body::-webkit-scrollbar-thumb:hover {
   background-color: darkgreen;
 }
 
@@ -124,7 +118,7 @@ li {
   display: flex;
   width: 100vw;
   justify-content: space-around;
-  margin-top: 80px;
+  margin-top: 150px;
 }
 
 .selected-item-content {
@@ -152,7 +146,7 @@ li {
   }
 
   .path-name {
-    font-size: 14px !important;
+    font-size: 20px !important;
   }
 
   .createMyPath {
@@ -166,10 +160,10 @@ li {
 
 @media screen and (max-width: 700px) {
   .back-container {
-    margin-top: 10px;
+    margin-top: 130px;
   }
   .selected-resources {
-    margin-top: 100px;
+    margin-top: 0px;
   }
 }
 
@@ -186,24 +180,7 @@ li {
     margin-top: 25px;
   }
 
-  .back-container {
-    margin-top: 0 !important;
-  }
-
   .selected-resources {
     width: 100% !important;
-    margin-top: 140px !important;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .selected-resources {
-    margin-top: 140px !important;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .selected-resources {
-    margin-top: 200px !important;
   }
 }

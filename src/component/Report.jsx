@@ -27,14 +27,18 @@ const Report = () => {
     };
 
     if (store?.mapResults?.length > 0) {
+      // map results is all of the resources, without the filters
+      console.log("MR", store.mapResults);
+
       store.mapResults.forEach((result) => {
         if (typeof result.category === "string") {
+          // init categories
           let categories = result.category.split(",").map((cat) => cat.trim());
           categories.forEach((cat) => {
             categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
           });
         }
-
+        // init schedule
         const schedule = store.schedules.find(
           (sched) => sched.resource_id === result.id
         );
@@ -70,7 +74,7 @@ const Report = () => {
         "babies",
         "migrants",
       ];
-
+      // init filteredCategoryCounts
       const filteredCategoryCounts = Object.keys(categoryCounts)
         .filter((key) => validCategories.includes(key.toLowerCase()))
         .reduce((obj, key) => {

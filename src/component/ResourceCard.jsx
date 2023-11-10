@@ -66,7 +66,8 @@ const ResourceCard = (props) => {
     props.selectedResources.some((resource) => resource.id === props.item.id);
 
   const handleToggleSelectResource = (event) => {
-    event.stopPropagation(); // Prevent the card's onClick from firing
+    event.stopPropagation();
+    console.log("hnadleToggleSelectR");
     if (isSelected) {
       handleDeselectResource(props.item.id);
     } else {
@@ -104,6 +105,13 @@ const ResourceCard = (props) => {
         </div>
       )}
       <div className="button-container">
+        <button
+          className={isSelected ? "remove-path" : "add-path"}
+          onClick={handleToggleSelectResource}
+        >
+          {isSelected ? "Remove from Path" : "Add to Path"}
+        </button>
+
         {store.token && (
           <button
             className="add-favorite"
@@ -116,10 +124,6 @@ const ResourceCard = (props) => {
             )}
           </button>
         )}
-
-        <button className="add-path" onClick={handleToggleSelectResource}>
-          {isSelected ? "Remove from Path" : "Add to Path"}
-        </button>
       </div>
     </div>
   );
