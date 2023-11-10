@@ -259,6 +259,10 @@ body.modal-open {
 
 .modal-center {
   text-align: center !important;
+  width: 100%;
+  text-decoration: none !important;
+  color: black;
+  font-size: 1rem;
 }
 
 .sched-div {
