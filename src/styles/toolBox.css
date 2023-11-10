@@ -85,7 +85,7 @@
 
 .toolclose-icon-nav,
 .toolopen-icon-nav {
-  position: absolute;
+  position: fixed;
   right: -40px;
   top: 10px;
   transition: 0tool3s ease !important;
@@ -162,6 +162,8 @@
   display: flex;
   justify-content: flex-start;
   transition: right 0.3s ease;
+  display: flex;
+  justify-content: center;
 }
 
 .toolnew-navbar.toolopen-nav {
@@ -236,7 +238,6 @@
 
 .toolnavbar-content {
   flex-direction: column;
-  /* padding: 5px; */
 }
 
 .toolnav-item {
@@ -251,6 +252,7 @@
 .toolclose-icon-nav {
   right: -40px !important;
   display: flex;
+  top: 20px;
 }
 
 .toolclose-icon-nav.toolopen-nav {
@@ -258,7 +260,7 @@
 }
 
 .toolopen-icon-nav.toolclosed {
-  right: 340px !important;
+  right: 40px !important;
 }
 
 @media screen and (max-width: 700px) {
