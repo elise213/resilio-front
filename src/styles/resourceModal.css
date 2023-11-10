@@ -250,32 +250,11 @@ body.modal-open {
   font-family: "Urbanist", sans-serif;
 }
 
-@media screen and (max-width: 700px) {
-  .carousel {
-    height: 280px;
-    overflow: hidden;
-  }
-
-  .details {
-    width: 100% !important;
-  }
-
-  .resource-card-text {
-    font-size: 13px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .resource-card-text {
-    font-size: 11px;
-  }
-}
-
 .modal-text {
   width: 100%;
   text-decoration: none !important;
   color: black;
-  font-size: 12px;
+  font-size: 1rem;
 }
 
 .modal-center {
@@ -285,4 +264,31 @@ body.modal-open {
 .sched-div {
   padding: 0 !important;
   width: 100%;
+}
+
+@media screen and (max-width: 700px) {
+  .carousel {
+    height: 280px !important;
+    overflow: hidden;
+  }
+
+  .details {
+    width: 100% !important;
+  }
+
+  .resource-card-text {
+    font-size: 13px !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .modal-text {
+    font-size: 12px !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .resource-card-text {
+    font-size: 11px !important;
+  }
 }

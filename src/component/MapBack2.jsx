@@ -38,20 +38,17 @@ const MapBack = ({
       const sessionResources = actions.getSessionSelectedResources();
       setSelectedResources(sessionResources);
     };
-
     document.addEventListener(
       "setSelectedResources",
       handleSetSelectedResources
     );
-
-    // Remove event listener on cleanup
     return () => {
       document.removeEventListener(
         "setSelectedResources",
         handleSetSelectedResources
       );
     };
-  }, [actions]); // No need to listen to selectedResources here
+  }, [actions]);
 
   const imagePath = "/assets/path1.png";
   const handleCreateMyPathClick = () => {
@@ -247,7 +244,7 @@ const MapBack = ({
           )}
         </div>
       ) : (
-        <p>Add Resources to Your Path! </p>
+        <p className="scroll-title">Add Resources to Your Path! </p>
       )}
       <div className="flip-div">
         <button

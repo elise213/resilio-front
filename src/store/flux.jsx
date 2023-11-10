@@ -777,40 +777,34 @@ const getState = ({ getStore, getActions, setStore }) => {
             .then((data) => {
               if (data.message === "okay") {
                 // Refetch favorites to update session and store
-                fetch(`${current_back_url}/api/getFavorites`, {
+                return fetch(`${current_back_url}/api/getFavorites`, {
                   headers: {
                     Authorization: "Bearer " + token,
                   },
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    const favorites = data.favorites.map((fav) => fav.resource);
-                    sessionStorage.setItem(
-                      "favorites",
-                      JSON.stringify(favorites)
-                    );
-                    setStore((prevState) => ({
-                      ...prevState,
-                      favorites: favorites,
-                    }));
-                  })
-                  .then((favorites) => {
-                    setFavorites([favorites]);
-                  })
-                  .catch((error) => {
-                    console.error("Error fetching updated favorites:", error);
-                    // Handle the error for fetching favorites here if needed
-                  });
+                });
+              } else {
+                throw new Error("Failed to add favorite");
               }
             })
+            .then((response) => response.json())
+            .then((data) => {
+              const favorites = data.favorites.map((fav) => fav.resource);
+              sessionStorage.setItem("favorites", JSON.stringify(favorites));
+              setStore((prevState) => ({
+                ...prevState,
+                favorites: favorites,
+              }));
+              return favorites; // Return the favorites array for the next .then()
+            })
+            .then((favorites) => {
+              setFavorites([...favorites]);
+            })
             .catch((error) => {
-              console.error("Error adding favorite:", error);
-              // Handle the error for adding favorite here if needed
+              console.error("Error fetching updated favorites:", error);
             });
         }
       },
-
-      popFavorites: (faveList, faveOffers) => {
+      popFavorites: (setFavorites, faveList, faveOffers) => {
         if (faveList && faveList.length) {
           setStore({ favorites: faveList });
         }

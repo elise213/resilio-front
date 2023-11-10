@@ -173,7 +173,6 @@
 }
 
 .map-container-modal {
-  min-width: 300px;
   border: 2px solid salmon;
   border-radius: 3px;
 }
@@ -325,11 +324,5 @@
 
   .scroll-title {
     font-size: 15px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .map-frame-wrapper:before {
-    margin-top: 150px !important;
   }
 }

@@ -12,24 +12,22 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-}
+  border: 10px double lightgreen;
+  background-color: #d4d2dd;
 
-.modal-overlay-treasure {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  z-index: 9999;
-  /* border: 5px solid yellow; */
+  padding: 20px;
 }
 
 .options-path-map {
   display: flex;
   margin-bottom: 20px;
+  flex-direction: column;
+}
+
+.map-container-treasure {
+  border: 5px solid salmon;
+  border-radius: 3px;
+  margin-top: 40px;
 }
 
 hr {
@@ -39,29 +37,58 @@ hr {
   width: 100%;
 }
 
-.modal-content-treasure {
+.modal-overlay-treasure {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: white;
+  /* background-color: rgba(0, 0, 0, 0.9); */
+  background-color: rgb(106, 103, 103);
+  display: flex;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content-treasure {
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 3px 4px 3px rgba(0, 0, 0, 0.1); */
   overflow-y: scroll;
   z-index: 999;
 }
 
+.modal-content-treasure::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.modal-content-treasure::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modal-content-treasure::-webkit-scrollbar-thumb {
+  background-color: lightgreen;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content-treasure::-webkit-scrollbar-thumb:hover {
+  background-color: darkgreen;
+}
+
 .modal-close-treasure {
   position: absolute;
-  top: 15px;
-  right: 100px;
+  top: 5px;
+  right: 10px;
   border: none;
   background: none;
-  font-size: 50px;
+  font-size: 30px;
   cursor: pointer;
-  color: salmon;
+  color: red;
 }
 
 .modal-close-treasure:hover,
 .modal-close-treasure:focus {
-  color: #ff0000;
+  color: darkred;
 }
 
 .text-area {
@@ -80,18 +107,18 @@ hr {
 }
 
 .option:hover {
-  color: lightgreen;
+  color: green;
   cursor: pointer;
 }
 
 .options {
-  color: salmon;
+  color: lightgreen;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   font-size: large;
   margin-top: 20px;
-  width: 100%;
+  font-family: "AwsumSans", sans-serif;
 }
 
 .title-box {
@@ -99,7 +126,7 @@ hr {
   font-size: 25px;
   justify-content: center;
   font-family: "AwsumSans", sans-serif;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .no-scroll {
@@ -139,6 +166,13 @@ hr {
 
 @media screen and (max-width: 1000px) {
   .modal-content-treasure {
-    width: 80%;
+    width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .title-box {
+    font-size: 20px !important;
+    margin: 3px 0 !important;
   }
 }
