@@ -72,7 +72,6 @@ li {
 
 .path-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
@@ -82,17 +81,13 @@ li {
 }
 
 .path-icon {
-  font-size: medium;
+  font-size: x-large;
   margin: 3px;
-  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); */
-  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .path-name {
-  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); */
   font-size: 18px;
   color: lightgreen;
-  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
 }
 
 .flip-horizontal {
@@ -129,8 +124,9 @@ li {
   z-index: 9998;
   border-radius: 3px;
   font-size: 25px;
-  background-color: salmon;
+  background-color: rgb(223, 217, 243);
   margin: 5px;
+  border: 2px solid orangered;
 }
 
 .createMyPath:hover {
@@ -143,10 +139,6 @@ li {
   }
   .cent {
     padding: 10px !important;
-  }
-
-  .path-name {
-    font-size: 20px !important;
   }
 
   .createMyPath {
@@ -182,5 +174,9 @@ li {
 
   .selected-resources {
     width: 100% !important;
+  }
+
+  .path-name {
+    font-size: 16px !important;
   }
 }

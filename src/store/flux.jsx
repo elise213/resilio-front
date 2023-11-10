@@ -124,11 +124,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       getColorForCategory: (category) => {
         const colors = {
           food: "DarkOrange",
-          health: "Green",
+          health: "Indigo",
           hygiene: "CornflowerBlue",
           clothing: "Salmon",
           shelter: "Maroon",
-          work: "Indigo",
+          work: "Green",
           wifi: "Orchid",
           crisis: "Red",
           legal: "Peru",
@@ -136,7 +136,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           mental: "Coral",
           substance: "DarkRed",
           sex: "Tomato",
-          babies: "Purple",
+          babies: "Yellow",
           lgbtq: "RosyBrown",
           kids: "Salmon",
           youth: "IndianRed",

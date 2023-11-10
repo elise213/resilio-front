@@ -158,7 +158,7 @@ const GeneratedTreasureMap = ({
           </div>
         </div>
         <button className="modal-close-treasure" onClick={closeModal}>
-          X
+          <i className="fa-solid fa-xmark"></i>
         </button>
         <div className="resources-list">
           {selectedResources.map((resource, index) => {

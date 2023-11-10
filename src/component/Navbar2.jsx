@@ -25,61 +25,55 @@ const Navbar2 = ({}) => {
   };
 
   useEffect(() => {
-    if (!isLargeScreen) {
-      const handleClickOutside = (event) => {
-        const nav = document.querySelector(".new-navbar");
-        if (nav && !nav.contains(event.target) && isNavOpen) {
-          setIsNavOpen(false);
-        }
-      };
+    // if (!isLargeScreen) {
+    const handleClickOutside = (event) => {
+      const nav = document.querySelector(".new-navbar");
+      if (nav && !nav.contains(event.target) && isNavOpen) {
+        setIsNavOpen(false);
+      }
+      // };
       document.addEventListener("click", handleClickOutside);
       return () => {
         document.removeEventListener("click", handleClickOutside);
       };
-    }
-  }, [isNavOpen, isLargeScreen]);
-
-  useEffect(() => {
-    if (isLargeScreen) {
-      setIsNavOpen(true);
-    }
-  }, [isLargeScreen]);
+    };
+  }, [isNavOpen]);
 
   useEffect(() => {
     const body = document.body;
-    if ((!isLargeScreen && isNavOpen) || showContactModal) {
+    if (isNavOpen || showContactModal) {
       body.classList.add("no-scroll");
     } else {
       body.classList.remove("no-scroll");
     }
-  }, [isNavOpen, showContactModal, isLargeScreen]);
+  }, [isNavOpen, showContactModal]);
 
   return (
     <>
       <div className="nav-container">
         <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
-          {!isLargeScreen && (
-            <div className="menu-icon" onClick={toggleNav}>
-              <div
-                className={`open-icon-nav ${!isNavOpen ? "closed" : ""}`}
-                onClick={() => setIsNavOpen(true)}
-              >
-                <i className="fas fa-bars"></i>
-              </div>
-              <div className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}>
-                <i className="fa-solid fa-x"></i>
-              </div>
+          {/* {!isLargeScreen && ( */}
+          <div className="menu-icon" onClick={toggleNav}>
+            <div
+              className={`open-icon-nav ${!isNavOpen ? "closed" : ""}`}
+              onClick={() => setIsNavOpen(true)}
+            >
+              <i className="fas fa-bars"></i>
             </div>
-          )}
+            <div className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}>
+              <i className="fa-solid fa-x"></i>
+            </div>
+          </div>
+          {/* )} */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            {!isLargeScreen && (
-              <img
-                src="/assets/RESILIOO.png"
-                alt="Resilio Logo"
-                className="navbar-logo"
-              />
-            )}
+            {/* {!isLargeScreen && ( */}
+            <img
+              src="/assets/RESILIOO.png"
+              alt="Resilio Logo"
+              className="navbar-logo"
+            />
+            {/* )} */}
             <span
               className="nav-item"
               onClick={() => {
@@ -99,7 +93,7 @@ const Navbar2 = ({}) => {
             >
               DONATE
             </span>
-            {!isLargeScreen && <EmailList />}
+            <EmailList />
           </div>
         </nav>
 
