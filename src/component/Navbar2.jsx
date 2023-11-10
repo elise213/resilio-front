@@ -64,16 +64,22 @@ const Navbar2 = ({}) => {
               <i className="fa-solid fa-x"></i>
             </div>
           </div>
-          {/* )} */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            {/* {!isLargeScreen && ( */}
             <img
               src="/assets/RESILIOO.png"
               alt="Resilio Logo"
               className="navbar-logo"
             />
-            {/* )} */}
+            <span
+              className="nav-item"
+              onClick={() => {
+                setIsNavOpen(false);
+                // toggleContactModal();
+              }}
+            >
+              ABOUT
+            </span>
             <span
               className="nav-item"
               onClick={() => {
@@ -88,11 +94,11 @@ const Navbar2 = ({}) => {
               className="nav-item"
               onClick={() => {
                 setIsNavOpen(false);
-                // toggleContactModal();
               }}
             >
               DONATE
             </span>
+
             <EmailList />
           </div>
         </nav>
