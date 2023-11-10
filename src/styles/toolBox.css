@@ -60,12 +60,16 @@
 .toolclose-icon-nav,
 .toolopen-icon-nav {
   position: fixed;
-  right: -40px; /* Adjust to match your design */
+  right: -40px;
   top: 10px;
-  font-size: 40px; /* Icon size */
-  color: salmon; /* Icon color */
+  font-size: 40px;
+  color: salmon;
   z-index: 995;
   transition: right 0.3s ease;
+}
+
+.toolclose-icon-nav {
+  font-size: 30px !important;
 }
 
 .toolclose-icon-nav.toolopen-nav {
