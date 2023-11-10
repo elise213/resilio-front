@@ -20,44 +20,33 @@ const ToolBox = ({
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(true);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
-  useEffect(() => {
-    // If large screen, open the navbar by default
-    setIsToolBoxOpen(isLargeScreen);
-  }, [isLargeScreen]);
-
   const toggleNav = () => {
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
   useEffect(() => {
-    if (!isLargeScreen) {
-      const handleClickOutside = (event) => {
-        const nav = document.querySelector(".toolnew-navbar");
-        if (nav && !nav.contains(event.target) && isToolBoxOpen) {
-          setIsToolBoxOpen(false);
-        }
-      };
+    // if (!isLargeScreen) {
+    const handleClickOutside = (event) => {
+      const nav = document.querySelector(".toolnew-navbar");
+      if (nav && !nav.contains(event.target) && isToolBoxOpen) {
+        setIsToolBoxOpen(false);
+      }
+      // };
       document.addEventListener("click", handleClickOutside);
       return () => {
         document.removeEventListener("click", handleClickOutside);
       };
-    }
-  }, [isToolBoxOpen, isLargeScreen]);
-
-  useEffect(() => {
-    if (isLargeScreen) {
-      setIsToolBoxOpen(true);
-    }
-  }, [isLargeScreen]);
+    };
+  }, [isToolBoxOpen]);
 
   useEffect(() => {
     const body = document.body;
-    if (!isLargeScreen && isToolBoxOpen) {
+    if (isToolBoxOpen) {
       body.classList.add("toolno-scroll");
     } else {
       body.classList.remove("toolno-scroll");
     }
-  }, [isToolBoxOpen, isLargeScreen]);
+  }, [isToolBoxOpen]);
 
   return (
     <>
@@ -65,29 +54,28 @@ const ToolBox = ({
         <div
           className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
         >
-          {!isLargeScreen && (
-            <div className="toolmenu-icon" onClick={toggleNav}>
-              <div
-                className={`toolopen-icon-nav ${
-                  !isToolBoxOpen ? "toolclosed" : ""
-                }`}
-                onClick={() => setIsToolBoxOpen(true)}
-              >
-                {/* <i className="fas fa-bars"></i> */}
-                <i className="fa-solid fa-toolbox"></i>
-              </div>
-              <div
-                className={`toolclose-icon-nav ${
-                  isToolBoxOpen ? "toolopen-nav" : ""
-                }`}
-              >
-                <i className="fa-solid fa-x"></i>
-              </div>
+          {/* {!isLargeScreen && ( */}
+          <div className="toolmenu-icon" onClick={toggleNav}>
+            <div
+              className={`toolopen-icon-nav ${
+                !isToolBoxOpen ? "toolclosed" : ""
+              }`}
+              onClick={() => setIsToolBoxOpen(true)}
+            >
+              {/* <i className="fas fa-bars"></i> */}
+              <i className="fa-solid fa-toolbox"></i>
             </div>
-          )}
+            <div
+              className={`toolclose-icon-nav ${
+                isToolBoxOpen ? "toolopen-nav" : ""
+              }`}
+            >
+              <i className="fa-solid fa-x"></i>
+            </div>
+          </div>
+          {/* )} */}
 
-          {!store.isLargeScreen &&
-          store.CATEGORY_OPTIONS &&
+          {store.CATEGORY_OPTIONS &&
           store.DAY_OPTIONS &&
           store.GROUP_OPTIONS &&
           categories &&
