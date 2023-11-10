@@ -1,40 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Context } from "../store/appContext";
 import MapBack from "./MapBack2";
-import Login from "../component/Login.jsx";
 
-// import Selection from "./Selection";
 import ResourceCard from "./ResourceCard";
-import ErrorBoundary from "./ErrorBoundary";
 import MapSettings from "./MapSettings";
-// import Report from "./Report";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
-import RESR from "/assets/RESILIOO.png";
 
 const AltSimpleMap = ({
   openModal,
   handleBoundsChange,
-  // INITIAL_DAY_STATE,
-  // searchingToday,
-  // setSearchingToday,
-  // setCategories,
-  // setGroups,
-  // setDays,
   city,
   geoFindMe,
   handleZipInputChange,
   zipInput,
-  // categories,
-  // days,
-  // groups,
   userLocation,
   closeModal,
   modalIsOpen,
   setModalIsOpen,
   selectedResource,
-  setSelectedResource,
   isGeneratedMapModalOpen,
   setIsGeneratedMapModalOpen,
   selectedResources,
@@ -57,7 +41,7 @@ const AltSimpleMap = ({
       if (prevResources.length >= 3) {
         // Display an alert if the limit is reached
         Swal.fire({
-          icon: "error",
+          // icon: "error",
           title: "Please limit the path to 3 resources at a time",
         });
         return prevResources;
@@ -199,7 +183,7 @@ const AltSimpleMap = ({
                     bootstrapURLKeys={{ key: apiKey }}
                     center={city.center}
                     bounds={city.bounds}
-                    defaultZoom={11}
+                    defaultZoom={10}
                     onChange={(e) => handleBoundsChange(e)}
                   >
                     {store.boundaryResults.map((result, i) => (
