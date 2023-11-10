@@ -65,7 +65,7 @@ li {
 
 .path {
   display: flex;
-  /* margin-top: 20px; */
+  flex-direction: column;
   width: 100%;
   align-items: center;
 }
