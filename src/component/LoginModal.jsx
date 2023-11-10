@@ -28,7 +28,9 @@ const LoginModal = ({
         <div className="login-modal-header">
           <div className="center-header">
             <span className="form-label" id="exampleloginModalLabel">
-              {/* Please Register */}
+              <span className="form-label">
+                Do you represent an organization?
+              </span>
             </span>
           </div>
           <button
@@ -39,9 +41,6 @@ const LoginModal = ({
         </div>
         <div className="login-modal-body">
           <form>
-            <span className="form-label">
-              Do you represent an organization?
-            </span>
             <div className="yes-or-no">
               <div className="form-check">
                 <input
@@ -115,19 +114,6 @@ const LoginModal = ({
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
-            <p className="form-label">Choose your avatar</p>
-            <div className="avatar-div">
-              {store.avatarImages.map((i, idx) => {
-                return (
-                  <span
-                    key={i}
-                    className={`${i} avatarImages`}
-                    id={"avatar" + idx}
-                    onClick={() => handleSelectImage(idx)}
-                  />
-                );
-              })}
-            </div>
 
             <button
               type="submit"
@@ -150,11 +136,12 @@ const LoginModal = ({
   }
   if (log == "1") {
     field = (
-      <div className="login-modal-content">
+      <div className="login-modal-content ">
         <div className="login-modal-header">
           <div className="header-div">
             <span className="form-label" id="">
-              {/* Please Login */}
+              Enter your Username <br />
+              and Password to Login
             </span>
           </div>
           <button
@@ -165,7 +152,7 @@ const LoginModal = ({
             onClick={() => setOpenLoginModal(false)}
           ></button>
         </div>
-        <div className="login-modal-body">
+        <div className="login-modal-body small-login-modal">
           <form>
             <div className="">
               <label

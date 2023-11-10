@@ -105,8 +105,13 @@
   font-family: "Urbanist", sans-serif;
   letter-spacing: 1.2px;
   margin: 20px 0 0 0;
-  font-size: medium;
+  font-size: medium !important;
   display: block;
+}
+
+.small-login-modal {
+  overflow: hidden !important;
+  padding: 18px !important;
 }
 
 .login-modal-body {
@@ -114,8 +119,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-x: hidden;
-  overflow-y: scroll !important;
   scroll-behavior: smooth;
   height: 100%;
   justify-content: center;
