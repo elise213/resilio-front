@@ -158,13 +158,13 @@ export const ModalInfo = (props) => {
             {/* SCHEDULE */}
             {Object.keys(formattedSchedule).length > 0 && (
               <div className=" info">
-                <i className="fa-solid fa-calendar-check"></i>
+                {/* <i className="fa-solid fa-calendar-check"></i> */}
                 <div className="sched-div">
                   {Object.entries(formattedSchedule).map(
                     ([day, schedule], index) => (
                       <p
                         key={index}
-                        className="modal-text modal-center"
+                        className="modal-center"
                         style={{
                           color: schedule !== "Closed" ? "green" : "inherit",
                         }}

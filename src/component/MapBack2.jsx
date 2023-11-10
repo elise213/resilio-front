@@ -245,7 +245,9 @@ const MapBack = ({
           )} */}
         </div>
       ) : (
-        <p className="scroll-title">Add Resources to Your Path! </p>
+        <p className="scroll-title">
+          Add Resources <br /> To Your Path
+        </p>
       )}
       <div className="flip-div">
         <button
