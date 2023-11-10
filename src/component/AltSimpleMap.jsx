@@ -4,11 +4,11 @@ import { Context } from "../store/appContext";
 import MapBack from "./MapBack2";
 import Login from "../component/Login.jsx";
 
-import Selection from "./Selection";
+// import Selection from "./Selection";
 import ResourceCard from "./ResourceCard";
 import ErrorBoundary from "./ErrorBoundary";
 import MapSettings from "./MapSettings";
-import Report from "./Report";
+// import Report from "./Report";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
 import RESR from "/assets/RESILIOO.png";
@@ -16,19 +16,19 @@ import RESR from "/assets/RESILIOO.png";
 const AltSimpleMap = ({
   openModal,
   handleBoundsChange,
-  INITIAL_DAY_STATE,
-  searchingToday,
-  setSearchingToday,
-  setCategories,
-  setGroups,
-  setDays,
+  // INITIAL_DAY_STATE,
+  // searchingToday,
+  // setSearchingToday,
+  // setCategories,
+  // setGroups,
+  // setDays,
   city,
   geoFindMe,
   handleZipInputChange,
   zipInput,
-  categories,
-  days,
-  groups,
+  // categories,
+  // days,
+  // groups,
   userLocation,
   closeModal,
   modalIsOpen,
@@ -54,11 +54,11 @@ const AltSimpleMap = ({
     console.log("Adding resource", resource);
 
     setSelectedResources((prevResources) => {
-      if (prevResources.length >= 4) {
+      if (prevResources.length >= 3) {
         // Display an alert if the limit is reached
         Swal.fire({
           icon: "error",
-          title: "Please limit the path to 4 resources at a time",
+          title: "Please limit the path to 3 resources at a time",
         });
         return prevResources;
       }
@@ -238,11 +238,21 @@ const AltSimpleMap = ({
           )}
         </div>
       </div>
-      <div className="back-container">
+      <div
+        className={`back-container ${store.favorites ? "column-class" : ""}`}
+      >
+        {!store.favorites ||
+          (!(store.favorites.length > 0) && (
+            <div className="favorites-warning-div">
+              <div className="scroll-title">
+                <span>Log in to save favorites</span>
+              </div>
+            </div>
+          ))}
         {store.boundaryResults && store.boundaryResults.length > 0 && (
           <div className="list-container">
             <div className="scroll-title">
-              <span>In your Area</span>
+              <span>Resources in your Area</span>
             </div>
             <ul className="all-ul">
               {Array.isArray(store.mapResults) &&
@@ -286,11 +296,7 @@ const AltSimpleMap = ({
             </ul>
           </div>
         ) : (
-          <div className="list-container">
-            <div className="scroll-title">
-              <span>Log in to see favorites</span>
-            </div>
-          </div>
+          ""
         )}
       </div>
     </>

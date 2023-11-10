@@ -33,7 +33,7 @@
 }
 
 .flip-button {
-  background-color: lightgreen;
+  background-color: rgba(144, 238, 144, 0.8);
   min-height: 70px;
   font-size: 13px;
   border-radius: 3px;
@@ -42,7 +42,7 @@
 }
 
 .flip-button-flipped {
-  background-color: lightgreen;
+  background-color: rgba(144, 238, 144, 0.8);
   min-height: 70px;
   font-size: 13px;
   border-radius: 3px;
@@ -249,8 +249,12 @@
   width: 100%;
 }
 
+.column-class {
+  flex-direction: column;
+}
+
 .list-container {
-  width: 50%;
+  /* width: 50%; */
   margin: 10px;
   display: flex;
   align-items: center;
@@ -261,6 +265,14 @@
   font-size: 25px;
   font-family: "AwsumSans", sans-serif;
   color: lightgreen;
+}
+
+.scroll-title span {
+  white-space: nowrap;
+}
+
+.favorites-warning-div {
+  margin: 40px 0 80px 0;
 }
 
 @media screen and (max-width: 800px) {

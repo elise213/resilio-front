@@ -111,9 +111,9 @@ li {
 
 .back-container {
   display: flex;
-  width: 100vw;
-  justify-content: space-around;
-  margin-top: 150px;
+  /* width: 100vw; */
+  justify-content: center;
+  margin-top: 100px;
 }
 
 .selected-item-content {
@@ -152,7 +152,7 @@ li {
 
 @media screen and (max-width: 700px) {
   .back-container {
-    margin-top: 130px;
+    margin-top: 30px;
   }
   .selected-resources {
     margin-top: 0px;
