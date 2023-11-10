@@ -14,12 +14,12 @@
   justify-content: center;
   overflow-y: auto;
   top: 0;
-  right: -315px; /* Initially hidden on the right */
-  width: 315px; /* Width of the toolbox */
+  right: -290px; /* Initially hidden on the right */
+  width: 290px; /* Width of the toolbox */
   height: 100%;
   z-index: 996;
   position: fixed;
-  background-color: #333; /* Background color like navbar */
+  background-color: #464646;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: right 0.3s ease; /* Transition for moving toolbox */
 }
@@ -36,24 +36,23 @@
   display: flex;
   justify-content: flex-start;
   border-radius: 3px;
-  height: 80px; /* Matching navbar height */
 }
 
 .toolnav-item,
 .toolnav-item a {
   font-weight: 600;
   letter-spacing: 1.5px;
-  color: var(--color1); /* Color to match navbar */
+  color: var(--color1);
   text-decoration: none;
   font-size: 18px;
   z-index: 999;
-  margin: 15px 0; /* Margin like navbar */
+  margin: 15px 0;
 }
 
 .toolnav-item:hover,
 .toolnav-item a:hover {
   cursor: pointer;
-  color: lightgreen; /* Hover effect like navbar */
+  color: lightgreen;
 }
 
 /* Icons */
@@ -73,7 +72,7 @@
 }
 
 .toolclose-icon-nav.toolopen-nav {
-  right: 275px;
+  right: 245px;
 }
 
 .toolopen-icon-nav.toolclosed {

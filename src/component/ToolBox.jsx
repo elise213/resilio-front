@@ -15,12 +15,17 @@ const ToolBox = ({
   searchingToday,
   setSearchingToday,
   INITIAL_DAY_STATE,
+  isNavOpen,
+  setIsNavOpen,
+  isToolBoxOpen,
+  setIsToolBoxOpen,
 }) => {
   const { store, actions } = useContext(Context);
-  const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
+
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   const toggleNav = () => {
+    setIsNavOpen(false);
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
