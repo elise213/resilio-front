@@ -6,9 +6,14 @@ import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
 
-const Navbar2 = ({}) => {
+const Navbar2 = ({
+  isNavOpen,
+  setIsNavOpen,
+  isToolBoxOpen,
+  setIsToolBoxOpen,
+}) => {
   const { store, actions } = useContext(Context);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+
   const [showContactModal, setShowContactModal] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
 
@@ -17,6 +22,7 @@ const Navbar2 = ({}) => {
   }, [store.isLargeScreen]);
 
   const toggleNav = () => {
+    setIsToolBoxOpen(false);
     setIsNavOpen(!isNavOpen);
   };
 
@@ -52,7 +58,6 @@ const Navbar2 = ({}) => {
     <>
       <div className="nav-container">
         <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
-          {/* {!isLargeScreen && ( */}
           <div className="menu-icon" onClick={toggleNav}>
             <div
               className={`open-icon-nav ${!isNavOpen ? "closed" : ""}`}
@@ -75,7 +80,6 @@ const Navbar2 = ({}) => {
               className="nav-item"
               onClick={() => {
                 setIsNavOpen(false);
-                // toggleContactModal();
               }}
             >
               ABOUT

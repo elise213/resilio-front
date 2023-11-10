@@ -72,6 +72,8 @@ const Home = () => {
   const [selectedResource, setSelectedResource] = useState(null);
   const [zipInput, setZipInput] = useState("");
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
 
   // FUNCTIONS
 
@@ -331,6 +333,10 @@ const Home = () => {
         searchingToday={searchingToday}
         setSearchingToday={setSearchingToday}
         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+        isNavOpen={isNavOpen}
+        setIsNavOpen={setIsNavOpen}
+        isToolBoxOpen={isToolBoxOpen}
+        setIsToolBoxOpen={setIsToolBoxOpen}
       />
 
       <ToolBox
@@ -343,6 +349,10 @@ const Home = () => {
         searchingToday={searchingToday}
         setSearchingToday={setSearchingToday}
         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+        isNavOpen={isNavOpen}
+        setIsNavOpen={setIsNavOpen}
+        isToolBoxOpen={isToolBoxOpen}
+        setIsToolBoxOpen={setIsToolBoxOpen}
       />
 
       <Login />
