@@ -26,7 +26,7 @@ const MapBack = ({
   const { store, actions } = useContext(Context);
   const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
 
-  console.log("IsLS", isLargeScreen);
+  // console.log("IsLS", isLargeScreen);
 
   useEffect(() => {
     setIsLargeScreen(store.isLargeScreen);
@@ -206,7 +206,7 @@ const MapBack = ({
               Create your Path
             </button>
           </div>
-          {isLargeScreen && (
+          {/* {isLargeScreen && (
             <div
               className="map-container"
               style={{ height: "160px", width: "100%" }}
@@ -241,7 +241,7 @@ const MapBack = ({
                 })}
               </GoogleMapReact>
             </div>
-          )}
+          )} */}
         </div>
       ) : (
         <p className="scroll-title">Add Resources to Your Path! </p>
