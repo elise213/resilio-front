@@ -183,7 +183,7 @@ const AltSimpleMap = ({
                     bootstrapURLKeys={{ key: apiKey }}
                     center={city.center}
                     bounds={city.bounds}
-                    defaultZoom={25}
+                    defaultZoom={10}
                     onChange={(e) => handleBoundsChange(e)}
                   >
                     {store.boundaryResults.map((result, i) => (
