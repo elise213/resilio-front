@@ -30,13 +30,12 @@ const ToolBox = ({
   };
 
   useEffect(() => {
-    // if (!isLargeScreen) {
     const handleClickOutside = (event) => {
       const nav = document.querySelector(".toolnew-navbar");
       if (nav && !nav.contains(event.target) && isToolBoxOpen) {
         setIsToolBoxOpen(false);
       }
-      // };
+
       document.addEventListener("click", handleClickOutside);
       return () => {
         document.removeEventListener("click", handleClickOutside);
@@ -59,7 +58,6 @@ const ToolBox = ({
         <div
           className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
         >
-          {/* {!isLargeScreen && ( */}
           <div className="toolmenu-icon" onClick={toggleNav}>
             <div
               className={`toolopen-icon-nav ${
@@ -67,7 +65,6 @@ const ToolBox = ({
               }`}
               onClick={() => setIsToolBoxOpen(true)}
             >
-              {/* <i className="fas fa-bars"></i> */}
               <i className="fa-solid fa-toolbox"></i>
             </div>
             <div
@@ -78,7 +75,6 @@ const ToolBox = ({
               <i className="fa-solid fa-x"></i>
             </div>
           </div>
-          {/* )} */}
 
           {store.CATEGORY_OPTIONS &&
           store.DAY_OPTIONS &&
