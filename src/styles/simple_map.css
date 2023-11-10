@@ -34,19 +34,20 @@
 
 .flip-button {
   background-color: lightgreen;
-  height: 100%;
+  min-height: 70px;
   font-size: 13px;
-  height: 82%;
   border-radius: 3px;
+  border-radius: 100%;
+  margin-left: 85px;
 }
 
 .flip-button-flipped {
   background-color: lightgreen;
-  height: 100%;
+  min-height: 70px;
   font-size: 13px;
-  height: 82%;
   border-radius: 3px;
-  margin-top: 80px;
+  margin-top: 50px;
+  border-radius: 100%;
 }
 
 .map-frame-wrapper.flipped:before {
@@ -54,7 +55,6 @@
   transition: transform 0.6s;
   background-image: url(/assets/scroll3.png) !important;
   background-repeat: no-repeat;
-  /* background-size: 100%; */
   background-size: contain !important;
 }
 
@@ -119,8 +119,8 @@
   height: 100%;
   background-image: url(/assets/scroll2.png);
   background-repeat: no-repeat;
-  /* background-size: contain; */
-  filter: brightness(74%);
+  background-size: 100%;
+  filter: brightness(66%);
   z-index: -1;
   margin-top: 100px;
 }
@@ -151,7 +151,7 @@
 
 .map-frame.alsoFlipped {
   transform: rotateY(180deg);
-  margin-top: 60px !important;
+  margin-top: 160px !important;
 }
 
 .flipped > div {
@@ -166,6 +166,7 @@
   z-index: 1;
   min-height: 23vh !important;
   overflow: visible;
+  max-width: 500px;
 }
 
 .marker-text {
@@ -273,7 +274,7 @@
 }
 @media screen and (max-width: 700px) {
   .map-frame-wrapper.flipped {
-    min-width: 60%;
+    min-width: 75%;
   }
 
   .map-frame-wrapper {
@@ -287,10 +288,6 @@
   }
   .map-frame-wrapper::before {
     background-size: 100% !important;
-  }
-
-  .map-frame.alsoFlipped {
-    margin-top: 125px !important;
   }
 }
 
@@ -307,7 +304,7 @@
   }
 
   .map-frame-wrapper.flipped {
-    min-width: 65%;
+    min-width: 90%;
   }
 }
 
@@ -327,5 +324,11 @@
 
   .scroll-title {
     font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .map-frame.alsoFlipped {
+    margin-top: 90px !important;
   }
 }
