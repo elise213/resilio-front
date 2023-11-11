@@ -1,0 +1,104 @@
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.scroll-title {
+  font-family: "AwsumSans";
+  /* color: brown; */
+}
+
+.deckno-scroll {
+  overflow: hidden;
+  height: 100%;
+}
+
+.decknav-container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+}
+
+.decknew-navbar {
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  bottom: 0;
+  left: -245px;
+  width: 245px;
+  height: 100%;
+  z-index: 996;
+  position: fixed;
+  background-color: #464646;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: left 0.3s ease;
+  direction: rtl;
+}
+
+.decknew-navbar.deckopen-nav {
+  left: 0;
+}
+
+.decknavbar-content {
+  flex-direction: column;
+  padding: 35px 15px;
+  align-items: flex-start;
+  margin: 20px;
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 3px;
+}
+
+.decknav-item,
+.decknav-item a {
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--color1);
+  text-decoration: none;
+  font-size: 18px;
+  z-index: 999;
+  margin: 15px 0;
+}
+
+.decknav-item:hover,
+.decknav-item a:hover {
+  cursor: pointer;
+  color: lightgreen;
+}
+
+/* deckBOX */
+.deckopen-icon-nav {
+  left: -45px;
+  font-size: 40px;
+  bottom: 10px;
+}
+
+.deckopen-icon-nav.deckclosed {
+  left: 40px !important;
+}
+
+/* X */
+.deckclose-icon-nav {
+  font-size: 30px;
+  left: -45px;
+  top: 10px;
+}
+.deckclose-icon-nav.deckopen-nav {
+  left: 205px !important;
+}
+
+.deckclose-icon-nav,
+.deckopen-icon-nav {
+  position: fixed !important;
+
+  color: salmon;
+  z-index: 996;
+  transition: left 0.3s ease;
+}
+
+.fa-deckbox {
+  z-index: 999999999 !important;
+}

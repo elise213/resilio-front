@@ -1,20 +1,32 @@
-.toolno-scroll {
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.scroll-title {
+  font-family: "AwsumSans";
+  /* color: brown; */
+}
+
+.favoritesno-scroll {
   overflow: hidden;
   height: 100%;
 }
 
-.toolnav-container {
+.favoritesnav-container {
   width: 100%;
   height: 100vh;
   position: absolute;
 }
 
-.toolnew-navbar {
+.favoritesnew-navbar {
   display: flex;
   justify-content: center;
   overflow-y: auto;
-  overflow-x: hidden;
-  top: 0;
+  bottom: 0;
   right: -245px;
   width: 245px;
   height: 100%;
@@ -23,13 +35,14 @@
   background-color: #464646;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: right 0.3s ease;
+  direction: rtl;
 }
 
-.toolnew-navbar.toolopen-nav {
+.favoritesnew-navbar.favoritesopen-nav {
   right: 0;
 }
 
-.toolnavbar-content {
+.favoritesnavbar-content {
   flex-direction: column;
   padding: 35px 15px;
   align-items: flex-start;
@@ -39,8 +52,8 @@
   border-radius: 3px;
 }
 
-.toolnav-item,
-.toolnav-item a {
+.favoritesnav-item,
+.favoritesnav-item a {
   font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--color1);
@@ -50,40 +63,42 @@
   margin: 15px 0;
 }
 
-.toolnav-item:hover,
-.toolnav-item a:hover {
+.favoritesnav-item:hover,
+.favoritesnav-item a:hover {
   cursor: pointer;
   color: lightgreen;
 }
 
-/* TOOLBOX */
-.toolopen-icon-nav {
+/* favorites */
+.favoritesopen-icon-nav {
   right: -45px;
   font-size: 40px;
+  bottom: 10px;
 }
 
-.toolopen-icon-nav.toolclosed {
+.favoritesopen-icon-nav.favoritesclosed {
   right: 40px !important;
 }
 
 /* X */
-.toolclose-icon-nav {
+.favoritesclose-icon-nav {
   font-size: 30px;
   right: -45px;
+  top: 10px;
 }
-.toolclose-icon-nav.toolopen-nav {
+.favoritesclose-icon-nav.favoritesopen-nav {
   right: 205px !important;
 }
 
-.toolclose-icon-nav,
-.toolopen-icon-nav {
+.favoritesclose-icon-nav,
+.favoritesopen-icon-nav {
   position: fixed !important;
-  top: 10px;
+
   color: salmon;
   z-index: 996;
   transition: right 0.3s ease;
 }
 
-.fa-toolbox {
+.fa-favorites {
   z-index: 999999999 !important;
 }
