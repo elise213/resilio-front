@@ -1,11 +1,3 @@
-/* @font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
-    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-} */
-
 .no-scroll {
   overflow: hidden;
   height: 100%;
@@ -97,6 +89,8 @@ body {
   flex-direction: column;
   align-items: center;
   padding-bottom: 15px;
+  overflow: visible !important;
+  min-height: 90vh;
 }
 
 .fake-navbar {
@@ -106,6 +100,15 @@ body {
   height: 80px;
   width: 100%;
   top: 0;
+}
+
+.fake-navbar2 {
+  position: fixed;
+  z-index: 994;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 80px;
+  width: 100%;
+  bottom: 0;
 }
 
 /* _____________________________________________________________Selection-*/

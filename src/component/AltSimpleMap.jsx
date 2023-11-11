@@ -8,6 +8,8 @@ import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
 
 const AltSimpleMap = ({
+  favorites,
+  setFavorites,
   openModal,
   handleBoundsChange,
   city,
@@ -25,56 +27,18 @@ const AltSimpleMap = ({
   setSelectedResources,
   hoveredItem,
   setHoveredItem,
+  addSelectedResource,
+  removeSelectedResource,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
   const [backSide, setBackSide] = useState(false);
-
-  const [favorites, setFavorites] = useState(
-    JSON.parse(sessionStorage.getItem("favorites")) || []
-  );
-
-  const addSelectedResource = (resource) => {
-    console.log("Adding resource", resource);
-
-    setSelectedResources((prevResources) => {
-      if (prevResources.length >= 3) {
-        // Display an alert if the limit is reached
-        Swal.fire({
-          // icon: "error",
-          title: "Please limit the path to 3 resources at a time",
-        });
-        return prevResources;
-      }
-
-      if (!prevResources.some((r) => r.id === resource.id)) {
-        const updatedResources = [...prevResources, resource];
-        console.log("Updated Resources", updatedResources);
-        updateSessionStorage(updatedResources);
-        return updatedResources;
-      }
-      return prevResources;
-    });
-  };
-
-  const removeSelectedResource = (resourceId) => {
-    setSelectedResources((prevResources) => {
-      const updatedResources = prevResources.filter((r) => r.id !== resourceId);
-      updateSessionStorage(updatedResources);
-      return updatedResources;
-    });
-  };
 
   useEffect(() => {
     // Update local state when store.favorites changes
     setFavorites(store.favorites);
     console.log("store favoritres updated!");
   }, [store.favorites]);
-
-  // Function to update session storage whenever selectedResources changes
-  const updateSessionStorage = (resources) => {
-    sessionStorage.setItem("selectedResources", JSON.stringify(resources));
-  };
 
   useEffect(() => {
     console.log("local favorites updated!");
@@ -222,17 +186,9 @@ const AltSimpleMap = ({
           )}
         </div>
       </div>
-      <div
+      {/* <div
         className={`back-container ${store.favorites ? "column-class" : ""}`}
       >
-        {!store.favorites ||
-          (!(store.favorites.length > 0) && (
-            <div className="favorites-warning-div">
-              <div className="scroll-title">
-                <span>Log in to save favorites</span>
-              </div>
-            </div>
-          ))}
         {store.boundaryResults && store.boundaryResults.length > 0 && (
           <div className="list-container">
             <div className="scroll-title">
@@ -282,7 +238,7 @@ const AltSimpleMap = ({
         ) : (
           ""
         )}
-      </div>
+      </div> */}
     </>
   );
 };
