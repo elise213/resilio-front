@@ -2,6 +2,8 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import GeneratedTreasureMap from "../component/GeneratedTreasureMap";
 import Navbar2 from "../component/Navbar2";
+import CardDeck from "../component/CardDeck";
+import Favorites from "../component/Favorites";
 import AltSimpleMap from "../component/AltSimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Logo from "/assets/RESILIOO.png";
@@ -52,7 +54,12 @@ const Home = () => {
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
+  const [isDeckOpen, setIsDeckOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
+
+  const [favorites, setFavorites] = useState(
+    JSON.parse(sessionStorage.getItem("favorites")) || []
+  );
 
   // const [showFront, setShowFront] = useState(true);
   const [searchingToday, setSearchingToday] = useState(false);
@@ -74,8 +81,45 @@ const Home = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
 
   // FUNCTIONS
+
+  // Function to update session storage whenever selectedResources changes
+  const updateSessionStorage = (resources) => {
+    sessionStorage.setItem("selectedResources", JSON.stringify(resources));
+  };
+
+  const addSelectedResource = (resource) => {
+    console.log("Adding resource", resource);
+
+    setSelectedResources((prevResources) => {
+      if (prevResources.length >= 3) {
+        // Display an alert if the limit is reached
+        Swal.fire({
+          // icon: "error",
+          title: "Please limit the path to 3 resources at a time",
+        });
+        return prevResources;
+      }
+
+      if (!prevResources.some((r) => r.id === resource.id)) {
+        const updatedResources = [...prevResources, resource];
+        console.log("Updated Resources", updatedResources);
+        updateSessionStorage(updatedResources);
+        return updatedResources;
+      }
+      return prevResources;
+    });
+  };
+
+  const removeSelectedResource = (resourceId) => {
+    setSelectedResources((prevResources) => {
+      const updatedResources = prevResources.filter((r) => r.id !== resourceId);
+      updateSessionStorage(updatedResources);
+      return updatedResources;
+    });
+  };
 
   const handleBoundsChange = (data) => {
     setCity((prevState) => ({
@@ -355,9 +399,42 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
       />
 
+      <CardDeck
+        isDeckOpen={isDeckOpen}
+        setIsDeckOpen={setIsDeckOpen}
+        setIsNavOpen={setIsNavOpen}
+        openModal={openModal}
+        closeModal={closeModal}
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        selectedResources={selectedResources}
+        addSelectedResource={addSelectedResource}
+        removeSelectedResource={removeSelectedResource}
+        setFavorites={setFavorites}
+        favorites={favorites}
+      />
+
+      <Favorites
+        isDeckOpen={isDeckOpen}
+        setIsDeckOpen={setIsDeckOpen}
+        setIsNavOpen={setIsNavOpen}
+        openModal={openModal}
+        closeModal={closeModal}
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        selectedResources={selectedResources}
+        addSelectedResource={addSelectedResource}
+        removeSelectedResource={removeSelectedResource}
+        setFavorites={setFavorites}
+        favorites={favorites}
+        isFavoritesOpen={isFavoritesOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
+      />
+
       <Login />
 
       <div className="fake-navbar"></div>
+      <div className="fake-navbar2"></div>
 
       <div className="grand-container">
         {/* <div className="search-container"> */}
@@ -365,6 +442,10 @@ const Home = () => {
           <>
             <ErrorBoundary>
               <AltSimpleMap
+                addSelectedResource={addSelectedResource}
+                removeSelectedResource={removeSelectedResource}
+                favorites={favorites}
+                setFavorites={setFavorites}
                 hoveredItem={hoveredItem}
                 setHoveredItem={setHoveredItem}
                 handleBoundsChange={handleBoundsChange}

@@ -268,19 +268,20 @@ const Selection = ({
   };
 
   // DEBUG
-  useEffect(() => {
-    console.log("Category Counts:", store.categoryCounts);
-    console.log("Day Counts:", store.dayCounts);
-  }, [store.categoryCounts, store.dayCounts]);
+  // useEffect(() => {
+  //   console.log("Category Counts:", store.categoryCounts);
+  //   console.log("Day Counts:", store.dayCounts);
+  // }, [store.categoryCounts, store.dayCounts]);
 
   // DEBUG
-  useEffect(() => {
-    console.log("Map Results:", store.mapResults);
-  }, [store.mapResults]);
+  // useEffect(() => {
+  //   console.log("Map Results:", store.mapResults);
+  // }, [store.mapResults]);
 
   return (
     <div className={"selection"}>
       <Report />
+
       {allCategories.length > 0 && (
         <div className={"cent"}>
           <div
