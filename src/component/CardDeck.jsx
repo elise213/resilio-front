@@ -56,7 +56,7 @@ const CardDeck = ({
               className={`deckopen-icon-nav ${!isDeckOpen ? "deckclosed" : ""}`}
               onClick={() => setIsDeckOpen(true)}
             >
-              <i className="fa-solid fa-clipboard"></i>
+              <i className="far fa-clipboard"></i>
             </div>
             <div
               className={`deckclose-icon-nav ${
