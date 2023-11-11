@@ -1,7 +1,12 @@
 .selection {
-  display: flex;
   width: 100%;
-  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.report-container {
+  display: none !important;
 }
 
 .need-today-option {
@@ -22,10 +27,11 @@
 }
 
 .cent {
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 12px;
+  margin: 10px;
   border: 1px solid salmon;
   padding: 10px;
   border-radius: 4px;
@@ -37,7 +43,6 @@
   display: flex;
   align-items: center;
   font-size: 18px;
-  /* margin: 0 55px 0 0; */
   width: 100%;
 }
 
@@ -121,11 +126,9 @@
   padding-left: 30px;
   cursor: pointer;
   padding-right: 7px;
-  /* color: white; */
 }
 
 .what-type {
-  /* min-height: 480px; */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -151,7 +154,7 @@
 }
 
 .my-schedule-button {
-  font-family: "Urbanist", sans-serif !important;
+  font-family: "Urbanist", sans-serif;
   font-size: large;
   color: var(--coral2);
   z-index: 999;
@@ -164,8 +167,7 @@
 }
 
 .side-car {
-  margin-top: 80px;
-  align-items: center;
+  margin-top: 55px;
   display: flex;
   justify-content: center;
 }
@@ -173,12 +175,6 @@
 @media screen and (max-width: 1000px) {
   .center {
     font-size: 14px;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .side-car {
-    height: auto !important;
   }
 }
 
@@ -204,8 +200,4 @@
   .header-open {
     justify-content: center !important;
   }
-}
-
-.report-container {
-  display: none !important;
 }

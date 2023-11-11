@@ -14,8 +14,8 @@
   justify-content: center;
   overflow-y: auto;
   top: 0;
-  right: -290px;
-  width: 290px;
+  right: -245px;
+  width: 245px;
   height: 100%;
   z-index: 996;
   position: fixed;
@@ -55,30 +55,32 @@
   color: lightgreen;
 }
 
+/* TOOLBOX */
 .toolopen-icon-nav {
-  right: -40px;
+  right: -45px;
+  font-size: 40px;
 }
-/* Icons */
+
+.toolopen-icon-nav.toolclosed {
+  right: 40px !important;
+}
+
+/* X */
+.toolclose-icon-nav {
+  font-size: 30px;
+  right: -45px;
+}
+.toolclose-icon-nav.toolopen-nav {
+  right: 205px !important;
+}
+
 .toolclose-icon-nav,
 .toolopen-icon-nav {
   position: fixed !important;
   top: 10px;
-  font-size: 40px;
   color: salmon;
-  z-index: 995;
+  z-index: 996;
   transition: right 0.3s ease;
-}
-
-.toolclose-icon-nav {
-  font-size: 30px !important;
-}
-
-.toolclose-icon-nav.toolopen-nav {
-  right: 245px;
-}
-
-.toolopen-icon-nav.toolclosed {
-  right: 40px;
 }
 
 .fa-toolbox {

@@ -137,17 +137,10 @@ li {
   .scroll-search-results {
     width: 200px;
   }
-  .cent {
-    padding: 10px !important;
-  }
 
   .createMyPath {
     font-size: 18px;
   }
-
-  /* .map-container {
-    margin-top: 10px !important;
-  } */
 }
 
 @media screen and (max-width: 700px) {

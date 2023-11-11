@@ -35,8 +35,8 @@
 .flip-button {
   background-color: rgba(144, 238, 144, 0.8);
   min-height: 70px;
+  min-width: 70px;
   font-size: 13px;
-  border-radius: 3px;
   border-radius: 100%;
   margin-left: 85px;
 }
@@ -92,7 +92,6 @@
 .logo-div {
   display: flex;
   justify-content: center;
-  /* margin: 0 0 20px 0; */
   width: 100%;
 }
 
@@ -192,7 +191,6 @@
 .scroll-search-results {
   background-color: transparent;
   overflow-y: auto;
-  /* overflow-x: hidden; */
   scroll-behavior: smooth;
   max-height: 600px;
   width: 250px;
@@ -254,7 +252,6 @@
 }
 
 .list-container {
-  /* width: 50%; */
   margin: 10px;
   display: flex;
   align-items: center;
