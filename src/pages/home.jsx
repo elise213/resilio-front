@@ -416,6 +416,7 @@ const Home = () => {
 
       <Favorites
         isDeckOpen={isDeckOpen}
+        isToolBoxOpen={isToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
         setIsNavOpen={setIsNavOpen}
         openModal={openModal}
