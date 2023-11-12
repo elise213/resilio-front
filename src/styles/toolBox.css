@@ -59,7 +59,7 @@
 
 .toolnav-item,
 .toolnav-item a {
-  font-weight: 600;
+  /* font-weight: 600; */
   letter-spacing: 1.5px;
   color: var(--color1);
   text-decoration: none;
