@@ -72,21 +72,12 @@
   overflow: hidden;
 }
 
-/* .resource-card-title-name {
-  font-size: medium;
-} */
-
 .add-favorite,
 .add-path,
 .remove-path {
   font-size: 12px;
   border-radius: 4px;
   margin: 5px;
-}
-
-.remove-path {
-  border: 2px solid brown;
-  background-color: #d8ccb7;
 }
 
 .add-path {
