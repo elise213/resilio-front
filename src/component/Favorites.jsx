@@ -62,25 +62,26 @@ const Favorites = ({
             isFavoritesOpen ? "favoritesopen-nav" : ""
           }`}
         >
-          <div className="favoritesmenu-icon" onClick={togglefavorites}>
-            <div
-              className={`favoritesopen-icon-nav ${
-                !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                  ? "favoritesclosed"
-                  : ""
-              }`}
-              onClick={() => setIsFavoritesOpen(true)}
-            >
-              <i className="fa-solid fa-heart"></i>
-            </div>
-            <div
-              className={`favoritesclose-icon-nav ${
-                isFavoritesOpen ? "favoritesopen-nav" : ""
-              }`}
-            >
-              <i className="fa-solid fa-x"></i>
-            </div>
+          {/* <div className="favoritesmenu-icon"> */}
+          <div
+            onClick={togglefavorites}
+            className={`favoritesopen-icon-nav ${
+              !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+                ? "favoritesclosed"
+                : ""
+            }`}
+          >
+            <i className="fa-solid fa-heart"></i>
           </div>
+          <div
+            onClick={togglefavorites}
+            className={`favoritesclose-icon-nav ${
+              isFavoritesOpen ? "favoritesopen-nav" : ""
+            }`}
+          >
+            <i className="fa-solid fa-x"></i>
+          </div>
+          {/* </div> */}
 
           <div
             className={`back-container ${
