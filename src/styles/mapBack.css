@@ -90,6 +90,16 @@ li {
   color: lightgreen;
 }
 
+.remove-path {
+  color: red;
+  background-color: transparent;
+  font-size: large;
+}
+
+.remove-path:hover {
+  color: green;
+}
+
 .flip-horizontal {
   transform: scaleX(-1);
   margin-right: 65px;
@@ -121,12 +131,23 @@ li {
 }
 
 .createMyPath {
-  z-index: 9998;
+  order: 1.5px solid var(--coral2);
+  background-color: var(--yellow) !important;
+  font-size: 12px;
+  height: 30px;
+  min-width: 120px;
   border-radius: 3px;
-  font-size: 25px;
-  background-color: rgb(223, 217, 243);
+  font-family: "Urbanist", sans-serif !important;
   margin: 5px;
-  border: 2px solid orangered;
+  padding: 5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.createMyPath:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
+  cursor: pointer;
 }
 
 .createMyPath:hover {
@@ -170,6 +191,6 @@ li {
   }
 
   .path-name {
-    font-size: 16px !important;
+    font-size: 14px !important;
   }
 }

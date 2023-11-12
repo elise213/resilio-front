@@ -86,8 +86,8 @@
 .open-icon-nav {
   position: absolute;
   left: -40px;
-  top: 10px;
-  /* transition: 0.3s ease !important; */
+  top: 0;
+  transition: 0.3s ease !important;
   z-index: 995;
   color: #ff6300;
 }
@@ -200,7 +200,7 @@
   margin: 40px 10px !important;
 }
 .open-icon-nav {
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .nav-container {

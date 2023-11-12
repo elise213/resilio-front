@@ -5,8 +5,13 @@ import ResourceCard from "./ResourceCard";
 
 const CardDeck = ({
   isDeckOpen,
+  isNavOpen,
+  isFavoritesOpen,
+  isToolBoxOpen,
   setIsDeckOpen,
   setIsNavOpen,
+  setIsToolBoxOpen,
+  setIsFavoritesOpen,
   openModal,
   closeModal,
   modalIsOpen,
@@ -15,10 +20,6 @@ const CardDeck = ({
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
-  isNavOpen,
-  isFavoritesOpen,
-  setIsFavoritesOpen,
-  setIsToolBoxOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -59,7 +60,11 @@ const CardDeck = ({
           <div className="deckmenu-icon">
             <div
               onClick={toggleCardDeck}
-              className={`deckopen-icon-nav ${!isDeckOpen ? "deckclosed" : ""}`}
+              className={`deckopen-icon-nav ${
+                !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
+                  ? "deckclosed"
+                  : ""
+              }`}
             >
               <i className="fa-solid fa-list"></i>
             </div>
