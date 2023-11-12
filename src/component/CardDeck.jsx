@@ -58,10 +58,8 @@ const CardDeck = ({
         <div className={`decknew-navbar ${isDeckOpen ? "deckopen-nav" : ""}`}>
           <div className="deckmenu-icon">
             <div
-              className={`deckopen-icon-nav ${
-                !isDeckOpen && !isNavOpen ? "deckclosed" : ""
-              }`}
               onClick={toggleCardDeck}
+              className={`deckopen-icon-nav ${!isDeckOpen ? "deckclosed" : ""}`}
             >
               <i className="fa-solid fa-list"></i>
             </div>
