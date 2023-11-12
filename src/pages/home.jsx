@@ -380,6 +380,7 @@ const Home = () => {
         setSearchingToday={setSearchingToday}
         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
         isNavOpen={isNavOpen}
+        isFavoritesOpen={isFavoritesOpen}
         setIsNavOpen={setIsNavOpen}
         isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
@@ -398,21 +399,24 @@ const Home = () => {
         searchingToday={searchingToday}
         setSearchingToday={setSearchingToday}
         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+        isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
-        setIsNavOpen={setIsNavOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
         isFavoritesOpen={isFavoritesOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
+        isToolBoxOpen={isToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
+        setIsNavOpen={setIsNavOpen}
+        setIsToolBoxOpen={setIsToolBoxOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
       />
       {/* All Resources */}
       <CardDeck
         isDeckOpen={isDeckOpen}
-        setIsDeckOpen={setIsDeckOpen}
         isNavOpen={isNavOpen}
-        setIsNavOpen={setIsNavOpen}
         isFavoritesOpen={isFavoritesOpen}
+        isToolBoxOpen={isToolBoxOpen}
+        setIsDeckOpen={setIsDeckOpen}
+        setIsNavOpen={setIsNavOpen}
+        setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
         openModal={openModal}
         closeModal={closeModal}
@@ -423,15 +427,9 @@ const Home = () => {
         removeSelectedResource={removeSelectedResource}
         favorites={favorites}
         setFavorites={setFavorites}
-        setIsToolBoxOpen={setIsToolBoxOpen}
       />
       {/* Favorites */}
       <Favorites
-        isDeckOpen={isDeckOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        isNavOpen={isNavOpen}
-        setIsNavOpen={setIsNavOpen}
         openModal={openModal}
         closeModal={closeModal}
         modalIsOpen={modalIsOpen}
@@ -441,9 +439,14 @@ const Home = () => {
         removeSelectedResource={removeSelectedResource}
         setFavorites={setFavorites}
         favorites={favorites}
+        isDeckOpen={isDeckOpen}
+        isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
+        isToolBoxOpen={isToolBoxOpen}
+        setIsDeckOpen={setIsDeckOpen}
+        setIsNavOpen={setIsNavOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
       />
 
       <button className="flip-button" onClick={() => setBackSide(!backSide)}>

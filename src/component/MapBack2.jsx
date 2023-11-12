@@ -187,8 +187,7 @@ const MapBack = ({
                         removeSelectedResource(resource.id);
                       }}
                     >
-                      {/* Remove from Path */}{" "}
-                      <i className="fa-solid fa-xmark"></i>
+                      {/* Remove from Path */} <i className="fa-solid fa-x"></i>
                     </button>
                   </div>
                   {/* flip-horizontal class for every other image based on index */}
