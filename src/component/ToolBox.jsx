@@ -22,8 +22,6 @@ const ToolBox = ({
 }) => {
   const { store, actions } = useContext(Context);
 
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-
   const toggleNav = () => {
     setIsNavOpen(false);
     setIsToolBoxOpen(!isToolBoxOpen);

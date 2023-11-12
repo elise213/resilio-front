@@ -7,6 +7,7 @@ const Favorites = ({
   favorites,
   isDeckOpen,
   setIsDeckOpen,
+  isToolBoxOpen,
   isFavoritesOpen,
   setIsFavoritesOpen,
   setIsNavOpen,
@@ -60,7 +61,7 @@ const Favorites = ({
           <div className="favoritesmenu-icon" onClick={togglefavorites}>
             <div
               className={`favoritesopen-icon-nav ${
-                !isFavoritesOpen ? "favoritesclosed" : ""
+                !isFavoritesOpen && !isToolBoxOpen ? "favoritesclosed" : ""
               }`}
               onClick={() => setIsFavoritesOpen(true)}
             >
