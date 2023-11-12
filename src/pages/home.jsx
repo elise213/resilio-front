@@ -397,6 +397,7 @@ const Home = () => {
         setIsNavOpen={setIsNavOpen}
         isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
+        isFavoritesOpen={isFavoritesOpen}
       />
 
       <CardDeck
