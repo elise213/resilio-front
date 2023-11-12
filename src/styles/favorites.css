@@ -53,7 +53,6 @@
 
 .favoritesnav-item,
 .favoritesnav-item a {
-  font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--color1);
   text-decoration: none;
@@ -93,9 +92,15 @@
 .favoritesopen-icon-nav {
   position: fixed !important;
 
-  color: salmon;
+  color: orange;
   z-index: 996;
   transition: right 0.3s ease;
+}
+
+.favoritesclose-icon-nav:hover,
+.favoritesopen-icon-nav:hover {
+  color: lavender !important;
+  cursor: pointer;
 }
 
 .fa-favorites {

@@ -42,7 +42,6 @@
 
 .nav-item,
 .nav-item a {
-  font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--color1);
   text-decoration: none;
@@ -88,9 +87,9 @@
   position: absolute;
   left: -40px;
   top: 10px;
-  transition: 0.3s ease !important;
+  /* transition: 0.3s ease !important; */
   z-index: 995;
-  color: salmon;
+  color: orange;
 }
 
 .close-icon-nav.open-nav {
@@ -242,7 +241,7 @@
 }
 /* } */
 
-@media screen and (max-width: 700px) {
+/* @media screen and (max-width: 700px) {
   .modal-content-contact {
     width: 100%;
   }
@@ -275,4 +274,4 @@
     top: 0;
     left: 0;
   }
-}
+} */

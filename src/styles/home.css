@@ -8,6 +8,20 @@
   z-index: 9998;
 }
 
+.flip-button {
+  background-color: #198754;
+  color: lightgreen;
+  height: 40px;
+  min-width: 120px;
+  font-size: 13px;
+  box-shadow: 3px 7px 8px rgba(0, 0, 0, 0.2), 1px 2px 6px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 996;
+  transform: translateX(-50%);
+}
+
 .search-results-full {
   overflow: hidden;
 }

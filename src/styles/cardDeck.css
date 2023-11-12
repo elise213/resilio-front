@@ -71,7 +71,6 @@
 
 .decknav-item,
 .decknav-item a {
-  font-weight: 600;
   letter-spacing: 1.5px;
   color: var(--color1);
   text-decoration: none;
@@ -111,9 +110,15 @@
 .deckopen-icon-nav {
   position: fixed !important;
 
-  color: salmon;
+  color: orange;
   z-index: 996;
   transition: left 0.3s ease;
+}
+
+.deckclose-icon-nav:hover,
+.deckopen-icon-nav:hover {
+  color: lavender !important;
+  cursor: pointer;
 }
 
 .fa-deckbox {
