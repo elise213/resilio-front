@@ -11,6 +11,8 @@ const Navbar2 = ({
   setIsNavOpen,
   isToolBoxOpen,
   setIsToolBoxOpen,
+  setIsDeckOpen,
+  setIsFavoritesOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -22,7 +24,9 @@ const Navbar2 = ({
   }, [store.isLargeScreen]);
 
   const toggleNav = () => {
+    setIsFavoritesOpen(false);
     setIsToolBoxOpen(false);
+    setIsDeckOpen(false);
     setIsNavOpen(!isNavOpen);
   };
 

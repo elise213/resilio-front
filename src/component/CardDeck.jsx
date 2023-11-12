@@ -15,11 +15,17 @@ const CardDeck = ({
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
+  isNavOpen,
+  isFavoritesOpen,
+  setIsFavoritesOpen,
+  setIsToolBoxOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
   const toggleCardDeck = () => {
+    setIsFavoritesOpen(false);
     setIsNavOpen(false);
+    setIsToolBoxOpen(false);
     setIsDeckOpen(!isDeckOpen);
   };
 
@@ -50,14 +56,17 @@ const CardDeck = ({
     <>
       <div className="decknav-container">
         <div className={`decknew-navbar ${isDeckOpen ? "deckopen-nav" : ""}`}>
-          <div className="deckmenu-icon" onClick={toggleCardDeck}>
+          <div className="deckmenu-icon">
             <div
-              className={`deckopen-icon-nav ${!isDeckOpen ? "deckclosed" : ""}`}
-              onClick={() => setIsDeckOpen(true)}
+              className={`deckopen-icon-nav ${
+                !isDeckOpen && !isNavOpen ? "deckclosed" : ""
+              }`}
+              onClick={toggleCardDeck}
             >
               <i className="fa-solid fa-list"></i>
             </div>
             <div
+              onClick={toggleCardDeck}
               className={`deckclose-icon-nav ${
                 isDeckOpen ? "deckopen-nav" : ""
               }`}

@@ -18,6 +18,7 @@
 
 .flip-button {
   letter-spacing: 1px;
+  border: 1px solid white;
   border-radius: 4px;
   background-color: #3e8e68;
   font-family: "AwsumSans" !important;
