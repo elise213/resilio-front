@@ -19,11 +19,14 @@ const Favorites = ({
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
+  setIsToolBoxOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
   const togglefavorites = () => {
     setIsNavOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(false);
     setIsFavoritesOpen(!isFavoritesOpen);
   };
 
