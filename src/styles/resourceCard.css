@@ -72,9 +72,9 @@
   overflow: hidden;
 }
 
-.resource-card-title-name {
+/* .resource-card-title-name {
   font-size: medium;
-}
+} */
 
 .add-favorite,
 .add-path,
@@ -96,7 +96,7 @@
 
 .resource-title {
   color: black;
-  font-size: medium;
+  font-size: small;
   font-weight: bolder;
   font-weight: bold;
   width: 100%;
@@ -108,6 +108,7 @@
   display: flex;
   margin: 0;
   padding: 0;
+  text-align: left;
 }
 
 .card-title-div {
@@ -121,7 +122,6 @@
 .icons-container {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
   margin: 0;
 }
 

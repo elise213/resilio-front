@@ -368,6 +368,7 @@ const Home = () => {
 
   return (
     <>
+      {/* Site Info */}
       <Navbar2
         categories={categories}
         setCategories={setCategories}
@@ -382,8 +383,11 @@ const Home = () => {
         setIsNavOpen={setIsNavOpen}
         isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
+        setIsDeckOpen={setIsDeckOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
       />
 
+      {/* Filter */}
       <ToolBox
         categories={categories}
         setCategories={setCategories}
@@ -399,13 +403,17 @@ const Home = () => {
         isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         isFavoritesOpen={isFavoritesOpen}
-        isDeckOpen={isDeckOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
+        setIsDeckOpen={setIsDeckOpen}
       />
-
+      {/* All Resources */}
       <CardDeck
         isDeckOpen={isDeckOpen}
         setIsDeckOpen={setIsDeckOpen}
+        isNavOpen={isNavOpen}
         setIsNavOpen={setIsNavOpen}
+        isFavoritesOpen={isFavoritesOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
         openModal={openModal}
         closeModal={closeModal}
         modalIsOpen={modalIsOpen}
@@ -413,14 +421,16 @@ const Home = () => {
         selectedResources={selectedResources}
         addSelectedResource={addSelectedResource}
         removeSelectedResource={removeSelectedResource}
-        setFavorites={setFavorites}
         favorites={favorites}
+        setFavorites={setFavorites}
+        setIsToolBoxOpen={setIsToolBoxOpen}
       />
-
+      {/* Favorites */}
       <Favorites
         isDeckOpen={isDeckOpen}
         isToolBoxOpen={isToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
+        isNavOpen={isNavOpen}
         setIsNavOpen={setIsNavOpen}
         openModal={openModal}
         closeModal={closeModal}
@@ -433,6 +443,7 @@ const Home = () => {
         favorites={favorites}
         isFavoritesOpen={isFavoritesOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
+        setIsToolBoxOpen={setIsToolBoxOpen}
       />
 
       <button className="flip-button" onClick={() => setBackSide(!backSide)}>

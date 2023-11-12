@@ -20,13 +20,14 @@ const ToolBox = ({
   isToolBoxOpen,
   setIsToolBoxOpen,
   setIsFavoritesOpen,
+  setIsDeckOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
   const toggleNav = () => {
-    // setIsNavOpen(false);
-    // setIsDeckOpen(false);
-    // setIsFavoritesOpen(false);
+    setIsNavOpen(false);
+    setIsDeckOpen(false);
+    setIsFavoritesOpen(false);
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
