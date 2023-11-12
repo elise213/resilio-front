@@ -4,7 +4,6 @@ import { Context } from "../store/appContext";
 import ResourceCard from "./ResourceCard";
 
 const CardDeck = ({
-  favorites,
   isDeckOpen,
   setIsDeckOpen,
   setIsNavOpen,
