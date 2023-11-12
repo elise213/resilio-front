@@ -26,8 +26,6 @@ const MapBack = ({
   const { store, actions } = useContext(Context);
   const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
 
-  // console.log("IsLS", isLargeScreen);
-
   useEffect(() => {
     setIsLargeScreen(store.isLargeScreen);
   }, [store.isLargeScreen]);
@@ -249,15 +247,6 @@ const MapBack = ({
           Add Resources <br /> To Your Path
         </p>
       )}
-      <div className="flip-div">
-        <button
-          className="flip-button-flipped"
-          onClick={() => setBackSide(!backSide)}
-        >
-          Flip <br />
-          The Map
-        </button>
-      </div>
     </>
   );
 };

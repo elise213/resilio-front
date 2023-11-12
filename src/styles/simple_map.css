@@ -116,24 +116,6 @@
   transition: transform 0.6s;
 }
 
-/* Flip Button Styles */
-.flip-button,
-.flip-button-flipped {
-  background-color: rgba(144, 238, 144, 0.8);
-  min-height: 70px;
-  font-size: 13px;
-  border-radius: 100%;
-}
-
-.flip-button {
-  min-width: 70px;
-  margin-left: 85px;
-}
-
-.flip-button-flipped {
-  margin-top: 50px;
-}
-
 /* Media Queries */
 
 @media screen and (max-width: 800px) {

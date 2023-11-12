@@ -28,10 +28,6 @@ const MapSettings = ({
             />
           </div>
         </div>
-        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-          Filp <br />
-          The Map
-        </button>
       </div>
     </div>
   );
