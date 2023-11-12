@@ -29,10 +29,11 @@ const AltSimpleMap = ({
   setHoveredItem,
   addSelectedResource,
   removeSelectedResource,
+  setBackSide,
+  backSide,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-  const [backSide, setBackSide] = useState(false);
 
   useEffect(() => {
     // Update local state when store.favorites changes
@@ -186,59 +187,6 @@ const AltSimpleMap = ({
           )}
         </div>
       </div>
-      {/* <div
-        className={`back-container ${store.favorites ? "column-class" : ""}`}
-      >
-        {store.boundaryResults && store.boundaryResults.length > 0 && (
-          <div className="list-container">
-            <div className="scroll-title">
-              <span>Resources in your Area</span>
-            </div>
-            <ul className="all-ul">
-              {Array.isArray(store.mapResults) &&
-                store.mapResults.map((resource, index) => (
-                  <ResourceCard
-                    key={resource.id}
-                    item={resource}
-                    openModal={openModal}
-                    closeModal={closeModal}
-                    modalIsOpen={modalIsOpen}
-                    setModalIsOpen={setModalIsOpen}
-                    selectedResources={selectedResources}
-                    addSelectedResource={addSelectedResource}
-                    removeSelectedResource={removeSelectedResource}
-                    setFavorites={setFavorites}
-                  />
-                ))}
-            </ul>
-          </div>
-        )}
-        {store.favorites && store.favorites.length > 0 ? (
-          <div className="list-container">
-            <div className="scroll-title">
-              <span>Liked Resources</span>
-            </div>
-            <ul>
-              {favorites.map((resource, index) => (
-                <ResourceCard
-                  key={resource.id}
-                  item={resource}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  modalIsOpen={modalIsOpen}
-                  setModalIsOpen={setModalIsOpen}
-                  selectedResources={selectedResources}
-                  addSelectedResource={addSelectedResource}
-                  removeSelectedResource={removeSelectedResource}
-                  setFavorites={setFavorites}
-                />
-              ))}
-            </ul>
-          </div>
-        ) : (
-          ""
-        )}
-      </div> */}
     </>
   );
 };
