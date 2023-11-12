@@ -110,7 +110,7 @@
 .deckopen-icon-nav {
   position: fixed !important;
 
-  color: orange;
+  color: #ff6300;
   z-index: 996;
   transition: left 0.3s ease;
 }

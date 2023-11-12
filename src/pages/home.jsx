@@ -399,6 +399,7 @@ const Home = () => {
         isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         isFavoritesOpen={isFavoritesOpen}
+        isDeckOpen={isDeckOpen}
       />
 
       <CardDeck

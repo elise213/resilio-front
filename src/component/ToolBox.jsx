@@ -24,9 +24,9 @@ const ToolBox = ({
   const { store, actions } = useContext(Context);
 
   const toggleNav = () => {
-    setIsNavOpen(false);
-    setIsCardDeckOpen(false);
-    setIsFavoritesOpen(false);
+    // setIsNavOpen(false);
+    // setIsDeckOpen(false);
+    // setIsFavoritesOpen(false);
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
@@ -59,7 +59,7 @@ const ToolBox = ({
         <div
           className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
         >
-          <div className="toolmenu-icon" onClick={toggleNav}>
+          <div onClick={toggleNav} className="toolmenu-icon">
             <div
               className={`toolopen-icon-nav ${
                 !isToolBoxOpen ? "toolclosed" : ""
@@ -68,6 +68,7 @@ const ToolBox = ({
               <i className="fa-solid fa-filter"></i>
             </div>
             <div
+              onClick={toggleNav}
               className={`toolclose-icon-nav ${
                 isToolBoxOpen ? "toolopen-nav" : ""
               }`}

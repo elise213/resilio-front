@@ -89,7 +89,7 @@
   top: 10px;
   /* transition: 0.3s ease !important; */
   z-index: 995;
-  color: orange;
+  color: #ff6300;
 }
 
 .close-icon-nav.open-nav {
