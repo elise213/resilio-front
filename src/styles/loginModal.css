@@ -202,17 +202,14 @@ body.loginModal-open {
 
 .login-container {
   position: fixed;
-  top: 20px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 995;
 }
 
 .login-logout {
-  /* margin: 20px; */
   font-size: large;
-  /* position: absolute; */
-  /* right: 30px; */
   margin-left: 10px;
 }
 

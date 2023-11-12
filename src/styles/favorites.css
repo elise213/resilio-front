@@ -70,8 +70,8 @@
 /* favorites */
 .favoritesopen-icon-nav {
   right: -45px;
-  font-size: 40px;
-  bottom: 10px;
+  font-size: 30px;
+  bottom: 0;
 }
 
 .favoritesopen-icon-nav.favoritesclosed {

@@ -15,12 +15,14 @@ const ToolBox = ({
   searchingToday,
   setSearchingToday,
   INITIAL_DAY_STATE,
+  isDeckOpen,
   isNavOpen,
-  setIsNavOpen,
+  isFavoritesOpen,
   isToolBoxOpen,
+  setIsDeckOpen,
+  setIsNavOpen,
   setIsToolBoxOpen,
   setIsFavoritesOpen,
-  setIsDeckOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -63,7 +65,9 @@ const ToolBox = ({
           <div onClick={toggleNav} className="toolmenu-icon">
             <div
               className={`toolopen-icon-nav ${
-                !isToolBoxOpen ? "toolclosed" : ""
+                !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+                  ? "toolclosed"
+                  : ""
               }`}
             >
               <i className="fa-solid fa-filter"></i>

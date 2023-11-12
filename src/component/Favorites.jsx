@@ -4,13 +4,14 @@ import { Context } from "../store/appContext";
 import ResourceCard from "./ResourceCard";
 
 const Favorites = ({
-  favorites,
   isDeckOpen,
-  setIsDeckOpen,
-  isToolBoxOpen,
+  isNavOpen,
   isFavoritesOpen,
-  setIsFavoritesOpen,
+  isToolBoxOpen,
+  setIsDeckOpen,
   setIsNavOpen,
+  setIsToolBoxOpen,
+  setIsFavoritesOpen,
   openModal,
   closeModal,
   modalIsOpen,
@@ -19,7 +20,7 @@ const Favorites = ({
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
-  setIsToolBoxOpen,
+  favorites,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -64,7 +65,9 @@ const Favorites = ({
           <div className="favoritesmenu-icon" onClick={togglefavorites}>
             <div
               className={`favoritesopen-icon-nav ${
-                !isFavoritesOpen && !isToolBoxOpen ? "favoritesclosed" : ""
+                !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+                  ? "favoritesclosed"
+                  : ""
               }`}
               onClick={() => setIsFavoritesOpen(true)}
             >

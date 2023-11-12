@@ -56,7 +56,7 @@
 }
 
 .decknew-navbar.deckopen-nav {
-  left: 0;
+  left: 0 !important;
 }
 
 .decknavbar-content {
@@ -88,8 +88,8 @@
 /* deckBOX */
 .deckopen-icon-nav {
   left: -45px;
-  font-size: 40px;
-  bottom: 10px;
+  font-size: 30px;
+  bottom: 0;
 }
 
 .deckopen-icon-nav.deckclosed {
@@ -109,7 +109,6 @@
 .deckclose-icon-nav,
 .deckopen-icon-nav {
   position: fixed !important;
-
   color: #ff6300;
   z-index: 996;
   transition: left 0.3s ease;
