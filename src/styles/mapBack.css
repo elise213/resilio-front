@@ -93,7 +93,9 @@ li {
 .remove-path {
   color: red;
   background-color: transparent;
-  font-size: large;
+  border: none;
+  font-weight: bold;
+  font-size: x-large;
 }
 
 .remove-path:hover {

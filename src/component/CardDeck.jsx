@@ -57,26 +57,25 @@ const CardDeck = ({
     <>
       <div className="decknav-container">
         <div className={`decknew-navbar ${isDeckOpen ? "deckopen-nav" : ""}`}>
-          <div className="deckmenu-icon">
-            <div
-              onClick={toggleCardDeck}
-              className={`deckopen-icon-nav ${
-                !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
-                  ? "deckclosed"
-                  : ""
-              }`}
-            >
-              <i className="fa-solid fa-list"></i>
-            </div>
-            <div
-              onClick={toggleCardDeck}
-              className={`deckclose-icon-nav ${
-                isDeckOpen ? "deckopen-nav" : ""
-              }`}
-            >
-              <i className="fa-solid fa-x"></i>
-            </div>
+          {/* <div className="deckmenu-icon"> */}
+          <div
+            onClick={toggleCardDeck}
+            className={`deckopen-icon-nav ${
+              !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
+                ? "deckclosed"
+                : ""
+            }`}
+          >
+            <i className="fa-solid fa-list"></i>
+            {/* <span className="material-symbols-outlined">list</span> */}
           </div>
+          <div
+            onClick={toggleCardDeck}
+            className={`deckclose-icon-nav ${isDeckOpen ? "deckopen-nav" : ""}`}
+          >
+            <i className="fa-solid fa-x"></i>
+          </div>
+          {/* </div> */}
 
           <div
             className={`back-container ${
