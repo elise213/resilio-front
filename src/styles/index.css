@@ -8,11 +8,6 @@ body {
   background-color: rgb(106, 103, 103);
 }
 
-.far,
-.fa-solid {
-  display: block !important;
-}
-
 :root {
   --peruish: rgb(235, 189, 142);
   --newGreen: rgb(181, 239, 181);
