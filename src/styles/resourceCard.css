@@ -74,7 +74,7 @@
 
 .add-favorite,
 .add-path,
-.remove-path {
+.remove-path-card {
   font-size: 12px;
   border-radius: 4px;
   margin: 5px;
@@ -82,7 +82,12 @@
 
 .add-path {
   border: 2px solid brown;
-  background-color: #b7d8c6;
+  background-color: #a9ebc7;
+}
+
+.remove-path-card {
+  border: 2px solid brown;
+  background-color: rgb(170, 199, 182);
 }
 
 .resource-title {
