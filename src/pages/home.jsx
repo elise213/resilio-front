@@ -51,6 +51,7 @@ const Home = () => {
   const abortControllerRef = useRef(null);
 
   // STATES
+  const [backSide, setBackSide] = useState(false);
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
@@ -433,6 +434,10 @@ const Home = () => {
         setIsFavoritesOpen={setIsFavoritesOpen}
       />
 
+      <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+        Filp The Map
+      </button>
+
       <Login />
 
       <div className="fake-navbar"></div>
@@ -444,6 +449,8 @@ const Home = () => {
           <>
             <ErrorBoundary>
               <AltSimpleMap
+                setBackSide={setBackSide}
+                backSide={backSide}
                 addSelectedResource={addSelectedResource}
                 removeSelectedResource={removeSelectedResource}
                 favorites={favorites}
