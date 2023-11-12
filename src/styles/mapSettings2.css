@@ -25,6 +25,11 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
+.geo-button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
+  cursor: pointer;
+}
+
 .zipcode-input-container {
   font-family: "Urbanist", sans-serif !important;
   font-size: 15px;
@@ -55,8 +60,4 @@
 
 #zipcode:focus {
   outline: none;
-}
-.geo-button:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
-  cursor: pointer;
 }

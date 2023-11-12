@@ -76,7 +76,7 @@
 /* TOOLBOX */
 .toolopen-icon-nav {
   right: -45px;
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .toolopen-icon-nav.toolclosed {
@@ -95,7 +95,7 @@
 .toolclose-icon-nav,
 .toolopen-icon-nav {
   position: fixed !important;
-  top: 10px;
+  top: 0;
   color: #ff6300;
   z-index: 996;
   transition: right 0.3s ease;

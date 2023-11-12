@@ -7,11 +7,13 @@ import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
 
 const Navbar2 = ({
+  isDeckOpen,
   isNavOpen,
-  setIsNavOpen,
+  isFavoritesOpen,
   isToolBoxOpen,
-  setIsToolBoxOpen,
   setIsDeckOpen,
+  setIsNavOpen,
+  setIsToolBoxOpen,
   setIsFavoritesOpen,
 }) => {
   const { store, actions } = useContext(Context);
@@ -62,17 +64,24 @@ const Navbar2 = ({
     <>
       <div className="nav-container">
         <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
-          <div className="menu-icon" onClick={toggleNav}>
-            <div
-              className={`open-icon-nav ${!isNavOpen ? "closed" : ""}`}
-              onClick={() => setIsNavOpen(true)}
-            >
-              <i className="fas fa-bars"></i>
-            </div>
-            <div className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}>
-              <i className="fa-solid fa-x"></i>
-            </div>
+          {/* <div className="menu-icon" onClick={toggleNav}> */}
+          <div
+            onClick={toggleNav}
+            className={`open-icon-nav ${
+              !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+                ? "closed"
+                : ""
+            }`}
+          >
+            <i className="fas fa-bars"></i>
           </div>
+          <div
+            onClick={toggleNav}
+            className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}
+          >
+            <i className="fa-solid fa-x"></i>
+          </div>
+          {/* </div> */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
             <img
