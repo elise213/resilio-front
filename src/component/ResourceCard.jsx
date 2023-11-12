@@ -106,7 +106,7 @@ const ResourceCard = (props) => {
       )}
       <div className="button-container">
         <button
-          className={isSelected ? "remove-path" : "add-path"}
+          className={isSelected ? "remove-path-card" : "add-path"}
           onClick={handleToggleSelectResource}
         >
           {isSelected ? "Remove from Path" : "Add to Path"}
