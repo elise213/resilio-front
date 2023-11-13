@@ -6,6 +6,24 @@
   font-style: normal;
 }
 
+.favoritesnew-navbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.favoritesnew-navbar::-webkit-scrollbar {
+  width: 7px;
+}
+
+.favoritesnew-navbar::-webkit-scrollbar-thumb {
+  background-color: lightgreen;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.favoritesnew-navbar::-webkit-scrollbar-thumb:hover {
+  background-color: darkgreen;
+}
+
 .scroll-title {
   font-family: "AwsumSans";
 }
@@ -22,6 +40,7 @@
 }
 
 .favoritesnew-navbar {
+  direction: ltr;
   display: flex;
   justify-content: center;
   overflow-y: auto;
@@ -34,7 +53,6 @@
   background-color: #464646;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: right 0.3s ease;
-  direction: rtl;
 }
 
 .favoritesnew-navbar.favoritesopen-nav {
