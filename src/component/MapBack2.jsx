@@ -20,6 +20,7 @@ const MapBack = ({
   removeSelectedResource,
   selectedResources,
   setSelectedResources,
+  setFavorites,
   city,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -154,6 +155,7 @@ const MapBack = ({
               selectedResources={selectedResources}
               addSelectedResource={addSelectedResource}
               removeSelectedResource={removeSelectedResource}
+              setFavorites={setFavorites}
             />
           </div>
         )}
