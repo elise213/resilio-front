@@ -186,6 +186,7 @@
 
 .close-icon-nav {
   font-size: 30px;
+  top: 10px;
 }
 
 .close-icon-nav.open-nav {
