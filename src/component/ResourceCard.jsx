@@ -122,6 +122,14 @@ const ResourceCard = (props) => {
             ) : (
               <i className="fa-regular fa-heart"></i>
             )}
+            {/* {isFavorited ? (
+              <i
+                className="fa-solid fa-bookmark"
+                style={{ color: "yellow" }}
+              ></i>
+            ) : (
+              <i className="fa-regular fa-bookmark"></i>
+            )} */}
           </button>
         )}
       </div>

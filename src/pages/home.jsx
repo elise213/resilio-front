@@ -450,7 +450,7 @@ const Home = () => {
       />
 
       <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        Filp The Map
+        {backSide ? "Back to Map" : "See my Path"}
       </button>
 
       <Login />
@@ -459,7 +459,6 @@ const Home = () => {
       <div className="fake-navbar2"></div>
 
       <div className="grand-container">
-        {/* <div className="search-container"> */}
         {message1Open && (
           <>
             <ErrorBoundary>

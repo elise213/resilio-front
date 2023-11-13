@@ -200,12 +200,6 @@ const SimpleMap = ({
         {backSide ? (
           // New view when backSide is true
           <>
-            <button
-              className="flip-button"
-              onClick={() => setBackSide(!backSide)}
-            >
-              Flip The Map
-            </button>
             <div className="backside">
               {hoveredItem && !backSide && (
                 <ResourceCard
@@ -272,12 +266,6 @@ const SimpleMap = ({
           </>
         ) : (
           <>
-            <button
-              className="flip-button"
-              onClick={() => setBackSide(!backSide)}
-            >
-              Flip The Map
-            </button>
             <div className="logo-div">
               <img className="navbar-logo" src={RESR} alt="Alive Logo" />
             </div>
