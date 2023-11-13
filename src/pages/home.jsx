@@ -6,10 +6,8 @@ import CardDeck from "../component/CardDeck";
 import Favorites from "../component/Favorites";
 import AltSimpleMap from "../component/AltSimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
-import Logo from "/assets/RESILIOO.png";
 import Styles from "../styles/home.css";
 import Login from "../component/Login";
-// import Styles from "../styles/home.css?inline";
 
 import {
   SimpleMap,
@@ -17,6 +15,11 @@ import {
   Loading,
   ResourceCard,
   Modal,
+  // Navbar2,
+  // CardDeck,
+  // Favorites,
+  // AltSimpleMap,
+  // ErrorBoundary,
 } from "../component";
 import ToolBox from "../component/ToolBox";
 

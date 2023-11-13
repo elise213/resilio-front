@@ -280,7 +280,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           sessionStorage.setItem("is_org", data.is_org);
           sessionStorage.setItem("name", data.name);
           sessionStorage.setItem("avatar", parseInt(data.avatar));
-          // sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
           sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
 
           setStore({
@@ -296,6 +295,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           Swal.fire({
             icon: "success",
             title: "Logged in Successfully",
+          }).then(() => {
+            window.location.href = "/";
           });
 
           return true;
