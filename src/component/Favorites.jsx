@@ -71,7 +71,7 @@ const Favorites = ({
                 : ""
             }`}
           >
-            <i className="fa-solid fa-heart"></i>
+            <i className="fa-regular fa-bookmark"></i>
           </div>
           <div
             onClick={togglefavorites}
@@ -99,7 +99,7 @@ const Favorites = ({
             {store.favorites && store.favorites.length > 0 ? (
               <div className="list-container">
                 <div className="scroll-title">
-                  <span>Your Liked Resources</span>
+                  <span>Saved Resources</span>
                 </div>
                 <ul>
                   {favorites.map((resource, index) => (
