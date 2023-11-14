@@ -26,6 +26,8 @@
 
 .scroll-title {
   font-family: "AwsumSans";
+  font-size: 20px;
+  text-align: center;
 }
 
 .favoritesno-scroll {
@@ -123,4 +125,10 @@
 
 .fa-favorites {
   z-index: 999999999 !important;
+}
+
+@media screen and (max-width: 500px) {
+  .scroll-title {
+    font-size: 14px;
+  }
 }
