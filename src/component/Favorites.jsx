@@ -92,7 +92,7 @@ const Favorites = ({
               (!(store.favorites.length > 0) && (
                 <div className="favorites-warning-div">
                   <div className="scroll-title">
-                    <span>Log in to save favorites</span>
+                    <span>Log in to save Resources</span>
                   </div>
                 </div>
               ))}
