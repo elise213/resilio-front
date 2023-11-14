@@ -88,7 +88,7 @@
 
 .map-frame-wrapper.flipped:before {
   transform: rotateY(180deg);
-  background-image: url(/assets/scroll5.png) !important;
+  background-image: url(/assets/scroll7.png) !important;
   /* background-size: contain !important; */
 }
 
@@ -131,9 +131,6 @@
 }
 
 @media screen and (max-width: 600px) {
-  .scroll-title {
-    font-size: 20px;
-  }
   .map-frame-wrapper {
     width: 96% !important;
   }
@@ -142,10 +139,6 @@
 @media screen and (max-width: 500px) {
   .scroll-search-results {
     width: 150px !important;
-  }
-
-  .scroll-title {
-    font-size: 15px;
   }
 }
 
