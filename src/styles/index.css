@@ -9,10 +9,26 @@
   height: 100%;
 }
 
+/* body {
+  background-image: url(/assets/sky.png);
+} */
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(/assets/sky.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: brightness(70%);
+  z-index: -1;
+}
+
 body {
-  /* background-color: rgb(244, 238, 231); */
-  background-color: rgb(106, 103, 103);
-  /* background-color: rgb(189 208 221); */
+  position: relative;
 }
 
 :root {
