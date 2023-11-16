@@ -18,11 +18,14 @@
 }
 
 .treasureMapDiv {
-  /* margin-bottom: 170px; */
   justify-content: flex-end;
   display: flex;
   align-items: flex-end;
   flex-direction: column;
+}
+
+.simple-selection {
+  width: 100%;
 }
 
 /* Marker Styles */
@@ -132,7 +135,7 @@
 
 @media screen and (max-width: 600px) {
   .map-frame-wrapper {
-    width: 96% !important;
+    width: 100% !important;
   }
 }
 
@@ -141,9 +144,3 @@
     width: 150px !important;
   }
 }
-
-/* @media screen and (max-width: 400px) {
-  .map-frame.alsoFlipped {
-    margin-top: 90px !important;
-  }
-} */

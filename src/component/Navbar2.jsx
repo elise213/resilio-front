@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/navbar2.css";
 import { Context } from "../store/appContext";
+import Login from "./Login";
 import Contact from "../component/Contact";
 import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
@@ -64,7 +65,6 @@ const Navbar2 = ({
     <>
       <div className="nav-container">
         <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
-          {/* <div className="menu-icon" onClick={toggleNav}> */}
           <div
             onClick={toggleNav}
             className={`open-icon-nav ${
@@ -84,39 +84,44 @@ const Navbar2 = ({
           {/* </div> */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            <img
+            {/* <img
               src="/assets/RESILIOO.png"
               alt="Resilio Logo"
               className="navbar-logo"
-            />
-            <span
-              className="nav-item"
-              onClick={() => {
-                setIsNavOpen(false);
-              }}
-            >
-              ABOUT
-            </span>
-            <span
-              className="nav-item"
-              onClick={() => {
-                setIsNavOpen(false);
-                toggleContactModal();
-              }}
-            >
-              CONTACT
-            </span>
+            /> */}
+            <div className="split-nav">
+              <div className="nav-list">
+                <span
+                  className="nav-item"
+                  onClick={() => {
+                    setIsNavOpen(false);
+                  }}
+                >
+                  ABOUT
+                </span>
+                <span
+                  className="nav-item"
+                  onClick={() => {
+                    setIsNavOpen(false);
+                    toggleContactModal();
+                  }}
+                >
+                  CONTACT
+                </span>
 
-            <span
-              className="nav-item"
-              onClick={() => {
-                setIsNavOpen(false);
-              }}
-            >
-              DONATE
-            </span>
+                <span
+                  className="nav-item"
+                  onClick={() => {
+                    setIsNavOpen(false);
+                  }}
+                >
+                  DONATE
+                </span>
 
-            <EmailList />
+                <Login />
+              </div>
+              <EmailList />
+            </div>
           </div>
         </nav>
 
