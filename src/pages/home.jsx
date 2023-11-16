@@ -448,7 +448,7 @@ const Home = () => {
       />
 
       <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        {backSide ? "Back to Map" : "Flip Map To See Path"}
+        {backSide ? "Map" : "Path"}
       </button>
 
       <div className="fake-navbar"></div>
