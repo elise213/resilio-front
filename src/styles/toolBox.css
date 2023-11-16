@@ -96,7 +96,7 @@
 .toolopen-icon-nav {
   position: fixed !important;
   top: 0;
-  color: #ff6300;
+  color: var(--yellow);
   z-index: 996;
   transition: right 0.3s ease;
 }

@@ -25,6 +25,7 @@ body::before {
 
 body {
   position: relative;
+  overflow: hidden;
 }
 
 :root {
