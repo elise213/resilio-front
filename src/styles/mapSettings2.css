@@ -3,6 +3,7 @@
   z-index: 9997;
   width: 100%;
   display: flex;
+  margin-bottom: 90px;
 }
 
 .map-settings-container {
