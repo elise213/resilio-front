@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  border: 10px double lightgreen;
+  border: 10px double var(--yellow);
   background-color: #d4d2dd;
 
   padding: 20px;
@@ -25,7 +25,7 @@
 }
 
 .map-container-treasure {
-  border: 5px solid salmon;
+  border: 5px solid var(--yellow);
   border-radius: 3px;
   margin-top: 40px;
 }
@@ -107,12 +107,12 @@ hr {
 }
 
 .option:hover {
-  color: green;
+  color: var(--yellow) !important;
   cursor: pointer;
 }
 
 .options {
-  color: lightgreen;
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,7 +146,6 @@ hr {
   font-size: 30px;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
-  /* color: blue; */
   width: 50px;
   justify-content: center;
   display: flex;

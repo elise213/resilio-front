@@ -136,14 +136,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           mental: "Coral",
           substance: "DarkRed",
           sex: "Tomato",
-          babies: "Yellow",
-          lgbtq: "RosyBrown",
-          kids: "Salmon",
-          youth: "IndianRed",
-          women: "DarkSalmon",
-          seniors: "Teal",
-          migrant: "DarkGreen",
-          vets: "Olive",
+          // babies: "Yellow",
+          // lgbtq: "RosyBrown",
+          // kids: "Salmon",
+          // youth: "IndianRed",
+          // women: "DarkSalmon",
+          // seniors: "Teal",
+          // migrant: "DarkGreen",
+          // vets: "Olive",
         };
         if (colors[category]) {
           return { color: colors[category] };
@@ -214,17 +214,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             return "fa-solid fa-people-arrows";
           case "mental":
             return "fa-solid fa-brain";
-          case "women":
-            return "fa-solid fa-female";
-          case "kids":
-            return "fa-solid fa-child";
-          case "youth":
-            return "fa-solid fa-person-rays";
-          case "seniors":
-            // return "fa-solid fa-person-cane";
-            return "fa-solid fa-user-plus";
-          case "lgbtq":
-            return "fa-solid fa-rainbow";
           case "shelter":
             return "fa-solid fa-person-shelter";
           case "clothing":
@@ -235,6 +224,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             return "fa-solid fa-users";
           case "vets":
             return "fa-solid fa-person-military-rifle";
+          case "women":
+            return "fa-solid fa-female";
+          case "kids":
+            return "fa-solid fa-child";
+          case "youth":
+            return "fa-solid fa-person-rays";
+          case "seniors":
+            return "fa-solid fa-user-plus";
+          case "lgbtq":
+            return "fa-solid fa-rainbow";
           default:
             return "fa-solid fa-question";
         }
