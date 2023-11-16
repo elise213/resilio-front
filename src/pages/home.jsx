@@ -15,11 +15,6 @@ import {
   Loading,
   ResourceCard,
   Modal,
-  // Navbar2,
-  // CardDeck,
-  // Favorites,
-  // AltSimpleMap,
-  // ErrorBoundary,
 } from "../component";
 import ToolBox from "../component/ToolBox";
 
@@ -453,10 +448,8 @@ const Home = () => {
       />
 
       <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        {backSide ? "Back to Map" : "See my Path"}
+        {backSide ? "Back to Map" : "Flip Map To See Path"}
       </button>
-
-      <Login />
 
       <div className="fake-navbar"></div>
       <div className="fake-navbar2"></div>
