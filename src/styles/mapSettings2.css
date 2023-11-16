@@ -13,6 +13,7 @@
 }
 
 .geo-button {
+  color: black;
   border: 1.5px solid var(--coral2);
   background-color: var(--yellow) !important;
   font-size: 15px;
