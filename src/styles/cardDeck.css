@@ -103,7 +103,13 @@
   font-size: 30px;
   left: -45px;
   top: 10px;
+  color: black;
 }
+
+.deckclose-icon-nav:hover {
+  color: var(--yellow) !important;
+}
+
 .deckclose-icon-nav.deckopen-nav {
   left: 205px !important;
 }
@@ -111,15 +117,22 @@
 .deckclose-icon-nav,
 .deckopen-icon-nav {
   position: fixed !important;
-  color: var(--yellow);
   z-index: 996;
   transition: left 0.3s ease;
 }
 
 .deckclose-icon-nav:hover,
 .deckopen-icon-nav:hover {
-  color: lavender !important;
+  color: var(--yellow) !important;
   cursor: pointer;
+}
+
+.deckopen-icon-nav {
+  color: var(--yellow);
+}
+
+.deckopen-icon-nav:hover {
+  color: lavender !important;
 }
 
 .fa-deckbox {
