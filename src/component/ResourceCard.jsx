@@ -80,6 +80,9 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
+      <div className="resource-card-header">
+        <p className="resource-title">{props.item.name}</p>
+      </div>
       <div className="icons-container">
         {categories.map((category, index) => {
           const colorStyle = actions.getColorForCategory(category);
@@ -92,9 +95,7 @@ const ResourceCard = (props) => {
           );
         })}
       </div>
-      <div className="resource-card-header">
-        <p className="resource-title">{props.item.name}</p>
-      </div>
+
       {props.item.image && (
         <div className="card-image-container">
           <img

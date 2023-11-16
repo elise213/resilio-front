@@ -17,6 +17,7 @@
 }
 
 .flip-button {
+  color: black;
   letter-spacing: 1px;
   position: fixed;
   left: 50%;
