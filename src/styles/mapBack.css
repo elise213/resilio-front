@@ -87,7 +87,9 @@ li {
 
 .path-name {
   font-size: 18px;
-  color: lightgreen;
+  color: black;
+  letter-spacing: 1px;
+  font-family: "AwsumSans";
 }
 
 .remove-path {
@@ -95,11 +97,11 @@ li {
   background-color: transparent;
   border: none;
   font-weight: bold;
-  font-size: x-large;
+  font-size: small;
 }
 
 .remove-path:hover {
-  color: green;
+  color: black;
 }
 
 .flip-horizontal {
@@ -117,7 +119,7 @@ li {
 
 .path-item:hover,
 .path-name:hover {
-  color: salmon !important;
+  color: var(--yellow) !important;
   cursor: pointer;
 }
 
@@ -133,7 +135,7 @@ li {
 }
 
 .createMyPath {
-  order: 1.5px solid var(--coral2);
+  border: 1.5px solid var(--coral2);
   background-color: var(--yellow) !important;
   font-size: 12px;
   height: 30px;
@@ -145,6 +147,10 @@ li {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 1px;
 }
 
 .createMyPath:hover {

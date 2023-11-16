@@ -75,12 +75,8 @@ const GeneratedTreasureMap = ({
     }
   };
 
-  // add an event listener to the document when the modal is open and remove it when the modal is closed
   useEffect(() => {
-    //  disable scroll on the body when the modal is open
     document.body.style.overflow = "hidden";
-
-    //re-enable scrolling and remove event listener
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -88,16 +84,11 @@ const GeneratedTreasureMap = ({
 
   useEffect(() => {
     const rootElement = document.documentElement;
-
-    // Store the original value of the overflow property so it can be restored later
     const originalOverflow = rootElement.style.overflow;
 
-    // Disable scrolling on the root element
     rootElement.style.overflow = "hidden";
 
-    // re-enable scrolling when the modal is closed
     return () => {
-      // Restore the original overflow value
       rootElement.style.overflow = originalOverflow;
     };
   }, []);
@@ -108,7 +99,6 @@ const GeneratedTreasureMap = ({
 
   return (
     <div className="modal-overlay-treasure" onClick={handleOverlayClick}>
-      {/* Prevent the click from propagating to the overlay when it's inside the modal */}
       <div
         className="modal-content-treasure"
         onClick={(e) => e.stopPropagation()}
