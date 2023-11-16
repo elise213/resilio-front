@@ -142,7 +142,7 @@ const AltSimpleMap = ({
               <div className="map-container-container">
                 <div
                   className="map-container"
-                  style={{ height: "40vh", width: "60vw" }}
+                  style={{ height: "45vh", width: "auto" }}
                 >
                   <GoogleMapReact
                     bootstrapURLKeys={{ key: apiKey }}

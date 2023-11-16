@@ -17,6 +17,10 @@
   width: 100% !important;
 }
 
+.map-container {
+  margin-top: 50px;
+}
+
 .treasureMapDiv {
   justify-content: flex-end;
   display: flex;
@@ -70,10 +74,9 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   top: 70px;
-  height: 75vh;
+  min-height: 80vh;
   width: 70%;
-  max-width: 800px;
-  min-height: 550px;
+  max-width: 900px;
 }
 
 .map-frame-wrapper::before,
@@ -109,6 +112,7 @@
   z-index: 0;
   width: 80%;
   height: 805;
+  margin-top: 90px;
 }
 
 .map-frame.alsoFlipped {
