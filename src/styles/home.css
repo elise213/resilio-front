@@ -18,20 +18,22 @@
 
 .flip-button {
   letter-spacing: 1px;
-  border: 1px solid white;
-  border-radius: 4px;
-  background-color: #3e8e68;
-  font-family: "AwsumSans" !important;
-  color: lightgreen;
-  height: 40px;
-  min-width: 120px;
-  font-size: 13px;
-  box-shadow: 3px 7px 8px rgba(0, 0, 0, 0.2), 1px 2px 6px rgba(0, 0, 0, 0.2);
   position: fixed;
   left: 50%;
-  bottom: 6px;
+  bottom: 3px;
   z-index: 995;
   transform: translateX(-50%);
+  border: 1.5px solid var(--coral2);
+  background-color: var(--yellow) !important;
+  font-size: 15px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  font-family: "Urbanist", sans-serif !important;
+  margin: 5px;
+  padding: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 .search-results-full {

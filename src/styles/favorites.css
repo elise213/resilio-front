@@ -112,7 +112,7 @@
 .favoritesopen-icon-nav {
   position: fixed !important;
 
-  color: #ff6300;
+  color: var(--yellow);
   z-index: 996;
   transition: right 0.3s ease;
 }

@@ -1,11 +1,10 @@
 .email-list-container {
   position: relative;
   background-color: transparent;
-  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px 0 0 0;
+  /* margin: 120px 0 0 0; */
 }
 
 .sign-up {
@@ -38,7 +37,7 @@
   border: none;
   border-bottom: 1px solid salmon !important;
   background-color: transparent;
-  padding: 10px;
+  /* padding: 10px; */
   font-family: "Urbanist", sans-serif;
   min-width: 150px;
 }
@@ -67,7 +66,6 @@
 }
 
 .send-2 {
-  /* margin: 10px 0px !important; */
   border: none;
   font-size: x-large;
   background-color: transparent;
@@ -91,10 +89,6 @@
 @media screen and (max-width: 1000px) {
   .email-logo {
     display: block;
-  }
-
-  .email-list-container {
-    margin: 20px 0 !important;
   }
 
   .email-list-form {
