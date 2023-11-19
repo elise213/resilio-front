@@ -17,6 +17,7 @@ const Favorites = ({
   modalIsOpen,
   setModalIsOpen,
   selectedResources,
+  selectedResource,
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
@@ -62,7 +63,6 @@ const Favorites = ({
             isFavoritesOpen ? "favoritesopen-nav" : ""
           }`}
         >
-          {/* <div className="favoritesmenu-icon"> */}
           <div
             onClick={togglefavorites}
             className={`favoritesopen-icon-nav ${
@@ -81,7 +81,6 @@ const Favorites = ({
           >
             <i className="fa-solid fa-x"></i>
           </div>
-          {/* </div> */}
 
           <div
             className={`back-container ${

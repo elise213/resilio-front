@@ -1,7 +1,9 @@
 @font-face {
-  font-family: "FontAwesome";
-  src: url("/fontawesome/webfonts/fa-solid-900.woff2") format("woff2");
-  /* Other sources */
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .no-scroll {

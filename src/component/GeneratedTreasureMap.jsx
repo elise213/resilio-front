@@ -103,49 +103,46 @@ const GeneratedTreasureMap = ({
         className="modal-content-treasure"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="options-path-map">
-          {/* {isLargeScreen && ( */}
-          <div
-            className="map-container-treasure"
-            style={{ height: "25vh", width: "100%" }}
+        <div className="options-path-map"></div>
+        <div className="options">
+          <p className="option">Download Path</p>
+          <p className="option">Send Path to Phone</p>
+          <p className="option">Send Path to Email</p>
+          <p className="option">Print Path</p>
+        </div>
+        <div
+          className="map-container-treasure"
+          style={{ height: "25vh", width: "100%" }}
+        >
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey }}
+            defaultZoom={11}
+            center={city.center}
           >
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: apiKey }}
-              defaultZoom={11}
-              center={city.center}
-            >
-              {selectedResources.map((resource, index) => {
-                console.log(resource);
+            {selectedResources.map((resource, index) => {
+              console.log(resource);
 
-                if (!resource.latitude || !resource.longitude) {
-                  console.error(
-                    "Resource is missing latitude or longitude",
-                    resource.id
-                  );
-                  return null;
-                }
-
-                return (
-                  <Marker
-                    lat={resource.latitude}
-                    lng={resource.longitude}
-                    text={resource.name}
-                    key={resource.id}
-                    id={resource.id}
-                    openModal={openModal}
-                    resource={resource}
-                  />
+              if (!resource.latitude || !resource.longitude) {
+                console.error(
+                  "Resource is missing latitude or longitude",
+                  resource.id
                 );
-              })}
-            </GoogleMapReact>
-          </div>
-          {/* )} */}
-          <div className="options">
-            <p className="option">Download Path</p>
-            <p className="option">Send Path to Phone</p>
-            <p className="option">Send Path to Email</p>
-            <p className="option">Print Path</p>
-          </div>
+                return null;
+              }
+
+              return (
+                <Marker
+                  lat={resource.latitude}
+                  lng={resource.longitude}
+                  text={resource.name}
+                  key={resource.id}
+                  id={resource.id}
+                  openModal={openModal}
+                  resource={resource}
+                />
+              );
+            })}
+          </GoogleMapReact>
         </div>
         <button className="modal-close-treasure" onClick={closeModal}>
           <i className="fa-solid fa-xmark"></i>
@@ -161,12 +158,6 @@ const GeneratedTreasureMap = ({
             return (
               <React.Fragment key={resource.id}>
                 <div className="modalContainer">
-                  <div className="number-box">
-                    <span>{index + 1}</span>
-                  </div>
-                  <div className="title-box">
-                    <span>{resource.name}</span>
-                  </div>
                   <div className="resource-category-icons">
                     {processedCategories &&
                       processedCategories.map((category, categoryIndex) => {
@@ -175,7 +166,6 @@ const GeneratedTreasureMap = ({
                         const colorStyle =
                           actions.getColorForCategory(category);
 
-                        // Use a different key for each category to avoid key conflicts
                         return (
                           <i
                             key={`${resource.id}-${categoryIndex}`}
@@ -185,58 +175,12 @@ const GeneratedTreasureMap = ({
                         );
                       })}
                   </div>
-
-                  <ModalInfo
-                    id={resource.id}
-                    schedule={resource.schedule}
-                    res={resource}
-                  />
-                </div>
-                {/* WHY aren't these hr's showing up?? */}
-                <hr />
-                {index < selectedResources.length - 1 && <hr />}
-              </React.Fragment>
-            );
-          })}
-
-          {/* {selectedResources.map((resource, index) => {
-            const processedCategories = actions.processCategory(
-              resource.category
-            );
-
-            return (
-              <>
-                <div key={resource.id} className="modalContainer">
-                  <div className="options">
-                    <p className="option">Download Path</p>
-                    <p className="option">Send Path to Phone</p>
-                    <p className="option">Send Path to Email</p>
-                    <p className="option">Print Path</p>
-                  </div>
                   <div className="number-box">
                     <span>{index + 1}</span>
                   </div>
                   <div className="title-box">
                     <span>{resource.name}</span>
                   </div>
-                  <div className="resource-category-icons">
-                    {processedCategories &&
-                      processedCategories.map((category, index) => {
-                        const iconClassName =
-                          actions.getIconForCategory(category);
-
-                        const colorStyle =
-                          actions.getColorForCategory(category);
-
-                        return (
-                          <i
-                            key={index}
-                            className={`${iconClassName} card-icon`}
-                            style={colorStyle || {}}
-                          />
-                        );
-                      })}
-                  </div>
 
                   <ModalInfo
                     id={resource.id}
@@ -244,10 +188,10 @@ const GeneratedTreasureMap = ({
                     res={resource}
                   />
                 </div>
-                {index < selectedResources.length - 1 && <hr />}
-              </>
+                {/* {index < selectedResources.length - 1 && <hr />} */}
+              </React.Fragment>
             );
-          })} */}
+          })}
         </div>
       </div>
     </div>
