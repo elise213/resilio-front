@@ -88,6 +88,18 @@
   min-height: 60vh;
 }
 
+.modal-center {
+  text-align: center !important;
+  width: 100%;
+  text-decoration: none !important;
+  color: black;
+  font-size: 1rem;
+}
+
+.modal-center p {
+  margin-bottom: 7px;
+}
+
 .modal-center::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -120,7 +132,6 @@ body.modal-open {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 30px;
 }
 
 .info {
@@ -152,7 +163,7 @@ body.modal-open {
 }
 
 .carousel-image {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
@@ -190,7 +201,7 @@ body.modal-open {
 
 .details-div {
   width: 100%;
-  /* justify-content: center; */
+  justify-content: center;
   display: flex;
   margin: 20px 0;
 }
@@ -203,7 +214,7 @@ body.modal-open {
 }
 
 .details-column div {
-  padding-top: 10px;
+  padding-top: 30px;
 }
 
 .modal-map {
@@ -251,14 +262,6 @@ body.modal-open {
 }
 
 .modal-text {
-  width: 100%;
-  text-decoration: none !important;
-  color: black;
-  font-size: 1rem;
-}
-
-.modal-center {
-  text-align: center !important;
   width: 100%;
   text-decoration: none !important;
   color: black;
