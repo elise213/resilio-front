@@ -66,7 +66,8 @@ const CardDeck = ({
                 : ""
             }`}
           >
-            <i className="fa-solid fa-list"></i>
+            All of the Resources in your Area
+            {/* <i className="fa-solid fa-list"></i> */}
             {/* <p>X</p> */}
             {/* <span className="material-symbols-outlined">list</span> */}
           </div>

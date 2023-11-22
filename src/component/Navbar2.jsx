@@ -16,6 +16,7 @@ const Navbar2 = ({
   setIsNavOpen,
   setIsToolBoxOpen,
   setIsFavoritesOpen,
+  toggleNav,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -25,13 +26,6 @@ const Navbar2 = ({
   useEffect(() => {
     setIsLargeScreen(store.isLargeScreen);
   }, [store.isLargeScreen]);
-
-  const toggleNav = () => {
-    setIsFavoritesOpen(false);
-    setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
-    setIsNavOpen(!isNavOpen);
-  };
 
   const toggleContactModal = () => {
     setShowContactModal(!showContactModal);

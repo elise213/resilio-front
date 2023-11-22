@@ -22,7 +22,7 @@
   position: static;
   user-select: none;
   background-color: white;
-  border: 4px solid var(--yellow);
+  color: var(--green2) !important;
   border-radius: 2%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 1px 2px 3px rgba(0, 0, 0, 0.2);
   transition: 0.5s;
@@ -83,7 +83,7 @@
 }
 
 .add-path {
-  background-color: var(--yellow);
+  background-color: var(--yellow) !important;
 }
 
 .add-path,

@@ -1,5 +1,3 @@
-
-
 .decknew-navbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -22,6 +20,7 @@
   font-family: "AwsumSans";
   font-size: 20px;
   text-align: center;
+  color: lavender;
 }
 
 .deckno-scroll {
@@ -40,12 +39,12 @@
   justify-content: center;
   overflow-y: auto;
   bottom: 0;
-  left: -245px;
-  width: 245px;
+  left: -300px;
+  width: 300px;
   height: 100%;
   z-index: 996;
   position: fixed;
-  background-color: #464646;
+  background-color: rgb(0, 0, 0, 0.5);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: left 0.3s ease;
   direction: rtl;
@@ -83,9 +82,17 @@
 
 /* deckBOX */
 .deckopen-icon-nav {
-  left: -45px;
-  font-size: 30px;
-  bottom: 0;
+  left: -400px;
+  bottom: 6px;
+  padding: 0 5px;
+  font-size: 20px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 20px;
+  font-family: "AwsumSans", sans-serif;
+  color: rgb(128, 41, 0);
+  background-color: lavender;
+  border: 1px solid blue;
 }
 
 .deckopen-icon-nav.deckclosed {
@@ -97,15 +104,15 @@
   font-size: 30px;
   left: -45px;
   top: 10px;
-  color: black;
+  color: lavender;
 }
 
 .deckclose-icon-nav:hover {
-  color: var(--yellow) !important;
+  color: darksalmon !important;
 }
 
 .deckclose-icon-nav.deckopen-nav {
-  left: 205px !important;
+  left: 265px !important;
 }
 
 .deckclose-icon-nav,
@@ -117,12 +124,12 @@
 
 .deckclose-icon-nav:hover,
 .deckopen-icon-nav:hover {
-  color: var(--yellow) !important;
+  color: var(--new) !important;
   cursor: pointer;
 }
 
 .deckopen-icon-nav {
-  color: var(--yellow);
+  color: var(--new);
 }
 
 .deckopen-icon-nav:hover {

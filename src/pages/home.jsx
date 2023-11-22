@@ -84,6 +84,13 @@ const Home = () => {
 
   // FUNCTIONS
 
+  const toggleNav = () => {
+    setIsFavoritesOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(false);
+    setIsNavOpen(!isNavOpen);
+  };
+
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
@@ -384,10 +391,12 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
+        toggleNav={toggleNav}
       />
 
       {/* Filter */}
       <ToolBox
+        backSide={backSide}
         categories={categories}
         setCategories={setCategories}
         groups={groups}
@@ -447,10 +456,6 @@ const Home = () => {
         setIsFavoritesOpen={setIsFavoritesOpen}
       />
 
-      <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        {backSide ? "Map" : "Path"}
-      </button>
-
       <div className="fake-navbar"></div>
       <div className="fake-navbar2"></div>
 
@@ -491,6 +496,12 @@ const Home = () => {
                 setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
+                toggleNav={toggleNav}
+                isFavoritesOpen={isFavoritesOpen}
+                isToolBoxOpen={isToolBoxOpen}
+                setIsToolBoxOpen={setIsToolBoxOpen}
+                isNavOpen={isNavOpen}
+                isDeckOpen={isDeckOpen}
               />
             </ErrorBoundary>
 
@@ -514,10 +525,10 @@ const Home = () => {
           <GeneratedTreasureMap
             closeModal={() => setIsGeneratedMapModalOpen(false)}
             selectedResources={selectedResources}
-            city={city}
             openModal={openModal}
-            hoveredItem={hoveredItem}
             setHoveredItem={setHoveredItem}
+            hoveredItem={hoveredItem}
+            selectedResource={selectedResource}
           />
         )}
       </div>

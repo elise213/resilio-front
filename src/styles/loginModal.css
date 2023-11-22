@@ -199,28 +199,8 @@ body.loginModal-open {
 }
 
 .login-container span:hover {
-  color: var(--yellow) !important;
+  color: var(--green2) !important;
 }
-
-/* .login-container { */
-/* position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 995; */
-
-/* letter-spacing: 1px;
-  border: 1.5px solid var(--coral2);
-  background-color: var(--yellow) !important;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  border-radius: 20px;
-  font-family: "Urbanist", sans-serif !important;
-  margin: 5px;
-  padding: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2); */
-/* } */
 
 .login-logout {
   font-size: large;
