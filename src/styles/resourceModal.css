@@ -91,13 +91,13 @@
 .modal-center {
   text-align: center !important;
   width: 100%;
-  text-decoration: none !important;
-  color: black;
-  font-size: 1rem;
+  margin-bottom: 7px;
 }
 
 .modal-center p {
-  margin-bottom: 7px;
+  text-decoration: none !important;
+  color: black;
+  font-size: 11px;
 }
 
 .modal-center::-webkit-scrollbar-track {
@@ -128,14 +128,16 @@ body.modal-open {
 .resource-info {
   display: flex;
   width: 100%;
-  max-width: 500px;
+  /* max-width: 500px; */
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding: 10px;
 }
 
 .info {
   display: flex;
+  padding: 10px !important;
 }
 
 .info i {

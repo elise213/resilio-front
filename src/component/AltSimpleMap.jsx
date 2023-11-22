@@ -12,6 +12,10 @@ const AltSimpleMap = ({
   setFavorites,
   openModal,
   handleBoundsChange,
+  isFavoritesOpen,
+  isToolBoxOpen,
+  isNavOpen,
+  isDeckOpen,
   city,
   geoFindMe,
   handleZipInputChange,
@@ -31,6 +35,8 @@ const AltSimpleMap = ({
   removeSelectedResource,
   setBackSide,
   backSide,
+  toggleNav,
+  setIsToolBoxOpen,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -181,6 +187,12 @@ const AltSimpleMap = ({
                   zipInput={zipInput}
                   backSide={backSide}
                   setBackSide={setBackSide}
+                  toggleNav={toggleNav}
+                  isFavoritesOpen={isFavoritesOpen}
+                  isToolBoxOpen={isToolBoxOpen}
+                  setIsToolBoxOpen={setIsToolBoxOpen}
+                  isNavOpen={isNavOpen}
+                  isDeckOpen={isDeckOpen}
                 />
               </div>
             </>

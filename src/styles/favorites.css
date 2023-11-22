@@ -47,12 +47,12 @@
   justify-content: center;
   overflow-y: auto;
   bottom: 0;
-  right: -245px;
-  width: 245px;
+  right: -300px;
+  width: 300px;
   height: 100%;
   z-index: 996;
   position: fixed;
-  background-color: #464646;
+  background-color: rgb(0, 0, 0, 0.5);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: right 0.3s ease;
 }
@@ -89,9 +89,16 @@
 
 /* favorites */
 .favoritesopen-icon-nav {
-  right: -45px;
-  font-size: 30px;
-  bottom: 0;
+  bottom: 6px;
+  right: -300px;
+  font-size: 20px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 20px;
+  font-family: "AwsumSans", sans-serif;
+  color: rgb(128, 41, 0);
+  background-color: lavender;
+  border: 1px solid blue;
 }
 
 .favoritesopen-icon-nav.favoritesclosed {
@@ -104,15 +111,14 @@
   right: -45px;
   top: 10px;
 }
+
 .favoritesclose-icon-nav.favoritesopen-nav {
-  right: 205px !important;
+  right: 265px !important;
 }
 
 .favoritesclose-icon-nav,
 .favoritesopen-icon-nav {
   position: fixed !important;
-
-  color: var(--yellow);
   z-index: 996;
   transition: right 0.3s ease;
 }

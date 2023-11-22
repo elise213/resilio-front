@@ -17,23 +17,21 @@
 }
 
 .flip-button {
-  color: black;
-  letter-spacing: 1px;
-  position: fixed;
+  right: 50%;
   left: 50%;
-  bottom: 3px;
-  z-index: 995;
-  transform: translateX(-50%);
-  border: 1.5px solid var(--coral2);
-  background-color: var(--yellow) !important;
+  min-width: 100px;
   font-size: 15px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  border-radius: 20px;
-  font-family: "Urbanist", sans-serif !important;
+  border-radius: 3px;
+  text-align: center;
+  bottom: 250px;
+  font-size: 20px;
+  font-family: "AwsumSans", sans-serif;
+  color: rgb(128, 41, 0);
+  background-color: var(--marascoral);
+  border: 1px solid blue;
   margin: 5px;
-  padding: 10px;
+  letter-spacing: 1px;
+  z-index: 995;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -53,23 +51,6 @@
 .flex {
   display: flex;
   width: 100%;
-}
-
-.results-message {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--yellow);
-  border: 1.5px solid var(--coral2);
-  font-size: 16px;
-  font-family: "Urbanist", sans-serif !important;
-  padding: 0 5px;
-  margin: 20px 0 0 0;
-  z-index: 999;
-  letter-spacing: 1.1px;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2), 1px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .results-message p {

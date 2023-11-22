@@ -63,7 +63,7 @@ const Favorites = ({
             isFavoritesOpen ? "favoritesopen-nav" : ""
           }`}
         >
-          <div
+          <button
             onClick={togglefavorites}
             className={`favoritesopen-icon-nav ${
               !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
@@ -71,8 +71,9 @@ const Favorites = ({
                 : ""
             }`}
           >
-            <i className="fa-regular fa-bookmark"></i>
-          </div>
+            Your Saved Resources
+            {/* <i className="fa-regular fa-bookmark"></i> */}
+          </button>
           <div
             onClick={togglefavorites}
             className={`favoritesclose-icon-nav ${

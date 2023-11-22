@@ -65,7 +65,7 @@
 .nav-item:hover,
 .nav-item a:hover {
   cursor: pointer;
-  color: var(--yellow);
+  color: var(--green2) !important;
 }
 
 .nav-btn:active {
@@ -99,7 +99,7 @@
   top: 0;
   transition: 0.3s ease !important;
   z-index: 995;
-  color: var(--yellow);
+  color: lavender !important;
 }
 
 .close-icon-nav.open-nav {
@@ -200,7 +200,7 @@
 }
 
 .close-icon-nav:hover {
-  color: var(--yellow) !important;
+  color: var(--green2) !important;
 }
 
 .close-icon-nav.open-nav {

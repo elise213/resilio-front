@@ -6,16 +6,23 @@
   font-style: normal;
 }
 
+.options {
+  border-radius: 100% !important;
+  padding: 20px;
+  background-color: white;
+  width: 300px;
+}
+
 .modalContainer {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  border: 10px double var(--yellow);
-  background-color: #d4d2dd;
-
+  background-color: white;
   padding: 20px;
+  border-top: 2px solid gray;
+  border-radius: 5px;
 }
 
 .options-path-map {
@@ -50,11 +57,11 @@ hr {
 }
 
 .modal-content-treasure {
-  padding: 20px;
-  background-color: white;
-  overflow-y: scroll;
-  z-index: 999;
-  border-radius: 14px;
+  width: 80% !important;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-content-treasure::-webkit-scrollbar-track {
@@ -83,7 +90,7 @@ hr {
   background: none;
   font-size: 30px;
   cursor: pointer;
-  color: red;
+  color: var(--marascoral);
 }
 
 .modal-close-treasure:hover,
@@ -106,8 +113,12 @@ hr {
   height: 100% !important;
 }
 
+.option {
+  margin: 5px 0;
+}
+
 .option:hover {
-  color: var(--yellow) !important;
+  color: lavender !important;
   cursor: pointer;
 }
 
@@ -119,6 +130,10 @@ hr {
   font-size: large;
   margin-top: 20px;
   font-family: "AwsumSans", sans-serif;
+  margin: 35px 0 15px 0;
+  border: 2px solid blue;
+  background-color: var(--marascoral);
+  color: rgb(128, 41, 0);
 }
 
 .title-box {
@@ -149,11 +164,12 @@ hr {
   width: 50px;
   justify-content: center;
   display: flex;
-  background-color: rgb(246, 134, 68);
+  background-color: var(--marascoral);
   margin-left: 20px;
   border: 1px solid blue;
   border-radius: 100%;
 }
+
 .resource-category-icons {
   display: flex;
   justify-content: flex-end;

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
+    "@react-pdf/renderer": "^3.1.14",
     "axios": "^1.4.0",
     "circletype": "^2.3.0",
     "emailjs-com": "^3.2.0",

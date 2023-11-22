@@ -32,10 +32,10 @@
   flex-direction: column;
   align-items: center;
   margin: 10px;
-  border: 1px solid salmon;
+  border: 2px solid blue;
   padding: 10px;
   border-radius: 4px;
-  background-color: white;
+  background-color: lavender;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -53,6 +53,13 @@
   white-space: nowrap;
   overflow: hidden;
   width: 100%;
+}
+
+.day-row2 {
+  padding: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
 }
 
 .day-row {
@@ -79,7 +86,11 @@
 .select-header p {
   padding: 0;
   margin: 0;
+  font-size: 17px;
   font-weight: bolder;
+  font-family: "AwsumSans", sans-serif;
+  color: rgb(128, 41, 0);
+  text-decoration: underline;
 }
 
 .open2,
@@ -150,7 +161,7 @@
 }
 
 .my-input:checked + .my-label:before {
-  background-color: rgb(144, 194, 144);
+  background-color: lightgreen;
 }
 
 .my-schedule-button {
@@ -162,12 +173,12 @@
   background-color: transparent;
 }
 
-.my-schedule-button:hover {
+/* .my-schedule-button:hover {
   color: var(--green2);
-}
+} */
 
 .side-car {
-  margin-top: 55px;
+  margin: 55px 0;
   display: flex;
   justify-content: center;
 }

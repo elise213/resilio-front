@@ -63,6 +63,11 @@ li {
   align-items: center;
 }
 
+.selected-resources p {
+  color: white;
+  font-size: 22px;
+}
+
 .path {
   display: flex;
   flex-direction: column;
@@ -73,6 +78,7 @@ li {
 .path-item {
   display: flex;
   align-items: center;
+  background-color: white;
 }
 
 .path-img {
@@ -80,8 +86,20 @@ li {
   width: 30px;
 }
 
+.bottom-row-path {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+.path-icons {
+  background-color: white;
+  align-self: flex-end;
+}
+
 .path-icon {
-  font-size: x-large;
+  font-size: large;
   margin: 3px;
 }
 
@@ -90,6 +108,7 @@ li {
   color: black;
   letter-spacing: 1px;
   font-family: "AwsumSans";
+  margin-top: 20px;
 }
 
 .remove-path {
@@ -115,11 +134,15 @@ li {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: white;
+  border: 2px solid blue;
+  font-family: "AwsumSans";
+  margin: 0 0 20px 0;
 }
 
 .path-item:hover,
 .path-name:hover {
-  color: var(--yellow) !important;
+  color: var(--green2) !important;
   cursor: pointer;
 }
 
@@ -135,6 +158,7 @@ li {
 }
 
 .createMyPath {
+  align-self: flex-end;
   border: 1.5px solid var(--coral2);
   background-color: var(--yellow) !important;
   font-size: 12px;
