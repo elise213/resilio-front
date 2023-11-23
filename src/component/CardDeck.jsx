@@ -20,16 +20,10 @@ const CardDeck = ({
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
+  toggleCardDeck,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const toggleCardDeck = () => {
-    setIsFavoritesOpen(false);
-    setIsNavOpen(false);
-    setIsToolBoxOpen(false);
-    setIsDeckOpen(!isDeckOpen);
-  };
 
   // Function to handle click outside the card deck area
   const handleClickOutside = (event) => {
@@ -61,16 +55,6 @@ const CardDeck = ({
             />
           </div>
 
-          <button
-            onClick={toggleCardDeck}
-            className={`deckopen-icon-nav ${
-              !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
-                ? "deckclosed"
-                : ""
-            }`}
-          >
-            Resources in the map area
-          </button>
           <div
             onClick={toggleCardDeck}
             className={`deckclose-icon-nav ${isDeckOpen ? "deckopen-nav" : ""}`}
