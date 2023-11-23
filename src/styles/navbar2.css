@@ -99,10 +99,14 @@
   margin: 0 20px;
 }
 
+.open-icon-nav {
+  font-size: 50px;
+}
+
 .close-icon-nav,
 .open-icon-nav {
   position: absolute;
-  left: -40px;
+  left: -50px;
   top: 0;
   transition: 0.3s ease !important;
   z-index: 995;
@@ -193,11 +197,6 @@
   position: absolute;
 }
 
-.close-icon-nav,
-.open-icon-nav {
-  left: -40px;
-}
-
 .close-icon-nav {
   font-size: 20px;
   top: 20px;
@@ -214,10 +213,6 @@
 
 .open-icon-nav.closed {
   left: 300px;
-}
-
-.open-icon-nav {
-  font-size: 30px;
 }
 
 .nav-container {

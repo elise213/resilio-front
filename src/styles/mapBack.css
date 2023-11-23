@@ -82,7 +82,6 @@ li {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  gap: 10px;
   width: 100%;
   margin-bottom: 100px;
 }

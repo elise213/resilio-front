@@ -21,7 +21,7 @@
   justify-self: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   padding: 6px;
   margin: 10px;
@@ -58,7 +58,8 @@
 
 .button-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .card-body {
@@ -80,7 +81,9 @@
   border-radius: 3px;
 }
 
-.add-favorite,
+.add-favorite i {
+  font-size: 20px;
+}
 .add-path,
 .remove-path-card {
   font-size: 12px;
@@ -150,7 +153,7 @@
   width: 100%;
   display: flex;
   margin: 0;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .add-favorite {
