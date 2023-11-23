@@ -81,8 +81,16 @@ const Home = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
 
   // FUNCTIONS
+
+  const toggleNav = () => {
+    setIsFavoritesOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(false);
+    setIsNavOpen(!isNavOpen);
+  };
 
   // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
@@ -93,11 +101,11 @@ const Home = () => {
     console.log("Adding resource", resource);
 
     setSelectedResources((prevResources) => {
-      if (prevResources.length >= 3) {
+      if (prevResources.length >= 10) {
         // Display an alert if the limit is reached
         Swal.fire({
           // icon: "error",
-          title: "Please limit the path to 3 resources at a time",
+          title: "Please limit the path to 10 resources at a time",
         });
         return prevResources;
       }
@@ -279,6 +287,16 @@ const Home = () => {
   }, []);
 
   // USE EFFECTS
+
+  useEffect(() => {
+    const body = document.body;
+    if (isDeckOpen || isNavOpen || isFavoritesOpen || isToolBoxOpen) {
+      body.classList.add("no-scroll");
+    } else {
+      body.classList.remove("no-scroll");
+    }
+  }, [isDeckOpen, isNavOpen, isFavoritesOpen, isToolBoxOpen]);
+
   useEffect(() => {
     actions.setSchedules();
   }, []);
@@ -368,6 +386,7 @@ const Home = () => {
     <>
       {/* Site Info */}
       <Navbar2
+        setOpenLoginModal={setOpenLoginModal}
         categories={categories}
         setCategories={setCategories}
         groups={groups}
@@ -384,10 +403,12 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
+        toggleNav={toggleNav}
       />
 
       {/* Filter */}
       <ToolBox
+        backSide={backSide}
         categories={categories}
         setCategories={setCategories}
         groups={groups}
@@ -445,11 +466,8 @@ const Home = () => {
         setIsNavOpen={setIsNavOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
+        setOpenLoginModal={setOpenLoginModal}
       />
-
-      <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        {backSide ? "Map" : "Path"}
-      </button>
 
       <div className="fake-navbar"></div>
       <div className="fake-navbar2"></div>
@@ -491,6 +509,12 @@ const Home = () => {
                 setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
+                toggleNav={toggleNav}
+                isFavoritesOpen={isFavoritesOpen}
+                isToolBoxOpen={isToolBoxOpen}
+                setIsToolBoxOpen={setIsToolBoxOpen}
+                isNavOpen={isNavOpen}
+                isDeckOpen={isDeckOpen}
               />
             </ErrorBoundary>
 
@@ -510,14 +534,18 @@ const Home = () => {
             </div>
           </div>
         )}
+
+        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
+          {backSide ? "Map View" : "Plan View"}
+        </button>
         {isGeneratedMapModalOpen && (
           <GeneratedTreasureMap
             closeModal={() => setIsGeneratedMapModalOpen(false)}
             selectedResources={selectedResources}
-            city={city}
             openModal={openModal}
-            hoveredItem={hoveredItem}
             setHoveredItem={setHoveredItem}
+            hoveredItem={hoveredItem}
+            selectedResource={selectedResource}
           />
         )}
       </div>

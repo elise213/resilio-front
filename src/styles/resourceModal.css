@@ -86,6 +86,20 @@
   overflow-y: scroll !important;
   scroll-behavior: smooth;
   min-height: 60vh;
+  padding: 0;
+}
+
+.modal-center {
+  text-align: center !important;
+  width: 100%;
+  margin-bottom: 7px;
+  font-size: 12px;
+}
+
+.modal-center p {
+  text-decoration: none !important;
+  color: black;
+  font-size: 11px;
 }
 
 .modal-center::-webkit-scrollbar-track {
@@ -116,15 +130,16 @@ body.modal-open {
 .resource-info {
   display: flex;
   width: 100%;
-  max-width: 500px;
+  /* max-width: 500px; */
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 30px;
+  padding: 10px;
 }
 
 .info {
   display: flex;
+  padding: 10px !important;
 }
 
 .info i {
@@ -143,7 +158,7 @@ body.modal-open {
   justify-content: center;
   position: relative;
   max-width: 500px;
-  max-height: 300px;
+  max-height: 250px;
   overflow: hidden;
 }
 
@@ -152,7 +167,7 @@ body.modal-open {
 }
 
 .carousel-image {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
@@ -190,7 +205,7 @@ body.modal-open {
 
 .details-div {
   width: 100%;
-  /* justify-content: center; */
+  justify-content: center;
   display: flex;
   margin: 20px 0;
 }
@@ -203,7 +218,7 @@ body.modal-open {
 }
 
 .details-column div {
-  padding-top: 10px;
+  padding-top: 30px;
 }
 
 .modal-map {
@@ -251,14 +266,6 @@ body.modal-open {
 }
 
 .modal-text {
-  width: 100%;
-  text-decoration: none !important;
-  color: black;
-  font-size: 1rem;
-}
-
-.modal-center {
-  text-align: center !important;
   width: 100%;
   text-decoration: none !important;
   color: black;

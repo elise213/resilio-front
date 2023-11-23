@@ -212,19 +212,19 @@ const Selection = ({
           return option &&
             (type !== "category" || allCategories.includes(id)) &&
             (type !== "group" || allCategories.includes(id)) ? (
-            <div key={id} style={{ display: "flex", alignItems: "center" }}>
-              <MyCheckbox
-                id={id}
-                label={`${option.label} (${count})`}
-                isChecked={state[id]}
-                handleToggle={() => handleToggle(setState, state, id)}
-              />
+            <div className="day-row2" key={id}>
               {type !== "day" && (
                 <span
                   className={actions.getIconForCategory(id)}
                   style={colorStyle ? colorStyle : {}}
                 ></span>
               )}
+              <MyCheckbox
+                id={id}
+                label={`${option.label} — ${count}`}
+                isChecked={state[id]}
+                handleToggle={() => handleToggle(setState, state, id)}
+              />
             </div>
           ) : null;
         })}
@@ -267,17 +267,6 @@ const Selection = ({
     }
   };
 
-  // DEBUG
-  // useEffect(() => {
-  //   console.log("Category Counts:", store.categoryCounts);
-  //   console.log("Day Counts:", store.dayCounts);
-  // }, [store.categoryCounts, store.dayCounts]);
-
-  // DEBUG
-  // useEffect(() => {
-  //   console.log("Map Results:", store.mapResults);
-  // }, [store.mapResults]);
-
   return (
     <div className={"selection"}>
       <Report />
@@ -288,17 +277,6 @@ const Selection = ({
             className={`select-header ${showCategories ? "header-open" : ""}`}
           >
             {showCategories && <p>Filter by Category</p>}
-            {/* <button
-              onClick={() => {
-                setShowCategories(!showCategories);
-                if (showCategories) {
-                  toggleAllCheckboxes(setCategories, categories, categoryIds);
-                }
-              }}
-              className={showCategories ? "open2" : "closed2"}
-            >
-              {showCategories ? "X" : "Filter By Category"}
-            </button> */}
           </div>
 
           {showCategories &&
@@ -310,17 +288,6 @@ const Selection = ({
         <div className={"cent"}>
           <div className={`select-header ${showGroups ? "header-open" : ""}`}>
             {showGroups && <p>Filter by Group</p>}
-            {/* <button
-              onClick={() => {
-                setShowGroups(!showGroups);
-                if (!showGroups) {
-                  toggleAllCheckboxes(setGroups, groups, groupIds);
-                }
-              }}
-              className={showGroups ? "open2" : "closed2"}
-            >
-              {showGroups ? "X" : "Filter By Group"}
-            </button> */}
           </div>
           {showGroups && renderCenterColumn("group", groups, setGroups)}
         </div>
@@ -332,17 +299,6 @@ const Selection = ({
             <div style={{ width: "100%" }}>
               <div className={`select-header ${showDays ? "header-open" : ""}`}>
                 {showDays && <p>Filter by Schedule</p>}
-                {/* <button
-                  onClick={() => {
-                    setShowDays(!showDays);
-                    if (showDays) {
-                      toggleAllCheckboxes(setDays, days, dayIds);
-                    }
-                  }}
-                  className={showDays ? "open2" : "closed2"}
-                >
-                  {showDays ? "X" : "Filter By Schedule"}
-                </button> */}
               </div>
               {showDays && renderCenterColumn("day", days, setDays)}
             </div>

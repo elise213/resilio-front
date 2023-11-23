@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/favorites.css";
 import { Context } from "../store/appContext";
 import ResourceCard from "./ResourceCard";
+import Login from "./Login";
 
 const Favorites = ({
   isDeckOpen,
@@ -17,10 +18,12 @@ const Favorites = ({
   modalIsOpen,
   setModalIsOpen,
   selectedResources,
+  selectedResource,
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
   favorites,
+  setOpenLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -62,8 +65,7 @@ const Favorites = ({
             isFavoritesOpen ? "favoritesopen-nav" : ""
           }`}
         >
-          {/* <div className="favoritesmenu-icon"> */}
-          <div
+          <button
             onClick={togglefavorites}
             className={`favoritesopen-icon-nav ${
               !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
@@ -71,8 +73,9 @@ const Favorites = ({
                 : ""
             }`}
           >
-            <i className="fa-regular fa-bookmark"></i>
-          </div>
+            Your Saved Resources
+            {/* <i className="fa-regular fa-bookmark"></i> */}
+          </button>
           <div
             onClick={togglefavorites}
             className={`favoritesclose-icon-nav ${
@@ -81,7 +84,6 @@ const Favorites = ({
           >
             <i className="fa-solid fa-x"></i>
           </div>
-          {/* </div> */}
 
           <div
             className={`back-container ${
@@ -90,12 +92,22 @@ const Favorites = ({
           >
             {!store.favorites ||
               (!(store.favorites.length > 0) && (
-                <div className="favorites-warning-div">
-                  <div className="scroll-title">
-                    <span>Log in to save Resources</span>
+                <>
+                  <div className="favorites-warning-div">
+                    <div className="scroll-title">
+                      <span
+                        onClick={() => {
+                          setOpenLoginModal(true);
+                        }}
+                      >
+                        Log in to save Resources
+                      </span>
+                    </div>
                   </div>
-                </div>
+                  <Login />
+                </>
               ))}
+
             {store.favorites && store.favorites.length > 0 ? (
               <div className="list-container">
                 <div className="scroll-title">

@@ -22,6 +22,7 @@ const CardDeck = ({
   setFavorites,
 }) => {
   const { store, actions } = useContext(Context);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleCardDeck = () => {
     setIsFavoritesOpen(false);
@@ -44,20 +45,19 @@ const CardDeck = ({
     };
   }, [isDeckOpen]);
 
-  useEffect(() => {
-    const body = document.body;
-    if (isDeckOpen) {
-      body.classList.add("deckno-scroll");
-    } else {
-      body.classList.remove("deckno-scroll");
-    }
-  }, [isDeckOpen]);
-
   return (
     <>
       <div className="decknav-container">
         <div className={`decknew-navbar ${isDeckOpen ? "deckopen-nav" : ""}`}>
-          {/* <div className="deckmenu-icon"> */}
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search resources..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
           <div
             onClick={toggleCardDeck}
             className={`deckopen-icon-nav ${
@@ -66,8 +66,7 @@ const CardDeck = ({
                 : ""
             }`}
           >
-            <i className="fa-solid fa-list"></i>
-            {/* <span className="material-symbols-outlined">list</span> */}
+            Resources in the map area
           </div>
           <div
             onClick={toggleCardDeck}
@@ -75,7 +74,6 @@ const CardDeck = ({
           >
             <i className="fa-solid fa-x"></i>
           </div>
-          {/* </div> */}
 
           <div
             className={`back-container ${
@@ -89,20 +87,31 @@ const CardDeck = ({
                 </div>
                 <ul className="all-ul">
                   {Array.isArray(store.mapResults) &&
-                    store.mapResults.map((resource, index) => (
-                      <ResourceCard
-                        key={resource.id}
-                        item={resource}
-                        openModal={openModal}
-                        closeModal={closeModal}
-                        modalIsOpen={modalIsOpen}
-                        setModalIsOpen={setModalIsOpen}
-                        selectedResources={selectedResources}
-                        addSelectedResource={addSelectedResource}
-                        removeSelectedResource={removeSelectedResource}
-                        setFavorites={setFavorites}
-                      />
-                    ))}
+                    store.mapResults
+                      .filter(
+                        (resource) =>
+                          resource.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (resource.description &&
+                            resource.description
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()))
+                      )
+                      .map((resource, index) => (
+                        <ResourceCard
+                          key={resource.id}
+                          item={resource}
+                          openModal={openModal}
+                          closeModal={closeModal}
+                          modalIsOpen={modalIsOpen}
+                          setModalIsOpen={setModalIsOpen}
+                          selectedResources={selectedResources}
+                          addSelectedResource={addSelectedResource}
+                          removeSelectedResource={removeSelectedResource}
+                          setFavorites={setFavorites}
+                        />
+                      ))}
                 </ul>
               </div>
             )}

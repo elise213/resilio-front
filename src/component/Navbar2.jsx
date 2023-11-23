@@ -16,6 +16,8 @@ const Navbar2 = ({
   setIsNavOpen,
   setIsToolBoxOpen,
   setIsFavoritesOpen,
+  toggleNav,
+  setOpenLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -25,13 +27,6 @@ const Navbar2 = ({
   useEffect(() => {
     setIsLargeScreen(store.isLargeScreen);
   }, [store.isLargeScreen]);
-
-  const toggleNav = () => {
-    setIsFavoritesOpen(false);
-    setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
-    setIsNavOpen(!isNavOpen);
-  };
 
   const toggleContactModal = () => {
     setShowContactModal(!showContactModal);
@@ -118,7 +113,7 @@ const Navbar2 = ({
                   DONATE
                 </span>
 
-                <Login />
+                <Login setOpenLoginModal={setOpenLoginModal} />
               </div>
               <EmailList />
             </div>

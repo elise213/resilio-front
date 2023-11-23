@@ -1,11 +1,27 @@
+:root {
+  --peruish: rgb(149, 84, 19);
+  --newGreen: rgb(67, 172, 67);
+  --marascoral: rgb(246, 134, 68);
+  --coral2: rgb(245, 112, 79);
+  --peach: rgb(249, 183, 173);
+  --green: rgb(170, 255, 200);
+  --green2: rgb(48, 129, 69);
+  --yellow: #f9d783;
+  --new: rgb(129, 100, 129);
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 @font-face {
-  font-family: "FontAwesome";
-  src: url("/fontawesome/webfonts/fa-solid-900.woff2") format("woff2");
-  /* Other sources */
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .no-scroll {
-  overflow: hidden;
+  overflow: hidden !important;
   height: 100%;
 }
 
@@ -18,28 +34,14 @@ body::before {
   bottom: 0;
   background-image: url(/assets/sky.png);
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   filter: brightness(70%);
   z-index: -1;
 }
 
 body {
   position: relative;
-  overflow: hidden;
-}
-
-:root {
-  --peruish: rgb(235, 189, 142);
-  --newGreen: rgb(181, 239, 181);
-  --coral: rgb(255, 123, 116);
-  --coral-rgb: rgb(255, 123, 116);
-  --coral2: rgb(245, 112, 79);
-  --peach: rgb(249, 183, 173);
-  --green: rgb(170, 255, 200);
-  --green2: rgb(48, 129, 69);
-  --yellow: #f9d783;
-  width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden !important;
 }
 
 .radio {
@@ -61,7 +63,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  /* flex-direction: column; */
   margin: 0px;
   width: 100%;
 }
