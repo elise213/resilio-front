@@ -169,6 +169,20 @@ const Home = () => {
     return lng;
   };
 
+  const togglefavorites = () => {
+    setIsNavOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(false);
+    setIsFavoritesOpen(!isFavoritesOpen);
+  };
+
+  const toggleCardDeck = () => {
+    setIsFavoritesOpen(false);
+    setIsNavOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(!isDeckOpen);
+  };
+
   const fetchBounds = async (query, isZip = false) => {
     let apiUrl;
     if (isZip) {
@@ -430,6 +444,7 @@ const Home = () => {
       />
       {/* All Resources */}
       <CardDeck
+        toggleCardDeck={toggleCardDeck}
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
@@ -450,6 +465,7 @@ const Home = () => {
       />
       {/* Favorites */}
       <Favorites
+        togglefavorites={togglefavorites}
         openModal={openModal}
         closeModal={closeModal}
         modalIsOpen={modalIsOpen}
@@ -539,6 +555,28 @@ const Home = () => {
 
         <button className="flip-button" onClick={() => setBackSide(!backSide)}>
           {backSide ? "View The Map" : "Make A Plan"}
+        </button>
+
+        <button
+          onClick={togglefavorites}
+          className={`favoritesopen-icon-nav ${
+            !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+              ? "favoritesclosed"
+              : ""
+          }`}
+        >
+          Your Saved Resources
+        </button>
+
+        <button
+          onClick={toggleCardDeck}
+          className={`deckopen-icon-nav ${
+            !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
+              ? "deckclosed"
+              : ""
+          }`}
+        >
+          Resources in the map area
         </button>
         {isGeneratedMapModalOpen && (
           <GeneratedTreasureMap
