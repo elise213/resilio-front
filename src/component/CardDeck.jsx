@@ -22,6 +22,7 @@ const CardDeck = ({
   setFavorites,
 }) => {
   const { store, actions } = useContext(Context);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleCardDeck = () => {
     setIsFavoritesOpen(false);
@@ -48,6 +49,15 @@ const CardDeck = ({
     <>
       <div className="decknav-container">
         <div className={`decknew-navbar ${isDeckOpen ? "deckopen-nav" : ""}`}>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search resources..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
           <div
             onClick={toggleCardDeck}
             className={`deckopen-icon-nav ${
@@ -77,20 +87,31 @@ const CardDeck = ({
                 </div>
                 <ul className="all-ul">
                   {Array.isArray(store.mapResults) &&
-                    store.mapResults.map((resource, index) => (
-                      <ResourceCard
-                        key={resource.id}
-                        item={resource}
-                        openModal={openModal}
-                        closeModal={closeModal}
-                        modalIsOpen={modalIsOpen}
-                        setModalIsOpen={setModalIsOpen}
-                        selectedResources={selectedResources}
-                        addSelectedResource={addSelectedResource}
-                        removeSelectedResource={removeSelectedResource}
-                        setFavorites={setFavorites}
-                      />
-                    ))}
+                    store.mapResults
+                      .filter(
+                        (resource) =>
+                          resource.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (resource.description &&
+                            resource.description
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()))
+                      )
+                      .map((resource, index) => (
+                        <ResourceCard
+                          key={resource.id}
+                          item={resource}
+                          openModal={openModal}
+                          closeModal={closeModal}
+                          modalIsOpen={modalIsOpen}
+                          setModalIsOpen={setModalIsOpen}
+                          selectedResources={selectedResources}
+                          addSelectedResource={addSelectedResource}
+                          removeSelectedResource={removeSelectedResource}
+                          setFavorites={setFavorites}
+                        />
+                      ))}
                 </ul>
               </div>
             )}
