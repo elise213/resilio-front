@@ -84,11 +84,6 @@
 .add-favorite i {
   font-size: 20px;
 }
-.add-path,
-.remove-path-card {
-  font-size: 12px;
-  margin: 5px;
-}
 
 .remove-path-card {
   background-color: lightgrey;
@@ -107,8 +102,10 @@
   padding: 3px;
   border-radius: 3px;
   font-family: "Urbanist", sans-serif !important;
+  letter-spacing: 1px;
   margin: 5px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2); */
+  font-size: 12px;
 }
 
 .resource-title {
