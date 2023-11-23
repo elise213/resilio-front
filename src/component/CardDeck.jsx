@@ -31,17 +31,20 @@ const CardDeck = ({
     setIsDeckOpen(!isDeckOpen);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const nav = document.querySelector(".decknew-navbar");
-      if (nav && !nav.contains(event.target) && isDeckOpen) {
-        setIsDeckOpen(false);
-      }
+  // Function to handle click outside the card deck area
+  const handleClickOutside = (event) => {
+    const deckNav = document.querySelector(".decknew-navbar");
+    if (deckNav && !deckNav.contains(event.target) && isDeckOpen) {
+      setIsDeckOpen(false);
+    }
+  };
 
-      document.addEventListener("click", handleClickOutside);
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
+  // Set up the event listener
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Clean up the event listener
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isDeckOpen]);
 

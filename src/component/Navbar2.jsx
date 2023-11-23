@@ -33,18 +33,20 @@ const Navbar2 = ({
     setShowContactModal(!showContactModal);
   };
 
+  // Function to handle click outside the navbar area
+  const handleClickOutside = (event) => {
+    const navbar = document.querySelector(".new-navbar");
+    if (navbar && !navbar.contains(event.target) && isNavOpen) {
+      setIsNavOpen(false);
+    }
+  };
+
+  // Set up the event listener
   useEffect(() => {
-    // if (!isLargeScreen) {
-    const handleClickOutside = (event) => {
-      const nav = document.querySelector(".new-navbar");
-      if (nav && !nav.contains(event.target) && isNavOpen) {
-        setIsNavOpen(false);
-      }
-      // };
-      document.addEventListener("click", handleClickOutside);
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Clean up the event listener
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isNavOpen]);
 
@@ -80,11 +82,6 @@ const Navbar2 = ({
           {/* </div> */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            {/* <img
-              src="/assets/RESILIOO.png"
-              alt="Resilio Logo"
-              className="navbar-logo"
-            /> */}
             <div className="split-nav">
               <div className="nav-list">
                 <span
