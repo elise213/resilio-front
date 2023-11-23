@@ -84,22 +84,6 @@
 }
 
 /* deckBOX */
-.deckopen-icon-nav {
-  /* bottom: 6px; */
-  right: -300px;
-  font-size: 16px;
-  border-radius: 3px;
-  text-align: center;
-  font-family: "AwsumSans", sans-serif;
-  color: rgb(128, 41, 0);
-  background-color: lavender;
-  border: 1px solid blue;
-  top: 110px;
-}
-
-.deckopen-icon-nav.deckclosed {
-  right: 10px !important;
-}
 
 .search-bar {
   margin: 60px 0 0 0;
@@ -132,7 +116,7 @@
 
 .deckclose-icon-nav,
 .deckopen-icon-nav {
-  position: fixed !important;
+  position: absolute !important;
   z-index: 996;
   transition: 0.3s ease;
 }

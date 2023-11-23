@@ -5,13 +5,7 @@ import ResourceCard from "./ResourceCard";
 
 const CardDeck = ({
   isDeckOpen,
-  isNavOpen,
-  isFavoritesOpen,
-  isToolBoxOpen,
   setIsDeckOpen,
-  setIsNavOpen,
-  setIsToolBoxOpen,
-  setIsFavoritesOpen,
   openModal,
   closeModal,
   modalIsOpen,

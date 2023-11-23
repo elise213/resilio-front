@@ -97,7 +97,7 @@
 
 /* X */
 .toolclose-icon-nav {
-  position: fixed !important;
+  position: absolute;
   font-size: 20px;
   right: -45px;
   color: lavender;
