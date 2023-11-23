@@ -104,8 +104,7 @@
   right: 265px !important;
 }
 
-.favoritesclose-icon-nav,
-.favoritesopen-icon-nav {
+.favoritesclose-icon-nav {
   position: absolute;
   z-index: 996;
   transition: right 0.3s ease;
@@ -113,7 +112,6 @@
 
 .favoritesclose-icon-nav:hover,
 .favoritesopen-icon-nav:hover {
-  /* color: lightgreen !important; */
   cursor: pointer;
 }
 

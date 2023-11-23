@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
-    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 .centered {
   display: flex;
   justify-content: center;
@@ -148,6 +140,15 @@
   /* background-color: rgba(0, 0, 0, 0.8); */
   /* background-color: #464646; */
   z-index: 9998;
+}
+
+.login-trigger {
+  color: lavender;
+  font-family: "InterVariable" !important;
+}
+
+.login-trigger:hover {
+  color: lightgreen;
 }
 
 body.loginModal-open {

@@ -20,6 +20,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "InterVariable";
+  src: url("/fonts/Inter-VariableFont_slnt,wght.tff") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .no-scroll {
   overflow: hidden !important;
   height: 100%;
