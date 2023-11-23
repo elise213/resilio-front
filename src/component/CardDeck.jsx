@@ -53,7 +53,7 @@ const CardDeck = ({
           <div className="search-bar">
             <input
               type="text"
-              placeholder="Search resources..."
+              placeholder="Search Resources..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

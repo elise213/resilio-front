@@ -14,6 +14,7 @@ const AltSimpleMap = ({
   handleBoundsChange,
   isFavoritesOpen,
   isToolBoxOpen,
+  setIsToolBoxOpen,
   isNavOpen,
   isDeckOpen,
   city,
@@ -36,7 +37,8 @@ const AltSimpleMap = ({
   setBackSide,
   backSide,
   toggleNav,
-  setIsToolBoxOpen,
+  togglefavorites,
+  toggleCardDeck,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -125,6 +127,8 @@ const AltSimpleMap = ({
           {backSide ? (
             <>
               <MapBack
+                toggleCardDeck={toggleCardDeck}
+                togglefavorites={togglefavorites}
                 hoveredItem={hoveredItem}
                 setHoveredItem={setHoveredItem}
                 openModal={openModal}
@@ -141,6 +145,11 @@ const AltSimpleMap = ({
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
                 removeSelectedResource={removeSelectedResource}
+                isFavoritesOpen={isFavoritesOpen}
+                isDeckOpen={isDeckOpen}
+                isNavOpen={isNavOpen}
+                isToolBoxOpen={isToolBoxOpen}
+                setIsToolBoxOpen={setIsToolBoxOpen}
               />
             </>
           ) : (
@@ -183,6 +192,8 @@ const AltSimpleMap = ({
               </div>
               <div className="simple-selection">
                 <MapSettings
+                  toggleCardDeck={toggleCardDeck}
+                  togglefavorites={togglefavorites}
                   geoFindMe={geoFindMe}
                   handleZipInputChange={handleZipInputChange}
                   zipInput={zipInput}

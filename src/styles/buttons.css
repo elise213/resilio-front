@@ -1,0 +1,10 @@
+.button-holder {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.button-holder button {
+  max-width: 300px;
+}

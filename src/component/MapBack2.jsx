@@ -1,18 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import GoogleMapReact from "google-map-react";
 import ResourceCard from "./ResourceCard";
-import MyDocument from "./MyDocument";
 import Styles from "../styles/mapBack.css";
+import Buttons from "./Buttons";
 
 const MapBack = ({
-  setBackSide,
-  backSide,
   setIsGeneratedMapModalOpen,
   isGeneratedMapModalOpen,
   openModal,
   closeModal,
-  hoveredItem,
   setHoveredItem,
   modalIsOpen,
   setModalIsOpen,
@@ -21,7 +17,13 @@ const MapBack = ({
   selectedResources,
   setSelectedResources,
   setFavorites,
-  city,
+  isDeckOpen,
+  isFavoritesOpen,
+  isNavOpen,
+  isToolBoxOpen,
+  setIsToolBoxOpen,
+  toggleCardDeck,
+  togglefavorites,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -208,6 +210,14 @@ const MapBack = ({
           Add Resources <br /> To Your Plan
         </p>
       )}
+      <Buttons
+        isDeckOpen={isDeckOpen}
+        isNavOpen={isNavOpen}
+        isFavoritesOpen={isFavoritesOpen}
+        isToolBoxOpen={isToolBoxOpen}
+        toggleCardDeck={toggleCardDeck}
+        togglefavorites={togglefavorites}
+      />
     </>
   );
 };
