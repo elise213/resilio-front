@@ -486,11 +486,8 @@ const Home = () => {
                 isDeckOpen={isDeckOpen}
               />
             </ErrorBoundary>
-
-            <div className="search-results-full"></div>
           </>
         )}
-        {/* </div> */}
         {modalIsOpen && (
           <div>
             <div className="modal-overlay"></div>

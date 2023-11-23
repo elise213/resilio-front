@@ -76,6 +76,7 @@
 
 /* TOOLBOX */
 .toolopen-icon-nav {
+  height: 100%;
   right: 50%;
   left: 50%;
   min-width: 100px;
