@@ -25,15 +25,9 @@ const Favorites = ({
   favorites,
   setOpenLoginModal,
   openLoginModal,
+  togglefavorites,
 }) => {
   const { store, actions } = useContext(Context);
-
-  const togglefavorites = () => {
-    setIsNavOpen(false);
-    setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
-    setIsFavoritesOpen(!isFavoritesOpen);
-  };
 
   // Function to handle click outside the favorites area
   const handleClickOutside = (event) => {
@@ -73,17 +67,6 @@ const Favorites = ({
             isFavoritesOpen ? "favoritesopen-nav" : ""
           }`}
         >
-          <button
-            onClick={togglefavorites}
-            className={`favoritesopen-icon-nav ${
-              !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                ? "favoritesclosed"
-                : ""
-            }`}
-          >
-            Your Saved Resources
-            {/* <i className="fa-regular fa-bookmark"></i> */}
-          </button>
           <div
             onClick={togglefavorites}
             className={`favoritesclose-icon-nav ${
