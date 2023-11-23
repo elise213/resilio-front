@@ -13,14 +13,14 @@
   border: none;
   background-color: transparent;
   align-self: flex-end;
-  color: black;
+  color: lavender;
   position: absolute;
   right: 10vw;
   top: 200px;
 }
 
 .close-contact:hover {
-  color: "brown" !important;
+  color: lightgreen !important;
   cursor: pointer;
 }
 
@@ -41,7 +41,6 @@
   width: 100%;
   padding: 10px;
   font-family: "Urbanist", sans-serif;
-  /* box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
   box-shadow: 2px 3px 14px 0 rgba(0, 0, 0, 0.2),
     2px 3px 4px 0 rgba(0, 0, 0, 0.19);
 }
@@ -77,19 +76,6 @@
 
 .message {
   height: 80px;
-}
-
-/* .contact-sticker {
-    position: absolute;
-    top: 230px;
-    right: 9px;
-    z-index: 5;
-} */
-
-.circle-font {
-  font-size: 30px;
-  font-family: "Urbanist", sans-serif;
-  color: var(--color4);
 }
 
 input textarea {
