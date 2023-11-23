@@ -61,7 +61,7 @@ const CardDeck = ({
             />
           </div>
 
-          <div
+          <button
             onClick={toggleCardDeck}
             className={`deckopen-icon-nav ${
               !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
@@ -70,7 +70,7 @@ const CardDeck = ({
             }`}
           >
             Resources in the map area
-          </div>
+          </button>
           <div
             onClick={toggleCardDeck}
             className={`deckclose-icon-nav ${isDeckOpen ? "deckopen-nav" : ""}`}
