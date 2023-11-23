@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import LoginModal from "./LoginModal";
 import styles from "../styles/loginModal.css";
 
-const Login = ({ openLoginModal }) => {
+const Login = ({ openLoginModal, setOpenLoginModal }) => {
   const [log, setLog] = useState("1");
 
   const [email, setEmail] = useState("");

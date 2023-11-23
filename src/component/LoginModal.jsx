@@ -33,11 +33,10 @@ const LoginModal = ({
               </span>
             </span>
           </div>
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => setLog("1")}
-          ></button>
+          <span className="login-close" onClick={() => setLog("1")}>
+            {" "}
+            <i className="fa-solid fa-x"></i>{" "}
+          </span>
         </div>
         <div className="login-modal-body">
           <form>
@@ -138,19 +137,18 @@ const LoginModal = ({
     field = (
       <div className="login-modal-content ">
         <div className="login-modal-header">
-          <div className="header-div">
+          {/* <div className="header-div">
             <span className="form-label" id="">
               Enter your Username <br />
               and Password to Login
             </span>
-          </div>
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="loginModal"
-            aria-label="Close"
+          </div> */}
+          <span
+            className="login-close"
             onClick={() => setOpenLoginModal(false)}
-          ></button>
+          >
+            <i className="fa-solid fa-x"></i>{" "}
+          </span>
         </div>
         <div className="login-modal-body small-login-modal">
           <form>
