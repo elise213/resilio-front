@@ -387,6 +387,7 @@ const Home = () => {
       {/* Site Info */}
       <Navbar2
         setOpenLoginModal={setOpenLoginModal}
+        openLoginModal={openLoginModal}
         categories={categories}
         setCategories={setCategories}
         groups={groups}
@@ -467,6 +468,7 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
         setOpenLoginModal={setOpenLoginModal}
+        openLoginModal={openLoginModal}
       />
 
       <div className="fake-navbar"></div>

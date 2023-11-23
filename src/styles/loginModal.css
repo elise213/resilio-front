@@ -40,13 +40,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: (32px);
 }
 
 .center-header {
   display: flex;
   justify-content: center;
-  margin: 15px 48px 15px 0;
   width: 100%;
 }
 
@@ -86,6 +84,7 @@
 
 .login-modal-content {
   max-width: 850px;
+  width: 80%;
   outline: 3px solid rgb(66, 100, 30);
   outline-offset: 5px;
   position: absolute;
@@ -107,6 +106,7 @@
   margin: 20px 0 0 0;
   font-size: medium !important;
   display: block;
+  text-align: center;
 }
 
 .small-login-modal {
@@ -146,7 +146,7 @@
   width: 100%;
   height: 100%;
   /* background-color: rgba(0, 0, 0, 0.8); */
-  background-color: #464646;
+  /* background-color: #464646; */
   z-index: 9998;
 }
 
@@ -178,11 +178,7 @@ body.loginModal-open {
 
 .login-container span {
   font-size: 30px;
-  font-family: "AwsumSans";
-}
-
-.login-container span:hover {
-  color: lightgreen !important;
+  font-family: "Urbanist", sans-serif;
 }
 
 .login-logout {
@@ -194,8 +190,16 @@ body.loginModal-open {
   margin-top: 0 !important;
 }
 
-.btn-close {
-  color: lavender !important;
+.login-close {
+  /* color: lavender !important; */
+  color: green;
+  position: fixed;
+  top: 5px;
+  margin-right: 5px;
+}
+
+.btn-close:hover {
+  color: lightgreen;
 }
 
 .open {
