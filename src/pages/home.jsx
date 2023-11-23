@@ -41,6 +41,8 @@ const Home = () => {
   // const resultsRef = useRef(null);
   // const fetchCounterRef = useRef(0);
   // const abortControllerRef = useRef(null);
+  const toggleFavoritesButtonRef = useRef(null);
+  const toggleDeckButtonRef = useRef(null);
 
   // STATES
   const [backSide, setBackSide] = useState(false);
@@ -409,9 +411,11 @@ const Home = () => {
         removeSelectedResource={removeSelectedResource}
         favorites={favorites}
         setFavorites={setFavorites}
+        toggleButtonRef={toggleDeckButtonRef}
       />
       {/* Favorites */}
       <Favorites
+        toggleButtonRef={toggleFavoritesButtonRef}
         togglefavorites={togglefavorites}
         openModal={openModal}
         closeModal={closeModal}
@@ -505,6 +509,7 @@ const Home = () => {
         </button>
 
         <button
+          ref={toggleFavoritesButtonRef}
           onClick={togglefavorites}
           className={`favoritesopen-icon-nav ${
             !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
@@ -515,12 +520,8 @@ const Home = () => {
           Your Saved Resources
         </button>
 
-        <div className="trouble">
-          <p>Is Deck Open? {isDeckOpen.toString()}</p>
-          <p>Is Favorites Open? {isFavoritesOpen.toString()}</p>
-        </div>
-
         <button
+          ref={toggleDeckButtonRef}
           onClick={toggleCardDeck}
           className={`deckopen-icon-nav ${
             !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
