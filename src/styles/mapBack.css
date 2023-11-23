@@ -170,8 +170,8 @@ li {
 
 .back-container {
   display: flex;
-  /* width: 100vw; */
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: center; */
   margin-top: 80px;
 }
 

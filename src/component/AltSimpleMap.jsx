@@ -146,7 +146,7 @@ const AltSimpleMap = ({
           ) : (
             <>
               <div className="map-container-container">
-                <p class="the-plan">THE MAP</p>
+                <p className="the-plan">THE MAP</p>
                 <div
                   className="map-container"
                   style={{ height: "45vh", width: "auto" }}
