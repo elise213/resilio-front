@@ -25,6 +25,7 @@
   font-size: 20px;
   text-align: center;
   color: lavender;
+  margin-top: 100px;
 }
 
 .deckno-scroll {
@@ -114,15 +115,13 @@
   left: 265px !important;
 }
 
-.deckclose-icon-nav,
-.deckopen-icon-nav {
+.deckclose-icon-nav {
   position: absolute !important;
   z-index: 996;
   transition: 0.3s ease;
 }
 
-.deckclose-icon-nav:hover,
-.deckopen-icon-nav:hover {
+.deckclose-icon-nav:hover {
   cursor: pointer;
 }
 

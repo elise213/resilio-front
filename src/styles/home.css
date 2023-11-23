@@ -38,7 +38,7 @@
 }
 
 .favoritesopen-icon-nav {
-  bottom: 50px;
+  bottom: 100px;
 }
 
 .favoritesopen-icon-nav.favoritesclosed,
@@ -46,17 +46,8 @@
   right: 10px !important;
 }
 
-.trouble {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  color: lightgreen;
-}
-
 .deckopen-icon-nav {
-  bottom: 10px;
+  bottom: 70px;
 }
 
 .modal-overlay {
@@ -156,8 +147,10 @@
   height: 100px;
   width: 300px;
 }
+
 .map-container {
-  padding: 10px;
+  border: 2px solid blue;
+  border-radius: 3px;
 }
 
 @media screen and (max-width: 900px) {
