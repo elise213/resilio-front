@@ -110,7 +110,7 @@ const ResourceCard = (props) => {
           className={isSelected ? "remove-path-card" : "add-path"}
           onClick={handleToggleSelectResource}
         >
-          {isSelected ? "Remove from Path" : "Add to Path"}
+          {isSelected ? "Remove from Plan" : "Add to Plan"}
         </button>
 
         {store.token && (

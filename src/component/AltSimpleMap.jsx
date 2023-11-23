@@ -12,6 +12,10 @@ const AltSimpleMap = ({
   setFavorites,
   openModal,
   handleBoundsChange,
+  isFavoritesOpen,
+  isToolBoxOpen,
+  isNavOpen,
+  isDeckOpen,
   city,
   geoFindMe,
   handleZipInputChange,
@@ -31,6 +35,8 @@ const AltSimpleMap = ({
   removeSelectedResource,
   setBackSide,
   backSide,
+  toggleNav,
+  setIsToolBoxOpen,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -53,7 +59,7 @@ const AltSimpleMap = ({
 
     const color = "red";
 
-    let icons = [<i className="fa-solid fa-map-pin"></i>];
+    // let icons = [<i className="fa-solid fa-map-pin"></i>];
     let iconClass = "fa-solid fa-map-pin";
 
     return (
@@ -95,7 +101,7 @@ const AltSimpleMap = ({
         )}
 
         <div className="marker-icon">
-          <i className={iconClass} style={{ color }}></i>
+          <i className={iconClass} style={{ color, zIndex: 995 }}></i>
         </div>
       </div>
     );
@@ -140,6 +146,7 @@ const AltSimpleMap = ({
           ) : (
             <>
               <div className="map-container-container">
+                <p className="the-plan">THE MAP</p>
                 <div
                   className="map-container"
                   style={{ height: "45vh", width: "auto" }}
@@ -181,6 +188,12 @@ const AltSimpleMap = ({
                   zipInput={zipInput}
                   backSide={backSide}
                   setBackSide={setBackSide}
+                  toggleNav={toggleNav}
+                  isFavoritesOpen={isFavoritesOpen}
+                  isToolBoxOpen={isToolBoxOpen}
+                  setIsToolBoxOpen={setIsToolBoxOpen}
+                  isNavOpen={isNavOpen}
+                  isDeckOpen={isDeckOpen}
                 />
               </div>
             </>

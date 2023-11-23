@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
-    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 .decknew-navbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -24,10 +16,15 @@
   background-color: darkgreen;
 }
 
+.list-container {
+  margin-top: 30px;
+}
+
 .scroll-title {
   font-family: "AwsumSans";
   font-size: 20px;
   text-align: center;
+  color: lavender;
 }
 
 .deckno-scroll {
@@ -42,12 +39,13 @@
 }
 
 .decknew-navbar {
-  display: flex;
-  justify-content: center;
+  border-radius: 0 30px 0 0;
+  /* display: flex;
+  justify-content: center; */
   overflow-y: auto;
   bottom: 0;
-  left: -245px;
-  width: 245px;
+  left: -300px;
+  width: 300px;
   height: 100%;
   z-index: 996;
   position: fixed;
@@ -89,29 +87,49 @@
 
 /* deckBOX */
 .deckopen-icon-nav {
-  left: -45px;
-  font-size: 30px;
-  bottom: 0;
+  left: -400px;
+  bottom: 6px;
+  padding: 0 5px;
+  font-size: 16px;
+  border-radius: 3px;
+  text-align: center;
+  font-family: "AwsumSans", sans-serif;
+  color: rgb(128, 41, 0);
+  background-color: lavender;
+  border: 1px solid blue;
 }
 
 .deckopen-icon-nav.deckclosed {
   left: 40px !important;
 }
 
+.search-bar {
+  margin: 60px 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar input {
+  width: 80%;
+  padding: 4px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
 /* X */
 .deckclose-icon-nav {
-  font-size: 30px;
+  font-size: 20px;
   left: -45px;
   top: 10px;
-  color: black;
+  color: lavender;
 }
 
 .deckclose-icon-nav:hover {
-  color: var(--yellow) !important;
+  color: lightgreen !important;
 }
 
 .deckclose-icon-nav.deckopen-nav {
-  left: 205px !important;
+  left: 265px !important;
 }
 
 .deckclose-icon-nav,
@@ -123,16 +141,19 @@
 
 .deckclose-icon-nav:hover,
 .deckopen-icon-nav:hover {
-  color: var(--yellow) !important;
   cursor: pointer;
 }
 
+.deckclose-icon-nav:hover {
+  color: lightgreen !important;
+}
+
 .deckopen-icon-nav {
-  color: var(--yellow);
+  color: var(--new);
 }
 
 .deckopen-icon-nav:hover {
-  color: lavender !important;
+  color: lightgreen !important;
 }
 
 .fa-deckbox {

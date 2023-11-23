@@ -41,6 +41,12 @@
   margin: 5px;
 }
 
+.function-buttons {
+  align-self: flex-start;
+  flex-direction: column;
+  display: flex;
+}
+
 .map-settings-buttons {
   z-index: 999;
   /* flex-direction: column; */

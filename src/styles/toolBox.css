@@ -12,9 +12,9 @@
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.toolnew-navbar::-webkit-scrollbar-thumb:hover {
+/* .toolnew-navbar::-webkit-scrollbar-thumb:hover {
   background-color: darkgreen;
-}
+} */
 
 .toolno-scroll {
   overflow: hidden;
@@ -33,12 +33,13 @@
   overflow-y: auto;
   overflow-x: hidden;
   top: 0;
-  right: -245px;
-  width: 245px;
+  right: -300px;
+  width: 300px;
   height: 100%;
   z-index: 996;
   position: fixed;
   background-color: #464646;
+  border-radius: 30px 0 0 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: right 0.3s ease;
 }
@@ -60,7 +61,7 @@
 .toolnav-item,
 .toolnav-item a {
   letter-spacing: 1.5px;
-  color: var(--color1);
+  color: var(--marascoral);
   text-decoration: none;
   font-size: 18px;
   z-index: 999;
@@ -70,33 +71,46 @@
 .toolnav-item:hover,
 .toolnav-item a:hover {
   cursor: pointer;
-  color: lightgreen;
+  color: lavender;
 }
 
 /* TOOLBOX */
 .toolopen-icon-nav {
-  right: -45px;
-  font-size: 30px;
+  right: 50%;
+  left: 50%;
+  min-width: 100px;
+  font-size: 15px;
+  border-radius: 3px;
+  text-align: center;
+  bottom: 250px;
+  font-size: 20px;
+  font-family: "AwsumSans", sans-serif;
+  color: rgb(128, 41, 0);
+  background-color: var(--marascoral);
+  border: 1px solid blue;
 }
 
-.toolopen-icon-nav.toolclosed {
-  right: 40px !important;
+.toolopen-icon-nav {
+  align-self: flex-start;
+  margin: 5px;
 }
 
 /* X */
 .toolclose-icon-nav {
-  font-size: 30px;
+  position: fixed !important;
+  font-size: 20px;
   right: -45px;
+  color: lavender;
+  top: 10px;
+  position: relative;
 }
+
 .toolclose-icon-nav.toolopen-nav {
-  right: 205px !important;
+  right: 265px !important;
 }
 
 .toolclose-icon-nav,
 .toolopen-icon-nav {
-  position: fixed !important;
-  top: 0;
-  color: var(--yellow);
   z-index: 996;
   transition: right 0.3s ease;
 }

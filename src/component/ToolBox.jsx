@@ -6,6 +6,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
 
 const ToolBox = ({
+  backSide,
   categories,
   setCategories,
   groups,
@@ -62,17 +63,18 @@ const ToolBox = ({
         <div
           className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
         >
-          {/* <div className="toolmenu-icon"> */}
-          <div
-            onClick={toggleNav}
-            className={`toolopen-icon-nav ${
-              !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                ? "toolclosed"
-                : ""
-            }`}
-          >
-            <i className="fa-solid fa-filter"></i>
-          </div>
+          {/* {!backSide && (
+            <button
+              onClick={toggleNav}
+              className={`toolopen-icon-nav ${
+                !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+                  ? "toolclosed"
+                  : ""
+              }`}
+            >
+              Filter Resources
+            </button>
+          )} */}
           <div
             onClick={toggleNav}
             className={`toolclose-icon-nav ${
