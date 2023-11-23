@@ -124,7 +124,7 @@
 
 .favoritesclose-icon-nav,
 .favoritesopen-icon-nav {
-  position: fixed !important;
+  position: absolute !important;
   z-index: 996;
   transition: right 0.3s ease;
 }
