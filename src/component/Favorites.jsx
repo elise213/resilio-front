@@ -104,7 +104,7 @@ const Favorites = ({
                       </span>
                     </div>
                   </div>
-                  <Login />
+                  <Login setOpenLoginModal={setOpenLoginModal} />
                 </>
               ))}
 
