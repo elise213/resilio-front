@@ -41,8 +41,6 @@ const Home = () => {
   // const resultsRef = useRef(null);
   // const fetchCounterRef = useRef(0);
   // const abortControllerRef = useRef(null);
-  const toggleFavoritesButtonRef = useRef(null);
-  const toggleDeckButtonRef = useRef(null);
 
   // STATES
   const [backSide, setBackSide] = useState(false);
@@ -411,11 +409,9 @@ const Home = () => {
         removeSelectedResource={removeSelectedResource}
         favorites={favorites}
         setFavorites={setFavorites}
-        toggleButtonRef={toggleDeckButtonRef}
       />
       {/* Favorites */}
       <Favorites
-        toggleButtonRef={toggleFavoritesButtonRef}
         togglefavorites={togglefavorites}
         openModal={openModal}
         closeModal={closeModal}
@@ -429,9 +425,9 @@ const Home = () => {
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
-        isToolBoxOpen={isToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
         setIsNavOpen={setIsNavOpen}
+        isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
         setOpenLoginModal={setOpenLoginModal}
@@ -446,6 +442,8 @@ const Home = () => {
           <>
             <ErrorBoundary>
               <AltSimpleMap
+                toggleCardDeck={toggleCardDeck}
+                togglefavorites={togglefavorites}
                 setBackSide={setBackSide}
                 backSide={backSide}
                 addSelectedResource={addSelectedResource}
@@ -505,29 +503,6 @@ const Home = () => {
           {backSide ? "View The Map" : "Make A Plan"}
         </button>
 
-        <button
-          ref={toggleFavoritesButtonRef}
-          onClick={togglefavorites}
-          className={`favoritesopen-icon-nav ${
-            !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-              ? "favoritesclosed"
-              : ""
-          }`}
-        >
-          Your Saved Resources
-        </button>
-
-        <button
-          ref={toggleDeckButtonRef}
-          onClick={toggleCardDeck}
-          className={`deckopen-icon-nav ${
-            !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
-              ? "deckclosed"
-              : ""
-          }`}
-        >
-          Resources in the map area
-        </button>
         {isGeneratedMapModalOpen && (
           <GeneratedTreasureMap
             closeModal={() => setIsGeneratedMapModalOpen(false)}

@@ -16,16 +16,12 @@
   background-color: darkgreen;
 }
 
-.list-container {
-  margin-top: 30px;
-}
-
 .scroll-title {
   font-family: "AwsumSans";
   font-size: 20px;
   text-align: center;
   color: lavender;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .deckno-scroll {
