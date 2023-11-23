@@ -31,15 +31,9 @@ const MapSettings = ({
             >
               Filter Resources
             </button>
-
-            <button
-              className="flip-button"
-              onClick={() => setBackSide(!backSide)}
-            >
-              {backSide ? "See the Map" : "Make a Plan"}
-            </button>
           </div>
         )}
+
         <div className="stack">
           <button className="geo-button" onClick={() => geoFindMe()}>
             geo-location

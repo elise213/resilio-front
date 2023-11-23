@@ -52,7 +52,7 @@
   height: 100%;
   z-index: 996;
   position: fixed;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: #464646;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: right 0.3s ease;
 }
@@ -74,7 +74,7 @@
 .favoritesnav-item,
 .favoritesnav-item a {
   letter-spacing: 1.5px;
-  color: var(--color1);
+  color: lavender;
   text-decoration: none;
   font-size: 18px;
   z-index: 999;
@@ -110,6 +110,11 @@
   font-size: 30px;
   right: -45px;
   top: 10px;
+  color: lavender;
+}
+
+.favoritesclose-icon-nav:hover {
+  color: lightgreen;
 }
 
 .favoritesclose-icon-nav.favoritesopen-nav {
@@ -125,7 +130,7 @@
 
 .favoritesclose-icon-nav:hover,
 .favoritesopen-icon-nav:hover {
-  color: lavender !important;
+  /* color: lightgreen !important; */
   cursor: pointer;
 }
 

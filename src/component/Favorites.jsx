@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/favorites.css";
 import { Context } from "../store/appContext";
 import ResourceCard from "./ResourceCard";
+import Login from "./Login";
 
 const Favorites = ({
   isDeckOpen,
@@ -22,6 +23,7 @@ const Favorites = ({
   removeSelectedResource,
   setFavorites,
   favorites,
+  setOpenLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -90,11 +92,18 @@ const Favorites = ({
           >
             {!store.favorites ||
               (!(store.favorites.length > 0) && (
-                <div className="favorites-warning-div">
-                  <div className="scroll-title">
-                    <span>Log in to save Resources</span>
+                <>
+                  <div className="favorites-warning-div">
+                    <div
+                      className="scroll-title"
+                      onClick={() => {
+                        setOpenLoginModal(true);
+                      }}
+                    >
+                      <span>Log in to save Resources</span>
+                    </div>
                   </div>
-                </div>
+                </>
               ))}
             {store.favorites && store.favorites.length > 0 ? (
               <div className="list-container">

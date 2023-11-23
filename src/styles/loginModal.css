@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: flex-end;
   font-size: x-large;
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 .login-modal-footer {
@@ -30,7 +30,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: whitesmoke;
+  background-color: white;
   padding: 10px 20px;
   font-size: small;
 }
@@ -145,7 +145,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  /* background-color: rgba(0, 0, 0, 0.8); */
+  background-color: #464646;
   z-index: 9998;
 }
 
@@ -157,26 +158,8 @@ body.loginModal-open {
 }
 
 .forgot-password:hover {
-  color: salmon;
+  color: lightgreen;
   cursor: pointer;
-}
-
-.avatar-div {
-  display: flex;
-  justify-content: center;
-  /* flex-direction: column; */
-}
-
-.avatarImages {
-  font-size: 25px;
-  margin: 5px;
-  transition: font-size 0.3s;
-}
-
-.avatarImages:hover {
-  font-size: 33px;
-  text-shadow: -10px -10px 20px salmon, 10px -10px 20px salmon,
-    -10px 10px 20px salmon, 10px 10px 20px salmon;
 }
 
 .form-check {
@@ -199,7 +182,7 @@ body.loginModal-open {
 }
 
 .login-container span:hover {
-  color: var(--green2) !important;
+  color: lightgreen !important;
 }
 
 .login-logout {
@@ -212,7 +195,7 @@ body.loginModal-open {
 }
 
 .btn-close {
-  color: green !important;
+  color: lavender !important;
 }
 
 .open {

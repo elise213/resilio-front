@@ -59,7 +59,7 @@ const AltSimpleMap = ({
 
     const color = "red";
 
-    let icons = [<i className="fa-solid fa-map-pin"></i>];
+    // let icons = [<i className="fa-solid fa-map-pin"></i>];
     let iconClass = "fa-solid fa-map-pin";
 
     return (
@@ -101,7 +101,7 @@ const AltSimpleMap = ({
         )}
 
         <div className="marker-icon">
-          <i className={iconClass} style={{ color }}></i>
+          <i className={iconClass} style={{ color, zIndex: 995 }}></i>
         </div>
       </div>
     );
@@ -146,6 +146,7 @@ const AltSimpleMap = ({
           ) : (
             <>
               <div className="map-container-container">
+                <p class="the-plan">THE MAP</p>
                 <div
                   className="map-container"
                   style={{ height: "45vh", width: "auto" }}

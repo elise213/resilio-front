@@ -16,6 +16,10 @@
   background-color: darkgreen;
 }
 
+.list-container {
+  margin-top: 50px;
+}
+
 .scroll-title {
   font-family: "AwsumSans";
   font-size: 20px;
@@ -35,6 +39,7 @@
 }
 
 .decknew-navbar {
+  border-radius: 0 30px 0 0;
   display: flex;
   justify-content: center;
   overflow-y: auto;
@@ -44,7 +49,7 @@
   height: 100%;
   z-index: 996;
   position: fixed;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: #464646;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: left 0.3s ease;
   direction: rtl;
@@ -101,14 +106,14 @@
 
 /* X */
 .deckclose-icon-nav {
-  font-size: 30px;
+  font-size: 20px;
   left: -45px;
   top: 10px;
   color: lavender;
 }
 
 .deckclose-icon-nav:hover {
-  color: darksalmon !important;
+  color: lightgreen !important;
 }
 
 .deckclose-icon-nav.deckopen-nav {
@@ -124,8 +129,11 @@
 
 .deckclose-icon-nav:hover,
 .deckopen-icon-nav:hover {
-  color: var(--new) !important;
   cursor: pointer;
+}
+
+.deckclose-icon-nav:hover {
+  color: lightgreen !important;
 }
 
 .deckopen-icon-nav {
@@ -133,7 +141,7 @@
 }
 
 .deckopen-icon-nav:hover {
-  color: lavender !important;
+  color: lightgreen !important;
 }
 
 .fa-deckbox {

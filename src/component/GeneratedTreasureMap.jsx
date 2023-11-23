@@ -5,6 +5,7 @@ import { ModalInfo } from "./ModalInfo";
 import Styles from "../styles/generatedTreasureMap.css";
 import GoogleMapReact from "google-map-react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import MyDocument from "./MyDocument";
 
 const GeneratedTreasureMap = ({
   closeModal,
@@ -106,27 +107,15 @@ const GeneratedTreasureMap = ({
       >
         <div className="options-path-map"></div>
         <div className="options">
-          <p className="option">Download Path</p>
-          <p className="option">Send Path to Phone</p>
-          <p className="option">Send Path to Email</p>
+          <p className="option">Send Plan to Phone</p>
+          <p className="option">Email Plan</p>
 
-          <PDFDownloadLink
-            document={
-              <MyDocument
-                closeModal={closeModal}
-                openModal={openModal}
-                selectedResources={selectedResources}
-                setHoveredItem={setHoveredItem}
-                hoveredItem={hoveredItem}
-              />
-            }
-            fileName="mypath.pdf"
-          >
+          <PDFDownloadLink document={<MyDocument />} fileName="mypath.pdf">
             {({ blob, url, loading, error }) =>
               loading ? "Loading document..." : "Download Plan"
             }
           </PDFDownloadLink>
-          <p className="option">Print Path</p>
+          <p className="option">Print Plan</p>
         </div>
         {/* <div
           className="map-container-treasure"

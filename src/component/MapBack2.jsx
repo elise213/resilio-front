@@ -3,8 +3,7 @@ import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import ResourceCard from "./ResourceCard";
 import MyDocument from "./MyDocument";
-
-import "../styles/mapBack.css";
+import Styles from "../styles/mapBack.css";
 
 const MapBack = ({
   setBackSide,
@@ -124,10 +123,21 @@ const MapBack = ({
 
     let icons = <i className="fa-solid fa-map-pin"></i>;
 
+    let iconClass = "fa-solid fa-map-pin";
+    if (text === "You are here!") {
+      iconClass = "fa-solid fa-location-arrow";
+      color = "blue";
+    }
+
     return (
       <div
         className="marker"
-        style={{ cursor: "pointer", color, position: "relative" }}
+        style={{
+          cursor: "pointer",
+          color: "red",
+          position: "relative",
+          zIndex: 996,
+        }}
         onMouseEnter={() => {
           setIsHovered(true);
           setHoveredItem(resource);
@@ -144,12 +154,11 @@ const MapBack = ({
               position: "absolute",
               bottom: "100%",
               width: "300px",
-              zIndex: 99999,
+              zIndex: 9999999,
             }}
           >
             <ResourceCard
               key={resource.name}
-              // key={`resource-${resource.id}-${index}`}
               item={resource}
               openModal={openModal}
               closeModal={closeModal}
@@ -172,45 +181,26 @@ const MapBack = ({
       {selectedResources[0] ? (
         <div className="path">
           <div className="selected-resources">
-            <p>THE PLAN</p>
-            {selectedResources.map((resource, index) => (
-              <React.Fragment key={resource.id}>
-                <div
-                  className="selected-item"
-                  onClick={() => openModal(resource)}
-                >
-                  <div className="path-item">
-                    <span className="path-name">{resource.name}</span>
-                  </div>
-                  <div className="bottom-row-path">
-                    <button
-                      className="remove-path"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        removeSelectedResource(resource.id);
-                      }}
-                    >
-                      Remove From Plan
-                      {/* <i className="fa-solid fa-x"></i> */}
-                    </button>
-                    <div className="path-icons">
-                      {renderCategoryIcons(resource.category)}
-                    </div>
-                  </div>
-
-                  {/* flip-horizontal class for every other image based on index */}
-                  {/* <img
-                    className={`path-img ${index % 2 ? "flip-horizontal" : ""}`}
-                    src={imagePath}
-                    alt={`Path to ${resource.name}`}
-                  /> */}
-                </div>
-              </React.Fragment>
-            ))}
-
+            <p className="the-plan">THE PLAN</p>
             <button className="createMyPath" onClick={handleCreateMyPathClick}>
-              View Plan
+              Save Your Plan
             </button>
+            <div className="grid-container">
+              {selectedResources.map((resource, index) => (
+                <ResourceCard
+                  key={resource.id}
+                  item={resource}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResources={selectedResources}
+                  addSelectedResource={addSelectedResource}
+                  removeSelectedResource={removeSelectedResource}
+                  setFavorites={setFavorites}
+                />
+              ))}
+            </div>
           </div>
         </div>
       ) : (

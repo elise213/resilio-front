@@ -17,6 +17,7 @@ const Navbar2 = ({
   setIsToolBoxOpen,
   setIsFavoritesOpen,
   toggleNav,
+  setOpenLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -112,7 +113,7 @@ const Navbar2 = ({
                   DONATE
                 </span>
 
-                <Login />
+                <Login setOpenLoginModal={setOpenLoginModal} />
               </div>
               <EmailList />
             </div>

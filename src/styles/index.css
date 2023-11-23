@@ -21,7 +21,7 @@
 }
 
 .no-scroll {
-  overflow: hidden;
+  overflow: hidden !important;
   height: 100%;
 }
 
@@ -34,14 +34,14 @@ body::before {
   bottom: 0;
   background-image: url(/assets/sky.png);
   background-size: 100vw 100vh;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   filter: brightness(70%);
   z-index: -1;
 }
 
 body {
   position: relative;
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 .radio {

@@ -1,4 +1,10 @@
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
+    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 .no-scroll {
   overflow: hidden;
@@ -54,24 +60,25 @@
 
 .nav-item,
 .nav-item a {
-  letter-spacing: 1.5px;
-  color: var(--color1);
+  letter-spacing: 2px;
+  color: lavender;
   text-decoration: none;
   font-size: 18px;
   z-index: 995;
   margin-bottom: 20px;
+  font-family: "AwsumSans";
 }
 
 .nav-item:hover,
 .nav-item a:hover {
   cursor: pointer;
-  color: var(--green2) !important;
+  color: lightgreen !important;
 }
 
 .nav-btn:active {
   cursor: pointer;
   text-decoration: underline;
-  color: #ffc400;
+  color: orange;
 }
 
 .navbar-logo {
@@ -122,7 +129,7 @@
   top: 0;
   position: fixed;
   z-index: 995;
-  background-color: rgba(128, 128, 128, 1);
+  background-color: #464646;
   border: none;
 }
 
@@ -148,8 +155,8 @@
 .close-icon-nav:focus,
 .open-icon-nav:hover,
 .open-icon-nav:focus {
-  /* color: lightgreen; */
-  color: rgb(177, 135, 177);
+  color: lightgreen !important;
+  /* color: rgb(177, 135, 177); */
   cursor: pointer;
 }
 
@@ -162,10 +169,10 @@
   display: flex;
   /* justify-content: flex-start; */
   transition: left 0.3s ease;
+  background-color: #464646;
 }
 
 .new-navbar.open-nav {
-  background-color: #464646;
   left: 0 !important;
   transition: left 0.3s ease;
 }
@@ -196,11 +203,11 @@
 .close-icon-nav {
   font-size: 30px;
   top: 20px;
-  color: black !important;
+  color: lavendar !important;
 }
 
 .close-icon-nav:hover {
-  color: var(--green2) !important;
+  color: lightgreen !important;
 }
 
 .close-icon-nav.open-nav {
@@ -218,11 +225,6 @@
 .nav-container {
   height: 100vh;
   position: absolute;
-}
-
-.new-navbar {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background-color: #333;
 }
 
 .new-navbar.open-nav {
