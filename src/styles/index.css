@@ -12,6 +12,7 @@
   overflow-x: hidden;
 }
 
+/* Regular font */
 @font-face {
   font-family: "AwsumSans";
   src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
@@ -20,11 +21,46 @@
   font-style: normal;
 }
 
+/* Bold font */
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSansBold-BF64c08556665f3.ttf") format("truetype"),
+    url("/fonts/AwsumSansBold-BF64c08556c5095.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Italic font */
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSansItalic-BF64c085561b552.otf") format("opentype"),
+    url("/fonts/AwsumSansItalic-BF64c0855662543.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Bold Italic font */
+@font-face {
+  font-family: "AwsumSans";
+  src: url("/fonts/AwsumSansBoldItalic-BF64c0855650966.ttf") format("truetype"),
+    url("/fonts/AwsumSansBoldItalic-BF64c08556c0bd3.otf") format("opentype");
+  font-weight: bold;
+  font-style: italic;
+}
+
 @font-face {
   font-family: "InterVariable";
   src: url("/fonts/Inter-VariableFont_slnt,wght.tff") format("truetype");
   font-weight: normal;
   font-style: normal;
+}
+
+.scroll-title {
+  font-family: "AwsumSans";
+  font-size: 20px;
+  text-align: center;
+  color: lavender;
+  /* margin-top: 10px; */
 }
 
 .no-scroll {
@@ -41,7 +77,6 @@ body::before {
   bottom: 0;
   background-image: url(/assets/sky.png);
   background-size: 100vw 100vh;
-  /* background-repeat: no-repeat; */
   filter: brightness(70%);
   z-index: -1;
 }
@@ -121,24 +156,6 @@ body {
   min-height: 100vh;
 }
 
-/* .fake-navbar {
-  position: fixed;
-  z-index: 994;
-  background-color: rgba(0, 0, 0, 0.3);
-  height: 45px;
-  width: 100%;
-  top: 0;
-} */
-
-/* .fake-navbar2 {
-  position: fixed;
-  z-index: 994;
-  background-color: rgba(0, 0, 0, 0.3);
-  height: 45px;
-  width: 100%;
-  bottom: 0;
-} */
-
 /* _____________________________________________________________Selection-*/
 
 .grand-container {
@@ -187,19 +204,21 @@ body {
   letter-spacing: 1.4x;
 }
 
-/* _____________________________________________________________CONTACT PAGE */
-.contact-page {
-  margin: 80px;
+.checkbox-row {
   display: flex;
-  justify-content: center;
+  justify-content: start;
+  margin-bottom: 10px;
 }
 
+/* _____________________________________________________________BUTTONS */
+
 .submit {
-  border: 1px solid var(--green2);
+  border: 1px solid blue;
+  color: rgb(149, 84, 19);
   border-radius: 3px;
-  font-family: "Carme", sans-serif;
+  font-family: "AwsumSans";
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background-color: var(--yellow);
+  background-color: var(--marascoral);
   width: 100%;
   height: 30px;
   font-size: medium;
@@ -207,17 +226,12 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
   letter-spacing: 1.1px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .submit:hover {
   background-color: lightgreen;
   border: 2px solid rgb(234, 153, 143);
-}
-
-.contact-page {
-  margin: 15px;
-  padding-top: 80px;
 }
 
 /* ______________________________________________________________SIZE < 700px */
@@ -244,8 +258,8 @@ body {
   }
 }
 
-.checkbox-row {
-  display: flex;
-  justify-content: start;
-  margin-bottom: 10px;
+@media screen and (max-width: 500px) {
+  .scroll-title {
+    font-size: 18px;
+  }
 }

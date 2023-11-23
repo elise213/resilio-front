@@ -15,7 +15,7 @@ const Contact = () => {
   useEffect(() => {
     let circle1;
     if (circleInstance.current) {
-      circle1 = new CircleType(circleInstance.current).radius(500);
+      circle1 = new CircleType(circleInstance.current).radius(300);
     }
     return () => {
       circle1 && circle1.destroy();
@@ -48,8 +48,8 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <div className="contact-call">
-        <span className="circle-font" ref={circleInstance}>
-          Get in touch
+        <span className="circle-font scroll-title" ref={circleInstance}>
+          Get In Touch !
         </span>
       </div>
 
@@ -91,7 +91,7 @@ const Contact = () => {
           </div>
         </div>
         <div className="form-col-full">
-          <button className="send-button" type="submit">
+          <button className="submit" type="submit">
             SEND
           </button>
         </div>

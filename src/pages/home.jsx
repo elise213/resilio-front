@@ -499,10 +499,6 @@ const Home = () => {
           </div>
         )}
 
-        <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-          {backSide ? "View The Map" : "Make A Plan"}
-        </button>
-
         {isGeneratedMapModalOpen && (
           <GeneratedTreasureMap
             closeModal={() => setIsGeneratedMapModalOpen(false)}
