@@ -17,7 +17,7 @@
 }
 
 .flip-button {
-  position: fixed;
+  position: absolute;
   top: 23px;
   right: 5px;
   min-width: 100px;

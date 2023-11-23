@@ -225,12 +225,8 @@ li {
     width: 170px !important;
   }
 
-  .path {
+  /* .path {
     flex-direction: column !important;
-  }
-
-  /* .map-container {
-    margin-top: 25px;
   } */
 
   .selected-resources {
