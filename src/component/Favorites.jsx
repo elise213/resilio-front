@@ -24,6 +24,7 @@ const Favorites = ({
   setFavorites,
   favorites,
   setOpenLoginModal,
+  openLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -95,16 +96,13 @@ const Favorites = ({
                 <>
                   <div className="favorites-warning-div">
                     <div className="scroll-title">
-                      <span
-                        onClick={() => {
-                          setOpenLoginModal(true);
-                        }}
-                      >
-                        Log in to save Resources
-                      </span>
+                      <span>Log in to save Resources</span>
                     </div>
                   </div>
-                  <Login />
+                  <Login
+                    openLoginModal={openLoginModal}
+                    setOpenLoginModal={setOpenLoginModal}
+                  />
                 </>
               ))}
 
