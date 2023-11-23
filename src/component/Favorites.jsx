@@ -94,17 +94,20 @@ const Favorites = ({
               (!(store.favorites.length > 0) && (
                 <>
                   <div className="favorites-warning-div">
-                    <div
-                      className="scroll-title"
-                      onClick={() => {
-                        setOpenLoginModal(true);
-                      }}
-                    >
-                      <span>Log in to save Resources</span>
+                    <div className="scroll-title">
+                      <span
+                        onClick={() => {
+                          setOpenLoginModal(true);
+                        }}
+                      >
+                        Log in to save Resources
+                      </span>
                     </div>
                   </div>
+                  <Login />
                 </>
               ))}
+
             {store.favorites && store.favorites.length > 0 ? (
               <div className="list-container">
                 <div className="scroll-title">
