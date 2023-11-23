@@ -109,7 +109,11 @@ const GeneratedTreasureMap = ({
           <p className="option">Send Plan to Phone</p>
           <p className="option">Email Plan</p>
 
-          <PDFDownloadLink document={<MyDocument />} fileName="mypath.pdf">
+          <PDFDownloadLink
+            document={<MyDocument />}
+            fileName="mypath.pdf"
+            className="option"
+          >
             {({ blob, url, loading, error }) =>
               loading ? "Loading document..." : "Download Plan"
             }
