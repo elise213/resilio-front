@@ -156,20 +156,18 @@
 .open-icon-nav:hover,
 .open-icon-nav:focus {
   color: lightgreen !important;
-  /* color: rgb(177, 135, 177); */
   cursor: pointer;
 }
 
-/* MIN WIDTH */
-/* @media screen and (max-width: 1000px) { */
 .new-navbar {
   width: 275px !important;
   left: -275px !important;
   height: 100%;
   display: flex;
-  /* justify-content: flex-start; */
+  justify-content: flex-start;
   transition: left 0.3s ease;
   background-color: #464646;
+  border-radius: 0 30px 0 0;
 }
 
 .new-navbar.open-nav {
@@ -201,7 +199,7 @@
 }
 
 .close-icon-nav {
-  font-size: 30px;
+  font-size: 20px;
   top: 20px;
   color: lavendar !important;
 }

@@ -27,7 +27,7 @@
 }
 
 .cent {
-  width: 80%;
+  min-width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
