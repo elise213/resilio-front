@@ -9,13 +9,7 @@ import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Login from "../component/Login";
 
-import {
-  SimpleMap,
-  Selection,
-  Loading,
-  ResourceCard,
-  Modal,
-} from "../component";
+import { Modal } from "../component";
 import ToolBox from "../component/ToolBox";
 
 const Home = () => {
@@ -43,24 +37,31 @@ const Home = () => {
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
   // REFS
-  const ulRef = useRef(null);
-  const resultsRef = useRef(null);
-  const fetchCounterRef = useRef(0);
-  const abortControllerRef = useRef(null);
+  // const ulRef = useRef(null);
+  // const resultsRef = useRef(null);
+  // const fetchCounterRef = useRef(0);
+  // const abortControllerRef = useRef(null);
 
   // STATES
   const [backSide, setBackSide] = useState(false);
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
   const [isDeckOpen, setIsDeckOpen] = useState(false);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
+  const [city, setCity] = useState(INITIAL_CITY_STATE);
+  const [isLocating, setIsLocating] = useState(false);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedResource, setSelectedResource] = useState(null);
+  const [zipInput, setZipInput] = useState("");
   const [hoveredItem, setHoveredItem] = useState(null);
 
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
   );
-
-  // const [showFront, setShowFront] = useState(true);
   const [searchingToday, setSearchingToday] = useState(false);
 
   const [categories, setCategories] = useState(
@@ -71,16 +72,6 @@ const Home = () => {
     INITIAL_GROUP_STATE(store.GROUP_OPTIONS)
   );
 
-  const [city, setCity] = useState(INITIAL_CITY_STATE);
-  const [isLocating, setIsLocating] = useState(false);
-  const [isScrolledToEnd, setIsScrolledToEnd] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedResource, setSelectedResource] = useState(null);
-  const [zipInput, setZipInput] = useState("");
-  const [isOverflowing, setIsOverflowing] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
-  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
   const [openLoginModal, setOpenLoginModal] = useState(false);
 
   // FUNCTIONS
@@ -90,6 +81,22 @@ const Home = () => {
     setIsToolBoxOpen(false);
     setIsDeckOpen(false);
     setIsNavOpen(!isNavOpen);
+  };
+
+  const togglefavorites = () => {
+    console.log("togglefavorites clicked");
+    setIsNavOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(false);
+    setIsFavoritesOpen(!isFavoritesOpen);
+  };
+
+  const toggleCardDeck = () => {
+    console.log("toggleCardDeck clicked");
+    setIsFavoritesOpen(false);
+    setIsNavOpen(false);
+    setIsToolBoxOpen(false);
+    setIsDeckOpen(!isDeckOpen);
   };
 
   // Function to update session storage whenever selectedResources changes
@@ -102,7 +109,6 @@ const Home = () => {
 
     setSelectedResources((prevResources) => {
       if (prevResources.length >= 10) {
-        // Display an alert if the limit is reached
         Swal.fire({
           // icon: "error",
           title: "Please limit the path to 10 resources at a time",
@@ -169,20 +175,6 @@ const Home = () => {
     return lng;
   };
 
-  const togglefavorites = () => {
-    setIsNavOpen(false);
-    setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
-    setIsFavoritesOpen(!isFavoritesOpen);
-  };
-
-  const toggleCardDeck = () => {
-    setIsFavoritesOpen(false);
-    setIsNavOpen(false);
-    setIsToolBoxOpen(false);
-    setIsDeckOpen(!isDeckOpen);
-  };
-
   const fetchBounds = async (query, isZip = false) => {
     let apiUrl;
     if (isZip) {
@@ -192,7 +184,6 @@ const Home = () => {
     }
     const response = await fetch(apiUrl);
     const data = await response.json();
-    // console.log("Raw API response:", JSON.stringify(data.results[0].geometry));
 
     const location = data.results[0]?.geometry?.location;
     let bounds =
@@ -212,8 +203,6 @@ const Home = () => {
         },
       };
     }
-    // console.log("Location:", location);
-    // console.log("Bounds:", bounds);
     return data;
   };
 
@@ -296,20 +285,10 @@ const Home = () => {
     }
   };
 
+  // USE EFFECTS
   useEffect(() => {
     geoFindMe();
   }, []);
-
-  // USE EFFECTS
-
-  useEffect(() => {
-    const body = document.body;
-    if (isDeckOpen || isNavOpen || isFavoritesOpen || isToolBoxOpen) {
-      body.classList.add("no-scroll");
-    } else {
-      body.classList.remove("no-scroll");
-    }
-  }, [isDeckOpen, isNavOpen, isFavoritesOpen, isToolBoxOpen]);
 
   useEffect(() => {
     actions.setSchedules();
@@ -327,20 +306,6 @@ const Home = () => {
     };
     fetchData();
   }, [city.bounds]);
-
-  useEffect(() => {
-    const checkOverflow = () => {
-      if (resultsRef.current) {
-        const { scrollWidth, clientWidth } = resultsRef.current;
-        setIsOverflowing(scrollWidth > clientWidth); // Set isOverflowing to true if content is overflowing
-      }
-    };
-    checkOverflow();
-    window.addEventListener("resize", checkOverflow); // Call whenever the window is resized
-    return () => {
-      window.removeEventListener("resize", checkOverflow);
-    };
-  }, [store.boundaryResults]);
 
   useEffect(() => {
     if (zipInput && zipInput.length === 5) {
@@ -365,24 +330,6 @@ const Home = () => {
     };
     fetchData();
   }, [categories, days, city, groups, searchingToday]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (ulRef.current) {
-        const { scrollWidth, clientWidth, scrollLeft } = ulRef.current;
-        const atEndOfScroll = scrollWidth - clientWidth - scrollLeft < 10;
-        setIsScrolledToEnd(atEndOfScroll);
-      }
-    };
-    if (ulRef.current) {
-      ulRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (ulRef.current) {
-        ulRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     actions.initializeScreenSize();
@@ -567,6 +514,11 @@ const Home = () => {
         >
           Your Saved Resources
         </button>
+
+        <div className="trouble">
+          <p>Is Deck Open? {isDeckOpen.toString()}</p>
+          <p>Is Favorites Open? {isFavoritesOpen.toString()}</p>
+        </div>
 
         <button
           onClick={toggleCardDeck}

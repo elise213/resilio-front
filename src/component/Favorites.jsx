@@ -5,20 +5,13 @@ import ResourceCard from "./ResourceCard";
 import Login from "./Login";
 
 const Favorites = ({
-  isDeckOpen,
-  isNavOpen,
   isFavoritesOpen,
-  isToolBoxOpen,
-  setIsDeckOpen,
-  setIsNavOpen,
-  setIsToolBoxOpen,
   setIsFavoritesOpen,
   openModal,
   closeModal,
   modalIsOpen,
   setModalIsOpen,
   selectedResources,
-  selectedResource,
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
@@ -48,15 +41,6 @@ const Favorites = ({
       // Clean up the event listener
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isFavoritesOpen]);
-
-  useEffect(() => {
-    const body = document.body;
-    if (isFavoritesOpen) {
-      body.classList.add("favoritesno-scroll");
-    } else {
-      body.classList.remove("favoritesno-scroll");
-    }
   }, [isFavoritesOpen]);
 
   return (
