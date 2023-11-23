@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "../styles/mapSettings2.css";
+import Buttons from "./Buttons";
 
 const MapSettings = ({
   handleZipInputChange,
@@ -13,6 +14,8 @@ const MapSettings = ({
   setIsToolBoxOpen,
   isNavOpen,
   isDeckOpen,
+  togglefavorites,
+  toggleCardDeck,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
 
@@ -50,6 +53,37 @@ const MapSettings = ({
           </div>
         </div>
       </div>
+      <Buttons
+        isDeckOpen={isDeckOpen}
+        isNavOpen={isNavOpen}
+        isFavoritesOpen={isFavoritesOpen}
+        isToolBoxOpen={isToolBoxOpen}
+        toggleCardDeck={toggleCardDeck}
+        togglefavorites={togglefavorites}
+      />
+      {/* <button
+        ref={toggleFavoritesButtonRef}
+        onClick={togglefavorites}
+        className={`favoritesopen-icon-nav ${
+          !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
+            ? "favoritesclosed"
+            : ""
+        }`}
+      >
+        Your Saved Resources
+      </button>
+
+      <button
+        ref={toggleDeckButtonRef}
+        onClick={toggleCardDeck}
+        className={`deckopen-icon-nav ${
+          !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
+            ? "deckclosed"
+            : ""
+        }`}
+      >
+        Resources in the map area
+      </button> */}
     </div>
   );
 };

@@ -3,7 +3,7 @@
   z-index: 9997;
   width: 100%;
   display: flex;
-  /* margin-bottom: 90px; */
+  flex-direction: column;
 }
 
 .map-settings-container {
@@ -50,7 +50,6 @@
 
 .map-settings-buttons {
   z-index: 999;
-  /* flex-direction: column; */
   margin: 10px;
   align-items: center;
 }
