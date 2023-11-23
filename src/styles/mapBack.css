@@ -172,7 +172,7 @@ li {
   display: flex;
   /* width: 100vw; */
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 80px;
 }
 
 .selected-item-content {
@@ -182,11 +182,10 @@ li {
 .createMyPath {
   align-self: center;
   min-width: 100px;
-  font-size: 15px;
+  font-size: 13px;
   border-radius: 3px;
   text-align: center;
   bottom: 250px;
-  font-size: 20px;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
   background-color: var(--marascoral);
@@ -217,9 +216,6 @@ li {
 }
 
 @media screen and (max-width: 700px) {
-  .back-container {
-    margin-top: 30px;
-  }
   .selected-resources {
     margin-top: 0px;
   }
