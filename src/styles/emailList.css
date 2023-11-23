@@ -20,7 +20,7 @@
 .socials {
   display: flex;
   font-size: xx-large;
-  color: salmon;
+  color: var(--marascoral);
   width: 100%;
   justify-content: space-between;
   box-sizing: border-box;
@@ -35,7 +35,7 @@
 .emailListInput {
   width: 100%;
   border: none;
-  border-bottom: 1px solid salmon !important;
+  border-bottom: 1px solid var(--marascoral) !important;
   background-color: transparent;
   /* padding: 10px; */
   font-family: "Urbanist", sans-serif;
@@ -69,7 +69,7 @@
   border: none;
   font-size: x-large;
   background-color: transparent;
-  color: salmon;
+  color: var(--marascoral);
   padding: 0;
 }
 
