@@ -24,6 +24,8 @@ const MapBack = ({
   setIsToolBoxOpen,
   toggleCardDeck,
   togglefavorites,
+  backSide,
+  setBackSide,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -206,11 +208,15 @@ const MapBack = ({
           </div>
         </div>
       ) : (
-        <p className="scroll-title">
-          Add Resources <br /> To Your Plan
-        </p>
+        <div className="path-warning-div">
+          <p className="scroll-title">
+            Add Resources <br /> To Your Plan
+          </p>
+        </div>
       )}
       <Buttons
+        setBackSide={setBackSide}
+        backSide={backSide}
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
