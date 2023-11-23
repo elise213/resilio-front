@@ -5,20 +5,13 @@ import ResourceCard from "./ResourceCard";
 import Login from "./Login";
 
 const Favorites = ({
-  isDeckOpen,
-  isNavOpen,
   isFavoritesOpen,
-  isToolBoxOpen,
-  setIsDeckOpen,
-  setIsNavOpen,
-  setIsToolBoxOpen,
   setIsFavoritesOpen,
   openModal,
   closeModal,
   modalIsOpen,
   setModalIsOpen,
   selectedResources,
-  selectedResource,
   addSelectedResource,
   removeSelectedResource,
   setFavorites,
@@ -26,12 +19,21 @@ const Favorites = ({
   setOpenLoginModal,
   openLoginModal,
   togglefavorites,
+  toggleButtonRef,
 }) => {
   const { store, actions } = useContext(Context);
 
-  // Function to handle click outside the favorites area
   const handleClickOutside = (event) => {
     const favoritesNav = document.querySelector(".favoritesnew-navbar");
+
+    // Check if the clicked element is the toggle button
+    if (
+      toggleButtonRef.current &&
+      toggleButtonRef.current.contains(event.target)
+    ) {
+      return; // Ignore clicks on the toggle button
+    }
+
     if (
       favoritesNav &&
       !favoritesNav.contains(event.target) &&
@@ -41,23 +43,12 @@ const Favorites = ({
     }
   };
 
-  // Set up the event listener
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
-      // Clean up the event listener
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isFavoritesOpen]);
-
-  useEffect(() => {
-    const body = document.body;
-    if (isFavoritesOpen) {
-      body.classList.add("favoritesno-scroll");
-    } else {
-      body.classList.remove("favoritesno-scroll");
-    }
-  }, [isFavoritesOpen]);
+  }, [isFavoritesOpen, toggleButtonRef]);
 
   return (
     <>

@@ -102,10 +102,13 @@ hr {
 
 .option {
   margin: 5px 0;
+  text-decoration: none;
+  /* color: lavender; */
+  color: rgb(128, 41, 0);
 }
 
 .option:hover {
-  color: lavender !important;
+  color: lightgreen !important;
   cursor: pointer;
 }
 
@@ -118,12 +121,10 @@ hr {
   margin-top: 20px;
   font-family: "AwsumSans", sans-serif;
   margin: 15px 0;
-  border: 8px double blue;
-  background-color: white;
-  /* background-color: var(--marascoral); */
-  color: rgb(128, 41, 0);
-  border-radius: 4px !important;
-  width: 300px;
+  border: 2px solid blue;
+  background-color: var(--marascoral);
+  border-radius: 100%;
+  padding: 30px;
 }
 
 .title-box {

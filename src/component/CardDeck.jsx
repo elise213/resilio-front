@@ -5,13 +5,7 @@ import ResourceCard from "./ResourceCard";
 
 const CardDeck = ({
   isDeckOpen,
-  isNavOpen,
-  isFavoritesOpen,
-  isToolBoxOpen,
   setIsDeckOpen,
-  setIsNavOpen,
-  setIsToolBoxOpen,
-  setIsFavoritesOpen,
   openModal,
   closeModal,
   modalIsOpen,
@@ -21,6 +15,7 @@ const CardDeck = ({
   removeSelectedResource,
   setFavorites,
   toggleCardDeck,
+  toggleButtonRef,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,6 +23,15 @@ const CardDeck = ({
   // Function to handle click outside the card deck area
   const handleClickOutside = (event) => {
     const deckNav = document.querySelector(".decknew-navbar");
+
+    // Check if the clicked element is the toggle button
+    if (
+      toggleButtonRef.current &&
+      toggleButtonRef.current.contains(event.target)
+    ) {
+      return; // Ignore clicks on the toggle button
+    }
+
     if (deckNav && !deckNav.contains(event.target) && isDeckOpen) {
       setIsDeckOpen(false);
     }
@@ -40,7 +44,7 @@ const CardDeck = ({
       // Clean up the event listener
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isDeckOpen]);
+  }, [isDeckOpen, toggleButtonRef]);
 
   return (
     <>

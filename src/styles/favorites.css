@@ -88,24 +88,6 @@
   color: lightgreen;
 }
 
-/* favorites */
-.favoritesopen-icon-nav {
-  position: absolute !important;
-  right: -300px;
-  font-size: 16px;
-  border-radius: 3px;
-  text-align: center;
-  font-family: "AwsumSans", sans-serif;
-  color: rgb(128, 41, 0);
-  background-color: lavender;
-  border: 1px solid blue;
-  top: 80px;
-}
-
-.favoritesopen-icon-nav.favoritesclosed {
-  right: 10px !important;
-}
-
 /* X */
 .favoritesclose-icon-nav {
   font-size: 20px;
