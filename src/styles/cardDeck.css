@@ -40,8 +40,6 @@
 
 .decknew-navbar {
   border-radius: 0 30px 0 0;
-  /* display: flex;
-  justify-content: center; */
   overflow-y: auto;
   bottom: 0;
   left: -300px;
@@ -87,9 +85,8 @@
 
 /* deckBOX */
 .deckopen-icon-nav {
-  left: -400px;
-  bottom: 6px;
-  padding: 0 5px;
+  /* bottom: 6px; */
+  right: -300px;
   font-size: 16px;
   border-radius: 3px;
   text-align: center;
@@ -97,10 +94,11 @@
   color: rgb(128, 41, 0);
   background-color: lavender;
   border: 1px solid blue;
+  top: 110px;
 }
 
 .deckopen-icon-nav.deckclosed {
-  left: 40px !important;
+  right: 10px !important;
 }
 
 .search-bar {
@@ -136,7 +134,7 @@
 .deckopen-icon-nav {
   position: fixed !important;
   z-index: 996;
-  transition: left 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .deckclose-icon-nav:hover,
@@ -146,10 +144,6 @@
 
 .deckclose-icon-nav:hover {
   color: lightgreen !important;
-}
-
-.deckopen-icon-nav {
-  color: var(--new);
 }
 
 .fa-deckbox {

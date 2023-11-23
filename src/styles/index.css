@@ -114,23 +114,23 @@ body {
   min-height: 100vh;
 }
 
-.fake-navbar {
+/* .fake-navbar {
   position: fixed;
   z-index: 994;
   background-color: rgba(0, 0, 0, 0.3);
   height: 45px;
   width: 100%;
   top: 0;
-}
+} */
 
-.fake-navbar2 {
+/* .fake-navbar2 {
   position: fixed;
   z-index: 994;
   background-color: rgba(0, 0, 0, 0.3);
   height: 45px;
   width: 100%;
   bottom: 0;
-}
+} */
 
 /* _____________________________________________________________Selection-*/
 
