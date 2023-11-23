@@ -34,19 +34,22 @@ const ToolBox = ({
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const nav = document.querySelector(".toolnew-navbar");
-      if (nav && !nav.contains(event.target) && isToolBoxOpen) {
-        setIsToolBoxOpen(false);
-      }
+  // Function to handle click outside the navbar area
+  const handleClickOutside = (event) => {
+    const navbar = document.querySelector(".new-navbar");
+    if (navbar && !navbar.contains(event.target) && isNavOpen) {
+      setIsNavOpen(false);
+    }
+  };
 
-      document.addEventListener("click", handleClickOutside);
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
+  // Set up the event listener
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Clean up the event listener
+      document.removeEventListener("click", handleClickOutside);
     };
-  }, [isToolBoxOpen]);
+  }, [isNavOpen]);
 
   useEffect(() => {
     const body = document.body;
@@ -63,18 +66,6 @@ const ToolBox = ({
         <div
           className={`toolnew-navbar ${isToolBoxOpen ? "toolopen-nav" : ""}`}
         >
-          {/* {!backSide && (
-            <button
-              onClick={toggleNav}
-              className={`toolopen-icon-nav ${
-                !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                  ? "toolclosed"
-                  : ""
-              }`}
-            >
-              Filter Resources
-            </button>
-          )} */}
           <div
             onClick={toggleNav}
             className={`toolclose-icon-nav ${
@@ -83,7 +74,6 @@ const ToolBox = ({
           >
             <i className="fa-solid fa-x"></i>
           </div>
-          {/* </div> */}
 
           {store.CATEGORY_OPTIONS &&
           store.DAY_OPTIONS &&

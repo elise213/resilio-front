@@ -152,10 +152,6 @@
   color: var(--new);
 }
 
-.deckopen-icon-nav:hover {
-  color: lightgreen !important;
-}
-
 .fa-deckbox {
   z-index: 999999999 !important;
 }

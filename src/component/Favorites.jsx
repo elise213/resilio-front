@@ -35,17 +35,24 @@ const Favorites = ({
     setIsFavoritesOpen(!isFavoritesOpen);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const nav = document.querySelector("favoritesnew-navbar");
-      if (nav && !nav.contains(event.target) && isFavoritesOpen) {
-        setIsFavoritesOpen(false);
-      }
+  // Function to handle click outside the favorites area
+  const handleClickOutside = (event) => {
+    const favoritesNav = document.querySelector(".favoritesnew-navbar");
+    if (
+      favoritesNav &&
+      !favoritesNav.contains(event.target) &&
+      isFavoritesOpen
+    ) {
+      setIsFavoritesOpen(false);
+    }
+  };
 
-      document.addEventListener("click", handleClickOutside);
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
+  // Set up the event listener
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      // Clean up the event listener
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [isFavoritesOpen]);
 
