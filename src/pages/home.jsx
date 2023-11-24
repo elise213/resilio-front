@@ -503,18 +503,23 @@ const Home = () => {
           </>
         )}
         {modalIsOpen && (
-          <div>
+          <>
             <div className="modal-overlay"></div>
             <div className="modal-div">
               <Modal
+                removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
                 isLoggedIn={isLoggedIn}
+                selectedResources={selectedResources}
+                addSelectedResource={addSelectedResource}
+                item={selectedResource}
+                setFavorites={setFavorites}
               />
             </div>
-          </div>
+          </>
         )}
 
         {isGeneratedMapModalOpen && (

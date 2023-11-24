@@ -85,8 +85,12 @@
   font-family: "Urbanist", sans-serif !important;
   letter-spacing: 1px;
   margin: 5px;
-  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2); */
   font-size: 12px;
+}
+
+.add-path span,
+.remove-path-card span {
+  display: block; /* Makes each span take up the full width, causing a line break */
 }
 
 .resource-title {

@@ -12,6 +12,12 @@ const Modal = ({
   closeModal,
   setModalIsOpen,
   isLoggedIn,
+
+  removeSelectedResource,
+  selectedResources,
+  addSelectedResource,
+  item,
+  setFavorites,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -21,8 +27,54 @@ const Modal = ({
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  const handleSelectResource = (resource) => {
+    addSelectedResource(resource);
+  };
+
+  const handleDeselectResource = (resourceId) => {
+    removeSelectedResource(resourceId);
+  };
 
   useEffect(() => {
+    const storedFavorites = JSON.parse(
+      sessionStorage.getItem("favorites") || "[]"
+    );
+    const isItemFavorited = storedFavorites.some(
+      (favorite) => favorite.name === item.name
+    );
+    setIsFavorited(isItemFavorited);
+  }, []);
+
+  const toggleFavorite = (event) => {
+    event.stopPropagation();
+    setIsFavorited(!isFavorited);
+
+    if (isFavorited) {
+      actions.removeFavorite(item.name, setFavorites);
+    } else {
+      actions.addFavorite(item.name, setFavorites);
+    }
+  };
+
+  const isSelected =
+    Array.isArray(selectedResources) &&
+    selectedResources.some((resource) => resource.id === item.id);
+
+  const handleToggleSelectResource = (event) => {
+    event.stopPropagation();
+    console.log("hnadleToggleSelectR");
+    if (isSelected) {
+      handleDeselectResource(item.id);
+    } else {
+      handleSelectResource(item);
+    }
+  };
+
+  useEffect(() => {
+    actions.getAverageRating(resource.id, setAverageRating);
     actions.getComments(resource.id, setComments);
   }, [resource.id, actions]);
 
@@ -54,8 +106,6 @@ const Modal = ({
       }
     });
   };
-
-  console.log("actions", actions);
 
   // REFS
   const modalContentRef = useRef(null);
@@ -133,6 +183,36 @@ const Modal = ({
               <i className="fa-solid fa-x"></i>
             </p>
           </div>
+          {isLoggedIn && (
+            <div className="modal-button-container">
+              <button
+                className="add-favorite"
+                onClick={(event) => toggleFavorite(event)}
+              >
+                {isFavorited ? (
+                  <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
+                ) : (
+                  <i className="fa-regular fa-heart"></i>
+                )}
+              </button>
+              <button
+                className={isSelected ? "remove-path-card" : "add-path"}
+                onClick={handleToggleSelectResource}
+              >
+                {isSelected ? (
+                  <>
+                    <span>Remove</span>
+                    <span>from Plan</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Add</span>
+                    <span>to Plan</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
           <div className="modal-title-div">
             <div className="icon-box">
               {categories.map((category, index) => {
@@ -151,16 +231,24 @@ const Modal = ({
             <div className="title-box">
               <span>{resource.name}</span>
             </div>
+            <div className="resource-rating">
+              {/* <p>Average Rating:</p> */}
+              <Rating
+                name="read-only"
+                value={averageRating}
+                precision={0.5}
+                readOnly
+              />
+            </div>
           </div>
+          {isLoggedIn && (
+            <div className="rate-this-resource-toggle">
+              <button onClick={() => setShowRating(true)} className="submit">
+                Rate this resource
+              </button>
+            </div>
+          )}
         </div>
-        {/* Rating Section Toggle */}
-        {!showRating && isLoggedIn && (
-          <div className="rate-this-resource-toggle">
-            <button onClick={() => setShowRating(true)} className="submit">
-              Rate this resource
-            </button>
-          </div>
-        )}
 
         <div className="modal-body">
           <ModalInfo
@@ -168,70 +256,71 @@ const Modal = ({
             schedule={resource.schedule}
             res={resource}
           />
+          <div className="full-comments-section">
+            {comments.length > 0 && (
+              <div className="comments-display">
+                <div className="comment-heading">
+                  <p>User Reviews</p>
+                </div>
+                {comments.map((comment, index) => {
+                  // Parsing the date string
+                  const date = new Date(comment.created_at);
 
-          {comments.length > 0 && (
-            <div className="comments-display">
-              <div className="comment-heading">
-                <p>User Reviews</p>
+                  // Formatting the date
+                  const formattedDate =
+                    date.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    }) +
+                    " at " +
+                    date.toLocaleTimeString("en-US", {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    });
+
+                  return (
+                    <>
+                      <div key={index} className="comment-div">
+                        <div className="comment-content-div">
+                          <p className="comment-content">
+                            "{comment.comment_cont}"
+                          </p>
+                        </div>
+                        <div className="comment-info">
+                          <div className="comment-user-info">
+                            <p className="comment-info-username">
+                              <i class="fa-solid fa-user"></i> {comment.user_id}{" "}
+                            </p>
+                          </div>
+                          <div className="comment-info-date">
+                            <p className="comment-info-content">
+                              {formattedDate}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
               </div>
-              {comments.map((comment, index) => {
-                // Parsing the date string
-                const date = new Date(comment.created_at);
+            )}
 
-                // Formatting the date
-                const formattedDate =
-                  date.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }) +
-                  " at " +
-                  date.toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                  });
-
-                return (
-                  <>
-                    <div key={index} className="comment-div">
-                      <div className="comment-content-div">
-                        <p className="comment-content">
-                          "{comment.comment_cont}"
-                        </p>
-                      </div>
-                      <div className="comment-info">
-                        <div className="comment-user-info">
-                          <p className="comment-info-username">
-                            <i class="fa-solid fa-user"></i> {comment.user_id}{" "}
-                          </p>
-                        </div>
-                        <div className="comment-info-date">
-                          <p className="comment-info-content">
-                            {formattedDate}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
-            </div>
-          )}
-
-          {isLoggedIn && (
-            <div className="comment-section">
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Add a comment..."
-                maxLength="280"
-              ></textarea>
-              <button className="submit" onClick={handleCommentSubmit}>
-                Submit Comment
-              </button>
-            </div>
-          )}
+            {isLoggedIn && (
+              <div className="comment-section">
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder=" Add a review..."
+                  maxLength="280"
+                ></textarea>
+                <button className="submit" onClick={handleCommentSubmit}>
+                  Submit Review
+                </button>
+              </div>
+            )}
+          </div>
 
           <div className="modal-footer">
             <p className="problem">
