@@ -4,19 +4,28 @@ import { ModalMap } from "./ModalMap";
 import arrow from "/assets/coralarrow.png";
 import styles from "../styles/resourceModal.css";
 
-export const ModalInfo = (props) => {
+export const ModalInfo = ({
+  res,
+  id,
+  isLoggedIn,
+  isFavorited,
+  isSelected,
+  handleToggleSelectResource,
+  setShowRating,
+  toggleFavorite,
+}) => {
   const { store, actions } = useContext(Context);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const images = [
-    props.res.image,
-    props.res.image2,
-    props.res.image3,
-    props.res.image4,
-    props.res.image5,
+    res.image,
+    res.image2,
+    res.image3,
+    res.image4,
+    res.image5,
   ].filter(Boolean);
 
-  const res = props.res || {};
+  // const res = res || {};
 
   function filterNonNullValues(schedule) {
     const result = {};
@@ -86,7 +95,7 @@ export const ModalInfo = (props) => {
   }
 
   const currentSchedule =
-    store.schedules.find((each) => each.resource_id === props.id) || null;
+    store.schedules.find((each) => each.resource_id === id) || null;
   const schedule2 = filterNonNullValues(currentSchedule);
   const formattedSchedule = {};
 
@@ -133,6 +142,33 @@ export const ModalInfo = (props) => {
       {/* DESCRIPTION */}
       {res.description && (
         <div className="description-div">
+          {isLoggedIn && (
+            <div className="modal-button-container">
+              <button
+                className="add-favorite"
+                onClick={(event) => toggleFavorite(event)}
+              >
+                {isFavorited ? (
+                  <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
+                ) : (
+                  <i className="fa-regular fa-heart"></i>
+                )}
+              </button>
+              <button
+                className={isSelected ? "remove-path-card" : "add-path"}
+                onClick={handleToggleSelectResource}
+              >
+                {isSelected ? <>Remove from Plan</> : <>Add to Plan</>}
+              </button>
+
+              {/* <div className="rate-this-resource-toggle"> */}
+              <button onClick={() => setShowRating(true)} className="submit">
+                Rate
+              </button>
+              {/* </div> */}
+            </div>
+          )}
+
           <p className="modal-text description">{res.description}</p>
         </div>
       )}
@@ -176,29 +212,16 @@ export const ModalInfo = (props) => {
                 </div>
               </div>
             )}
-
-            {/* ADDRESS */}
-            {res.address && (
-              <div className="info">
-                <i className="fa-solid fa-map-pin"></i>
-                <a
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                    res.address
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="modal-text"
-                >
-                  {res.address}
-                </a>
-              </div>
-            )}
           </div>
         </div>
         {/* MAP */}
         {res.latitude && res.longitude && (
           <div className="modal-map">
-            <ModalMap latitude={res.latitude} longitude={res.longitude} />
+            <ModalMap
+              res={res}
+              latitude={res.latitude}
+              longitude={res.longitude}
+            />
           </div>
         )}
       </div>

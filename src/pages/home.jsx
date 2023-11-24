@@ -446,9 +446,6 @@ const Home = () => {
         toggleDeckButtonRef={toggleDeckButtonRef}
       />
 
-      <div className="fake-navbar"></div>
-      <div className="fake-navbar2"></div>
-
       <div className="grand-container">
         {message1Open && (
           <>
@@ -503,18 +500,23 @@ const Home = () => {
           </>
         )}
         {modalIsOpen && (
-          <div>
+          <>
             <div className="modal-overlay"></div>
             <div className="modal-div">
               <Modal
+                removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
                 isLoggedIn={isLoggedIn}
+                selectedResources={selectedResources}
+                addSelectedResource={addSelectedResource}
+                item={selectedResource}
+                setFavorites={setFavorites}
               />
             </div>
-          </div>
+          </>
         )}
 
         {isGeneratedMapModalOpen && (

@@ -52,19 +52,37 @@ export const ModalMap = (props) => {
   };
 
   return (
-    <div>
+    <>
+      {/* ADDRESS */}
+      {props.res.address && (
+        <div className="info-address">
+          <i className="fa-solid fa-map-pin"></i>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+              props.res.address
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="modal-text"
+          >
+            {props.res.address}
+          </a>
+        </div>
+      )}
       <div
         className="map-container-modal"
         style={{ height: "30vh", width: "100%", padding: "10px" }}
       >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyDOhqYOYIXvrk8lt2HQQLI8cS1O8FnZt9I" }}
+          bootstrapURLKeys={{
+            key: "AIzaSyDOhqYOYIXvrk8lt2HQQLI8cS1O8FnZt9I",
+          }}
           center={city.center}
           defaultZoom={14}
         >
           <Marker lat={lat} lng={lng} color="red" text="hi" />
         </GoogleMapReact>
       </div>
-    </div>
+    </>
   );
 };
