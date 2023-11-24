@@ -95,7 +95,6 @@ hr {
 .option {
   margin: 5px 0;
   text-decoration: none;
-  /* color: lavender; */
   color: rgb(128, 41, 0);
 }
 
@@ -106,20 +105,21 @@ hr {
 
 .options {
   position: fixed;
-  top: 0;
+  top: -14px;
   left: 0;
   color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: large;
   margin-top: 20px;
   font-family: "AwsumSans", sans-serif;
   margin: 15px 0;
   border: 2px solid blue;
   background-color: var(--marascoral);
+  opacity: 0.99;
   border-radius: 100%;
   padding: 30px;
+  z-index: 99;
 }
 
 .title-box {
@@ -180,5 +180,10 @@ hr {
   .title-box {
     font-size: 20px !important;
     margin: 3px 0 !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .option {
+    font-size: 14px;
   }
 }
