@@ -127,6 +127,10 @@
 }
 
 @media screen and (max-width: 440px) {
+  .modal-div {
+    width: 100vw;
+  }
+
   .scroll-search-results li {
     margin: 10px 8px 5px 8px !important;
   }
