@@ -38,7 +38,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       offerings: [],
       checked: false,
       loading: false,
-      // commentsList: [],
+      commentsList: [],
       categorySEarch: [],
       // when: [],
       schedules: [],
@@ -136,14 +136,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           mental: "Coral",
           substance: "DarkRed",
           sex: "Tomato",
-          // babies: "Yellow",
-          // lgbtq: "RosyBrown",
-          // kids: "Salmon",
-          // youth: "IndianRed",
-          // women: "DarkSalmon",
-          // seniors: "Teal",
-          // migrant: "DarkGreen",
-          // vets: "Olive",
         };
         if (colors[category]) {
           return { color: colors[category] };
@@ -755,6 +747,39 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({ loading: false });
             console.error("Error fetching data:", error);
           }
+        }
+      },
+
+      createRating: (resourceId, ratingValue, setRatingResponse) => {
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          const opts = {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify({
+              resource_id: resourceId,
+              rating_value: ratingValue,
+            }),
+          };
+          fetch(`${current_back_url}/api/rating`, opts)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "true") {
+                // The rating was successfully created
+                setRatingResponse(data);
+              } else {
+                // Handle failure (e.g., invalid rating value)
+                throw new Error(data.message || "Failed to create rating");
+              }
+            })
+            .catch((error) => {
+              console.error("Error creating rating:", error);
+            });
         }
       },
 

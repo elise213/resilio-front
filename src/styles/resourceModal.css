@@ -28,6 +28,19 @@
   margin-left: 20px;
 }
 
+.rate-this-resource {
+  position: fixed;
+  top: 50%;
+  bottom: 50%;
+  left: 50%;
+  right: 50%;
+  z-index: 9999999;
+  background-color: var(--marascoral);
+  height: 300px;
+  display: flex;
+  align-items: center;
+}
+
 .modal-header {
   display: flex;
   flex-shrink: 0;
@@ -36,7 +49,7 @@
   color: #000;
   font-size: x-large;
   background-color: rgb(218, 224, 245);
-  border-bottom: 3px solid salmon;
+  border-bottom: 3px solid var(--marascoral);
 }
 
 .modal-footer {

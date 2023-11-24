@@ -67,14 +67,14 @@
 }
 
 .remove-path-card {
-  background-color: lightgrey;
-  color: red;
+  background-color: lavender;
+  color: rgb(128, 41, 0);
   border: 1.5px solid red;
 }
 
 .add-path {
-  background-color: var(--yellow) !important;
-  color: black;
+  background-color: var(--marascoral) !important;
+  color: rgb(128, 41, 0);
   border: 1.5px solid var(--coral2);
 }
 

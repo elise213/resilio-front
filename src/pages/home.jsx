@@ -36,11 +36,8 @@ const Home = () => {
   const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
-  // REFS
-  // const ulRef = useRef(null);
-  // const resultsRef = useRef(null);
-  // const fetchCounterRef = useRef(0);
-  // const abortControllerRef = useRef(null);
+  // REF
+  const toggleButtonRef = useRef(null);
 
   // STATES
   const [backSide, setBackSide] = useState(false);
@@ -366,6 +363,7 @@ const Home = () => {
         setIsDeckOpen={setIsDeckOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
         toggleNav={toggleNav}
+        toggleButtonRef={toggleButtonRef}
       />
 
       {/* Filter */}
@@ -388,9 +386,11 @@ const Home = () => {
         setIsNavOpen={setIsNavOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
+        toggleButtonRef={toggleButtonRef}
       />
       {/* All Resources */}
       <CardDeck
+        toggleButtonRef={toggleButtonRef}
         toggleCardDeck={toggleCardDeck}
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
@@ -432,6 +432,7 @@ const Home = () => {
         setIsFavoritesOpen={setIsFavoritesOpen}
         setOpenLoginModal={setOpenLoginModal}
         openLoginModal={openLoginModal}
+        toggleButtonRef={toggleButtonRef}
       />
 
       <div className="fake-navbar"></div>
