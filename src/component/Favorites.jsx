@@ -98,7 +98,9 @@ const Favorites = ({
             {isLoggedIn && !store.favorites.length > 0 && (
               <>
                 <span className="scroll-title to-save-res">
-                  Your "Liked" resources will appear here! Add some!
+                  Your Liked{" "}
+                  <i style={{ color: "red" }} className="fa-solid fa-heart"></i>{" "}
+                  resources will appear here. Try adding some!
                 </span>
               </>
             )}

@@ -20,6 +20,11 @@ const Modal = ({
   const [showRating, setShowRating] = useState(false);
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    actions.getComments(resource.id, setComments);
+  }, [resource.id, actions]);
 
   const handleCommentSubmit = () => {
     if (comment.length > 280) {
@@ -163,15 +168,71 @@ const Modal = ({
             schedule={resource.schedule}
             res={resource}
           />
-          <div className="comment-section">
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Write a comment..."
-              maxLength="280"
-            ></textarea>
-            <button onClick={handleCommentSubmit}>Submit Comment</button>
-          </div>
+
+          {comments.length > 0 && (
+            <div className="comments-display">
+              <div className="comment-heading">
+                <p>User Reviews</p>
+              </div>
+              {comments.map((comment, index) => {
+                // Parsing the date string
+                const date = new Date(comment.created_at);
+
+                // Formatting the date
+                const formattedDate =
+                  date.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }) +
+                  " at " +
+                  date.toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  });
+
+                return (
+                  <>
+                    <div key={index} className="comment-div">
+                      <div className="comment-content-div">
+                        <p className="comment-content">
+                          "{comment.comment_cont}"
+                        </p>
+                      </div>
+                      <div className="comment-info">
+                        <div className="comment-user-info">
+                          <p className="comment-info-username">
+                            <i class="fa-solid fa-user"></i> {comment.user_id}{" "}
+                          </p>
+                        </div>
+                        <div className="comment-info-date">
+                          <p className="comment-info-content">
+                            {formattedDate}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          )}
+
+          {isLoggedIn && (
+            <div className="comment-section">
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Add a comment..."
+                maxLength="280"
+              ></textarea>
+              <button className="submit" onClick={handleCommentSubmit}>
+                Submit Comment
+              </button>
+            </div>
+          )}
+
           <div className="modal-footer">
             <p className="problem">
               Is there a problem with this information? {""}

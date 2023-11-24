@@ -101,6 +101,60 @@
   border-bottom: 3px solid var(--marascoral);
 }
 
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  margin: 20px;
+}
+
+p {
+  margin: 0;
+}
+
+.comment-div {
+  border: 2px solid lightgray;
+  padding: 5px;
+}
+
+.comment-content {
+  text-align: center;
+  margin: 5px 0;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+.comment-info-date {
+  font-size: 10px;
+  color: lightgray;
+  text-align: end;
+}
+
+.comment-user-info {
+  font-size: 13px;
+  color: lightgray;
+  text-align: start;
+}
+
+.comment-info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.comments-display {
+  min-width: 300px;
+}
+
+.comment-heading {
+  font-family: "AwsumSans", sans-serif;
+  border: 1px solid blue;
+  color: rgb(128, 41, 0);
+  justify-content: center;
+  display: flex;
+  background-color: lavender;
+}
+
 .modal-footer {
   border-top: 1px solid gray;
   display: flex;
@@ -192,11 +246,11 @@ body.modal-open {
 .resource-info {
   display: flex;
   width: 100%;
-  /* max-width: 500px; */
+  position: relative;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  padding: 15px;
 }
 
 .info {
