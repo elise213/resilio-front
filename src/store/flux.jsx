@@ -782,6 +782,49 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
+      // ____________________________COMMENTS FAVORITES RATINGS
+
+      createComment: async (resourceId, commentContent, callback) => {
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+
+        const opts = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            resource_id: resourceId,
+            comment_cont: commentContent,
+          }),
+        };
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/createComment`,
+            opts
+          );
+          if (response.status !== 200) {
+            const data = await response.json();
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: data.message || "Failed to submit the comment.",
+            });
+            return;
+          }
+          const data = await response.json();
+          callback(data);
+        } catch (error) {
+          console.error("Error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred while submitting the comment.",
+          });
+        }
+      },
 
       addFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
@@ -819,7 +862,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 ...prevState,
                 favorites: favorites,
               }));
-              return favorites; // Return the favorites array for the next .then()
+              return favorites;
             })
             .then((favorites) => {
               setFavorites([...favorites]);

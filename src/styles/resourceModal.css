@@ -8,6 +8,18 @@
   overflow: hidden;
 }
 
+.close-modal {
+  color: blue;
+  font-size: 30px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+.close-modal:hover {
+  color: lightgreen;
+}
+
 .modal-title-div {
   display: flex;
   flex-direction: column;
@@ -28,17 +40,54 @@
   margin-left: 20px;
 }
 
+.close-rating {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  font-size: 20px;
+  color: lavender;
+}
+
+.close-rating:hover {
+  color: lightgreen !important;
+}
+
+.what-do-you-think {
+  font-size: 18px;
+  text-align: center;
+  font-family: "Urbanist";
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
 .rate-this-resource {
-  position: fixed;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 300px;
+  height: 300px;
   top: 50%;
-  bottom: 50%;
   left: 50%;
-  right: 50%;
+  transform: translate(-50%, -50%);
   z-index: 9999999;
   background-color: var(--marascoral);
-  height: 300px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid blue;
+}
+
+.rate-this-resource-toggle button {
+  height: unset !important;
+}
+
+.rate-this-resource-toggle {
+  font-size: 12px;
+  background-color: var(--marascoral);
 }
 
 .modal-header {
@@ -53,7 +102,7 @@
 }
 
 .modal-footer {
-  border: none;
+  border-top: 1px solid gray;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,7 +135,7 @@
   max-width: 850px;
   outline: 4px solid var(--coral);
   outline-offset: 5px;
-  height: 85vh;
+  max-height: 95vh;
 }
 
 .modal-body {

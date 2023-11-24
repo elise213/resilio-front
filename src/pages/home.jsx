@@ -37,7 +37,8 @@ const Home = () => {
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
   // REF
-  const toggleButtonRef = useRef(null);
+  const toggleFavoritesButtonRef = useRef(null);
+  const toggleDeckButtonRef = useRef(null);
 
   // STATES
   const [backSide, setBackSide] = useState(false);
@@ -50,6 +51,7 @@ const Home = () => {
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLocating, setIsLocating] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
@@ -284,6 +286,15 @@ const Home = () => {
 
   // USE EFFECTS
   useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+  }, [store.token]);
+
+  useEffect(() => {
     geoFindMe();
   }, []);
 
@@ -357,13 +368,12 @@ const Home = () => {
         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
         setIsNavOpen={setIsNavOpen}
         isToolBoxOpen={isToolBoxOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
         toggleNav={toggleNav}
-        toggleButtonRef={toggleButtonRef}
       />
 
       {/* Filter */}
@@ -386,11 +396,9 @@ const Home = () => {
         setIsNavOpen={setIsNavOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
-        toggleButtonRef={toggleButtonRef}
       />
       {/* All Resources */}
       <CardDeck
-        toggleButtonRef={toggleButtonRef}
         toggleCardDeck={toggleCardDeck}
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
@@ -409,6 +417,8 @@ const Home = () => {
         removeSelectedResource={removeSelectedResource}
         favorites={favorites}
         setFavorites={setFavorites}
+        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+        toggleDeckButtonRef={toggleDeckButtonRef}
       />
       {/* Favorites */}
       <Favorites
@@ -432,7 +442,8 @@ const Home = () => {
         setIsFavoritesOpen={setIsFavoritesOpen}
         setOpenLoginModal={setOpenLoginModal}
         openLoginModal={openLoginModal}
-        toggleButtonRef={toggleButtonRef}
+        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+        toggleDeckButtonRef={toggleDeckButtonRef}
       />
 
       <div className="fake-navbar"></div>
@@ -479,10 +490,14 @@ const Home = () => {
                 setSelectedResources={setSelectedResources}
                 toggleNav={toggleNav}
                 isFavoritesOpen={isFavoritesOpen}
+                setIsFavoritesOpen={setIsFavoritesOpen}
                 isToolBoxOpen={isToolBoxOpen}
                 setIsToolBoxOpen={setIsToolBoxOpen}
                 isNavOpen={isNavOpen}
                 isDeckOpen={isDeckOpen}
+                setIsDeckOpen={setIsDeckOpen}
+                toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+                toggleDeckButtonRef={toggleDeckButtonRef}
               />
             </ErrorBoundary>
           </>
@@ -495,6 +510,8 @@ const Home = () => {
                 resource={selectedResource}
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
+                setModalIsOpen={setModalIsOpen}
+                isLoggedIn={isLoggedIn}
               />
             </div>
           </div>
