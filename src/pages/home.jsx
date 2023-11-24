@@ -446,9 +446,6 @@ const Home = () => {
         toggleDeckButtonRef={toggleDeckButtonRef}
       />
 
-      <div className="fake-navbar"></div>
-      <div className="fake-navbar2"></div>
-
       <div className="grand-container">
         {message1Open && (
           <>

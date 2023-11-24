@@ -132,7 +132,7 @@ const Modal = ({
         Swal.fire({
           title: "Success!",
           text: "Your rating has been submitted.",
-          icon: "success",
+          // icon: "success",
           confirmButtonText: "Ok",
         });
       } else {
@@ -140,7 +140,7 @@ const Modal = ({
           title: "Error!",
           text:
             response.message || "There was an issue submitting your rating.",
-          icon: "error",
+          // icon: "error",
           confirmButtonText: "Ok",
         });
       }
@@ -183,37 +183,20 @@ const Modal = ({
               <i className="fa-solid fa-x"></i>
             </p>
           </div>
-          {isLoggedIn && (
-            <div className="modal-button-container">
-              <button
-                className="add-favorite"
-                onClick={(event) => toggleFavorite(event)}
-              >
-                {isFavorited ? (
-                  <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
-                ) : (
-                  <i className="fa-regular fa-heart"></i>
-                )}
-              </button>
-              <button
-                className={isSelected ? "remove-path-card" : "add-path"}
-                onClick={handleToggleSelectResource}
-              >
-                {isSelected ? (
-                  <>
-                    <span>Remove</span>
-                    <span>from Plan</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Add</span>
-                    <span>to Plan</span>
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+
           <div className="modal-title-div">
+            <div className="modal-title-box">
+              <span>{resource.name}</span>
+            </div>
+            <div className="resource-rating">
+              {/* <p>Average Rating:</p> */}
+              <Rating
+                name="read-only"
+                value={averageRating}
+                precision={0.5}
+                readOnly
+              />
+            </div>
             <div className="icon-box">
               {categories.map((category, index) => {
                 const colorStyle = actions.getColorForCategory(category);
@@ -228,33 +211,20 @@ const Modal = ({
                 );
               })}
             </div>
-            <div className="title-box">
-              <span>{resource.name}</span>
-            </div>
-            <div className="resource-rating">
-              {/* <p>Average Rating:</p> */}
-              <Rating
-                name="read-only"
-                value={averageRating}
-                precision={0.5}
-                readOnly
-              />
-            </div>
           </div>
-          {isLoggedIn && (
-            <div className="rate-this-resource-toggle">
-              <button onClick={() => setShowRating(true)} className="submit">
-                Rate this resource
-              </button>
-            </div>
-          )}
         </div>
-
+        <div className="modal-tools"></div>
         <div className="modal-body">
           <ModalInfo
             id={resource.id}
             schedule={resource.schedule}
             res={resource}
+            isLoggedIn={isLoggedIn}
+            isFavorited={isFavorited}
+            isSelected={isSelected}
+            handleToggleSelectResource={handleToggleSelectResource}
+            setShowRating={setShowRating}
+            toggleFavorite={toggleFavorite}
           />
           <div className="full-comments-section">
             {comments.length > 0 && (
