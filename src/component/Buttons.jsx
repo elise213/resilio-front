@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Styles from "../styles/buttons.css";
 
 const Buttons = ({
@@ -10,16 +10,15 @@ const Buttons = ({
   togglefavorites,
   backSide,
   setBackSide,
+  toggleFavoritesButtonRef,
+  toggleDeckButtonRef,
 }) => {
-  const toggleFavoritesButtonRef = useRef(null);
-  const toggleDeckButtonRef = useRef(null);
-
   return (
     <>
       <div className="button-holder">
         <button
           ref={toggleFavoritesButtonRef}
-          onClick={togglefavorites}
+          onClick={() => togglefavorites()}
           className={`favoritesopen-icon-nav ${
             !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
               ? "favoritesclosed"
@@ -31,7 +30,7 @@ const Buttons = ({
 
         <button
           ref={toggleDeckButtonRef}
-          onClick={toggleCardDeck}
+          onClick={() => toggleCardDeck()}
           className={`deckopen-icon-nav ${
             !isDeckOpen && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
               ? "deckclosed"

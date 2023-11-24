@@ -3,6 +3,8 @@ import styles from "../styles/mapSettings2.css";
 import Buttons from "./Buttons";
 
 const MapSettings = ({
+  toggleFavoritesButtonRef,
+  toggleDeckButtonRef,
   handleZipInputChange,
   zipInput,
   geoFindMe,
@@ -10,10 +12,12 @@ const MapSettings = ({
   setBackSide,
   toggleNav,
   isFavoritesOpen,
+  setIsFavoritesOpen,
   isToolBoxOpen,
   setIsToolBoxOpen,
   isNavOpen,
   isDeckOpen,
+  setIsDeckOpen,
   togglefavorites,
   toggleCardDeck,
 }) => {
@@ -57,11 +61,15 @@ const MapSettings = ({
         backSide={backSide}
         setBackSide={setBackSide}
         isDeckOpen={isDeckOpen}
+        setIsDeckOpen={setIsDeckOpen}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
         isToolBoxOpen={isToolBoxOpen}
         toggleCardDeck={toggleCardDeck}
         togglefavorites={togglefavorites}
+        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+        toggleDeckButtonRef={toggleDeckButtonRef}
       />
       {/* <button
         ref={toggleFavoritesButtonRef}

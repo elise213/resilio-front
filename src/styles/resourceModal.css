@@ -8,6 +8,18 @@
   overflow: hidden;
 }
 
+.close-modal {
+  color: blue;
+  font-size: 30px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+
+.close-modal:hover {
+  color: lightgreen;
+}
+
 .modal-title-div {
   display: flex;
   flex-direction: column;
@@ -28,6 +40,56 @@
   margin-left: 20px;
 }
 
+.close-rating {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  font-size: 20px;
+  color: lavender;
+}
+
+.close-rating:hover {
+  color: lightgreen !important;
+}
+
+.what-do-you-think {
+  font-size: 18px;
+  text-align: center;
+  font-family: "Urbanist";
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.rate-this-resource {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999;
+  background-color: var(--marascoral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid blue;
+}
+
+.rate-this-resource-toggle button {
+  height: unset !important;
+}
+
+.rate-this-resource-toggle {
+  font-size: 12px;
+  background-color: var(--marascoral);
+}
+
 .modal-header {
   display: flex;
   flex-shrink: 0;
@@ -36,11 +98,65 @@
   color: #000;
   font-size: x-large;
   background-color: rgb(218, 224, 245);
-  border-bottom: 3px solid salmon;
+  border-bottom: 3px solid var(--marascoral);
+}
+
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  margin: 20px;
+}
+
+p {
+  margin: 0;
+}
+
+.comment-div {
+  border: 2px solid lightgray;
+  padding: 5px;
+}
+
+.comment-content {
+  text-align: center;
+  margin: 5px 0;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+.comment-info-date {
+  font-size: 10px;
+  color: lightgray;
+  text-align: end;
+}
+
+.comment-user-info {
+  font-size: 13px;
+  color: lightgray;
+  text-align: start;
+}
+
+.comment-info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.comments-display {
+  min-width: 300px;
+}
+
+.comment-heading {
+  font-family: "AwsumSans", sans-serif;
+  border: 1px solid blue;
+  color: rgb(128, 41, 0);
+  justify-content: center;
+  display: flex;
+  background-color: lavender;
 }
 
 .modal-footer {
-  border: none;
+  border-top: 1px solid gray;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,7 +189,7 @@
   max-width: 850px;
   outline: 4px solid var(--coral);
   outline-offset: 5px;
-  height: 85vh;
+  max-height: 95vh;
 }
 
 .modal-body {
@@ -130,11 +246,11 @@ body.modal-open {
 .resource-info {
   display: flex;
   width: 100%;
-  /* max-width: 500px; */
+  position: relative;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  padding: 15px;
 }
 
 .info {

@@ -137,14 +137,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(0, 0, 0, 0.8); */
-  /* background-color: #464646; */
+
   z-index: 9998;
 }
 
 .login-trigger {
   color: lavender;
   font-family: "InterVariable" !important;
+  font-size: 25px;
 }
 
 .login-trigger:hover {
@@ -177,11 +177,6 @@ body.loginModal-open {
   margin-top: 0px !important;
 }
 
-.login-container span {
-  font-size: 30px;
-  font-family: "Urbanist", sans-serif;
-}
-
 .login-logout {
   font-size: large;
   margin-left: 10px;
@@ -192,8 +187,8 @@ body.loginModal-open {
 }
 
 .login-close {
-  /* color: lavender !important; */
-  color: green;
+  color: blue;
+  font-size: 20px;
   position: fixed;
   top: 5px;
   margin-right: 5px;

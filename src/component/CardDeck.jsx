@@ -15,21 +15,20 @@ const CardDeck = ({
   removeSelectedResource,
   setFavorites,
   toggleCardDeck,
-  toggleButtonRef,
+  toggleFavoritesButtonRef,
+  toggleDeckButtonRef,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Function to handle click outside the card deck area
   const handleClickOutside = (event) => {
     const deckNav = document.querySelector(".decknew-navbar");
 
-    // Check if the clicked element is the toggle button
     if (
-      toggleButtonRef.current &&
-      toggleButtonRef.current.contains(event.target)
+      toggleDeckButtonRef.current &&
+      toggleDeckButtonRef.current.contains(event.target)
     ) {
-      return; // Ignore clicks on the toggle button
+      return; // Ignore clicks on the toggle card deck button
     }
 
     if (deckNav && !deckNav.contains(event.target) && isDeckOpen) {
@@ -44,7 +43,7 @@ const CardDeck = ({
       // Clean up the event listener
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isDeckOpen, toggleButtonRef]);
+  }, [isDeckOpen]);
 
   return (
     <>

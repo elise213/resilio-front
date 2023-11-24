@@ -19,19 +19,30 @@ const Favorites = ({
   setOpenLoginModal,
   openLoginModal,
   togglefavorites,
-  toggleButtonRef,
+  toggleFavoritesButtonRef,
+  toggleDeckButtonRef,
 }) => {
   const { store, actions } = useContext(Context);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+  }, [store.token]);
 
   const handleClickOutside = (event) => {
     const favoritesNav = document.querySelector(".favoritesnew-navbar");
 
-    // Check if the clicked element is the toggle button
     if (
-      toggleButtonRef.current &&
-      toggleButtonRef.current.contains(event.target)
+      toggleFavoritesButtonRef.current &&
+      toggleFavoritesButtonRef.current.contains(event.target)
     ) {
-      return; // Ignore clicks on the toggle button
+      return; // Ignore clicks on the toggle favorites button
     }
 
     if (
@@ -48,7 +59,7 @@ const Favorites = ({
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isFavoritesOpen, toggleButtonRef]);
+  }, [isFavoritesOpen]);
 
   return (
     <>
@@ -72,21 +83,27 @@ const Favorites = ({
               store.favorites ? "column-class" : ""
             }`}
           >
-            {!store.favorites ||
-              (!(store.favorites.length > 0) && (
-                <>
-                  {/* <div className="favorites-warning-div"> */}
-                  {/* </div> */}
-                  <Login
-                    openLoginModal={openLoginModal}
-                    setOpenLoginModal={setOpenLoginModal}
-                  />
+            {!isLoggedIn && (
+              <>
+                <Login
+                  openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                />
+                <span className="scroll-title to-save-res">
+                  to save Resources
+                </span>
+              </>
+            )}
 
-                  <span className="scroll-title to-save-res">
-                    to save Resources
-                  </span>
-                </>
-              ))}
+            {isLoggedIn && !store.favorites.length > 0 && (
+              <>
+                <span className="scroll-title to-save-res">
+                  Your Liked{" "}
+                  <i style={{ color: "red" }} className="fa-solid fa-heart"></i>{" "}
+                  resources will appear here. Try adding some!
+                </span>
+              </>
+            )}
 
             {store.favorites && store.favorites.length > 0 ? (
               <div className="list-container">
@@ -96,7 +113,7 @@ const Favorites = ({
                 <ul>
                   {favorites.map((resource, index) => (
                     <ResourceCard
-                      key={resource.id}
+                      key={`${resource.id}-${index}`}
                       item={resource}
                       openModal={openModal}
                       closeModal={closeModal}

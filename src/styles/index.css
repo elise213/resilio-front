@@ -234,6 +234,10 @@ body {
   border: 2px solid rgb(234, 153, 143);
 }
 
+.swal2-container {
+  z-index: 999999999999999999;
+}
+
 /* ______________________________________________________________SIZE < 700px */
 
 @media screen and (max-width: 700px) {
