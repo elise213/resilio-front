@@ -148,14 +148,14 @@ hr {
 
 .number-box {
   font-size: 30px;
+  width: 50px;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
-  width: 50px;
   justify-content: center;
   display: flex;
   background-color: var(--marascoral);
-  margin-left: 20px;
   border: 1px solid blue;
+  margin-left: 20px;
   border-radius: 100%;
 }
 

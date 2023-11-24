@@ -826,6 +826,24 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      getComments: async (resourceId, setCommentsCallback) => {
+        const current_back_url = getStore().current_back_url;
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/getcomments/${resourceId}`
+          );
+          if (response.status !== 200) {
+            throw new Error("Failed to get comments");
+          }
+          const data = await response.json();
+          setCommentsCallback(data.comments); // Update the comments in the Modal component
+        } catch (error) {
+          console.error("Error:", error);
+          // Handle the error (e.g., show an error message)
+        }
+      },
+
       addFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
