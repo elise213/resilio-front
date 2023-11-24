@@ -122,8 +122,6 @@ const AltSimpleMap = ({
         }`}
       >
         <div className={`map-frame ${backSide ? "alsoFlipped" : ""}`}>
-          <div className="map-head"></div>
-
           {backSide ? (
             <>
               <MapBack
@@ -197,14 +195,14 @@ const AltSimpleMap = ({
                   geoFindMe={geoFindMe}
                   handleZipInputChange={handleZipInputChange}
                   zipInput={zipInput}
-                  backSide={backSide}
-                  setBackSide={setBackSide}
                   toggleNav={toggleNav}
                   isFavoritesOpen={isFavoritesOpen}
                   isToolBoxOpen={isToolBoxOpen}
                   setIsToolBoxOpen={setIsToolBoxOpen}
                   isNavOpen={isNavOpen}
                   isDeckOpen={isDeckOpen}
+                  setBackSide={setBackSide}
+                  backSide={backSide}
                 />
               </div>
             </>

@@ -1,11 +1,3 @@
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
-    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 .favoritesnew-navbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -24,10 +16,8 @@
   background-color: darkgreen;
 }
 
-.scroll-title {
-  font-family: "AwsumSans";
-  font-size: 20px;
-  text-align: center;
+.to-save-res {
+  margin: 8px 0 0 5px;
 }
 
 .favoritesno-scroll {
@@ -117,10 +107,4 @@
 
 .fa-favorites {
   z-index: 999999999 !important;
-}
-
-@media screen and (max-width: 500px) {
-  .scroll-title {
-    font-size: 18px;
-  }
 }

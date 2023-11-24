@@ -54,6 +54,8 @@ const MapSettings = ({
         </div>
       </div>
       <Buttons
+        backSide={backSide}
+        setBackSide={setBackSide}
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
