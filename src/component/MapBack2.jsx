@@ -18,7 +18,9 @@ const MapBack = ({
   setSelectedResources,
   setFavorites,
   isDeckOpen,
+  setIsDeckOpen,
   isFavoritesOpen,
+  setIsFavoritesOpen,
   isNavOpen,
   isToolBoxOpen,
   setIsToolBoxOpen,
@@ -26,6 +28,8 @@ const MapBack = ({
   togglefavorites,
   backSide,
   setBackSide,
+  toggleFavoritesButtonRef,
+  toggleDeckButtonRef,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -215,14 +219,18 @@ const MapBack = ({
         </div>
       )}
       <Buttons
-        setBackSide={setBackSide}
         backSide={backSide}
+        setBackSide={setBackSide}
         isDeckOpen={isDeckOpen}
+        setIsDeckOpen={setIsDeckOpen}
         isNavOpen={isNavOpen}
         isFavoritesOpen={isFavoritesOpen}
+        setIsFavoritesOpen={setIsFavoritesOpen}
         isToolBoxOpen={isToolBoxOpen}
         toggleCardDeck={toggleCardDeck}
         togglefavorites={togglefavorites}
+        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+        toggleDeckButtonRef={toggleDeckButtonRef}
       />
     </>
   );

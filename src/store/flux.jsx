@@ -38,7 +38,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       offerings: [],
       checked: false,
       loading: false,
-      // commentsList: [],
+      commentsList: [],
       categorySEarch: [],
       // when: [],
       schedules: [],
@@ -136,14 +136,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           mental: "Coral",
           substance: "DarkRed",
           sex: "Tomato",
-          // babies: "Yellow",
-          // lgbtq: "RosyBrown",
-          // kids: "Salmon",
-          // youth: "IndianRed",
-          // women: "DarkSalmon",
-          // seniors: "Teal",
-          // migrant: "DarkGreen",
-          // vets: "Olive",
         };
         if (colors[category]) {
           return { color: colors[category] };
@@ -758,6 +750,100 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      createRating: (resourceId, ratingValue, setRatingResponse) => {
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          const opts = {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+            mode: "cors",
+            method: "POST",
+            body: JSON.stringify({
+              resource_id: resourceId,
+              rating_value: ratingValue,
+            }),
+          };
+          fetch(`${current_back_url}/api/rating`, opts)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "true") {
+                // The rating was successfully created
+                setRatingResponse(data);
+              } else {
+                // Handle failure (e.g., invalid rating value)
+                throw new Error(data.message || "Failed to create rating");
+              }
+            })
+            .catch((error) => {
+              console.error("Error creating rating:", error);
+            });
+        }
+      },
+      // ____________________________COMMENTS FAVORITES RATINGS
+
+      createComment: async (resourceId, commentContent, callback) => {
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+
+        const opts = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            resource_id: resourceId,
+            comment_cont: commentContent,
+          }),
+        };
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/createComment`,
+            opts
+          );
+          if (response.status !== 200) {
+            const data = await response.json();
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: data.message || "Failed to submit the comment.",
+            });
+            return;
+          }
+          const data = await response.json();
+          callback(data);
+        } catch (error) {
+          console.error("Error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred while submitting the comment.",
+          });
+        }
+      },
+
+      getComments: async (resourceId, setCommentsCallback) => {
+        const current_back_url = getStore().current_back_url;
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/getcomments/${resourceId}`
+          );
+          if (response.status !== 200) {
+            throw new Error("Failed to get comments");
+          }
+          const data = await response.json();
+          setCommentsCallback(data.comments); // Update the comments in the Modal component
+        } catch (error) {
+          console.error("Error:", error);
+          // Handle the error (e.g., show an error message)
+        }
+      },
+
       addFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
@@ -794,7 +880,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 ...prevState,
                 favorites: favorites,
               }));
-              return favorites; // Return the favorites array for the next .then()
+              return favorites;
             })
             .then((favorites) => {
               setFavorites([...favorites]);

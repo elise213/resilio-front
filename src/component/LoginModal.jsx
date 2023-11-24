@@ -117,12 +117,12 @@ const LoginModal = ({
             <button
               type="submit"
               className="submit"
-              data-bs-dismiss="loginModal"
-              style={{ width: "100%" }}
-              onClick={(e) => handleRegister(e)}
+              style={{ width: "100%", marginTop: "10px" }}
+              onClick={handleRegister}
             >
               Register
             </button>
+
             <div className="login-modal-footer">
               <div className="forgot-password" onClick={() => setLog("1")}>
                 Go back to login

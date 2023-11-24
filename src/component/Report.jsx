@@ -28,7 +28,6 @@ const Report = () => {
 
     if (store?.mapResults?.length > 0) {
       // map results is all of the resources, without the filters
-      console.log("MR", store.mapResults);
 
       store.mapResults.forEach((result) => {
         if (typeof result.category === "string") {
@@ -82,8 +81,9 @@ const Report = () => {
           return obj;
         }, {});
 
-      console.log("categoryCounts:", categoryCounts);
-      console.log("filteredCategoryCounts:", filteredCategoryCounts);
+      // console.log("MR", store.mapResults);
+      // console.log("categoryCounts:", categoryCounts);
+      // console.log("filteredCategoryCounts:", filteredCategoryCounts);
 
       setReport(filteredCategoryCounts);
       actions.setCategoryCounts(filteredCategoryCounts);
