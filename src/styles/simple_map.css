@@ -1,5 +1,15 @@
 /* Font Face Definitions */
 
+.info-address a {
+  padding: 0;
+  width: unset !important;
+  color: blue;
+}
+.info-address i {
+  padding: 3px;
+  color: red;
+}
+
 /* Global Layout */
 .treasureMap,
 .droppable-map-area,
