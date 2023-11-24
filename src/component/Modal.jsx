@@ -6,21 +6,71 @@ import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
 
-const Modal = (props) => {
-  const { actions } = useContext(Context);
+const Modal = ({
+  resource,
+  modalIsOpen,
+  closeModal,
+  setModalIsOpen,
+  isLoggedIn,
+}) => {
+  const { store, actions } = useContext(Context);
 
   const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
   const [showRating, setShowRating] = useState(false);
+  const [hover, setHover] = useState(-1);
+  const [comment, setComment] = useState("");
+
+  const handleCommentSubmit = () => {
+    if (comment.length > 280) {
+      Swal.fire({
+        icon: "error",
+        title: "Comment Too Long",
+        text: "Your comment must be less than 280 characters.",
+      });
+      return;
+    }
+
+    actions.createComment(resource.id, comment, (response) => {
+      if (response && response.status === "true") {
+        Swal.fire({
+          icon: "success",
+          title: "Comment Submitted",
+          text: "Your comment has been successfully submitted.",
+        });
+        setComment("");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Submit Comment",
+          text:
+            response.message || "There was an issue submitting your comment.",
+        });
+      }
+    });
+  };
+
+  console.log("actions", actions);
+
+  // REFS
   const modalContentRef = useRef(null);
+  const ratingModalRef = useRef(null);
 
   const toggleRatingModal = () => {
     setShowRating(!showRating);
   };
 
+  const labels = {
+    1: "Poor",
+    2: "Fair",
+    3: "Good",
+    4: "Very Good",
+    5: "Exceptional",
+  };
+
   const handleRatingSubmit = () => {
     console.log("handle rating submit!");
-    let resourceId = props.resource.id;
+    let resourceId = resource.id;
     actions.createRating(resourceId, rating, (response) => {
       setRatingResponse(response);
       if (response && response.status === "true") {
@@ -42,36 +92,42 @@ const Modal = (props) => {
     });
   };
 
-  const handleCloseClick = (event) => {
-    event.stopPropagation();
-    props.closeModal();
-  };
-
   useEffect(() => {
     const handleOutsideClick = (event) => {
+      // Check if the rating modal is open and the click is outside the rating modal
       if (
-        modalContentRef.current &&
-        !modalContentRef.current.contains(event.target)
+        showRating &&
+        ratingModalRef.current &&
+        !ratingModalRef.current.contains(event.target)
       ) {
-        console.log("Clicked outside the modal!");
-        props.closeModal();
+        console.log("Clicked outside the rating modal!");
+        setShowRating(false);
       }
     };
+
+    // Attaching the event listener to the document
     document.addEventListener("mousedown", handleOutsideClick);
+
+    // Cleanup function to remove the event listener
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [showRating]); // Dependency array includes showRating to update the listener when it changes
 
-  const resourceId = props.resource.id;
+  const resourceId = resource.id;
   const tokenExists = sessionStorage.getItem("token");
-  let categories = actions.processCategory(props.resource.category);
+  let categories = actions.processCategory(resource.category);
 
   return (
     <>
       <div className="modal-content" ref={modalContentRef}>
         {/* Modal Header */}
         <div className="modal-header">
+          <div className="modal-close-div">
+            <p className="close-modal" onClick={() => setModalIsOpen(false)}>
+              <i className="fa-solid fa-x"></i>
+            </p>
+          </div>
           <div className="modal-title-div">
             <div className="icon-box">
               {categories.map((category, index) => {
@@ -88,45 +144,34 @@ const Modal = (props) => {
               })}
             </div>
             <div className="title-box">
-              <span>{props.resource.name}</span>
+              <span>{resource.name}</span>
             </div>
           </div>
-
-          <div className="rate-this-resource">
-            <div className="modal-close-div">
-              <p className="x-close btn-close" onClick={handleCloseClick}></p>
-            </div>
-          </div>
-
-          {/* Rating Section Toggle */}
-          <div className="rate-this-resource-toggle">
-            <button onClick={toggleRatingModal}>Rate this resource</button>
-          </div>
-
-          {/* Rating Section */}
-          {showRating && (
-            <div className="rate-this-resource">
-              <Rating
-                name="resource-rating"
-                value={rating}
-                onChange={(event, newRating) => setRating(newRating)}
-              />
-              <button
-                onClick={handleRatingSubmit}
-                className="submit-rating-button"
-              >
-                Submit
-              </button>
-            </div>
-          )}
         </div>
+        {/* Rating Section Toggle */}
+        {!showRating && isLoggedIn && (
+          <div className="rate-this-resource-toggle">
+            <button onClick={() => setShowRating(true)} className="submit">
+              Rate this resource
+            </button>
+          </div>
+        )}
 
         <div className="modal-body">
           <ModalInfo
-            id={props.resource.id}
-            schedule={props.resource.schedule}
-            res={props.resource}
+            id={resource.id}
+            schedule={resource.schedule}
+            res={resource}
           />
+          <div className="comment-section">
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write a comment..."
+              maxLength="280"
+            ></textarea>
+            <button onClick={handleCommentSubmit}>Submit Comment</button>
+          </div>
           <div className="modal-footer">
             <p className="problem">
               Is there a problem with this information? {""}
@@ -148,6 +193,40 @@ const Modal = (props) => {
           </div>
         </div>
       </div>
+
+      {/* Rating Modal */}
+      {showRating && (
+        <>
+          <div className="rate-this-resource" ref={ratingModalRef}>
+            <div className="modal-close-div">
+              <p className="close-rating" onClick={() => setShowRating(false)}>
+                <i className="fa-solid fa-x"></i>
+              </p>
+            </div>
+            <p className="what-do-you-think">
+              What do You Think of <br />
+              {resource.name} ?
+            </p>
+            <div className="rating-container">
+              <div className="rating-label">
+                {rating !== null && labels[hover !== -1 ? hover : rating]}
+              </div>
+              <Rating
+                name="resource-rating"
+                value={rating}
+                precision={1}
+                onChange={(event, newRating) => setRating(newRating)}
+                onChangeActive={(event, newHover) => {
+                  setHover(newHover);
+                }}
+              />
+              <button onClick={handleRatingSubmit} className="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
