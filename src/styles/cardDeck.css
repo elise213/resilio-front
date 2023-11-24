@@ -16,14 +16,6 @@
   background-color: darkgreen;
 }
 
-.scroll-title {
-  font-family: "AwsumSans";
-  font-size: 20px;
-  text-align: center;
-  color: lavender;
-  margin-top: 10px;
-}
-
 .deckno-scroll {
   overflow: hidden;
   height: 100%;

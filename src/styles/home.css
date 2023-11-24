@@ -6,23 +6,6 @@
   font-style: normal;
 }
 
-.flip-button {
-  position: absolute;
-  bottom: 10px;
-  min-width: 100px;
-  font-size: 30px;
-  border-radius: 3px;
-  text-align: center;
-  font-family: "AwsumSans", sans-serif;
-  color: rgb(128, 41, 0);
-  background-color: var(--marascoral);
-  border: 1px solid blue;
-  margin: 5px;
-  letter-spacing: 1px;
-  z-index: 995;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
-}
-
 .deckopen-icon-nav,
 .favoritesopen-icon-nav {
   font-size: 16px;

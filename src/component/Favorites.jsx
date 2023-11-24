@@ -75,15 +75,16 @@ const Favorites = ({
             {!store.favorites ||
               (!(store.favorites.length > 0) && (
                 <>
-                  <div className="favorites-warning-div">
-                    <div className="scroll-title">
-                      <span>Log in to save Resources</span>
-                    </div>
-                  </div>
+                  {/* <div className="favorites-warning-div"> */}
+                  {/* </div> */}
                   <Login
                     openLoginModal={openLoginModal}
                     setOpenLoginModal={setOpenLoginModal}
                   />
+
+                  <span className="scroll-title to-save-res">
+                    to save Resources
+                  </span>
                 </>
               ))}
 
