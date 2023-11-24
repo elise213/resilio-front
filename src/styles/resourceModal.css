@@ -81,31 +81,40 @@
   border: 2px solid blue;
 }
 
-.rate-this-resource-toggle button {
-  height: unset !important;
+.rate-this-resource-toggle {
+  width: 180px;
 }
 
-.rate-this-resource-toggle {
-  font-size: 12px;
-  background-color: var(--marascoral);
+.rate-this-resource-toggle button {
+  height: unset !important;
+  width: unset !important;
+}
+
+.add-path span,
+.remove-path-card span {
+  display: block; /* Makes each span take up the full width, causing a line break */
+}
+
+.modal-button-container {
+  display: flex;
+  width: 180px;
 }
 
 .modal-header {
   display: flex;
-  flex-shrink: 0;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   color: #000;
   font-size: x-large;
   background-color: rgb(218, 224, 245);
-  border-bottom: 3px solid var(--marascoral);
+  border-bottom: 3px solid darkgray;
 }
 
 .comment-section {
   display: flex;
   flex-direction: column;
   align-self: flex-end;
-  margin: 20px;
+  margin-top: 40px;
 }
 
 p {
@@ -113,21 +122,28 @@ p {
 }
 
 .comment-div {
-  border: 2px solid lightgray;
-  padding: 5px;
+  margin-top: 20px;
+}
+
+.full-comments-section {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .comment-content {
   text-align: center;
   margin: 5px 0;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.4px;
 }
 
 .comment-info-date {
-  font-size: 10px;
+  font-size: 12px;
   color: lightgray;
   text-align: end;
+  margin-left: 10px;
 }
 
 .comment-user-info {
@@ -138,21 +154,31 @@ p {
 
 .comment-info {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  /* width: 100%; */
+  justify-content: flex-end;
 }
 
 .comments-display {
   min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+textarea {
+  border: 1px solid lightgray;
 }
 
 .comment-heading {
+  padding: 5px;
   font-family: "AwsumSans", sans-serif;
-  border: 1px solid blue;
-  color: rgb(128, 41, 0);
+  font-size: 20px;
+  color: rgb(149, 84, 19);
+  font-family: "AwsumSans";
   justify-content: center;
   display: flex;
-  background-color: lavender;
+  letter-spacing: 1px;
+  border-bottom: 7px double limegreen;
 }
 
 .modal-footer {
@@ -250,7 +276,7 @@ body.modal-open {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 15px;
+  padding: 15px 15px 40px 15px;
 }
 
 .info {

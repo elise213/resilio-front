@@ -5,11 +5,6 @@ import Styles from "../styles/resourceCard.css";
 const ResourceCard = (props) => {
   const { actions, store } = useContext(Context);
 
-  if (!props.item) {
-    console.error("ResourceCard component was rendered without an item prop.");
-    return null;
-  }
-
   const [isFavorited, setIsFavorited] = useState(false);
 
   const handleSelectResource = (resource) => {
@@ -118,11 +113,27 @@ const ResourceCard = (props) => {
             )}
           </button>
         )}
-        <button
+        {/* <button
           className={isSelected ? "remove-path-card" : "add-path"}
           onClick={handleToggleSelectResource}
         >
           {isSelected ? "Remove from Plan" : "Add to Plan"}
+        </button> */}
+        <button
+          className={isSelected ? "remove-path-card" : "add-path"}
+          onClick={handleToggleSelectResource}
+        >
+          {isSelected ? (
+            <>
+              <span>Remove</span>
+              <span>from Plan</span>
+            </>
+          ) : (
+            <>
+              <span>Add</span>
+              <span>to Plan</span>
+            </>
+          )}
         </button>
       </div>
     </div>

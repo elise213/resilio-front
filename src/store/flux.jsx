@@ -750,6 +750,26 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      // ____________________________COMMENTS FAVORITES RATINGS
+
+      getAverageRating: async (resourceId, setAverageRatingCallback) => {
+        const current_back_url = getStore().current_back_url;
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/rating?resource=${resourceId}`
+          );
+          if (response.status !== 200) {
+            throw new Error("Failed to get average rating");
+          }
+          const data = await response.json();
+          setAverageRatingCallback(data.rating); // Update the average rating in the Modal component
+        } catch (error) {
+          console.error("Error:", error);
+          // Handle the error (e.g., show an error message)
+        }
+      },
+
       createRating: (resourceId, ratingValue, setRatingResponse) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
@@ -782,7 +802,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
-      // ____________________________COMMENTS FAVORITES RATINGS
 
       createComment: async (resourceId, commentContent, callback) => {
         const current_back_url = getStore().current_back_url;
