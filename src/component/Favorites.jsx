@@ -96,7 +96,7 @@ const Favorites = ({
                 <ul>
                   {favorites.map((resource, index) => (
                     <ResourceCard
-                      key={resource.id}
+                      key={`${resource.id}-${index}`}
                       item={resource}
                       openModal={openModal}
                       closeModal={closeModal}
