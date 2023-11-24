@@ -126,11 +126,14 @@
   }
 }
 
-@media screen and (max-width: 440px) {
+@media screen and (max-width: 600px) {
   .modal-div {
     width: 100vw;
+    height: 100vh;
   }
+}
 
+@media screen and (max-width: 440px) {
   .scroll-search-results li {
     margin: 10px 8px 5px 8px !important;
   }
