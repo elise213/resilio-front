@@ -164,29 +164,30 @@ p {
 }
 
 .comments-display {
-  width: 330px;
+  /* width: 330px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 3px;
   border: 1px solid black;
-  padding: 10px 0;
+  padding: 0 0 10px 0;
 }
 
 textarea {
-  border: 1px solid lightgray;
+  border: 1px solid gray;
 }
 
 .comment-heading {
-  padding: 5px;
-  font-family: "AwsumSans", sans-serif;
   font-size: 20px;
   color: rgb(149, 84, 19);
+  background-color: lavender;
+  width: 100%;
   font-family: "AwsumSans";
   justify-content: center;
   display: flex;
   letter-spacing: 1px;
-  border-bottom: 7px double limegreen;
+  border-bottom: 5px double olive;
+  border-radius: 3px;
 }
 
 .modal-footer {
@@ -219,10 +220,10 @@ textarea {
 
 .modal-content {
   margin: 20px;
-  width: 85%;
+  width: 70%;
   max-width: 850px;
   outline: 4px solid var(--coral);
-  outline-offset: 5px;
+  /* outline-offset: 5px; */
   max-height: 95vh;
 }
 
@@ -236,7 +237,7 @@ textarea {
   overflow-y: scroll !important;
   scroll-behavior: smooth;
   min-height: 60vh;
-  padding: 0;
+  padding: 0 7px 0 0;
 }
 
 .modal-center {
@@ -245,9 +246,8 @@ textarea {
   margin-bottom: 7px;
 }
 
-.modal-center p {
+.modal-center {
   text-decoration: none !important;
-  color: black;
   font-size: 14px;
 }
 
@@ -459,11 +459,18 @@ body.modal-open {
   /* .rate-this-resource-toggle button {
     font-size: 12px;
   } */
+  .modal-content {
+    width: 80%;
+  }
 }
 
 @media screen and (max-width: 600px) {
   .modal-text {
     font-size: 12px !important;
+  }
+
+  .modal-content {
+    width: 95%;
   }
 }
 
@@ -471,8 +478,7 @@ body.modal-open {
   .resource-card-text {
     font-size: 11px !important;
   }
-
-  .modal-center p {
-    font-size: 12px;
+  .modal-center {
+    font-size: 12px !important;
   }
 }
