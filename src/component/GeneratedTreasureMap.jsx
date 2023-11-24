@@ -106,7 +106,7 @@ const GeneratedTreasureMap = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="options">
-          <p className="option">Send Plan to Phone</p>
+          {/* <p className="option">Send Plan to Phone</p> */}
           <p className="option">Email Plan</p>
 
           <PDFDownloadLink
