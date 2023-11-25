@@ -24,6 +24,7 @@ const ToolBox = ({
   setIsNavOpen,
   setIsToolBoxOpen,
   setIsFavoritesOpen,
+  toggleToolButtonRef,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -34,22 +35,20 @@ const ToolBox = ({
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
-  // Function to handle click outside the navbar area
   const handleClickOutside = (event) => {
-    const navbar = document.querySelector(".new-navbar");
-    if (navbar && !navbar.contains(event.target) && isNavOpen) {
-      setIsNavOpen(false);
+    const toolNav = document.querySelector(".toolnew-navbar");
+
+    if (
+      toggleToolButtonRef.current &&
+      toggleToolButtonRef.current.contains(event.target)
+    ) {
+      return;
+    }
+
+    if (toolNav && !toolNav.contains(event.target) && isToolBoxOpen) {
+      setIsToolBoxOpen(false);
     }
   };
-
-  // Set up the event listener
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      // Clean up the event listener
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isNavOpen]);
 
   useEffect(() => {
     const body = document.body;
@@ -58,6 +57,21 @@ const ToolBox = ({
     } else {
       body.classList.remove("toolno-scroll");
     }
+  }, [isToolBoxOpen]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    const body = document.body;
+    if (isToolBoxOpen) {
+      body.classList.add("toolno-scroll");
+    } else {
+      body.classList.remove("toolno-scroll");
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
   }, [isToolBoxOpen]);
 
   return (
