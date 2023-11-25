@@ -7,12 +7,14 @@ import styles from "../styles/resourceModal.css";
 export const ModalInfo = ({
   res,
   id,
+  item,
   modalIsOpen,
   isFavorited,
-  isSelected,
   handleToggleSelectResource,
   setShowRating,
   toggleFavorite,
+  isGeneratedMapModalOpen,
+  selectedResources,
 }) => {
   const { store, actions } = useContext(Context);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -104,6 +106,10 @@ export const ModalInfo = ({
     return formattedTime;
   }
 
+  const isSelected =
+    Array.isArray(selectedResources) &&
+    selectedResources.some((resource) => resource.id === item.id);
+
   const currentSchedule =
     store.schedules.find((each) => each.resource_id === id) || null;
   const schedule2 = filterNonNullValues(currentSchedule);
@@ -152,36 +158,42 @@ export const ModalInfo = ({
       {/* DESCRIPTION */}
 
       <div className="description-div">
-        {isLoggedIn && (
-          <div className="modal-button-container">
-            <button
-              className="add-favorite"
-              onClick={(event) => toggleFavorite(event)}
-            >
-              {isFavorited ? (
-                <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
-              ) : (
-                <i className="fa-regular fa-heart"></i>
-              )}
-            </button>
+        {!isGeneratedMapModalOpen && (
+          <>
             <button
               className={isSelected ? "remove-path-card" : "add-path"}
               onClick={handleToggleSelectResource}
             >
               {isSelected ? <>Remove from Plan</> : <>Add to Plan</>}
             </button>
-
-            {/* <div className="rate-this-resource-toggle"> */}
-            <button onClick={() => setShowRating(true)} className="submit">
-              Rate
-            </button>
-            {/* </div> */}
-          </div>
-        )}
-        {res.description && (
-          <div className="text-description-div">
-            <p className="modal-text description">{res.description}</p>
-          </div>
+            {isLoggedIn && (
+              <div className="modal-button-container">
+                <button
+                  className="add-favorite"
+                  onClick={(event) => toggleFavorite(event)}
+                >
+                  {isFavorited ? (
+                    <i
+                      className="fa-solid fa-heart"
+                      style={{ color: "red" }}
+                    ></i>
+                  ) : (
+                    <i className="fa-regular fa-heart"></i>
+                  )}
+                </button>
+                {/* <div className="rate-this-resource-toggle"> */}
+                <button onClick={() => setShowRating(true)} className="submit">
+                  Rate
+                </button>
+                {/* </div> */}
+              </div>
+            )}
+            {res.description && (
+              <div className="text-description-div">
+                <p className="modal-text description">{res.description}</p>
+              </div>
+            )}
+          </>
         )}
       </div>
 

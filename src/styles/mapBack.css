@@ -95,7 +95,7 @@ li {
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 30px;
+  /* margin-bottom: 5px; */
 }
 
 .path {

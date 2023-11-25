@@ -10,10 +10,16 @@ import MyDocument from "./MyDocument";
 const GeneratedTreasureMap = ({
   closeModal,
   openModal,
+  modalIsOpen,
   selectedResources,
   selectedResource,
   setHoveredItem,
   hoveredItem,
+  isFavorited,
+  handleToggleSelectResource,
+  setShowRating,
+  setIsFavorited,
+  isGeneratedMapModalOpen,
 }) => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -77,13 +83,16 @@ const GeneratedTreasureMap = ({
     }
   };
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
+  const toggleFavorite = (event) => {
+    event.stopPropagation();
+    setIsFavorited(!isFavorited);
 
+    if (isFavorited) {
+      actions.removeFavorite(item.name, setFavorites);
+    } else {
+      actions.addFavorite(item.name, setFavorites);
+    }
+  };
   useEffect(() => {
     const rootElement = document.documentElement;
     const originalOverflow = rootElement.style.overflow;
@@ -95,10 +104,6 @@ const GeneratedTreasureMap = ({
     };
   }, []);
 
-  // useEffect(() => {
-  //   setIsLargeScreen(store.isLargeScreen);
-  // }, [store.isLargeScreen]);
-
   return (
     <div className="modal-overlay-treasure" onClick={handleOverlayClick}>
       <div
@@ -106,7 +111,6 @@ const GeneratedTreasureMap = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="options">
-          {/* <p className="option">Send Plan to Phone</p> */}
           <p className="option">Email Plan</p>
 
           <PDFDownloadLink
@@ -120,40 +124,7 @@ const GeneratedTreasureMap = ({
           </PDFDownloadLink>
           <p className="option">Print Plan</p>
         </div>
-        {/* <div
-          className="map-container-treasure"
-          style={{ height: "25vh", width: "100%" }}
-        >
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: apiKey }}
-            defaultZoom={11}
-            center={city.center}
-          >
-            {selectedResources.map((resource, index) => {
-              console.log(resource);
 
-              if (!resource.latitude || !resource.longitude) {
-                console.error(
-                  "Resource is missing latitude or longitude",
-                  resource.id
-                );
-                return null;
-              }
-
-              return (
-                <Marker
-                  lat={resource.latitude}
-                  lng={resource.longitude}
-                  text={resource.name}
-                  key={resource.id}
-                  id={resource.id}
-                  openModal={openModal}
-                  resource={resource}
-                />
-              );
-            })}
-          </GoogleMapReact>
-        </div> */}
         <button className="modal-close-treasure" onClick={closeModal}>
           <i className="fa-solid fa-xmark"></i>
         </button>
@@ -164,8 +135,6 @@ const GeneratedTreasureMap = ({
                 resource.category
               );
 
-              // Return a React.Fragment with a key instead of the shorthand fragment
-              // This is important for React's rendering of lists
               return (
                 <React.Fragment key={resource.id}>
                   <div className="modalContainer">
@@ -195,8 +164,16 @@ const GeneratedTreasureMap = ({
 
                     <ModalInfo
                       id={resource.id}
+                      item={resource}
                       schedule={resource.schedule}
                       res={resource}
+                      modalIsOpen={modalIsOpen}
+                      isFavorited={isFavorited}
+                      handleToggleSelectResource={handleToggleSelectResource}
+                      setShowRating={setShowRating}
+                      toggleFavorite={toggleFavorite}
+                      isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                      selectedResources={selectedResources}
                     />
                   </div>
                   {/* {index < selectedResources.length - 1 && <hr />} */}
