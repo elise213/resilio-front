@@ -24,11 +24,11 @@ const LoginModal = ({
   let field = null;
   if (log == "2") {
     field = (
-      <div className="login-modal-content">
-        <div className="login-modal-header">
+      <div className="custom-login-modal-content">
+        <div className="custom-login-modal-header">
           <div className="center-header">
-            <span className="form-label" id="exampleloginModalLabel">
-              <span className="form-label">
+            <span className="custom-form-label" id="exampleloginModalLabel">
+              <span className="custom-form-label">
                 Do you represent an organization?
               </span>
             </span>
@@ -38,12 +38,12 @@ const LoginModal = ({
             <i className="fa-solid fa-x"></i>{" "}
           </span>
         </div>
-        <div className="login-modal-body">
+        <div className="custom-login-modal-body">
           <form>
             <div className="yes-or-no">
-              <div className="form-check">
+              <div className="custom-form-check">
                 <input
-                  className="form-check-input radio"
+                  className="custom-form-check-input radio"
                   type="radio"
                   name="orgRadio"
                   id="orgRadio1"
@@ -51,16 +51,16 @@ const LoginModal = ({
                   onChange={() => setIs_org("true")}
                 />
                 <label
-                  className="form-label radio-label"
+                  className="custom-form-label radio-label"
                   htmlFor="exampleRadios1"
                 >
                   Yes
                 </label>
               </div>
 
-              <div className="form-check">
+              <div className="custom-form-check">
                 <input
-                  className="form-check-input radio"
+                  className="custom-form-check-input radio"
                   type="radio"
                   name="orgRadio"
                   id="orgRadio2"
@@ -68,7 +68,7 @@ const LoginModal = ({
                   onChange={() => setIs_org("false")}
                 />
                 <label
-                  className="form-label radio-label"
+                  className="custom-form-label radio-label"
                   htmlFor="exampleRadios1"
                 >
                   No
@@ -76,12 +76,12 @@ const LoginModal = ({
               </div>
             </div>
             <div className="">
-              <label htmlFor="name" className="form-label less-margin">
+              <label htmlFor="name" className="custom-form-label less-margin">
                 Name
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="custom-form-control"
                 id="name"
                 aria-describedby="emailHelp"
                 value={name}
@@ -89,12 +89,12 @@ const LoginModal = ({
               ></input>
             </div>
             <div className="">
-              <label htmlFor="email1" className="form-label">
+              <label htmlFor="email1" className="custom-form-label">
                 Email
               </label>
               <input
                 type="email"
-                className="form-control"
+                className="custom-form-control"
                 id="email"
                 aria-describedby="emailHelp"
                 value={email}
@@ -102,12 +102,12 @@ const LoginModal = ({
               ></input>
             </div>
             <div className="">
-              <label htmlFor="password" className="form-label">
+              <label htmlFor="password" className="custom-form-label">
                 Password
               </label>
               <input
                 type="password"
-                className="form-control"
+                className="custom-form-control"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -123,7 +123,7 @@ const LoginModal = ({
               Register
             </button>
 
-            <div className="login-modal-footer">
+            <div className="custom-login-modal-footer">
               <div className="forgot-password" onClick={() => setLog("1")}>
                 Go back to login
               </div>
@@ -135,10 +135,10 @@ const LoginModal = ({
   }
   if (log == "1") {
     field = (
-      <div className="login-modal-content ">
-        <div className="login-modal-header">
+      <div className="custom-login-modal-content ">
+        <div className="custom-login-modal-header">
           {/* <div className="header-div">
-            <span className="form-label" id="">
+            <span className="custom-form-label" id="">
               Enter your Username <br />
               and Password to Login
             </span>
@@ -150,37 +150,40 @@ const LoginModal = ({
             <i className="fa-solid fa-x"></i>{" "}
           </span>
         </div>
-        <div className="login-modal-body small-login-modal">
+        <div className="custom-login-modal-body small-login-modal">
           <form>
             <div className="">
               <label
                 htmlFor="exampleInputEmail1"
-                className="form-label margin-cancel"
+                className="custom-form-label margin-cancel"
               >
                 Email address
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="custom-form-control"
                 id="exampleInputEmail1"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
             </div>
             <div className="">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label
+                htmlFor="exampleInputPassword1"
+                className="custom-form-label"
+              >
                 Password
               </label>
               <input
                 type="password"
-                className="form-control"
+                className="custom-form-control"
                 id="exampleInputPassword1"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
 
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", marginTop: "10px" }}>
               <button
                 type="submit"
                 className="submit"
@@ -191,7 +194,7 @@ const LoginModal = ({
             </div>
           </form>
         </div>
-        <div className="login-modal-footer">
+        <div className="custom-login-modal-footer">
           <div className="forgot-password" onClick={() => setLog("2")}>
             Register for an account
           </div>

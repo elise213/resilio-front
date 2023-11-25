@@ -8,17 +8,23 @@
   margin: 15px;
 }
 
+.circle-font {
+  color: lightgreen !important;
+  font-size: 30px !important;
+}
+
 .close-contact {
   padding: 0;
   margin: 0;
-  font-size: 30px;
+  font-size: 20px;
   border: none;
   background-color: transparent;
-  align-self: flex-end;
   color: lavender;
-  position: absolute;
-  right: 10vw;
-  top: 200px;
+  justify-content: end;
+  margin: 0 15px;
+  display: flex;
+  width: 100%;
+  float: right;
 }
 
 .close-contact:hover {

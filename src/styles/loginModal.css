@@ -9,22 +9,86 @@
   z-index: 99999;
 }
 
-.login-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-size: x-large;
-  background-color: white;
+/* Replace .form-check */
+.custom-form-check {
+  position: relative;
+  display: block;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
 }
 
-.login-modal-footer {
+.custom-form-check-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-form-label {
+  margin: 5px 0;
+  display: inline-block;
+  font-family: "Urbanist", sans-serif;
+  letter-spacing: 1px;
+}
+
+.custom-form-control {
+  display: block;
+  width: 100%;
+  padding: 2px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-login-modal-header {
+  padding: 5px 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background-color: white;
-  padding: 10px 20px;
-  font-size: small;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.custom-login-modal-body {
+  padding: 1rem;
+}
+
+.custom-login-modal-content {
+  position: relative;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  outline: 0;
+  border: 12px double rgb(92, 128, 0);
+  margin: 10px;
+}
+
+.custom-login-modal-footer {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Custom submit button style */
+.custom-submit-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
 }
 
 .header-div {
@@ -157,6 +221,10 @@ body.loginModal-open {
   position: fixed;
   width: 100%;
 }
+.forgot-password {
+  font-family: "Urbanist", sans-serif;
+  letter-spacing: 1px;
+}
 
 .forgot-password:hover {
   color: lightgreen;
@@ -189,12 +257,12 @@ body.loginModal-open {
 .login-close {
   color: blue;
   font-size: 20px;
-  position: fixed;
   top: 5px;
   margin-right: 5px;
+  transition: 0.3s;
 }
 
-.btn-close:hover {
+.login-close:hover {
   color: lightgreen;
 }
 
