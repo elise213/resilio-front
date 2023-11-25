@@ -126,7 +126,7 @@ const Navbar2 = ({
         </nav>
 
         {showContactModal && (
-          <div className="modal-contact">
+          <div className="modal-overlay">
             <div className="modal-content-contact">
               <span className="close-contact" onClick={toggleContactModal}>
                 <i className="fa-solid fa-x"></i>
