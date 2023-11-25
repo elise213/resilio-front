@@ -4,6 +4,7 @@ import Buttons from "./Buttons";
 
 const MapSettings = ({
   toggleFavoritesButtonRef,
+  toggleToolButtonRef,
   toggleDeckButtonRef,
   handleZipInputChange,
   zipInput,
@@ -29,6 +30,7 @@ const MapSettings = ({
         {!backSide && (
           <div className="function-buttons">
             <button
+              ref={toggleToolButtonRef}
               onClick={() => setIsToolBoxOpen(true)}
               className={`toolopen-icon-nav ${
                 !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
@@ -70,6 +72,7 @@ const MapSettings = ({
         togglefavorites={togglefavorites}
         toggleFavoritesButtonRef={toggleFavoritesButtonRef}
         toggleDeckButtonRef={toggleDeckButtonRef}
+        toggleToolButtonRef={toggleToolButtonRef}
       />
       {/* <button
         ref={toggleFavoritesButtonRef}

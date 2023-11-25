@@ -42,6 +42,7 @@ const AltSimpleMap = ({
   togglefavorites,
   toggleCardDeck,
   toggleFavoritesButtonRef,
+  toggleToolButtonRef,
   toggleDeckButtonRef,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -199,6 +200,7 @@ const AltSimpleMap = ({
               <div className="simple-selection">
                 <MapSettings
                   toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+                  toggleToolButtonRef={toggleToolButtonRef}
                   toggleDeckButtonRef={toggleDeckButtonRef}
                   toggleCardDeck={toggleCardDeck}
                   togglefavorites={togglefavorites}

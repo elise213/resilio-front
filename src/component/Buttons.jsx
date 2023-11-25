@@ -12,6 +12,7 @@ const Buttons = ({
   setBackSide,
   toggleFavoritesButtonRef,
   toggleDeckButtonRef,
+  toggleToolButtonRef,
 }) => {
   return (
     <>
