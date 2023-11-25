@@ -54,7 +54,7 @@
 }
 
 .simple-selection {
-  width: 100%;
+  width: 70%;
 }
 
 /* Marker Styles */
@@ -107,17 +107,24 @@
 }
 
 /* Map Frame Styles */
+
+.map-frame {
+  width: 98%;
+}
+
 .map-frame,
 .map-frame.alsoFlipped {
   flex-direction: column;
   display: flex;
   z-index: 0;
-  width: 80%;
+  align-items: center;
+
   margin-top: 40px;
 }
 
 .map-frame.alsoFlipped {
   transform: rotateY(180deg);
+  width: 90%;
 }
 
 .flipped > div {
@@ -132,11 +139,11 @@
     flex: 1 1 45%; /* Two columns on smaller screens */
   }
 }
-@media screen and (max-width: 700px) {
+/* @media screen and (max-width: 700px) {
   .map-frame-wrapper {
-    width: 90% !important;
+    width: 98% !important;
   }
-}
+} */
 
 @media screen and (max-width: 600px) {
   .map-frame-wrapper {
