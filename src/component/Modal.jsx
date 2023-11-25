@@ -11,18 +11,21 @@ const Modal = ({
   modalIsOpen,
   closeModal,
   setModalIsOpen,
-
+  isGeneratedMapModalOpen,
   removeSelectedResource,
   selectedResources,
   addSelectedResource,
   item,
   setFavorites,
+  handleToggleSelectResource,
+  showRating,
+  setShowRating,
 }) => {
   const { store, actions } = useContext(Context);
 
   const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
-  const [showRating, setShowRating] = useState(false);
+
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -72,16 +75,6 @@ const Modal = ({
   const isSelected =
     Array.isArray(selectedResources) &&
     selectedResources.some((resource) => resource.id === item.id);
-
-  const handleToggleSelectResource = (event) => {
-    event.stopPropagation();
-    console.log("hnadleToggleSelectR");
-    if (isSelected) {
-      handleDeselectResource(item.id);
-    } else {
-      handleSelectResource(item);
-    }
-  };
 
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
@@ -235,6 +228,7 @@ const Modal = ({
             handleToggleSelectResource={handleToggleSelectResource}
             setShowRating={setShowRating}
             toggleFavorite={toggleFavorite}
+            isGeneratedMapModalOpen={isGeneratedMapModalOpen}
           />
           <div className="full-comments-section">
             {comments.length > 0 && (
