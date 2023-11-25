@@ -512,7 +512,7 @@ const Home = () => {
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
-                isLoggedIn={isLoggedIn}
+                // isLoggedIn={isLoggedIn}
                 selectedResources={selectedResources}
                 addSelectedResource={addSelectedResource}
                 item={selectedResource}
