@@ -113,12 +113,7 @@ const ResourceCard = (props) => {
             )}
           </button>
         )}
-        {/* <button
-          className={isSelected ? "remove-path-card" : "add-path"}
-          onClick={handleToggleSelectResource}
-        >
-          {isSelected ? "Remove from Plan" : "Add to Plan"}
-        </button> */}
+
         <button
           className={isSelected ? "remove-path-card" : "add-path"}
           onClick={handleToggleSelectResource}

@@ -107,8 +107,10 @@ const Home = () => {
   };
 
   const addSelectedResource = (resource) => {
-    console.log("Adding resource", resource);
-
+    if (!resource) {
+      console.error("Resource is undefined");
+      return;
+    }
     setSelectedResources((prevResources) => {
       if (prevResources.length >= 10) {
         Swal.fire({
@@ -232,16 +234,6 @@ const Home = () => {
     setZipInput(value);
     if (value.length === 5) {
       await updateCityStateFromZip(value);
-    }
-  };
-
-  const handleToggleSelectResource = (event) => {
-    event.stopPropagation();
-    console.log("hnadleToggleSelectR");
-    if (isSelected) {
-      handleDeselectResource(item.id);
-    } else {
-      handleSelectResource(item);
     }
   };
 
@@ -532,15 +524,13 @@ const Home = () => {
               <Modal
                 removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
+                selectedResources={selectedResources}
+                addSelectedResource={addSelectedResource}
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
                 isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                selectedResources={selectedResources}
-                addSelectedResource={addSelectedResource}
-                item={selectedResource}
                 setFavorites={setFavorites}
-                handleToggleSelectResource={handleToggleSelectResource}
                 showRating={showRating}
                 setShowRating={setShowRating}
               />
@@ -559,6 +549,7 @@ const Home = () => {
             modalIsOpen={modalIsOpen}
             setIsFavorited={setIsFavorited}
             isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+            addSelectedResource={addSelectedResource}
           />
         )}
       </div>

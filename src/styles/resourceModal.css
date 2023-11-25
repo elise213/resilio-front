@@ -283,7 +283,7 @@ body.modal-open {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 15px 15px 40px 15px;
+  padding: 0 15px 40px 15px;
 }
 
 .info {
@@ -441,7 +441,7 @@ body.modal-open {
   text-decoration: none !important;
   color: black;
   font-size: 15px;
-  padding: 15px;
+  padding: 0 15px;
 }
 
 .sched-div {
