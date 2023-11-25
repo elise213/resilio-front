@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import UserProfile from "./pages/UserProfile";
 import Donate from "./pages/Donate";
-import Contact from "./pages/Contact";
+// import Contact from "./pages/Contact";
 import Create from "./pages/Create";
 import Edit from "./pages/Edit";
 import Footer from "./component/Footer2";
@@ -22,7 +22,7 @@ const Layout = () => {
         <Routes>
           <Route element={<Home />} path="/" />
           <Route element={<UserProfile />} path="/profile" />
-          <Route element={<Contact />} path="/contact" />
+          {/* <Route element={<Contact />} path="/contact" /> */}
           <Route element={<Create />} path="/create" />
           <Route element={<Donate />} path="/donate" />
           <Route element={<Edit />} path="/edit/:id" />
