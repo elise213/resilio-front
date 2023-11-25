@@ -1,18 +1,22 @@
 /* Font Face Definitions */
 
+.info-address {
+  text-align: center;
+}
+
 .info-address a {
   padding: 0;
   width: unset !important;
   color: blue;
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 0.5px;
-  text-align: center;
 }
 
 .info-address i {
   padding: 3px;
   color: red;
-  font-size: 14px;
+  font-size: 15px;
+  text-align: center;
 }
 
 /* Global Layout */
@@ -157,5 +161,9 @@
   }
   .resource-card {
     flex: 1 1 100%; /* One column on very small screens */
+  }
+
+  .info-address a {
+    font-size: 11px;
   }
 }

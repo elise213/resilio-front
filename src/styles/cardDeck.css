@@ -28,6 +28,8 @@
 }
 
 .decknew-navbar {
+  display: flex;
+  flex-direction: column;
   border-radius: 0 30px 0 0;
   overflow-y: auto;
   bottom: 0;
