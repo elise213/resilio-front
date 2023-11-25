@@ -293,16 +293,6 @@ const Home = () => {
 
   // USE EFFECTS
 
-  // useEffect(() => {
-  //   const storedFavorites = JSON.parse(
-  //     sessionStorage.getItem("favorites") || "[]"
-  //   );
-  //   const isItemFavorited = storedFavorites.some(
-  //     (favorite) => favorite.name === item.name
-  //   );
-  //   setIsFavorited(isItemFavorited);
-  // }, []);
-
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
