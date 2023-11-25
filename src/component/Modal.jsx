@@ -11,7 +11,6 @@ const Modal = ({
   modalIsOpen,
   closeModal,
   setModalIsOpen,
-  isLoggedIn,
 
   removeSelectedResource,
   selectedResources,
@@ -29,6 +28,17 @@ const Modal = ({
   const [comments, setComments] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [isFavorited, setIsFavorited] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  // USE EFFECTS
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+  }, [store.token, modalIsOpen]);
 
   const handleSelectResource = (resource) => {
     addSelectedResource(resource);
@@ -216,10 +226,10 @@ const Modal = ({
         <div className="modal-tools"></div>
         <div className="modal-body">
           <ModalInfo
+            modalIsOpen={modalIsOpen}
             id={resource.id}
             schedule={resource.schedule}
             res={resource}
-            isLoggedIn={isLoggedIn}
             isFavorited={isFavorited}
             isSelected={isSelected}
             handleToggleSelectResource={handleToggleSelectResource}
@@ -261,7 +271,8 @@ const Modal = ({
                         <div className="comment-info">
                           <div className="comment-user-info">
                             <p className="comment-info-username">
-                              <i class="fa-solid fa-user"></i> {comment.user_id}{" "}
+                              <i className="fa-solid fa-user"></i>{" "}
+                              {comment.user_id}{" "}
                             </p>
                           </div>
                           <div className="comment-info-date">
