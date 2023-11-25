@@ -92,6 +92,12 @@
   display: block; /* Makes each span take up the full width, causing a line break */
 }
 
+.buttons-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .modal-button-container {
   display: flex;
   flex-direction: column;
@@ -240,15 +246,16 @@ textarea {
   padding: 0 7px 0 0;
 }
 
+.info a {
+  font-size: 15px;
+}
+
 .modal-center {
   text-align: center !important;
   width: 100%;
   margin-bottom: 7px;
-}
-
-.modal-center {
   text-decoration: none !important;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .modal-center::-webkit-scrollbar-track {

@@ -178,7 +178,7 @@ export const ModalInfo = ({
 
       <div className="description-div">
         {!isGeneratedMapModalOpen && (
-          <>
+          <div className="buttons-modal">
             <button
               className={isSelected ? "remove-path-card" : "add-path"}
               onClick={handleToggleSelectResource}
@@ -217,12 +217,12 @@ export const ModalInfo = ({
                 {/* </div> */}
               </div>
             )}
-            {res.description && (
-              <div className="text-description-div">
-                <p className="modal-text description">{res.description}</p>
-              </div>
-            )}
-          </>
+          </div>
+        )}
+        {res.description && (
+          <div className="text-description-div">
+            <p className="modal-text description">{res.description}</p>
+          </div>
         )}
       </div>
 
@@ -232,7 +232,10 @@ export const ModalInfo = ({
             {/* WEBSITE */}
             {res.website && (
               <div className="info">
-                <i className="fa-solid fa-earth-americas"></i>
+                <i
+                  style={{ color: "blue" }}
+                  className="fa-solid fa-earth-americas"
+                ></i>
                 <a
                   href={`https://www.${res.website}`}
                   target="_blank"
