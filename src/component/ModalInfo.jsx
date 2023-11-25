@@ -7,18 +7,37 @@ import styles from "../styles/resourceModal.css";
 export const ModalInfo = ({
   res,
   id,
-  item,
   modalIsOpen,
   isFavorited,
-  handleToggleSelectResource,
+  addSelectedResource,
   setShowRating,
   toggleFavorite,
   isGeneratedMapModalOpen,
   selectedResources,
+  selectedResource,
+  removeSelectedResource,
 }) => {
   const { store, actions } = useContext(Context);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  const handleDeselectResource = (resourceId) => {
+    removeSelectedResource(resourceId);
+  };
+
+  const handleToggleSelectResource = (event) => {
+    event.stopPropagation();
+    console.log("hnadleToggleSelectR");
+    if (isSelected) {
+      handleDeselectResource(res.id);
+    } else {
+      handleSelectResource(res);
+    }
+  };
+
+  const handleSelectResource = (resource) => {
+    addSelectedResource(resource);
+  };
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -108,7 +127,7 @@ export const ModalInfo = ({
 
   const isSelected =
     Array.isArray(selectedResources) &&
-    selectedResources.some((resource) => resource.id === item.id);
+    selectedResources.some((resource) => resource.id === res.id);
 
   const currentSchedule =
     store.schedules.find((each) => each.resource_id === id) || null;
@@ -164,7 +183,17 @@ export const ModalInfo = ({
               className={isSelected ? "remove-path-card" : "add-path"}
               onClick={handleToggleSelectResource}
             >
-              {isSelected ? <>Remove from Plan</> : <>Add to Plan</>}
+              {isSelected ? (
+                <>
+                  <span>Remove</span>
+                  <span>from Plan</span>
+                </>
+              ) : (
+                <>
+                  <span>Add</span>
+                  <span>to Plan</span>
+                </>
+              )}
             </button>
             {isLoggedIn && (
               <div className="modal-button-container">
