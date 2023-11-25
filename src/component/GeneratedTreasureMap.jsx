@@ -20,6 +20,7 @@ const GeneratedTreasureMap = ({
   setShowRating,
   setIsFavorited,
   isGeneratedMapModalOpen,
+  addSelectedResource,
 }) => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -174,6 +175,7 @@ const GeneratedTreasureMap = ({
                       toggleFavorite={toggleFavorite}
                       isGeneratedMapModalOpen={isGeneratedMapModalOpen}
                       selectedResources={selectedResources}
+                      addSelectedResource={addSelectedResource}
                     />
                   </div>
                   {/* {index < selectedResources.length - 1 && <hr />} */}
