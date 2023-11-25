@@ -115,7 +115,7 @@
 .donation-text {
   /* font-family: "Urbanist", sans-serif !important; */
   font-family: "InterVariable";
-  font-size: 22px;
+  font-size: 20px;
   color: rgb(128, 41, 0);
   letter-spacing: 1px;
   text-align: center;
@@ -139,7 +139,7 @@
   justify-content: end;
   display: flex;
   width: 100%;
-  right: -50px;
+  right: -30px;
 }
 
 .donation-close:hover {
