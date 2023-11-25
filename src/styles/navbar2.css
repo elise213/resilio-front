@@ -121,12 +121,11 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  position: absolute;
   top: 0;
+  right: 0;
   position: fixed;
   z-index: 995;
   background-color: #464646;
-  border: none;
 }
 
 .modal-open {
