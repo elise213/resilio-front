@@ -49,7 +49,6 @@ const SimpleMap = ({
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
-    // Update local state when store.favorites changes
     setFavorites(store.favorites);
     console.log("store favoritres updated!");
   }, [store.favorites]);
@@ -57,15 +56,19 @@ const SimpleMap = ({
   useEffect(() => {
     console.log("local favorites updated!");
     console.log("state favorites", favorites);
-
     console.log("STOREFAV", store.favorites);
   }, [favorites]);
 
+  useEffect(() => {
+    const fetchMarkers = async () => {};
+    if (city && city.bounds) {
+      fetchMarkers();
+    }
+  }, [city]);
+
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
-
     const color = "red";
-
     let iconClass = "fa-solid fa-map-pin";
 
     return (
@@ -112,7 +115,6 @@ const SimpleMap = ({
   };
 
   useEffect(() => {
-    // console.log("Checking if favorites is updated", store.favorites);
     actions.popFavorites(setFavorites);
   }, [store.favorites]);
 

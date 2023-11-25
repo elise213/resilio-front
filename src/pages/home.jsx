@@ -7,7 +7,6 @@ import Favorites from "../component/Favorites";
 import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
-import Login from "../component/Login";
 
 import { Modal } from "../component";
 import ToolBox from "../component/ToolBox";
@@ -42,6 +41,7 @@ const Home = () => {
   const toggleToolButtonRef = useRef(null);
 
   // STATES
+  const [loading, setLoading] = useState(false);
   const [backSide, setBackSide] = useState(false);
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
@@ -103,7 +103,6 @@ const Home = () => {
     setIsDeckOpen(!isDeckOpen);
   };
 
-  // Function to update session storage whenever selectedResources changes
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
   };
@@ -239,6 +238,25 @@ const Home = () => {
     }
   };
 
+  // const updateCityStateFromZip = async (zip) => {
+  //   try {
+  //     const data = await fetchBounds(zip, true);
+  //     const location = data.results[0]?.geometry?.location;
+  //     const bounds =
+  //       data.results[0]?.geometry?.bounds ||
+  //       data.results[0]?.geometry?.viewport;
+  //     if (location && bounds) {
+  //       setCity({
+  //         ...city,
+  //         center: location,
+  //         bounds: bounds,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching bounds:", error.message);
+  //   }
+  // };
+
   const updateCityStateFromZip = async (zip) => {
     try {
       const data = await fetchBounds(zip, true);
@@ -246,12 +264,18 @@ const Home = () => {
       const bounds =
         data.results[0]?.geometry?.bounds ||
         data.results[0]?.geometry?.viewport;
+
       if (location && bounds) {
-        setCity({
+        const newCityState = {
           ...city,
           center: location,
           bounds: bounds,
-        });
+        };
+        setCity(newCityState);
+        handleBoundsChange({ center: location, bounds: bounds });
+
+        // Make sure categories, days, and groups have the correct values
+        await actions.setBoundaryResults(bounds, categories, days, groups);
       }
     } catch (error) {
       console.error("Error fetching bounds:", error.message);
@@ -303,6 +327,15 @@ const Home = () => {
   }, [store.token]);
 
   useEffect(() => {
+    const checkLoadingStatus = () => {
+      const loading = sessionStorage.getItem("loading");
+      setLoading(loading);
+    };
+
+    checkLoadingStatus();
+  }, [store.loading]);
+
+  useEffect(() => {
     geoFindMe();
   }, []);
 
@@ -321,7 +354,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [city.bounds]);
+  }, [city]);
 
   useEffect(() => {
     if (zipInput && zipInput.length === 5) {
@@ -385,6 +418,11 @@ const Home = () => {
         setDonationModalIsOpen={setDonationModalIsOpen}
         setAboutModalIsOpen={setAboutModalIsOpen}
       />
+      {loading != undefined && (
+        <div className="loading">
+          <p>{loading}</p>
+        </div>
+      )}
 
       {/* Filter */}
       <ToolBox
@@ -545,8 +583,9 @@ const Home = () => {
                   <i className="fa-solid fa-x"></i>
                 </div>
                 <p className="donation-text">
-                  Resilio is a 501(c)3, in great need of donations. Please Email
-                  resilio.map@gmail.com to connect with us. Thank you!
+                  Resilio is a 501(c)3, in need of donations and community
+                  support. Please Email resourcemap001@gmail.com to connect with
+                  us. Thank you!
                 </p>
               </div>
             </div>
