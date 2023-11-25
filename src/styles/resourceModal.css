@@ -287,8 +287,9 @@ body.modal-open {
 }
 
 .info {
+  text-align: center;
   display: flex;
-  padding: 10px !important;
+  justify-content: center;
 }
 
 .info i {
@@ -403,8 +404,7 @@ body.modal-open {
 .description-div {
   width: 100%;
   display: flex;
-  justify-content: center;
-  /* flex-direction: column; */
+  justify-content: space-between;
   text-align: justify;
   margin: 20px 0 0 0;
 }
@@ -427,6 +427,13 @@ body.modal-open {
 .resource-card-text {
   font-size: 14px;
   font-family: "Urbanist", sans-serif;
+}
+
+.text-description-div {
+  align-items: center;
+  width: 100%;
+  justify-content: end;
+  display: flex;
 }
 
 .modal-text {
