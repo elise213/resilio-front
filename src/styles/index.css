@@ -213,7 +213,7 @@ body {
 /* _____________________________________________________________BUTTONS */
 
 .submit {
-  border: 1px solid blue;
+  border: 2px solid rgb(149, 84, 19);
   color: rgb(149, 84, 19);
   border-radius: 3px;
   font-family: "AwsumSans";

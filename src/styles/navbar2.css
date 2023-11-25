@@ -234,3 +234,9 @@
   left: -40px !important;
   display: flex;
 }
+
+@media screen and (max-width: 600px) {
+  .modal-content-contact {
+    width: 100% !important;
+  }
+}

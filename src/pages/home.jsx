@@ -55,7 +55,9 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [showRating, setShowRating] = useState(false);
+  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
 
+  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
   const [zipInput, setZipInput] = useState("");
@@ -291,15 +293,15 @@ const Home = () => {
 
   // USE EFFECTS
 
-  useEffect(() => {
-    const storedFavorites = JSON.parse(
-      sessionStorage.getItem("favorites") || "[]"
-    );
-    const isItemFavorited = storedFavorites.some(
-      (favorite) => favorite.name === item.name
-    );
-    setIsFavorited(isItemFavorited);
-  }, []);
+  // useEffect(() => {
+  //   const storedFavorites = JSON.parse(
+  //     sessionStorage.getItem("favorites") || "[]"
+  //   );
+  //   const isItemFavorited = storedFavorites.some(
+  //     (favorite) => favorite.name === item.name
+  //   );
+  //   setIsFavorited(isItemFavorited);
+  // }, []);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -390,6 +392,8 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
         toggleNav={toggleNav}
+        setDonationModalIsOpen={setDonationModalIsOpen}
+        setAboutModalIsOpen={setAboutModalIsOpen}
       />
 
       {/* Filter */}
@@ -534,6 +538,46 @@ const Home = () => {
                 showRating={showRating}
                 setShowRating={setShowRating}
               />
+            </div>
+          </>
+        )}
+
+        {donationModalIsOpen && (
+          <>
+            <div className="donation-overlay">
+              <div className="donation-modal">
+                <div
+                  className="donation-close"
+                  onClick={() => {
+                    setDonationModalIsOpen(false);
+                  }}
+                >
+                  <i className="fa-solid fa-x"></i>
+                </div>
+                <p className="donation-text">
+                  Resilio is a 501(c)3, in need of donations and community
+                  support. Please Email resilio.map@gmail.com to inquire about
+                  making a contribution. Thank you.
+                </p>
+              </div>
+            </div>
+          </>
+        )}
+
+        {aboutModalIsOpen && (
+          <>
+            <div className="donation-overlay">
+              <div className="donation-modal">
+                <div
+                  className="donation-close"
+                  onClick={() => {
+                    setAboutModalIsOpen(false);
+                  }}
+                >
+                  <i className="fa-solid fa-x"></i>
+                </div>
+                <p className="donation-text">We are ...</p>
+              </div>
             </div>
           </>
         )}
