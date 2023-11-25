@@ -33,6 +33,7 @@
   display: grid;
   gap: 10px;
   width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .button-box {
@@ -95,10 +96,6 @@ li {
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  /* margin-bottom: 5px; */
-}
-
-.path {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,10 +210,6 @@ li {
 
 .createMyPath:hover {
   background-color: lightgreen;
-}
-
-.grid-container {
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 @media screen and (max-width: 800px) {
