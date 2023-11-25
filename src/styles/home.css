@@ -63,20 +63,8 @@
   align-items: center;
 }
 
-.home-logo {
-  width: 40%;
-  height: auto;
-  z-index: 0;
-  top: 200px;
-  opacity: 0.9;
-}
-
 .scroll-search-results ul::-webkit-scrollbar-thumb {
   display: hidden;
-}
-
-.spacing-scroll-warning {
-  margin-top: 67px;
 }
 
 .new-container {
