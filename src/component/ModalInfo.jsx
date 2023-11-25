@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { ModalMap } from "./ModalMap";
 import arrow from "/assets/coralarrow.png";
@@ -7,7 +7,7 @@ import styles from "../styles/resourceModal.css";
 export const ModalInfo = ({
   res,
   id,
-  isLoggedIn,
+  modalIsOpen,
   isFavorited,
   isSelected,
   handleToggleSelectResource,
@@ -16,6 +16,16 @@ export const ModalInfo = ({
 }) => {
   const { store, actions } = useContext(Context);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+  }, [store.token, modalIsOpen]);
 
   const images = [
     res.image,
@@ -140,38 +150,40 @@ export const ModalInfo = ({
       )}
 
       {/* DESCRIPTION */}
-      {res.description && (
-        <div className="description-div">
-          {isLoggedIn && (
-            <div className="modal-button-container">
-              <button
-                className="add-favorite"
-                onClick={(event) => toggleFavorite(event)}
-              >
-                {isFavorited ? (
-                  <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
-                ) : (
-                  <i className="fa-regular fa-heart"></i>
-                )}
-              </button>
-              <button
-                className={isSelected ? "remove-path-card" : "add-path"}
-                onClick={handleToggleSelectResource}
-              >
-                {isSelected ? <>Remove from Plan</> : <>Add to Plan</>}
-              </button>
 
-              {/* <div className="rate-this-resource-toggle"> */}
-              <button onClick={() => setShowRating(true)} className="submit">
-                Rate
-              </button>
-              {/* </div> */}
-            </div>
-          )}
+      <div className="description-div">
+        {isLoggedIn && (
+          <div className="modal-button-container">
+            <button
+              className="add-favorite"
+              onClick={(event) => toggleFavorite(event)}
+            >
+              {isFavorited ? (
+                <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
+              ) : (
+                <i className="fa-regular fa-heart"></i>
+              )}
+            </button>
+            <button
+              className={isSelected ? "remove-path-card" : "add-path"}
+              onClick={handleToggleSelectResource}
+            >
+              {isSelected ? <>Remove from Plan</> : <>Add to Plan</>}
+            </button>
 
-          <p className="modal-text description">{res.description}</p>
-        </div>
-      )}
+            {/* <div className="rate-this-resource-toggle"> */}
+            <button onClick={() => setShowRating(true)} className="submit">
+              Rate
+            </button>
+            {/* </div> */}
+          </div>
+        )}
+        {res.description && (
+          <div className="text-description-div">
+            <p className="modal-text description">{res.description}</p>
+          </div>
+        )}
+      </div>
 
       <div className="info-map-div">
         <div className="details-div">
