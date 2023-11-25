@@ -123,6 +123,10 @@
   width: 100%;
   z-index: 995;
   background-color: #464646;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .modal-open {
