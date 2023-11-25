@@ -115,15 +115,12 @@
   transition: left 0.3s ease;
 }
 
-.modal-contact {
+.modal-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
-  top: 0;
-  right: 0;
-  position: fixed;
+  height: 100%;
+  width: 100%;
   z-index: 995;
   background-color: #464646;
 }
@@ -136,7 +133,6 @@
 .modal-content-contact {
   max-width: 850px;
   border-radius: 3px;
-  background-color: transparent;
   width: 70%;
   z-index: 999;
 }
@@ -236,12 +232,6 @@
 
 @media screen and (max-width: 600px) {
   .modal-content-contact {
-    max-width: 600px !important;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .modal-content-contact {
-    max-width: 350px !important;
+    width: 95% !important;
   }
 }
