@@ -4,7 +4,7 @@ import GeneratedTreasureMap from "../component/GeneratedTreasureMap";
 import Navbar2 from "../component/Navbar2";
 import CardDeck from "../component/CardDeck";
 import Favorites from "../component/Favorites";
-import AltSimpleMap from "../component/AltSimpleMap";
+import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Login from "../component/Login";
@@ -452,7 +452,7 @@ const Home = () => {
         {message1Open && (
           <>
             <ErrorBoundary>
-              <AltSimpleMap
+              <SimpleMap
                 toggleCardDeck={toggleCardDeck}
                 toggleToolButtonRef={toggleToolButtonRef}
                 togglefavorites={togglefavorites}
