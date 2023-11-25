@@ -188,7 +188,7 @@ const MapBack = ({
     <>
       <p className="the-plan">THE PLAN</p>
       {selectedResources[0] ? (
-        <div className="path">
+        <>
           <div className="selected-resources">
             <button className="createMyPath" onClick={handleCreateMyPathClick}>
               Save Your Plan
@@ -210,7 +210,7 @@ const MapBack = ({
               ))}
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <div className="path-warning-div">
           <p className="scroll-title">

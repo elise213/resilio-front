@@ -56,4 +56,5 @@
   width: 100%;
   justify-content: space-between;
   margin: 0;
+  /* justify-self: center; */
 }
