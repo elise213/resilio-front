@@ -15,9 +15,7 @@ const Modal = ({
   removeSelectedResource,
   selectedResources,
   addSelectedResource,
-  item,
   setFavorites,
-  handleToggleSelectResource,
   showRating,
   setShowRating,
 }) => {
@@ -56,7 +54,7 @@ const Modal = ({
       sessionStorage.getItem("favorites") || "[]"
     );
     const isItemFavorited = storedFavorites.some(
-      (favorite) => favorite.name === item.name
+      (favorite) => favorite.name === resource.name
     );
     setIsFavorited(isItemFavorited);
   }, []);
@@ -66,15 +64,11 @@ const Modal = ({
     setIsFavorited(!isFavorited);
 
     if (isFavorited) {
-      actions.removeFavorite(item.name, setFavorites);
+      actions.removeFavorite(resource.name, setFavorites);
     } else {
-      actions.addFavorite(item.name, setFavorites);
+      actions.addFavorite(resource.name, setFavorites);
     }
   };
-
-  const isSelected =
-    Array.isArray(selectedResources) &&
-    selectedResources.some((resource) => resource.id === item.id);
 
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
@@ -224,11 +218,13 @@ const Modal = ({
             schedule={resource.schedule}
             res={resource}
             isFavorited={isFavorited}
-            isSelected={isSelected}
-            handleToggleSelectResource={handleToggleSelectResource}
             setShowRating={setShowRating}
             toggleFavorite={toggleFavorite}
             isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+            addSelectedResource={addSelectedResource}
+            removeSelectedResource={removeSelectedResource}
+            selectedResource={resource}
+            selectedResources={selectedResources}
           />
           <div className="full-comments-section">
             {comments.length > 0 && (

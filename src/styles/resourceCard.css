@@ -67,13 +67,19 @@
 }
 
 .remove-path-card {
-  background-color: lavender;
-  color: rgb(128, 41, 0);
+  background-color: lavender);
   border: 1.5px solid red;
 }
 
+.remove-path-card,
 .add-path {
-  background-color: var(--marascoral) !important;
+  max-height: 40px;
+  min-width: 100px;
+  color: rgb(128, 41, 0);
+}
+
+.add-path {
+  background-color: lightgreen !important;
   color: rgb(128, 41, 0);
   border: 1.5px solid var(--coral2);
 }
