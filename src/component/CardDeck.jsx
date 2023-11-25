@@ -28,7 +28,7 @@ const CardDeck = ({
       toggleDeckButtonRef.current &&
       toggleDeckButtonRef.current.contains(event.target)
     ) {
-      return; // Ignore clicks on the toggle card deck button
+      return;
     }
 
     if (deckNav && !deckNav.contains(event.target) && isDeckOpen) {
@@ -36,11 +36,9 @@ const CardDeck = ({
     }
   };
 
-  // Set up the event listener
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
-      // Clean up the event listener
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isDeckOpen]);
