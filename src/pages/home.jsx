@@ -39,6 +39,7 @@ const Home = () => {
   // REF
   const toggleFavoritesButtonRef = useRef(null);
   const toggleDeckButtonRef = useRef(null);
+  const toggleToolButtonRef = useRef(null);
 
   // STATES
   const [backSide, setBackSide] = useState(false);
@@ -396,6 +397,7 @@ const Home = () => {
         setIsNavOpen={setIsNavOpen}
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
+        toggleToolButtonRef={toggleToolButtonRef}
       />
       {/* All Resources */}
       <CardDeck
@@ -452,6 +454,7 @@ const Home = () => {
             <ErrorBoundary>
               <AltSimpleMap
                 toggleCardDeck={toggleCardDeck}
+                toggleToolButtonRef={toggleToolButtonRef}
                 togglefavorites={togglefavorites}
                 setBackSide={setBackSide}
                 backSide={backSide}
