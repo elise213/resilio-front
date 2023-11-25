@@ -19,6 +19,8 @@ const Navbar2 = ({
   toggleNav,
   setOpenLoginModal,
   openLoginModal,
+  setDonationModalIsOpen,
+  setAboutModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -88,6 +90,7 @@ const Navbar2 = ({
                   className="nav-item"
                   onClick={() => {
                     setIsNavOpen(false);
+                    setAboutModalIsOpen(true);
                   }}
                 >
                   ABOUT
@@ -106,6 +109,7 @@ const Navbar2 = ({
                   className="nav-item"
                   onClick={() => {
                     setIsNavOpen(false);
+                    setDonationModalIsOpen(true);
                   }}
                 >
                   DONATE
