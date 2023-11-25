@@ -53,6 +53,8 @@ const Home = () => {
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLocating, setIsLocating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [showRating, setShowRating] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
@@ -233,6 +235,16 @@ const Home = () => {
     }
   };
 
+  const handleToggleSelectResource = (event) => {
+    event.stopPropagation();
+    console.log("hnadleToggleSelectR");
+    if (isSelected) {
+      handleDeselectResource(item.id);
+    } else {
+      handleSelectResource(item);
+    }
+  };
+
   const updateCityStateFromZip = async (zip) => {
     try {
       const data = await fetchBounds(zip, true);
@@ -286,6 +298,17 @@ const Home = () => {
   };
 
   // USE EFFECTS
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(
+      sessionStorage.getItem("favorites") || "[]"
+    );
+    const isItemFavorited = storedFavorites.some(
+      (favorite) => favorite.name === item.name
+    );
+    setIsFavorited(isItemFavorited);
+  }, []);
+
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
@@ -512,11 +535,14 @@ const Home = () => {
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
-                // isLoggedIn={isLoggedIn}
+                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
                 selectedResources={selectedResources}
                 addSelectedResource={addSelectedResource}
                 item={selectedResource}
                 setFavorites={setFavorites}
+                handleToggleSelectResource={handleToggleSelectResource}
+                showRating={showRating}
+                setShowRating={setShowRating}
               />
             </div>
           </>
@@ -530,6 +556,9 @@ const Home = () => {
             setHoveredItem={setHoveredItem}
             hoveredItem={hoveredItem}
             selectedResource={selectedResource}
+            modalIsOpen={modalIsOpen}
+            setIsFavorited={setIsFavorited}
+            isGeneratedMapModalOpen={isGeneratedMapModalOpen}
           />
         )}
       </div>
