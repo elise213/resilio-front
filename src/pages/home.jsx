@@ -524,13 +524,12 @@ const Home = () => {
               <Modal
                 removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
+                selectedResources={selectedResources}
+                addSelectedResource={addSelectedResource}
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
                 isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                selectedResources={selectedResources}
-                addSelectedResource={addSelectedResource}
-                item={selectedResource}
                 setFavorites={setFavorites}
                 showRating={showRating}
                 setShowRating={setShowRating}
