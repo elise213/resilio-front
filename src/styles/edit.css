@@ -54,7 +54,8 @@
 .map-settings-buttons {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: center;
   margin: 0;
   /* justify-self: center; */
 }

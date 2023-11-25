@@ -162,7 +162,7 @@ const SimpleMap = ({
                 <p className="the-plan">THE MAP</p>
                 <div
                   className="map-container"
-                  style={{ height: "45vh", width: "auto" }}
+                  style={{ height: "50vh", width: "auto" }}
                 >
                   <GoogleMapReact
                     bootstrapURLKeys={{ key: apiKey }}
