@@ -4,6 +4,8 @@ import arrow from "/assets/coralarrow.png";
 import styles from "../styles/resourceModal.css";
 
 const Carousel = ({ res }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const images = [
     res.image,
     res.image2,
@@ -12,14 +14,24 @@ const Carousel = ({ res }) => {
     res.image5,
   ].filter(Boolean);
 
-  function changeImage(newIndex) {
-    const imageElement = document.querySelector(".carousel-image");
-    imageElement.style.opacity = "0";
+  // function changeImage(newIndex) {
+  //   const imageElement = document.querySelector(".carousel-image");
+  //   imageElement.style.opacity = "0";
 
-    setTimeout(() => {
-      setCurrentImageIndex(newIndex);
-      imageElement.style.opacity = "1";
-    }, 300);
+  //   setTimeout(() => {
+  //     setCurrentImageIndex(newIndex);
+  //     imageElement.style.opacity = "1";
+  //   }, 300);
+  // }
+
+  function changeImage(newIndex) {
+    // const imageElement = document.querySelector(".carousel-image");
+    // imageElement.style.opacity = "0";
+
+    // setTimeout(() => {
+    setCurrentImageIndex(newIndex);
+    // imageElement.style.opacity = "1";
+    // }, 300);
   }
 
   function shiftLeft() {
@@ -39,7 +51,12 @@ const Carousel = ({ res }) => {
       {images.length > 0 && (
         <div className="carousel-container">
           {images.length > 1 && (
-            <button className="arrow-button" onClick={shiftLeft}>
+            <button
+              className="arrow-button"
+              onClick={() => {
+                shiftLeft;
+              }}
+            >
               <img className="left-arrow" src={arrow}></img>
             </button>
           )}
@@ -53,7 +70,12 @@ const Carousel = ({ res }) => {
           </div>
 
           {images.length > 1 && (
-            <button className="arrow-button" onClick={shiftRight}>
+            <button
+              className="arrow-button"
+              onClick={() => {
+                shiftRight;
+              }}
+            >
               <img className="right-arrow" src={arrow}></img>
             </button>
           )}

@@ -35,7 +35,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .resource-cards-container {
@@ -113,7 +113,7 @@
 /* Map Frame Styles */
 
 .map-frame {
-  width: 98%;
+  width: 93%;
 }
 
 .map-frame,
