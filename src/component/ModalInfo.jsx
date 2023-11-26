@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { ModalMap } from "./ModalMap";
-import arrow from "/assets/coralarrow.png";
-import styles from "../styles/resourceModal.css";
+import Carousel from "./Carousel";
 
 export const ModalInfo = ({
   res,
@@ -48,14 +47,6 @@ export const ModalInfo = ({
     checkLoginStatus();
   }, [store.token, modalIsOpen]);
 
-  const images = [
-    res.image,
-    res.image2,
-    res.image3,
-    res.image4,
-    res.image5,
-  ].filter(Boolean);
-
   // const res = res || {};
 
   function filterNonNullValues(schedule) {
@@ -82,28 +73,6 @@ export const ModalInfo = ({
       }
     });
     return result;
-  }
-
-  function changeImage(newIndex) {
-    const imageElement = document.querySelector(".carousel-image");
-    imageElement.style.opacity = "0";
-
-    setTimeout(() => {
-      setCurrentImageIndex(newIndex);
-      imageElement.style.opacity = "1";
-    }, 500); // This duration should match the transition duration in the CSS
-  }
-
-  function shiftLeft() {
-    let newIndex =
-      currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1;
-    changeImage(newIndex);
-  }
-
-  function shiftRight() {
-    let newIndex =
-      currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0;
-    changeImage(newIndex);
   }
 
   function formatTime(time) {
@@ -150,29 +119,7 @@ export const ModalInfo = ({
 
   return (
     <div className="resource-info">
-      {images.length > 0 && (
-        <div className="carousel-container">
-          {images.length > 1 && (
-            <button className="arrow-button" onClick={shiftLeft}>
-              <img className="left-arrow" src={arrow}></img>
-            </button>
-          )}
-
-          <div className="carousel">
-            <img
-              className="carousel-image"
-              src={images[currentImageIndex]}
-              alt=""
-            />
-          </div>
-
-          {images.length > 1 && (
-            <button className="arrow-button" onClick={shiftRight}>
-              <img className="right-arrow" src={arrow}></img>
-            </button>
-          )}
-        </div>
-      )}
+      <Carousel res={res} />
 
       {/* DESCRIPTION */}
 
@@ -210,11 +157,10 @@ export const ModalInfo = ({
                     <i className="fa-regular fa-heart"></i>
                   )}
                 </button>
-                {/* <div className="rate-this-resource-toggle"> */}
+
                 <button onClick={() => setShowRating(true)} className="submit">
                   Rate
                 </button>
-                {/* </div> */}
               </div>
             )}
           </div>
@@ -250,7 +196,6 @@ export const ModalInfo = ({
             {/* SCHEDULE */}
             {Object.keys(formattedSchedule).length > 0 && (
               <div className=" info">
-                {/* <i className="fa-solid fa-calendar-check"></i> */}
                 <div className="sched-div">
                   {Object.entries(formattedSchedule).map(
                     ([day, schedule], index) => (

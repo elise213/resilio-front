@@ -5,10 +5,27 @@
   text-align: center;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
-  background-color: lavender;
-  border: 1px solid blue;
   z-index: 9999;
   margin: 3px;
+}
+
+.deckopen-icon-nav:hover {
+  color: var(--marascoral) !important;
+}
+
+.favoritesopen-icon-nav:hover {
+  color: lightgreen !important;
+}
+
+.favoritesopen-icon-nav {
+  border: 2px solid blue;
+  background-color: lavender;
+}
+
+.deckopen-icon-nav {
+  background-color: rgb(211, 241, 212);
+  padding: 6px;
+  border: 3px solid blue;
 }
 
 .search-results-full {

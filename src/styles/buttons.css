@@ -20,8 +20,12 @@
   color: rgb(128, 41, 0);
   background-color: var(--marascoral);
   border: 1px solid blue;
-  margin: 5px;
+  margin: 3px;
   letter-spacing: 1px;
   z-index: 995;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.flip-button:hover {
+  color: lavender !important;
 }

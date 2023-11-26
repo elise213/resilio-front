@@ -60,6 +60,7 @@
   justify-content: center;
   overflow: hidden;
   border-radius: 3px;
+  max-height: 100px;
 }
 
 .add-favorite i {
