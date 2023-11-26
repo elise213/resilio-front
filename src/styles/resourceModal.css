@@ -318,7 +318,7 @@ body.modal-open {
   display: flex;
   justify-content: center;
   position: relative;
-  max-width: 500px;
+  /* max-width: 500px; */
   max-height: 250px;
   overflow: hidden;
 }

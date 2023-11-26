@@ -5,10 +5,18 @@
   text-align: center;
   font-family: "AwsumSans", sans-serif;
   color: rgb(128, 41, 0);
-  background-color: lavender;
-  border: 1px solid blue;
+  border: 2px solid blue;
   z-index: 9999;
   margin: 3px;
+}
+
+.favoritesopen-icon-nav {
+  background-color: lavender;
+}
+
+.deckopen-icon-nav {
+  background-color: rgb(211, 241, 212);
+  padding: 5px;
 }
 
 .search-results-full {
