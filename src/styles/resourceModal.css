@@ -289,7 +289,7 @@ body.modal-open {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 0 15px 40px 15px;
+  padding: 15px;
 }
 
 .info {
@@ -318,8 +318,7 @@ body.modal-open {
   display: flex;
   justify-content: center;
   position: relative;
-  /* max-width: 500px; */
-  max-height: 250px;
+  max-height: 300px;
   overflow: hidden;
 }
 
@@ -379,7 +378,7 @@ body.modal-open {
 }
 
 .details-column div {
-  padding-top: 30px;
+  padding-top: 20px;
 }
 
 .modal-map {
@@ -451,13 +450,13 @@ body.modal-open {
 }
 
 .sched-div {
-  padding: 0 !important;
+  padding: 5px;
   width: 100%;
 }
 
 @media screen and (max-width: 700px) {
   .carousel {
-    height: 280px !important;
+    max-height: 200px !important;
     overflow: hidden;
   }
 
@@ -469,9 +468,6 @@ body.modal-open {
     font-size: 13px !important;
   }
 
-  /* .rate-this-resource-toggle button {
-    font-size: 12px;
-  } */
   .modal-content {
     width: 80%;
   }

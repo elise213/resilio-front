@@ -26,7 +26,7 @@ const Buttons = ({
               : ""
           }`}
         >
-          View Your Saved Resources
+          Your Saved Resources
         </button>
 
         <button
@@ -38,12 +38,12 @@ const Buttons = ({
               : ""
           }`}
         >
-          View All Resources in the Map Area
+          Resources in the Map Area
         </button>
       </div>
 
       <button className="flip-button" onClick={() => setBackSide(!backSide)}>
-        {backSide ? "View The Map" : "Make A Plan"}
+        {backSide ? "Go to The Map" : "Make a Plan"}
       </button>
     </>
   );
