@@ -9,6 +9,14 @@
   margin: 3px;
 }
 
+.deckopen-icon-nav:hover {
+  color: var(--marascoral) !important;
+}
+
+.favoritesopen-icon-nav:hover {
+  color: lightgreen !important;
+}
+
 .favoritesopen-icon-nav {
   border: 2px solid blue;
   background-color: lavender;
