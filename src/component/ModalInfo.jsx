@@ -17,7 +17,7 @@ export const ModalInfo = ({
   removeSelectedResource,
 }) => {
   const { store, actions } = useContext(Context);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   const handleDeselectResource = (resourceId) => {
