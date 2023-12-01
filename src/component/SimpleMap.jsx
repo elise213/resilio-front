@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Context } from "../store/appContext";
 import MapBack from "./MapBack2";
 
@@ -48,6 +48,8 @@ const SimpleMap = ({
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
 
+  const mapContainerRef = useRef(null);
+
   useEffect(() => {
     setFavorites(store.favorites);
     console.log("store favoritres updated!");
@@ -66,32 +68,65 @@ const SimpleMap = ({
     }
   }, [city]);
 
+  // Function to calculate the closest corner
+  const calculateClosestCorner = (cursorX, cursorY) => {
+    const mapRect = mapContainerRef.current.getBoundingClientRect();
+    const isCloserToTop = cursorY < (mapRect.top + mapRect.bottom) / 2;
+    const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
+
+    if (isCloserToTop && isCloserToLeft) {
+      console.log("top left");
+      return "corner-top-left";
+    } else if (isCloserToTop && !isCloserToLeft) {
+      console.log("top right");
+      return "corner-top-right";
+    } else if (!isCloserToTop && isCloserToLeft) {
+      console.log("bottom left");
+      return "corner-bottom-left";
+    } else {
+      console.log("bottom right");
+
+      return "corner-bottom-right";
+    }
+  };
+
   const Marker = ({ text, id, result, markerColor }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [closestCornerClass, setClosestCornerClass] = useState("");
+
+    const handleMouseEnter = (event) => {
+      setIsHovered(true);
+      setHoveredItem(result);
+
+      // Calculate the position relative to the marker
+      const markerRect = event.currentTarget.getBoundingClientRect();
+      const cornerClass = calculateClosestCorner(
+        markerRect.left + markerRect.width / 2,
+        markerRect.top + markerRect.height / 2
+      );
+      setClosestCornerClass(cornerClass);
+    };
+
+    const handleMouseLeave = () => {
+      setIsHovered(false);
+      setHoveredItem(null);
+    };
+
     const color = "red";
     let iconClass = "fa-solid fa-map-pin";
 
     return (
       <div
         className="marker"
-        onMouseEnter={() => {
-          setIsHovered(true);
-          setHoveredItem(result);
-        }}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          setHoveredItem(null);
-        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onClick={result ? () => openModal(result) : undefined}
       >
+        <div className="marker-icon">
+          <i className={iconClass} style={{ color, zIndex: 0 }}></i>
+        </div>
         {isHovered && result && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "100%",
-              zIndex: 9999999,
-            }}
-          >
+          <div className={`hover-card ${closestCornerClass}`}>
             <ResourceCard
               key={result.id}
               item={result}
@@ -163,6 +198,7 @@ const SimpleMap = ({
               <div className="map-container-container">
                 <p className="the-plan">THE MAP</p>
                 <div
+                  ref={mapContainerRef}
                   className="map-container"
                   style={{ height: "50vh", width: "auto" }}
                 >

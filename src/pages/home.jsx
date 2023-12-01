@@ -583,9 +583,9 @@ const Home = () => {
                   <i className="fa-solid fa-x"></i>
                 </div>
                 <p className="donation-text">
-                  Resilio is a 501(c)3, in need of donations and community
-                  support. Please Email resourcemap001@gmail.com to connect with
-                  us. Thank you!
+                  We are a 501(c)3, in need of donations and community support.
+                  Please Email resourcemap001@gmail.com to connect with us.
+                  Thank you very much.
                 </p>
               </div>
             </div>
