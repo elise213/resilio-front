@@ -12,10 +12,10 @@ const Navbar2 = ({
   isNavOpen,
   isFavoritesOpen,
   isToolBoxOpen,
-  setIsDeckOpen,
+  // setIsDeckOpen,
   setIsNavOpen,
-  setIsToolBoxOpen,
-  setIsFavoritesOpen,
+  // setIsToolBoxOpen,
+  // setIsFavoritesOpen,
   toggleNav,
   setOpenLoginModal,
   openLoginModal,
@@ -81,11 +81,15 @@ const Navbar2 = ({
           >
             <i className="fa-solid fa-x"></i>
           </div>
-          {/* </div> */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
             <div className="split-nav">
               <div className="nav-list">
+                <Login
+                  openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                />
+
                 <span
                   className="nav-item"
                   onClick={() => {
@@ -95,6 +99,7 @@ const Navbar2 = ({
                 >
                   ABOUT
                 </span>
+
                 <span
                   className="nav-item"
                   onClick={() => {
@@ -114,11 +119,6 @@ const Navbar2 = ({
                 >
                   DONATE
                 </span>
-
-                <Login
-                  openLoginModal={openLoginModal}
-                  setOpenLoginModal={setOpenLoginModal}
-                />
               </div>
               <EmailList />
             </div>
