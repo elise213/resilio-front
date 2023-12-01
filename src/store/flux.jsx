@@ -44,19 +44,20 @@ const getState = ({ getStore, getActions, setStore }) => {
       schedules: [],
       selectedResources: [],
       CATEGORY_OPTIONS: [
-        { id: "food", label: "Food" },
-        { id: "health", label: "Medical Care" },
-        { id: "shelter", label: "Shelter" },
-        { id: "hygiene", label: "Showers" },
-        { id: "crisis", label: "Crisis Support" },
-        { id: "mental", label: "Mental Health" },
-        { id: "work", label: "Work" },
-        { id: "bathroom", label: "Bathrooms" },
-        { id: "wifi", label: "WiFi" },
-        { id: "substance", label: "Substance Support" },
-        { id: "sex", label: "Sexual Health" },
-        { id: "legal", label: "Legal Support" },
+        { id: "food", value: "food", label: "Food" },
+        { id: "health", value: "health", label: "Medical Care" },
+        { id: "shelter", value: "shelter", label: "Shelter" },
+        { id: "hygiene", value: "hygiene", label: "Showers" },
+        { id: "crisis", value: "crisis", label: "Crisis Support" },
+        { id: "mental", value: "mental", label: "Mental Health" },
+        { id: "work", value: "work", label: "Work" },
+        { id: "bathroom", value: "bathroom", label: "Bathrooms" },
+        { id: "wifi", value: "wifi", label: "WiFi" },
+        { id: "substance", value: "substance", label: "Substance Support" },
+        { id: "sex", value: "sex", label: "Sexual Health" },
+        { id: "legal", value: "legal", label: "Legal Support" },
       ],
+
       DAY_OPTIONS: [
         { id: "monday", label: "Monday" },
         { id: "tuesday", label: "Tuesday" },
@@ -233,6 +234,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       // ________________________________________________________________LOGIN/TOKEN
 
+      // ________________________________________________________________LOGIN/TOKEN
+
       getToken: () => {
         const token = sessionStorage.getItem("token");
         const favorites = JSON.parse(sessionStorage.getItem("favorites"));
@@ -368,6 +371,44 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       // ________________________________________________________________RESOURCES
+
+      deleteResource: async (resourceId, navigate) => {
+        const { current_back_url } = getStore();
+        const token = sessionStorage.getItem("token");
+        const opts = {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        };
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/deleteResource/${resourceId}`,
+            opts
+          );
+          if (response.status >= 400) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "There was an error while deleting the resource.",
+            });
+            return;
+          }
+          Swal.fire({
+            icon: "success",
+            title: "Deleted",
+            text: "Resource deleted successfully!",
+          });
+          navigate("/");
+        } catch (error) {
+          console.error("Error during resource deletion:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: `An error occurred: ${error.message}`,
+          });
+        }
+      },
 
       editResource: async (resourceId, formData, navigate) => {
         const { current_back_url, current_front_url } = getStore();

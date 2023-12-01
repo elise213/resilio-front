@@ -202,6 +202,11 @@ const SimpleMap = ({
                     bootstrapURLKeys={{ key: apiKey }}
                     center={city.center}
                     bounds={city.bounds}
+                    // center={{ lat: 24.681678475660995, lng: 84.99154781534179 }}
+                    // bounds={{
+                    //   ne: { lat: 25.0, lng: 85.2 },
+                    //   sw: { lat: 24.4, lng: 84.8 },
+                    // }}
                     defaultZoom={10}
                     onChange={(e) => handleBoundsChange(e)}
                   >
@@ -222,7 +227,7 @@ const SimpleMap = ({
                         lat={userLocation.lat}
                         lng={userLocation.lng}
                         text="You are here!"
-                        color="red"
+                        color="maroon"
                       />
                     )}
                   </GoogleMapReact>
