@@ -137,12 +137,6 @@ const LoginModal = ({
     field = (
       <div className="custom-login-modal-content ">
         <div className="custom-login-modal-header">
-          {/* <div className="header-div">
-            <span className="custom-form-label" id="">
-              Enter your Username <br />
-              and Password to Login
-            </span>
-          </div> */}
           <span
             className="login-close"
             onClick={() => setOpenLoginModal(false)}

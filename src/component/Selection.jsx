@@ -114,9 +114,12 @@ const Selection = ({
     if (Array.isArray(store.mapResults)) {
       const uniqueCategories = getUniqueCategoriesFromResults();
       setActiveCategoryIds(uniqueCategories);
-      const allCats = uniqueCategories.flatMap((category) =>
-        category.split(",").map((c) => c.trim())
-      );
+      const allCats = uniqueCategories.flatMap((category) => {
+        if (typeof category === "string") {
+          return category.split(",").map((c) => c.trim());
+        }
+        return [];
+      });
       setAllCategories(allCats);
     }
   }, [store.mapResults]);
