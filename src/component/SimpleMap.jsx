@@ -75,17 +75,16 @@ const SimpleMap = ({
     const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
 
     if (isCloserToTop && isCloserToLeft) {
-      console.log("top left");
+      // console.log("top left");
       return "corner-top-left";
     } else if (isCloserToTop && !isCloserToLeft) {
-      console.log("top right");
+      // console.log("top right");
       return "corner-top-right";
     } else if (!isCloserToTop && isCloserToLeft) {
-      console.log("bottom left");
+      // console.log("bottom left");
       return "corner-bottom-left";
     } else {
-      console.log("bottom right");
-
+      // console.log("bottom right");
       return "corner-bottom-right";
     }
   };
