@@ -4,15 +4,76 @@
   align-items: start !important;
 }
 
+.resource-name {
+  display: flex;
+  justify-content: center;
+}
+
+.info-map-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.map-container-modal {
+  margin: 10px;
+}
+
+.resource-image {
+  border: 1px solid lime;
+  border-radius: 1%;
+  width: 400px;
+  margin: 00px 20px 20px 20px;
+}
+
+.form-check {
+  display: flex;
+  justify-content: space-between;
+}
+
+.description-buttons {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding-right: 50px;
+}
+
+.fa-arrow-right {
+  margin: 6px 0px 0px 10px;
+  animation: wiggle 5s infinite;
+}
+
+.info-address {
+  text-align: center;
+}
+
+.info-address a {
+  padding: 0;
+  width: unset !important;
+  color: blue;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.info-address i {
+  padding: 3px;
+  color: red;
+  font-size: 15px;
+  text-align: center;
+}
+
 .modal-open {
   overflow: hidden;
 }
 
 .close-modal {
   color: blue;
-  font-size: 30px;
+  font-size: 20px;
   position: absolute;
-  right: 10px;
+  right: 5px;
   top: 0;
 }
 
@@ -170,13 +231,12 @@ p {
 }
 
 .comments-display {
-  /* width: 330px; */
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 3px;
-  border: 1px solid black;
-  padding: 0 0 10px 0;
+  /* border: 1px solid black; */
 }
 
 textarea {
@@ -186,13 +246,14 @@ textarea {
 .comment-heading {
   font-size: 20px;
   color: rgb(149, 84, 19);
-  background-color: lavender;
+  /* background-color: lavender; */
   width: 100%;
   font-family: "AwsumSans";
   justify-content: center;
   display: flex;
   letter-spacing: 1px;
   border-radius: 3px;
+  text-decoration: underline;
 }
 
 .modal-footer {
@@ -224,12 +285,12 @@ textarea {
 }
 
 .modal-content {
-  margin: 20px;
+  /* margin: 20px; */
   width: 70%;
   max-width: 850px;
   outline: 4px solid var(--coral);
   /* outline-offset: 5px; */
-  max-height: 95vh;
+  max-height: 80vh;
 }
 
 .modal-body {
@@ -476,11 +537,6 @@ body.modal-open {
 @media screen and (max-width: 600px) {
   .modal-text {
     font-size: 12px !important;
-  }
-
-  .modal-content {
-    width: 95%;
-    max-height: 85vh !important;
   }
 }
 

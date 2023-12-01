@@ -201,18 +201,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-
   z-index: 9998;
-}
-
-.login-trigger {
-  color: lavender;
-  font-family: "InterVariable" !important;
-  font-size: 25px;
-}
-
-.login-trigger:hover {
-  color: lightgreen;
 }
 
 body.loginModal-open {
@@ -221,6 +210,7 @@ body.loginModal-open {
   position: fixed;
   width: 100%;
 }
+
 .forgot-password {
   font-family: "Urbanist", sans-serif;
   letter-spacing: 1px;
