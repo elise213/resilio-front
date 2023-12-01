@@ -1,24 +1,5 @@
 /* Font Face Definitions */
 
-.info-address {
-  text-align: center;
-}
-
-.info-address a {
-  padding: 0;
-  width: unset !important;
-  color: blue;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-}
-
-.info-address i {
-  padding: 3px;
-  color: red;
-  font-size: 15px;
-  text-align: center;
-}
-
 /* Global Layout */
 .treasureMap,
 .droppable-map-area,

@@ -54,11 +54,11 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
   return (
     <div className={`login-container ${openLoginModal ? "open" : ""}`}>
       <span
-        className="login-trigger"
+        className="login-trigger nav-item"
         type="button"
         onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
       >
-        {!openLoginModal && (hasToken ? "Logout" : "Login")}
+        {!openLoginModal && (hasToken ? "LOG OUT" : "LOG IN")}
       </span>
       {openLoginModal && (
         <>

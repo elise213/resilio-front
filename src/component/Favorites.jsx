@@ -90,7 +90,7 @@ const Favorites = ({
                   setOpenLoginModal={setOpenLoginModal}
                 />
                 <span className="scroll-title to-save-res">
-                  to save Resources
+                  to save resources
                 </span>
               </>
             )}

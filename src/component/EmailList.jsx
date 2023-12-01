@@ -54,7 +54,7 @@ const EmailList = () => {
             id="emailListInput"
             name="email"
             className="emailListInput"
-            placeholder="Enter your Email"
+            placeholder="Email Address"
             required
           />
         </div>
