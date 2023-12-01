@@ -122,9 +122,9 @@ const SimpleMap = ({
         onMouseLeave={handleMouseLeave}
         onClick={result ? () => openModal(result) : undefined}
       >
-        <div className="marker-icon">
+        {/* <div className="marker-icon">
           <i className={iconClass} style={{ color, zIndex: 0 }}></i>
-        </div>
+        </div> */}
         {isHovered && result && (
           <div className={`hover-card ${closestCornerClass}`}>
             <ResourceCard
