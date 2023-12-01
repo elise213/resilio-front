@@ -41,23 +41,7 @@ const Edit = () => {
   };
   const [formData, setFormData] = useState(initialFormData || {});
 
-  const categories = [
-    { id: "F", value: "food", label: "Food" },
-    { id: "Sh", value: "shelter", label: "Shelter" },
-    { id: "H", value: "health", label: "Health" },
-    { id: "Hy", value: "hygiene", label: "Hygiene" },
-    { id: "Wi", value: "wifi", label: "WiFi" },
-    { id: "C", value: "crisis", label: "Crisis Support" },
-    { id: "Su", value: "substance", label: "Substance Support" },
-    { id: "B", value: "bathroom", label: "Bathroom" },
-    { id: "Le", value: "legal", label: "Legal Services" },
-    { id: "Sex", value: "sex", label: "Sexual Health" },
-    { id: "Me", value: "mental", label: "Mental Health" },
-    { id: "Wo", value: "women", label: "Women" },
-    { id: "Y", value: "youth", label: "Youth" },
-    { id: "Sn", value: "seniors", label: "Seniors" },
-    { id: "Lg", value: "lgbtq", label: "LGBTQ" },
-  ];
+  const categories = store.CATEGORY_OPTIONS;
 
   useEffect(() => {
     const fetchResourceData = async () => {
@@ -93,12 +77,19 @@ const Edit = () => {
     try {
       const results = await geocodeByAddress(address);
       const latLng = await getLatLng(results[0]);
-      // handleChange("latitude", latLng.lat ? latLng.lat.toString() : null);
-      // handleChange("longitude", latLng.lng ? latLng.lng.toString() : null);
       handleChange("latitude", latLng.lat || null);
       handleChange("longitude", latLng.lng || null);
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this resource? This action cannot be undone."
+    );
+    if (confirm) {
+      await actions.deleteResource(id, navigate);
     }
   };
 
@@ -207,7 +198,7 @@ const Edit = () => {
     return "";
   };
 
-  console.log("form data", formData);
+  // console.log("form data", formData);
   return (
     <div className="form-container">
       <form className="geo-form" onSubmit={handleSubmit}>
@@ -249,7 +240,6 @@ const Edit = () => {
                   <div>
                     {loading ? <div>Loading...</div> : null}
                     {suggestions.map((suggestion, index) => {
-                      console.log(suggestions);
                       const className = suggestion.active
                         ? "suggestion-item--active"
                         : "suggestion-item";
@@ -365,34 +355,12 @@ const Edit = () => {
           Update
         </button>
       </form>
+
+      <button className="delete-button" onClick={handleDelete}>
+        Permanently Delete This Resource
+      </button>
     </div>
   );
 };
 
 export default Edit;
-
-// {/* <div className="input-group">
-//                     <label htmlFor="latitude">Latitude</label>
-//                     <input
-//                         className="geo-input"
-//                         id="latitude"
-//                         name="latitude"
-//                         type="text"
-//                         value={formData.latitude || ""}
-//                         onChange={(e) => handleChange("latitude", e.target.value)}
-//                         title="Provide the latitude"
-//                     />
-//                 </div>
-
-//                 <div className="input-group">
-//                     <label htmlFor="longitude">Longitude</label>
-//                     <input
-//                         className="geo-input"
-//                         id="longitude"
-//                         name="longitude"
-//                         type="text"
-//                         value={formData.longitude || ""}
-//                         onChange={(e) => handleChange("longitude", e.target.value)}
-//                         title="Provide the longitude"
-//                     />
-//                 </div> */}

@@ -54,7 +54,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
   return (
     <div className={`login-container ${openLoginModal ? "open" : ""}`}>
       <span
-        className="login-trigger nav-item"
+        className="nav-item"
         type="button"
         onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
       >

@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import arrow from "/assets/coralarrow.png";
 import { ModalInfo } from "./ModalInfo";
+import ErrorBoundary from "./ErrorBoundary";
 import Styles from "../styles/generatedTreasureMap.css";
 import GoogleMapReact from "google-map-react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -114,15 +115,18 @@ const GeneratedTreasureMap = ({
         <div className="options">
           <p className="option">Email Plan</p>
 
-          <PDFDownloadLink
-            document={<MyDocument />}
-            fileName="mypath.pdf"
-            className="option"
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? "Loading document..." : "Download Plan"
-            }
-          </PDFDownloadLink>
+          <ErrorBoundary>
+            <PDFDownloadLink
+              document={<MyDocument selectedResources={selectedResources} />}
+              fileName="mypath.pdf"
+              className="option"
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? "Loading document..." : "Download Plan"
+              }
+            </PDFDownloadLink>
+          </ErrorBoundary>
+
           <p className="option">Print Plan</p>
         </div>
 
