@@ -92,7 +92,7 @@
 }
 
 .open-icon-nav {
-  font-size: 30px;
+  font-size: 50px;
 }
 
 .close-icon-nav,
@@ -237,5 +237,8 @@
 @media screen and (max-width: 600px) {
   .modal-content-contact {
     width: 95% !important;
+  }
+  .open-icon-nav.closed {
+    font-size: 30px;
   }
 }

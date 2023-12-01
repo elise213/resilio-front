@@ -107,7 +107,7 @@
   right: 0;
   margin: 10px;
   font-size: 20px;
-  color: lavender;
+  color: blue;
 }
 
 .close-rating:hover {
@@ -132,13 +132,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999999;
-  background-color: var(--marascoral);
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   border-radius: 3px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.3);
   border: 2px solid blue;
 }
 
