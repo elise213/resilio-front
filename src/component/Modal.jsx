@@ -31,6 +31,10 @@ const Modal = ({
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
+  function toggleRatingModal() {
+    setShowRating(!showRating);
+  }
+
   // USE EFFECTS
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -41,13 +45,13 @@ const Modal = ({
     checkLoginStatus();
   }, [store.token, modalIsOpen]);
 
-  const handleSelectResource = (resource) => {
-    addSelectedResource(resource);
-  };
+  // const handleSelectResource = (resource) => {
+  //   addSelectedResource(resource);
+  // };
 
-  const handleDeselectResource = (resourceId) => {
-    removeSelectedResource(resourceId);
-  };
+  // const handleDeselectResource = (resourceId) => {
+  //   removeSelectedResource(resourceId);
+  // };
 
   useEffect(() => {
     const storedFavorites = JSON.parse(
@@ -108,10 +112,6 @@ const Modal = ({
   const modalContentRef = useRef(null);
   const ratingModalRef = useRef(null);
 
-  const toggleRatingModal = () => {
-    setShowRating(!showRating);
-  };
-
   const labels = {
     1: "Poor",
     2: "Fair",
@@ -153,18 +153,18 @@ const Modal = ({
         !ratingModalRef.current.contains(event.target)
       ) {
         console.log("Clicked outside the rating modal!");
-        setShowRating(false);
+        toggleRatingModal();
       }
     };
 
-    // Attaching the event listener to the document
+    // Attaching the event listener
     document.addEventListener("mousedown", handleOutsideClick);
 
-    // Cleanup function to remove the event listener
+    // Cleanup  event listener
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [showRating]); // Dependency array includes showRating to update the listener when it changes
+  }, [showRating]);
 
   const resourceId = resource.id;
   const tokenExists = sessionStorage.getItem("token");
@@ -185,15 +185,24 @@ const Modal = ({
             <div className="modal-title-box">
               <span>{resource.name}</span>
             </div>
-            <div className="resource-rating">
-              {/* <p>Average Rating:</p> */}
-              <Rating
-                name="read-only"
-                value={averageRating}
-                precision={0.5}
-                readOnly
-              />
+            <div
+              className="resource-rating"
+              onClick={() => {
+                toggleRatingModal();
+              }}
+            >
+              {averageRating > 0 ? (
+                <Rating
+                  name="read-only"
+                  value={averageRating}
+                  precision={0.5}
+                  readOnly
+                />
+              ) : (
+                ""
+              )}
             </div>
+
             <div className="icon-box">
               {categories.map((category, index) => {
                 const colorStyle = actions.getColorForCategory(category);
@@ -233,10 +242,7 @@ const Modal = ({
                   <p>User Reviews</p>
                 </div>
                 {comments.map((comment, index) => {
-                  // Parsing the date string
                   const date = new Date(comment.created_at);
-
-                  // Formatting the date
                   const formattedDate =
                     date.toLocaleDateString("en-US", {
                       year: "numeric",
@@ -324,6 +330,7 @@ const Modal = ({
                 <i className="fa-solid fa-x"></i>
               </p>
             </div>
+
             <p className="what-do-you-think">
               What do You Think of <br />
               {resource.name} ?

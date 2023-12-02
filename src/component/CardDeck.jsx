@@ -17,31 +17,42 @@ const CardDeck = ({
   toggleCardDeck,
   toggleFavoritesButtonRef,
   toggleDeckButtonRef,
+  primaryModalRef,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleClickOutside = (event) => {
-    const deckNav = document.querySelector(".decknew-navbar");
+  // Turned off click outside for Mike Garza. Will uncomment later.
 
-    if (
-      toggleDeckButtonRef.current &&
-      toggleDeckButtonRef.current.contains(event.target)
-    ) {
-      return;
-    }
+  // const handleClickOutside = (event) => {
+  //   const deckNav = document.querySelector(".decknew-navbar");
 
-    if (deckNav && !deckNav.contains(event.target) && isDeckOpen) {
-      setIsDeckOpen(false);
-    }
-  };
+  //   if (
+  //     toggleDeckButtonRef.current &&
+  //     toggleDeckButtonRef.current.contains(event.target)
+  //   ) {
+  //     return;
+  //   }
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isDeckOpen]);
+  //   if (
+  //     primaryModalRef.current &&
+  //     primaryModalRef.current.contains(event.target)
+  //   ) {
+  //     return;
+  //   }
+
+  //   // Close the deck navigation if the click is outside the deckNav and the deck is open
+  //   if (deckNav && !deckNav.contains(event.target) && isDeckOpen) {
+  //     setIsDeckOpen(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [isDeckOpen]);
 
   return (
     <>
