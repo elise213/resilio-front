@@ -151,11 +151,7 @@ const SimpleMap = ({
 
   return (
     <>
-      <div
-        className={`map-frame-wrapper ${backSide ? "flipped" : ""} ${
-          isGeneratedMapModalOpen ? "noPadding" : ""
-        }`}
-      >
+      <div className={`map-frame-wrapper ${backSide ? "flipped" : ""}`}>
         <div className={`map-frame ${backSide ? "alsoFlipped" : ""}`}>
           {backSide ? (
             <>
@@ -192,11 +188,11 @@ const SimpleMap = ({
           ) : (
             <>
               <div className="map-container-container">
-                <p className="the-plan">THE MAP</p>
+                {/* <p className="the-plan">THE MAP</p> */}
                 <div
                   ref={mapContainerRef}
                   className="map-container"
-                  style={{ height: "50vh", width: "auto" }}
+                  style={{ height: "70vh", width: "auto" }}
                 >
                   <GoogleMapReact
                     bootstrapURLKeys={{ key: apiKey }}
@@ -231,6 +227,21 @@ const SimpleMap = ({
                       />
                     )}
                   </GoogleMapReact>
+                </div>
+                <div className="stack">
+                  <button className="geo-button" onClick={() => geoFindMe()}>
+                    geo-location
+                  </button>
+                  <div className="zipcode-input-container">
+                    <input
+                      type="text"
+                      id="zipcode"
+                      value={zipInput}
+                      onChange={handleZipInputChange}
+                      maxLength="5"
+                      placeholder="Zip Code"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="simple-selection">

@@ -186,7 +186,7 @@ const MapBack = ({
 
   return (
     <>
-      <p className="the-plan">THE PLAN</p>
+      {/* <p className="the-plan">THE PLAN</p> */}
       {selectedResources[0] ? (
         <>
           <div className="selected-resources">
@@ -219,6 +219,7 @@ const MapBack = ({
         </div>
       )}
       <Buttons
+        setIsToolBoxOpen={setIsToolBoxOpen}
         backSide={backSide}
         setBackSide={setBackSide}
         isDeckOpen={isDeckOpen}
