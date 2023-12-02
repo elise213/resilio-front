@@ -551,6 +551,12 @@ const Home = () => {
             </ErrorBoundary>
           </>
         )}
+
+        <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
+          <span class="material-symbols-outlined">arrow_forward</span>
+          {backSide ? "The Map" : "The Plan"}
+        </p>
+
         {modalIsOpen && (
           <>
             <div className="modal-overlay"></div>

@@ -43,7 +43,7 @@
 
 .function-buttons {
   align-self: flex-start;
-  flex-direction: column;
+  /* flex-direction: column; */
   display: flex;
   height: 100%;
 }
@@ -52,6 +52,8 @@
   z-index: 999;
   margin: 10px;
   align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 #zipcode {

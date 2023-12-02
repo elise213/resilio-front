@@ -13,8 +13,10 @@
     "@emailjs/browser": "^3.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@material/web": "^1.0.1",
     "@mui/material": "^5.14.18",
     "@react-pdf/renderer": "^3.1.14",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "axios": "^1.4.0",
     "circletype": "^2.3.0",
     "emailjs-com": "^3.2.0",
@@ -26,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^6.12.1",
+    "rollup": "^4.6.1",
     "sweetalert2": "^11.7.28"
   },
   "devDependencies": {

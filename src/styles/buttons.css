@@ -1,8 +1,8 @@
 .button-holder {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   width: 100%;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .button-holder button {
@@ -11,9 +11,10 @@
 
 .flip-button {
   align-self: center;
+  height: 30px;
   max-width: 300px;
   min-width: 100px;
-  font-size: 30px;
+  font-size: 15px;
   border-radius: 3px;
   text-align: center;
   font-family: "AwsumSans", sans-serif;
@@ -28,4 +29,9 @@
 
 .flip-button:hover {
   color: lavender !important;
+}
+
+.button-holder {
+  display: flex;
+  justify-content: center;
 }

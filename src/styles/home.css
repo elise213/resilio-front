@@ -7,6 +7,7 @@
   color: rgb(128, 41, 0);
   z-index: 9999;
   margin: 3px;
+  display: flex;
 }
 
 .deckopen-icon-nav:hover {
@@ -109,10 +110,6 @@
 
   .results-message {
     font-size: 12px;
-  }
-
-  .map-container {
-    height: 40vh !important;
   }
 }
 .donation-modal {
