@@ -35,31 +35,31 @@ const Favorites = ({
     checkLoginStatus();
   }, [store.token]);
 
-  const handleClickOutside = (event) => {
-    const favoritesNav = document.querySelector(".favoritesnew-navbar");
+  // const handleClickOutside = (event) => {
+  //   const favoritesNav = document.querySelector(".favoritesnew-navbar");
 
-    if (
-      toggleFavoritesButtonRef.current &&
-      toggleFavoritesButtonRef.current.contains(event.target)
-    ) {
-      return; // Ignore clicks on the toggle favorites button
-    }
+  //   if (
+  //     toggleFavoritesButtonRef.current &&
+  //     toggleFavoritesButtonRef.current.contains(event.target)
+  //   ) {
+  //     return; // Ignore clicks on the toggle favorites button
+  //   }
 
-    if (
-      favoritesNav &&
-      !favoritesNav.contains(event.target) &&
-      isFavoritesOpen
-    ) {
-      setIsFavoritesOpen(false);
-    }
-  };
+  //   if (
+  //     favoritesNav &&
+  //     !favoritesNav.contains(event.target) &&
+  //     isFavoritesOpen
+  //   ) {
+  //     setIsFavoritesOpen(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isFavoritesOpen]);
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [isFavoritesOpen]);
 
   return (
     <>

@@ -132,20 +132,35 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999999;
-  background-color: white;
+  background-color: lavender;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   border-radius: 3px;
   box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.3);
-  border: 2px solid blue;
+  border: 2px solid var(--marascoral);
 }
 
 .rate-this-resource-toggle {
   /* width: 180px; */
   display: flex;
   justify-content: flex-end;
+}
+
+.resource-rating:hover {
+  cursor: pointer;
+}
+
+.rating-label {
+  min-height: 25px;
+}
+
+.rating-container {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .add-path span,
@@ -157,6 +172,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin: 10px;
 }
 
 .modal-button-container {
