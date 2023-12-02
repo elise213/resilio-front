@@ -800,11 +800,18 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await fetch(
             `${current_back_url}/api/rating?resource=${resourceId}`
           );
-          if (response.status !== 200) {
-            throw new Error("Failed to get average rating");
-          }
           const data = await response.json();
-          setAverageRatingCallback(data.rating); // Update the average rating in the Modal component
+          if (data.rating === "No ratings yet") {
+            setAverageRatingCallback("No ratings yet");
+          } else {
+            setAverageRatingCallback(data.rating);
+          }
+
+          if (data.rating === "No ratings yet") {
+            setAverageRatingCallback(0);
+          } else {
+            setAverageRatingCallback(parseFloat(data.rating)); // Ensure it's a number
+          }
         } catch (error) {
           console.error("Error:", error);
           // Handle the error (e.g., show an error message)
