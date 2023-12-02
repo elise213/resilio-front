@@ -39,6 +39,7 @@ const Home = () => {
   const toggleFavoritesButtonRef = useRef(null);
   const toggleDeckButtonRef = useRef(null);
   const toggleToolButtonRef = useRef(null);
+  const primaryModalRef = useRef(null);
 
   // STATES
   const [loading, setLoading] = useState(false);
@@ -81,25 +82,25 @@ const Home = () => {
   // FUNCTIONS
 
   const toggleNav = () => {
-    setIsFavoritesOpen(false);
-    setIsToolBoxOpen(false);
+    // setIsFavoritesOpen(false);
+    // setIsToolBoxOpen(false);
     setIsDeckOpen(false);
     setIsNavOpen(!isNavOpen);
   };
 
   const togglefavorites = () => {
-    console.log("togglefavorites clicked");
-    setIsNavOpen(false);
+    // console.log("togglefavorites clicked");
+    // setIsNavOpen(false);
     setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
+    // setIsDeckOpen(false);
     setIsFavoritesOpen(!isFavoritesOpen);
   };
 
   const toggleCardDeck = () => {
-    console.log("toggleCardDeck clicked");
-    setIsFavoritesOpen(false);
+    // console.log("toggleCardDeck clicked");
+    // setIsFavoritesOpen(false);
     setIsNavOpen(false);
-    setIsToolBoxOpen(false);
+    // setIsToolBoxOpen(false);
     setIsDeckOpen(!isDeckOpen);
   };
 
@@ -116,7 +117,7 @@ const Home = () => {
       if (prevResources.length >= 10) {
         Swal.fire({
           // icon: "error",
-          title: "Please limit the path to 10 resources at a time",
+          title: "Please limit the plan to 10 resources at a time",
         });
         return prevResources;
       }
@@ -448,6 +449,7 @@ const Home = () => {
       />
       {/* All Resources */}
       <CardDeck
+        primaryModalRef={primaryModalRef}
         toggleCardDeck={toggleCardDeck}
         isDeckOpen={isDeckOpen}
         isNavOpen={isNavOpen}
@@ -552,7 +554,7 @@ const Home = () => {
         {modalIsOpen && (
           <>
             <div className="modal-overlay"></div>
-            <div className="modal-div">
+            <div className="modal-div" ref={primaryModalRef}>
               <Modal
                 removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
