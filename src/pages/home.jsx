@@ -7,6 +7,8 @@ import Favorites from "../component/Favorites";
 import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
+import Buttons from "../component/Buttons";
+import Button from "@mui/material/Button";
 
 import { Modal } from "../component";
 import ToolBox from "../component/ToolBox";
@@ -551,6 +553,44 @@ const Home = () => {
             </ErrorBoundary>
           </>
         )}
+
+        <Buttons
+          setIsToolBoxOpen={setIsToolBoxOpen}
+          backSide={backSide}
+          setBackSide={setBackSide}
+          isDeckOpen={isDeckOpen}
+          setIsDeckOpen={setIsDeckOpen}
+          isNavOpen={isNavOpen}
+          isFavoritesOpen={isFavoritesOpen}
+          setIsFavoritesOpen={setIsFavoritesOpen}
+          isToolBoxOpen={isToolBoxOpen}
+          toggleCardDeck={toggleCardDeck}
+          togglefavorites={togglefavorites}
+          toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+          toggleDeckButtonRef={toggleDeckButtonRef}
+        />
+
+        <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
+          <span class="material-symbols-outlined">arrow_forward</span>
+          {backSide ? "The Map" : "The Plan"}
+        </p>
+
+        <div className="saved">
+          <Button
+            className="mdc-button savedButton"
+            variant="text"
+            startIcon={
+              <span className="material-symbols-outlined savedButton">
+                favorite
+              </span>
+            }
+            ref={toggleFavoritesButtonRef}
+            onClick={() => togglefavorites()}
+          >
+            {/* Saved */}
+          </Button>
+        </div>
+
         {modalIsOpen && (
           <>
             <div className="modal-overlay"></div>

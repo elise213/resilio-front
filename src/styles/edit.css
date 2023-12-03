@@ -51,15 +51,6 @@
   margin: 5px 15px 3px 2px;
 }
 
-.map-settings-buttons {
-  display: flex;
-  width: 100%;
-  /* justify-content: space-between; */
-  justify-content: center;
-  margin: 0;
-  /* justify-self: center; */
-}
-
 .delete-button {
   color: maroon;
   border: 1px solid red;

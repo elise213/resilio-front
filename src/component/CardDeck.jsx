@@ -86,7 +86,8 @@ const CardDeck = ({
                 </div>
                 <ul className="all-ul">
                   {Array.isArray(store.mapResults) &&
-                    store.mapResults
+                    // store.mapResults
+                    store.boundaryResults
                       .filter(
                         (resource) =>
                           resource.name

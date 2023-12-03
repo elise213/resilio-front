@@ -35,20 +35,20 @@ const ToolBox = ({
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
-  const handleClickOutside = (event) => {
-    const toolNav = document.querySelector(".toolnew-navbar");
+  // const handleClickOutside = (event) => {
+  //   const toolNav = document.querySelector(".toolnew-navbar");
 
-    if (
-      toggleToolButtonRef.current &&
-      toggleToolButtonRef.current.contains(event.target)
-    ) {
-      return;
-    }
+  //   if (
+  //     toggleToolButtonRef.current &&
+  //     toggleToolButtonRef.current.contains(event.target)
+  //   ) {
+  //     return;
+  //   }
 
-    if (toolNav && !toolNav.contains(event.target) && isToolBoxOpen) {
-      setIsToolBoxOpen(false);
-    }
-  };
+  //   if (toolNav && !toolNav.contains(event.target) && isToolBoxOpen) {
+  //     setIsToolBoxOpen(false);
+  //   }
+  // };
 
   useEffect(() => {
     const body = document.body;
@@ -59,20 +59,20 @@ const ToolBox = ({
     }
   }, [isToolBoxOpen]);
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+  // useEffect(() => {
+  //   document.addEventListener("click", handleClickOutside);
 
-    const body = document.body;
-    if (isToolBoxOpen) {
-      body.classList.add("toolno-scroll");
-    } else {
-      body.classList.remove("toolno-scroll");
-    }
+  //   const body = document.body;
+  //   if (isToolBoxOpen) {
+  //     body.classList.add("toolno-scroll");
+  //   } else {
+  //     body.classList.remove("toolno-scroll");
+  //   }
 
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isToolBoxOpen]);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, [isToolBoxOpen]);
 
   return (
     <>

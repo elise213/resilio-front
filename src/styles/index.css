@@ -22,13 +22,13 @@
 }
 
 /* Bold font */
-@font-face {
+/* @font-face {
   font-family: "AwsumSans";
   src: url("/fonts/AwsumSansBold-BF64c08556665f3.ttf") format("truetype"),
     url("/fonts/AwsumSansBold-BF64c08556c5095.otf") format("opentype");
   font-weight: bold;
-  font-style: normal;
-}
+  font-style: normal; */
+/* } */
 
 /* Italic font */
 @font-face {
