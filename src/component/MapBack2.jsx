@@ -218,21 +218,6 @@ const MapBack = ({
           </p>
         </div>
       )}
-      <Buttons
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        backSide={backSide}
-        setBackSide={setBackSide}
-        isDeckOpen={isDeckOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        toggleCardDeck={toggleCardDeck}
-        togglefavorites={togglefavorites}
-        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-        toggleDeckButtonRef={toggleDeckButtonRef}
-      />
     </>
   );
 };

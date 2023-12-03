@@ -20,75 +20,30 @@ const Buttons = ({
 }) => {
   return (
     <>
-      <div className="button-holder">
-        {/* {!backSide && ( */}
-        {/* <div className="deck-buttons"></div> */}
+      <div className="function-buttons">
+        <Button
+          className="customButton"
+          variant="contained"
+          // startIcon={<i className="material-symbols-outlined">map</i>}
+          startIcon={<i class="material-symbols-outlined">content_copy</i>}
+          ref={toggleDeckButtonRef}
+          onClick={() => toggleCardDeck()}
+        >
+          List
+        </Button>
 
-        <div className="function-buttons">
-          {/* <Button
-            variant="contained"
-            color="primary"
-            ref={toggleToolButtonRef}
-            className={`toolopen-icon-nav ${
-              !isToolBoxOpen ? "toolclosed" : ""
-            }`}
-            onClick={() => setIsToolBoxOpen(!isToolBoxOpen)}
-          >
-            Filters
-          </Button> */}
-
-          <button
-            ref={toggleFavoritesButtonRef}
-            onClick={() => togglefavorites()}
-            className={`favoritesopen-icon-nav ${
-              !isFavoritesOpen
-                ? // && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                  "favoritesclosed"
-                : ""
-            }`}
-          >
-            {/* Your Saved Resources */}
-            {/* <span class="material-symbols-outlined">favorite</span> */}
-            <i className="material-icons mdc-button__icon" aria-hidden="true">
-              bookmark
-            </i>{" "}
-            Saved
-          </button>
-          <button
-            ref={toggleDeckButtonRef}
-            onClick={() => toggleCardDeck()}
-            className={`deckopen-icon-nav ${
-              !isDeckOpen
-                ? // && !isNavOpen && !isFavoritesOpen && !isToolBoxOpen
-                  "deckclosed"
-                : ""
-            }`}
-          >
-            {/* Resources in the Map Area */}
-            <span class="material-symbols-outlined">map</span>
-            List
-          </button>
-
-          <button
-            ref={toggleToolButtonRef}
-            onClick={() => setIsToolBoxOpen(true)}
-            className={`flip-button toolopen-icon-nav ${
-              !isFavoritesOpen && !isNavOpen && !isDeckOpen && !isToolBoxOpen
-                ? "toolclosed"
-                : ""
-            }`}
-          >
-            Filters
-          </button>
-
-          {/* <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setBackSide(!backSide)}
-          >
-            {backSide ? "Go to The Map" : "Make a Plan"}
-          </Button> */}
-        </div>
+        <Button
+          className="customButton"
+          variant="contained"
+          startIcon={<i class="material-symbols-outlined">filter_list</i>}
+          ref={toggleToolButtonRef}
+          onClick={() => {
+            setIsToolBoxOpen(!isToolBoxOpen);
+            console.log(isToolBoxOpen);
+          }}
+        >
+          Filters
+        </Button>
       </div>
     </>
   );
