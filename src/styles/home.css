@@ -14,9 +14,9 @@
 }
 
 .saved {
-  position: absolute;
-  top: 0px;
-  right: 5px;
+  position: fixed;
+  top: -10px;
+  right: -10px;
 }
 
 .savedButton {

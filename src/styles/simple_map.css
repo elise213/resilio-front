@@ -77,7 +77,7 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   width: 85%;
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 .map-frame.flipped {
@@ -85,7 +85,7 @@
 }
 
 .stack {
-  position: fixed;
+  position: absolute;
   left: 5px;
   bottom: 15px;
 }
