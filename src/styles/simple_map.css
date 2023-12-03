@@ -77,7 +77,7 @@
   transform: rotateY(0deg);
   transition: transform 0.6s;
   width: 85%;
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .map-frame.flipped {

@@ -10,10 +10,6 @@
   justify-content: space-between;
 }
 
-.nav-container {
-  width: 100%;
-}
-
 .nav-list {
   display: flex;
   flex-direction: column;
@@ -184,7 +180,9 @@
 }
 
 .nav-container {
-  height: 100vh;
+  /* height: 100vh; */
+  position: absolute;
+  width: 100%;
   position: absolute;
 }
 
@@ -204,11 +202,6 @@
 
 .open-icon-nav.closed {
   left: 285px !important;
-}
-
-.nav-container {
-  height: 100vh;
-  position: absolute;
 }
 
 .new-navbar.open-nav {
