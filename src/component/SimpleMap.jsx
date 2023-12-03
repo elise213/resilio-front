@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Context } from "../store/appContext";
 import MapBack from "./MapBack2";
-
+import Buttons from "./Buttons";
 import ResourceCard from "./ResourceCard";
-import MapSettings from "./MapSettings";
+// import MapSettings from "./MapSettings";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
+import Button from "@mui/material/Button";
 
 const SimpleMap = ({
   favorites,
@@ -151,124 +152,102 @@ const SimpleMap = ({
 
   return (
     <>
-      <div className={`map-frame-wrapper ${backSide ? "flipped" : ""}`}>
-        <div className={`map-frame ${backSide ? "alsoFlipped" : ""}`}>
-          {backSide ? (
-            <>
-              <MapBack
-                toggleCardDeck={toggleCardDeck}
-                togglefavorites={togglefavorites}
-                hoveredItem={hoveredItem}
-                setHoveredItem={setHoveredItem}
-                openModal={openModal}
-                closeModal={closeModal}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                selectedResource={selectedResource}
-                setFavorites={setFavorites}
-                setBackSide={setBackSide}
-                backSide={backSide}
-                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-                city={city}
-                selectedResources={selectedResources}
-                setSelectedResources={setSelectedResources}
-                removeSelectedResource={removeSelectedResource}
-                isFavoritesOpen={isFavoritesOpen}
-                isDeckOpen={isDeckOpen}
-                isNavOpen={isNavOpen}
-                isToolBoxOpen={isToolBoxOpen}
-                setIsToolBoxOpen={setIsToolBoxOpen}
-                toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-                toggleDeckButtonRef={toggleDeckButtonRef}
-                setIsFavoritesOpen={setIsFavoritesOpen}
-                setIsDeckOpen={setIsDeckOpen}
-              />
-            </>
-          ) : (
-            <>
-              <div className="map-container-container">
-                {/* <p className="the-plan">THE MAP</p> */}
-                <div
-                  ref={mapContainerRef}
-                  className="map-container"
-                  style={{ height: "70vh", width: "auto" }}
+      <div className={`map-frame ${backSide ? "flipped" : ""}`}>
+        {backSide ? (
+          <>
+            <MapBack
+              toggleCardDeck={toggleCardDeck}
+              togglefavorites={togglefavorites}
+              hoveredItem={hoveredItem}
+              setHoveredItem={setHoveredItem}
+              openModal={openModal}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+              setFavorites={setFavorites}
+              setBackSide={setBackSide}
+              backSide={backSide}
+              isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+              setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+              city={city}
+              selectedResources={selectedResources}
+              setSelectedResources={setSelectedResources}
+              removeSelectedResource={removeSelectedResource}
+              isFavoritesOpen={isFavoritesOpen}
+              isDeckOpen={isDeckOpen}
+              isNavOpen={isNavOpen}
+              isToolBoxOpen={isToolBoxOpen}
+              setIsToolBoxOpen={setIsToolBoxOpen}
+              toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+              toggleDeckButtonRef={toggleDeckButtonRef}
+              setIsFavoritesOpen={setIsFavoritesOpen}
+              setIsDeckOpen={setIsDeckOpen}
+            />
+          </>
+        ) : (
+          <>
+            <div className="map-container-container">
+              {/* <p className="the-plan">THE MAP</p> */}
+              <div
+                ref={mapContainerRef}
+                className="map-container"
+                style={{ height: "70vh", width: "auto" }}
+              >
+                <GoogleMapReact
+                  bootstrapURLKeys={{ key: apiKey }}
+                  center={city.center}
+                  bounds={city.bounds}
+                  // center={{ lat: 24.681678475660995, lng: 84.99154781534179 }}
+                  // bounds={{
+                  //   ne: { lat: 25.0, lng: 85.2 },
+                  //   sw: { lat: 24.4, lng: 84.8 },
+                  // }}
+                  defaultZoom={11}
+                  onChange={(e) => handleBoundsChange(e)}
                 >
-                  <GoogleMapReact
-                    bootstrapURLKeys={{ key: apiKey }}
-                    center={city.center}
-                    bounds={city.bounds}
-                    // center={{ lat: 24.681678475660995, lng: 84.99154781534179 }}
-                    // bounds={{
-                    //   ne: { lat: 25.0, lng: 85.2 },
-                    //   sw: { lat: 24.4, lng: 84.8 },
-                    // }}
-                    defaultZoom={10}
-                    onChange={(e) => handleBoundsChange(e)}
-                  >
-                    {store.boundaryResults.map((result, i) => (
-                      <Marker
-                        lat={result.latitude}
-                        lng={result.longitude}
-                        text={result.name}
-                        key={i}
-                        id={result.id}
-                        openModal={openModal}
-                        result={result}
-                      />
-                    ))}
-
-                    {userLocation && (
-                      <Marker
-                        lat={userLocation.lat}
-                        lng={userLocation.lng}
-                        text="You are here!"
-                        color="maroon"
-                      />
-                    )}
-                  </GoogleMapReact>
-                </div>
-                <div className="stack">
-                  <button className="geo-button" onClick={() => geoFindMe()}>
-                    geo-location
-                  </button>
-                  <div className="zipcode-input-container">
-                    <input
-                      type="text"
-                      id="zipcode"
-                      value={zipInput}
-                      onChange={handleZipInputChange}
-                      maxLength="5"
-                      placeholder="Zip Code"
+                  {store.boundaryResults.map((result, i) => (
+                    <Marker
+                      lat={result.latitude}
+                      lng={result.longitude}
+                      text={result.name}
+                      key={i}
+                      id={result.id}
+                      openModal={openModal}
+                      result={result}
                     />
-                  </div>
+                  ))}
+
+                  {userLocation && (
+                    <Marker
+                      lat={userLocation.lat}
+                      lng={userLocation.lng}
+                      text="You are here!"
+                      color="maroon"
+                    />
+                  )}
+                </GoogleMapReact>
+              </div>
+
+              <div className="stack">
+                <button className="geo-button" onClick={() => geoFindMe()}>
+                  geo-location
+                </button>
+                <div className="zipcode-input-container">
+                  <input
+                    type="text"
+                    id="zipcode"
+                    value={zipInput}
+                    onChange={handleZipInputChange}
+                    maxLength="5"
+                    placeholder="Zip Code"
+                  />
                 </div>
               </div>
-              <div className="simple-selection">
-                <MapSettings
-                  toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-                  toggleToolButtonRef={toggleToolButtonRef}
-                  toggleDeckButtonRef={toggleDeckButtonRef}
-                  toggleCardDeck={toggleCardDeck}
-                  togglefavorites={togglefavorites}
-                  geoFindMe={geoFindMe}
-                  handleZipInputChange={handleZipInputChange}
-                  zipInput={zipInput}
-                  toggleNav={toggleNav}
-                  isFavoritesOpen={isFavoritesOpen}
-                  setIsFavoritesOpen={setIsFavoritesOpen}
-                  isToolBoxOpen={isToolBoxOpen}
-                  setIsToolBoxOpen={setIsToolBoxOpen}
-                  isNavOpen={isNavOpen}
-                  isDeckOpen={isDeckOpen}
-                  setIsDeckOpen={setIsDeckOpen}
-                  setBackSide={setBackSide}
-                  backSide={backSide}
-                />
-              </div>
-            </>
-          )}
-        </div>
+            </div>
+            <div className="simple-selection"></div>
+          </>
+        )}
       </div>
     </>
   );

@@ -20,6 +20,11 @@
   margin: 5px 10px 0 0;
 }
 
+.the-plan:hover {
+  cursor: pointer;
+  color: lightgreen !important;
+}
+
 .path-warning-div {
   min-height: 300px;
   display: flex;
