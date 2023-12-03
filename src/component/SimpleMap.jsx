@@ -203,7 +203,7 @@ const SimpleMap = ({
                   //   ne: { lat: 25.0, lng: 85.2 },
                   //   sw: { lat: 24.4, lng: 84.8 },
                   // }}
-                  defaultZoom={11}
+                  defaultZoom={12}
                   onChange={(e) => handleBoundsChange(e)}
                 >
                   {store.boundaryResults.map((result, i) => (
