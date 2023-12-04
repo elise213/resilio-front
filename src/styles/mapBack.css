@@ -164,21 +164,6 @@ li {
   margin-top: 20px;
 }
 
-.remove-path {
-  color: red;
-  background-color: lightgrey;
-  border: none;
-  font-weight: bold;
-  font-size: small;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
-  border: 1px solid red;
-  border-radius: 3px;
-}
-
-.remove-path:hover {
-  color: black;
-}
-
 .flip-horizontal {
   transform: scaleX(-1);
   margin-right: 65px;

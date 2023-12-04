@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/cardDeck.css";
 import { Context } from "../store/appContext";
 import ResourceCard from "./ResourceCard";
+import Button from "@mui/material/Button";
 
 const CardDeck = ({
   isDeckOpen,

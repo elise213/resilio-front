@@ -163,11 +163,6 @@
   align-items: center;
 }
 
-.add-path span,
-.remove-path-card span {
-  display: block; /* Makes each span take up the full width, causing a line break */
-}
-
 .buttons-modal {
   display: flex;
   flex-direction: column;
