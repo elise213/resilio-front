@@ -526,25 +526,6 @@ body.modal-open {
   width: 100%;
 }
 
-@media screen and (max-width: 700px) {
-  .carousel {
-    max-height: 200px !important;
-    overflow: hidden;
-  }
-
-  .details {
-    width: 100% !important;
-  }
-
-  .resource-card-text {
-    font-size: 13px !important;
-  }
-
-  .modal-content {
-    width: 80%;
-  }
-}
-
 @media screen and (max-width: 600px) {
   .modal-text {
     font-size: 12px !important;
@@ -557,5 +538,20 @@ body.modal-open {
   }
   .modal-center {
     font-size: 12px !important;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .carousel {
+    max-height: 200px !important;
+    overflow: hidden;
+  }
+
+  .details {
+    width: 100% !important;
+  }
+
+  .modal-content {
+    width: 80%;
   }
 }

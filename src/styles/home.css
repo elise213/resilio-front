@@ -20,7 +20,7 @@
 }
 
 .savedButton {
-  margin-top: 5px !important;
+  margin-top: 3px !important;
   background-color: transparent !important;
   color: lavender !important;
   font-size: 50px !important;
@@ -151,7 +151,7 @@
     height: 100vh;
   }
   .savedButton {
-    font-size: 35px !important;
+    font-size: 30px !important;
   }
 }
 
