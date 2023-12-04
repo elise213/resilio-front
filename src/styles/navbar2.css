@@ -20,26 +20,16 @@
   justify-content: space-between;
   transition: left 0.3s ease;
   top: 0;
-  left: 0;
-  width: 100%;
   z-index: 996;
-  position: fixed;
-}
-
-.new-navbar.open-nav {
-  left: 0;
-}
-
-.navbar-content {
+  position: absolute;
+  width: 275px !important;
+  left: -275px !important;
+  height: 100vh;
   display: flex;
-  align-items: center;
-  border-radius: 3px;
-  height: 100%;
-  margin: 10px;
-}
-
-.navbar-content.open-nav {
-  display: flex;
+  justify-content: flex-start;
+  transition: left 0.3s ease;
+  background-color: #464646;
+  border-radius: 0 30px 0 0;
 }
 
 .active {
@@ -88,7 +78,7 @@
 }
 
 .open-icon-nav {
-  font-size: 50px;
+  font-size: 45px;
 }
 
 .close-icon-nav,
@@ -150,29 +140,9 @@
   cursor: pointer;
 }
 
-.new-navbar {
-  width: 275px !important;
-  left: -275px !important;
-  height: 100%;
-  display: flex;
-  justify-content: flex-start;
-  transition: left 0.3s ease;
-  background-color: #464646;
-  border-radius: 0 30px 0 0;
-}
-
 .new-navbar.open-nav {
   left: 0 !important;
   transition: left 0.3s ease;
-}
-
-.navbar-content {
-  flex-direction: column;
-  padding: 35px 15px;
-  align-items: flex-start !important;
-  margin: 0 0 0 20px;
-  display: flex;
-  box-shadow: none !important;
 }
 
 .nav-item {
@@ -180,8 +150,6 @@
 }
 
 .nav-container {
-  /* height: 100vh; */
-  position: absolute;
   width: 100%;
   position: absolute;
 }
@@ -204,13 +172,17 @@
   left: 285px !important;
 }
 
-.new-navbar.open-nav {
-  left: 0;
-}
-
 .navbar-content {
   flex-direction: column;
-  /* padding: 5px; */
+  padding: 35px 15px;
+  align-items: flex-start !important;
+  display: flex;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  height: 100%;
+  margin: 10px;
 }
 
 .nav-item {
@@ -228,10 +200,20 @@
 }
 
 @media screen and (max-width: 600px) {
-  .modal-content-contact {
-    width: 95% !important;
+  .new-navbar {
+    width: 200px !important;
+    left: -200px !important;
   }
+
   .open-icon-nav.closed {
+    left: 220px !important;
+  }
+
+  .close-icon-nav.open-nav {
+    left: 170px !important;
+  }
+
+  .open-icon-nav {
     font-size: 30px;
   }
 }

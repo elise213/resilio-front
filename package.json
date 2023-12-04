@@ -14,7 +14,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@material/web": "^1.0.1",
-    "@mui/material": "^5.14.18",
+    "@mui/material": "^5.14.19",
     "@react-pdf/renderer": "^3.1.14",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "axios": "^1.4.0",

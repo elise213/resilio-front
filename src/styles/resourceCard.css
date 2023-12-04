@@ -67,39 +67,22 @@
   font-size: 20px;
 }
 
-.remove-path-card {
-  background-color: lavender;
-  border: 1.5px solid red;
-}
-
-.remove-path-card,
-.add-path {
-  max-height: 40px;
-  min-width: 100px;
-  color: rgb(128, 41, 0);
-  max-width: 100px;
+.remove-path {
+  background-color: lavender !important;
+  border: 1.5px solid red !important;
+  color: red !important;
 }
 
 .add-path {
-  background-color: lightgreen !important;
-  color: rgb(128, 41, 0);
-  border: 1.5px solid var(--coral2);
+  background-color: rgb(173, 228, 173) !important;
+  color: green !important;
+  border: 1.5px solid var(--coral2) !important;
 }
 
-.add-path,
-.remove-path-card {
-  padding: 3px;
-  border-radius: 3px;
-  font-family: "Urbanist", sans-serif !important;
-  letter-spacing: 1px;
-  margin: 5px;
-  font-size: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 1px 2px 3px rgba(0, 0, 0, 0.2);
-}
-
-.add-path span,
-.remove-path-card span {
-  display: block; /* Makes each span take up the full width, causing a line break */
+.remove-path,
+.add-path {
+  font-size: 10px !important;
+  padding: 3px !important;
 }
 
 .resource-title {
@@ -110,7 +93,7 @@
   font-family: sans-serif;
   letter-spacing: 1px;
   font-weight: bolder;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .fa-baby,
@@ -175,9 +158,5 @@
 @media screen and (max-width: 600px) {
   .my-resource-card {
     width: 150px !important;
-  }
-
-  .resource-title {
-    font-size: 15px;
   }
 }

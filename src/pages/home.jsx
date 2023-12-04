@@ -241,25 +241,6 @@ const Home = () => {
     }
   };
 
-  // const updateCityStateFromZip = async (zip) => {
-  //   try {
-  //     const data = await fetchBounds(zip, true);
-  //     const location = data.results[0]?.geometry?.location;
-  //     const bounds =
-  //       data.results[0]?.geometry?.bounds ||
-  //       data.results[0]?.geometry?.viewport;
-  //     if (location && bounds) {
-  //       setCity({
-  //         ...city,
-  //         center: location,
-  //         bounds: bounds,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching bounds:", error.message);
-  //   }
-  // };
-
   const updateCityStateFromZip = async (zip) => {
     try {
       const data = await fetchBounds(zip, true);
@@ -571,7 +552,7 @@ const Home = () => {
         />
 
         <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
-          <span class="material-symbols-outlined">arrow_forward</span>
+          <span className="material-symbols-outlined">arrow_forward</span>
           {backSide ? "The Map" : "The Plan"}
         </p>
 

@@ -24,8 +24,7 @@ const Buttons = ({
         <Button
           className="customButton"
           variant="contained"
-          // startIcon={<i className="material-symbols-outlined">map</i>}
-          startIcon={<i class="material-symbols-outlined">content_copy</i>}
+          startIcon={<i className="material-symbols-outlined">content_copy</i>}
           ref={toggleDeckButtonRef}
           onClick={() => toggleCardDeck()}
         >
@@ -35,7 +34,7 @@ const Buttons = ({
         <Button
           className="customButton"
           variant="contained"
-          startIcon={<i class="material-symbols-outlined">filter_list</i>}
+          startIcon={<i className="material-symbols-outlined">filter_list</i>}
           ref={toggleToolButtonRef}
           onClick={() => {
             setIsToolBoxOpen(!isToolBoxOpen);
