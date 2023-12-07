@@ -289,11 +289,12 @@ const Modal = ({
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder=" Add a review..."
+                  placeholder={`Write a review of... ${resource.name}`}
                   maxLength="280"
                 ></textarea>
+
                 <button className="submit" onClick={handleCommentSubmit}>
-                  Submit Review
+                  Submit
                 </button>
               </div>
             )}

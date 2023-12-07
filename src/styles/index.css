@@ -55,6 +55,28 @@
   font-style: normal;
 }
 
+.back-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.back-container::-webkit-scrollbar {
+  width: 7px;
+}
+
+.back-container::-webkit-scrollbar-thumb {
+  background-color: lightgreen;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.back-container::-webkit-scrollbar-thumb:hover {
+  background-color: darkgreen;
+}
+
+.back-container {
+  width: 100%;
+}
+
 .scroll-title {
   font-family: "AwsumSans";
   font-size: 20px;

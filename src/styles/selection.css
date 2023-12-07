@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 40px;
 }
 
 .report-container {
@@ -27,16 +28,17 @@
 }
 
 .cent {
-  min-width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 10px;
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   padding: 10px;
   border-radius: 3px;
-  background-color: white;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  color: white;
+  /* background-color: white; */
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2), 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .center {
@@ -134,6 +136,7 @@
   padding-left: 30px;
   cursor: pointer;
   padding-right: 7px;
+  letter-spacing: 0.8px;
 }
 
 .what-type {
