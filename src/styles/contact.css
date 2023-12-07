@@ -12,15 +12,16 @@
 }
 
 .close-contact {
-  padding: 0;
+  padding: 15px;
   font-size: 30px;
   border: none;
   background-color: transparent;
   color: lavender;
   justify-content: end;
-  margin: 0 25px;
+  position: absolute;
   display: flex;
   width: 100%;
+  z-index: 9999999;
 }
 
 .close-contact:hover {
