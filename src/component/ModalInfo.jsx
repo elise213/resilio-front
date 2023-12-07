@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { ModalMap } from "./ModalMap";
 import Carousel from "./Carousel";
+import Button from "@mui/material/Button";
 
 export const ModalInfo = ({
   res,
@@ -126,22 +127,21 @@ export const ModalInfo = ({
       <div className="description-div">
         {!isGeneratedMapModalOpen && (
           <div className="buttons-modal">
-            <button
-              className={isSelected ? "remove-path-card" : "add-path"}
+            <Button
+              variant="contained"
+              color="primary"
+              // startIcon={
+              //   isSelected ? (
+              //     <i className="material-symbols-outlined">cancel</i>
+              //   ) : (
+              //     <i className="material-symbols-outlined">add</i>
+              //   )
+              // }
+              className={isSelected ? "remove-path" : "add-path"}
               onClick={handleToggleSelectResource}
             >
-              {isSelected ? (
-                <>
-                  <span>Remove</span>
-                  <span>from Plan</span>
-                </>
-              ) : (
-                <>
-                  <span>Add</span>
-                  <span>to Plan</span>
-                </>
-              )}
-            </button>
+              {isSelected ? "remove from plan" : "add to plan"}
+            </Button>
             {isLoggedIn && (
               <div className="modal-button-container">
                 <button

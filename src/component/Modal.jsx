@@ -258,7 +258,7 @@ const Modal = ({
 
                   return (
                     <>
-                      <div key={index} className="comment-div">
+                      <div key={comment.id} className="comment-div">
                         <div className="comment-content-div">
                           <p className="comment-content">
                             "{comment.comment_cont}"
@@ -289,7 +289,7 @@ const Modal = ({
                 <textarea
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder={`Write a review of... ${resource.name}`}
+                  placeholder={`Write a review of ${resource.name}...`}
                   maxLength="280"
                 ></textarea>
 

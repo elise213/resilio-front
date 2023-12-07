@@ -241,30 +241,59 @@ const Home = () => {
     }
   };
 
+  // const updateCityStateFromZip = async (zip) => {
+  //   try {
+  //     const data = await fetchBounds(zip, true);
+  //     const location = data.results[0]?.geometry?.location;
+  //     const bounds =
+  //       data.results[0]?.geometry?.bounds ||
+  //       data.results[0]?.geometry?.viewport;
+
+  //     if (location && bounds) {
+  //       const newCityState = {
+  //         ...city,
+  //         center: location,
+  //         bounds: bounds,
+  //       };
+  //       setCity(newCityState);
+  //       handleBoundsChange({ center: location, bounds: bounds });
+  //       await actions.setBoundaryResults(bounds, categories, days, groups);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching bounds:", error.message);
+  //   }
+  // };
+
   const updateCityStateFromZip = async (zip) => {
     try {
       const data = await fetchBounds(zip, true);
+      console.log("API Response:", data); // Add this line for debugging
       const location = data.results[0]?.geometry?.location;
       const bounds =
         data.results[0]?.geometry?.bounds ||
         data.results[0]?.geometry?.viewport;
 
       if (location && bounds) {
-        const newCityState = {
-          ...city,
-          center: location,
-          bounds: bounds,
-        };
-        setCity(newCityState);
+        // const newCityState = {
+        //   ...city,
+        //   center: location,
+        //   bounds: bounds,
+        // };
+        // setCity(newCityState);
+        // console.log("New City State:", newCityState); // Add this line for debugging
         handleBoundsChange({ center: location, bounds: bounds });
-
-        // Make sure categories, days, and groups have the correct values
         await actions.setBoundaryResults(bounds, categories, days, groups);
       }
     } catch (error) {
       console.error("Error fetching bounds:", error.message);
     }
   };
+
+  useEffect(() => {
+    if (zipInput && zipInput.length === 5) {
+      updateCityStateFromZip(zipInput);
+    }
+  }, [zipInput]); // Ensure zipInput is triggering this effect
 
   const openModal = (resource) => {
     setSelectedResource(resource);

@@ -198,7 +198,7 @@ body {
 /* _____________________________________________________________BUTTONS */
 
 .submit {
-  border: 2px solid rgb(149, 84, 19);
+  border: 1.5px solid rgb(149, 84, 19) !important;
   color: rgb(149, 84, 19);
   border-radius: 3px;
   font-family: "AwsumSans";
@@ -211,7 +211,7 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
   letter-spacing: 1.1px;
-  /* margin-top: 20px; */
+  /* margin-top: 5px; */
 }
 
 .submit:hover {
