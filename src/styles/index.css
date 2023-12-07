@@ -55,6 +55,28 @@
   font-style: normal;
 }
 
+.back-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.back-container::-webkit-scrollbar {
+  width: 7px;
+}
+
+.back-container::-webkit-scrollbar-thumb {
+  background-color: lightgreen;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.back-container::-webkit-scrollbar-thumb:hover {
+  background-color: darkgreen;
+}
+
+.back-container {
+  width: 100%;
+}
+
 .scroll-title {
   font-family: "AwsumSans";
   font-size: 20px;
@@ -176,7 +198,7 @@ body {
 /* _____________________________________________________________BUTTONS */
 
 .submit {
-  border: 2px solid rgb(149, 84, 19);
+  border: 1.5px solid rgb(149, 84, 19) !important;
   color: rgb(149, 84, 19);
   border-radius: 3px;
   font-family: "AwsumSans";
@@ -189,7 +211,7 @@ body {
   cursor: pointer;
   transition: background-color 0.3s;
   letter-spacing: 1.1px;
-  /* margin-top: 20px; */
+  /* margin-top: 5px; */
 }
 
 .submit:hover {

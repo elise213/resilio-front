@@ -96,19 +96,19 @@ const ToolBox = ({
           days &&
           groups ? (
             <ErrorBoundary>
-              <div className="side-car">
-                <Selection
-                  categories={categories}
-                  setCategories={setCategories}
-                  groups={groups}
-                  setGroups={setGroups}
-                  days={days}
-                  setDays={setDays}
-                  searchingToday={searchingToday}
-                  setSearchingToday={setSearchingToday}
-                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                />
-              </div>
+              {/* <div className="side-car"> */}
+              <Selection
+                categories={categories}
+                setCategories={setCategories}
+                groups={groups}
+                setGroups={setGroups}
+                days={days}
+                setDays={setDays}
+                searchingToday={searchingToday}
+                setSearchingToday={setSearchingToday}
+                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+              />
+              {/* </div> */}
             </ErrorBoundary>
           ) : (
             <p>Loading selection options...</p>
