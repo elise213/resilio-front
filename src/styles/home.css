@@ -92,6 +92,7 @@
   border: 2px solid lavender;
   /* border: 2px solid var(--marascoral); */
   border-radius: 7px;
+  min-height: 300px;
 }
 
 .geo-button {
