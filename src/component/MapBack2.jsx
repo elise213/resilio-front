@@ -190,9 +190,6 @@ const MapBack = ({
       {selectedResources[0] ? (
         <>
           <div className="selected-resources">
-            <button className="createMyPath" onClick={handleCreateMyPathClick}>
-              Save Your Plan
-            </button>
             <div className="grid-container">
               {selectedResources.map((resource, index) => (
                 <ResourceCard
@@ -209,6 +206,9 @@ const MapBack = ({
                 />
               ))}
             </div>
+            <button className="createMyPath" onClick={handleCreateMyPathClick}>
+              Save Your Plan
+            </button>
           </div>
         </>
       ) : (

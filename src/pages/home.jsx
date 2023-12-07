@@ -580,11 +580,6 @@ const Home = () => {
           toggleDeckButtonRef={toggleDeckButtonRef}
         />
 
-        <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
-          <span className="material-symbols-outlined">arrow_forward</span>
-          {backSide ? "The Map" : "The Plan"}
-        </p>
-
         <div className="saved">
           <Button
             className="mdc-button savedButton"
