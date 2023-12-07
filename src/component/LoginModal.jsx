@@ -14,7 +14,6 @@ const LoginModal = ({
   setName,
   is_org,
   setIs_org,
-  handleSelectImage,
   handleRegister,
   setOpenLoginModal,
   handleLogin,
@@ -26,13 +25,6 @@ const LoginModal = ({
     field = (
       <div className="custom-login-modal-content">
         <div className="custom-login-modal-header">
-          <div className="center-header">
-            <span className="custom-form-label" id="exampleloginModalLabel">
-              <span className="custom-form-label">
-                Do you represent an organization?
-              </span>
-            </span>
-          </div>
           <span className="login-close" onClick={() => setLog("1")}>
             {" "}
             <i className="fa-solid fa-x"></i>{" "}
@@ -40,41 +32,6 @@ const LoginModal = ({
         </div>
         <div className="custom-login-modal-body">
           <form>
-            <div className="yes-or-no">
-              <div className="custom-form-check">
-                <input
-                  className="custom-form-check-input radio"
-                  type="radio"
-                  name="orgRadio"
-                  id="orgRadio1"
-                  value={is_org}
-                  onChange={() => setIs_org("true")}
-                />
-                <label
-                  className="custom-form-label radio-label"
-                  htmlFor="exampleRadios1"
-                >
-                  Yes
-                </label>
-              </div>
-
-              <div className="custom-form-check">
-                <input
-                  className="custom-form-check-input radio"
-                  type="radio"
-                  name="orgRadio"
-                  id="orgRadio2"
-                  value={is_org}
-                  onChange={() => setIs_org("false")}
-                />
-                <label
-                  className="custom-form-label radio-label"
-                  htmlFor="exampleRadios1"
-                >
-                  No
-                </label>
-              </div>
-            </div>
             <div className="">
               <label htmlFor="name" className="custom-form-label less-margin">
                 Name
@@ -112,6 +69,46 @@ const LoginModal = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
+            </div>
+            <div className="center-header">
+              <span className="custom-form-label" id="exampleloginModalLabel">
+                Do you represent an organization?
+              </span>
+            </div>
+            <div className="yes-or-no">
+              <div className="custom-form-check">
+                <input
+                  className="custom-form-check-input radio"
+                  type="radio"
+                  name="orgRadio"
+                  id="orgRadio1"
+                  value={is_org}
+                  onChange={() => setIs_org("true")}
+                />
+                <label
+                  className="custom-form-label radio-label"
+                  htmlFor="exampleRadios1"
+                >
+                  Yes
+                </label>
+              </div>
+
+              <div className="custom-form-check">
+                <input
+                  className="custom-form-check-input radio"
+                  type="radio"
+                  name="orgRadio"
+                  id="orgRadio2"
+                  value={is_org}
+                  onChange={() => setIs_org("false")}
+                />
+                <label
+                  className="custom-form-label radio-label"
+                  htmlFor="exampleRadios1"
+                >
+                  No
+                </label>
+              </div>
             </div>
 
             <button

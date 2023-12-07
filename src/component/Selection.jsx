@@ -279,7 +279,7 @@ const Selection = ({
           <div
             className={`select-header ${showCategories ? "header-open" : ""}`}
           >
-            {showCategories && <p>Filter by Category</p>}
+            {showCategories && <p>Categories</p>}
           </div>
 
           {showCategories &&
@@ -290,7 +290,7 @@ const Selection = ({
       {visibleGroupCount > 0 && (
         <div className={"cent"}>
           <div className={`select-header ${showGroups ? "header-open" : ""}`}>
-            {showGroups && <p>Filter by Group</p>}
+            {showGroups && <p>Groups</p>}
           </div>
           {showGroups && renderCenterColumn("group", groups, setGroups)}
         </div>
@@ -301,7 +301,7 @@ const Selection = ({
           {!searchingToday && (
             <div style={{ width: "100%" }}>
               <div className={`select-header ${showDays ? "header-open" : ""}`}>
-                {showDays && <p>Filter by Schedule</p>}
+                {showDays && <p>Schedule</p>}
               </div>
               {showDays && renderCenterColumn("day", days, setDays)}
             </div>

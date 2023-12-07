@@ -89,7 +89,13 @@ const Favorites = ({
                   openLoginModal={openLoginModal}
                   setOpenLoginModal={setOpenLoginModal}
                 />
-                <span className="scroll-title to-save-res">
+                <span
+                  onClick={() => {
+                    setOpenLoginModal(true);
+                  }}
+                  className="scroll-title to-save-res"
+                  style={openLoginModal ? { display: "none" } : {}}
+                >
                   to save resources
                 </span>
               </>

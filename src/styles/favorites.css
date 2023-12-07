@@ -1,4 +1,4 @@
-.favoritesnew-navbar::-webkit-scrollbar-track {
+/* .favoritesnew-navbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
@@ -14,7 +14,7 @@
 
 .favoritesnew-navbar::-webkit-scrollbar-thumb:hover {
   background-color: darkgreen;
-}
+} */
 
 .to-save-res {
   margin: 15px 0 0 5px;
