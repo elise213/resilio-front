@@ -83,7 +83,7 @@ const CardDeck = ({
             {store.boundaryResults && store.boundaryResults.length > 0 && (
               <div className="list-container">
                 <div className="scroll-title">
-                  <span>Resources in your Area</span>
+                  {/* <span>Resources in the Map Area</span> */}
                 </div>
                 <ul className="all-ul">
                   {Array.isArray(store.mapResults) &&
