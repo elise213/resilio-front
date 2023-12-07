@@ -95,6 +95,17 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         },
       ],
+
+      austin: [
+        {
+          center: { lat: 30.2672, lng: -97.7431 },
+          bounds: {
+            ne: { lat: 30.456076231280107, lng: -97.29987032470669 },
+            sw: { lat: 30.07832376871989, lng: -98.18632967529331 },
+          },
+        },
+      ],
+
       categoryCounts: {},
       dayCounts: {},
     },
