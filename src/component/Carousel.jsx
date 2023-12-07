@@ -47,7 +47,7 @@ const Carousel = ({ res }) => {
   }
 
   return (
-    <div>
+    <>
       {images.length > 0 && (
         <div className="carousel-container">
           {images.length > 1 && (
@@ -81,7 +81,7 @@ const Carousel = ({ res }) => {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

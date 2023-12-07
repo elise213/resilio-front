@@ -196,10 +196,8 @@ const SimpleMap = ({
               >
                 <GoogleMapReact
                   bootstrapURLKeys={{ key: apiKey }}
-                  // center={city.center}
-                  // bounds={city.bounds}
-                  center={store.austin[0].center}
-                  bounds={store.austin[0].bounds}
+                  center={city.center}
+                  bounds={city.bounds}
                   defaultZoom={12}
                   onChange={(e) => handleBoundsChange(e)}
                 >
