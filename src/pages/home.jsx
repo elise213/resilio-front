@@ -319,9 +319,9 @@ const Home = () => {
     checkLoadingStatus();
   }, [store.loading]);
 
-  useEffect(() => {
-    geoFindMe();
-  }, []);
+  // useEffect(() => {
+  //   geoFindMe();
+  // }, []);
 
   useEffect(() => {
     actions.setSchedules();
