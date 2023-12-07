@@ -63,6 +63,15 @@
   max-height: 100px;
 }
 
+.add-favorite {
+  border: none;
+  font-size: 20px;
+  background-color: transparent;
+  display: flex;
+  align-items: end;
+  margin: 10px 0 2px 0 !important;
+}
+
 .add-favorite i {
   font-size: 20px;
 }
@@ -76,7 +85,7 @@
 .add-path {
   background-color: rgb(173, 228, 173) !important;
   color: green !important;
-  border: 1.5px solid var(--coral2) !important;
+  border: 1.5px solid green !important;
 }
 
 .remove-path,
@@ -129,14 +138,6 @@
   display: flex;
   margin: 0;
   /* justify-content: flex-end; */
-}
-
-.add-favorite {
-  border: none;
-  font-size: 20px;
-  background-color: transparent;
-  display: flex;
-  align-items: end;
 }
 
 @media screen and (max-width: 900px) {

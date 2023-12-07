@@ -13,9 +13,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0px;
   width: 100%;
-  margin-top: 20px;
+  /* margin-top: 10px; */
 }
 
 .map-container-modal {
@@ -180,7 +179,7 @@
 
 .modal-button-container button {
   width: unset !important;
-  margin: 5px;
+  margin: 5px 0;
 }
 
 .modal-header {
@@ -197,7 +196,9 @@
   display: flex;
   flex-direction: column;
   align-self: flex-end;
-  margin-top: 40px;
+  margin-top: 10px;
+  min-width: 300px;
+  height: 100px;
 }
 
 p {
@@ -205,7 +206,7 @@ p {
 }
 
 .comment-div {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .full-comments-section {
@@ -242,7 +243,7 @@ p {
 }
 
 .comments-display {
-  margin-top: 30px;
+  margin: 30px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -252,12 +253,15 @@ p {
 
 textarea {
   border: 1px solid gray;
+  border-radius: 3px;
+  padding: 5px;
+  font-size: 15px;
+  height: 100%;
 }
 
 .comment-heading {
   font-size: 20px;
   color: rgb(149, 84, 19);
-  /* background-color: lavender; */
   width: 100%;
   font-family: "AwsumSans";
   justify-content: center;
@@ -268,12 +272,7 @@ textarea {
 }
 
 .modal-footer {
-  /* border-top: 1px solid gray; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .modal-footer p,
@@ -314,7 +313,7 @@ textarea {
   overflow-y: scroll !important;
   scroll-behavior: smooth;
   min-height: 60vh;
-  padding: 0 7px 0 0;
+  /* padding: 0 7px 0 0; */
 }
 
 .info a {
@@ -392,6 +391,7 @@ body.modal-open {
   position: relative;
   max-height: 300px;
   overflow: hidden;
+  margin: 10px 0 30px 0;
 }
 
 .carousel-description-div {
@@ -483,7 +483,7 @@ body.modal-open {
   display: flex;
   justify-content: space-between;
   text-align: justify;
-  margin: 20px 0 0 0;
+  /* margin: 20px 0 0 0; */
 }
 
 .description {

@@ -727,7 +727,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setBoundaryResults: async (bounds, resources, days, groups) => {
-        console.trace("setBoundaryResults called from:");
+        // console.trace("setBoundaryResults called from:");
         const store = getStore();
 
         // If there's an ongoing request, abort it

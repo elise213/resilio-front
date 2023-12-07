@@ -116,8 +116,8 @@ const ResourceCard = (props) => {
         )}
 
         <Button
-          variant="contained" // or 'outlined' or 'text' depending on your design preference
-          color="primary" // or 'secondary', 'success', etc., as needed
+          variant="contained"
+          color="primary"
           // startIcon={
           //   isSelected ? (
           //     <i className="material-symbols-outlined">cancel</i>
