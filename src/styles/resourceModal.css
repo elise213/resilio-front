@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* margin-top: 10px; */
+  padding: 5px;
 }
 
 .map-container-modal {
@@ -483,7 +483,7 @@ body.modal-open {
   display: flex;
   justify-content: space-between;
   text-align: justify;
-  /* margin: 20px 0 0 0; */
+  padding: 5px;
 }
 
 .description {
