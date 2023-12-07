@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React from "react";
 
 const MyCheckbox = ({ id, label, isChecked, handleToggle }) => (
   <div className="day-row" key={id}>
@@ -10,10 +9,12 @@ const MyCheckbox = ({ id, label, isChecked, handleToggle }) => (
         id={id}
         value={id}
         name="selection"
-        checked={isChecked}
+        checked={isChecked || false}
         onChange={() => handleToggle(id)}
       />
-      <label className="my-label" htmlFor={id}>{label}</label>
+      <label className="my-label" htmlFor={id}>
+        {label}
+      </label>
     </div>
   </div>
 );
