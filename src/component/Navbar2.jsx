@@ -7,10 +7,17 @@ import Contact from "../component/Contact";
 import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
+import ToolBox from "./ToolBox";
 
 const Navbar2 = ({
+  INITIAL_DAY_STATE,
   addSelectedResource,
+  backSide,
+  categories,
   closeModal,
+  days,
+  favorites,
+  groups,
   isDeckOpen,
   isFavoritesOpen,
   isNavOpen,
@@ -18,50 +25,46 @@ const Navbar2 = ({
   modalIsOpen,
   openLoginModal,
   openModal,
-  primaryModalRef,
   removeSelectedResource,
+  searchingToday,
   selectedResources,
-  setAboutModalIsOpen,
-  setDonationModalIsOpen,
+  setCategories,
+  setDays,
   setFavorites,
+  setGroups,
+  setIsDeckOpen,
+  setIsFavoritesOpen,
   setIsNavOpen,
+  setIsToolBoxOpen,
   setModalIsOpen,
   setOpenLoginModal,
-  toggleCardDeck,
-  toggleDeckButtonRef,
-  toggleFavoritesButtonRef,
+  setSearchingToday,
   toggleNav,
+  toggleToolButtonRef,
 }) => {
   const { store, actions } = useContext(Context);
 
   const [showContactModal, setShowContactModal] = useState(false);
-  const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
+  // const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLargeScreen(store.isLargeScreen);
-  }, [store.isLargeScreen]);
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+  }, [store.token]);
+
+  // useEffect(() => {
+  //   setIsLargeScreen(store.isLargeScreen);
+  // }, [store.isLargeScreen]);
 
   const toggleContactModal = () => {
     setShowContactModal(!showContactModal);
   };
-
-  // Function to handle click outside the navbar area
-  // const handleClickOutside = (event) => {
-  //   const navbar = document.querySelector(".new-navbar");
-  //   if (navbar && !navbar.contains(event.target) && isNavOpen) {
-  //     setIsNavOpen(false);
-  //   }
-  // };
-
-  // Set up the event listener
-  // useEffect(() => {
-  //   document.addEventListener("click", handleClickOutside);
-  //   return () => {
-  //     // Clean up the event listener
-  //     document.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, [isNavOpen]);
 
   useEffect(() => {
     const body = document.body;
@@ -86,106 +89,135 @@ const Navbar2 = ({
           >
             <i className="fas fa-bars"></i>
           </div>
-          {/* <div
-            onClick={toggleNav}
-            className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}
-          >
-            <i className="fa-solid fa-x"></i>
-          </div> */}
 
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            <div className="split-nav">
-              <div className="nav-list">
-                <div>
-                  <span>
-                    Use this app to search for resources near you. Save
-                    resources and make a plan for yourself by logging in with
-                    your email.
-                  </span>
-                </div>
-                <div className="login-nav-div">
-                  <div className="login-label">
-                    <span>Favorites</span>
-                  </div>
-                  <Login
-                    openLoginModal={openLoginModal}
-                    setOpenLoginModal={setOpenLoginModal}
-                  />
-                </div>
-
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    placeholder="Search Resources..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-
-                {store.boundaryResults && store.boundaryResults.length > 0 && (
-                  <div className="list-container">
-                    <ul className="all-ul">
-                      {Array.isArray(store.mapResults) &&
-                        store.boundaryResults
-                          .filter(
-                            (resource) =>
-                              resource.name
-                                .toLowerCase()
-                                .includes(searchQuery.toLowerCase()) ||
-                              (resource.description &&
-                                resource.description
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()))
-                          )
-                          .map((resource, index) => (
-                            <ResourceCard
-                              key={resource.id}
-                              item={resource}
-                              openModal={openModal}
-                              closeModal={closeModal}
-                              modalIsOpen={modalIsOpen}
-                              setModalIsOpen={setModalIsOpen}
-                              selectedResources={selectedResources}
-                              addSelectedResource={addSelectedResource}
-                              removeSelectedResource={removeSelectedResource}
-                              setFavorites={setFavorites}
-                            />
-                          ))}
-                    </ul>
-                  </div>
-                )}
-
-                <span
-                  className="nav-item"
-                  onClick={() => {
-                    setIsNavOpen(false);
-                    setAboutModalIsOpen(true);
-                  }}
-                >
-                  ABOUT
-                </span>
-
-                <span
-                  className="nav-item"
-                  onClick={() => {
-                    setIsNavOpen(false);
-                    toggleContactModal();
-                  }}
-                >
-                  CONTACT
-                </span>
-
-                <span
-                  className="nav-item"
-                  onClick={() => {
-                    setIsNavOpen(false);
-                    setDonationModalIsOpen(true);
-                  }}
-                >
-                  DONATE
-                </span>
+            <div className="nav-div">
+              <span className="intro">
+                Use this app to search for resources near you. Save resources
+                and make a plan for yourself by logging in with your email.
+              </span>
+            </div>
+            <div
+              className="
+            nav-div"
+            >
+              <Login
+                openLoginModal={openLoginModal}
+                setOpenLoginModal={setOpenLoginModal}
+              />
+              <div className="search-bar">
+                <input
+                  type="text"
+                  placeholder="Search Resources..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
-              <EmailList />
+
+              <ToolBox
+                backSide={backSide}
+                categories={categories}
+                setCategories={setCategories}
+                groups={groups}
+                setGroups={setGroups}
+                days={days}
+                setDays={setDays}
+                searchingToday={searchingToday}
+                setSearchingToday={setSearchingToday}
+                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                isDeckOpen={isDeckOpen}
+                isNavOpen={isNavOpen}
+                isFavoritesOpen={isFavoritesOpen}
+                isToolBoxOpen={isToolBoxOpen}
+                setIsDeckOpen={setIsDeckOpen}
+                setIsNavOpen={setIsNavOpen}
+                setIsToolBoxOpen={setIsToolBoxOpen}
+                setIsFavoritesOpen={setIsFavoritesOpen}
+                toggleToolButtonRef={toggleToolButtonRef}
+              />
+            </div>
+
+            <div
+              className="
+            nav-div"
+            >
+              <span className="intro">Favorites</span>
+
+              {isLoggedIn && !store.favorites.length > 0 && (
+                <>
+                  <span className="scroll-title to-save-res">
+                    Your Liked{" "}
+                    <i
+                      style={{ color: "red" }}
+                      className="fa-solid fa-heart"
+                    ></i>{" "}
+                    resources will appear here. Try adding some!
+                  </span>
+                </>
+              )}
+
+              {store.favorites && store.favorites.length > 0 ? (
+                <div className="list-container">
+                  <ul>
+                    {favorites.map((resource, index) => (
+                      <ResourceCard
+                        key={`${resource.id}-${index}`}
+                        item={resource}
+                        openModal={openModal}
+                        closeModal={closeModal}
+                        modalIsOpen={modalIsOpen}
+                        setModalIsOpen={setModalIsOpen}
+                        selectedResources={selectedResources}
+                        addSelectedResource={addSelectedResource}
+                        removeSelectedResource={removeSelectedResource}
+                        setFavorites={setFavorites}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div
+              className="
+            nav-div"
+            >
+              <span className="intro">All Resources </span>
+
+              {store.boundaryResults && store.boundaryResults.length > 0 && (
+                <div className="list-container">
+                  <ul>
+                    {Array.isArray(store.mapResults) &&
+                      store.boundaryResults
+                        .filter(
+                          (resource) =>
+                            resource.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (resource.description &&
+                              resource.description
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()))
+                        )
+                        .map((resource, index) => (
+                          <ResourceCard
+                            key={resource.id}
+                            item={resource}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResources={selectedResources}
+                            addSelectedResource={addSelectedResource}
+                            removeSelectedResource={removeSelectedResource}
+                            setFavorites={setFavorites}
+                          />
+                        ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </nav>

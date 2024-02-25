@@ -1,28 +1,54 @@
 import React, { useRef, useState } from "react";
 import Styles from "../styles/buttons.css";
 import Button from "@mui/material/Button";
+import EmailList from "./EmailList";
 
 const Buttons = ({
-  isDeckOpen,
-  isNavOpen,
-  isFavoritesOpen,
-  isToolBoxOpen,
-  setIsToolBoxOpen,
-  toggleCardDeck,
-  togglefavorites,
   backSide,
   setBackSide,
-  toggleFavoritesButtonRef,
-  toggleDeckButtonRef,
+  setIsNavOpen,
+  setAboutModalIsOpen,
+  toggleContactModal,
   toggleToolButtonRef,
-  zipInput,
-  handleZipInputChange,
+  setIsToolBoxOpen,
+  isToolBoxOpen,
 }) => {
   return (
     <>
-      <div>
-        <div className="function-buttons">
-          <Button
+      {/* <div> */}
+      <div className="function-buttons">
+        <span
+          className="nav-item"
+          onClick={() => {
+            setIsNavOpen(false);
+            setAboutModalIsOpen(true);
+          }}
+        >
+          ABOUT
+        </span>
+
+        <span
+          className="nav-item"
+          onClick={() => {
+            setIsNavOpen(false);
+            toggleContactModal();
+          }}
+        >
+          CONTACT
+        </span>
+
+        <span
+          className="nav-item"
+          onClick={() => {
+            setIsNavOpen(false);
+            setDonationModalIsOpen(true);
+          }}
+        >
+          DONATE
+        </span>
+
+        {/* <EmailList /> */}
+        {/* <Button
             className="customButton"
             variant="contained"
             startIcon={
@@ -45,13 +71,13 @@ const Buttons = ({
             }}
           >
             Filters
-          </Button>
-        </div>
-        <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
+          </Button> */}
+      </div>
+      {/* <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
           <span className="material-symbols-outlined">arrow_forward</span>
           {backSide ? "The Map" : "The Plan"}
-        </p>
-      </div>
+        </p> */}
+      {/* </div> */}
     </>
   );
 };

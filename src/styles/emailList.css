@@ -7,14 +7,14 @@
   /* margin: 120px 0 0 0; */
 }
 
-.sign-up {
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: var(--color1);
-  font-size: 18px;
-  z-index: 999;
-  margin-bottom: 20px;
-  font-family: system-ui;
+.email-list-container p {
+  letter-spacing: 2px;
+  color: blue;
+  text-decoration: none;
+  font-size: 12px;
+  z-index: 995;
+  font-family: "Inter", sans-serif;
+  margin: 7px 0;
 }
 
 .socials {
@@ -47,11 +47,6 @@
   align-items: center;
 }
 
-.email-list-container p {
-  color: var(--color4);
-}
-
-.email-list-container p,
 .email-list-input-div,
 .email-list-button-div {
   margin: 0;

@@ -222,17 +222,11 @@ const Selection = ({
                   style={colorStyle ? colorStyle : {}}
                 ></span>
               )}
-              {/* <MyCheckbox
+              <MyCheckbox
                 id={id}
                 label={`${option.label} — ${count}`}
                 isChecked={state[id]}
                 handleToggle={() => handleToggle(setState, state, id)}
-              /> */}
-              <MyCheckbox
-                id={id}
-                label={`${option.label} — ${count}`}
-                isChecked={categories[id]} // This should reflect the current state
-                handleToggle={() => handleToggle(setCategories, categories, id)}
               />
             </div>
           ) : null;
@@ -276,74 +270,8 @@ const Selection = ({
     }
   };
 
-  useEffect(() => {
-    console.log("Groups state:", groups);
-    console.log("Days state:", days);
-  }, [groups, days]);
-
-  const getCheckedFiltersDisplay = () => {
-    const checkedCategories = Object.entries(categories)
-      .filter(([key, value]) => value)
-      .map(
-        ([key]) => store.CATEGORY_OPTIONS.find((opt) => opt.id === key)?.label
-      )
-      .filter((label) => label)
-      .join(", ");
-    const categoriesString = checkedCategories
-      ? `Categories: ${checkedCategories}`
-      : "";
-
-    const checkedGroups = Object.entries(groups)
-      .filter(([key, value]) => value)
-      .map(([key]) => store.GROUP_OPTIONS.find((opt) => opt.id === key)?.label)
-      .filter((label) => label) // Filter out any undefined labels
-      .join(", ");
-    const groupsString = checkedGroups ? `Groups: ${checkedGroups}` : "";
-
-    const checkedDays = Object.entries(days)
-      .filter(([key, value]) => value)
-      .map(([key]) => store.DAY_OPTIONS.find((opt) => opt.id === key)?.label)
-      .filter((label) => label) // Filter out any undefined labels
-      .join(", ");
-    const daysString = checkedDays ? `Days: ${checkedDays}` : "";
-
-    const filterStrings = [categoriesString, groupsString, daysString].filter(
-      (str) => str
-    );
-    return filterStrings.join(", ") || "No filters selected";
-  };
-
-  // Function to clear all filters
-  const clearAllFilters = () => {
-    const resetCategories = {};
-    store.CATEGORY_OPTIONS.forEach((option) => {
-      resetCategories[option.id] = false;
-    });
-
-    console.log(resetCategories);
-
-    const resetGroups = {};
-    store.GROUP_OPTIONS.forEach((option) => {
-      resetGroups[option.id] = false;
-    });
-
-    const resetDays = {};
-    store.DAY_OPTIONS.forEach((option) => {
-      resetDays[option.id] = false;
-    });
-
-    setCategories(resetCategories);
-    setGroups(resetGroups);
-    setDays(resetDays);
-    setSearchingToday(false);
-  };
-
   return (
     <div className={"selection"}>
-      <div className="checked-filters">
-        {/* <p>Selected Filters: {getCheckedFiltersDisplay()}</p> */}
-        <button onClick={clearAllFilters}>Clear All Filters</button>
-      </div>
       <Report />
 
       {allCategories.length > 0 && (
@@ -351,7 +279,7 @@ const Selection = ({
           <div
             className={`select-header ${showCategories ? "header-open" : ""}`}
           >
-            {showCategories && <p>Categories</p>}
+            {showCategories && <p>Filter by Category</p>}
           </div>
 
           {showCategories &&
@@ -362,7 +290,7 @@ const Selection = ({
       {visibleGroupCount > 0 && (
         <div className={"cent"}>
           <div className={`select-header ${showGroups ? "header-open" : ""}`}>
-            {showGroups && <p>Groups</p>}
+            {showGroups && <p>Filter by Group</p>}
           </div>
           {showGroups && renderCenterColumn("group", groups, setGroups)}
         </div>
@@ -373,7 +301,7 @@ const Selection = ({
           {!searchingToday && (
             <div style={{ width: "100%" }}>
               <div className={`select-header ${showDays ? "header-open" : ""}`}>
-                {showDays && <p>Schedule</p>}
+                {showDays && <p>Filter by Schedule</p>}
               </div>
               {showDays && renderCenterColumn("day", days, setDays)}
             </div>
