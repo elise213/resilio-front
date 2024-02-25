@@ -76,32 +76,19 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
-      <div className="icons-container">
-        {categories.map((category, index) => {
-          const colorStyle = actions.getColorForCategory(category);
-          return (
-            <i
-              key={index}
-              className={`card-icon ${actions.getIconForCategory(category)}`}
-              style={colorStyle ? colorStyle : {}}
-            />
-          );
-        })}
-      </div>
+      {props.item.image && (
+        // <div className="card-image-container">
+        <img
+          className="card-img"
+          src={props.item.image}
+          alt="profile picture"
+        />
+        // </div>
+      )}
       <div className="resource-card-header">
         <p className="resource-title">{props.item.name}</p>
       </div>
-
-      {props.item.image && (
-        <div className="card-image-container">
-          <img
-            className="card-img"
-            src={props.item.image}
-            alt="profile picture"
-          />
-        </div>
-      )}
-      <div className="button-container">
+      {/* <div className="button-container">
         {store.token && (
           <button
             className="add-favorite"
@@ -130,6 +117,18 @@ const ResourceCard = (props) => {
         >
           {isSelected ? "remove from plan" : "add to plan"}
         </Button>
+      </div> */}
+      <div className="icons-container">
+        {categories.map((category, index) => {
+          const colorStyle = actions.getColorForCategory(category);
+          return (
+            <i
+              key={index}
+              className={`card-icon ${actions.getIconForCategory(category)}`}
+              style={colorStyle ? colorStyle : {}}
+            />
+          );
+        })}
       </div>
     </div>
   );

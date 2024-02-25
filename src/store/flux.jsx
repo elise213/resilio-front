@@ -205,7 +205,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             return "fa-solid fa-toilet";
           case "work":
             return "fa-solid fa-people-carry-box";
-          // return "fa-solid fa-briefcase";
           case "wifi":
             return "fa-solid fa-wifi";
           case "crisis":

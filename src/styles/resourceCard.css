@@ -3,18 +3,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
-  padding: 6px;
-  margin: 10px;
-  width: 200px;
+  margin: 10px 0;
+  width: 100%;
   z-index: 996 !important;
   position: static;
   user-select: none;
   background-color: white;
-  color: brown !important;
   border-radius: 2%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2), 1px 2px 3px rgba(0, 0, 0, 0.2);
+  border: 1px solid gray;
   transition: 0.5s;
+  overflow: hidden;
 }
 
 .my-resource-card:hover {
@@ -55,14 +53,6 @@
   height: 100%;
 }
 
-.card-image-container {
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 3px;
-  max-height: 100px;
-}
-
 .add-favorite {
   border: none;
   font-size: 20px;
@@ -98,7 +88,7 @@
   color: black;
   width: 100%;
   padding: 5px;
-  text-align: center;
+  /* text-align: center; */
   font-family: sans-serif;
   letter-spacing: 1px;
   font-weight: bolder;

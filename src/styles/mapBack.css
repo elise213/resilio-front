@@ -187,13 +187,6 @@ li {
   cursor: pointer;
 }
 
-.back-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 60px;
-  overflow-x: hidden;
-}
-
 .selected-item-content {
   width: 100%;
 }

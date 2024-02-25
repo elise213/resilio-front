@@ -49,7 +49,7 @@ const Home = () => {
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(true);
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
   const [isDeckOpen, setIsDeckOpen] = useState(false);
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
@@ -415,6 +415,7 @@ const Home = () => {
         setCategories={setCategories}
         groups={groups}
         setGroups={setGroups}
+        favorites={favorites}
         days={days}
         setDays={setDays}
         searchingToday={searchingToday}
@@ -428,6 +429,7 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsDeckOpen={setIsDeckOpen}
         toggleNav={toggleNav}
+        togglefavorites={togglefavorites}
         setDonationModalIsOpen={setDonationModalIsOpen}
         setAboutModalIsOpen={setAboutModalIsOpen}
       />
@@ -438,7 +440,7 @@ const Home = () => {
       )}
 
       {/* Filter */}
-      <ToolBox
+      {/* <ToolBox
         backSide={backSide}
         categories={categories}
         setCategories={setCategories}
@@ -458,7 +460,7 @@ const Home = () => {
         setIsToolBoxOpen={setIsToolBoxOpen}
         setIsFavoritesOpen={setIsFavoritesOpen}
         toggleToolButtonRef={toggleToolButtonRef}
-      />
+      /> */}
       {/* All Resources */}
       {/* <CardDeck
         primaryModalRef={primaryModalRef}
@@ -484,7 +486,7 @@ const Home = () => {
         toggleDeckButtonRef={toggleDeckButtonRef}
       /> */}
       {/* Favorites */}
-      <Favorites
+      {/* <Favorites
         togglefavorites={togglefavorites}
         openModal={openModal}
         closeModal={closeModal}
@@ -507,7 +509,7 @@ const Home = () => {
         openLoginModal={openLoginModal}
         toggleFavoritesButtonRef={toggleFavoritesButtonRef}
         toggleDeckButtonRef={toggleDeckButtonRef}
-      />
+      /> */}
 
       <div className="grand-container">
         {message1Open && (
@@ -580,7 +582,7 @@ const Home = () => {
           toggleDeckButtonRef={toggleDeckButtonRef}
         />
 
-        <div className="saved">
+        {/* <div className="saved">
           <Button
             className="mdc-button savedButton"
             variant="text"
@@ -593,8 +595,8 @@ const Home = () => {
             onClick={() => togglefavorites()}
           >
             {/* Saved */}
-          </Button>
-        </div>
+        {/* </Button>
+        </div> */}
 
         {modalIsOpen && (
           <>

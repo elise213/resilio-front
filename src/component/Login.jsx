@@ -14,6 +14,17 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
   const [is_org, setIs_org] = useState("");
   const { store, actions } = useContext(Context);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+  }, [store.token]);
+
   const hasToken = store.token;
 
   async function handleLogin(e) {
@@ -224,13 +235,16 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
   return (
     <>
       {/* // <div className={`login-container ${openLoginModal ? "open" : ""}`}> */}
-      <span
-        className="logOut-logIn"
-        type="button"
+      <button
+        className={`mdc-button mdc-button--raised login-button ${
+          openLoginModal ? "open" : ""
+        }`}
         onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
       >
-        {!openLoginModal && (hasToken ? "LOG OUT" : "LOG IN")}
-      </span>
+        <span className="mdc-button__label">
+          {!openLoginModal && (hasToken ? "Logout" : "Log in")}
+        </span>
+      </button>
       {openLoginModal && <div className="centered">{field}</div>}
     </>
   );

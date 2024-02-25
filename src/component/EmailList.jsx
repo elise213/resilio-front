@@ -36,13 +36,7 @@ const EmailList = () => {
 
   return (
     <div className="email-list-container">
-      {/* <img className="email-logo" src="/img/LOGO2.png" /> */}
-      {/* <div className="socials">
-        <i className="fa-brands fa-instagram" />
-        <i className="fa-brands fa-twitter" />
-        <i className="fa-brands fa-facebook-f" />
-      </div> */}
-      <p className="sign-up">SUBSCRIBE TO OUR NEWSLETTER</p>
+      <p>SUBSCRIBE TO OUR NEWSLETTER</p>
       <form
         ref={form}
         onSubmit={signUpForMailingList}

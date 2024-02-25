@@ -91,7 +91,7 @@
   height: 100%;
 }
 
-body::before {
+/* body::before {
   content: "";
   position: absolute;
   top: 0;
@@ -102,7 +102,7 @@ body::before {
   background-size: 100vw 100vh;
   filter: brightness(70%);
   z-index: -1;
-}
+} */
 
 body {
   position: relative;
@@ -126,7 +126,8 @@ body {
   align-items: center;
   overflow: visible !important;
   min-height: 100vh;
-  padding-left: 275px;
+  padding-left: 310px;
+  /* same as nav */
 }
 
 .form-check-inline {
