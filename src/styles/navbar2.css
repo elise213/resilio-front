@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
 .no-scroll {
   overflow: hidden;
   height: 100%;
@@ -6,7 +8,7 @@
 .split-nav {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 95vh;
   justify-content: space-between;
 }
 
@@ -28,7 +30,8 @@
   display: flex;
   justify-content: flex-start;
   transition: left 0.3s ease;
-  background-color: #464646;
+  /* background-color: #464646; */
+  background-color: white;
   border-radius: 0 30px 0 0;
 }
 
@@ -36,15 +39,23 @@
   text-decoration: underline;
 }
 
+.login-nav-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .nav-item,
 .nav-item a {
   letter-spacing: 2px;
-  color: lavender;
+  color: blue;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 14px;
   z-index: 995;
   margin-bottom: 20px;
-  font-family: "AwsumSans";
+  font-family: "Inter", sans-serif;
 }
 
 .nav-item:hover,
@@ -70,7 +81,7 @@
 }
 
 .icons {
-  color: white;
+  color: blue;
 }
 
 .nav-item {
@@ -88,7 +99,7 @@
   top: 0;
   transition: 0.3s ease !important;
   z-index: 995;
-  color: lavender !important;
+  color: blue !important;
 }
 
 .close-icon-nav.open-nav {
@@ -183,6 +194,11 @@
   border-radius: 3px;
   height: 100%;
   margin: 10px;
+}
+
+.all-ul {
+  overflow-y: scroll;
+  height: 40vh;
 }
 
 .nav-item {

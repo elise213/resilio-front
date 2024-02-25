@@ -460,7 +460,7 @@ const Home = () => {
         toggleToolButtonRef={toggleToolButtonRef}
       />
       {/* All Resources */}
-      <CardDeck
+      {/* <CardDeck
         primaryModalRef={primaryModalRef}
         toggleCardDeck={toggleCardDeck}
         isDeckOpen={isDeckOpen}
@@ -482,7 +482,7 @@ const Home = () => {
         setFavorites={setFavorites}
         toggleFavoritesButtonRef={toggleFavoritesButtonRef}
         toggleDeckButtonRef={toggleDeckButtonRef}
-      />
+      /> */}
       {/* Favorites */}
       <Favorites
         togglefavorites={togglefavorites}

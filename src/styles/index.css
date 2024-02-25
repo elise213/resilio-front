@@ -55,6 +55,8 @@
   font-style: normal;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
 .back-container::-webkit-scrollbar-track {
   background-color: transparent;
 }
@@ -78,11 +80,10 @@
 }
 
 .scroll-title {
-  font-family: "AwsumSans";
+  font-family: "Inter", sans-serif;
   font-size: 20px;
   text-align: center;
   color: lavender;
-  /* margin-top: 10px; */
 }
 
 .no-scroll {
@@ -117,24 +118,6 @@ body {
   color: gray;
 }
 
-/* _____________________________________________________________RESOURCE INFO  */
-
-/* @keyframes wiggle {
-  0% {
-    transform: translateX(-8px);
-  }
-
-  50% {
-    transform: translateX(6px);
-  }
-
-  100% {
-    transform: translateX(-8px);
-  }
-} */
-
-/* _____________________________________________________________Selection-*/
-
 .grand-container {
   margin: 0;
   justify-content: space-between;
@@ -143,6 +126,7 @@ body {
   align-items: center;
   overflow: visible !important;
   min-height: 100vh;
+  padding-left: 275px;
 }
 
 .form-check-inline {
@@ -163,7 +147,7 @@ body {
 }
 
 .tell-us {
-  font-family: "Urbanist", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 35px;
   letter-spacing: 1.3x;
   margin-bottom: 30px;
@@ -182,7 +166,7 @@ body {
 }
 
 .form-check-label {
-  font-family: "Carme", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   letter-spacing: 1.4x;
 }
@@ -199,7 +183,7 @@ body {
   border: 1.5px solid rgb(149, 84, 19) !important;
   color: rgb(149, 84, 19);
   border-radius: 3px;
-  font-family: "AwsumSans";
+  font-family: "Inter", sans-serif;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: var(--marascoral);
   width: 100%;

@@ -2,11 +2,15 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  position: absolute;
+  /* position: absolute; */
   left: 50%;
   /* top: 30%; */
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
   z-index: 99999;
+}
+
+.logOut-logIn {
+  text-align: center;
 }
 
 .custom-form-check {
@@ -65,14 +69,14 @@
 }
 
 .custom-login-modal-content {
-  position: relative;
+  /* position: relative; */
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   outline: 0;
-  border: 12px double rgb(92, 128, 0);
-  margin: 10px;
+  border: 2px solid rgb(92, 128, 0);
+  /* margin: 10px; */
 }
 
 .custom-login-modal-footer {
@@ -251,7 +255,7 @@ body.loginModal-open {
   top: 5px;
   margin-right: 5px;
   transition: 0.3s;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .login-close:hover {

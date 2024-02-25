@@ -1,8 +1,5 @@
 .customButton {
   margin: 5px !important;
-  /* background-color: rgb(187, 229, 184) !important; */
-  /* color: brown !important; */
-  /* background-color: var(--marascoral) !important; */
   color: black !important;
   border: 1px solid var(--marascoral) !important;
   background-color: lavender !important;
