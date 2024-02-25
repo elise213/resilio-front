@@ -14,7 +14,7 @@
   font-size: 18px;
   z-index: 999;
   margin-bottom: 20px;
-  font-family: unset !important;
+  font-family: system-ui;
 }
 
 .socials {
@@ -37,8 +37,7 @@
   border: none;
   border-bottom: 1px solid var(--marascoral) !important;
   background-color: transparent;
-  /* padding: 10px; */
-  font-family: "Urbanist", sans-serif;
+  font-family: system-ui;
   min-width: 150px;
 }
 
@@ -57,7 +56,7 @@
 .email-list-button-div {
   margin: 0;
   font-size: large;
-  font-family: "Urbanist", sans-serif;
+  font-family: system-ui;
   letter-spacing: 1.2px;
 }
 

@@ -22,7 +22,6 @@ const Layout = () => {
         <Routes>
           <Route element={<Home />} path="/" />
           <Route element={<UserProfile />} path="/profile" />
-          {/* <Route element={<Contact />} path="/contact" /> */}
           <Route element={<Create />} path="/create" />
           <Route element={<Donate />} path="/donate" />
           <Route element={<Edit />} path="/edit/:id" />

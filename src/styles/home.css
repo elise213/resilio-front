@@ -2,7 +2,7 @@
   font-size: 16px;
   border-radius: 3px;
   text-align: center;
-  font-family: "AwsumSans", sans-serif;
+  font-family: system-ui;
   color: rgb(128, 41, 0);
   z-index: 9999;
   margin: 3px;
@@ -103,7 +103,7 @@
   height: 30px;
   width: 120px;
   border-radius: 3px;
-  font-family: "Urbanist", sans-serif !important;
+  font-family: system-ui;
   margin: 5px;
   padding: 0px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
@@ -115,7 +115,7 @@
 }
 
 .zipcode-input-container {
-  font-family: "Urbanist", sans-serif !important;
+  font-family: system-ui;
   font-size: 15px;
 }
 
@@ -180,8 +180,7 @@
 }
 
 .donation-text {
-  /* font-family: "Urbanist", sans-serif !important; */
-  font-family: "InterVariable";
+  font-family: system-ui;
   font-size: 20px;
   color: rgb(128, 41, 0);
   letter-spacing: 0.7px;
