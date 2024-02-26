@@ -157,8 +157,8 @@ const Navbar2 = ({
               )}
 
               {store.favorites && store.favorites.length > 0 ? (
-                <div className="list-container">
-                  <ul>
+                <div className="list-container-favs">
+                  {/* <ul>
                     {favorites.map((resource, index) => (
                       <ResourceCard
                         key={`${resource.id}-${index}`}
@@ -173,6 +173,34 @@ const Navbar2 = ({
                         setFavorites={setFavorites}
                       />
                     ))}
+                  </ul> */}
+                  <ul>
+                    {Array.isArray(store.mapResults) &&
+                      store.boundaryResults
+                        .filter(
+                          (resource) =>
+                            resource.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (resource.description &&
+                              resource.description
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()))
+                        )
+                        .map((resource, index) => (
+                          <ResourceCard
+                            key={`${resource.id}-${index}`}
+                            item={resource}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResources={selectedResources}
+                            addSelectedResource={addSelectedResource}
+                            removeSelectedResource={removeSelectedResource}
+                            setFavorites={setFavorites}
+                          />
+                        ))}
                   </ul>
                 </div>
               ) : (

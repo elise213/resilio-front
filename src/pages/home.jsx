@@ -432,84 +432,13 @@ const Home = () => {
         togglefavorites={togglefavorites}
         setDonationModalIsOpen={setDonationModalIsOpen}
         setAboutModalIsOpen={setAboutModalIsOpen}
+        openModal={openModal}
       />
       {loading != undefined && (
         <div className="loading">
           <p>{loading}</p>
         </div>
       )}
-
-      {/* Filter */}
-      {/* <ToolBox
-        backSide={backSide}
-        categories={categories}
-        setCategories={setCategories}
-        groups={groups}
-        setGroups={setGroups}
-        days={days}
-        setDays={setDays}
-        searchingToday={searchingToday}
-        setSearchingToday={setSearchingToday}
-        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-        isDeckOpen={isDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        setIsNavOpen={setIsNavOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        toggleToolButtonRef={toggleToolButtonRef}
-      /> */}
-      {/* All Resources */}
-      {/* <CardDeck
-        primaryModalRef={primaryModalRef}
-        toggleCardDeck={toggleCardDeck}
-        isDeckOpen={isDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        setIsNavOpen={setIsNavOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        openModal={openModal}
-        closeModal={closeModal}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
-        selectedResources={selectedResources}
-        addSelectedResource={addSelectedResource}
-        removeSelectedResource={removeSelectedResource}
-        favorites={favorites}
-        setFavorites={setFavorites}
-        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-        toggleDeckButtonRef={toggleDeckButtonRef}
-      /> */}
-      {/* Favorites */}
-      {/* <Favorites
-        togglefavorites={togglefavorites}
-        openModal={openModal}
-        closeModal={closeModal}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
-        selectedResources={selectedResources}
-        addSelectedResource={addSelectedResource}
-        removeSelectedResource={removeSelectedResource}
-        setFavorites={setFavorites}
-        favorites={favorites}
-        isDeckOpen={isDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        setIsNavOpen={setIsNavOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        setOpenLoginModal={setOpenLoginModal}
-        openLoginModal={openLoginModal}
-        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-        toggleDeckButtonRef={toggleDeckButtonRef}
-      /> */}
 
       <div className="grand-container">
         {message1Open && (
@@ -659,7 +588,7 @@ const Home = () => {
           </>
         )}
 
-        {isGeneratedMapModalOpen && (
+        {/* {isGeneratedMapModalOpen && (
           <GeneratedTreasureMap
             closeModal={() => setIsGeneratedMapModalOpen(false)}
             selectedResources={selectedResources}
@@ -672,7 +601,7 @@ const Home = () => {
             isGeneratedMapModalOpen={isGeneratedMapModalOpen}
             addSelectedResource={addSelectedResource}
           />
-        )}
+        )} */}
       </div>
     </>
   );

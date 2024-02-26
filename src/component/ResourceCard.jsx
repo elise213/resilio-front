@@ -76,49 +76,18 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
+      <div className="resource-card-header">
+        <p className="resource-title">{props.item.name}</p>
+      </div>
       {props.item.image && (
-        // <div className="card-image-container">
         <img
           className="card-img"
           src={props.item.image}
           alt="profile picture"
         />
-        // </div>
       )}
-      <div className="resource-card-header">
-        <p className="resource-title">{props.item.name}</p>
-      </div>
-      {/* <div className="button-container">
-        {store.token && (
-          <button
-            className="add-favorite"
-            onClick={(event) => toggleFavorite(event)}
-          >
-            {isFavorited ? (
-              <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
-            ) : (
-              <i className="fa-regular fa-heart"></i>
-            )}
-          </button>
-        )}
 
-        <Button
-          variant="contained"
-          color="primary"
-          // startIcon={
-          //   isSelected ? (
-          //     <i className="material-symbols-outlined">cancel</i>
-          //   ) : (
-          //     <i className="material-symbols-outlined">add</i>
-          //   )
-          // }
-          className={isSelected ? "remove-path" : "add-path"}
-          onClick={handleToggleSelectResource}
-        >
-          {isSelected ? "remove from plan" : "add to plan"}
-        </Button>
-      </div> */}
-      <div className="icons-container">
+      {/* <div className="icons-container">
         {categories.map((category, index) => {
           const colorStyle = actions.getColorForCategory(category);
           return (
@@ -129,6 +98,13 @@ const ResourceCard = (props) => {
             />
           );
         })}
+      </div> */}
+      <div className="card-description">
+        <span>
+          {(props.item.description || "").length > 80
+            ? `${(props.item.description || "").slice(0, 80)}...`
+            : props.item.description}
+        </span>
       </div>
     </div>
   );

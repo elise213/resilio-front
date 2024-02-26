@@ -22,6 +22,11 @@
   overflow-y: scroll;
 }
 
+.list-container-favs {
+  max-height: 20vh;
+  overflow-y: scroll;
+}
+
 .nav-list {
   display: flex;
   flex-direction: column;
