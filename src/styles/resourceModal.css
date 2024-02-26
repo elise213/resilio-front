@@ -71,9 +71,9 @@
 .close-modal {
   color: blue;
   font-size: 20px;
-  position: absolute;
-  right: 5px;
-  top: 0;
+  /* position: absolute; */
+  /* right: 5px; */
+  /* top: 0; */
 }
 
 .close-modal:hover {
@@ -184,12 +184,13 @@
 
 .modal-header {
   display: flex;
+  flex-direction: column;
   align-items: flex-end;
   justify-content: space-between;
   color: #000;
-  font-size: x-large;
-  background-color: rgb(218, 224, 245);
-  border-bottom: 3px solid darkgray;
+  font-size: large;
+  /* background-color: rgb(218, 224, 245);
+  border-bottom: 3px solid darkgray; */
 }
 
 .comment-section {
@@ -295,11 +296,9 @@ textarea {
 }
 
 .modal-content {
-  /* margin: 20px; */
   width: 70%;
   max-width: 850px;
   outline: 4px solid var(--coral);
-  /* outline-offset: 5px; */
   max-height: 80vh;
 }
 
@@ -468,7 +467,7 @@ body.modal-open {
   width: 100%;
 }
 
-.modal-title-box {
+/* .modal-title-box {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -476,7 +475,7 @@ body.modal-open {
   font-size: 20px;
   font-family: "AwsumSans", sans-serif;
   color: rgb(149, 84, 19);
-}
+} */
 
 .description-div {
   width: 100%;

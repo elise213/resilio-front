@@ -127,35 +127,29 @@ export const ModalInfo = ({
       <div className="description-div">
         {!isGeneratedMapModalOpen && (
           <div className="buttons-modal">
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
-              // startIcon={
-              //   isSelected ? (
-              //     <i className="material-symbols-outlined">cancel</i>
-              //   ) : (
-              //     <i className="material-symbols-outlined">add</i>
-              //   )
-              // }
               className={isSelected ? "remove-path" : "add-path"}
               onClick={handleToggleSelectResource}
             >
               {isSelected ? "remove from plan" : "add to plan"}
-            </Button>
+            </Button> */}
             {isLoggedIn && (
               <div className="modal-button-container">
                 <button
                   className="add-favorite"
                   onClick={(event) => toggleFavorite(event)}
                 >
-                  {isFavorited ? (
+                  {/* {isFavorited ? (
                     <i
                       className="fa-solid fa-heart"
                       style={{ color: "red" }}
                     ></i>
                   ) : (
                     <i className="fa-regular fa-heart"></i>
-                  )}
+                  )} */}
+                  {isFavorited ? "remove favorite" : "add favorite"}
                 </button>
 
                 <button onClick={() => setShowRating(true)} className="submit">
@@ -216,7 +210,7 @@ export const ModalInfo = ({
           </div>
         </div>
         {/* MAP */}
-        {res.latitude && res.longitude && (
+        {/* {res.latitude && res.longitude && (
           <div className="modal-map">
             <ModalMap
               res={res}
@@ -224,7 +218,7 @@ export const ModalInfo = ({
               longitude={res.longitude}
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
