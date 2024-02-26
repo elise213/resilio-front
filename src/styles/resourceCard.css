@@ -12,7 +12,7 @@
   border-radius: 2%;
   transition: 0.5s;
   overflow: hidden;
-  /* border: 1px solid rgb(200, 192, 192); */
+  font-family: "Inter", sans-serif;
 }
 
 .my-resource-card:hover {
@@ -98,9 +98,7 @@
 .resource-title {
   color: black;
   width: 100%;
-  /* padding: 5px; */
-  /* text-align: center; */
-  font-family: sans-serif;
+  font-family: "Inter", sans-serif;
   letter-spacing: 1px;
   font-weight: bolder;
   font-size: 12px;

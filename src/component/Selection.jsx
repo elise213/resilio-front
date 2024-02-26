@@ -18,9 +18,7 @@ const Selection = ({
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
   const [openDropdown, setOpenDropdown] = useState(null);
-  // const [showCategories, setShowCategories] = useState(true);
-  // const [showGroups, setShowGroups] = useState(true);
-  // const [showDays, setShowDays] = useState(true);
+
   const [activeCategoryIds, setActiveCategoryIds] = useState([]);
   const [visibleGroupCount, setVisibleGroupCount] = useState(0);
   const [visibleDaysCounts, setVisibleDaysCounts] = useState({
@@ -36,21 +34,6 @@ const Selection = ({
 
   const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
-
-  // function Dropdown({ title, children }) {
-  //   const [isOpen, setIsOpen] = useState(false);
-
-  //   const toggleDropdown = () => setIsOpen(!isOpen);
-
-  //   return (
-  //     <div className="dropdown">
-  //       <button onClick={toggleDropdown} className="dropdown-button">
-  //         {title} <span className="material-symbols-outlined">expand_more</span>
-  //       </button>
-  //       {isOpen && <div className="dropdown-content">{children}</div>}
-  //     </div>
-  //   );
-  // }
 
   const handleToggleDropdown = (id) => {
     setOpenDropdown(openDropdown === id ? null : id);
@@ -72,8 +55,46 @@ const Selection = ({
     );
   }
 
-  // const handleToggleDropdown = (id) => {
-  //   setOpenDropdown(openDropdown === id ? null : id);
+  // const renderDropdownColumn = (type, state, setState) => {
+  //   const ids =
+  //     type === "category" ? categoryIds : type === "group" ? groupIds : dayIds;
+  //   const options =
+  //     type === "category"
+  //       ? store.CATEGORY_OPTIONS
+  //       : type === "group"
+  //       ? store.GROUP_OPTIONS
+  //       : store.DAY_OPTIONS;
+  //   const title = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter
+
+  //   return (
+  //     <Dropdown
+  //       id={type}
+  //       title={`${type.charAt(0).toUpperCase() + type.slice(1)}`}
+  //     >
+  //       <MyCheckbox
+  //         key={`all-${type}`}
+  //         id={`all-${type}`}
+  //         label="All"
+  //         isChecked={areAllUnchecked(state, ids)}
+  //         handleToggle={() => handleToggleAll(setState, state, ids)}
+  //       />
+  //       {options.map((option) => {
+  //         const count =
+  //           type === "day"
+  //             ? dayCounts[option.id] || ""
+  //             : categoryCounts[option.id] || "";
+  //         return (
+  //           <MyCheckbox
+  //             key={option.id}
+  //             id={option.id}
+  //             label={`${option.label} (${count})`}
+  //             isChecked={state[option.id]}
+  //             handleToggle={() => handleToggle(setState, state, option.id)}
+  //           />
+  //         );
+  //       })}
+  //     </Dropdown>
+  //   );
   // };
 
   const renderDropdownColumn = (type, state, setState) => {
@@ -86,12 +107,10 @@ const Selection = ({
         ? store.GROUP_OPTIONS
         : store.DAY_OPTIONS;
     const title = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter
+    const counts = type === "day" ? dayCounts : categoryCounts; // Use dayCounts for "day" type, categoryCounts otherwise
 
     return (
-      <Dropdown
-        id={type}
-        title={`${type.charAt(0).toUpperCase() + type.slice(1)}`}
-      >
+      <Dropdown id={type} title={`${title}`}>
         <MyCheckbox
           key={`all-${type}`}
           id={`all-${type}`}
@@ -99,21 +118,21 @@ const Selection = ({
           isChecked={areAllUnchecked(state, ids)}
           handleToggle={() => handleToggleAll(setState, state, ids)}
         />
-        {options.map((option) => {
-          const count =
-            type === "day"
-              ? dayCounts[option.id] || ""
-              : categoryCounts[option.id] || "";
-          return (
-            <MyCheckbox
-              key={option.id}
-              id={option.id}
-              label={`${option.label} (${count})`}
-              isChecked={state[option.id]}
-              handleToggle={() => handleToggle(setState, state, option.id)}
-            />
-          );
-        })}
+        {options
+          .filter((option) => counts[option.id] && counts[option.id] > 0)
+          .map((option) => {
+            // Filter options based on their count
+            const count = counts[option.id] || "";
+            return (
+              <MyCheckbox
+                key={option.id}
+                id={option.id}
+                label={`${option.label} (${count})`}
+                isChecked={state[option.id]}
+                handleToggle={() => handleToggle(setState, state, option.id)}
+              />
+            );
+          })}
       </Dropdown>
     );
   };
@@ -190,53 +209,6 @@ const Selection = ({
     return Array.from(categorySet);
   };
 
-  const renderCenterColumn = (type, state, setState) => {
-    const ids =
-      type === "category" ? categoryIds : type === "group" ? groupIds : dayIds;
-    const options =
-      type === "category"
-        ? store.CATEGORY_OPTIONS
-        : type === "group"
-        ? store.GROUP_OPTIONS
-        : store.DAY_OPTIONS;
-
-    return (
-      <div className="center">
-        <MyCheckbox
-          key={`all-${type}`}
-          id={`all-${type}`}
-          label="All"
-          isChecked={areAllUnchecked(state, ids)}
-          handleToggle={() => handleToggleAll(setState, state, ids)}
-        />
-        {ids.map((id) => {
-          const option = options.find((o) => o.id === id);
-          const colorStyle =
-            type !== "day" ? actions.getColorForCategory(id) : null;
-          const count =
-            type === "day"
-              ? dayCounts[id] || ""
-              : categoryCounts || ""
-              ? categoryCounts[id] || ""
-              : 0;
-
-          return option &&
-            (type !== "category" || allCategories.includes(id)) &&
-            (type !== "group" || allCategories.includes(id)) ? (
-            <div className="day-row2" key={id}>
-              <MyCheckbox
-                id={id}
-                label={`${option.label} (${count})`}
-                isChecked={state[id]}
-                handleToggle={() => handleToggle(setState, state, id)}
-              />
-            </div>
-          ) : null;
-        })}
-      </div>
-    );
-  };
-
   const handleToggleAll = (setFn, stateObj, ids) => {
     if (isAnyChecked(stateObj, ids)) {
       const newState = {};
@@ -262,23 +234,16 @@ const Selection = ({
     });
   };
 
-  // const toggleAllCheckboxes = (setFn, stateObj, ids) => {
-  //   if (isAnyChecked(stateObj, ids)) {
-  //     const newState = {};
-  //     ids.forEach((id) => {
-  //       newState[id] = false;
-  //     });
-  //     setFn(newState);
-  //   }
-  // };
-
   return (
     <div className={"selection"}>
       <Report />
       <div className={"dropdowns-container"}>
-        {renderDropdownColumn("category", categories, setCategories)}
-        {renderDropdownColumn("group", groups, setGroups)}
-        {renderDropdownColumn("day", days, setDays)}
+        {allCategories.length > 0 &&
+          renderDropdownColumn("category", categories, setCategories)}
+        {visibleGroupCount > 0 &&
+          renderDropdownColumn("group", groups, setGroups)}
+        {Object.values(visibleDaysCounts).some((count) => count > 0) &&
+          renderDropdownColumn("day", days, setDays)}
       </div>
     </div>
   );
