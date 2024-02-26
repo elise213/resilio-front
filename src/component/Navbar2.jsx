@@ -139,77 +139,6 @@ const Navbar2 = ({
               className="
             nav-div"
             >
-              <span className="intro">Favorites</span>
-
-              {isLoggedIn && !store.favorites.length > 0 && (
-                <>
-                  <span className="scroll-title to-save-res">
-                    Your Liked{" "}
-                    <i
-                      style={{ color: "red" }}
-                      className="fa-solid fa-heart"
-                    ></i>{" "}
-                    resources will appear here. Try adding some!
-                  </span>
-                </>
-              )}
-
-              {store.favorites && store.favorites.length > 0 ? (
-                <div className="list-container-favs">
-                  {/* <ul>
-                    {favorites.map((resource, index) => (
-                      <ResourceCard
-                        key={`${resource.id}-${index}`}
-                        item={resource}
-                        openModal={openModal}
-                        closeModal={closeModal}
-                        modalIsOpen={modalIsOpen}
-                        setModalIsOpen={setModalIsOpen}
-                        selectedResources={selectedResources}
-                        addSelectedResource={addSelectedResource}
-                        removeSelectedResource={removeSelectedResource}
-                        setFavorites={setFavorites}
-                      />
-                    ))}
-                  </ul> */}
-                  <ul>
-                    {Array.isArray(store.mapResults) &&
-                      store.boundaryResults
-                        .filter(
-                          (resource) =>
-                            resource.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (resource.description &&
-                              resource.description
-                                .toLowerCase()
-                                .includes(searchQuery.toLowerCase()))
-                        )
-                        .map((resource, index) => (
-                          <ResourceCard
-                            key={`${resource.id}-${index}`}
-                            item={resource}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResources={selectedResources}
-                            addSelectedResource={addSelectedResource}
-                            removeSelectedResource={removeSelectedResource}
-                            setFavorites={setFavorites}
-                          />
-                        ))}
-                  </ul>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-
-            <div
-              className="
-            nav-div"
-            >
               <span className="intro">All Resources </span>
 
               {store.boundaryResults && store.boundaryResults.length > 0 && (
@@ -243,6 +172,47 @@ const Navbar2 = ({
                         ))}
                   </ul>
                 </div>
+              )}
+            </div>
+            <div
+              className="
+            nav-div"
+            >
+              <span className="intro">Favorites</span>
+
+              {store.favorites && store.favorites.length > 0 ? (
+                <div className="list-container-favs">
+                  <ul>
+                    {Array.isArray(store.mapResults) &&
+                      store.boundaryResults
+                        .filter(
+                          (resource) =>
+                            resource.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (resource.description &&
+                              resource.description
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()))
+                        )
+                        .map((resource, index) => (
+                          <ResourceCard
+                            key={`${resource.id}-${index}`}
+                            item={resource}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResources={selectedResources}
+                            addSelectedResource={addSelectedResource}
+                            removeSelectedResource={removeSelectedResource}
+                            setFavorites={setFavorites}
+                          />
+                        ))}
+                  </ul>
+                </div>
+              ) : (
+                ""
               )}
             </div>
           </div>

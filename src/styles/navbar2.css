@@ -3,6 +3,8 @@
 .intro {
   font-size: 14px;
   color: gray;
+  margin-bottom: 4px;
+  font-family: "Inter", sans-serif;
 }
 
 .no-scroll {
