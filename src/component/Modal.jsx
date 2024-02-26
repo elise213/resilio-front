@@ -172,155 +172,157 @@ const Modal = ({
 
   return (
     <>
-      <div className="modal-content" ref={modalContentRef}>
-        {/* Modal Header */}
-        <div className="modal-header">
-          <div className="modal-close-div">
-            <p className="close-modal" onClick={() => setModalIsOpen(false)}>
-              <i className="fa-solid fa-x"></i>
-            </p>
+      {/* <div className="modal-content" ref={modalContentRef}> */}
+      {/* Modal Header */}
+      <div className="modal-header">
+        <div className="modal-close-div">
+          <p className="close-modal" onClick={() => setModalIsOpen(false)}>
+            <i className="fa-solid fa-x"></i>
+          </p>
+        </div>
+
+        <div className="modal-title-div">
+          {/* <div className="modal-title-box"> */}
+          <span>{resource.name}</span>
+          {/* </div> */}
+          <div
+            className="resource-rating"
+            onClick={() => {
+              toggleRatingModal();
+            }}
+          >
+            {averageRating > 0 ? (
+              <Rating
+                name="read-only"
+                value={averageRating}
+                precision={0.5}
+                readOnly
+              />
+            ) : (
+              ""
+            )}
           </div>
 
-          <div className="modal-title-div">
-            <div className="modal-title-box">
-              <span>{resource.name}</span>
-            </div>
-            <div
-              className="resource-rating"
-              onClick={() => {
-                toggleRatingModal();
-              }}
-            >
-              {averageRating > 0 ? (
-                <Rating
-                  name="read-only"
-                  value={averageRating}
-                  precision={0.5}
-                  readOnly
-                />
-              ) : (
-                ""
-              )}
-            </div>
+          {/* KEEP THIS!  */}
 
-            <div className="icon-box">
-              {categories.map((category, index) => {
-                const colorStyle = actions.getColorForCategory(category);
+          {/* <div className="icon-box">
+            {categories.map((category, index) => {
+              const colorStyle = actions.getColorForCategory(category);
+              return (
+                <i
+                  key={index}
+                  className={`${actions.getIconForCategory(
+                    category
+                  )} card-icon`}
+                  style={colorStyle ? colorStyle : {}}
+                />
+              );
+            })}
+          </div> */}
+        </div>
+      </div>
+      <div className="modal-tools"></div>
+      <div className="modal-body">
+        <ModalInfo
+          modalIsOpen={modalIsOpen}
+          id={resource.id}
+          schedule={resource.schedule}
+          res={resource}
+          isFavorited={isFavorited}
+          setShowRating={setShowRating}
+          toggleFavorite={toggleFavorite}
+          isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+          addSelectedResource={addSelectedResource}
+          removeSelectedResource={removeSelectedResource}
+          selectedResource={resource}
+          selectedResources={selectedResources}
+        />
+        <div className="full-comments-section">
+          {comments.length > 0 && (
+            <div className="comments-display">
+              <div className="comment-heading">
+                <p>User Reviews</p>
+              </div>
+              {comments.map((comment, index) => {
+                const date = new Date(comment.created_at);
+                const formattedDate =
+                  date.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }) +
+                  " at " +
+                  date.toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  });
+
                 return (
-                  <i
-                    key={index}
-                    className={`${actions.getIconForCategory(
-                      category
-                    )} card-icon`}
-                    style={colorStyle ? colorStyle : {}}
-                  />
+                  <>
+                    <div key={comment.id} className="comment-div">
+                      <div className="comment-content-div">
+                        <p className="comment-content">
+                          "{comment.comment_cont}"
+                        </p>
+                      </div>
+                      <div className="comment-info">
+                        <div className="comment-user-info">
+                          <p className="comment-info-username">
+                            <i className="fa-solid fa-user"></i>{" "}
+                            {comment.user_id}{" "}
+                          </p>
+                        </div>
+                        <div className="comment-info-date">
+                          <p className="comment-info-content">
+                            {formattedDate}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 );
               })}
             </div>
-          </div>
+          )}
+
+          {isLoggedIn && (
+            <div className="comment-section">
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder={`Write a review of ${resource.name}...`}
+                maxLength="280"
+              ></textarea>
+
+              <button className="submit" onClick={handleCommentSubmit}>
+                Submit
+              </button>
+            </div>
+          )}
         </div>
-        <div className="modal-tools"></div>
-        <div className="modal-body">
-          <ModalInfo
-            modalIsOpen={modalIsOpen}
-            id={resource.id}
-            schedule={resource.schedule}
-            res={resource}
-            isFavorited={isFavorited}
-            setShowRating={setShowRating}
-            toggleFavorite={toggleFavorite}
-            isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-            addSelectedResource={addSelectedResource}
-            removeSelectedResource={removeSelectedResource}
-            selectedResource={resource}
-            selectedResources={selectedResources}
-          />
-          <div className="full-comments-section">
-            {comments.length > 0 && (
-              <div className="comments-display">
-                <div className="comment-heading">
-                  <p>User Reviews</p>
-                </div>
-                {comments.map((comment, index) => {
-                  const date = new Date(comment.created_at);
-                  const formattedDate =
-                    date.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    }) +
-                    " at " +
-                    date.toLocaleTimeString("en-US", {
-                      hour: "numeric",
-                      minute: "2-digit",
-                      hour12: true,
-                    });
 
-                  return (
-                    <>
-                      <div key={comment.id} className="comment-div">
-                        <div className="comment-content-div">
-                          <p className="comment-content">
-                            "{comment.comment_cont}"
-                          </p>
-                        </div>
-                        <div className="comment-info">
-                          <div className="comment-user-info">
-                            <p className="comment-info-username">
-                              <i className="fa-solid fa-user"></i>{" "}
-                              {comment.user_id}{" "}
-                            </p>
-                          </div>
-                          <div className="comment-info-date">
-                            <p className="comment-info-content">
-                              {formattedDate}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
-            )}
+        <div className="modal-footer">
+          <p className="problem">
+            Is there a problem with this information? {""}
+            <Link to="/Contact">Let us know</Link>
+          </p>
+          <p className="create">
+            Click {""}
+            <Link to="/create">here</Link>
+            {""} to create a new resource listing.
+          </p>
 
-            {isLoggedIn && (
-              <div className="comment-section">
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder={`Write a review of ${resource.name}...`}
-                  maxLength="280"
-                ></textarea>
-
-                <button className="submit" onClick={handleCommentSubmit}>
-                  Submit
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="modal-footer">
-            <p className="problem">
-              Is there a problem with this information? {""}
-              <Link to="/Contact">Let us know</Link>
-            </p>
-            <p className="create">
+          {tokenExists && (
+            <p className="edit-text">
               Click {""}
-              <Link to="/create">here</Link>
-              {""} to create a new resource listing.
+              <Link to={`/edit/${resourceId}`}>here</Link>
+              {""} to edit this resource
             </p>
-
-            {tokenExists && (
-              <p className="edit-text">
-                Click {""}
-                <Link to={`/edit/${resourceId}`}>here</Link>
-                {""} to edit this resource
-              </p>
-            )}
-          </div>
+          )}
         </div>
       </div>
+      {/* </div> */}
 
       {/* Rating Modal */}
       {showRating && (

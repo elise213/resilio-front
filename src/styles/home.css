@@ -61,14 +61,15 @@
 }
 
 .modal-div {
+  width: 300px;
+  height: 100vh;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 99999999;
   border: none;
-  background-color: transparent;
-  min-width: 90%;
+  flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
