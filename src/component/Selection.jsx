@@ -39,76 +39,59 @@ const Selection = ({
   const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
 
-  useEffect(() => {
-    if (searchingToday) {
-      const today = new Date().getDay(); // get today's day as a number (0 = Sunday, 1 = Monday, etc.)
-      const updatedDays = { ...INITIAL_DAY_STATE(store.DAY_OPTIONS) }; // reset all days to false
-      switch (today) {
-        case 0:
-          updatedDays.sunday = true;
-          break;
-        case 1:
-          updatedDays.monday = true;
-          break;
-        case 2:
-          updatedDays.tuesday = true;
-          break;
-        case 3:
-          updatedDays.wednesday = true;
-          break;
-        case 4:
-          updatedDays.thursday = true;
-          break;
-        case 5:
-          updatedDays.friday = true;
-          break;
-        case 6:
-          updatedDays.saturday = true;
-          break;
-        default:
-          break;
-      }
-      setDays(updatedDays);
-    } else {
-      const updatedDays = { ...INITIAL_DAY_STATE(store.DAY_OPTIONS) };
-      setDays(updatedDays);
-    }
-  }, [searchingToday]);
+  function Dropdown({ title, children }) {
+    const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const today = new Date().getDay();
-    let todayKey = "";
+    const toggleDropdown = () => setIsOpen(!isOpen);
 
-    switch (today) {
-      case 0:
-        todayKey = "sunday";
-        break;
-      case 1:
-        todayKey = "monday";
-        break;
-      case 2:
-        todayKey = "tuesday";
-        break;
-      case 3:
-        todayKey = "wednesday";
-        break;
-      case 4:
-        todayKey = "thursday";
-        break;
-      case 5:
-        todayKey = "friday";
-        break;
-      case 6:
-        todayKey = "saturday";
-        break;
-      default:
-        break;
-    }
+    return (
+      <div className="dropdown">
+        <button onClick={toggleDropdown} className="dropdown-button">
+          {title}
+        </button>
+        {isOpen && <div className="dropdown-content">{children}</div>}
+      </div>
+    );
+  }
 
-    if (!days[todayKey]) {
-      setSearchingToday(false);
-    }
-  }, [days]);
+  const renderDropdownColumn = (type, state, setState) => {
+    const ids =
+      type === "category" ? categoryIds : type === "group" ? groupIds : dayIds;
+    const options =
+      type === "category"
+        ? store.CATEGORY_OPTIONS
+        : type === "group"
+        ? store.GROUP_OPTIONS
+        : store.DAY_OPTIONS;
+    const title = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter
+
+    return (
+      <Dropdown title={title}>
+        <MyCheckbox
+          key={`all-${type}`}
+          id={`all-${type}`}
+          label="All"
+          isChecked={areAllUnchecked(state, ids)}
+          handleToggle={() => handleToggleAll(setState, state, ids)}
+        />
+        {options.map((option) => {
+          const count =
+            type === "day"
+              ? dayCounts[option.id] || ""
+              : categoryCounts[option.id] || "";
+          return (
+            <MyCheckbox
+              key={option.id}
+              id={option.id}
+              label={`${option.label} (${count})`}
+              isChecked={state[option.id]}
+              handleToggle={() => handleToggle(setState, state, option.id)}
+            />
+          );
+        })}
+      </Dropdown>
+    );
+  };
 
   useEffect(() => {
     if (Array.isArray(store.mapResults)) {
@@ -216,15 +199,9 @@ const Selection = ({
             (type !== "category" || allCategories.includes(id)) &&
             (type !== "group" || allCategories.includes(id)) ? (
             <div className="day-row2" key={id}>
-              {type !== "day" && (
-                <span
-                  className={actions.getIconForCategory(id)}
-                  style={colorStyle ? colorStyle : {}}
-                ></span>
-              )}
               <MyCheckbox
                 id={id}
-                label={`${option.label} — ${count}`}
+                label={`${option.label} (${count})`}
                 isChecked={state[id]}
                 handleToggle={() => handleToggle(setState, state, id)}
               />
@@ -273,41 +250,17 @@ const Selection = ({
   return (
     <div className={"selection"}>
       <Report />
-
-      {allCategories.length > 0 && (
-        <div className={"cent"}>
-          <div
-            className={`select-header ${showCategories ? "header-open" : ""}`}
-          >
-            {showCategories && <p>Filter by Category</p>}
-          </div>
-
-          {showCategories &&
-            renderCenterColumn("category", categories, setCategories)}
-        </div>
-      )}
-
-      {visibleGroupCount > 0 && (
-        <div className={"cent"}>
-          <div className={`select-header ${showGroups ? "header-open" : ""}`}>
-            {showGroups && <p>Filter by Group</p>}
-          </div>
-          {showGroups && renderCenterColumn("group", groups, setGroups)}
-        </div>
-      )}
-
-      {Object.values(visibleDaysCounts).some((count) => count > 0) && (
-        <div className={"cent"}>
-          {!searchingToday && (
-            <div style={{ width: "100%" }}>
-              <div className={`select-header ${showDays ? "header-open" : ""}`}>
-                {showDays && <p>Filter by Schedule</p>}
-              </div>
-              {showDays && renderCenterColumn("day", days, setDays)}
-            </div>
-          )}
-        </div>
-      )}
+      <div className={"dropdowns-container"}>
+        {allCategories.length > 0 &&
+          showCategories &&
+          renderDropdownColumn("category", categories, setCategories)}
+        {visibleGroupCount > 0 &&
+          showGroups &&
+          renderDropdownColumn("group", groups, setGroups)}
+        {Object.values(visibleDaysCounts).some((count) => count > 0) &&
+          showDays &&
+          renderDropdownColumn("day", days, setDays)}
+      </div>
     </div>
   );
 };

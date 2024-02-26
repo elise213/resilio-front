@@ -224,7 +224,7 @@ const SimpleMap = ({
                 </GoogleMapReact>
               </div>
 
-              <div className="stack">
+              {/* <div className="stack">
                 <button className="geo-button" onClick={() => geoFindMe()}>
                   geo-location
                 </button>
@@ -238,7 +238,7 @@ const SimpleMap = ({
                     placeholder="Zip Code"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="simple-selection"></div>
           </>
