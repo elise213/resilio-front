@@ -123,9 +123,12 @@
 .function-buttons {
   display: flex;
   flex-direction: column;
-  width: 100%;
   align-items: flex-end;
   padding: 15px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
 }
 
 #zipcode {

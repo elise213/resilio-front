@@ -12,7 +12,6 @@
 .login-button {
   color: white;
   background-color: #1976d2; /* Material Design Blue 700 */
-  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .login-button:hover {

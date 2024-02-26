@@ -17,14 +17,24 @@
   justify-content: space-between;
 }
 
+.side-by {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .list-container {
-  max-height: 30vh;
+  max-height: 50vh;
   overflow-y: scroll;
+  border-radius: 2%;
+  border: 1px solid rgb(174, 161, 161);
 }
 
 .list-container-favs {
   max-height: 20vh;
   overflow-y: scroll;
+  border-radius: 2%;
+  border: 1px solid gray;
 }
 
 .nav-list {
@@ -39,8 +49,8 @@
   top: 0;
   z-index: 996;
   position: absolute;
-  width: 310px !important;
-  left: -310px !important;
+  width: 350px !important;
+  left: -350px !important;
   height: 100vh;
   display: flex;
   justify-content: flex-start;
@@ -65,6 +75,7 @@
   flex-direction: column;
   justify-content: center;
   margin-top: 10px;
+  border-radius: 2%;
 }
 
 .nav-item,
