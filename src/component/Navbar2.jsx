@@ -62,10 +62,6 @@ const Navbar2 = ({
   //   setIsLargeScreen(store.isLargeScreen);
   // }, [store.isLargeScreen]);
 
-  const toggleContactModal = () => {
-    setShowContactModal(!showContactModal);
-  };
-
   useEffect(() => {
     const body = document.body;
     if (isNavOpen || showContactModal) {
@@ -93,24 +89,26 @@ const Navbar2 = ({
           <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
             <div className="nav-div">
               <span className="intro">
-                Use this app to search for resources near you. Save resources
-                and make a plan for yourself by logging in with your email.
+                Use this app to search for resources near you. Save resources by
+                logging in with your email.
               </span>
             </div>
             <div
               className="
             nav-div"
             >
-              <Login
-                openLoginModal={openLoginModal}
-                setOpenLoginModal={setOpenLoginModal}
-              />
-              <div className="search-bar">
-                <input
-                  type="text"
-                  placeholder="Search Resources..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+              <div className="side-by">
+                <div className="search-bar">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Login
+                  openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
                 />
               </div>
 
@@ -251,14 +249,14 @@ const Navbar2 = ({
         </nav>
 
         {showContactModal && (
-          <div className="modal-overlay">
-            <div className="modal-content-contact">
-              <span className="close-contact" onClick={toggleContactModal}>
-                <i className="fa-solid fa-x"></i>
-              </span>
-              <Contact />
-            </div>
+          // <div className="modal-overlay">
+          <div className="modal-content-contact">
+            <span className="close-contact" onClick={toggleContactModal}>
+              <i className="fa-solid fa-x"></i>
+            </span>
+            <Contact />
           </div>
+          // </div>
         )}
       </div>
     </>

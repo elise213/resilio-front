@@ -3,6 +3,8 @@ import { Context } from "../store/appContext";
 // import LoginModal from "./LoginModal";
 import styles from "../styles/loginModal.css";
 import Swal from "sweetalert2";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
 
 const Login = ({ openLoginModal, setOpenLoginModal }) => {
   const [log, setLog] = useState("1");
@@ -234,17 +236,24 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
 
   return (
     <>
-      {/* // <div className={`login-container ${openLoginModal ? "open" : ""}`}> */}
-      <button
-        className={`mdc-button mdc-button--raised login-button ${
-          openLoginModal ? "open" : ""
-        }`}
-        onClick={() => (hasToken ? handleLogout() : setOpenLoginModal(true))}
-      >
-        <span className="mdc-button__label">
-          {!openLoginModal && (hasToken ? "Logout" : "Log in")}
-        </span>
-      </button>
+      {isLoggedIn ? (
+        <Avatar
+          onClick={handleLogout}
+          style={{ cursor: "pointer", backgroundColor: "#1976d2" }} // Customize background color as needed
+        >
+          <i className="fa fa-user" />
+        </Avatar>
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpenLoginModal(true)}
+          style={{ borderRadius: "20px" }}
+        >
+          Log in
+        </Button>
+      )}
+
       {openLoginModal && <div className="centered">{field}</div>}
     </>
   );

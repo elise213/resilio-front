@@ -20,7 +20,7 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
-            setIsNavOpen(false);
+            // setIsNavOpen(false);
             setAboutModalIsOpen(true);
           }}
         >
@@ -30,7 +30,7 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
-            setIsNavOpen(false);
+            // setIsNavOpen(false);
             toggleContactModal();
           }}
         >
@@ -40,7 +40,7 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
-            setIsNavOpen(false);
+            // setIsNavOpen(false);
             setDonationModalIsOpen(true);
           }}
         >

@@ -83,27 +83,16 @@ const Home = () => {
 
   // FUNCTIONS
 
+  const toggleContactModal = () => {
+    setShowContactModal(!showContactModal);
+  };
+
   const toggleNav = () => {
-    // setIsFavoritesOpen(false);
-    // setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
     setIsNavOpen(!isNavOpen);
   };
 
   const togglefavorites = () => {
-    // console.log("togglefavorites clicked");
-    // setIsNavOpen(false);
-    setIsToolBoxOpen(false);
-    // setIsDeckOpen(false);
     setIsFavoritesOpen(!isFavoritesOpen);
-  };
-
-  const toggleCardDeck = () => {
-    // console.log("toggleCardDeck clicked");
-    // setIsFavoritesOpen(false);
-    setIsNavOpen(false);
-    // setIsToolBoxOpen(false);
-    setIsDeckOpen(!isDeckOpen);
   };
 
   const updateSessionStorage = (resources) => {
@@ -433,6 +422,7 @@ const Home = () => {
         setDonationModalIsOpen={setDonationModalIsOpen}
         setAboutModalIsOpen={setAboutModalIsOpen}
         openModal={openModal}
+        toggleContactModal={toggleContactModal}
       />
       {loading != undefined && (
         <div className="loading">
@@ -445,7 +435,7 @@ const Home = () => {
           <>
             <ErrorBoundary>
               <SimpleMap
-                toggleCardDeck={toggleCardDeck}
+                // toggleCardDeck={toggleCardDeck}
                 toggleToolButtonRef={toggleToolButtonRef}
                 togglefavorites={togglefavorites}
                 setBackSide={setBackSide}
@@ -505,10 +495,11 @@ const Home = () => {
           isFavoritesOpen={isFavoritesOpen}
           setIsFavoritesOpen={setIsFavoritesOpen}
           isToolBoxOpen={isToolBoxOpen}
-          toggleCardDeck={toggleCardDeck}
+          // toggleCardDeck={toggleCardDeck}
           togglefavorites={togglefavorites}
           toggleFavoritesButtonRef={toggleFavoritesButtonRef}
           toggleDeckButtonRef={toggleDeckButtonRef}
+          toggleContactModal={toggleContactModal}
         />
 
         {/* <div className="saved">

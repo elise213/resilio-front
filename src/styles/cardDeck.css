@@ -59,14 +59,15 @@
 /* deckBOX */
 
 .search-bar {
-  margin: 10px 0;
-  /* display: flex;
-  justify-content: center; */
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .search-bar input {
-  width: 80%;
-  padding: 4px;
+  width: 90%;
+  height: 32px;
+  padding: 5px;
   border-radius: 3px;
   border: 1px solid #ccc;
 }
