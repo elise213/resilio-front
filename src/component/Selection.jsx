@@ -11,18 +11,16 @@ const Selection = ({
   setCategories,
   days,
   setDays,
-  searchingToday,
-  setSearchingToday,
-  INITIAL_DAY_STATE,
 }) => {
   const { store, actions } = useContext(Context);
   const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
-  const [showCategories, setShowCategories] = useState(true);
-  const [showGroups, setShowGroups] = useState(true);
-  const [showDays, setShowDays] = useState(true);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  // const [showCategories, setShowCategories] = useState(true);
+  // const [showGroups, setShowGroups] = useState(true);
+  // const [showDays, setShowDays] = useState(true);
   const [activeCategoryIds, setActiveCategoryIds] = useState([]);
   const [visibleGroupCount, setVisibleGroupCount] = useState(0);
   const [visibleDaysCounts, setVisibleDaysCounts] = useState({
@@ -39,20 +37,44 @@ const Selection = ({
   const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
 
-  function Dropdown({ title, children }) {
-    const [isOpen, setIsOpen] = useState(false);
+  // function Dropdown({ title, children }) {
+  //   const [isOpen, setIsOpen] = useState(false);
 
-    const toggleDropdown = () => setIsOpen(!isOpen);
+  //   const toggleDropdown = () => setIsOpen(!isOpen);
+
+  //   return (
+  //     <div className="dropdown">
+  //       <button onClick={toggleDropdown} className="dropdown-button">
+  //         {title} <span className="material-symbols-outlined">expand_more</span>
+  //       </button>
+  //       {isOpen && <div className="dropdown-content">{children}</div>}
+  //     </div>
+  //   );
+  // }
+
+  const handleToggleDropdown = (id) => {
+    setOpenDropdown(openDropdown === id ? null : id);
+  };
+
+  function Dropdown({ id, title, children }) {
+    const isOpen = openDropdown === id;
+    const toggleDropdown = () => {
+      setOpenDropdown(isOpen ? null : id); // Toggle this dropdown or close if it's already open
+    };
 
     return (
       <div className="dropdown">
         <button onClick={toggleDropdown} className="dropdown-button">
-          {title}
+          {title} <span className="material-symbols-outlined">expand_more</span>
         </button>
         {isOpen && <div className="dropdown-content">{children}</div>}
       </div>
     );
   }
+
+  // const handleToggleDropdown = (id) => {
+  //   setOpenDropdown(openDropdown === id ? null : id);
+  // };
 
   const renderDropdownColumn = (type, state, setState) => {
     const ids =
@@ -66,7 +88,10 @@ const Selection = ({
     const title = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter
 
     return (
-      <Dropdown title={title}>
+      <Dropdown
+        id={type}
+        title={`${type.charAt(0).toUpperCase() + type.slice(1)}`}
+      >
         <MyCheckbox
           key={`all-${type}`}
           id={`all-${type}`}
@@ -237,29 +262,23 @@ const Selection = ({
     });
   };
 
-  const toggleAllCheckboxes = (setFn, stateObj, ids) => {
-    if (isAnyChecked(stateObj, ids)) {
-      const newState = {};
-      ids.forEach((id) => {
-        newState[id] = false;
-      });
-      setFn(newState);
-    }
-  };
+  // const toggleAllCheckboxes = (setFn, stateObj, ids) => {
+  //   if (isAnyChecked(stateObj, ids)) {
+  //     const newState = {};
+  //     ids.forEach((id) => {
+  //       newState[id] = false;
+  //     });
+  //     setFn(newState);
+  //   }
+  // };
 
   return (
     <div className={"selection"}>
       <Report />
       <div className={"dropdowns-container"}>
-        {allCategories.length > 0 &&
-          showCategories &&
-          renderDropdownColumn("category", categories, setCategories)}
-        {visibleGroupCount > 0 &&
-          showGroups &&
-          renderDropdownColumn("group", groups, setGroups)}
-        {Object.values(visibleDaysCounts).some((count) => count > 0) &&
-          showDays &&
-          renderDropdownColumn("day", days, setDays)}
+        {renderDropdownColumn("category", categories, setCategories)}
+        {renderDropdownColumn("group", groups, setGroups)}
+        {renderDropdownColumn("day", days, setDays)}
       </div>
     </div>
   );
