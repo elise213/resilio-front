@@ -46,16 +46,12 @@
   width: 100%;
 }
 
-.day-row2 {
+.day-row2,
+.day-row {
   padding: 5px;
   font-size: 14px;
   display: flex;
   align-items: center;
-}
-
-.day-row {
-  padding: 5px;
-  font-size: 14px;
 }
 
 .closed-icons {
@@ -105,7 +101,7 @@
   border: 4px double green;
   border-radius: 5px;
   margin: 0px 10px;
-  background-color: whitesmoke;
+  background-color: white;
   opacity: 0.9;
   box-sizing: border-box;
   z-index: 1;

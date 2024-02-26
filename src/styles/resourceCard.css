@@ -3,14 +3,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 10px 0;
+  margin: 5px 0;
   width: 100%;
   z-index: 996 !important;
   position: static;
   user-select: none;
   background-color: white;
   border-radius: 2%;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   transition: 0.5s;
   overflow: hidden;
 }
