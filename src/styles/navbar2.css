@@ -14,7 +14,7 @@
 
 .top-logo {
   width: 120px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .login-link:hover {
@@ -86,8 +86,21 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.nav-div-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-div-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   border-radius: 2%;
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
 }
 
 .nav-item,
@@ -104,7 +117,7 @@
 .nav-item:hover,
 .nav-item a:hover {
   cursor: pointer;
-  color: lightgreen !important;
+  color: black !important;
 }
 
 .nav-btn:active {
@@ -152,7 +165,9 @@
 }
 
 .avatar-material-design {
-  align-self: flex-end;
+  align-self: flex-start;
+  height: 30px;
+  width: 30px;
 }
 
 .modal-open {
@@ -174,7 +189,7 @@
 .close-icon-nav:focus,
 .open-icon-nav:hover,
 .open-icon-nav:focus {
-  color: lightgreen !important;
+  color: black !important;
   cursor: pointer;
 }
 
@@ -205,12 +220,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 15px;
-  /* box-shadow: none !important; */
+  padding: 10px;
   display: flex;
   align-items: center;
-  /* border-radius: 3px; */
-  /* height: 100vh; */
+  overflow-y: scroll;
 }
 
 .close-icon-nav,

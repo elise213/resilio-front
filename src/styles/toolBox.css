@@ -1,4 +1,4 @@
-.toolnew-navbar::-webkit-scrollbar-track {
+/* .toolnew-navbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
@@ -10,7 +10,7 @@
   background-color: lightgreen;
   border-radius: 4px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
+} */
 
 /* .toolnew-navbar::-webkit-scrollbar-thumb:hover {
   background-color: darkgreen;

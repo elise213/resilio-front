@@ -57,12 +57,6 @@ const SimpleMap = ({
   }, [store.favorites]);
 
   useEffect(() => {
-    console.log("local favorites updated!");
-    console.log("state favorites", favorites);
-    console.log("STOREFAV", store.favorites);
-  }, [favorites]);
-
-  useEffect(() => {
     const fetchMarkers = async () => {};
     if (city && city.bounds) {
       fetchMarkers();
@@ -187,59 +181,43 @@ const SimpleMap = ({
           </>
         ) : (
           <>
-            <div className="map-container-container">
-              {/* <p className="the-plan">THE MAP</p> */}
-              <div
-                ref={mapContainerRef}
-                className="map-container"
-                style={{ height: "100vh", width: "auto" }}
+            {/* <div className="map-container-container"> */}
+            {/* <p className="the-plan">THE MAP</p> */}
+            <div
+              ref={mapContainerRef}
+              className="map-container"
+              style={{ height: "100vh", width: "auto" }}
+            >
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: apiKey }}
+                center={city.center}
+                bounds={city.bounds}
+                defaultZoom={12}
+                onChange={(e) => handleBoundsChange(e)}
               >
-                <GoogleMapReact
-                  bootstrapURLKeys={{ key: apiKey }}
-                  center={city.center}
-                  bounds={city.bounds}
-                  defaultZoom={12}
-                  onChange={(e) => handleBoundsChange(e)}
-                >
-                  {store.boundaryResults.map((result, i) => (
-                    <Marker
-                      lat={result.latitude}
-                      lng={result.longitude}
-                      text={result.name}
-                      key={i}
-                      id={result.id}
-                      openModal={openModal}
-                      result={result}
-                    />
-                  ))}
-
-                  {userLocation && (
-                    <Marker
-                      lat={userLocation.lat}
-                      lng={userLocation.lng}
-                      text="You are here!"
-                      color="maroon"
-                    />
-                  )}
-                </GoogleMapReact>
-              </div>
-
-              {/* <div className="stack">
-                <button className="geo-button" onClick={() => geoFindMe()}>
-                  geo-location
-                </button>
-                <div className="zipcode-input-container">
-                  <input
-                    type="text"
-                    id="zipcode"
-                    value={zipInput}
-                    onChange={handleZipInputChange}
-                    maxLength="5"
-                    placeholder="Zip Code"
+                {store.boundaryResults.map((result, i) => (
+                  <Marker
+                    lat={result.latitude}
+                    lng={result.longitude}
+                    text={result.name}
+                    key={i}
+                    id={result.id}
+                    openModal={openModal}
+                    result={result}
                   />
-                </div>
-              </div> */}
+                ))}
+
+                {userLocation && (
+                  <Marker
+                    lat={userLocation.lat}
+                    lng={userLocation.lng}
+                    text="You are here!"
+                    color="maroon"
+                  />
+                )}
+              </GoogleMapReact>
             </div>
+            {/* </div> */}
             <div className="simple-selection"></div>
           </>
         )}

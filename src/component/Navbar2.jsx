@@ -68,17 +68,19 @@ const Navbar2 = ({
     <>
       <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
         <div className={`navbar-content`}>
-          <div className={`nav-div`}>
+          <div className={`nav-div-row`}>
+            <div>
+              <img
+                className="top-logo"
+                src="/assets/RESILIOO.png"
+                alt="Resilio Logo"
+              />
+              <p className="intro">Find free resources near you.</p>
+            </div>
             <Login
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
             />
-            <img
-              className="top-logo"
-              src="/assets/RESILIOO.png"
-              alt="Resilio Logo"
-            />
-            <span className="intro">Find free resources near you.</span>
           </div>
           {hasBoundaryResults ? (
             <>
@@ -122,7 +124,7 @@ const Navbar2 = ({
 
               <div
                 className="
-            nav-div"
+            nav-div-list"
               >
                 <span className="intro">All Resources </span>
 
@@ -187,7 +189,7 @@ const Navbar2 = ({
 
           <div
             className="
-            nav-div"
+            nav-div-list"
           >
             {!isLoggedIn && (
               <span className="intro">

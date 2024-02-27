@@ -12,67 +12,19 @@
   overflow-x: hidden;
 }
 
-/* Regular font */
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
-    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* Bold font */
-/* @font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSansBold-BF64c08556665f3.ttf") format("truetype"),
-    url("/fonts/AwsumSansBold-BF64c08556c5095.otf") format("opentype");
-  font-weight: bold;
-  font-style: normal; */
-/* } */
-
-/* Italic font */
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSansItalic-BF64c085561b552.otf") format("opentype"),
-    url("/fonts/AwsumSansItalic-BF64c0855662543.ttf") format("truetype");
-  font-weight: normal;
-  font-style: italic;
-}
-
-/* Bold Italic font */
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSansBoldItalic-BF64c0855650966.ttf") format("truetype"),
-    url("/fonts/AwsumSansBoldItalic-BF64c08556c0bd3.otf") format("opentype");
-  font-weight: bold;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "InterVariable";
-  src: url("/fonts/Inter-VariableFont_slnt,wght.tff") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
-.back-container::-webkit-scrollbar-track {
-  background-color: transparent;
+.close-contact {
+  font-size: 20px;
+  border: none;
+  z-index: 9999999;
+  align-self: flex-end;
+  color: gray;
 }
 
-.back-container::-webkit-scrollbar {
-  width: 7px;
-}
-
-.back-container::-webkit-scrollbar-thumb {
-  background-color: lightgreen;
-  border-radius: 4px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.back-container::-webkit-scrollbar-thumb:hover {
-  background-color: darkgreen;
+.close-contact:hover {
+  color: black !important;
+  cursor: pointer;
 }
 
 .back-container {
@@ -82,7 +34,6 @@
 .scroll-title {
   font-size: 20px;
   text-align: center;
-  color: lavender;
 }
 
 .no-scroll {
@@ -105,7 +56,7 @@ body {
   color: gray;
 }
 
-.grand-container {
+.grand-map-container {
   margin: 0;
   justify-content: space-between;
   display: flex;
@@ -132,13 +83,6 @@ body {
 .right-arrow-filter {
   width: 15px;
   margin-left: 5px;
-}
-
-.tell-us {
-  font-family: "Inter", sans-serif;
-  font-size: 35px;
-  letter-spacing: 1.3x;
-  margin-bottom: 30px;
 }
 
 .form-check {
@@ -168,12 +112,10 @@ body {
 /* _____________________________________________________________BUTTONS */
 
 .submit {
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
   width: 100%;
   color: white;
-  background-color: #1976d2;
-  border-radius: 20px !important;
-  height: 32px !important;
+  /* background-color: #1976d2; */
 }
 
 .submit:hover {
@@ -189,27 +131,5 @@ body {
 @media screen and (max-width: 700px) {
   .checkbox-row {
     margin: 0;
-  }
-
-  .tell-us {
-    font-size: 18px;
-  }
-
-  .favorites-col {
-    width: 40vw;
-  }
-
-  .form-check-label {
-    font-size: 14px;
-  }
-
-  .my-schedule-button.scroll-warning {
-    font-size: 15px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .scroll-title {
-    font-size: 18px;
   }
 }

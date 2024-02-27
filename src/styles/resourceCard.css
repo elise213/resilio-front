@@ -15,6 +15,16 @@
   font-family: "Inter", sans-serif;
 }
 
+.add-favorite {
+  /* border-radius: 20px !important; */
+  width: 100% !important;
+  margin: 10px 0 !important;
+}
+
+textarea {
+  font-family: "Inter", sans-serif;
+}
+
 .my-resource-card:hover {
   cursor: pointer;
 }
@@ -64,19 +74,6 @@
   height: 100%;
 }
 
-/* .add-favorite {
-  border: none;
-  font-size: 20px;
-  background-color: transparent;
-  display: flex;
-  align-items: end;
-  margin: 10px 0 2px 0 !important;
-}
-
-.add-favorite i {
-  font-size: 20px;
-} */
-
 .remove-path {
   background-color: lavender !important;
   border: 1.5px solid red !important;
@@ -101,7 +98,8 @@
   font-family: "Inter", sans-serif;
   letter-spacing: 1px;
   font-weight: bolder;
-  font-size: 12px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .fa-baby,

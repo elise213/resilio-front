@@ -1,7 +1,15 @@
 .centered {
-  height: 100vh;
-  z-index: 99999;
-  margin-top: 20px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9999999;
+  height: 100%;
+  background-color: white;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .login-button-resilio {
@@ -44,9 +52,9 @@
 
 .custom-form-label {
   display: inline-block;
-  font-family: "Urbanist", sans-serif;
-  letter-spacing: 1px;
+  font-family: "Inter", sans-serif !important;
   text-align: center;
+  font-size: 14px;
 }
 
 .custom-form-control {
@@ -101,7 +109,7 @@
   align-items: start !important;
 }
 
-.loginModal-title-div {
+/* .loginModal-title-div {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -111,7 +119,7 @@
 
 .loginModal-title-div p {
   margin: 0;
-}
+} */
 
 .loginModal-footer {
   border: none;

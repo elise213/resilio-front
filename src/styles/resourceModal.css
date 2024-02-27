@@ -1,21 +1,7 @@
-/* .modal-close-div {
-  display: flex;
-  justify-content: center;
-  align-items: start !important;
-} */
-
 .resource-name {
   display: flex;
   justify-content: center;
 }
-
-/* .info-map-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 5px;
-} */
 
 .map-container-modal {
   margin: 10px;
@@ -46,19 +32,19 @@
 }
 
 .info-address {
-  text-align: center;
+  /* text-align: center; */
+  font-family: "Inter", sans-serif;
+  margin: 10px 0;
 }
 
 .info-address a {
   padding: 0;
   width: unset !important;
   color: blue;
-  font-size: 15px;
-  letter-spacing: 0.5px;
 }
 
 .info-address i {
-  padding: 3px;
+  padding: 0 3px 0 0;
   color: red;
   font-size: 15px;
   text-align: center;
@@ -72,6 +58,7 @@
   color: grey;
   font-family: "Inter", sans-serif;
   margin: 20px 0;
+  align-self: flex-start;
 }
 
 .close-modal:hover {
@@ -141,7 +128,11 @@
 }
 
 .resource-rating {
-  margin: 15px 0;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
 }
 
 .rating-label {
@@ -155,41 +146,12 @@
   align-items: center;
 }
 
-.buttons-modal {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin: 10px;
-}
-
-.modal-button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  /* padding: 15px 0 0 15px; */
-  min-width: 100px;
-}
-
-.modal-button-container button {
-  width: unset !important;
-  margin: 5px 0;
-}
-
-.modal-header {
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */
-  color: #000;
-  /* font-size: large; */
-}
-
 .comment-section {
   display: flex;
   flex-direction: column;
-  align-self: flex-end;
   margin-top: 10px;
-  min-width: 300px;
   height: 100px;
+  width: 100%;
 }
 
 p {
@@ -208,56 +170,43 @@ p {
 }
 
 .comment-content {
-  text-align: center;
-  margin: 5px 0;
-  font-size: 16px;
-  letter-spacing: 0.4px;
+  /* text-align: center; */
+  font-family: "Inter", sans-serif;
 }
 
 .comment-info-date {
   font-size: 12px;
-  color: lightgray;
+  color: gray;
   text-align: end;
   margin-left: 10px;
 }
 
 .comment-user-info {
   font-size: 13px;
-  color: lightgray;
+  color: gray;
   text-align: start;
 }
 
-.comment-info {
-  display: flex;
-  /* width: 100%; */
-  justify-content: flex-end;
-}
-
 .comments-display {
-  margin: 30px 0;
+  /* margin: 30px 0; */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-radius: 3px;
-  /* border: 1px solid black; */
+  /* align-items: center; */
+  width: 100%;
 }
 
 textarea {
   border: 1px solid gray;
   border-radius: 3px;
   padding: 5px;
-  font-size: 15px;
   height: 100%;
 }
 
 .comment-heading {
   font-size: 20px;
-  color: rgb(149, 84, 19);
   width: 100%;
   justify-content: center;
   display: flex;
-  letter-spacing: 1px;
-  border-radius: 3px;
   text-decoration: underline;
 }
 
@@ -265,67 +214,28 @@ textarea {
   margin-top: 10px;
 }
 
-.modal-footer p,
-.modal-footer a {
-  font-size: small !important;
-  text-decoration: none !important;
-  letter-spacing: 1px;
-}
-
-.problem a,
-.create a,
-.edit-text a {
-  text-decoration: none !important;
-}
-
 .modal-title {
   font-size: large;
 }
 
-.modal-content {
-  width: 70%;
-  max-width: 850px;
-  outline: 4px solid var(--coral);
-  max-height: 80vh;
+.problem {
+  font-family: "Inter", sans-serif;
+  color: gray;
+  text-decoration: none;
+  font-size: 12px;
 }
 
-.modal-body {
-  /* background-color: rgb(139, 136, 135); */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 4px;
-  overflow-x: hidden;
+.problem-link {
+  text-decoration: none !important;
+}
+
+.modal-div {
   overflow-y: scroll !important;
   scroll-behavior: smooth;
-  min-height: 60vh;
-  /* padding: 0 7px 0 0; */
-}
-
-.info a {
-  font-size: 15px;
 }
 
 .modal-center {
   font-family: "Inter", sans-serif;
-}
-
-.modal-center::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.modal-center::-webkit-scrollbar {
-  width: 7px;
-}
-
-.modal-center::-webkit-scrollbar-thumb {
-  /* background-color: lightgreen; */
-  border-radius: 4px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.modal-center::-webkit-scrollbar-thumb:hover {
-  background-color: darkgreen;
 }
 
 body.modal-open {
@@ -335,22 +245,13 @@ body.modal-open {
   width: 100%;
 }
 
-.resource-info {
-  display: flex;
-  width: 100%;
-  position: relative;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  padding: 15px;
-}
-
 .info {
   text-align: center;
   display: flex;
   justify-content: center;
   flex-direction: column;
   font-family: "Inter", sans-serif;
+  padding: 0;
 }
 
 .info i {
@@ -412,30 +313,10 @@ body.modal-open {
   position: absolute;
 }
 
-.resource-card-text {
-  font-size: medium;
-  /* color: black; */
-  /* line-height: 1.5; */
-  text-decoration: none;
-  /* letter-spacing: 1px; */
-}
-
-.details-div {
-  width: 100%;
-  justify-content: center;
-  display: flex;
-  margin: 20px 0;
-}
-
 .details-column {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.details-column div {
-  padding-top: 20px;
 }
 
 .modal-map {
@@ -446,11 +327,6 @@ body.modal-open {
 .icon-box {
   display: flex;
   justify-content: flex-end;
-}
-.create,
-.problem,
-.edit-text {
-  width: 100%;
 }
 
 .description-div {
@@ -476,15 +352,7 @@ body.modal-open {
 }
 
 .resource-card-text {
-  font-size: 14px;
   font-family: "Inter", sans-serif;
-}
-
-.text-description-div {
-  align-items: center;
-  width: 100%;
-  justify-content: end;
-  display: flex;
 }
 
 .modal-text {
@@ -496,31 +364,4 @@ body.modal-open {
 .sched-div {
   padding: 5px;
   width: 100%;
-}
-
-@media screen and (max-width: 600px) {
-  .modal-text {
-    font-size: 12px !important;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .resource-card-text {
-    font-size: 11px !important;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .carousel {
-    max-height: 200px !important;
-    overflow: hidden;
-  }
-
-  .details {
-    width: 100% !important;
-  }
-
-  .modal-content {
-    width: 80%;
-  }
 }

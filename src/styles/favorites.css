@@ -62,7 +62,7 @@
   border-radius: 3px;
 }
 
-.favoritesnav-item,
+/* .favoritesnav-item,
 .favoritesnav-item a {
   letter-spacing: 1.5px;
   color: lavender;
@@ -76,7 +76,7 @@
 .favoritesnav-item a:hover {
   cursor: pointer;
   color: lightgreen;
-}
+} */
 
 /* X */
 .favoritesclose-icon-nav {
@@ -86,9 +86,9 @@
   color: lavender;
 }
 
-.favoritesclose-icon-nav:hover {
+/* .favoritesclose-icon-nav:hover {
   color: lightgreen;
-}
+} */
 
 .favoritesclose-icon-nav.favoritesopen-nav {
   right: 265px !important;
