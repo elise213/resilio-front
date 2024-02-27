@@ -13,8 +13,8 @@
 }
 
 .top-logo {
-  width: 130px;
-  margin-bottom: 20px;
+  width: 120px;
+  margin-bottom: 10px;
 }
 
 .login-link:hover {
@@ -30,12 +30,13 @@
 
 .side-by {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  justify-content: space-between;
+  margin: 25px 0;
 }
 
 .list-container {
-  max-height: 50vh;
+  max-height: 40vh;
   overflow-y: scroll;
   border-radius: 2%;
   border: 1px solid rgb(174, 161, 161);
@@ -85,8 +86,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 10px;
   border-radius: 2%;
+  margin: 0 0 20px 0;
 }
 
 .nav-item,
@@ -150,18 +151,8 @@
   transition: left 0.3s ease;
 }
 
-.modal-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  z-index: 995;
-  background-color: #464646;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.avatar-material-design {
+  align-self: flex-end;
 }
 
 .modal-open {
@@ -171,8 +162,6 @@
 
 .modal-content-contact {
   max-width: 850px;
-  border-radius: 3px;
-  /* width: 70%; */
   z-index: 999;
 }
 

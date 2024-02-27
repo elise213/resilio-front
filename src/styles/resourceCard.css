@@ -64,7 +64,7 @@
   height: 100%;
 }
 
-.add-favorite {
+/* .add-favorite {
   border: none;
   font-size: 20px;
   background-color: transparent;
@@ -75,7 +75,7 @@
 
 .add-favorite i {
   font-size: 20px;
-}
+} */
 
 .remove-path {
   background-color: lavender !important;

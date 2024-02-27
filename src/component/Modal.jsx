@@ -175,11 +175,13 @@ const Modal = ({
       {/* <div className="modal-content" ref={modalContentRef}> */}
       {/* Modal Header */}
       <div className="modal-header">
-        <div className="modal-close-div">
-          <p className="close-modal" onClick={() => setModalIsOpen(false)}>
-            <i className="fa-solid fa-x"></i>
-          </p>
-        </div>
+        {/* <div className="modal-close-div"> */}
+        <p className="close-modal" onClick={() => setModalIsOpen(false)}>
+          <span class="material-symbols-outlined">arrow_back_ios</span>
+          {/* <i className="fa-solid fa-x"></i> */}
+          Back to search
+        </p>
+        {/* </div> */}
 
         <div className="modal-title-div">
           {/* <div className="modal-title-box"> */}
@@ -327,14 +329,12 @@ const Modal = ({
       {/* Rating Modal */}
       {showRating && (
         <>
-          <div className="rate-this-resource" ref={ratingModalRef}>
-            <div className="modal-close-div">
-              <p className="close-rating" onClick={() => setShowRating(false)}>
-                <i className="fa-solid fa-x"></i>
-              </p>
-            </div>
+          <div className="donation-modal" ref={ratingModalRef}>
+            <p className="close-rating" onClick={() => setShowRating(false)}>
+              <i className="fa-solid fa-x"></i>
+            </p>
 
-            <p className="what-do-you-think">
+            <p className="">
               What do You Think of <br />
               {resource.name} ?
             </p>
@@ -343,6 +343,7 @@ const Modal = ({
                 {rating !== null && labels[hover !== -1 ? hover : rating]}
               </div>
               <Rating
+                className="resource-rating"
                 name="resource-rating"
                 value={rating}
                 precision={1}

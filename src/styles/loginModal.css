@@ -181,15 +181,6 @@
   justify-content: center;
 }
 
-.loginModal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9998;
-}
-
 body.loginModal-open {
   overflow: hidden;
   height: 100%;
