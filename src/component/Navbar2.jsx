@@ -2,140 +2,255 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/navbar2.css";
 import { Context } from "../store/appContext";
 import Login from "./Login";
+import ResourceCard from "./ResourceCard";
 import Contact from "../component/Contact";
 import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
+import ToolBox from "./ToolBox";
 
 const Navbar2 = ({
+  INITIAL_DAY_STATE,
+  addSelectedResource,
+  backSide,
+  categories,
+  closeModal,
+  days,
+  groups,
+  geoFindMe,
+  handleZipInputChange,
   isDeckOpen,
-  isNavOpen,
   isFavoritesOpen,
+  isNavOpen,
   isToolBoxOpen,
-  // setIsDeckOpen,
-  setIsNavOpen,
-  // setIsToolBoxOpen,
-  // setIsFavoritesOpen,
-  toggleNav,
-  setOpenLoginModal,
+  modalIsOpen,
   openLoginModal,
-  setDonationModalIsOpen,
-  setAboutModalIsOpen,
+  openModal,
+  removeSelectedResource,
+  searchingToday,
+  selectedResources,
+  setCategories,
+  setDays,
+  setFavorites,
+  setGroups,
+  setIsDeckOpen,
+  setIsFavoritesOpen,
+  setIsNavOpen,
+  setIsToolBoxOpen,
+  setModalIsOpen,
+  setOpenLoginModal,
+  setSearchingToday,
+  toggleNav,
+  toggleToolButtonRef,
+  zipInput,
 }) => {
   const { store, actions } = useContext(Context);
-
-  const [showContactModal, setShowContactModal] = useState(false);
-  const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
 
   useEffect(() => {
-    setIsLargeScreen(store.isLargeScreen);
-  }, [store.isLargeScreen]);
-
-  const toggleContactModal = () => {
-    setShowContactModal(!showContactModal);
-  };
-
-  // Function to handle click outside the navbar area
-  const handleClickOutside = (event) => {
-    const navbar = document.querySelector(".new-navbar");
-    if (navbar && !navbar.contains(event.target) && isNavOpen) {
-      setIsNavOpen(false);
-    }
-  };
-
-  // Set up the event listener
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      // Clean up the event listener
-      document.removeEventListener("click", handleClickOutside);
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
     };
-  }, [isNavOpen]);
+
+    checkLoginStatus();
+  }, [store.token]);
 
   useEffect(() => {
-    const body = document.body;
-    if (isNavOpen || showContactModal) {
-      body.classList.add("no-scroll");
-    } else {
-      body.classList.remove("no-scroll");
-    }
-  }, [isNavOpen, showContactModal]);
+    setHasBoundaryResults(
+      !!store.boundaryResults && store.boundaryResults.length > 0
+    );
+  }, [store.boundaryResults]);
 
   return (
     <>
-      <div className="nav-container">
-        <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
-          <div
-            onClick={toggleNav}
-            className={`open-icon-nav ${
-              !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                ? "closed"
-                : ""
-            }`}
-          >
-            <i className="fas fa-bars"></i>
+      <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
+        <div className={`navbar-content`}>
+          <div className={`nav-div-row`}>
+            <div>
+              <img
+                className="top-logo"
+                src="/assets/RESILIOO.png"
+                alt="Resilio Logo"
+              />
+              <p className="intro">Find free resources near you.</p>
+            </div>
+            <Login
+              openLoginModal={openLoginModal}
+              setOpenLoginModal={setOpenLoginModal}
+            />
           </div>
-          <div
-            onClick={toggleNav}
-            className={`close-icon-nav ${isNavOpen ? "open-nav" : ""}`}
-          >
-            <i className="fa-solid fa-x"></i>
-          </div>
-
-          <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            <div className="split-nav">
-              <div className="nav-list">
-                <Login
-                  openLoginModal={openLoginModal}
-                  setOpenLoginModal={setOpenLoginModal}
-                />
-
-                <span
-                  className="nav-item"
-                  onClick={() => {
-                    setIsNavOpen(false);
-                    setAboutModalIsOpen(true);
-                  }}
-                >
-                  ABOUT
-                </span>
-
-                <span
-                  className="nav-item"
-                  onClick={() => {
-                    setIsNavOpen(false);
-                    toggleContactModal();
-                  }}
-                >
-                  CONTACT
-                </span>
-
-                <span
-                  className="nav-item"
-                  onClick={() => {
-                    setIsNavOpen(false);
-                    setDonationModalIsOpen(true);
-                  }}
-                >
-                  DONATE
-                </span>
+          {hasBoundaryResults ? (
+            <>
+              <div
+                className="
+            nav-div"
+              >
+                <div className="side-by">
+                  <span className="intro">Filter Resources </span>
+                  <div className="search-bar">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <ToolBox
+                    backSide={backSide}
+                    categories={categories}
+                    setCategories={setCategories}
+                    groups={groups}
+                    setGroups={setGroups}
+                    days={days}
+                    setDays={setDays}
+                    searchingToday={searchingToday}
+                    setSearchingToday={setSearchingToday}
+                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                    isDeckOpen={isDeckOpen}
+                    isNavOpen={isNavOpen}
+                    isFavoritesOpen={isFavoritesOpen}
+                    isToolBoxOpen={isToolBoxOpen}
+                    setIsDeckOpen={setIsDeckOpen}
+                    setIsNavOpen={setIsNavOpen}
+                    setIsToolBoxOpen={setIsToolBoxOpen}
+                    setIsFavoritesOpen={setIsFavoritesOpen}
+                    toggleToolButtonRef={toggleToolButtonRef}
+                  />
+                </div>
               </div>
-              <EmailList />
-            </div>
-          </div>
-        </nav>
 
-        {showContactModal && (
-          <div className="modal-overlay">
-            <div className="modal-content-contact">
-              <span className="close-contact" onClick={toggleContactModal}>
-                <i className="fa-solid fa-x"></i>
+              <div
+                className="
+            nav-div-list"
+              >
+                <span className="intro">All Resources </span>
+
+                {store.boundaryResults && store.boundaryResults.length > 0 && (
+                  <div className="list-container">
+                    <ul>
+                      {Array.isArray(store.mapResults) &&
+                        store.boundaryResults
+                          .filter(
+                            (resource) =>
+                              resource.name
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()) ||
+                              (resource.description &&
+                                resource.description
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()))
+                          )
+                          .map((resource, index) => (
+                            <ResourceCard
+                              key={resource.id}
+                              item={resource}
+                              openModal={openModal}
+                              closeModal={closeModal}
+                              modalIsOpen={modalIsOpen}
+                              setModalIsOpen={setModalIsOpen}
+                              selectedResources={selectedResources}
+                              addSelectedResource={addSelectedResource}
+                              removeSelectedResource={removeSelectedResource}
+                              setFavorites={setFavorites}
+                            />
+                          ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="intro">
+                  Please enter a zip code to navigate to a location that is
+                  participating in our platform.
+                </p>
+                <div className="stack">
+                  {/* <button className="geo-button" onClick={() => geoFindMe()}>
+                    geo-location
+                  </button> */}
+
+                  <input
+                    type="text"
+                    id="zipcode"
+                    value={zipInput}
+                    onChange={handleZipInputChange}
+                    maxLength="5"
+                    placeholder="Zip Code"
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          <div
+            className="
+            nav-div-list"
+          >
+            {!isLoggedIn && (
+              <span className="intro">
+                To save your favorite resources, please{" "}
+                <a
+                  className="login-link"
+                  onClick={() => setOpenLoginModal(true)}
+                >
+                  {" "}
+                  Log in
+                </a>
+                .
               </span>
-              <Contact />
-            </div>
+            )}
+
+            {isLoggedIn && store.favorites.length == 0 && (
+              <span className="intro">
+                Heart resources to add to your Favorites!{" "}
+              </span>
+            )}
+            {isLoggedIn && store.favorites && store.favorites.length > 0 && (
+              <>
+                <span className="intro">Favorites</span>
+
+                <div className="list-container-favs">
+                  <ul>
+                    {Array.isArray(store.mapResults) &&
+                      store.boundaryResults
+                        .filter(
+                          (resource) =>
+                            resource.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (resource.description &&
+                              resource.description
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()))
+                        )
+                        .map((resource, index) => (
+                          <ResourceCard
+                            key={`${resource.id}-${index}`}
+                            item={resource}
+                            openModal={openModal}
+                            closeModal={closeModal}
+                            modalIsOpen={modalIsOpen}
+                            setModalIsOpen={setModalIsOpen}
+                            selectedResources={selectedResources}
+                            addSelectedResource={addSelectedResource}
+                            removeSelectedResource={removeSelectedResource}
+                            setFavorites={setFavorites}
+                          />
+                        ))}
+                  </ul>
+                </div>
+              </>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      </nav>
+
+      {/* </div> */}
     </>
   );
 };

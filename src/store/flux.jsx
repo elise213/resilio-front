@@ -11,6 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       is_org: null,
       name: null,
       avatarID: null,
+      user_id: null,
       avatarImages: [
         "fas fa-robot",
         "fas fa-user-astronaut",
@@ -29,18 +30,18 @@ const getState = ({ getStore, getActions, setStore }) => {
         },
       ],
 
+      boundaryResults: [],
+      categorySearch: [],
+      checked: false,
+      commentsList: [],
       favorites: [],
       favoriteOfferings: [],
       isLargeScreen: false,
-      searchResults: [],
-      boundaryResults: [],
+      loading: false,
       mapResults: [],
       offerings: [],
-      checked: false,
-      loading: false,
-      commentsList: [],
-      categorySEarch: [],
-      // when: [],
+      searchResults: [],
+
       schedules: [],
       selectedResources: [],
       CATEGORY_OPTIONS: [
@@ -205,7 +206,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             return "fa-solid fa-toilet";
           case "work":
             return "fa-solid fa-people-carry-box";
-          // return "fa-solid fa-briefcase";
           case "wifi":
             return "fa-solid fa-wifi";
           case "crisis":
@@ -286,6 +286,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           sessionStorage.setItem("name", data.name);
           sessionStorage.setItem("avatar", parseInt(data.avatar));
           sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
+          sessionStorage.setItem("user_id", data.user_id);
 
           setStore({
             token: data.access_token,
@@ -294,6 +295,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             name: data.name,
             // favorites: data.favorites,
             favorites: data.favorites.map((fav) => fav.resource),
+            user_id: data.user_id,
             //       // favoriteOfferings: data.favoriteOfferings,
           });
 
@@ -1036,187 +1038,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           windowWidth: window.innerWidth,
         });
       },
-
-      // ________________________________________________________________OFFERINGS
-      // addFavoriteOffering: (offering) => {
-      //   console.log(offering);
-      //   const current_back_url = getStore().current_back_url;
-      //   let favorites = getStore().favoriteOfferings;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify({
-      //         title: offering,
-      //       }),
-      //     };
-      //     fetch(current_back_url + "/api/addFavoriteOffering", opts)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         if (data.message == "okay") {
-      //           console.log("okay");
-      //           favorites.push(data.offering)
-      //           setStore({ favoriteOfferings: favorites })
-      //         }
-      //       });
-      //   }
-      // },
-      // removeFavoriteOffering: (offering) => {
-      //   console.log("offering from REMOVE FAVE OFFER FLUX", offering)
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token")
-      //   if (token) {
-      //     fetch(`${current_back_url}/api/removeFavoriteOffering`, {
-      //       method: 'DELETE',
-      //       headers: {
-      //         Authorization: "Bearer " + sessionStorage.getItem("token"),
-      //         "Content-Type": "application/json"
-      //       },
-      //       body: JSON.stringify({ title: offering })
-      //     }).then(response => response.json())
-      //       .then(result => {
-      //         if (result.message == "okay") {
-      //           const favorites = getStore().favoriteOfferings.filter((fav) => fav.title !== offering);
-      //           setStore({ favoriteOfferings: favorites });
-      //           console.log("FAVE OFFERINGS FLUX", getStore().favoriteOfferings)
-      //         }
-      //       })
-      //       .catch(error => {
-      //         console.error('An error occurred while removing favorite offering:', error);
-      //       })
-      //   }
-      // },
-      // setOfferings: () => {
-      //   fetch(getStore().current_back_url + "/api/getOfferings")
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       setStore({ offerings: data.data });
-      //     })
-      //     .catch((error) => console.log(error));
-      // },
-      // createOffering: async (
-      //   title,
-      //   offeringType,
-      //   offeringDescription,
-      //   image,
-      //   image2
-      // ) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = getStore().token;
-      //   const opts = {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //       "Content-Type": "application/json",
-      //       "Access-Control-Allow-Origin": "*",
-      //     },
-      //     body: JSON.stringify({
-      //       title: title,
-      //       offering_type: offeringType,
-      //       description: offeringDescription,
-      //       image: image,
-      //       image2: image2,
-      //     }),
-      //   };
-      //   try {
-      //     const response = await fetch(
-      //       current_back_url + "/api/createOffering",
-      //       opts
-      //     );
-      //     if (response.status >= 400) {
-      //       alert("There has been an error");
-      //       return false;
-      //     }
-      //     const data = await response.json();
-      //     return true;
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // },
-      // createDrop: async (
-      //   name,
-      //   address,
-      //   phone,
-      //   description,
-      //   type,
-      //   identification,
-      //   image
-      // ) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const current_front_url = getStore().current_front_url;
-      //   const token = getStore().token;
-      //   const opts = {
-      //     method: "POST",
-      //     mode: "cors",
-      //     headers: {
-      //       Authorization: "Bearer " + token,
-      //       "Content-Type": "application/json",
-      //       "Access-Control-Allow-Origin": "*",
-      //     },
-      //     body: JSON.stringify({
-      //       name: name,
-      //       address: address,
-      //       phone: phone,
-      //       description: description,
-      //       type: type,
-      //       identification: identification,
-      //       image: image,
-      //     }),
-      //   };
-      //   try {
-      //     const response = await fetch(
-      //       current_back_url + "/api/createDrop",
-      //       opts
-      //     );
-      //     if (response.status >= 400) {
-      //       alert("There has been an error");
-      //       return false;
-      //     }
-      //     const data = await response.json();
-      //     if (data.status == "true") {
-      //       window.location.href = current_front_url + "/";
-      //     }
-      //     return true;
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // },
-      // getFavorites: () => {
-      //   const currentBackUrl = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const requestOptions = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "GET",
-      //     };
-      //     fetch(currentBackUrl + "/api/getFavoriteOfferings", requestOptions)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         console.log("favorite offerings", data.favoriteOfferings)
-      //         setStore({ favoriteOfferings: data.favoriteOfferings })
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error fetching data:", error);
-      //       });
-
-      //     fetch(currentBackUrl + "/api/getFavorites", requestOptions)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         setStore({ favorites: data.favorites })
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error fetching data:", error);
-      //       });
-      //   }
-      // },
     },
   };
 };

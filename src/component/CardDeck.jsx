@@ -23,7 +23,7 @@ const CardDeck = ({
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Turned off click outside for Mike Garza. Will uncomment later.
+  // Turned off click outside for Garza. Will uncomment later.
 
   // const handleClickOutside = (event) => {
   //   const deckNav = document.querySelector(".decknew-navbar");
@@ -82,12 +82,9 @@ const CardDeck = ({
           >
             {store.boundaryResults && store.boundaryResults.length > 0 && (
               <div className="list-container">
-                <div className="scroll-title">
-                  {/* <span>Resources in the Map Area</span> */}
-                </div>
+                <div className="scroll-title"></div>
                 <ul className="all-ul">
                   {Array.isArray(store.mapResults) &&
-                    // store.mapResults
                     store.boundaryResults
                       .filter(
                         (resource) =>

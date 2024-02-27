@@ -82,7 +82,7 @@ ul {
   justify-content: flex-end;
 }
 
-.modal-body::-webkit-scrollbar-track {
+/* .modal-body::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
@@ -98,7 +98,7 @@ ul {
 
 .modal-body::-webkit-scrollbar-thumb:hover {
   background-color: darkgreen;
-}
+} */
 
 li {
   margin: 10px;
@@ -187,13 +187,6 @@ li {
   cursor: pointer;
 }
 
-.back-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 60px;
-  overflow-x: hidden;
-}
-
 .selected-item-content {
   width: 100%;
 }
@@ -218,10 +211,6 @@ li {
 .createMyPath:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
   cursor: pointer;
-}
-
-.createMyPath:hover {
-  background-color: lightgreen;
 }
 
 @media screen and (max-width: 800px) {
