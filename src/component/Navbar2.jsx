@@ -48,6 +48,47 @@ const Navbar2 = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
+  // const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+
+  // const toggleLocation = () => {
+  //   setIsLocationOpen(!isLocationOpen);
+  // };
+
+  const toggleLocationDropdown = () => {
+    setIsLocationDropdownOpen(!isLocationDropdownOpen);
+  };
+
+  function LocationDropdown() {
+    return (
+      <div className="dropdown">
+        <button className="dropdown-button" onClick={toggleLocationDropdown}>
+          Change Location
+          <span className="material-symbols-outlined">
+            {isLocationDropdownOpen ? "expand_less" : "expand_more"}
+          </span>
+        </button>
+        {isLocationDropdownOpen && (
+          <div className="dropdown-content">
+            {/* Zip code input and any other location change functionality */}
+            <p className="intro">
+              Please enter a zip code to navigate to a location that is
+              participating in our platform.
+            </p>
+            <input
+              type="text"
+              id="zipcode"
+              // Assume zipInput and handleZipInputChange are defined in your component
+              value={zipInput}
+              onChange={handleZipInputChange}
+              maxLength="5"
+              placeholder="Zip Code"
+            />
+          </div>
+        )}
+      </div>
+    );
+  }
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -82,12 +123,34 @@ const Navbar2 = ({
               setOpenLoginModal={setOpenLoginModal}
             />
           </div>
+
+          <LocationDropdown />
+          {/* <div>
+            <button onClick={toggleLocation}>Change Location</button>
+
+            {isLocationOpen && (
+              <div className="list-container">
+                <p className="intro">
+                  Please enter a zip code to navigate to a location that is
+                  participating in our platform.
+                </p>
+                <div className="stack">
+                  <input
+                    type="text"
+                    id="zipcode"
+                    value={zipInput}
+                    onChange={handleZipInputChange}
+                    maxLength="5"
+                    placeholder="Zip Code"
+                  />
+                </div>
+              </div>
+            )}
+          </div> */}
+
           {hasBoundaryResults ? (
             <>
-              <div
-                className="
-            nav-div"
-              >
+              <div className=" nav-div">
                 <div className="side-by">
                   <span className="intro">Filter Resources </span>
                   <div className="search-bar">
@@ -120,51 +183,57 @@ const Navbar2 = ({
                     toggleToolButtonRef={toggleToolButtonRef}
                   />
                 </div>
-              </div>
 
-              <div
-                className="
+                <div
+                  className="
             nav-div-list"
-              >
-                <span className="intro">All Resources </span>
+                >
+                  <span className="intro">All Resources </span>
 
-                {store.boundaryResults && store.boundaryResults.length > 0 && (
-                  <div className="list-container">
-                    <ul>
-                      {Array.isArray(store.mapResults) &&
-                        store.boundaryResults
-                          .filter(
-                            (resource) =>
-                              resource.name
-                                .toLowerCase()
-                                .includes(searchQuery.toLowerCase()) ||
-                              (resource.description &&
-                                resource.description
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()))
-                          )
-                          .map((resource, index) => (
-                            <ResourceCard
-                              key={resource.id}
-                              item={resource}
-                              openModal={openModal}
-                              closeModal={closeModal}
-                              modalIsOpen={modalIsOpen}
-                              setModalIsOpen={setModalIsOpen}
-                              selectedResources={selectedResources}
-                              addSelectedResource={addSelectedResource}
-                              removeSelectedResource={removeSelectedResource}
-                              setFavorites={setFavorites}
-                            />
-                          ))}
-                    </ul>
-                  </div>
-                )}
+                  {store.boundaryResults &&
+                    store.boundaryResults.length > 0 && (
+                      <div
+                        className="list-container"
+                        style={{ maxHeight: !isLoggedIn ? "60vh" : "auto" }}
+                      >
+                        <ul>
+                          {Array.isArray(store.mapResults) &&
+                            store.boundaryResults
+                              .filter(
+                                (resource) =>
+                                  resource.name
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()) ||
+                                  (resource.description &&
+                                    resource.description
+                                      .toLowerCase()
+                                      .includes(searchQuery.toLowerCase()))
+                              )
+                              .map((resource, index) => (
+                                <ResourceCard
+                                  key={resource.id}
+                                  item={resource}
+                                  openModal={openModal}
+                                  closeModal={closeModal}
+                                  modalIsOpen={modalIsOpen}
+                                  setModalIsOpen={setModalIsOpen}
+                                  selectedResources={selectedResources}
+                                  addSelectedResource={addSelectedResource}
+                                  removeSelectedResource={
+                                    removeSelectedResource
+                                  }
+                                  setFavorites={setFavorites}
+                                />
+                              ))}
+                        </ul>
+                      </div>
+                    )}
+                </div>
               </div>
             </>
           ) : (
             <>
-              <div>
+              <div className="change-location">
                 <p className="intro">
                   Please enter a zip code to navigate to a location that is
                   participating in our platform.
@@ -186,22 +255,21 @@ const Navbar2 = ({
               </div>
             </>
           )}
-
           <div
             className="
             nav-div-list"
           >
             {!isLoggedIn && (
               <span className="intro">
-                To save your favorite resources, please{" "}
+                Please{" "}
                 <a
                   className="login-link"
                   onClick={() => setOpenLoginModal(true)}
                 >
                   {" "}
-                  Log in
-                </a>
-                .
+                  Log in{" "}
+                </a>{" "}
+                to save resources.
               </span>
             )}
 
