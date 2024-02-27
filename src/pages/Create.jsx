@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import Button from "@mui/material/Button";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -294,7 +295,7 @@ const Create = () => {
           </div>
         ))}
 
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="latitude">Latitude</label>
           <input
             className="geo-input"
@@ -319,39 +320,19 @@ const Create = () => {
             value={formData.longitude}
             onChange={(e) =>
               handleChange("longitude", parseFloat(e.target.value))
-            } // Added parseFloat
-            title="Provide the longitude"
-          />
-        </div>
-        {/* <div className="input-group">
-          <label htmlFor="latitude">Latitude</label>
-          <input
-            className="geo-input"
-            id="latitude"
-            name="latitude"
-            type="text"
-            value={formData.latitude}
-            onChange={(e) => handleChange("latitude", e.target.value)}
-            title="Provide the latitude"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="longitude">Longitude</label>
-          <input
-            className="geo-input"
-            id="longitude"
-            name="longitude"
-            type="text"
-            value={formData.longitude}
-            onChange={(e) => handleChange("longitude", e.target.value)}
+            } 
             title="Provide the longitude"
           />
         </div> */}
 
-        <button className="geo-button" type="submit">
+        <Button
+          variant="contained"
+          color="primary"
+          className="submit"
+          type="submit"
+        >
           Submit
-        </button>
+        </Button>
       </form>
     </div>
   );

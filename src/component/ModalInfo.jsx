@@ -9,35 +9,39 @@ export const ModalInfo = ({
   id,
   modalIsOpen,
   isFavorited,
-  addSelectedResource,
-  setShowRating,
   toggleFavorite,
   isGeneratedMapModalOpen,
-  selectedResources,
-  selectedResource,
-  removeSelectedResource,
 }) => {
   const { store, actions } = useContext(Context);
 
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
-  const handleDeselectResource = (resourceId) => {
-    removeSelectedResource(resourceId);
+  const currentSchedule =
+    store.schedules.find((each) => each.resource_id === id) || null;
+
+  const schedule2 = filterNonNullValues(currentSchedule);
+
+  const isEverydaySameSchedule = (formattedSchedule) => {
+    const schedules = Object.values(formattedSchedule);
+    return schedules.every((schedule) => schedule === schedules[0]);
   };
 
-  const handleToggleSelectResource = (event) => {
-    event.stopPropagation();
-    console.log("hnadleToggleSelectR");
-    if (isSelected) {
-      handleDeselectResource(res.id);
-    } else {
-      handleSelectResource(res);
-    }
-  };
+  const formattedSchedule = {};
 
-  const handleSelectResource = (resource) => {
-    addSelectedResource(resource);
-  };
+  Object.keys(schedule2).forEach((key) => {
+    const day = key.replace(/End|Start/g, "");
+    const start = schedule2[`${day}Start`];
+    const end = schedule2[`${day}End`];
+    const formattedStart = formatTime(start);
+    const formattedEnd = formatTime(end);
+    const scheduleString =
+      start && end && formattedStart !== "closed"
+        ? `${formattedStart} - ${formattedEnd}`
+        : "Closed";
+    formattedSchedule[day] = scheduleString;
+  });
+
+  const everydaySameSchedule = isEverydaySameSchedule(formattedSchedule);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -47,8 +51,6 @@ export const ModalInfo = ({
 
     checkLoginStatus();
   }, [store.token, modalIsOpen]);
-
-  // const res = res || {};
 
   function filterNonNullValues(schedule) {
     const result = {};
@@ -76,150 +78,137 @@ export const ModalInfo = ({
     return result;
   }
 
+  // Consolidate the two formatTime functions into a single, corrected one
   function formatTime(time) {
     if (time === "closed") {
-      return "closed";
+      return "Closed";
     }
     if (!time) {
       return "";
     }
-
-    const [hour, minute] = time.split(":");
-    let formattedTime = time;
-
-    if (parseInt(hour) > 12) {
-      formattedTime = `${parseInt(hour) - 12}:${minute} p.m.`;
-    } else {
-      formattedTime = `${hour}:${minute} a.m.`;
+    let [hour, minute] = time.split(":");
+    let numericHour = parseInt(hour, 10);
+    let suffix = numericHour >= 12 ? "p.m." : "a.m.";
+    if (numericHour > 12) {
+      numericHour -= 12;
+    } else if (numericHour === 0) {
+      numericHour = 12; // Handle midnight as 12 AM
     }
-    return formattedTime;
+    return `${numericHour}:${minute} ${suffix}`;
   }
 
-  const isSelected =
-    Array.isArray(selectedResources) &&
-    selectedResources.some((resource) => resource.id === res.id);
-
-  const currentSchedule =
-    store.schedules.find((each) => each.resource_id === id) || null;
-  const schedule2 = filterNonNullValues(currentSchedule);
-  const formattedSchedule = {};
-
-  schedule2 != undefined
-    ? Object.keys(schedule2).forEach((key) => {
-        const day = key.replace(/End|Start/g, "");
-        const start = schedule2[`${day}Start`];
-        const end = schedule2[`${day}End`];
-        const formattedStart = formatTime(start);
-        const formattedEnd = formatTime(end);
-        formattedSchedule[day] =
-          start && end && formattedStart !== "closed"
-            ? `${formattedStart} - ${formattedEnd}`
-            : "Closed";
-      })
-    : "";
-
   return (
-    <div className="resource-info">
-      <Carousel res={res} />
+    <>
+      {/* ADDRESS */}
+      {res.address && (
+        <div className="info-address">
+          {/* <i className="fa-solid fa-map-pin"></i> */}
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+              res.address
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="modal-text"
+          >
+            {res.address}
+          </a>
+        </div>
+      )}
 
       {/* DESCRIPTION */}
+      {res.description && (
+        <p className="modal-text description">{res.description}</p>
+      )}
 
-      <div className="description-div">
-        {!isGeneratedMapModalOpen && (
-          <div className="buttons-modal">
-            {/* <Button
-              variant="contained"
-              color="primary"
-              className={isSelected ? "remove-path" : "add-path"}
-              onClick={handleToggleSelectResource}
-            >
-              {isSelected ? "remove from plan" : "add to plan"}
-            </Button> */}
-            {isLoggedIn && (
-              <div className="modal-button-container">
-                <button
-                  className="add-favorite"
-                  onClick={(event) => toggleFavorite(event)}
-                >
-                  {/* {isFavorited ? (
-                    <i
-                      className="fa-solid fa-heart"
-                      style={{ color: "red" }}
-                    ></i>
-                  ) : (
-                    <i className="fa-regular fa-heart"></i>
-                  )} */}
-                  {isFavorited ? "remove favorite" : "add favorite"}
-                </button>
-
-                <button onClick={() => setShowRating(true)} className="submit">
-                  Rate
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-        {res.description && (
-          <div className="text-description-div">
-            <p className="modal-text description">{res.description}</p>
-          </div>
-        )}
-      </div>
-
-      {/* <div className="info-map-div"> */}
-      <div className="details-div">
-        <div className="details-column">
-          {/* WEBSITE */}
-          {res.website && (
-            <div className="info">
-              <i
-                style={{ color: "blue" }}
-                className="fa-solid fa-earth-americas"
-              ></i>
-              <a
-                href={`https://www.${res.website}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="modal-text"
-              >
-                Visit Website
-              </a>
-            </div>
+      {!isGeneratedMapModalOpen && isLoggedIn && (
+        <Button
+          variant="contained"
+          color="primary"
+          className="add-favorite"
+          onClick={(event) => toggleFavorite(event)}
+        >
+          {isFavorited ? (
+            <>
+              <span class="material-symbols-outlined">remove</span>
+              <span>remove from favorites</span>
+            </>
+          ) : (
+            <>
+              <span class="material-symbols-outlined">add</span>{" "}
+              <span> add to favorites</span>
+            </>
           )}
+        </Button>
+      )}
 
-          {/* SCHEDULE */}
-          {Object.keys(formattedSchedule).length > 0 && (
-            <div className=" info">
-              {/* <div className="sched-div"> */}
-              {Object.entries(formattedSchedule).map(
+      <div className="details-column">
+        {/* WEBSITE */}
+        {res.website && (
+          <div className="info">
+            <i
+              style={{ color: "blue" }}
+              className="fa-solid fa-earth-americas"
+            ></i>
+            <a
+              href={`https://www.${res.website}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="modal-text"
+            >
+              Visit Website
+            </a>
+          </div>
+        )}
+
+        {/* SCHEDULE */}
+        {/* {Object.keys(formattedSchedule).length > 0 && (
+          <div className=" info">
+            {Object.entries(formattedSchedule).map(([day, schedule], index) => (
+              <p
+                key={index}
+                className="modal-center"
+                style={{
+                  color: schedule !== "Closed" ? "green" : "grey",
+                }}
+              >
+                {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
+              </p>
+            ))}
+          </div>
+        )} */}
+
+        {Object.keys(formattedSchedule).length > 0 && (
+          <div className="info">
+            {everydaySameSchedule ? (
+              <p
+                className="modal-center"
+                style={{
+                  color:
+                    formattedSchedule.monday !== "Closed" ? "green" : "grey",
+                }}
+              >
+                Everyday: {formattedSchedule.monday}
+              </p>
+            ) : (
+              Object.entries(formattedSchedule).map(
                 ([day, schedule], index) => (
                   <p
                     key={index}
                     className="modal-center"
                     style={{
-                      color: schedule !== "Closed" ? "green" : "inherit",
+                      color: schedule !== "Closed" ? "green" : "grey",
                     }}
                   >
                     {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
                   </p>
                 )
-              )}
-              {/* </div> */}
-            </div>
-          )}
-        </div>
-      </div>
-      {/* MAP */}
-      {/* {res.latitude && res.longitude && (
-          <div className="modal-map">
-            <ModalMap
-              res={res}
-              latitude={res.latitude}
-              longitude={res.longitude}
-            />
+              )
+            )}
           </div>
-        )} */}
-      {/* </div> */}
-    </div>
+        )}
+        <Carousel res={res} />
+      </div>
+    </>
   );
 };

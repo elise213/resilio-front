@@ -35,15 +35,6 @@ const ToolBox = ({
     setIsToolBoxOpen(!isToolBoxOpen);
   };
 
-  useEffect(() => {
-    const body = document.body;
-    if (isToolBoxOpen) {
-      body.classList.add("toolno-scroll");
-    } else {
-      body.classList.remove("toolno-scroll");
-    }
-  }, [isToolBoxOpen]);
-
   return (
     <>
       {/* <div className="toolnav-container"> */}
