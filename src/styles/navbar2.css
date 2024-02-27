@@ -1,13 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+.intro {
+  font-size: 14px;
+  color: gray;
+  margin-bottom: 4px;
+  font-family: "Inter", sans-serif;
+}
+
 .no-scroll {
   overflow: hidden;
   height: 100%;
 }
 
+.top-logo {
+  width: 120px;
+  margin-bottom: 5px;
+}
+
+.login-link:hover {
+  cursor: pointer;
+}
+
 .split-nav {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 95vh;
   justify-content: space-between;
+}
+
+.side-by {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 25px 0;
+}
+
+.list-container {
+  max-height: 40vh;
+  overflow-y: scroll;
+  border-radius: 2%;
+  border: 1px solid rgb(174, 161, 161);
+}
+
+.list-container-favs {
+  max-height: 20vh;
+  overflow-y: scroll;
+  border-radius: 2%;
+  border: 1px solid gray;
 }
 
 .nav-list {
@@ -22,35 +61,63 @@
   top: 0;
   z-index: 996;
   position: absolute;
-  width: 275px !important;
-  left: -275px !important;
+  width: 350px !important;
+  left: -350px !important;
   height: 100vh;
   display: flex;
   justify-content: flex-start;
   transition: left 0.3s ease;
-  background-color: #464646;
+  /* background-color: #464646; */
+  background-color: white;
   border-radius: 0 30px 0 0;
+}
+
+.favorites-scroll {
+  height: 30vh;
+  overflow-y: scroll;
 }
 
 .active {
   text-decoration: underline;
 }
 
+.nav-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nav-div-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-div-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 2%;
+  margin: 0 0 10px 0;
+}
+
 .nav-item,
 .nav-item a {
   letter-spacing: 2px;
-  color: lavender;
+  color: blue;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 12px;
   z-index: 995;
-  margin-bottom: 20px;
-  font-family: "AwsumSans";
+  font-family: "Inter", sans-serif;
+  margin: 7px 0;
 }
 
 .nav-item:hover,
 .nav-item a:hover {
   cursor: pointer;
-  color: lightgreen !important;
+  color: black !important;
 }
 
 .nav-btn:active {
@@ -70,11 +137,7 @@
 }
 
 .icons {
-  color: white;
-}
-
-.nav-item {
-  margin: 0 20px;
+  color: blue;
 }
 
 .open-icon-nav {
@@ -88,7 +151,7 @@
   top: 0;
   transition: 0.3s ease !important;
   z-index: 995;
-  color: lavender !important;
+  color: blue !important;
 }
 
 .close-icon-nav.open-nav {
@@ -101,18 +164,10 @@
   transition: left 0.3s ease;
 }
 
-.modal-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  z-index: 995;
-  background-color: #464646;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.avatar-material-design {
+  align-self: flex-start;
+  height: 30px;
+  width: 30px;
 }
 
 .modal-open {
@@ -122,8 +177,6 @@
 
 .modal-content-contact {
   max-width: 850px;
-  border-radius: 3px;
-  /* width: 70%; */
   z-index: 999;
 }
 
@@ -136,22 +189,13 @@
 .close-icon-nav:focus,
 .open-icon-nav:hover,
 .open-icon-nav:focus {
-  color: lightgreen !important;
+  color: black !important;
   cursor: pointer;
 }
 
 .new-navbar.open-nav {
   left: 0 !important;
   transition: left 0.3s ease;
-}
-
-.nav-item {
-  margin: 15px 0;
-}
-
-.nav-container {
-  width: 100%;
-  position: absolute;
 }
 
 .close-icon-nav {
@@ -173,20 +217,13 @@
 }
 
 .navbar-content {
-  flex-direction: column;
-  padding: 35px 15px;
-  align-items: flex-start !important;
   display: flex;
-  box-shadow: none !important;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
   display: flex;
   align-items: center;
-  border-radius: 3px;
-  height: 100%;
-  margin: 10px;
-}
-
-.nav-item {
-  margin: 15px 0;
+  overflow-y: scroll;
 }
 
 .close-icon-nav,

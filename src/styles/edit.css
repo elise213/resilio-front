@@ -22,12 +22,10 @@
 }
 
 .form-container {
-  width: 80%;
-  margin: 2em auto;
-  padding: 2em;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: #f7f7f7;
+  /* padding: 20px; */
+  overflow-y: scroll;
+  height: 95vh;
+  box-sizing: border-box;
 }
 
 .geo-form .input-group {

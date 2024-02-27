@@ -12,65 +12,19 @@
   overflow-x: hidden;
 }
 
-/* Regular font */
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSans-BF64c0855677e49.ttf") format("truetype"),
-    url("/fonts/AwsumSans-BF64c085572b0a6.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+.close-contact {
+  font-size: 20px;
+  border: none;
+  z-index: 9999999;
+  align-self: flex-end;
+  color: gray;
 }
 
-/* Bold font */
-/* @font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSansBold-BF64c08556665f3.ttf") format("truetype"),
-    url("/fonts/AwsumSansBold-BF64c08556c5095.otf") format("opentype");
-  font-weight: bold;
-  font-style: normal; */
-/* } */
-
-/* Italic font */
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSansItalic-BF64c085561b552.otf") format("opentype"),
-    url("/fonts/AwsumSansItalic-BF64c0855662543.ttf") format("truetype");
-  font-weight: normal;
-  font-style: italic;
-}
-
-/* Bold Italic font */
-@font-face {
-  font-family: "AwsumSans";
-  src: url("/fonts/AwsumSansBoldItalic-BF64c0855650966.ttf") format("truetype"),
-    url("/fonts/AwsumSansBoldItalic-BF64c08556c0bd3.otf") format("opentype");
-  font-weight: bold;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "InterVariable";
-  src: url("/fonts/Inter-VariableFont_slnt,wght.tff") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-.back-container::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.back-container::-webkit-scrollbar {
-  width: 7px;
-}
-
-.back-container::-webkit-scrollbar-thumb {
-  background-color: lightgreen;
-  border-radius: 4px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.back-container::-webkit-scrollbar-thumb:hover {
-  background-color: darkgreen;
+.close-contact:hover {
+  color: black !important;
+  cursor: pointer;
 }
 
 .back-container {
@@ -78,11 +32,8 @@
 }
 
 .scroll-title {
-  font-family: "AwsumSans";
   font-size: 20px;
   text-align: center;
-  color: lavender;
-  /* margin-top: 10px; */
 }
 
 .no-scroll {
@@ -90,22 +41,10 @@
   height: 100%;
 }
 
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url(/assets/sky.png);
-  background-size: 100vw 100vh;
-  filter: brightness(70%);
-  z-index: -1;
-}
-
 body {
   position: relative;
   overflow: hidden !important;
+  font-family: "Inter", sans-serif;
 }
 
 .radio {
@@ -117,25 +56,7 @@ body {
   color: gray;
 }
 
-/* _____________________________________________________________RESOURCE INFO  */
-
-/* @keyframes wiggle {
-  0% {
-    transform: translateX(-8px);
-  }
-
-  50% {
-    transform: translateX(6px);
-  }
-
-  100% {
-    transform: translateX(-8px);
-  }
-} */
-
-/* _____________________________________________________________Selection-*/
-
-.grand-container {
+.grand-map-container {
   margin: 0;
   justify-content: space-between;
   display: flex;
@@ -143,6 +64,8 @@ body {
   align-items: center;
   overflow: visible !important;
   min-height: 100vh;
+  padding-left: 350px;
+  /* same as nav */
 }
 
 .form-check-inline {
@@ -162,13 +85,6 @@ body {
   margin-left: 5px;
 }
 
-.tell-us {
-  font-family: "Urbanist", sans-serif;
-  font-size: 35px;
-  letter-spacing: 1.3x;
-  margin-bottom: 30px;
-}
-
 .form-check {
   display: flex !important;
   margin: 10px;
@@ -182,7 +98,7 @@ body {
 }
 
 .form-check-label {
-  font-family: "Carme", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   letter-spacing: 1.4x;
 }
@@ -196,25 +112,14 @@ body {
 /* _____________________________________________________________BUTTONS */
 
 .submit {
-  border: 1.5px solid rgb(149, 84, 19) !important;
-  color: rgb(149, 84, 19);
-  border-radius: 3px;
-  font-family: "AwsumSans";
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  background-color: var(--marascoral);
+  /* font-family: "Inter", sans-serif; */
   width: 100%;
-  height: 30px;
-  font-size: medium;
-  border: 1px solid var(--marascoral);
-  cursor: pointer;
-  transition: background-color 0.3s;
-  letter-spacing: 1.1px;
-  margin-top: 5px;
+  color: white;
+  /* background-color: #1976d2; */
 }
 
 .submit:hover {
-  background-color: lightgreen;
-  border: 2px solid rgb(234, 153, 143);
+  background-color: #1565c0;
 }
 
 .swal2-container {
@@ -226,27 +131,5 @@ body {
 @media screen and (max-width: 700px) {
   .checkbox-row {
     margin: 0;
-  }
-
-  .tell-us {
-    font-size: 18px;
-  }
-
-  .favorites-col {
-    width: 40vw;
-  }
-
-  .form-check-label {
-    font-size: 14px;
-  }
-
-  .my-schedule-button.scroll-warning {
-    font-size: 15px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .scroll-title {
-    font-size: 18px;
   }
 }

@@ -1,9 +1,6 @@
 .deckopen-icon-nav {
-  font-size: 16px;
   border-radius: 3px;
   text-align: center;
-  font-family: "AwsumSans", sans-serif;
-  color: rgb(128, 41, 0);
   z-index: 9999;
   margin: 3px;
   display: flex;
@@ -11,6 +8,12 @@
 
 .deckopen-icon-nav:hover {
   color: var(--marascoral) !important;
+}
+
+.grand-resilio-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .saved {
@@ -22,7 +25,6 @@
 .savedButton {
   margin-top: 3px !important;
   background-color: transparent !important;
-  color: lavender !important;
   font-size: 50px !important;
 }
 
@@ -50,28 +52,20 @@
   width: 100%;
 }
 
-.results-message p {
-  margin: 20px 0;
-  text-wrap: nowrap;
-}
-
-.results-message p:hover {
-  cursor: pointer;
-  color: lightgreen;
-}
-
 .modal-div {
+  width: 350px;
+  height: 100%;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 99999999;
   border: none;
-  background-color: transparent;
-  min-width: 90%;
+  flex-direction: column;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-thumb {
@@ -95,18 +89,32 @@
   overflow: hidden;
 }
 
-.geo-button {
-  color: black;
-  border: 1.5px solid var(--coral2);
-  background-color: var(--yellow) !important;
-  font-size: 15px;
-  height: 30px;
-  width: 120px;
+.function-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 15px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+}
+
+#zipcode {
   border-radius: 3px;
-  font-family: "Urbanist", sans-serif !important;
-  margin: 5px;
-  padding: 0px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  height: 30px;
+}
+
+#zipcode:focus {
+  outline: none;
+}
+
+.geo-button {
+  border-radius: 3px;
+  text-align: center;
+  height: 30px;
+  /* box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2); */
 }
 
 .geo-button:hover {
@@ -114,101 +122,37 @@
   cursor: pointer;
 }
 
-.zipcode-input-container {
-  font-family: "Urbanist", sans-serif !important;
-  font-size: 15px;
-}
-
-.function-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-#zipcode {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
-  border: 1.5px solid var(--coral2);
-  border-radius: 3px;
-  text-align: center;
-  background-color: var(--yellow);
-  height: 30px;
-  width: 120px;
-  padding: 0px;
-  margin: 5px;
-}
-
-#zipcode:focus {
-  outline: none;
-}
-
-@media screen and (max-width: 900px) {
-  .new-container {
-    flex-direction: column !important;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .modal-div {
-    width: 100vw;
-    height: 100vh;
-  }
-  .savedButton {
-    font-size: 30px !important;
-  }
-}
-
-@media screen and (max-width: 440px) {
-  .scroll-search-results li {
-    margin: 10px 8px 5px 8px !important;
-  }
-
-  .results-message {
-    font-size: 12px;
-  }
-}
 .donation-modal {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  width: 80%;
-  background-color: white;
-  border: 10px solid lavender;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 99999999;
-  transform: translate(-50%, -50%);
-  padding: 15px;
-  border-radius: 4px;
-}
-
-.donation-text {
-  /* font-family: "Urbanist", sans-serif !important; */
-  font-family: "InterVariable";
-  font-size: 20px;
-  color: rgb(128, 41, 0);
-  letter-spacing: 0.7px;
-  text-align: center;
-}
-
-.donation-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 99999998;
-}
-
-.donation-close {
-  color: lavender;
-  font-size: 25px;
   position: absolute;
-  top: -50px;
-  justify-content: end;
+  left: 0;
+  top: 0;
+  z-index: 9999999;
+  height: 100%;
+  background-color: white;
+  width: 350px;
   display: flex;
-  width: 100%;
-  right: -30px;
+  flex-direction: column;
+
+  padding: 15px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
-.donation-close:hover {
-  color: lightgreen !important;
+.nav-footer {
+  display: flex;
+  font-family: "Inter", sans-serif;
+  color: gray;
+  position: fixed;
+  z-index: 9999999;
+  bottom: 0;
+  right: 0;
+  width: calc(100vw - 350px) !important;
+  justify-self: center;
+  background-color: white !important;
+  width: 100vw;
+  text-align: center;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
 }

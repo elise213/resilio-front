@@ -71,19 +71,17 @@ const Report = () => {
         "women",
         "lgbtq",
         "babies",
-        "migrants",
+        "migrant",
+        "legal",
+        "seniors",
       ];
-      // init filteredCategoryCounts
+
       const filteredCategoryCounts = Object.keys(categoryCounts)
         .filter((key) => validCategories.includes(key.toLowerCase()))
         .reduce((obj, key) => {
           obj[key] = categoryCounts[key];
           return obj;
         }, {});
-
-      // console.log("MR", store.mapResults);
-      // console.log("categoryCounts:", categoryCounts);
-      // console.log("filteredCategoryCounts:", filteredCategoryCounts);
 
       setReport(filteredCategoryCounts);
       actions.setCategoryCounts(filteredCategoryCounts);

@@ -5,6 +5,7 @@ import { ModalInfo } from "./ModalInfo";
 import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
+import Button from "@mui/material/Button";
 
 const Modal = ({
   resource,
@@ -18,11 +19,21 @@ const Modal = ({
   setFavorites,
   showRating,
   setShowRating,
+  setAboutModalIsOpen,
+  setDonationModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
   const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
+
+  const resourceId = resource.id;
+  const tokenExists = sessionStorage.getItem("token");
+
+  const validUserIds = [1, 2, 3, 4];
+  // const isAuthorizedUser = validUserIds.includes(store.user_id);
+  const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10); // Get user ID from session storage and convert it to a number
+  const isAuthorizedUser = validUserIds.includes(userIdFromSession);
 
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
@@ -44,14 +55,6 @@ const Modal = ({
 
     checkLoginStatus();
   }, [store.token, modalIsOpen]);
-
-  // const handleSelectResource = (resource) => {
-  //   addSelectedResource(resource);
-  // };
-
-  // const handleDeselectResource = (resourceId) => {
-  //   removeSelectedResource(resourceId);
-  // };
 
   useEffect(() => {
     const storedFavorites = JSON.parse(
@@ -146,7 +149,6 @@ const Modal = ({
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      // Check if the rating modal is open and the click is outside the rating modal
       if (
         showRating &&
         ratingModalRef.current &&
@@ -166,81 +168,179 @@ const Modal = ({
     };
   }, [showRating]);
 
-  const resourceId = resource.id;
-  const tokenExists = sessionStorage.getItem("token");
-  let categories = actions.processCategory(resource.category);
+  // const resourceId = resource.id;
+  // const tokenExists = sessionStorage.getItem("token");
+  // let categories = actions.processCategory(resource.category);
 
   return (
     <>
-      <div className="modal-content" ref={modalContentRef}>
-        {/* Modal Header */}
-        <div className="modal-header">
-          <div className="modal-close-div">
-            <p className="close-modal" onClick={() => setModalIsOpen(false)}>
-              <i className="fa-solid fa-x"></i>
-            </p>
-          </div>
+      <p className="close-modal" onClick={() => setModalIsOpen(false)}>
+        <span class="material-symbols-outlined">arrow_back_ios</span>
+        Back to search
+      </p>
 
-          <div className="modal-title-div">
-            <div className="modal-title-box">
-              <span>{resource.name}</span>
-            </div>
-            <div
-              className="resource-rating"
-              onClick={() => {
-                toggleRatingModal();
-              }}
-            >
-              {averageRating > 0 ? (
-                <Rating
-                  name="read-only"
-                  value={averageRating}
-                  precision={0.5}
-                  readOnly
+      <div>
+        <div
+          className="resource-rating"
+          onClick={() => {
+            toggleRatingModal();
+          }}
+        >
+          <span className="resource-title">{resource.name}</span>
+          <Rating
+            name="read-only"
+            value={averageRating}
+            precision={0.5}
+            readOnly
+          />
+        </div>
+        {/* {isLoggedIn && !averageRating && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setShowRating(true)}
+          className="submit"
+        >
+          Rate
+        </Button>
+      )} */}
+
+        {/* KEEP THIS!  */}
+
+        {/* <div className="icon-box">
+            {categories.map((category, index) => {
+              const colorStyle = actions.getColorForCategory(category);
+              return (
+                <i
+                  key={index}
+                  className={`${actions.getIconForCategory(
+                    category
+                  )} card-icon`}
+                  style={colorStyle ? colorStyle : {}}
                 />
-              ) : (
-                ""
+              );
+            })}
+          </div> */}
+        {/* </div> */}
+        {/* </div> */}
+        {/* <div className="modal-tools"></div> */}
+        {/* <div className="modal-body"> */}
+        <ModalInfo
+          modalIsOpen={modalIsOpen}
+          id={resource.id}
+          schedule={resource.schedule}
+          res={resource}
+          isFavorited={isFavorited}
+          setShowRating={setShowRating}
+          toggleFavorite={toggleFavorite}
+          isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+          addSelectedResource={addSelectedResource}
+          removeSelectedResource={removeSelectedResource}
+          selectedResource={resource}
+          selectedResources={selectedResources}
+        />
+        {/* <div className="full-comments-section"> */}
+      </div>
+      <div className="modal-footer">
+        <p className="problem">
+          Is there a problem with this information? {""}
+          <span
+            onClick={() => {
+              setDonationModalIsOpen(false);
+              setShowContactModal(true);
+              setAboutModalIsOpen(false);
+            }}
+          >
+            Let us know
+          </span>
+        </p>
+
+        {/* <p className="problem">
+          Click {""}
+          <Link to="/create">here</Link>
+          {""} to create a new resource listing.
+        </p>
+
+        {isLoggedIn && (
+          <p className="problem">
+            Click {""}
+            <Link to={`/edit/${resourceId}`}>here</Link>
+            {""} to edit this resource
+          </p>
+        )} */}
+
+        {isAuthorizedUser && (
+          <>
+            <p className="problem">
+              Click {""}
+              <Link to="/create">here</Link>
+              {""} to create a new resource listing.
+            </p>
+
+            <p className="problem">
+              Click {""}
+              <Link to={`/edit/${resourceId}`}>here</Link>
+              {""} to edit this resource
+            </p>
+          </>
+        )}
+      </div>
+
+      {/* Rating Modal */}
+      {showRating && (
+        <>
+          <div className="donation-modal" ref={ratingModalRef}>
+            <div>
+              <p className="close-rating" onClick={() => setShowRating(false)}>
+                <i className="fa-solid fa-x"></i>
+              </p>
+
+              <span className="">What do You Think of {resource.name} ?</span>
+              <div className="rating-container">
+                <div className="rating-label">
+                  {rating !== null && labels[hover !== -1 ? hover : rating]}
+                </div>
+                <Rating
+                  className="resource-rating"
+                  name="resource-rating"
+                  value={rating}
+                  precision={1}
+                  onChange={(event, newRating) => setRating(newRating)}
+                  onChangeActive={(event, newHover) => {
+                    setHover(newHover);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleRatingSubmit}
+                  className="submit"
+                >
+                  Submit
+                </Button>
+              </div>
+              {isLoggedIn && (
+                <div className="comment-section">
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder={`Write a review of ${resource.name}...`}
+                    maxLength="280"
+                  ></textarea>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="submit"
+                    onClick={handleCommentSubmit}
+                  >
+                    Submit
+                  </Button>
+                </div>
               )}
             </div>
-
-            <div className="icon-box">
-              {categories.map((category, index) => {
-                const colorStyle = actions.getColorForCategory(category);
-                return (
-                  <i
-                    key={index}
-                    className={`${actions.getIconForCategory(
-                      category
-                    )} card-icon`}
-                    style={colorStyle ? colorStyle : {}}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        <div className="modal-tools"></div>
-        <div className="modal-body">
-          <ModalInfo
-            modalIsOpen={modalIsOpen}
-            id={resource.id}
-            schedule={resource.schedule}
-            res={resource}
-            isFavorited={isFavorited}
-            setShowRating={setShowRating}
-            toggleFavorite={toggleFavorite}
-            isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-            addSelectedResource={addSelectedResource}
-            removeSelectedResource={removeSelectedResource}
-            selectedResource={resource}
-            selectedResources={selectedResources}
-          />
-          <div className="full-comments-section">
             {comments.length > 0 && (
               <div className="comments-display">
-                <div className="comment-heading">
-                  <p>User Reviews</p>
-                </div>
+                <div className="intro">User Reviews</div>
                 {comments.map((comment, index) => {
                   const date = new Date(comment.created_at);
                   const formattedDate =
@@ -249,7 +349,7 @@ const Modal = ({
                       month: "short",
                       day: "numeric",
                     }) +
-                    " at " +
+                    ", " +
                     date.toLocaleTimeString("en-US", {
                       hour: "numeric",
                       minute: "2-digit",
@@ -283,76 +383,6 @@ const Modal = ({
                 })}
               </div>
             )}
-
-            {isLoggedIn && (
-              <div className="comment-section">
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  placeholder={`Write a review of ${resource.name}...`}
-                  maxLength="280"
-                ></textarea>
-
-                <button className="submit" onClick={handleCommentSubmit}>
-                  Submit
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="modal-footer">
-            <p className="problem">
-              Is there a problem with this information? {""}
-              <Link to="/Contact">Let us know</Link>
-            </p>
-            <p className="create">
-              Click {""}
-              <Link to="/create">here</Link>
-              {""} to create a new resource listing.
-            </p>
-
-            {tokenExists && (
-              <p className="edit-text">
-                Click {""}
-                <Link to={`/edit/${resourceId}`}>here</Link>
-                {""} to edit this resource
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Rating Modal */}
-      {showRating && (
-        <>
-          <div className="rate-this-resource" ref={ratingModalRef}>
-            <div className="modal-close-div">
-              <p className="close-rating" onClick={() => setShowRating(false)}>
-                <i className="fa-solid fa-x"></i>
-              </p>
-            </div>
-
-            <p className="what-do-you-think">
-              What do You Think of <br />
-              {resource.name} ?
-            </p>
-            <div className="rating-container">
-              <div className="rating-label">
-                {rating !== null && labels[hover !== -1 ? hover : rating]}
-              </div>
-              <Rating
-                name="resource-rating"
-                value={rating}
-                precision={1}
-                onChange={(event, newRating) => setRating(newRating)}
-                onChangeActive={(event, newHover) => {
-                  setHover(newHover);
-                }}
-              />
-              <button onClick={handleRatingSubmit} className="submit">
-                Submit
-              </button>
-            </div>
           </div>
         </>
       )}

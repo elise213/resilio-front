@@ -9,6 +9,7 @@ import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Buttons from "../component/Buttons";
 import Button from "@mui/material/Button";
+import Contact from "../component/Contact";
 
 import { Modal } from "../component";
 import ToolBox from "../component/ToolBox";
@@ -17,6 +18,8 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const INITIAL_CITY_STATE = store.austin[0];
+
+  console.log("user id", store.user_id);
 
   // State to manage selected resources
   const [selectedResources, setSelectedResources] = useState(() => {
@@ -49,7 +52,7 @@ const Home = () => {
   const [message1Open, setMessage1Open] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(true);
   const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
   const [isDeckOpen, setIsDeckOpen] = useState(false);
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
@@ -63,6 +66,8 @@ const Home = () => {
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
+
+  const [showContactModal, setShowContactModal] = useState(false);
   const [zipInput, setZipInput] = useState("");
   const [hoveredItem, setHoveredItem] = useState(null);
 
@@ -83,27 +88,21 @@ const Home = () => {
 
   // FUNCTIONS
 
+  // useEffect(() => {
+  //   const body = document.body;
+  //   if (isNavOpen || showContactModal) {
+  //     body.classList.add("no-scroll");
+  //   } else {
+  //     body.classList.remove("no-scroll");
+  //   }
+  // }, [isNavOpen, showContactModal]);
+
   const toggleNav = () => {
-    // setIsFavoritesOpen(false);
-    // setIsToolBoxOpen(false);
-    setIsDeckOpen(false);
     setIsNavOpen(!isNavOpen);
   };
 
   const togglefavorites = () => {
-    // console.log("togglefavorites clicked");
-    // setIsNavOpen(false);
-    setIsToolBoxOpen(false);
-    // setIsDeckOpen(false);
     setIsFavoritesOpen(!isFavoritesOpen);
-  };
-
-  const toggleCardDeck = () => {
-    // console.log("toggleCardDeck clicked");
-    // setIsFavoritesOpen(false);
-    setIsNavOpen(false);
-    // setIsToolBoxOpen(false);
-    setIsDeckOpen(!isDeckOpen);
   };
 
   const updateSessionStorage = (resources) => {
@@ -407,270 +406,194 @@ const Home = () => {
 
   return (
     <>
-      {/* Site Info */}
-      <Navbar2
-        setOpenLoginModal={setOpenLoginModal}
-        openLoginModal={openLoginModal}
-        categories={categories}
-        setCategories={setCategories}
-        groups={groups}
-        setGroups={setGroups}
-        days={days}
-        setDays={setDays}
-        searchingToday={searchingToday}
-        setSearchingToday={setSearchingToday}
-        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        setIsNavOpen={setIsNavOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        toggleNav={toggleNav}
-        setDonationModalIsOpen={setDonationModalIsOpen}
-        setAboutModalIsOpen={setAboutModalIsOpen}
-      />
-      {loading != undefined && (
-        <div className="loading">
-          <p>{loading}</p>
-        </div>
-      )}
-
-      {/* Filter */}
-      <ToolBox
-        backSide={backSide}
-        categories={categories}
-        setCategories={setCategories}
-        groups={groups}
-        setGroups={setGroups}
-        days={days}
-        setDays={setDays}
-        searchingToday={searchingToday}
-        setSearchingToday={setSearchingToday}
-        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-        isDeckOpen={isDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        setIsNavOpen={setIsNavOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        toggleToolButtonRef={toggleToolButtonRef}
-      />
-      {/* All Resources */}
-      <CardDeck
-        primaryModalRef={primaryModalRef}
-        toggleCardDeck={toggleCardDeck}
-        isDeckOpen={isDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        setIsNavOpen={setIsNavOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        openModal={openModal}
-        closeModal={closeModal}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
-        selectedResources={selectedResources}
-        addSelectedResource={addSelectedResource}
-        removeSelectedResource={removeSelectedResource}
-        favorites={favorites}
-        setFavorites={setFavorites}
-        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-        toggleDeckButtonRef={toggleDeckButtonRef}
-      />
-      {/* Favorites */}
-      <Favorites
-        togglefavorites={togglefavorites}
-        openModal={openModal}
-        closeModal={closeModal}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
-        selectedResources={selectedResources}
-        addSelectedResource={addSelectedResource}
-        removeSelectedResource={removeSelectedResource}
-        setFavorites={setFavorites}
-        favorites={favorites}
-        isDeckOpen={isDeckOpen}
-        isNavOpen={isNavOpen}
-        isFavoritesOpen={isFavoritesOpen}
-        setIsDeckOpen={setIsDeckOpen}
-        setIsNavOpen={setIsNavOpen}
-        isToolBoxOpen={isToolBoxOpen}
-        setIsToolBoxOpen={setIsToolBoxOpen}
-        setIsFavoritesOpen={setIsFavoritesOpen}
-        setOpenLoginModal={setOpenLoginModal}
-        openLoginModal={openLoginModal}
-        toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-        toggleDeckButtonRef={toggleDeckButtonRef}
-      />
-
-      <div className="grand-container">
-        {message1Open && (
-          <>
-            <ErrorBoundary>
-              <SimpleMap
-                toggleCardDeck={toggleCardDeck}
-                toggleToolButtonRef={toggleToolButtonRef}
-                togglefavorites={togglefavorites}
-                setBackSide={setBackSide}
-                backSide={backSide}
-                addSelectedResource={addSelectedResource}
-                removeSelectedResource={removeSelectedResource}
-                favorites={favorites}
-                setFavorites={setFavorites}
-                hoveredItem={hoveredItem}
-                setHoveredItem={setHoveredItem}
-                handleBoundsChange={handleBoundsChange}
-                openModal={openModal}
-                city={city}
-                geoFindMe={geoFindMe}
-                handleZipInputChange={handleZipInputChange}
-                zipInput={zipInput}
-                categories={categories}
-                days={days}
-                groups={groups}
-                setCategories={setCategories}
-                setGroups={setGroups}
-                setDays={setDays}
-                searchingToday={searchingToday}
-                setSearchingToday={setSearchingToday}
-                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                closeModal={closeModal}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                selectedResource={selectedResource}
-                setSelectedResource={setSelectedResource}
-                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-                selectedResources={selectedResources}
-                setSelectedResources={setSelectedResources}
-                toggleNav={toggleNav}
-                isFavoritesOpen={isFavoritesOpen}
-                setIsFavoritesOpen={setIsFavoritesOpen}
-                isToolBoxOpen={isToolBoxOpen}
-                setIsToolBoxOpen={setIsToolBoxOpen}
-                isNavOpen={isNavOpen}
-                isDeckOpen={isDeckOpen}
-                setIsDeckOpen={setIsDeckOpen}
-                toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-                toggleDeckButtonRef={toggleDeckButtonRef}
-              />
-            </ErrorBoundary>
-          </>
-        )}
-
-        <Buttons
-          setIsToolBoxOpen={setIsToolBoxOpen}
-          backSide={backSide}
-          setBackSide={setBackSide}
-          isDeckOpen={isDeckOpen}
-          setIsDeckOpen={setIsDeckOpen}
+      <div className="grand-resilio-container">
+        <Navbar2
+          setOpenLoginModal={setOpenLoginModal}
+          openLoginModal={openLoginModal}
+          categories={categories}
+          setCategories={setCategories}
+          groups={groups}
+          setGroups={setGroups}
+          favorites={favorites}
+          days={days}
+          setDays={setDays}
+          searchingToday={searchingToday}
+          setSearchingToday={setSearchingToday}
+          INITIAL_DAY_STATE={INITIAL_DAY_STATE}
           isNavOpen={isNavOpen}
           isFavoritesOpen={isFavoritesOpen}
           setIsFavoritesOpen={setIsFavoritesOpen}
+          setIsNavOpen={setIsNavOpen}
           isToolBoxOpen={isToolBoxOpen}
-          toggleCardDeck={toggleCardDeck}
+          setIsToolBoxOpen={setIsToolBoxOpen}
+          setIsDeckOpen={setIsDeckOpen}
+          toggleNav={toggleNav}
           togglefavorites={togglefavorites}
-          toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-          toggleDeckButtonRef={toggleDeckButtonRef}
+          setDonationModalIsOpen={setDonationModalIsOpen}
+          setAboutModalIsOpen={setAboutModalIsOpen}
+          openModal={openModal}
+          geoFindMe={geoFindMe}
+          handleZipInputChange={handleZipInputChange}
+          zipInput={zipInput}
         />
-
-        <div className="saved">
-          <Button
-            className="mdc-button savedButton"
-            variant="text"
-            startIcon={
-              <span className="material-symbols-outlined savedButton">
-                favorite
-              </span>
-            }
-            ref={toggleFavoritesButtonRef}
-            onClick={() => togglefavorites()}
-          >
-            {/* Saved */}
-          </Button>
-        </div>
-
-        {modalIsOpen && (
-          <>
-            <div className="modal-overlay"></div>
-            <div className="modal-div" ref={primaryModalRef}>
-              <Modal
-                removeSelectedResource={removeSelectedResource}
-                resource={selectedResource}
-                selectedResources={selectedResources}
-                addSelectedResource={addSelectedResource}
-                modalIsOpen={modalIsOpen}
-                closeModal={closeModal}
-                setModalIsOpen={setModalIsOpen}
-                isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                setFavorites={setFavorites}
-                showRating={showRating}
-                setShowRating={setShowRating}
-              />
-            </div>
-          </>
+        {loading != undefined && (
+          <div className="loading">
+            <p>{loading}</p>
+          </div>
         )}
 
-        {donationModalIsOpen && (
-          <>
-            <div className="donation-overlay">
+        <div className="grand-map-container">
+          {message1Open && (
+            <>
+              <ErrorBoundary>
+                <SimpleMap
+                  // toggleCardDeck={toggleCardDeck}
+                  toggleToolButtonRef={toggleToolButtonRef}
+                  togglefavorites={togglefavorites}
+                  setBackSide={setBackSide}
+                  backSide={backSide}
+                  addSelectedResource={addSelectedResource}
+                  removeSelectedResource={removeSelectedResource}
+                  favorites={favorites}
+                  setFavorites={setFavorites}
+                  hoveredItem={hoveredItem}
+                  setHoveredItem={setHoveredItem}
+                  handleBoundsChange={handleBoundsChange}
+                  openModal={openModal}
+                  city={city}
+                  geoFindMe={geoFindMe}
+                  handleZipInputChange={handleZipInputChange}
+                  zipInput={zipInput}
+                  categories={categories}
+                  days={days}
+                  groups={groups}
+                  setCategories={setCategories}
+                  setGroups={setGroups}
+                  setDays={setDays}
+                  searchingToday={searchingToday}
+                  setSearchingToday={setSearchingToday}
+                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                  closeModal={closeModal}
+                  modalIsOpen={modalIsOpen}
+                  setModalIsOpen={setModalIsOpen}
+                  selectedResource={selectedResource}
+                  setSelectedResource={setSelectedResource}
+                  isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                  setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+                  selectedResources={selectedResources}
+                  setSelectedResources={setSelectedResources}
+                  toggleNav={toggleNav}
+                  isFavoritesOpen={isFavoritesOpen}
+                  setIsFavoritesOpen={setIsFavoritesOpen}
+                  isToolBoxOpen={isToolBoxOpen}
+                  setIsToolBoxOpen={setIsToolBoxOpen}
+                  isNavOpen={isNavOpen}
+                  isDeckOpen={isDeckOpen}
+                  setIsDeckOpen={setIsDeckOpen}
+                  toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+                  toggleDeckButtonRef={toggleDeckButtonRef}
+                />
+              </ErrorBoundary>
+            </>
+          )}
+
+          <Buttons
+            setIsToolBoxOpen={setIsToolBoxOpen}
+            backSide={backSide}
+            setBackSide={setBackSide}
+            isDeckOpen={isDeckOpen}
+            setIsDeckOpen={setIsDeckOpen}
+            isNavOpen={isNavOpen}
+            isFavoritesOpen={isFavoritesOpen}
+            setIsFavoritesOpen={setIsFavoritesOpen}
+            isToolBoxOpen={isToolBoxOpen}
+            setAboutModalIsOpen={setAboutModalIsOpen}
+            togglefavorites={togglefavorites}
+            toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+            toggleDeckButtonRef={toggleDeckButtonRef}
+            setShowContactModal={setShowContactModal}
+            setDonationModalIsOpen={setDonationModalIsOpen}
+          />
+
+          {modalIsOpen && (
+            <>
+              {/* <div className="modal-overlay"></div> */}
+              <div className="modal-div" ref={primaryModalRef}>
+                <Modal
+                  removeSelectedResource={removeSelectedResource}
+                  resource={selectedResource}
+                  selectedResources={selectedResources}
+                  addSelectedResource={addSelectedResource}
+                  modalIsOpen={modalIsOpen}
+                  closeModal={closeModal}
+                  setModalIsOpen={setModalIsOpen}
+                  isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                  setFavorites={setFavorites}
+                  showRating={showRating}
+                  setShowRating={setShowRating}
+                  setAboutModalIsOpen={setAboutModalIsOpen}
+                  setDonationModalIsOpen={setDonationModalIsOpen}
+                />
+              </div>
+            </>
+          )}
+
+          {donationModalIsOpen && (
+            <>
               <div className="donation-modal">
                 <div
-                  className="donation-close"
+                  className="close-contact"
                   onClick={() => {
                     setDonationModalIsOpen(false);
                   }}
                 >
                   <i className="fa-solid fa-x"></i>
                 </div>
-                <p className="donation-text">
+                <p className="intro">
                   We are a 501(c)3, in need of donations and community support.
                   Please Email resourcemap001@gmail.com to connect with us.
                   Thank you very much.
                 </p>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
 
-        {aboutModalIsOpen && (
-          <>
-            <div className="donation-overlay">
+          {aboutModalIsOpen && (
+            <>
               <div className="donation-modal">
                 <div
-                  className="donation-close"
+                  className="close-contact"
                   onClick={() => {
                     setAboutModalIsOpen(false);
                   }}
                 >
                   <i className="fa-solid fa-x"></i>
                 </div>
-                <p className="donation-text">We are ...</p>
+                <p className="intro">
+                  Resilio is a 501(c)3 based in Austin, TX.
+                </p>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
 
-        {isGeneratedMapModalOpen && (
-          <GeneratedTreasureMap
-            closeModal={() => setIsGeneratedMapModalOpen(false)}
-            selectedResources={selectedResources}
-            openModal={openModal}
-            setHoveredItem={setHoveredItem}
-            hoveredItem={hoveredItem}
-            selectedResource={selectedResource}
-            modalIsOpen={modalIsOpen}
-            setIsFavorited={setIsFavorited}
-            isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-            addSelectedResource={addSelectedResource}
-          />
-        )}
+          {showContactModal && (
+            <div className="donation-modal">
+              <span
+                className="close-contact"
+                onClick={() => {
+                  setShowContactModal(false);
+                }}
+              >
+                <i className="fa-solid fa-x"></i>
+              </span>
+              <Contact />
+            </div>
+          )}
+        </div>
+        <div className="nav-footer">
+          <span className="material-symbols-outlined">copyright</span>
+          <span>2024 Resilio All Rights Reserved</span>
+        </div>
       </div>
     </>
   );
