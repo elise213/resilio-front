@@ -114,6 +114,7 @@
   justify-content: flex-start;
   padding: 5px 0 0 20px;
   font-family: "Inter", sans-serif;
+  font-size: 12px;
 }
 
 .my-label {
@@ -165,6 +166,24 @@
   margin: 55px 0;
   display: flex;
   justify-content: center;
+}
+
+.selected-filters-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selected-filter {
+  display: flex;
+  margin: 5px;
+}
+
+.selected-filter span {
+  margin: 5px 0 0 5px;
+}
+
+.selected-filter span:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {
