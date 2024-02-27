@@ -88,14 +88,14 @@ const Home = () => {
 
   // FUNCTIONS
 
-  useEffect(() => {
-    const body = document.body;
-    if (isNavOpen || showContactModal) {
-      body.classList.add("no-scroll");
-    } else {
-      body.classList.remove("no-scroll");
-    }
-  }, [isNavOpen, showContactModal]);
+  // useEffect(() => {
+  //   const body = document.body;
+  //   if (isNavOpen || showContactModal) {
+  //     body.classList.add("no-scroll");
+  //   } else {
+  //     body.classList.remove("no-scroll");
+  //   }
+  // }, [isNavOpen, showContactModal]);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);

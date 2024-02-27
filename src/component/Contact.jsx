@@ -4,6 +4,7 @@ import styles from "../styles/contact.css";
 import CircleType from "circletype";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
+import Button from "@mui/material/Button";
 
 const Contact = () => {
   const circleInstance = useRef();
@@ -86,9 +87,14 @@ const Contact = () => {
         </div>
 
         <div className="contact-submit">
-          <button className="submit" type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            className="submit"
+            type="submit"
+          >
             SEND
-          </button>
+          </Button>
         </div>
       </form>
     </>
