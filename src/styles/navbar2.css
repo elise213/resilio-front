@@ -216,6 +216,14 @@
   left: 285px !important;
 }
 
+.dropdown-content {
+  padding: 0 25px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .navbar-content {
   display: flex;
   flex-direction: column;
