@@ -1,37 +1,24 @@
-.contact-page {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  margin: 15px;
-}
-
-.circle-font {
-  color: lightgreen !important;
-  font-size: 30px !important;
-}
-
 .close-contact {
-  padding: 15px;
-  font-size: 30px;
+  font-size: 20px;
   border: none;
-  background-color: transparent;
-  color: lavender;
-  justify-content: end;
-  position: absolute;
-  display: flex;
-  width: 100%;
   z-index: 9999999;
+  align-self: flex-end;
+  color: gray;
 }
 
 .close-contact:hover {
-  color: lightgreen !important;
+  color: black !important;
   cursor: pointer;
 }
 
 .contact-call {
   display: flex;
   justify-content: center;
+}
+
+.contact-submit {
+  margin-top: 20px;
+  margin-left: 20px;
 }
 
 .label {
@@ -41,13 +28,13 @@
 
 .form-control,
 .send-button {
-  border: 1px solid var(--color1);
   border-radius: 2px;
   width: 100%;
   padding: 10px;
-  font-family: system-ui;
-  box-shadow: 2px 3px 14px 0 rgba(0, 0, 0, 0.2),
-    2px 3px 4px 0 rgba(0, 0, 0, 0.19);
+  border: 1px solid gray;
+  /* font-family: system-ui; */
+  /* box-shadow: 2px 3px 14px 0 rgba(0, 0, 0, 0.2),
+    2px 3px 4px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .form-row {
@@ -57,26 +44,15 @@
 }
 
 .form-col {
-  padding: 10px;
+  padding: 10px 20px;
   box-sizing: border-box;
 }
 
 .form-col-full {
-  width: 100%;
-  padding: 10px;
-  flex: 1;
-}
-
-.contact-form-div {
-  display: flex;
-}
-
-.contact-form {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20px 25px 20px 10px;
-  position: relative;
+  height: 150px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  /* margin-top: 10px; */
 }
 
 .message {
@@ -92,12 +68,8 @@ input textarea {
     top: 180px !important;
     right: 9px;
   }
+}
 
-  .contact-form {
-    padding: 20px 45px 20px 30px !important;
-  }
-
-  .send-button {
-    font-size: small;
-  }
+.contact-form {
+  padding: 10px;
 }

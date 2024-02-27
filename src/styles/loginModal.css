@@ -1,21 +1,26 @@
 .centered {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  /* position: absolute; */
-  left: 50%;
-  /* top: 30%; */
-  /* transform: translateX(-50%); */
+  height: 100vh;
   z-index: 99999;
+  margin-top: 20px;
 }
 
-.login-button {
+.login-button-resilio {
   color: white;
-  background-color: #1976d2; /* Material Design Blue 700 */
+  background-color: #1976d2;
+  border-radius: 20px !important;
+  width: 90px;
+  height: 32px !important;
+  /* margin: 10px 0 !important; */
+  align-self: flex-end;
 }
 
-.login-button:hover {
-  background-color: #1565c0; /* A slightly darker blue on hover */
+.login-button-resilio:hover {
+  background-color: #1565c0;
+}
+
+.login-button-resilio p {
+  font-family: "Inter", sans-serif !important;
+  font-size: 12px !important;
 }
 
 .logOut-logIn {
@@ -33,16 +38,11 @@
 }
 
 .custom-form-check-input {
-  /* position: absolute;
-  opacity: 0; */
   cursor: pointer;
   margin-right: 10px;
-  /* height: 0;
-  width: 0; */
 }
 
 .custom-form-label {
-  /* margin: 5px 0; */
   display: inline-block;
   font-family: "Urbanist", sans-serif;
   letter-spacing: 1px;
@@ -50,42 +50,20 @@
 }
 
 .custom-form-control {
-  display: block;
-  width: 100%;
-  padding: 2px;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 95%;
+  padding: 5px;
+  margin: 10px 0;
+  font-family: "Inter", sans-serif !important;
 }
 
 .custom-login-modal-header {
-  padding: 20px 0 0 0;
   display: flex;
-  align-items: center;
-  display: flex;
-  justify-content: end;
   align-items: center;
   justify-content: flex-end;
 }
 
-.custom-login-modal-body {
-  padding: 1rem;
-}
-
 .custom-login-modal-content {
-  /* position: relative; */
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  outline: 0;
-  border: 2px solid rgb(92, 128, 0);
-  /* margin: 10px; */
+  width: 100%;
 }
 
 .custom-login-modal-footer {
@@ -93,7 +71,6 @@
   text-align: center;
 }
 
-/* Custom submit button style */
 .custom-submit-button {
   width: 100%;
   padding: 10px;
@@ -179,11 +156,6 @@
   text-align: center;
 }
 
-.small-login-modal {
-  overflow: hidden !important;
-  padding: 18px !important;
-}
-
 .login-modal-body {
   background-color: whitesmoke;
   display: flex;
@@ -226,12 +198,12 @@ body.loginModal-open {
 }
 
 .forgot-password {
-  font-family: "Urbanist", sans-serif;
-  letter-spacing: 1px;
+  font-family: "Inter", sans-serif !important;
+  color: gray;
 }
 
 .forgot-password:hover {
-  color: lightgreen;
+  color: black;
   cursor: pointer;
 }
 
@@ -259,16 +231,13 @@ body.loginModal-open {
 }
 
 .login-close {
-  color: blue;
-  font-size: 20px;
-  top: 5px;
-  margin-right: 5px;
+  color: gray;
   transition: 0.3s;
-  /* position: absolute; */
 }
 
 .login-close:hover {
-  color: lightgreen;
+  color: black;
+  cursor: pointer;
 }
 
 .open {

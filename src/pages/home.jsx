@@ -9,6 +9,7 @@ import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Buttons from "../component/Buttons";
 import Button from "@mui/material/Button";
+import Contact from "../component/Contact";
 
 import { Modal } from "../component";
 import ToolBox from "../component/ToolBox";
@@ -63,6 +64,8 @@ const Home = () => {
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedResource, setSelectedResource] = useState(null);
+
+  const [showContactModal, setShowContactModal] = useState(false);
   const [zipInput, setZipInput] = useState("");
   const [hoveredItem, setHoveredItem] = useState(null);
 
@@ -83,9 +86,14 @@ const Home = () => {
 
   // FUNCTIONS
 
-  const toggleContactModal = () => {
-    setShowContactModal(!showContactModal);
-  };
+  useEffect(() => {
+    const body = document.body;
+    if (isNavOpen || showContactModal) {
+      body.classList.add("no-scroll");
+    } else {
+      body.classList.remove("no-scroll");
+    }
+  }, [isNavOpen, showContactModal]);
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -422,7 +430,9 @@ const Home = () => {
         setDonationModalIsOpen={setDonationModalIsOpen}
         setAboutModalIsOpen={setAboutModalIsOpen}
         openModal={openModal}
-        toggleContactModal={toggleContactModal}
+        geoFindMe={geoFindMe}
+        handleZipInputChange={handleZipInputChange}
+        zipInput={zipInput}
       />
       {loading != undefined && (
         <div className="loading">
@@ -495,28 +505,13 @@ const Home = () => {
           isFavoritesOpen={isFavoritesOpen}
           setIsFavoritesOpen={setIsFavoritesOpen}
           isToolBoxOpen={isToolBoxOpen}
-          // toggleCardDeck={toggleCardDeck}
+          setAboutModalIsOpen={setAboutModalIsOpen}
           togglefavorites={togglefavorites}
           toggleFavoritesButtonRef={toggleFavoritesButtonRef}
           toggleDeckButtonRef={toggleDeckButtonRef}
-          toggleContactModal={toggleContactModal}
+          setShowContactModal={setShowContactModal}
+          setDonationModalIsOpen={setDonationModalIsOpen}
         />
-
-        {/* <div className="saved">
-          <Button
-            className="mdc-button savedButton"
-            variant="text"
-            startIcon={
-              <span className="material-symbols-outlined savedButton">
-                favorite
-              </span>
-            }
-            ref={toggleFavoritesButtonRef}
-            onClick={() => togglefavorites()}
-          >
-            {/* Saved */}
-        {/* </Button>
-        </div> */}
 
         {modalIsOpen && (
           <>
@@ -541,42 +536,52 @@ const Home = () => {
 
         {donationModalIsOpen && (
           <>
-            <div className="donation-overlay">
-              <div className="donation-modal">
-                <div
-                  className="donation-close"
-                  onClick={() => {
-                    setDonationModalIsOpen(false);
-                  }}
-                >
-                  <i className="fa-solid fa-x"></i>
-                </div>
-                <p className="donation-text">
-                  We are a 501(c)3, in need of donations and community support.
-                  Please Email resourcemap001@gmail.com to connect with us.
-                  Thank you very much.
-                </p>
+            <div className="donation-modal">
+              <div
+                className="donation-close"
+                onClick={() => {
+                  setDonationModalIsOpen(false);
+                }}
+              >
+                <i className="fa-solid fa-x"></i>
               </div>
+              <p className="intro">
+                We are a 501(c)3, in need of donations and community support.
+                Please Email resourcemap001@gmail.com to connect with us. Thank
+                you very much.
+              </p>
             </div>
           </>
         )}
 
         {aboutModalIsOpen && (
           <>
-            <div className="donation-overlay">
-              <div className="donation-modal">
-                <div
-                  className="donation-close"
-                  onClick={() => {
-                    setAboutModalIsOpen(false);
-                  }}
-                >
-                  <i className="fa-solid fa-x"></i>
-                </div>
-                <p className="donation-text">We are ...</p>
+            <div className="donation-modal">
+              <div
+                className="donation-close"
+                onClick={() => {
+                  setAboutModalIsOpen(false);
+                }}
+              >
+                <i className="fa-solid fa-x"></i>
               </div>
+              <p className="intro">Resilio is a 501(c)3 based in Austin, TX.</p>
             </div>
           </>
+        )}
+
+        {showContactModal && (
+          <div className="donation-modal">
+            <span
+              className="close-contact"
+              onClick={() => {
+                setShowContactModal(false);
+              }}
+            >
+              <i className="fa-solid fa-x"></i>
+            </span>
+            <Contact />
+          </div>
         )}
 
         {/* {isGeneratedMapModalOpen && (

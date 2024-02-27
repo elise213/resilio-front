@@ -8,10 +8,11 @@ const Buttons = ({
   setBackSide,
   setIsNavOpen,
   setAboutModalIsOpen,
-  toggleContactModal,
   toggleToolButtonRef,
   setIsToolBoxOpen,
   isToolBoxOpen,
+  setShowContactModal,
+  setDonationModalIsOpen,
 }) => {
   return (
     <>
@@ -20,8 +21,9 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
-            // setIsNavOpen(false);
+            setDonationModalIsOpen(false);
             setAboutModalIsOpen(true);
+            setShowContactModal(false);
           }}
         >
           ABOUT
@@ -30,8 +32,9 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
-            // setIsNavOpen(false);
-            toggleContactModal();
+            setDonationModalIsOpen(false);
+            setShowContactModal(true);
+            setAboutModalIsOpen(false);
           }}
         >
           CONTACT
@@ -40,8 +43,9 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
-            // setIsNavOpen(false);
+            setAboutModalIsOpen(false);
             setDonationModalIsOpen(true);
+            setShowContactModal(false);
           }}
         >
           DONATE

@@ -85,9 +85,8 @@
 } */
 
 .stack {
-  position: absolute;
-  left: 5px;
-  bottom: 15px;
+display: flex;
+justify-content: space-around;
 }
 
 .flipped > div {
