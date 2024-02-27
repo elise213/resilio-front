@@ -28,9 +28,37 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
   const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
 
-  // const handleToggleDropdown = (id) => {
-  //   setOpenDropdown(openDropdown === id ? null : id);
-  // };
+  const handleRemoveFilter = (id, type) => {
+    const setState = type === "category" ? setCategories : setDays;
+    const stateObj = type === "category" ? categories : days;
+    setState({
+      ...stateObj,
+      [id]: false,
+    });
+  };
+
+  const renderSelectedFilters = (state, type) => {
+    return Object.entries(state)
+      .filter(([, isSelected]) => isSelected)
+      .map(([id]) => {
+        const label =
+          type === "category"
+            ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
+            : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
+        if (!label) return null; // If no label is found, don't render anything
+        return (
+          <div key={id} className="selected-filter">
+            {label}{" "}
+            <span
+              className="material-symbols-outlined"
+              onClick={() => handleRemoveFilter(id, type)}
+            >
+              close
+            </span>
+          </div>
+        );
+      });
+  };
 
   function Dropdown({ id, title, children }) {
     const isOpen = openDropdown === id;
@@ -188,6 +216,10 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
   return (
     <div className={"selection"}>
       <Report />
+      <div className={"selected-filters-container"}>
+        {renderSelectedFilters(categories, "category")}
+        {renderSelectedFilters(days, "day")}
+      </div>
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}
