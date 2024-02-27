@@ -19,7 +19,6 @@
   width: 90px;
   height: 32px !important;
   align-self: flex-start;
-  align-self: flex-end;
 }
 
 .login-button-resilio:hover {
