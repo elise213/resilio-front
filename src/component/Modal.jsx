@@ -149,7 +149,6 @@ const Modal = ({
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      // Check if the rating modal is open and the click is outside the rating modal
       if (
         showRating &&
         ratingModalRef.current &&
@@ -341,9 +340,7 @@ const Modal = ({
             </div>
             {comments.length > 0 && (
               <div className="comments-display">
-                <div className="comment-heading">
-                  <p>User Reviews</p>
-                </div>
+                <div className="intro">User Reviews</div>
                 {comments.map((comment, index) => {
                   const date = new Date(comment.created_at);
                   const formattedDate =

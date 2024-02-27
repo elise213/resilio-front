@@ -16,6 +16,12 @@ export const ModalInfo = ({
 
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
+  const [isReadMore, setIsReadMore] = useState(true);
+
+  const toggleReadMore = () => {
+    setIsReadMore(!isReadMore);
+  };
+
   const currentSchedule =
     store.schedules.find((each) => each.resource_id === id) || null;
 
@@ -118,7 +124,14 @@ export const ModalInfo = ({
 
       {/* DESCRIPTION */}
       {res.description && (
-        <p className="modal-text description">{res.description}</p>
+        <p className="modal-description">
+          {isReadMore ? `${res.description.slice(0, 200)}...` : res.description}
+          {res.description.length > 200 && (
+            <span onClick={toggleReadMore} className="read-more">
+              {isReadMore ? "Read more" : "Show less"}
+            </span>
+          )}
+        </p>
       )}
 
       {!isGeneratedMapModalOpen && isLoggedIn && (
