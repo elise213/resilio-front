@@ -80,7 +80,6 @@
 }
 
 .scroll-title {
-  font-family: "Inter", sans-serif;
   font-size: 20px;
   text-align: center;
   color: lavender;
@@ -94,6 +93,7 @@
 body {
   position: relative;
   overflow: hidden !important;
+  font-family: "Inter", sans-serif;
 }
 
 .radio {

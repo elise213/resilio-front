@@ -47,6 +47,7 @@ const Navbar2 = ({
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -56,6 +57,12 @@ const Navbar2 = ({
 
     checkLoginStatus();
   }, [store.token]);
+
+  useEffect(() => {
+    setHasBoundaryResults(
+      !!store.boundaryResults && store.boundaryResults.length > 0
+    );
+  }, [store.boundaryResults]);
 
   return (
     <>
@@ -71,30 +78,16 @@ const Navbar2 = ({
               src="/assets/RESILIOO.png"
               alt="Resilio Logo"
             />
-            <span className="intro">
-              Use Resilio to find free resources near you.
-            </span>
-            {!isLoggedIn && (
-              <span className="intro">
-                To save your favorite resources, please{" "}
-                <a
-                  className="login-link"
-                  onClick={() => setOpenLoginModal(true)}
-                >
-                  {" "}
-                  Log in
-                </a>
-                .
-              </span>
-            )}
+            <span className="intro">Find free resources near you.</span>
           </div>
-          {store.favorites && store.favorites.length > 0 ? (
+          {hasBoundaryResults ? (
             <>
               <div
                 className="
             nav-div"
               >
                 <div className="side-by">
+                  <span className="intro">Filter Resources </span>
                   <div className="search-bar">
                     <input
                       type="text"
@@ -103,29 +96,28 @@ const Navbar2 = ({
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                   </div>
+                  <ToolBox
+                    backSide={backSide}
+                    categories={categories}
+                    setCategories={setCategories}
+                    groups={groups}
+                    setGroups={setGroups}
+                    days={days}
+                    setDays={setDays}
+                    searchingToday={searchingToday}
+                    setSearchingToday={setSearchingToday}
+                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                    isDeckOpen={isDeckOpen}
+                    isNavOpen={isNavOpen}
+                    isFavoritesOpen={isFavoritesOpen}
+                    isToolBoxOpen={isToolBoxOpen}
+                    setIsDeckOpen={setIsDeckOpen}
+                    setIsNavOpen={setIsNavOpen}
+                    setIsToolBoxOpen={setIsToolBoxOpen}
+                    setIsFavoritesOpen={setIsFavoritesOpen}
+                    toggleToolButtonRef={toggleToolButtonRef}
+                  />
                 </div>
-
-                <ToolBox
-                  backSide={backSide}
-                  categories={categories}
-                  setCategories={setCategories}
-                  groups={groups}
-                  setGroups={setGroups}
-                  days={days}
-                  setDays={setDays}
-                  searchingToday={searchingToday}
-                  setSearchingToday={setSearchingToday}
-                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                  isDeckOpen={isDeckOpen}
-                  isNavOpen={isNavOpen}
-                  isFavoritesOpen={isFavoritesOpen}
-                  isToolBoxOpen={isToolBoxOpen}
-                  setIsDeckOpen={setIsDeckOpen}
-                  setIsNavOpen={setIsNavOpen}
-                  setIsToolBoxOpen={setIsToolBoxOpen}
-                  setIsFavoritesOpen={setIsFavoritesOpen}
-                  toggleToolButtonRef={toggleToolButtonRef}
-                />
               </div>
 
               <div
@@ -197,7 +189,21 @@ const Navbar2 = ({
             className="
             nav-div"
           >
-            {isLoggedIn && store.favorites && store.favorites.length === 0 && (
+            {!isLoggedIn && (
+              <span className="intro">
+                To save your favorite resources, please{" "}
+                <a
+                  className="login-link"
+                  onClick={() => setOpenLoginModal(true)}
+                >
+                  {" "}
+                  Log in
+                </a>
+                .
+              </span>
+            )}
+
+            {isLoggedIn && store.favorites.length == 0 && (
               <span className="intro">
                 Heart resources to add to your Favorites!{" "}
               </span>

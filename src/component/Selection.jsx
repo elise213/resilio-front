@@ -4,14 +4,7 @@ import styles from "../styles/selection.css";
 import MyCheckbox from "./MyCheckbox";
 import Report from "./Report";
 
-const Selection = ({
-  groups,
-  setGroups,
-  categories,
-  setCategories,
-  days,
-  setDays,
-}) => {
+const Selection = ({ categories, setCategories, days, setDays }) => {
   const { store, actions } = useContext(Context);
   const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
@@ -35,14 +28,14 @@ const Selection = ({
   const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
 
-  const handleToggleDropdown = (id) => {
-    setOpenDropdown(openDropdown === id ? null : id);
-  };
+  // const handleToggleDropdown = (id) => {
+  //   setOpenDropdown(openDropdown === id ? null : id);
+  // };
 
   function Dropdown({ id, title, children }) {
     const isOpen = openDropdown === id;
     const toggleDropdown = () => {
-      setOpenDropdown(isOpen ? null : id); // Toggle this dropdown or close if it's already open
+      setOpenDropdown(isOpen ? null : id);
     };
 
     return (
@@ -198,8 +191,8 @@ const Selection = ({
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}
-        {visibleGroupCount > 0 &&
-          renderDropdownColumn("group", groups, setGroups)}
+        {/* {visibleGroupCount > 0 &&
+          renderDropdownColumn("group", groups, setGroups)} */}
         {Object.values(visibleDaysCounts).some((count) => count > 0) &&
           renderDropdownColumn("day", days, setDays)}
       </div>

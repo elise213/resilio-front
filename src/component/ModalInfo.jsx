@@ -166,51 +166,51 @@ export const ModalInfo = ({
         )}
       </div>
 
-      <div className="info-map-div">
-        <div className="details-div">
-          <div className="details-column">
-            {/* WEBSITE */}
-            {res.website && (
-              <div className="info">
-                <i
-                  style={{ color: "blue" }}
-                  className="fa-solid fa-earth-americas"
-                ></i>
-                <a
-                  href={`https://www.${res.website}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="modal-text"
-                >
-                  Visit Website
-                </a>
-              </div>
-            )}
+      {/* <div className="info-map-div"> */}
+      <div className="details-div">
+        <div className="details-column">
+          {/* WEBSITE */}
+          {res.website && (
+            <div className="info">
+              <i
+                style={{ color: "blue" }}
+                className="fa-solid fa-earth-americas"
+              ></i>
+              <a
+                href={`https://www.${res.website}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="modal-text"
+              >
+                Visit Website
+              </a>
+            </div>
+          )}
 
-            {/* SCHEDULE */}
-            {Object.keys(formattedSchedule).length > 0 && (
-              <div className=" info">
-                <div className="sched-div">
-                  {Object.entries(formattedSchedule).map(
-                    ([day, schedule], index) => (
-                      <p
-                        key={index}
-                        className="modal-center"
-                        style={{
-                          color: schedule !== "Closed" ? "green" : "inherit",
-                        }}
-                      >
-                        {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-                      </p>
-                    )
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
+          {/* SCHEDULE */}
+          {Object.keys(formattedSchedule).length > 0 && (
+            <div className=" info">
+              {/* <div className="sched-div"> */}
+              {Object.entries(formattedSchedule).map(
+                ([day, schedule], index) => (
+                  <p
+                    key={index}
+                    className="modal-center"
+                    style={{
+                      color: schedule !== "Closed" ? "green" : "inherit",
+                    }}
+                  >
+                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
+                  </p>
+                )
+              )}
+              {/* </div> */}
+            </div>
+          )}
         </div>
-        {/* MAP */}
-        {/* {res.latitude && res.longitude && (
+      </div>
+      {/* MAP */}
+      {/* {res.latitude && res.longitude && (
           <div className="modal-map">
             <ModalMap
               res={res}
@@ -219,7 +219,7 @@ export const ModalInfo = ({
             />
           </div>
         )} */}
-      </div>
+      {/* </div> */}
     </div>
   );
 };

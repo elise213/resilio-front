@@ -244,8 +244,9 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
       {!openLoginModal &&
         (isLoggedIn ? (
           <Avatar
+            className="avatar-material-design"
             onClick={handleLogout}
-            style={{ cursor: "pointer", backgroundColor: "#1976d2" }} // Customize background color as needed
+            style={{ cursor: "pointer", backgroundColor: "#1976d2" }}
           >
             <i className="fa fa-user" />
           </Avatar>

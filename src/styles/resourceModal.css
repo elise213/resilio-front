@@ -1,21 +1,21 @@
-.modal-close-div {
+/* .modal-close-div {
   display: flex;
   justify-content: center;
   align-items: start !important;
-}
+} */
 
 .resource-name {
   display: flex;
   justify-content: center;
 }
 
-.info-map-div {
+/* .info-map-div {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding: 5px;
-}
+} */
 
 .map-container-modal {
   margin: 10px;
@@ -69,15 +69,14 @@
 }
 
 .close-modal {
-  color: blue;
-  font-size: 20px;
-  /* position: absolute; */
-  /* right: 5px; */
-  /* top: 0; */
+  color: grey;
+  font-family: "Inter", sans-serif;
+  margin: 20px 0;
 }
 
 .close-modal:hover {
-  color: lightgreen;
+  color: black;
+  cursor: pointer;
 }
 
 .modal-title-div {
@@ -90,38 +89,28 @@
 }
 
 .modal-title-div span {
-  margin-left: 20px;
-  font-size: large;
-  margin: 0;
+  font-family: "Inter", sans-serif;
 }
 
 .modal-header-icon {
-  font-size: x-large;
+  /* font-size: x-large; */
   margin-left: 20px;
 }
 
 .close-rating {
-  position: absolute;
+  align-self: flex-end;
   top: 0;
   right: 0;
   margin: 10px;
   font-size: 20px;
-  color: blue;
+  color: grey;
 }
 
 .close-rating:hover {
-  color: lightgreen !important;
+  color: black !important;
 }
 
-.what-do-you-think {
-  font-size: 18px;
-  text-align: center;
-  font-family: "Urbanist";
-  font-weight: 300;
-  letter-spacing: 1px;
-}
-
-.rate-this-resource {
+/* .rate-this-resource {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -139,7 +128,7 @@
   border-radius: 3px;
   box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.3);
   border: 2px solid var(--marascoral);
-}
+} */
 
 .rate-this-resource-toggle {
   /* width: 180px; */
@@ -149,6 +138,10 @@
 
 .resource-rating:hover {
   cursor: pointer;
+}
+
+.resource-rating {
+  margin: 15px 0;
 }
 
 .rating-label {
@@ -185,10 +178,9 @@
 .modal-header {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   color: #000;
-  font-size: large;
+  /* font-size: large; */
 }
 
 .comment-section {
@@ -262,7 +254,6 @@ textarea {
   font-size: 20px;
   color: rgb(149, 84, 19);
   width: 100%;
-  font-family: "AwsumSans";
   justify-content: center;
   display: flex;
   letter-spacing: 1px;
@@ -278,7 +269,6 @@ textarea {
 .modal-footer a {
   font-size: small !important;
   text-decoration: none !important;
-  font-family: "Urbanist", sans-serif;
   letter-spacing: 1px;
 }
 
@@ -289,8 +279,7 @@ textarea {
 }
 
 .modal-title {
-  font-family: "Urbanist", sans-serif;
-  font-size: xx-large;
+  font-size: large;
 }
 
 .modal-content {
@@ -318,11 +307,7 @@ textarea {
 }
 
 .modal-center {
-  text-align: center !important;
-  width: 100%;
-  margin-bottom: 7px;
-  text-decoration: none !important;
-  font-size: 15px;
+  font-family: "Inter", sans-serif;
 }
 
 .modal-center::-webkit-scrollbar-track {
@@ -334,7 +319,7 @@ textarea {
 }
 
 .modal-center::-webkit-scrollbar-thumb {
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
   border-radius: 4px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -364,6 +349,8 @@ body.modal-open {
   text-align: center;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
 }
 
 .info i {
@@ -386,7 +373,7 @@ body.modal-open {
   display: flex;
   justify-content: center;
   position: relative;
-  max-height: 300px;
+
   overflow: hidden;
   margin: 10px 0 30px 0;
 }
@@ -396,8 +383,9 @@ body.modal-open {
 }
 
 .carousel-image {
-  /* width: 100%; */
-  height: 100%;
+  width: 300px;
+  height: 100px;
+  /* height: 100%; */
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
 }
@@ -426,10 +414,10 @@ body.modal-open {
 
 .resource-card-text {
   font-size: medium;
-  color: black;
-  line-height: 1.5;
+  /* color: black; */
+  /* line-height: 1.5; */
   text-decoration: none;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
 }
 
 .details-div {
@@ -465,16 +453,6 @@ body.modal-open {
   width: 100%;
 }
 
-/* .modal-title-box {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  font-size: 20px;
-  font-family: "AwsumSans", sans-serif;
-  color: rgb(149, 84, 19);
-} */
-
 .description-div {
   width: 100%;
   display: flex;
@@ -484,10 +462,9 @@ body.modal-open {
 }
 
 .description {
-  font-family: "Carme", sans-serif;
+  font-family: "Inter", sans-serif;
   line-height: 2;
   display: flex;
-  /* justify-content: center; */
   margin: 0;
   display: flex;
   align-items: end;
@@ -500,7 +477,7 @@ body.modal-open {
 
 .resource-card-text {
   font-size: 14px;
-  font-family: "Urbanist", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .text-description-div {
@@ -511,11 +488,9 @@ body.modal-open {
 }
 
 .modal-text {
-  /* width: 100%; */
   text-decoration: none !important;
   color: black;
-  font-size: 15px;
-  padding: 0 15px;
+  font-size: 12px;
 }
 
 .sched-div {
@@ -532,9 +507,6 @@ body.modal-open {
 @media screen and (max-width: 500px) {
   .resource-card-text {
     font-size: 11px !important;
-  }
-  .modal-center {
-    font-size: 12px !important;
   }
 }
 
