@@ -16,8 +16,9 @@ const Navbar2 = ({
   categories,
   closeModal,
   days,
-  favorites,
   groups,
+  geoFindMe,
+  handleZipInputChange,
   isDeckOpen,
   isFavoritesOpen,
   isNavOpen,
@@ -41,11 +42,9 @@ const Navbar2 = ({
   setSearchingToday,
   toggleNav,
   toggleToolButtonRef,
+  zipInput,
 }) => {
   const { store, actions } = useContext(Context);
-
-  const [showContactModal, setShowContactModal] = useState(false);
-  // const [isLargeScreen, setIsLargeScreen] = useState(store.isLargeScreen);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -58,177 +57,194 @@ const Navbar2 = ({
     checkLoginStatus();
   }, [store.token]);
 
-  // useEffect(() => {
-  //   setIsLargeScreen(store.isLargeScreen);
-  // }, [store.isLargeScreen]);
-
-  useEffect(() => {
-    const body = document.body;
-    if (isNavOpen || showContactModal) {
-      body.classList.add("no-scroll");
-    } else {
-      body.classList.remove("no-scroll");
-    }
-  }, [isNavOpen, showContactModal]);
-
   return (
     <>
-      <div className="nav-container">
-        <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
-          <div
-            onClick={toggleNav}
-            className={`open-icon-nav ${
-              !isFavoritesOpen && !isToolBoxOpen && !isNavOpen && !isDeckOpen
-                ? "closed"
-                : ""
-            }`}
-          >
-            <i className="fas fa-bars"></i>
-          </div>
-
-          <div className={`navbar-content ${isNavOpen ? "open-nav" : ""}`}>
-            <div className="nav-div">
+      <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
+        <div className={`navbar-content`}>
+          <div className={`nav-div`}>
+            <Login
+              openLoginModal={openLoginModal}
+              setOpenLoginModal={setOpenLoginModal}
+            />
+            <img
+              className="top-logo"
+              src="/assets/RESILIOO.png"
+              alt="Resilio Logo"
+            />
+            <span className="intro">
+              Use Resilio to find free resources near you.
+            </span>
+            {!isLoggedIn && (
               <span className="intro">
-                Use this app to search for resources near you. Save resources by
-                logging in with your email.
+                To save your favorite resources, please{" "}
+                <a
+                  className="login-link"
+                  onClick={() => setOpenLoginModal(true)}
+                >
+                  {" "}
+                  Log in
+                </a>
+                .
               </span>
-            </div>
-            <div
-              className="
+            )}
+          </div>
+          {store.favorites && store.favorites.length > 0 ? (
+            <>
+              <div
+                className="
             nav-div"
-            >
-              <div className="side-by">
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+              >
+                <div className="side-by">
+                  <div className="search-bar">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <Login
-                  openLoginModal={openLoginModal}
-                  setOpenLoginModal={setOpenLoginModal}
+
+                <ToolBox
+                  backSide={backSide}
+                  categories={categories}
+                  setCategories={setCategories}
+                  groups={groups}
+                  setGroups={setGroups}
+                  days={days}
+                  setDays={setDays}
+                  searchingToday={searchingToday}
+                  setSearchingToday={setSearchingToday}
+                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                  isDeckOpen={isDeckOpen}
+                  isNavOpen={isNavOpen}
+                  isFavoritesOpen={isFavoritesOpen}
+                  isToolBoxOpen={isToolBoxOpen}
+                  setIsDeckOpen={setIsDeckOpen}
+                  setIsNavOpen={setIsNavOpen}
+                  setIsToolBoxOpen={setIsToolBoxOpen}
+                  setIsFavoritesOpen={setIsFavoritesOpen}
+                  toggleToolButtonRef={toggleToolButtonRef}
                 />
               </div>
 
-              <ToolBox
-                backSide={backSide}
-                categories={categories}
-                setCategories={setCategories}
-                groups={groups}
-                setGroups={setGroups}
-                days={days}
-                setDays={setDays}
-                searchingToday={searchingToday}
-                setSearchingToday={setSearchingToday}
-                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                isDeckOpen={isDeckOpen}
-                isNavOpen={isNavOpen}
-                isFavoritesOpen={isFavoritesOpen}
-                isToolBoxOpen={isToolBoxOpen}
-                setIsDeckOpen={setIsDeckOpen}
-                setIsNavOpen={setIsNavOpen}
-                setIsToolBoxOpen={setIsToolBoxOpen}
-                setIsFavoritesOpen={setIsFavoritesOpen}
-                toggleToolButtonRef={toggleToolButtonRef}
-              />
-            </div>
-
-            <div
-              className="
+              <div
+                className="
             nav-div"
-            >
-              <span className="intro">All Resources </span>
+              >
+                <span className="intro">All Resources </span>
 
-              {store.boundaryResults && store.boundaryResults.length > 0 && (
-                <div className="list-container">
-                  <ul>
-                    {Array.isArray(store.mapResults) &&
-                      store.boundaryResults
-                        .filter(
-                          (resource) =>
-                            resource.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (resource.description &&
-                              resource.description
+                {store.boundaryResults && store.boundaryResults.length > 0 && (
+                  <div className="list-container">
+                    <ul>
+                      {Array.isArray(store.mapResults) &&
+                        store.boundaryResults
+                          .filter(
+                            (resource) =>
+                              resource.name
                                 .toLowerCase()
-                                .includes(searchQuery.toLowerCase()))
-                        )
-                        .map((resource, index) => (
-                          <ResourceCard
-                            key={resource.id}
-                            item={resource}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResources={selectedResources}
-                            addSelectedResource={addSelectedResource}
-                            removeSelectedResource={removeSelectedResource}
-                            setFavorites={setFavorites}
-                          />
-                        ))}
-                  </ul>
+                                .includes(searchQuery.toLowerCase()) ||
+                              (resource.description &&
+                                resource.description
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()))
+                          )
+                          .map((resource, index) => (
+                            <ResourceCard
+                              key={resource.id}
+                              item={resource}
+                              openModal={openModal}
+                              closeModal={closeModal}
+                              modalIsOpen={modalIsOpen}
+                              setModalIsOpen={setModalIsOpen}
+                              selectedResources={selectedResources}
+                              addSelectedResource={addSelectedResource}
+                              removeSelectedResource={removeSelectedResource}
+                              setFavorites={setFavorites}
+                            />
+                          ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="intro">
+                  Please enter a zip code to navigate to a location that is
+                  participating in our platform.
+                </p>
+                <div className="stack">
+                  {/* <button className="geo-button" onClick={() => geoFindMe()}>
+                    geo-location
+                  </button> */}
+
+                  <input
+                    type="text"
+                    id="zipcode"
+                    value={zipInput}
+                    onChange={handleZipInputChange}
+                    maxLength="5"
+                    placeholder="Zip Code"
+                  />
                 </div>
-              )}
-            </div>
-            <div
-              className="
+              </div>
+            </>
+          )}
+
+          <div
+            className="
             nav-div"
-            >
+          >
+            {isLoggedIn && store.favorites && store.favorites.length === 0 && (
+              <span className="intro">
+                Heart resources to add to your Favorites!{" "}
+              </span>
+            )}
+            {isLoggedIn && store.favorites && store.favorites.length > 0 && (
               <span className="intro">Favorites</span>
+            )}
 
-              {store.favorites && store.favorites.length > 0 ? (
-                <div className="list-container-favs">
-                  <ul>
-                    {Array.isArray(store.mapResults) &&
-                      store.boundaryResults
-                        .filter(
-                          (resource) =>
-                            resource.name
+            {store.favorites && store.favorites.length > 0 ? (
+              <div className="list-container-favs">
+                <ul>
+                  {Array.isArray(store.mapResults) &&
+                    store.boundaryResults
+                      .filter(
+                        (resource) =>
+                          resource.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (resource.description &&
+                            resource.description
                               .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (resource.description &&
-                              resource.description
-                                .toLowerCase()
-                                .includes(searchQuery.toLowerCase()))
-                        )
-                        .map((resource, index) => (
-                          <ResourceCard
-                            key={`${resource.id}-${index}`}
-                            item={resource}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResources={selectedResources}
-                            addSelectedResource={addSelectedResource}
-                            removeSelectedResource={removeSelectedResource}
-                            setFavorites={setFavorites}
-                          />
-                        ))}
-                  </ul>
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
+                              .includes(searchQuery.toLowerCase()))
+                      )
+                      .map((resource, index) => (
+                        <ResourceCard
+                          key={`${resource.id}-${index}`}
+                          item={resource}
+                          openModal={openModal}
+                          closeModal={closeModal}
+                          modalIsOpen={modalIsOpen}
+                          setModalIsOpen={setModalIsOpen}
+                          selectedResources={selectedResources}
+                          addSelectedResource={addSelectedResource}
+                          removeSelectedResource={removeSelectedResource}
+                          setFavorites={setFavorites}
+                        />
+                      ))}
+                </ul>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-        </nav>
+        </div>
+      </nav>
 
-        {showContactModal && (
-          // <div className="modal-overlay">
-          <div className="modal-content-contact">
-            <span className="close-contact" onClick={toggleContactModal}>
-              <i className="fa-solid fa-x"></i>
-            </span>
-            <Contact />
-          </div>
-          // </div>
-        )}
-      </div>
+      {/* </div> */}
     </>
   );
 };

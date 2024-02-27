@@ -55,48 +55,6 @@ const Selection = ({
     );
   }
 
-  // const renderDropdownColumn = (type, state, setState) => {
-  //   const ids =
-  //     type === "category" ? categoryIds : type === "group" ? groupIds : dayIds;
-  //   const options =
-  //     type === "category"
-  //       ? store.CATEGORY_OPTIONS
-  //       : type === "group"
-  //       ? store.GROUP_OPTIONS
-  //       : store.DAY_OPTIONS;
-  //   const title = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter
-
-  //   return (
-  //     <Dropdown
-  //       id={type}
-  //       title={`${type.charAt(0).toUpperCase() + type.slice(1)}`}
-  //     >
-  //       <MyCheckbox
-  //         key={`all-${type}`}
-  //         id={`all-${type}`}
-  //         label="All"
-  //         isChecked={areAllUnchecked(state, ids)}
-  //         handleToggle={() => handleToggleAll(setState, state, ids)}
-  //       />
-  //       {options.map((option) => {
-  //         const count =
-  //           type === "day"
-  //             ? dayCounts[option.id] || ""
-  //             : categoryCounts[option.id] || "";
-  //         return (
-  //           <MyCheckbox
-  //             key={option.id}
-  //             id={option.id}
-  //             label={`${option.label} (${count})`}
-  //             isChecked={state[option.id]}
-  //             handleToggle={() => handleToggle(setState, state, option.id)}
-  //           />
-  //         );
-  //       })}
-  //     </Dropdown>
-  //   );
-  // };
-
   const renderDropdownColumn = (type, state, setState) => {
     const ids =
       type === "category" ? categoryIds : type === "group" ? groupIds : dayIds;

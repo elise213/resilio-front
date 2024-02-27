@@ -148,14 +148,15 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
               </div>
             </div>
 
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               type="submit"
               className="submit"
-              style={{ width: "100%", marginTop: "10px" }}
               onClick={handleRegister}
             >
               Register
-            </button>
+            </Button>
 
             <div className="custom-login-modal-footer">
               <div className="forgot-password" onClick={() => setLog("1")}>
@@ -178,31 +179,33 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             <i className="fa-solid fa-x"></i>{" "}
           </span>
         </div>
-        <div className="custom-login-modal-body small-login-modal">
+        <div className="custom-login-modal-body">
           <form>
-            <div className="">
-              <label
+            <>
+              {/* <label
                 htmlFor="exampleInputEmail1"
                 className="custom-form-label margin-cancel"
               >
                 Email address
-              </label>
+              </label> */}
               <input
+                placeholder="Email"
                 type="text"
                 className="custom-form-control"
                 id="exampleInputEmail1"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
-            </div>
+            </>
             <div className="">
-              <label
+              {/* <label
                 htmlFor="exampleInputPassword1"
                 className="custom-form-label"
               >
                 Password
-              </label>
+              </label> */}
               <input
+                placeholder="Password"
                 type="password"
                 className="custom-form-control"
                 id="exampleInputPassword1"
@@ -212,13 +215,15 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             </div>
 
             <div style={{ width: "100%", marginTop: "10px" }}>
-              <button
+              <Button
+                variant="contained"
+                color="primary"
                 type="submit"
                 className="submit"
                 onClick={(e) => handleLogin(e)}
               >
-                Submit
-              </button>
+                Log In
+              </Button>
             </div>
           </form>
         </div>
@@ -236,24 +241,24 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
 
   return (
     <>
-      {isLoggedIn ? (
-        <Avatar
-          onClick={handleLogout}
-          style={{ cursor: "pointer", backgroundColor: "#1976d2" }} // Customize background color as needed
-        >
-          <i className="fa fa-user" />
-        </Avatar>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setOpenLoginModal(true)}
-          style={{ borderRadius: "20px" }}
-        >
-          Log in
-        </Button>
-      )}
-
+      {!openLoginModal &&
+        (isLoggedIn ? (
+          <Avatar
+            onClick={handleLogout}
+            style={{ cursor: "pointer", backgroundColor: "#1976d2" }} // Customize background color as needed
+          >
+            <i className="fa fa-user" />
+          </Avatar>
+        ) : (
+          <Button
+            className="login-button-resilio"
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenLoginModal(true)}
+          >
+            Log in
+          </Button>
+        ))}
       {openLoginModal && <div className="centered">{field}</div>}
     </>
   );
