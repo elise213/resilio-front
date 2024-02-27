@@ -116,7 +116,7 @@ const Navbar2 = ({
                 src="/assets/RESILIOO.png"
                 alt="Resilio Logo"
               />
-              <p className="intro">Find free resources near you.</p>
+              <p className="intro">Free resources in your neighborhood.</p>
             </div>
             <Login
               openLoginModal={openLoginModal}
