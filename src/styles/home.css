@@ -156,3 +156,13 @@
   justify-content: center;
   align-items: center;
 }
+
+@media screen and (max-width: 700px) {
+  .map-container {
+    height: 30vh !important;
+    width: 100vw !important;
+    left: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+  }
+}
