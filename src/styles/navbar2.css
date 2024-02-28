@@ -244,21 +244,14 @@
   display: flex;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .new-navbar {
-    width: 200px !important;
-    left: -200px !important;
+    top: 30vh !important;
+    width: 100% !important;
+    height: 70vh !important;
   }
 
-  .open-icon-nav.closed {
-    left: 220px !important;
-  }
-
-  .close-icon-nav.open-nav {
-    left: 170px !important;
-  }
-
-  .open-icon-nav {
-    font-size: 30px;
+  .navbar-content {
+    width: 100%;
   }
 }
