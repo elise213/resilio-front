@@ -56,6 +56,7 @@ const Contact = () => {
 
       <form ref={form} onSubmit={sendEmail} className="contact-form">
         <div className="contact-form-div">
+          <p className="intro">We would love to hear from you</p>
           <div className="form-col">
             <input
               type="text"
@@ -74,8 +75,8 @@ const Contact = () => {
               placeholder="Email address"
             />
           </div>
-        </div>
-        <div className="contact-form-div">
+          {/* </div>
+        <div className="contact-form-div"> */}
           <div className="form-col-full">
             <textarea
               id="contactTextArea"
@@ -86,17 +87,17 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="contact-submit">
-          <Button
-            variant="contained"
-            color="primary"
-            className="submit"
-            type="submit"
-          >
-            SEND
-          </Button>
-        </div>
+        {/* <div className="contact-submit">
+        </div> */}
       </form>
+      <Button
+        variant="contained"
+        color="primary"
+        className="contact-submit"
+        type="submit"
+      >
+        SEND
+      </Button>
     </>
   );
 };

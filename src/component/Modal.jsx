@@ -175,7 +175,7 @@ const Modal = ({
   return (
     <>
       <p className="close-modal" onClick={() => setModalIsOpen(false)}>
-        <span class="material-symbols-outlined">arrow_back_ios</span>
+        <span className="material-symbols-outlined">arrow_back_ios</span>
         Back to search
       </p>
 
@@ -186,8 +186,11 @@ const Modal = ({
             toggleRatingModal();
           }}
         >
-          <span className="resource-title">{resource.name}</span>
+          <span className="resource-title" style={{ textAlign: "center" }}>
+            {resource.name}
+          </span>
           <Rating
+            style={{ flexDirection: "row" }}
             name="read-only"
             value={averageRating}
             precision={0.5}
@@ -233,7 +236,7 @@ const Modal = ({
           isFavorited={isFavorited}
           setShowRating={setShowRating}
           toggleFavorite={toggleFavorite}
-          isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+          // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
           addSelectedResource={addSelectedResource}
           removeSelectedResource={removeSelectedResource}
           selectedResource={resource}
@@ -241,18 +244,52 @@ const Modal = ({
         />
         {/* <div className="full-comments-section"> */}
       </div>
+
+      {comments.length > 0 && (
+        <div className="comments-display">
+          <div className="intro">User Reviews</div>
+          {comments.map((comment, index) => {
+            const date = new Date(comment.created_at);
+            const formattedDate =
+              date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              }) +
+              ", " +
+              date.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              });
+
+            return (
+              <>
+                <div key={comment.id} className="comment-div">
+                  <div className="comment-content-div">
+                    <p className="comment-content">"{comment.comment_cont}"</p>
+                  </div>
+                  <div className="comment-info">
+                    <div className="comment-user-info">
+                      <p className="comment-info-username">
+                        <i className="fa-solid fa-user"></i> {comment.user_id}{" "}
+                      </p>
+                    </div>
+                    <div className="comment-info-date">
+                      <p className="comment-info-content">{formattedDate}</p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </div>
+      )}
+
       <div className="modal-footer">
         <p className="problem">
           Is there a problem with this information? {""}
-          <span
-            onClick={() => {
-              setDonationModalIsOpen(false);
-              setShowContactModal(true);
-              setAboutModalIsOpen(false);
-            }}
-          >
-            Let us know
-          </span>
+          <span onClick={() => {}}>Let us know</span>
         </p>
 
         {/* <p className="problem">
@@ -294,31 +331,34 @@ const Modal = ({
               <p className="close-rating" onClick={() => setShowRating(false)}>
                 <i className="fa-solid fa-x"></i>
               </p>
-
-              <span className="">What do You Think of {resource.name} ?</span>
-              <div className="rating-container">
-                <div className="rating-label">
-                  {rating !== null && labels[hover !== -1 ? hover : rating]}
+              {isLoggedIn && (
+                <div className="rating-container">
+                  <span className="">
+                    What do You Think of {resource.name} ?
+                  </span>
+                  <div className="rating-label">
+                    {rating !== null && labels[hover !== -1 ? hover : rating]}
+                  </div>
+                  <Rating
+                    className="resource-rating"
+                    name="resource-rating"
+                    value={rating}
+                    precision={1}
+                    onChange={(event, newRating) => setRating(newRating)}
+                    onChangeActive={(event, newHover) => {
+                      setHover(newHover);
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleRatingSubmit}
+                    className="submit"
+                  >
+                    Submit
+                  </Button>
                 </div>
-                <Rating
-                  className="resource-rating"
-                  name="resource-rating"
-                  value={rating}
-                  precision={1}
-                  onChange={(event, newRating) => setRating(newRating)}
-                  onChangeActive={(event, newHover) => {
-                    setHover(newHover);
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleRatingSubmit}
-                  className="submit"
-                >
-                  Submit
-                </Button>
-              </div>
+              )}
               {isLoggedIn && (
                 <div className="comment-section">
                   <textarea
@@ -338,51 +378,6 @@ const Modal = ({
                 </div>
               )}
             </div>
-            {comments.length > 0 && (
-              <div className="comments-display">
-                <div className="intro">User Reviews</div>
-                {comments.map((comment, index) => {
-                  const date = new Date(comment.created_at);
-                  const formattedDate =
-                    date.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    }) +
-                    ", " +
-                    date.toLocaleTimeString("en-US", {
-                      hour: "numeric",
-                      minute: "2-digit",
-                      hour12: true,
-                    });
-
-                  return (
-                    <>
-                      <div key={comment.id} className="comment-div">
-                        <div className="comment-content-div">
-                          <p className="comment-content">
-                            "{comment.comment_cont}"
-                          </p>
-                        </div>
-                        <div className="comment-info">
-                          <div className="comment-user-info">
-                            <p className="comment-info-username">
-                              <i className="fa-solid fa-user"></i>{" "}
-                              {comment.user_id}{" "}
-                            </p>
-                          </div>
-                          <div className="comment-info-date">
-                            <p className="comment-info-content">
-                              {formattedDate}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
-            )}
           </div>
         </>
       )}

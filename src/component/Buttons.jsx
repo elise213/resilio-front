@@ -4,13 +4,7 @@ import Button from "@mui/material/Button";
 import EmailList from "./EmailList";
 
 const Buttons = ({
-  backSide,
-  setBackSide,
-  setIsNavOpen,
   setAboutModalIsOpen,
-  toggleToolButtonRef,
-  setIsToolBoxOpen,
-  isToolBoxOpen,
   setShowContactModal,
   setDonationModalIsOpen,
 }) => {

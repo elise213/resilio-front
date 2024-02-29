@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Contact from "../component/Contact";
 
 import { Modal } from "../component";
-import ToolBox from "../component/ToolBox";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -21,7 +20,6 @@ const Home = () => {
 
   console.log("user id", store.user_id);
 
-  // State to manage selected resources
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
     return storedResources;
@@ -40,34 +38,25 @@ const Home = () => {
   const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
-  // REF
-  const toggleFavoritesButtonRef = useRef(null);
-  const toggleDeckButtonRef = useRef(null);
-  const toggleToolButtonRef = useRef(null);
-  const primaryModalRef = useRef(null);
-
   // STATES
+
   const [loading, setLoading] = useState(false);
   const [backSide, setBackSide] = useState(false);
-  const [message1Open, setMessage1Open] = useState(true);
+
   const [userLocation, setUserLocation] = useState(null);
   const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(true);
-  const [isToolBoxOpen, setIsToolBoxOpen] = useState(false);
-  const [isDeckOpen, setIsDeckOpen] = useState(false);
-  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
+
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLocating, setIsLocating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [showRating, setShowRating] = useState(false);
-  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
 
-  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [showRating, setShowRating] = useState(false);
+
   const [selectedResource, setSelectedResource] = useState(null);
 
-  const [showContactModal, setShowContactModal] = useState(false);
   const [zipInput, setZipInput] = useState("");
   const [hoveredItem, setHoveredItem] = useState(null);
 
@@ -97,13 +86,13 @@ const Home = () => {
   //   }
   // }, [isNavOpen, showContactModal]);
 
-  const toggleNav = () => {
-    setIsNavOpen(!isNavOpen);
-  };
+  // const toggleNav = () => {
+  //   setIsNavOpen(!isNavOpen);
+  // };
 
-  const togglefavorites = () => {
-    setIsFavoritesOpen(!isFavoritesOpen);
-  };
+  // const togglefavorites = () => {
+  //   setIsFavoritesOpen(!isFavoritesOpen);
+  // };
 
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
@@ -417,20 +406,20 @@ const Home = () => {
           favorites={favorites}
           days={days}
           setDays={setDays}
-          searchingToday={searchingToday}
+          // searchingToday={searchingToday}
           setSearchingToday={setSearchingToday}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-          isNavOpen={isNavOpen}
-          isFavoritesOpen={isFavoritesOpen}
-          setIsFavoritesOpen={setIsFavoritesOpen}
-          setIsNavOpen={setIsNavOpen}
-          isToolBoxOpen={isToolBoxOpen}
-          setIsToolBoxOpen={setIsToolBoxOpen}
-          setIsDeckOpen={setIsDeckOpen}
-          toggleNav={toggleNav}
-          togglefavorites={togglefavorites}
-          setDonationModalIsOpen={setDonationModalIsOpen}
-          setAboutModalIsOpen={setAboutModalIsOpen}
+          // isNavOpen={isNavOpen}
+          // isFavoritesOpen={isFavoritesOpen}
+          // setIsFavoritesOpen={setIsFavoritesOpen}
+          // setIsNavOpen={setIsNavOpen}
+          // isToolBoxOpen={isToolBoxOpen}
+          // setIsToolBoxOpen={setIsToolBoxOpen}
+          // setIsDeckOpen={setIsDeckOpen}
+          // toggleNav={toggleNav}
+          // togglefavorites={togglefavorites}
+          // setDonationModalIsOpen={setDonationModalIsOpen}
+          // setAboutModalIsOpen={setAboutModalIsOpen}
           openModal={openModal}
           geoFindMe={geoFindMe}
           handleZipInputChange={handleZipInputChange}
@@ -443,157 +432,83 @@ const Home = () => {
         )}
 
         <div className="grand-map-container">
-          {message1Open && (
-            <>
-              <ErrorBoundary>
-                <SimpleMap
-                  // toggleCardDeck={toggleCardDeck}
-                  toggleToolButtonRef={toggleToolButtonRef}
-                  togglefavorites={togglefavorites}
-                  setBackSide={setBackSide}
-                  backSide={backSide}
-                  addSelectedResource={addSelectedResource}
-                  removeSelectedResource={removeSelectedResource}
-                  favorites={favorites}
-                  setFavorites={setFavorites}
-                  hoveredItem={hoveredItem}
-                  setHoveredItem={setHoveredItem}
-                  handleBoundsChange={handleBoundsChange}
-                  openModal={openModal}
-                  city={city}
-                  geoFindMe={geoFindMe}
-                  handleZipInputChange={handleZipInputChange}
-                  zipInput={zipInput}
-                  categories={categories}
-                  days={days}
-                  groups={groups}
-                  setCategories={setCategories}
-                  setGroups={setGroups}
-                  setDays={setDays}
-                  searchingToday={searchingToday}
-                  setSearchingToday={setSearchingToday}
-                  INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                  closeModal={closeModal}
-                  modalIsOpen={modalIsOpen}
-                  setModalIsOpen={setModalIsOpen}
-                  selectedResource={selectedResource}
-                  setSelectedResource={setSelectedResource}
-                  isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                  setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-                  selectedResources={selectedResources}
-                  setSelectedResources={setSelectedResources}
-                  toggleNav={toggleNav}
-                  isFavoritesOpen={isFavoritesOpen}
-                  setIsFavoritesOpen={setIsFavoritesOpen}
-                  isToolBoxOpen={isToolBoxOpen}
-                  setIsToolBoxOpen={setIsToolBoxOpen}
-                  isNavOpen={isNavOpen}
-                  isDeckOpen={isDeckOpen}
-                  setIsDeckOpen={setIsDeckOpen}
-                  toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-                  toggleDeckButtonRef={toggleDeckButtonRef}
-                />
-              </ErrorBoundary>
-            </>
-          )}
+          {/* {message1Open && ( */}
+          <>
+            <ErrorBoundary>
+              <SimpleMap
+                // toggleCardDeck={toggleCardDeck}
+                // toggleToolButtonRef={toggleToolButtonRef}
+                // togglefavorites={togglefavorites}
+                // setBackSide={setBackSide}
+                // backSide={backSide}
+                addSelectedResource={addSelectedResource}
+                removeSelectedResource={removeSelectedResource}
+                favorites={favorites}
+                setFavorites={setFavorites}
+                hoveredItem={hoveredItem}
+                setHoveredItem={setHoveredItem}
+                handleBoundsChange={handleBoundsChange}
+                openModal={openModal}
+                city={city}
+                // geoFindMe={geoFindMe}
+                // handleZipInputChange={handleZipInputChange}
+                zipInput={zipInput}
+                categories={categories}
+                days={days}
+                groups={groups}
+                setCategories={setCategories}
+                setGroups={setGroups}
+                setDays={setDays}
+                // searchingToday={searchingToday}
+                setSearchingToday={setSearchingToday}
+                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                closeModal={closeModal}
+                modalIsOpen={modalIsOpen}
+                setModalIsOpen={setModalIsOpen}
+                selectedResource={selectedResource}
+                setSelectedResource={setSelectedResource}
+                // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                // setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
+                selectedResources={selectedResources}
+                setSelectedResources={setSelectedResources}
+                // toggleNav={toggleNav}
+                // isFavoritesOpen={isFavoritesOpen}
+                // setIsFavoritesOpen={setIsFavoritesOpen}
+                // isToolBoxOpen={isToolBoxOpen}
+                // setIsToolBoxOpen={setIsToolBoxOpen}
+                // isNavOpen={isNavOpen}
+                // isDeckOpen={isDeckOpen}
+                // setIsDeckOpen={setIsDeckOpen}
+                // toggleFavoritesButtonRef={toggleFavoritesButtonRef}
+                // toggleDeckButtonRef={toggleDeckButtonRef}
+              />
+            </ErrorBoundary>
+          </>
+          {/* )
+          } */}
+        </div>
 
-          <Buttons
-            setIsToolBoxOpen={setIsToolBoxOpen}
-            backSide={backSide}
-            setBackSide={setBackSide}
-            isDeckOpen={isDeckOpen}
-            setIsDeckOpen={setIsDeckOpen}
-            isNavOpen={isNavOpen}
-            isFavoritesOpen={isFavoritesOpen}
-            setIsFavoritesOpen={setIsFavoritesOpen}
-            isToolBoxOpen={isToolBoxOpen}
-            setAboutModalIsOpen={setAboutModalIsOpen}
-            togglefavorites={togglefavorites}
-            toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-            toggleDeckButtonRef={toggleDeckButtonRef}
-            setShowContactModal={setShowContactModal}
-            setDonationModalIsOpen={setDonationModalIsOpen}
-          />
-
-          {modalIsOpen && (
-            <>
-              {/* <div className="modal-overlay"></div> */}
-              <div className="modal-div" ref={primaryModalRef}>
-                <Modal
-                  removeSelectedResource={removeSelectedResource}
-                  resource={selectedResource}
-                  selectedResources={selectedResources}
-                  addSelectedResource={addSelectedResource}
-                  modalIsOpen={modalIsOpen}
-                  closeModal={closeModal}
-                  setModalIsOpen={setModalIsOpen}
-                  isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                  setFavorites={setFavorites}
-                  showRating={showRating}
-                  setShowRating={setShowRating}
-                  setAboutModalIsOpen={setAboutModalIsOpen}
-                  setDonationModalIsOpen={setDonationModalIsOpen}
-                />
-              </div>
-            </>
-          )}
-
-          {donationModalIsOpen && (
-            <>
-              <div className="donation-modal">
-                <div
-                  className="close-contact"
-                  onClick={() => {
-                    setDonationModalIsOpen(false);
-                  }}
-                >
-                  <i className="fa-solid fa-x"></i>
-                </div>
-                <p className="intro">
-                  We are a 501(c)3, in need of donations and community support.
-                  Please Email resourcemap001@gmail.com to connect with us.
-                  Thank you very much.
-                </p>
-              </div>
-            </>
-          )}
-
-          {aboutModalIsOpen && (
-            <>
-              <div className="donation-modal">
-                <div
-                  className="close-contact"
-                  onClick={() => {
-                    setAboutModalIsOpen(false);
-                  }}
-                >
-                  <i className="fa-solid fa-x"></i>
-                </div>
-                <p className="intro">
-                  Resilio is a 501(c)3 based in Austin, TX.
-                </p>
-              </div>
-            </>
-          )}
-
-          {showContactModal && (
-            <div className="donation-modal">
-              <span
-                className="close-contact"
-                onClick={() => {
-                  setShowContactModal(false);
-                }}
-              >
-                <i className="fa-solid fa-x"></i>
-              </span>
-              <Contact />
+        {modalIsOpen && (
+          <>
+            <div className="modal-div">
+              <Modal
+                removeSelectedResource={removeSelectedResource}
+                resource={selectedResource}
+                selectedResources={selectedResources}
+                addSelectedResource={addSelectedResource}
+                modalIsOpen={modalIsOpen}
+                closeModal={closeModal}
+                setModalIsOpen={setModalIsOpen}
+                // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+                setFavorites={setFavorites}
+                showRating={showRating}
+                setShowRating={setShowRating}
+                // setAboutModalIsOpen={setAboutModalIsOpen}
+                // setDonationModalIsOpen={setDonationModalIsOpen}
+              />
             </div>
-          )}
-        </div>
-        <div className="nav-footer">
-          <span className="material-symbols-outlined">copyright</span>
-          <span>2024 Resilio All Rights Reserved</span>
-        </div>
+          </>
+        )}
       </div>
     </>
   );
