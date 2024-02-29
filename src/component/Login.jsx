@@ -70,7 +70,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
         <div className="custom-login-modal-body">
           {/* <div className="custom-login-modal-footer"> */}
           <div className="close-modal" onClick={() => setLog("1")}>
-            <span class="material-symbols-outlined">arrow_back_ios</span>
+            <span className="material-symbols-outlined">arrow_back_ios</span>
             Back to log in
           </div>
           {/* </div> */}

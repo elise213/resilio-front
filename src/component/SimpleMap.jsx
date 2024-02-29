@@ -9,7 +9,7 @@ import Styles from "../styles/simple_map.css";
 import Button from "@mui/material/Button";
 
 const SimpleMap = ({
-  favorites,
+  // favorites,
   setFavorites,
   openModal,
   handleBoundsChange,
@@ -21,9 +21,9 @@ const SimpleMap = ({
   isDeckOpen,
   setIsDeckOpen,
   city,
-  geoFindMe,
-  handleZipInputChange,
-  zipInput,
+  // geoFindMe,
+  // handleZipInputChange,
+  // zipInput,
   userLocation,
   closeModal,
   modalIsOpen,
@@ -39,11 +39,11 @@ const SimpleMap = ({
   removeSelectedResource,
   setBackSide,
   backSide,
-  toggleNav,
+  // toggleNav,
   togglefavorites,
   toggleCardDeck,
   toggleFavoritesButtonRef,
-  toggleToolButtonRef,
+  // toggleToolButtonRef,
   toggleDeckButtonRef,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
@@ -146,81 +146,43 @@ const SimpleMap = ({
 
   return (
     <>
-      <div className={`map-frame ${backSide ? "flipped" : ""}`}>
-        {backSide ? (
-          <>
-            <MapBack
-              toggleCardDeck={toggleCardDeck}
-              togglefavorites={togglefavorites}
-              hoveredItem={hoveredItem}
-              setHoveredItem={setHoveredItem}
-              openModal={openModal}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-              setFavorites={setFavorites}
-              setBackSide={setBackSide}
-              backSide={backSide}
-              isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-              setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
-              city={city}
-              selectedResources={selectedResources}
-              setSelectedResources={setSelectedResources}
-              removeSelectedResource={removeSelectedResource}
-              isFavoritesOpen={isFavoritesOpen}
-              isDeckOpen={isDeckOpen}
-              isNavOpen={isNavOpen}
-              isToolBoxOpen={isToolBoxOpen}
-              setIsToolBoxOpen={setIsToolBoxOpen}
-              toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-              toggleDeckButtonRef={toggleDeckButtonRef}
-              setIsFavoritesOpen={setIsFavoritesOpen}
-              setIsDeckOpen={setIsDeckOpen}
-            />
-          </>
-        ) : (
-          <>
-            {/* <div className="map-container-container"> */}
-            {/* <p className="the-plan">THE MAP</p> */}
-            <div
-              ref={mapContainerRef}
-              className="map-container"
-              style={{ height: "100vh", width: "auto" }}
-            >
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: apiKey }}
-                center={city.center}
-                bounds={city.bounds}
-                defaultZoom={12}
-                onChange={(e) => handleBoundsChange(e)}
-              >
-                {store.boundaryResults.map((result, i) => (
-                  <Marker
-                    lat={result.latitude}
-                    lng={result.longitude}
-                    text={result.name}
-                    key={i}
-                    id={result.id}
-                    openModal={openModal}
-                    result={result}
-                  />
-                ))}
+      <div className={`map-frame`}>
+        <div
+          ref={mapContainerRef}
+          className="map-container"
+          style={{ height: "100vh", width: "auto" }}
+        >
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey }}
+            center={city.center}
+            bounds={city.bounds}
+            defaultZoom={12}
+            onChange={(e) => handleBoundsChange(e)}
+          >
+            {store.boundaryResults.map((result, i) => (
+              <Marker
+                lat={result.latitude}
+                lng={result.longitude}
+                text={result.name}
+                key={i}
+                id={result.id}
+                openModal={openModal}
+                result={result}
+              />
+            ))}
 
-                {userLocation && (
-                  <Marker
-                    lat={userLocation.lat}
-                    lng={userLocation.lng}
-                    text="You are here!"
-                    color="maroon"
-                  />
-                )}
-              </GoogleMapReact>
-            </div>
-            {/* </div> */}
-            <div className="simple-selection"></div>
-          </>
-        )}
+            {userLocation && (
+              <Marker
+                lat={userLocation.lat}
+                lng={userLocation.lng}
+                text="You are here!"
+                color="maroon"
+              />
+            )}
+          </GoogleMapReact>
+        </div>
+        {/* </div> */}
+        <div className="simple-selection"></div>
       </div>
     </>
   );
