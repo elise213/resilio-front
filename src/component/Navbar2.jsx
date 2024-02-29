@@ -13,7 +13,8 @@ import Modal from "../component/Modal";
 const Navbar2 = ({
   INITIAL_DAY_STATE,
   addSelectedResource,
-  // backSide,
+  showContactModal,
+  setShowContactModal,
   categories,
   closeModal,
   days,
@@ -44,7 +45,7 @@ const Navbar2 = ({
 
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
-  const [showContactModal, setShowContactModal] = useState(false);
+
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
 

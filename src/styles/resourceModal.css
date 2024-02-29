@@ -118,6 +118,11 @@
   align-items: center;
 }
 
+.resource-info {
+  margin-top: 50px;
+  padding: 10px;
+}
+
 .rating-label {
   min-height: 25px;
 }
@@ -127,6 +132,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.rating-container span {
+  flex-direction: row !important;
 }
 
 .comment-section {
@@ -210,11 +219,6 @@ textarea {
 
 .problem-link {
   text-decoration: none !important;
-}
-
-.modal-div {
-  overflow-y: scroll !important;
-  scroll-behavior: smooth;
 }
 
 .modal-center {
