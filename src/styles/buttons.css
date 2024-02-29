@@ -4,8 +4,3 @@
   border: 1px solid var(--marascoral) !important;
   background-color: lavender !important;
 }
-
-.footer-container {
-  display: flex;
-  flex-direction: column;
-}

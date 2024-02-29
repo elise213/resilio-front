@@ -11,12 +11,6 @@
 
 /* Footer */
 
-.all-rights {
-  letter-spacing: 1.6px;
-  font-size: medium;
-  margin-top: 20px;
-}
-
 .footer-logo {
   max-width: 120px;
   margin: 50px 15px 15px 15px;
@@ -38,10 +32,4 @@
   width: 200px;
   justify-content: space-around;
   margin-top: 10px;
-}
-
-@media screen and (max-width: 700px) {
-  .all-rights {
-    font-size: small;
-  }
 }

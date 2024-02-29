@@ -37,28 +37,28 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     });
   };
 
-  const renderSelectedFilters = (state, type) => {
-    return Object.entries(state)
-      .filter(([, isSelected]) => isSelected)
-      .map(([id]) => {
-        const label =
-          type === "category"
-            ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
-            : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
-        if (!label) return null; // If no label is found, don't render anything
-        return (
-          <div key={id} className="selected-filter">
-            {label}{" "}
-            <span
-              className="material-symbols-outlined"
-              onClick={() => handleRemoveFilter(id, type)}
-            >
-              close
-            </span>
-          </div>
-        );
-      });
-  };
+  // const renderSelectedFilters = (state, type) => {
+  //   return Object.entries(state)
+  //     .filter(([, isSelected]) => isSelected)
+  //     .map(([id]) => {
+  //       const label =
+  //         type === "category"
+  //           ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
+  //           : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
+  //       if (!label) return null; // If no label is found, don't render anything
+  //       return (
+  //         <div key={id} className="selected-filter">
+  //           {label}{" "}
+  //           <span
+  //             className="material-symbols-outlined"
+  //             onClick={() => handleRemoveFilter(id, type)}
+  //           >
+  //             close
+  //           </span>
+  //         </div>
+  //       );
+  //     });
+  // };
 
   function Dropdown({ id, title, children }) {
     const isOpen = openDropdown === id;
@@ -213,22 +213,22 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     });
   };
 
+  // const toggleLocation = () => {
+  //   setIsLocationOpen(!isLocationOpen);
+  // };
+
   return (
-    <div className={"selection"}>
+    <>
       <Report />
-      <div className={"selected-filters-container"}>
-        {renderSelectedFilters(categories, "category")}
-        {renderSelectedFilters(days, "day")}
-      </div>
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
-          renderDropdownColumn("category", categories, setCategories)}
+          renderDropdownColumn("filter by Category", categories, setCategories)}
         {/* {visibleGroupCount > 0 &&
           renderDropdownColumn("group", groups, setGroups)} */}
         {Object.values(visibleDaysCounts).some((count) => count > 0) &&
-          renderDropdownColumn("day", days, setDays)}
+          renderDropdownColumn("filter by Day", days, setDays)}
       </div>
-    </div>
+    </>
   );
 };
 
