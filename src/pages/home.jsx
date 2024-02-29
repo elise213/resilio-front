@@ -1,9 +1,8 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
-import GeneratedTreasureMap from "../component/GeneratedTreasureMap";
 import Navbar2 from "../component/Navbar2";
-import CardDeck from "../component/CardDeck";
-import Favorites from "../component/Favorites";
+// import CardDeck from "../component/CardDeck";
+// import Favorites from "../component/Favorites";
 import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
@@ -19,6 +18,8 @@ const Home = () => {
   const INITIAL_CITY_STATE = store.austin[0];
 
   console.log("user id", store.user_id);
+
+  const [showContactModal, setShowContactModal] = useState(false);
 
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
@@ -406,24 +407,14 @@ const Home = () => {
           favorites={favorites}
           days={days}
           setDays={setDays}
-          // searchingToday={searchingToday}
           setSearchingToday={setSearchingToday}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-          // isNavOpen={isNavOpen}
-          // isFavoritesOpen={isFavoritesOpen}
-          // setIsFavoritesOpen={setIsFavoritesOpen}
-          // setIsNavOpen={setIsNavOpen}
-          // isToolBoxOpen={isToolBoxOpen}
-          // setIsToolBoxOpen={setIsToolBoxOpen}
-          // setIsDeckOpen={setIsDeckOpen}
-          // toggleNav={toggleNav}
-          // togglefavorites={togglefavorites}
-          // setDonationModalIsOpen={setDonationModalIsOpen}
-          // setAboutModalIsOpen={setAboutModalIsOpen}
           openModal={openModal}
           geoFindMe={geoFindMe}
           handleZipInputChange={handleZipInputChange}
           zipInput={zipInput}
+          showContactModal={showContactModal}
+          setShowContactModal={setShowContactModal}
         />
         {loading != undefined && (
           <div className="loading">
@@ -432,15 +423,9 @@ const Home = () => {
         )}
 
         <div className="grand-map-container">
-          {/* {message1Open && ( */}
           <>
             <ErrorBoundary>
               <SimpleMap
-                // toggleCardDeck={toggleCardDeck}
-                // toggleToolButtonRef={toggleToolButtonRef}
-                // togglefavorites={togglefavorites}
-                // setBackSide={setBackSide}
-                // backSide={backSide}
                 addSelectedResource={addSelectedResource}
                 removeSelectedResource={removeSelectedResource}
                 favorites={favorites}
@@ -450,8 +435,6 @@ const Home = () => {
                 handleBoundsChange={handleBoundsChange}
                 openModal={openModal}
                 city={city}
-                // geoFindMe={geoFindMe}
-                // handleZipInputChange={handleZipInputChange}
                 zipInput={zipInput}
                 categories={categories}
                 days={days}
@@ -459,7 +442,6 @@ const Home = () => {
                 setCategories={setCategories}
                 setGroups={setGroups}
                 setDays={setDays}
-                // searchingToday={searchingToday}
                 setSearchingToday={setSearchingToday}
                 INITIAL_DAY_STATE={INITIAL_DAY_STATE}
                 closeModal={closeModal}
@@ -467,20 +449,8 @@ const Home = () => {
                 setModalIsOpen={setModalIsOpen}
                 selectedResource={selectedResource}
                 setSelectedResource={setSelectedResource}
-                // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
-                // setIsGeneratedMapModalOpen={setIsGeneratedMapModalOpen}
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
-                // toggleNav={toggleNav}
-                // isFavoritesOpen={isFavoritesOpen}
-                // setIsFavoritesOpen={setIsFavoritesOpen}
-                // isToolBoxOpen={isToolBoxOpen}
-                // setIsToolBoxOpen={setIsToolBoxOpen}
-                // isNavOpen={isNavOpen}
-                // isDeckOpen={isDeckOpen}
-                // setIsDeckOpen={setIsDeckOpen}
-                // toggleFavoritesButtonRef={toggleFavoritesButtonRef}
-                // toggleDeckButtonRef={toggleDeckButtonRef}
               />
             </ErrorBoundary>
           </>
@@ -499,12 +469,11 @@ const Home = () => {
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
-                // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
                 setFavorites={setFavorites}
                 showRating={showRating}
                 setShowRating={setShowRating}
-                // setAboutModalIsOpen={setAboutModalIsOpen}
-                // setDonationModalIsOpen={setDonationModalIsOpen}
+                setShowContactModal={setShowContactModal}
+                showContactModal={showContactModal}
               />
             </div>
           </>

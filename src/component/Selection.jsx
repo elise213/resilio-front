@@ -10,7 +10,33 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
-  const [openDropdown, setOpenDropdown] = useState(null);
+  // const [openDropdown, setOpenDropdown] = useState(null);
+  // Adjusted to manage open state of multiple dropdowns
+  const [openDropdown, setOpenDropdown] = useState({
+    category: false,
+    day: false,
+  });
+
+  // Other state initializations remain unchanged
+
+  function Dropdown({ id, title, children }) {
+    // Adjusted to check if this dropdown is open
+    const isOpen = openDropdown[id];
+
+    // Adjusted to toggle the specific dropdown open state
+    const toggleDropdown = () => {
+      setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    return (
+      <div className="dropdown">
+        <button onClick={toggleDropdown} className="dropdown-button">
+          {title} <span className="material-symbols-outlined">expand_more</span>
+        </button>
+        {isOpen && <div className="dropdown-content">{children}</div>}
+      </div>
+    );
+  }
 
   const [activeCategoryIds, setActiveCategoryIds] = useState([]);
   const [visibleGroupCount, setVisibleGroupCount] = useState(0);
@@ -37,44 +63,44 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     });
   };
 
-  // const renderSelectedFilters = (state, type) => {
-  //   return Object.entries(state)
-  //     .filter(([, isSelected]) => isSelected)
-  //     .map(([id]) => {
-  //       const label =
-  //         type === "category"
-  //           ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
-  //           : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
-  //       if (!label) return null; // If no label is found, don't render anything
-  //       return (
-  //         <div key={id} className="selected-filter">
-  //           {label}{" "}
-  //           <span
-  //             className="material-symbols-outlined"
-  //             onClick={() => handleRemoveFilter(id, type)}
-  //           >
-  //             close
-  //           </span>
-  //         </div>
-  //       );
-  //     });
-  // };
+  const renderSelectedFilters = (state, type) => {
+    return Object.entries(state)
+      .filter(([, isSelected]) => isSelected)
+      .map(([id]) => {
+        const label =
+          type === "category"
+            ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
+            : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
+        if (!label) return null; // If no label is found, don't render anything
+        return (
+          <div key={id} className="selected-filter">
+            {label}{" "}
+            <span
+              className="material-symbols-outlined"
+              onClick={() => handleRemoveFilter(id, type)}
+            >
+              close
+            </span>
+          </div>
+        );
+      });
+  };
 
-  function Dropdown({ id, title, children }) {
-    const isOpen = openDropdown === id;
-    const toggleDropdown = () => {
-      setOpenDropdown(isOpen ? null : id);
-    };
+  // function Dropdown({ id, title, children }) {
+  //   const isOpen = openDropdown === id;
+  //   const toggleDropdown = () => {
+  //     setOpenDropdown(isOpen ? null : id);
+  //   };
 
-    return (
-      <div className="dropdown">
-        <button onClick={toggleDropdown} className="dropdown-button">
-          {title} <span className="material-symbols-outlined">expand_more</span>
-        </button>
-        {isOpen && <div className="dropdown-content">{children}</div>}
-      </div>
-    );
-  }
+  //   return (
+  //     <div className="dropdown">
+  //       <button onClick={toggleDropdown} className="dropdown-button">
+  //         {title} <span className="material-symbols-outlined">expand_more</span>
+  //       </button>
+  //       {isOpen && <div className="dropdown-content">{children}</div>}
+  //     </div>
+  //   );
+  // }
 
   const renderDropdownColumn = (type, state, setState) => {
     const ids =
@@ -220,13 +246,17 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
   return (
     <>
       <Report />
+      <div className={"selected-filters-container"}>
+        {renderSelectedFilters(categories, "category")}
+        {renderSelectedFilters(days, "day")}
+      </div>
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
-          renderDropdownColumn("filter by Category", categories, setCategories)}
+          renderDropdownColumn("category", categories, setCategories)}
         {/* {visibleGroupCount > 0 &&
           renderDropdownColumn("group", groups, setGroups)} */}
         {Object.values(visibleDaysCounts).some((count) => count > 0) &&
-          renderDropdownColumn("filter by Day", days, setDays)}
+          renderDropdownColumn("day", days, setDays)}
       </div>
     </>
   );

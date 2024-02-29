@@ -64,7 +64,8 @@
   width: 100%;
 }
 
-.search-bar input {
+.search-bar input,
+#zipcode {
   width: 100%;
   padding: 5px;
   border-radius: 3px;
