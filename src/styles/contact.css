@@ -4,8 +4,14 @@
 }
 
 .contact-submit {
-  margin-top: 20px;
-  margin-left: 20px;
+  margin-top: 27px;
+  margin-left: 5px;
+  width: 98%;
+}
+
+.contact-form-div p {
+  margin-left: 5px;
+  text-align: center;
 }
 
 .label {
@@ -28,13 +34,17 @@
 }
 
 .form-col {
-  padding: 10px 20px;
+  padding: 5px;
   box-sizing: border-box;
+}
+
+.submit {
+  color: purple !important;
 }
 
 .form-col-full {
   height: 150px;
-  padding: 10px 20px;
+  padding: 5px;
   box-sizing: border-box;
   /* margin-top: 10px; */
 }
@@ -55,5 +65,6 @@ input textarea {
 }
 
 .contact-form {
-  padding: 10px;
+  padding: 0 20px 0 0;
+  margin-top: 50px;
 }

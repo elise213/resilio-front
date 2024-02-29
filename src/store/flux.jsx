@@ -303,7 +303,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             icon: "success",
             title: "Logged in Successfully",
           }).then(() => {
-            window.location.href = "/";
+            // window.location.href = "/";
           });
 
           return true;
@@ -329,7 +329,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           icon: "success",
           title: "Logged out Successfully",
           onClose: () => {
-            window.location.href = "/";
+            // window.location.href = "/";
           },
         });
       },

@@ -91,15 +91,18 @@
 
 .function-buttons {
   display: flex;
-  padding: 15px 15px 25px 15px;
   box-sizing: border-box;
-  position: absolute;
   bottom: 0;
   left: 0;
-  background-color: white;
   z-index: 999;
-  width: 350px;
+  width: 100%;
   justify-content: center;
+}
+
+.all-rights {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: rgb(149, 149, 149);
 }
 
 #zipcode {
@@ -135,26 +138,10 @@
   width: 350px;
   display: flex;
   flex-direction: column;
-
   padding: 15px;
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: scroll;
-}
-
-.nav-footer {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  color: rgb(149, 149, 149);
-  position: fixed;
-  z-index: 9999999;
-  bottom: 0;
-  left: 0;
-  width: 350px;
-  background-color: white !important;
-  text-align: center;
-  height: 30px;
-  letter-spacing: 1px;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 700px) {
