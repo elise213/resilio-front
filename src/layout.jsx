@@ -26,7 +26,7 @@ const Layout = () => {
           <Route element={<Donate />} path="/donate" />
           <Route element={<Edit />} path="/edit/:id" />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </ScrollToTop>
     </BrowserRouter>
     // </div>
