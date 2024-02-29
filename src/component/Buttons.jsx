@@ -15,8 +15,7 @@ const Buttons = ({
   setDonationModalIsOpen,
 }) => {
   return (
-    <>
-      {/* <div> */}
+    <div className="footer-container">
       <div className="function-buttons">
         <span
           className="nav-item"
@@ -76,13 +75,17 @@ const Buttons = ({
           >
             Filters
           </Button> */}
-      </div>
-      {/* <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
+
+        {/* <p className={`the-plan`} onClick={() => setBackSide(!backSide)}>
           <span className="material-symbols-outlined">arrow_forward</span>
           {backSide ? "The Map" : "The Plan"}
         </p> */}
-      {/* </div> */}
-    </>
+        {/* </div> */}
+      </div>
+      <div className="foot">
+        <p className="all-rights">©2023 RESILIO All Rights Reserved</p>
+      </div>
+    </div>
   );
 };
 

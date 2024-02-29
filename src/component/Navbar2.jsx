@@ -48,7 +48,7 @@ const Navbar2 = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
-  // const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("AllResources");
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
 
   // const toggleLocation = () => {
@@ -70,15 +70,10 @@ const Navbar2 = ({
         </button>
         {isLocationDropdownOpen && (
           <div className="dropdown-content">
-            {/* Zip code input and any other location change functionality */}
-            <p className="intro">
-              Please enter a zip code to navigate to a location that is
-              participating in our platform.
-            </p>
+            <p className="intro">Please enter your zip code.</p>
             <input
               type="text"
               id="zipcode"
-              // Assume zipInput and handleZipInputChange are defined in your component
               value={zipInput}
               onChange={handleZipInputChange}
               maxLength="5"
@@ -109,46 +104,20 @@ const Navbar2 = ({
     <>
       <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
         <div className={`navbar-content`}>
-          <div className={`nav-div-row`}>
-            <div>
-              <img
-                className="top-logo"
-                src="/assets/RESILIOO.png"
-                alt="Resilio Logo"
-              />
-              <p className="intro">Free resources in your neighborhood.</p>
-            </div>
-            <Login
-              openLoginModal={openLoginModal}
-              setOpenLoginModal={setOpenLoginModal}
+          <Login
+            openLoginModal={openLoginModal}
+            setOpenLoginModal={setOpenLoginModal}
+          />
+          <div className={`nav-div-row`}></div>
+          <div className="logo-div">
+            <img
+              className="top-logo"
+              src="/assets/RESILIOO.png"
+              alt="Resilio Logo"
             />
+            <p className="intro">Free resources in your neighborhood.</p>
           </div>
-
-          <LocationDropdown />
-          {/* <div>
-            <button onClick={toggleLocation}>Change Location</button>
-
-            {isLocationOpen && (
-              <div className="list-container">
-                <p className="intro">
-                  Please enter a zip code to navigate to a location that is
-                  participating in our platform.
-                </p>
-                <div className="stack">
-                  <input
-                    type="text"
-                    id="zipcode"
-                    value={zipInput}
-                    onChange={handleZipInputChange}
-                    maxLength="5"
-                    placeholder="Zip Code"
-                  />
-                </div>
-              </div>
-            )}
-          </div> */}
-
-          {hasBoundaryResults ? (
+          {hasBoundaryResults && (
             <>
               <div className=" nav-div">
                 <div className="side-by">
@@ -184,143 +153,287 @@ const Navbar2 = ({
                   />
                 </div>
 
-                <div
-                  className="
-            nav-div-list"
-                >
-                  <span className="intro">All Resources </span>
-
-                  {store.boundaryResults &&
-                    store.boundaryResults.length > 0 && (
+                <div className="nav-div-list">
+                  <div className="tab-buttons">
+                    <div
+                      className={activeTab === "AllResources" ? "active" : ""}
+                      onClick={() => setActiveTab("AllResources")}
+                    >
+                      All Resources
+                    </div>
+                    {isLoggedIn && (
                       <div
-                        className="list-container"
-                        style={{ maxHeight: !isLoggedIn ? "60vh" : "auto" }}
+                        className={activeTab === "Favorites" ? "active" : ""}
+                        onClick={() => setActiveTab("Favorites")}
                       >
-                        <ul>
-                          {Array.isArray(store.mapResults) &&
-                            store.boundaryResults
-                              .filter(
-                                (resource) =>
-                                  resource.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (resource.description &&
-                                    resource.description
-                                      .toLowerCase()
-                                      .includes(searchQuery.toLowerCase()))
-                              )
-                              .map((resource, index) => (
-                                <ResourceCard
-                                  key={resource.id}
-                                  item={resource}
-                                  openModal={openModal}
-                                  closeModal={closeModal}
-                                  modalIsOpen={modalIsOpen}
-                                  setModalIsOpen={setModalIsOpen}
-                                  selectedResources={selectedResources}
-                                  addSelectedResource={addSelectedResource}
-                                  removeSelectedResource={
-                                    removeSelectedResource
-                                  }
-                                  setFavorites={setFavorites}
-                                />
-                              ))}
-                        </ul>
+                        Favorites
                       </div>
                     )}
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="change-location">
-                <p className="intro">
-                  Please enter a zip code to navigate to a location that is
-                  participating in our platform.
-                </p>
-                <div className="stack">
-                  {/* <button className="geo-button" onClick={() => geoFindMe()}>
-                    geo-location
-                  </button> */}
-
-                  <input
-                    type="text"
-                    id="zipcode"
-                    value={zipInput}
-                    onChange={handleZipInputChange}
-                    maxLength="5"
-                    placeholder="Zip Code"
-                  />
+                  </div>
+                  {activeTab === "AllResources" && (
+                    <div className="list-container">
+                      <ul>
+                        {Array.isArray(store.mapResults) &&
+                          store.boundaryResults
+                            .filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            )
+                            .map((resource, index) => (
+                              <ResourceCard
+                                key={resource.id}
+                                item={resource}
+                                openModal={openModal}
+                                closeModal={closeModal}
+                                modalIsOpen={modalIsOpen}
+                                setModalIsOpen={setModalIsOpen}
+                                selectedResources={selectedResources}
+                                addSelectedResource={addSelectedResource}
+                                removeSelectedResource={removeSelectedResource}
+                                setFavorites={setFavorites}
+                              />
+                            ))}
+                      </ul>
+                    </div>
+                  )}
+                  {activeTab === "Favorites" && isLoggedIn && (
+                    <div className="list-container">
+                      <ul>
+                        {Array.isArray(store.mapResults) &&
+                          store.favorites
+                            .filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            )
+                            .map((resource, index) => (
+                              <ResourceCard
+                                key={`${resource.id}-${index}`}
+                                item={resource}
+                                openModal={openModal}
+                                closeModal={closeModal}
+                                modalIsOpen={modalIsOpen}
+                                setModalIsOpen={setModalIsOpen}
+                                selectedResources={selectedResources}
+                                addSelectedResource={addSelectedResource}
+                                removeSelectedResource={removeSelectedResource}
+                                setFavorites={setFavorites}
+                              />
+                            ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             </>
           )}
-          <div
-            className="
-            nav-div-list"
-          >
-            {!isLoggedIn && (
-              <span className="intro">
-                Please{" "}
-                <a
-                  className="login-link"
-                  onClick={() => setOpenLoginModal(true)}
-                >
-                  {" "}
-                  Log in{" "}
-                </a>{" "}
-                to save resources.
-              </span>
-            )}
-
-            {isLoggedIn && store.favorites.length == 0 && (
-              <span className="intro">
-                Heart resources to add to your Favorites!{" "}
-              </span>
-            )}
-            {isLoggedIn && store.favorites && store.favorites.length > 0 && (
-              <>
-                <span className="intro">Favorites</span>
-
-                <div className="list-container-favs">
-                  <ul>
-                    {Array.isArray(store.mapResults) &&
-                      store.boundaryResults
-                        .filter(
-                          (resource) =>
-                            resource.name
-                              .toLowerCase()
-                              .includes(searchQuery.toLowerCase()) ||
-                            (resource.description &&
-                              resource.description
-                                .toLowerCase()
-                                .includes(searchQuery.toLowerCase()))
-                        )
-                        .map((resource, index) => (
-                          <ResourceCard
-                            key={`${resource.id}-${index}`}
-                            item={resource}
-                            openModal={openModal}
-                            closeModal={closeModal}
-                            modalIsOpen={modalIsOpen}
-                            setModalIsOpen={setModalIsOpen}
-                            selectedResources={selectedResources}
-                            addSelectedResource={addSelectedResource}
-                            removeSelectedResource={removeSelectedResource}
-                            setFavorites={setFavorites}
-                          />
-                        ))}
-                  </ul>
-                </div>
-              </>
-            )}
-          </div>
         </div>
       </nav>
-
-      {/* </div> */}
     </>
   );
+
+  // return (
+  //   <>
+  //     <nav className={`new-navbar ${isNavOpen ? "open-nav" : ""}`}>
+  //       <div className={`navbar-content`}>
+  //         <Login
+  //           openLoginModal={openLoginModal}
+  //           setOpenLoginModal={setOpenLoginModal}
+  //         />
+  //         <div className={`nav-div-row`}></div>
+  //         <div className="logo-div">
+  //           <img
+  //             className="top-logo"
+  //             src="/assets/RESILIOO.png"
+  //             alt="Resilio Logo"
+  //           />
+  //           <p className="intro">Free resources in your neighborhood.</p>
+  //         </div>
+  //         {hasBoundaryResults && <LocationDropdown />}
+
+  //         {hasBoundaryResults ? (
+  //           <>
+  //             <div className=" nav-div">
+  //               <div className="side-by">
+  //                 <span className="intro">Filter Resources </span>
+  //                 <div className="search-bar">
+  //                   <input
+  //                     type="text"
+  //                     placeholder="Search"
+  //                     value={searchQuery}
+  //                     onChange={(e) => setSearchQuery(e.target.value)}
+  //                   />
+  //                 </div>
+  //                 <ToolBox
+  //                   backSide={backSide}
+  //                   categories={categories}
+  //                   setCategories={setCategories}
+  //                   groups={groups}
+  //                   setGroups={setGroups}
+  //                   days={days}
+  //                   setDays={setDays}
+  //                   searchingToday={searchingToday}
+  //                   setSearchingToday={setSearchingToday}
+  //                   INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+  //                   isDeckOpen={isDeckOpen}
+  //                   isNavOpen={isNavOpen}
+  //                   isFavoritesOpen={isFavoritesOpen}
+  //                   isToolBoxOpen={isToolBoxOpen}
+  //                   setIsDeckOpen={setIsDeckOpen}
+  //                   setIsNavOpen={setIsNavOpen}
+  //                   setIsToolBoxOpen={setIsToolBoxOpen}
+  //                   setIsFavoritesOpen={setIsFavoritesOpen}
+  //                   toggleToolButtonRef={toggleToolButtonRef}
+  //                 />
+  //               </div>
+
+  //               <div
+  //                 className="
+  //           nav-div-list"
+  //               >
+  //                 <span className="intro">All Resources </span>
+
+  //                 {store.boundaryResults &&
+  //                   store.boundaryResults.length > 0 && (
+  //                     <div
+  //                       className="list-container"
+  //                       style={{ maxHeight: !isLoggedIn ? "60vh" : "auto" }}
+  //                     >
+  //                       <ul>
+  //                         {Array.isArray(store.mapResults) &&
+  //                           store.boundaryResults
+  //                             .filter(
+  //                               (resource) =>
+  //                                 resource.name
+  //                                   .toLowerCase()
+  //                                   .includes(searchQuery.toLowerCase()) ||
+  //                                 (resource.description &&
+  //                                   resource.description
+  //                                     .toLowerCase()
+  //                                     .includes(searchQuery.toLowerCase()))
+  //                             )
+  //                             .map((resource, index) => (
+  //                               <ResourceCard
+  //                                 key={resource.id}
+  //                                 item={resource}
+  //                                 openModal={openModal}
+  //                                 closeModal={closeModal}
+  //                                 modalIsOpen={modalIsOpen}
+  //                                 setModalIsOpen={setModalIsOpen}
+  //                                 selectedResources={selectedResources}
+  //                                 addSelectedResource={addSelectedResource}
+  //                                 removeSelectedResource={
+  //                                   removeSelectedResource
+  //                                 }
+  //                                 setFavorites={setFavorites}
+  //                               />
+  //                             ))}
+  //                       </ul>
+  //                     </div>
+  //                   )}
+  //               </div>
+  //             </div>
+  //           </>
+  //         ) : (
+  //           <>
+  //             {/* <div className="change-location"> */}
+  //             <div className="stack">
+  //               {/* <p className="intro">Please enter your zip code.</p> */}
+  //               {/* <button className="geo-button" onClick={() => geoFindMe()}>
+  //                   geo-location
+  //                 </button> */}
+
+  //               <input
+  //                 type="text"
+  //                 id="zipcode"
+  //                 value={zipInput}
+  //                 onChange={handleZipInputChange}
+  //                 maxLength="5"
+  //                 placeholder="Zip Code"
+  //               />
+  //             </div>
+  //             {/* </div> */}
+  //           </>
+  //         )}
+  //         {hasBoundaryResults && (
+  //           <div
+  //             className="
+  //           nav-div-list"
+  //           >
+  //             {!isLoggedIn && (
+  //               <span className="intro">
+  //                 Please{" "}
+  //                 <a
+  //                   className="login-link"
+  //                   onClick={() => setOpenLoginModal(true)}
+  //                 >
+  //                   {" "}
+  //                   Log in{" "}
+  //                 </a>{" "}
+  //                 to save resources.
+  //               </span>
+  //             )}
+
+  //             {isLoggedIn && store.favorites.length == 0 && (
+  //               <span className="intro">
+  //                 Heart resources to add to your Favorites!{" "}
+  //               </span>
+  //             )}
+  //             {isLoggedIn && store.favorites && store.favorites.length > 0 && (
+  //               <>
+  //                 <span className="intro">Favorites</span>
+
+  //                 <div className="list-container-favs">
+  //                   <ul>
+  //                     {Array.isArray(store.mapResults) &&
+  //                       store.boundaryResults
+  //                         .filter(
+  //                           (resource) =>
+  //                             resource.name
+  //                               .toLowerCase()
+  //                               .includes(searchQuery.toLowerCase()) ||
+  //                             (resource.description &&
+  //                               resource.description
+  //                                 .toLowerCase()
+  //                                 .includes(searchQuery.toLowerCase()))
+  //                         )
+  //                         .map((resource, index) => (
+  //                           <ResourceCard
+  //                             key={`${resource.id}-${index}`}
+  //                             item={resource}
+  //                             openModal={openModal}
+  //                             closeModal={closeModal}
+  //                             modalIsOpen={modalIsOpen}
+  //                             setModalIsOpen={setModalIsOpen}
+  //                             selectedResources={selectedResources}
+  //                             addSelectedResource={addSelectedResource}
+  //                             removeSelectedResource={removeSelectedResource}
+  //                             setFavorites={setFavorites}
+  //                           />
+  //                         ))}
+  //                   </ul>
+  //                 </div>
+  //               </>
+  //             )}
+  //           </div>
+  //         )}
+  //       </div>
+  //     </nav>
+
+  //     {/* </div> */}
+  //   </>
+  // );
 };
 
 export default Navbar2;
