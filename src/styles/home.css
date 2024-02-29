@@ -63,9 +63,11 @@
   border: none;
   flex-direction: column;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   padding: 15px;
   box-sizing: border-box;
+  overflow-y: scroll !important;
+  scroll-behavior: smooth;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-thumb {
@@ -105,7 +107,7 @@
   color: rgb(149, 149, 149);
 }
 
-#zipcode {
+/* #zipcode {
   border-radius: 3px;
   text-align: center;
   height: 30px;
@@ -114,7 +116,7 @@
 
 #zipcode:focus {
   outline: none;
-}
+} */
 
 .geo-button {
   border-radius: 3px;

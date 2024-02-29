@@ -21,6 +21,8 @@ const Modal = ({
   setShowRating,
   setAboutModalIsOpen,
   setDonationModalIsOpen,
+  showContactModal,
+  setShowContactModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -179,7 +181,7 @@ const Modal = ({
         Back to search
       </p>
 
-      <div>
+      <div className="resource-info">
         <div
           className="resource-rating"
           onClick={() => {
@@ -289,7 +291,13 @@ const Modal = ({
       <div className="modal-footer">
         <p className="problem">
           Is there a problem with this information? {""}
-          <span onClick={() => {}}>Let us know</span>
+          <span
+            onClick={() => {
+              setShowContactModal(true);
+            }}
+          >
+            Let us know
+          </span>
         </p>
 
         {/* <p className="problem">

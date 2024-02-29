@@ -143,12 +143,12 @@ export const ModalInfo = ({
         >
           {isFavorited ? (
             <>
-              <span class="material-symbols-outlined">remove</span>
+              <span className="material-symbols-outlined">remove</span>
               <span>remove from favorites</span>
             </>
           ) : (
             <>
-              <span class="material-symbols-outlined">add</span>{" "}
+              <span className="material-symbols-outlined">add</span>{" "}
               <span> add to favorites</span>
             </>
           )}
