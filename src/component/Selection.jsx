@@ -246,10 +246,10 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
   return (
     <>
       <Report />
-      <div className={"selected-filters-container"}>
+      {/* <div className={"selected-filters-container"}>
         {renderSelectedFilters(categories, "category")}
         {renderSelectedFilters(days, "day")}
-      </div>
+      </div> */}
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}

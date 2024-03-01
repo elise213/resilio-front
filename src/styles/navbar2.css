@@ -19,6 +19,14 @@
   grid-gap: 10px;
 }
 
+.active-filters-label {
+  font-size: 14px;
+  color: gray;
+  font-family: "Inter", sans-serif;
+  margin: 20px 0 0 0;
+  text-align: center;
+}
+
 .active-filter {
   display: flex;
   align-items: center;
