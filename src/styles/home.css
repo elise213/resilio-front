@@ -154,4 +154,8 @@
     position: absolute !important;
     top: 0 !important;
   }
+
+  .modal-div {
+    width: 100% !important;
+  }
 }

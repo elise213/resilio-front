@@ -243,13 +243,23 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     <>
       {!openLoginModal &&
         (isLoggedIn ? (
-          <Avatar
-            className="avatar-material-design"
-            onClick={handleLogout}
-            style={{ cursor: "pointer", backgroundColor: "#1976d2" }}
+          // <Avatar
+          //   className="avatar-material-design"
+          //   onClick={handleLogout}
+          //   style={{ cursor: "pointer", backgroundColor: "#1976d2" }}
+          // >
+          //   <i className="fa fa-user" />
+          // </Avatar>
+          <Button
+            className="login-button-resilio"
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              handleLogout;
+            }}
           >
-            <i className="fa fa-user" />
-          </Avatar>
+            Log out
+          </Button>
         ) : (
           <Button
             className="login-button-resilio"
