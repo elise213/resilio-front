@@ -241,23 +241,27 @@ const Navbar2 = ({
                 />
 
                 {/* Show active filters */}
-                <div className="nav-div-list">
-                  <div className="tab-buttons">
-                    <div
-                      className={activeTab === "AllResources" ? "active" : ""}
-                      onClick={() => setActiveTab("AllResources")}
-                    >
-                      All Resources
-                    </div>
-                    {isLoggedIn && (
+                <div
+                  className={
+                    "nav-div-list" + (isLoggedIn ? "" : " more-margin")
+                  }
+                >
+                  {isLoggedIn && (
+                    <div className="tab-buttons">
+                      <div
+                        className={activeTab === "AllResources" ? "active" : ""}
+                        onClick={() => setActiveTab("AllResources")}
+                      >
+                        All Resources
+                      </div>
                       <div
                         className={activeTab === "Favorites" ? "active" : ""}
                         onClick={() => setActiveTab("Favorites")}
                       >
                         Favorites
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                   {activeTab === "AllResources" && (
                     <div className="list-container">
                       <ul>
