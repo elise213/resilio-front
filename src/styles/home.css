@@ -146,6 +146,21 @@
   overflow-y: auto;
 }
 
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.search-bar input,
+#zipcode {
+  /* width: 100%; */
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid gray;
+}
+
 @media screen and (max-width: 700px) {
   .map-container {
     height: 30vh !important;

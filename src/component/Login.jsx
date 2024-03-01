@@ -64,16 +64,11 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
         <div className="custom-login-modal-header">
           <span className="login-close" onClick={() => setLog("1")}>
             {" "}
-            <i className="fa-solid fa-x"></i>{" "}
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            Back to log in
           </span>
         </div>
         <div className="custom-login-modal-body">
-          {/* <div className="custom-login-modal-footer"> */}
-          <div className="close-modal" onClick={() => setLog("1")}>
-            <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to log in
-          </div>
-          {/* </div> */}
           <form>
             <div className="">
               <label htmlFor="name" className="custom-form-label less-margin">
@@ -176,7 +171,8 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             className="login-close"
             onClick={() => setOpenLoginModal(false)}
           >
-            <i className="fa-solid fa-x"></i>{" "}
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            Back to Search
           </span>
         </div>
         <div className="custom-login-modal-body">
