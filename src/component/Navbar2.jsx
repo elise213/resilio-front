@@ -92,25 +92,47 @@ const Navbar2 = ({
     clearSelectedDay,
   }) => {
     return (
-      <div className="active-filters">
-        {searchQuery && (
-          <div className="active-filter">
-            {searchQuery} <div onClick={clearSearchQuery}>&times;</div>
-          </div>
+      <>
+        {(searchQuery ||
+          selectedDays.length > 0 ||
+          selectedCategories.length > 0) && (
+          <>
+            <p className="active-filters-label">Your Active Filters:</p>
+            <div className="active-filters">
+              {searchQuery && (
+                <div className="active-filter">
+                  {searchQuery}{" "}
+                  <div onClick={clearSearchQuery} style={{ cursor: "pointer" }}>
+                    &times;
+                  </div>
+                </div>
+              )}
+              {selectedCategories.map((category) => (
+                <div key={category} className="active-filter">
+                  {category}{" "}
+                  <div
+                    onClick={() => clearSelectedCategory(category)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    &times;
+                  </div>
+                </div>
+              ))}
+              {selectedDays.map((day) => (
+                <div key={day} className="active-filter">
+                  {day}{" "}
+                  <div
+                    onClick={() => clearSelectedDay(day)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    &times;
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
-        {selectedCategories.map((category) => (
-          <div key={category} className="active-filter">
-            {category}{" "}
-            <div onClick={() => clearSelectedCategory(category)}>&times;</div>{" "}
-            {/* Updated function call here */}
-          </div>
-        ))}
-        {selectedDays.map((day) => (
-          <div key={day} className="active-filter">
-            {day} <div onClick={() => clearSelectedDay(day)}>&times;</div>
-          </div>
-        ))}
-      </div>
+      </>
     );
   };
 
@@ -240,7 +262,6 @@ const Navbar2 = ({
                   setOpenLoginModal={setOpenLoginModal}
                 />
 
-                {/* Show active filters */}
                 <div
                   className={
                     "nav-div-list" + (isLoggedIn ? "" : " more-margin")

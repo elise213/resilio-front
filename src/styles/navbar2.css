@@ -19,6 +19,14 @@
   grid-gap: 10px;
 }
 
+.active-filters-label {
+  font-size: 14px;
+  color: gray;
+  font-family: "Inter", sans-serif;
+  margin: 20px 0 0 0;
+  text-align: center;
+}
+
 .active-filter {
   display: flex;
   align-items: center;
@@ -57,11 +65,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 20px 0 0 0;
+  /* margin: 20px 0 0 0; */
 }
 
 .list-container {
-  max-height: 65vh;
+  max-height: 55vh;
   overflow-y: scroll;
   border-radius: 0 2% 2% 2%;
   border: 1px solid rgb(174, 161, 161);
@@ -310,7 +318,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* margin: 20px 0; */
+  margin: 25px 0 20px 0;
 }
 
 .more-margin {

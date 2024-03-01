@@ -58,21 +58,6 @@
 
 /* deckBOX */
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-}
-
-.search-bar input,
-#zipcode {
-  width: 100%;
-  padding: 5px;
-  border-radius: 3px;
-  border: 1px solid gray;
-}
-
 /* X */
 .deckclose-icon-nav {
   font-size: 20px;

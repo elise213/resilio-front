@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
+// import arrow from "/assets/coralarrow.png";
 import arrow from "/assets/coralarrow.png";
 import styles from "../styles/resourceModal.css";
 
