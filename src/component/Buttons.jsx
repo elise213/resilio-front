@@ -77,7 +77,7 @@ const Buttons = ({
         {/* </div> */}
       </div>
       <div className="foot">
-        <p className="all-rights">2024 Resilio© All Rights Reserved</p>
+        <p className="all-rights">2024 ©Resilio, All Rights Reserved</p>
       </div>
     </div>
   );

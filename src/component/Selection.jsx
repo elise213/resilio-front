@@ -4,7 +4,13 @@ import styles from "../styles/selection.css";
 import MyCheckbox from "./MyCheckbox";
 import Report from "./Report";
 
-const Selection = ({ categories, setCategories, days, setDays }) => {
+const Selection = ({
+  categories,
+  setCategories,
+  days,
+  setDays,
+  areAllUnchecked,
+}) => {
   const { store, actions } = useContext(Context);
   const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
@@ -228,9 +234,9 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     return ids.some((id) => stateObj[id]);
   };
 
-  const areAllUnchecked = (stateObj, ids) => {
-    return ids.every((id) => !stateObj[id]);
-  };
+  // const areAllUnchecked = (stateObj, ids) => {
+  //   return ids.every((id) => !stateObj[id]);
+  // };
 
   const handleToggle = (setFn, stateObj, id) => {
     setFn({
@@ -239,17 +245,9 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     });
   };
 
-  // const toggleLocation = () => {
-  //   setIsLocationOpen(!isLocationOpen);
-  // };
-
   return (
     <>
       <Report />
-      {/* <div className={"selected-filters-container"}>
-        {renderSelectedFilters(categories, "category")}
-        {renderSelectedFilters(days, "day")}
-      </div> */}
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}

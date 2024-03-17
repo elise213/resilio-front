@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "work", value: "work", label: "Work" },
         { id: "bathroom", value: "bathroom", label: "Bathrooms" },
         { id: "wifi", value: "wifi", label: "WiFi" },
-        { id: "substance", value: "substance", label: "Substance Support" },
+        { id: "substance", value: "substance", label: "Drug Use" },
         { id: "sex", value: "sex", label: "Sexual Health" },
         { id: "legal", value: "legal", label: "Legal Support" },
       ],
