@@ -6,11 +6,13 @@
   width: 100% !important;
 }
 
+marker:hover, .hover-card:hover {
+  cursor: pointer;
+}
 
 
 .marker,
 .marker-icon {
-  position: relative;
   display: block;
   z-index: 0 !important;
 }
@@ -85,4 +87,8 @@ margin-top: 40px;
     flex: 1 1 100%; /
   }
 
+}
+
+.hover-card {
+  z-index: 999999999 !important;
 }

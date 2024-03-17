@@ -123,9 +123,11 @@ const SimpleMap = ({
           </div>
         )}
 
-        <div className="marker-icon">
-          <i className={iconClass} style={{ color, zIndex: 0 }}></i>
-        </div>
+        {!isHovered && result && (
+          <div className="marker-icon">
+            <i className={iconClass} style={{ color }}></i>
+          </div>
+        )}
       </div>
     );
   };
