@@ -154,7 +154,7 @@ const Navbar2 = ({
     return (
       <div className="dropdown">
         <button className="dropdown-button" onClick={toggleLocationDropdown}>
-          Change Location
+          Location
           <span className="material-symbols-outlined">
             {isLocationDropdownOpen ? "expand_less" : "expand_more"}
           </span>
