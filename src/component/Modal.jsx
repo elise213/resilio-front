@@ -10,18 +10,18 @@ import Button from "@mui/material/Button";
 const Modal = ({
   resource,
   modalIsOpen,
-  closeModal,
+  // closeModal,
   setModalIsOpen,
-  isGeneratedMapModalOpen,
+  // isGeneratedMapModalOpen,
   removeSelectedResource,
   selectedResources,
   addSelectedResource,
   setFavorites,
   showRating,
   setShowRating,
-  setAboutModalIsOpen,
-  setDonationModalIsOpen,
-  showContactModal,
+  // setAboutModalIsOpen,
+  // setDonationModalIsOpen,
+  // showContactModal,
   setShowContactModal,
 }) => {
   const { store, actions } = useContext(Context);
@@ -114,7 +114,7 @@ const Modal = ({
   };
 
   // REFS
-  const modalContentRef = useRef(null);
+  // const modalContentRef = useRef(null);
   const ratingModalRef = useRef(null);
 
   const labels = {
@@ -367,7 +367,7 @@ const Modal = ({
                   </Button>
                 </div>
               )}
-              {isLoggedIn && (
+              {isLoggedIn ? (
                 <div className="comment-section">
                   <textarea
                     value={comment}
@@ -384,6 +384,8 @@ const Modal = ({
                     Submit
                   </Button>
                 </div>
+              ) : (
+                <div>Please log in to rate and review a resource.</div>
               )}
             </div>
           </div>
