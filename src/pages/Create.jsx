@@ -64,7 +64,7 @@ const Create = () => {
     { id: "Hy", value: "hygiene", label: "Hygiene" },
     { id: "Wi", value: "wifi", label: "WiFi" },
     { id: "C", value: "crisis", label: "Crisis Support" },
-    { id: "Su", value: "substance", label: "Substance Support" },
+    { id: "Su", value: "substance", label: "Drug Use" },
     { id: "B", value: "bathroom", label: "Bathroom" },
     { id: "Le", value: "legal", label: "Legal Services" },
     { id: "Sex", value: "sex", label: "Sexual Health" },

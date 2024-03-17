@@ -18,10 +18,10 @@
   border-radius: 20px !important;
   width: 90px;
   height: 32px !important;
-  align-self: flex-end;
-  position: absolute !important;
+  /* align-self: flex-end; */
+  /* position: absolute !important;
   top: 10px;
-  left: 250px;
+  left: 250px; */
 }
 
 .login-button-resilio:hover {

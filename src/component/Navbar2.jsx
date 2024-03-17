@@ -20,7 +20,7 @@ const Navbar2 = ({
   days,
   groups,
   handleZipInputChange,
-  isNavOpen,
+  // isNavOpen,
   modalIsOpen,
   openLoginModal,
   openModal,
@@ -48,6 +48,19 @@ const Navbar2 = ({
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
+
+  const [userSelectedFilter, setUserSelectedFilter] = useState(false);
+
+  const areAllUnchecked = (stateObj) => {
+    return Object.values(stateObj).every((value) => !value);
+  };
+
+  useEffect(() => {
+    const noCategorySelected = areAllUnchecked(categories);
+    const noDaySelected = areAllUnchecked(days);
+
+    setUserSelectedFilter(!(noCategorySelected && noDaySelected));
+  }, [categories, days]);
 
   // Function to clear selected categories
   const clearSelectedCategory = (category) => {
@@ -93,6 +106,7 @@ const Navbar2 = ({
   }) => {
     return (
       <>
+        {/* <p>User Selected Filter? {userSelectedFilter ? "Yes" : "No"}</p> */}
         {(searchQuery ||
           selectedDays.length > 0 ||
           selectedCategories.length > 0) && (
@@ -206,27 +220,48 @@ const Navbar2 = ({
               src="/assets/RESILIOO.png"
               alt="Resilio Logo"
             />
-            <p className="intro">Free resources in your neighborhood.</p>
+            <Login
+              openLoginModal={openLoginModal}
+              setOpenLoginModal={setOpenLoginModal}
+            />
           </div>
+          <p className="tag-line">Free services in your neighborhood</p>
 
-          {hasBoundaryResults && (
+          {hasBoundaryResults && store.boundaryResults.length > 0 && (
+            // !userSelectedFilter &&
             <>
               <div className=" nav-div">
                 <div className="side-by">
-                  <div className="search-bar">
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
+                  {store.boundaryResults &&
+                    // store.boundaryResults > 1 &&
+                    !userSelectedFilter && (
+                      // <div className="search-bar">
+                      //   <input
+                      //     type="text"
+                      //     placeholder="Search"
+                      //     value={searchQuery}
+                      //     onChange={(e) => setSearchQuery(e.target.value)}
+                      //   />
+                      // </div>
+                      <div className="search-bar">
+                        <span className="material-symbols-outlined search-icon">
+                          search
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Search"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </div>
+                    )}
                   <LocationDropdown />
                   {store.CATEGORY_OPTIONS &&
                   store.DAY_OPTIONS &&
                   store.GROUP_OPTIONS &&
                   categories &&
                   days &&
+                  // store.boundaryResults > 1 &&
                   groups ? (
                     <ErrorBoundary>
                       <Selection
@@ -241,6 +276,7 @@ const Navbar2 = ({
                         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
                         zipInput={zipInput}
                         handleZipInputChange={handleZipInputChange}
+                        areAllUnchecked={areAllUnchecked}
                       />
                     </ErrorBoundary>
                   ) : (
@@ -256,10 +292,6 @@ const Navbar2 = ({
                   clearSelectedCategory={clearSelectedCategory}
                   selectedDays={selectedDays}
                   clearSelectedDay={clearSelectedDay}
-                />
-                <Login
-                  openLoginModal={openLoginModal}
-                  setOpenLoginModal={setOpenLoginModal}
                 />
 
                 <div

@@ -3,8 +3,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 10px 0;
-  width: 90%;
+  margin: 25px 0 0 0;
+  /* width: 90%; */
   z-index: 996 !important;
   position: static;
   user-select: none;
@@ -13,6 +13,13 @@
   transition: 0.5s;
   overflow: hidden;
   font-family: "Inter", sans-serif;
+  border: 2px solid transparent;
+}
+
+.my-resource-card:hover {
+  border-color: purple;
+  background-color: lightpink !important;
+  border-radius: 3px !important;
 }
 
 .add-favorite {
@@ -96,10 +103,9 @@ textarea {
   color: black;
   width: 100%;
   font-family: "Inter", sans-serif;
-  letter-spacing: 1px;
+  /* letter-spacing: 0.5px; */
   font-weight: bolder;
-  font-size: 16px;
-  /* margin-bottom: 10px; */
+  font-size: 14px;
 }
 
 .fa-baby,

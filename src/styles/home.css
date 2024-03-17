@@ -146,19 +146,54 @@
   overflow-y: auto;
 }
 
-.search-bar {
+/* .search-bar {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: center;
-}
+} */
 
 .search-bar input,
 #zipcode {
-  /* width: 100%; */
+  width: 100%;
   padding: 5px;
   border-radius: 3px;
-  border: 1px solid gray;
+  /* border: 2px solid gray; */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: white;
+  border: 1px solid gray; /* Example border to mimic input */
+  border-radius: 4px; /* Optional: if you want rounded corners */
+}
+
+.search-bar input {
+  border: none;
+  padding-left: 40px;
+  width: 100%;
+}
+
+.search-bar .search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 20px;
+}
+
+.search-bar input:focus {
+  outline: none;
+}
+
+.search-bar input::placeholder {
+  /* font-size: 20px; */
+  color: gray;
+}
+
+#zipcode {
+  max-width: 100px;
+  align-self: center;
 }
 
 @media screen and (max-width: 700px) {
