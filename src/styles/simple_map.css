@@ -2,7 +2,6 @@
 .droppable-map-area,
 .treasureMapDiv,
 .map-container,
-/* .map-container-container, */
 .simple-map {
   width: 100% !important;
 }
@@ -13,7 +12,7 @@
 .marker-icon {
   position: relative;
   display: block;
-  z-index: 0;
+  z-index: 0 !important;
 }
 
 .marker-icon i {
@@ -25,22 +24,10 @@
 
 .marker-icon i:hover {
   color: lightgreen !important;
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
-.resource-card {
-  z-index: 99999 !important;
-}
 
-.marker {
-  position: relative;
-}
-
-.hover-card {
-  position: absolute;
-  padding: 0;
-  margin: 0;
-}
 
 .corner-top-left {
   top: 0;
