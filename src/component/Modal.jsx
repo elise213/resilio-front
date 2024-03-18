@@ -85,13 +85,13 @@ const Modal = ({
   }, [resource.id, actions]);
 
   const handleCommentSubmit = () => {
-    if (comment.length > 280) {
+    if (comment.trim().length > 280) {
       Swal.fire({
         icon: "error",
         title: "Comment Too Long",
         text: "Your comment must be less than 280 characters.",
       });
-      return;
+      return; // Exit the function if the comment is too long
     }
 
     actions.createComment(resource.id, comment, (response) => {
@@ -173,6 +173,18 @@ const Modal = ({
   // const resourceId = resource.id;
   // const tokenExists = sessionStorage.getItem("token");
   // let categories = actions.processCategory(resource.category);
+
+  const handleSubmit = () => {
+    // Check if a rating was provided
+    if (rating > 0) {
+      handleRatingSubmit();
+    }
+
+    // Check if a comment was entered
+    if (comment.trim().length > 0) {
+      handleCommentSubmit();
+    }
+  };
 
   return (
     <>
@@ -357,14 +369,14 @@ const Modal = ({
                       setHover(newHover);
                     }}
                   />
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="primary"
                     onClick={handleRatingSubmit}
                     className="submit"
                   >
                     Submit
-                  </Button>
+                  </Button> */}
                 </div>
               )}
               {isLoggedIn ? (
@@ -375,11 +387,19 @@ const Modal = ({
                     placeholder={`Write a review of ${resource.name}...`}
                     maxLength="280"
                   ></textarea>
-                  <Button
+                  {/* <Button
                     variant="contained"
                     color="primary"
                     className="submit"
                     onClick={handleCommentSubmit}
+                  >
+                    Submit
+                  </Button> */}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="submit"
+                    onClick={handleSubmit}
                   >
                     Submit
                   </Button>
