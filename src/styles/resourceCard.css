@@ -17,11 +17,13 @@
 }
 
 .my-resource-card:hover {
-  background-color: lightpink !important;
+  /* background-color: lightpink !important; */
+  background-color: #8fafce !important;
+  border-color: #1976d2;
   border-radius: 3px !important;
   cursor: pointer;
   cursor: pointer;
-  border-color: rgb(22, 22, 136) !important;
+  /* border-color: rgb(22, 22, 136) !important; */
 }
 
 .add-favorite {

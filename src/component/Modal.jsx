@@ -211,37 +211,6 @@ const Modal = ({
             readOnly
           />
         </div>
-        {/* {isLoggedIn && !averageRating && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setShowRating(true)}
-          className="submit"
-        >
-          Rate
-        </Button>
-      )} */}
-
-        {/* KEEP THIS!  */}
-
-        {/* <div className="icon-box">
-            {categories.map((category, index) => {
-              const colorStyle = actions.getColorForCategory(category);
-              return (
-                <i
-                  key={index}
-                  className={`${actions.getIconForCategory(
-                    category
-                  )} card-icon`}
-                  style={colorStyle ? colorStyle : {}}
-                />
-              );
-            })}
-          </div> */}
-        {/* </div> */}
-        {/* </div> */}
-        {/* <div className="modal-tools"></div> */}
-        {/* <div className="modal-body"> */}
         <ModalInfo
           modalIsOpen={modalIsOpen}
           id={resource.id}
@@ -261,7 +230,7 @@ const Modal = ({
 
       {comments.length > 0 && (
         <div className="comments-display">
-          <div className="intro">User Reviews</div>
+          <span className="user-reviews">User Reviews</span>
           {comments.map((comment, index) => {
             const date = new Date(comment.created_at);
             const formattedDate =
@@ -280,17 +249,18 @@ const Modal = ({
             return (
               <>
                 <div key={comment.id} className="comment-div">
-                  <div className="comment-content-div">
-                    <p className="comment-content">"{comment.comment_cont}"</p>
-                  </div>
                   <div className="comment-info">
                     <div className="comment-user-info">
-                      <p className="comment-info-username">
-                        <i className="fa-solid fa-user"></i> {comment.user_id}{" "}
-                      </p>
+                      <span class="material-symbols-outlined account-circle">
+                        account_circle
+                      </span>
+                      {comment.user_id}{" "}
                     </div>
                     <div className="comment-info-date">
                       <p className="comment-info-content">{formattedDate}</p>
+                    </div>
+                    <div className="comment-content-div">
+                      <p className="comment-content">{comment.comment_cont}</p>
                     </div>
                   </div>
                 </div>
@@ -302,29 +272,17 @@ const Modal = ({
 
       <div className="modal-footer">
         <p className="problem">
-          Is there a problem with this information? {""}
+          Click {""}
           <span
             onClick={() => {
               setShowContactModal(true);
             }}
+            className="here"
           >
-            Let us know
-          </span>
+            here
+          </span>{" "}
+          if there is a problem with this information.
         </p>
-
-        {/* <p className="problem">
-          Click {""}
-          <Link to="/create">here</Link>
-          {""} to create a new resource listing.
-        </p>
-
-        {isLoggedIn && (
-          <p className="problem">
-            Click {""}
-            <Link to={`/edit/${resourceId}`}>here</Link>
-            {""} to edit this resource
-          </p>
-        )} */}
 
         {isAuthorizedUser && (
           <>
@@ -369,14 +327,6 @@ const Modal = ({
                       setHover(newHover);
                     }}
                   />
-                  {/* <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleRatingSubmit}
-                    className="submit"
-                  >
-                    Submit
-                  </Button> */}
                 </div>
               )}
               {isLoggedIn ? (
@@ -387,14 +337,7 @@ const Modal = ({
                     placeholder={`Write a review of ${resource.name}...`}
                     maxLength="280"
                   ></textarea>
-                  {/* <Button
-                    variant="contained"
-                    color="primary"
-                    className="submit"
-                    onClick={handleCommentSubmit}
-                  >
-                    Submit
-                  </Button> */}
+
                   <Button
                     variant="contained"
                     color="primary"
@@ -405,7 +348,7 @@ const Modal = ({
                   </Button>
                 </div>
               ) : (
-                <div>Please log in to rate and review a resource.</div>
+                <div>Please log in to rate and review resources.</div>
               )}
             </div>
           </div>
