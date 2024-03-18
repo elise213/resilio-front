@@ -20,7 +20,7 @@ const Navbar2 = ({
   days,
   groups,
   handleZipInputChange,
-  isNavOpen,
+  // isNavOpen,
   modalIsOpen,
   openLoginModal,
   openModal,
@@ -48,6 +48,19 @@ const Navbar2 = ({
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
+
+  const [userSelectedFilter, setUserSelectedFilter] = useState(false);
+
+  const areAllUnchecked = (stateObj) => {
+    return Object.values(stateObj).every((value) => !value);
+  };
+
+  useEffect(() => {
+    const noCategorySelected = areAllUnchecked(categories);
+    const noDaySelected = areAllUnchecked(days);
+
+    setUserSelectedFilter(!(noCategorySelected && noDaySelected));
+  }, [categories, days]);
 
   // Function to clear selected categories
   const clearSelectedCategory = (category) => {
@@ -97,7 +110,8 @@ const Navbar2 = ({
           selectedDays.length > 0 ||
           selectedCategories.length > 0) && (
           <>
-            <p className="active-filters-label">Your Active Filters:</p>
+            {/* <div> */}
+            {/* <p className="active-filters-label">Your Active Filters:</p> */}
             <div className="active-filters">
               {searchQuery && (
                 <div className="active-filter">
@@ -130,19 +144,55 @@ const Navbar2 = ({
                 </div>
               ))}
             </div>
+            {/* </div> */}
           </>
         )}
       </>
     );
   };
 
+  // function LocationDropdown() {
+  //   return (
+  //     <div className="dropdown">
+  //       <button className="dropdown-button" onClick={toggleLocationDropdown}>
+  //         Location
+  //         <span className="material-symbols-outlined">
+  //           {isLocationDropdownOpen ? "expand_less" : "expand_more"}
+  //         </span>
+  //       </button>
+  //       {isLocationDropdownOpen && (
+  //         <div className="dropdown-content">
+  //           <input
+  //             type="text"
+  //             id="zipcode"
+  //             value={zipInput}
+  //             onChange={handleZipInputChange}
+  //             maxLength="5"
+  //             placeholder="Zip Code"
+  //           />
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // }
+
   function LocationDropdown() {
+    // Toggle function to change the state of isLocationDropdownOpen
+    const toggleLocationDropdown = () => {
+      setIsLocationDropdownOpen(!isLocationDropdownOpen);
+    };
+
+    // Determine the icon based on the dropdown's state
+    const locationDropdownIcon = isLocationDropdownOpen
+      ? "expand_more"
+      : "chevron_right";
+
     return (
       <div className="dropdown">
         <button className="dropdown-button" onClick={toggleLocationDropdown}>
-          Change Location
+          Location{" "}
           <span className="material-symbols-outlined">
-            {isLocationDropdownOpen ? "expand_less" : "expand_more"}
+            {locationDropdownIcon}
           </span>
         </button>
         {isLocationDropdownOpen && (
@@ -150,7 +200,6 @@ const Navbar2 = ({
             <input
               type="text"
               id="zipcode"
-              // Assume zipInput and handleZipInputChange are defined in your component
               value={zipInput}
               onChange={handleZipInputChange}
               maxLength="5"
@@ -206,27 +255,25 @@ const Navbar2 = ({
               src="/assets/RESILIOO.png"
               alt="Resilio Logo"
             />
-            <p className="intro">Free resources in your neighborhood.</p>
+            <Login
+              openLoginModal={openLoginModal}
+              setOpenLoginModal={setOpenLoginModal}
+            />
           </div>
+          <p className="tag-line">Free services in your neighborhood</p>
 
-          {hasBoundaryResults && (
+          {hasBoundaryResults && store.boundaryResults.length > 0 && (
+            // !userSelectedFilter &&
             <>
               <div className=" nav-div">
                 <div className="side-by">
-                  <div className="search-bar">
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
                   <LocationDropdown />
                   {store.CATEGORY_OPTIONS &&
                   store.DAY_OPTIONS &&
                   store.GROUP_OPTIONS &&
                   categories &&
                   days &&
+                  // store.boundaryResults > 1 &&
                   groups ? (
                     <ErrorBoundary>
                       <Selection
@@ -241,6 +288,7 @@ const Navbar2 = ({
                         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
                         zipInput={zipInput}
                         handleZipInputChange={handleZipInputChange}
+                        areAllUnchecked={areAllUnchecked}
                       />
                     </ErrorBoundary>
                   ) : (
@@ -248,19 +296,21 @@ const Navbar2 = ({
                   )}
                 </div>
 
-                {/* Show combined active filters */}
-                <CombinedFilters
-                  searchQuery={searchQuery}
-                  clearSearchQuery={clearSearchQuery}
-                  selectedCategories={selectedCategories}
-                  clearSelectedCategory={clearSelectedCategory}
-                  selectedDays={selectedDays}
-                  clearSelectedDay={clearSelectedDay}
-                />
-                <Login
-                  openLoginModal={openLoginModal}
-                  setOpenLoginModal={setOpenLoginModal}
-                />
+                {store.boundaryResults &&
+                  // store.boundaryResults > 1 &&
+                  !userSelectedFilter && (
+                    <div className="search-bar">
+                      <span className="material-symbols-outlined search-icon">
+                        search
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                  )}
 
                 <div
                   className={
@@ -270,13 +320,22 @@ const Navbar2 = ({
                   {isLoggedIn && (
                     <div className="tab-buttons">
                       <div
-                        className={activeTab === "AllResources" ? "active" : ""}
+                        className={
+                          activeTab === "AllResources" ? "active" : "dormant"
+                        }
                         onClick={() => setActiveTab("AllResources")}
                       >
-                        All Resources
+                        {!userSelectedFilter && !searchQuery ? (
+                          <p>Map boundary</p>
+                        ) : (
+                          <p>Filtered Results</p>
+                        )}
                       </div>
                       <div
-                        className={activeTab === "Favorites" ? "active" : ""}
+                        style={{ textAlign: "end" }}
+                        className={
+                          activeTab === "Favorites" ? "active" : "dormant"
+                        }
                         onClick={() => setActiveTab("Favorites")}
                       >
                         Favorites
@@ -284,36 +343,48 @@ const Navbar2 = ({
                     </div>
                   )}
                   {activeTab === "AllResources" && (
-                    <div className="list-container">
-                      <ul>
-                        {Array.isArray(store.mapResults) &&
-                          store.boundaryResults
-                            .filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
+                    <>
+                      <CombinedFilters
+                        searchQuery={searchQuery}
+                        clearSearchQuery={clearSearchQuery}
+                        selectedCategories={selectedCategories}
+                        clearSelectedCategory={clearSelectedCategory}
+                        selectedDays={selectedDays}
+                        clearSelectedDay={clearSelectedDay}
+                      />
+                      <div className="list-container">
+                        <ul>
+                          {Array.isArray(store.mapResults) &&
+                            store.boundaryResults
+                              .filter(
+                                (resource) =>
+                                  resource.name
                                     .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
-                            .map((resource, index) => (
-                              <ResourceCard
-                                key={resource.id}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                                setFavorites={setFavorites}
-                              />
-                            ))}
-                      </ul>
-                    </div>
+                                    .includes(searchQuery.toLowerCase()) ||
+                                  (resource.description &&
+                                    resource.description
+                                      .toLowerCase()
+                                      .includes(searchQuery.toLowerCase()))
+                              )
+                              .map((resource, index) => (
+                                <ResourceCard
+                                  key={resource.id}
+                                  item={resource}
+                                  openModal={openModal}
+                                  closeModal={closeModal}
+                                  modalIsOpen={modalIsOpen}
+                                  setModalIsOpen={setModalIsOpen}
+                                  selectedResources={selectedResources}
+                                  addSelectedResource={addSelectedResource}
+                                  removeSelectedResource={
+                                    removeSelectedResource
+                                  }
+                                  setFavorites={setFavorites}
+                                />
+                              ))}
+                        </ul>
+                      </div>
+                    </>
                   )}
                   {activeTab === "Favorites" && isLoggedIn && (
                     <div className="list-container">

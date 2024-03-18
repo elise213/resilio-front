@@ -1,50 +1,51 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Context } from "../store/appContext";
-import MapBack from "./MapBack2";
-import Buttons from "./Buttons";
+// import MapBack from "./MapBack2";
+// import Buttons from "./Buttons";
 import ResourceCard from "./ResourceCard";
 // import MapSettings from "./MapSettings";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
 import Button from "@mui/material/Button";
+import HoverCard from "./HoverCard";
 
 const SimpleMap = ({
   // favorites,
   setFavorites,
   openModal,
   handleBoundsChange,
-  isFavoritesOpen,
-  setIsFavoritesOpen,
-  isToolBoxOpen,
-  setIsToolBoxOpen,
-  isNavOpen,
-  isDeckOpen,
-  setIsDeckOpen,
+  // isFavoritesOpen,
+  // setIsFavoritesOpen,
+  // isToolBoxOpen,
+  // setIsToolBoxOpen,
+  // isNavOpen,
+  // isDeckOpen,
+  // setIsDeckOpen,
   city,
   // geoFindMe,
   // handleZipInputChange,
   // zipInput,
   userLocation,
-  closeModal,
-  modalIsOpen,
-  setModalIsOpen,
-  selectedResource,
-  isGeneratedMapModalOpen,
-  setIsGeneratedMapModalOpen,
-  selectedResources,
-  setSelectedResources,
-  hoveredItem,
+  // closeModal,
+  // modalIsOpen,
+  // setModalIsOpen,
+  // selectedResource,
+  // isGeneratedMapModalOpen,
+  // setIsGeneratedMapModalOpen,
+  // selectedResources,
+  // setSelectedResources,
+  // hoveredItem,
   setHoveredItem,
-  addSelectedResource,
-  removeSelectedResource,
-  setBackSide,
-  backSide,
+  // addSelectedResource,
+  // removeSelectedResource,
+  // setBackSide,
+  // backSide,
   // toggleNav,
-  togglefavorites,
-  toggleCardDeck,
-  toggleFavoritesButtonRef,
+  // togglefavorites,
+  // toggleCardDeck,
+  // toggleFavoritesButtonRef,
   // toggleToolButtonRef,
-  toggleDeckButtonRef,
+  // toggleDeckButtonRef,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -118,24 +119,15 @@ const SimpleMap = ({
       >
         {isHovered && result && (
           <div className={`hover-card ${closestCornerClass}`}>
-            <ResourceCard
-              key={result.id}
-              item={result}
-              openModal={openModal}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-              selectedResources={selectedResources}
-              addSelectedResource={addSelectedResource}
-              removeSelectedResource={removeSelectedResource}
-            />
+            <HoverCard key={result.id} item={result} openModal={openModal} />
           </div>
         )}
 
-        <div className="marker-icon">
-          <i className={iconClass} style={{ color, zIndex: 0 }}></i>
-        </div>
+        {!isHovered && result && (
+          <div className="marker-icon">
+            <i className={iconClass} style={{ color }}></i>
+          </div>
+        )}
       </div>
     );
   };
@@ -181,7 +173,6 @@ const SimpleMap = ({
             )}
           </GoogleMapReact>
         </div>
-        {/* </div> */}
         <div className="simple-selection"></div>
       </div>
     </>

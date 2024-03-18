@@ -6,7 +6,8 @@
 .contact-submit {
   margin-top: 27px;
   margin-left: 5px;
-  width: 98%;
+  /* width: 98%; */
+  /* box-sizing: border-box; */
 }
 
 .contact-form-div p {
