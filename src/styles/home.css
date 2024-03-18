@@ -209,3 +209,9 @@
     width: 100% !important;
   }
 }
+
+.read-more {
+  /* display: block; */
+  color: gray;
+  margin-left: 10px;
+}
