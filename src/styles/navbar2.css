@@ -18,7 +18,7 @@
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 10px;
   border-right-width: 1px;
-  border-left-width: 6px;
+  border-left-width: 3px;
   border-bottom-width: 0;
   border-top-width: 0;
   border-color: black;
@@ -68,11 +68,11 @@
   color: black !important;
   border-style: solid;
   /* border-color: rgb(170, 228, 198); */
-  border-top-width: 5px;
+  border-top-width: 3px;
   border-right-width: 1px;
   border-bottom-width: 0px;
   /* border-bottom-color: white !important; */
-  border-left-width: 6px;
+  border-left-width: 3px;
 }
 
 /* .active::before {
@@ -138,15 +138,14 @@
 .list-container {
   max-height: 65vh;
   overflow-y: scroll;
-  border-radius: 0 2% 2% 2%;
+  /* border-radius: 0 2% 2% 2%; */
   border-color: gray;
   border-style: solid;
-  border-left-width: 6px;
+  border-left-width: 3px;
   border-left-color: black;
   border-right-width: 1px;
   border-top-width: 0;
   border-bottom-width: 1px;
-  /* margin-top: -9px; */
 }
 
 .list-container ul {

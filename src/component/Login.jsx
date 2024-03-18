@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-// import LoginModal from "./LoginModal";
 import styles from "../styles/loginModal.css";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 
 const Login = ({ openLoginModal, setOpenLoginModal }) => {
-  const [log, setLog] = useState("1");
+  const { store, actions } = useContext(Context);
 
-  const [email, setEmail] = useState("");
+  const [log, setLog] = useState("1");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const [email, setEmail] = useState("");
   const [is_org, setIs_org] = useState("");
-  const { store, actions } = useContext(Context);
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -250,9 +248,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             className="login-button-resilio"
             variant="contained"
             color="primary"
-            onClick={() => {
-              handleLogout;
-            }}
+            onClick={() => handleLogout()}
           >
             Log out
           </Button>
