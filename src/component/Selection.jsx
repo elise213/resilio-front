@@ -21,21 +21,38 @@ const Selection = ({
     day: false,
   });
 
-  // Other state initializations remain unchanged
+  // function Dropdown({ id, title, children }) {
+
+  //   const isOpen = openDropdown[id];
+
+  //   const toggleDropdown = () => {
+  //     setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
+  //   };
+
+  //   return (
+  //     <div className="dropdown">
+  //       <button onClick={toggleDropdown} className="dropdown-button">
+  //         {title} <span className="material-symbols-outlined">expand_more</span>
+  //       </button>
+  //       {isOpen && <div className="dropdown-content">{children}</div>}
+  //     </div>
+  //   );
+  // }
 
   function Dropdown({ id, title, children }) {
-    // Adjusted to check if this dropdown is open
     const isOpen = openDropdown[id];
 
-    // Adjusted to toggle the specific dropdown open state
     const toggleDropdown = () => {
       setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
+    // Conditionally set the icon based on the isOpen state
+    const icon = isOpen ? "expand_more" : "chevron_right";
+
     return (
       <div className="dropdown">
         <button onClick={toggleDropdown} className="dropdown-button">
-          {title} <span className="material-symbols-outlined">expand_more</span>
+          {title} <span className="material-symbols-outlined">{icon}</span>
         </button>
         {isOpen && <div className="dropdown-content">{children}</div>}
       </div>
@@ -89,22 +106,6 @@ const Selection = ({
         );
       });
   };
-
-  // function Dropdown({ id, title, children }) {
-  //   const isOpen = openDropdown === id;
-  //   const toggleDropdown = () => {
-  //     setOpenDropdown(isOpen ? null : id);
-  //   };
-
-  //   return (
-  //     <div className="dropdown">
-  //       <button onClick={toggleDropdown} className="dropdown-button">
-  //         {title} <span className="material-symbols-outlined">expand_more</span>
-  //       </button>
-  //       {isOpen && <div className="dropdown-content">{children}</div>}
-  //     </div>
-  //   );
-  // }
 
   const renderDropdownColumn = (type, state, setState) => {
     const ids =

@@ -18,19 +18,11 @@
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 10px;
   border-right-width: 1px;
-  border-left-width: 1px;
+  border-left-width: 6px;
   border-bottom-width: 0;
-  border-top-width: 1px;
-  border-color: gray;
+  border-top-width: 0;
+  border-color: black;
   border-style: solid;
-}
-
-.active-filters-label {
-  font-size: 14px;
-  color: gray;
-  font-family: "Inter", sans-serif;
-  /* margin: 20px 0 0 0; */
-  text-align: center;
 }
 
 .active-filter {
@@ -39,6 +31,7 @@
   padding: 5px 10px;
   background-color: #f0f0f0;
   border-radius: 5px;
+  color: green;
 }
 
 .active-filter > div {
@@ -62,7 +55,7 @@
 
 .tag-line {
   text-align: center;
-  margin: 10px 0 20px 0;
+  margin: 10px 0;
   font-family: "Inter", sans-serif;
   font-weight: bolder;
   letter-spacing: 1px;
@@ -71,14 +64,14 @@
 .active {
   position: relative;
   border-bottom: none;
-  margin: 0 5px -2px 0;
+  margin: 0 5px -1px 0;
   color: black !important;
   border-style: solid;
   /* border-color: rgb(170, 228, 198); */
   border-top-width: 5px;
   border-right-width: 1px;
-  border-bottom-width: 3px;
-  border-bottom-color: white !important;
+  border-bottom-width: 0px;
+  /* border-bottom-color: white !important; */
   border-left-width: 6px;
 }
 
@@ -148,10 +141,12 @@
   border-radius: 0 2% 2% 2%;
   border-color: gray;
   border-style: solid;
-  border-left-width: 1px;
+  border-left-width: 6px;
+  border-left-color: black;
   border-right-width: 1px;
   border-top-width: 0;
   border-bottom-width: 1px;
+  /* margin-top: -9px; */
 }
 
 .list-container ul {
@@ -374,6 +369,7 @@
   width: 100%;
   margin: 0 0;
   justify-content: space-between;
+  align-items: center;
 }
 
 .more-margin {

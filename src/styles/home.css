@@ -107,17 +107,6 @@
   color: rgb(149, 149, 149);
 }
 
-/* #zipcode {
-  border-radius: 3px;
-  text-align: center;
-  height: 30px;
-  border: 1px solid black;
-}
-
-#zipcode:focus {
-  outline: none;
-} */
-
 .geo-button {
   border-radius: 3px;
   text-align: center;
@@ -146,19 +135,16 @@
   overflow-y: auto;
 }
 
-/* .search-bar {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-} */
-
 .search-bar input,
 #zipcode {
   width: 100%;
   padding: 5px;
-  border-radius: 3px;
-  /* border: 2px solid gray; */
+  /* border-radius: 3px; */
+}
+
+#zipcode {
+  max-width: 100px;
+  align-self: center;
 }
 
 .search-bar {
@@ -166,8 +152,9 @@
   align-items: center;
   position: relative;
   background: white;
-  border: 1px solid gray; /* Example border to mimic input */
-  border-radius: 4px; /* Optional: if you want rounded corners */
+  border: 1px solid gray; /*  mimic input */
+  border-radius: 4px;
+  margin-top: 20px;
 }
 
 .search-bar input {
@@ -189,11 +176,6 @@
 .search-bar input::placeholder {
   /* font-size: 20px; */
   color: gray;
-}
-
-#zipcode {
-  max-width: 100px;
-  align-self: center;
 }
 
 @media screen and (max-width: 700px) {

@@ -151,13 +151,48 @@ const Navbar2 = ({
     );
   };
 
+  // function LocationDropdown() {
+  //   return (
+  //     <div className="dropdown">
+  //       <button className="dropdown-button" onClick={toggleLocationDropdown}>
+  //         Location
+  //         <span className="material-symbols-outlined">
+  //           {isLocationDropdownOpen ? "expand_less" : "expand_more"}
+  //         </span>
+  //       </button>
+  //       {isLocationDropdownOpen && (
+  //         <div className="dropdown-content">
+  //           <input
+  //             type="text"
+  //             id="zipcode"
+  //             value={zipInput}
+  //             onChange={handleZipInputChange}
+  //             maxLength="5"
+  //             placeholder="Zip Code"
+  //           />
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // }
+
   function LocationDropdown() {
+    // Toggle function to change the state of isLocationDropdownOpen
+    const toggleLocationDropdown = () => {
+      setIsLocationDropdownOpen(!isLocationDropdownOpen);
+    };
+
+    // Determine the icon based on the dropdown's state
+    const locationDropdownIcon = isLocationDropdownOpen
+      ? "expand_more"
+      : "chevron_right";
+
     return (
       <div className="dropdown">
         <button className="dropdown-button" onClick={toggleLocationDropdown}>
-          Location
+          Location{" "}
           <span className="material-symbols-outlined">
-            {isLocationDropdownOpen ? "expand_less" : "expand_more"}
+            {locationDropdownIcon}
           </span>
         </button>
         {isLocationDropdownOpen && (
@@ -165,7 +200,6 @@ const Navbar2 = ({
             <input
               type="text"
               id="zipcode"
-              // Assume zipInput and handleZipInputChange are defined in your component
               value={zipInput}
               onChange={handleZipInputChange}
               maxLength="5"
@@ -233,29 +267,6 @@ const Navbar2 = ({
             <>
               <div className=" nav-div">
                 <div className="side-by">
-                  {store.boundaryResults &&
-                    // store.boundaryResults > 1 &&
-                    !userSelectedFilter && (
-                      // <div className="search-bar">
-                      //   <input
-                      //     type="text"
-                      //     placeholder="Search"
-                      //     value={searchQuery}
-                      //     onChange={(e) => setSearchQuery(e.target.value)}
-                      //   />
-                      // </div>
-                      <div className="search-bar">
-                        <span className="material-symbols-outlined search-icon">
-                          search
-                        </span>
-                        <input
-                          type="text"
-                          placeholder="Search"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                      </div>
-                    )}
                   <LocationDropdown />
                   {store.CATEGORY_OPTIONS &&
                   store.DAY_OPTIONS &&
@@ -284,6 +295,22 @@ const Navbar2 = ({
                     <p>Loading selection options...</p>
                   )}
                 </div>
+
+                {store.boundaryResults &&
+                  // store.boundaryResults > 1 &&
+                  !userSelectedFilter && (
+                    <div className="search-bar">
+                      <span className="material-symbols-outlined search-icon">
+                        search
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                  )}
 
                 <div
                   className={
