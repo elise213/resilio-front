@@ -10,18 +10,13 @@ import Button from "@mui/material/Button";
 const Modal = ({
   resource,
   modalIsOpen,
-  // closeModal,
   setModalIsOpen,
-  // isGeneratedMapModalOpen,
   removeSelectedResource,
   selectedResources,
   addSelectedResource,
   setFavorites,
   showRating,
   setShowRating,
-  // setAboutModalIsOpen,
-  // setDonationModalIsOpen,
-  // showContactModal,
   setShowContactModal,
 }) => {
   const { store, actions } = useContext(Context);
@@ -30,11 +25,12 @@ const Modal = ({
   const [rating, setRating] = useState(0);
 
   const resourceId = resource.id;
-  const tokenExists = sessionStorage.getItem("token");
+  // const tokenExists = sessionStorage.getItem("token");
 
   const validUserIds = [1, 2, 3, 4];
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
-  const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10); // Get user ID from session storage and convert it to a number
+  const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
+  // Get user ID from session storage and convert it to a number
   const isAuthorizedUser = validUserIds.includes(userIdFromSession);
 
   const [hover, setHover] = useState(-1);
@@ -84,34 +80,34 @@ const Modal = ({
     actions.getComments(resource.id, setComments);
   }, [resource.id, actions]);
 
-  const handleCommentSubmit = () => {
-    if (comment.trim().length > 280) {
-      Swal.fire({
-        icon: "error",
-        title: "Comment Too Long",
-        text: "Your comment must be less than 280 characters.",
-      });
-      return; // Exit the function if the comment is too long
-    }
+  // const handleCommentSubmit = () => {
+  //   if (comment.trim().length > 280) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Comment Too Long",
+  //       text: "Your comment must be less than 280 characters.",
+  //     });
+  //     return; // Exit the function if the comment is too long
+  //   }
 
-    actions.createComment(resource.id, comment, (response) => {
-      if (response && response.status === "true") {
-        Swal.fire({
-          icon: "success",
-          title: "Comment Submitted",
-          text: "Your comment has been successfully submitted.",
-        });
-        setComment("");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Failed to Submit Comment",
-          text:
-            response.message || "There was an issue submitting your comment.",
-        });
-      }
-    });
-  };
+  //   actions.createComment(resource.id, comment, (response) => {
+  //     if (response && response.status === "true") {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Comment Submitted",
+  //         text: "Your comment has been successfully submitted.",
+  //       });
+  //       setComment("");
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Failed to Submit Comment",
+  //         text:
+  //           response.message || "There was an issue submitting your comment.",
+  //       });
+  //     }
+  //   });
+  // };
 
   // REFS
   // const modalContentRef = useRef(null);
@@ -169,22 +165,6 @@ const Modal = ({
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [showRating]);
-
-  // const resourceId = resource.id;
-  // const tokenExists = sessionStorage.getItem("token");
-  // let categories = actions.processCategory(resource.category);
-
-  const handleSubmit = () => {
-    // Check if a rating was provided
-    if (rating > 0) {
-      handleRatingSubmit();
-    }
-
-    // Check if a comment was entered
-    if (comment.trim().length > 0) {
-      handleCommentSubmit();
-    }
-  };
 
   return (
     <>
@@ -334,7 +314,7 @@ const Modal = ({
                   <textarea
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder={`Write a review of ${resource.name}...`}
+                    placeholder={`Please say something about ${resource.name}...`}
                     maxLength="280"
                   ></textarea>
 
@@ -342,7 +322,32 @@ const Modal = ({
                     variant="contained"
                     color="primary"
                     className="submit"
-                    onClick={handleSubmit}
+                    onClick={() => {
+                      console.log("Submit button clicked"); // Debug log
+                      actions
+                        .submitRatingAndComment(resource.id, comment, rating)
+                        .then((response) => {
+                          // Handle successful submission
+                          console.log("Success", response);
+                          Swal.fire(
+                            "Success",
+                            "Your review has been submitted!",
+                            "success"
+                          );
+                          // Reset form state here if needed
+                          setRating(0);
+                          setComment("");
+                        })
+                        .catch((error) => {
+                          // Handle error case
+                          console.error("Error submitting review:", error);
+                          Swal.fire(
+                            "Error",
+                            "Failed to submit your review.",
+                            "error"
+                          );
+                        });
+                    }}
                   >
                     Submit
                   </Button>

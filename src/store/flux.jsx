@@ -245,8 +245,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       // ________________________________________________________________LOGIN/TOKEN
 
-      // ________________________________________________________________LOGIN/TOKEN
-
       getToken: () => {
         const token = sessionStorage.getItem("token");
         const favorites = JSON.parse(sessionStorage.getItem("favorites"));
@@ -302,9 +300,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           Swal.fire({
             icon: "success",
             title: "Logged in Successfully",
-          }).then(() => {
-            // window.location.href = "/";
-          });
+          }).then(() => {});
 
           return true;
         } catch (error) {
@@ -827,7 +823,114 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           console.error("Error:", error);
-          // Handle the error (e.g., show an error message)
+        }
+      },
+
+      // submitRatingAndComment: async (
+      //   resourceId,
+      //   commentContent,
+      //   ratingValue
+      // ) => {
+      //   const store = getStore();
+      //   const url = getStore().current_back_url + "/api/createCommentAndRating";
+      //   const token = sessionStorage.getItem("token");
+
+      //   if (!token) {
+      //     return Promise.reject(new Error("User is not logged in."));
+      //   }
+
+      //   try {
+      //     const response = await fetch(url, {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //       body: JSON.stringify({
+      //         resource_id: resourceId,
+      //         comment_content: commentContent,
+      //         rating_value: ratingValue,
+      //       }),
+      //     });
+
+      //     if (!response.ok) {
+      //       throw new Error("Network response was not ok.");
+      //     }
+
+      //     const data = await response.json();
+      //     // Handle success
+      //     return data;
+      //   } catch (error) {
+      //     // Handle error
+      //     console.error("Error submitting rating and comment:", error);
+      //     return Promise.reject(error);
+      //   }
+      // },
+      submitRatingAndComment: async (
+        resourceId,
+        commentContent,
+        ratingValue
+      ) => {
+        const url = getStore().current_back_url + "/api/createCommentAndRating";
+        const token = sessionStorage.getItem("token");
+
+        if (!token) {
+          throw new Error("User is not logged in.");
+        }
+
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              resource_id: resourceId,
+              comment_content: commentContent,
+              rating_value: ratingValue,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok.");
+          }
+
+          const data = await response.json();
+          return data; // Handle success as needed
+        } catch (error) {
+          console.error("Error submitting rating and comment:", error);
+          throw error; // Handle error as needed
+        }
+      },
+
+      createRatingAndComment: async (
+        resourceId,
+        commentContent,
+        ratingValue
+      ) => {
+        const token = sessionStorage.getItem("token");
+
+        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+        if (token) {
+          fetch(`${backendUrl}/api/createCommentAndRating`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              resource_id: resourceId,
+              comment_content: commentContent,
+              rating_value: ratingValue,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((error) => {
+              console.error("Error:", error);
+            });
         }
       },
 

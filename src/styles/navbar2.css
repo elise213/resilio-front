@@ -16,9 +16,9 @@
 .active-filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-gap: 10px;
+  grid-gap: 5px;
   border-right-width: 1px;
-  border-left-width: 3px;
+  border-left-width: 1px;
   border-bottom-width: 0;
   border-top-width: 0;
   border-color: black;
@@ -67,10 +67,10 @@
   margin: 0 5px -1px 0;
   color: black !important;
   border-style: solid;
-  border-top-width: 3px;
+  border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 0px;
-  border-left-width: 3px;
+  border-left-width: 1px;
 }
 
 .tab-buttons {
@@ -126,7 +126,7 @@
   /* border-radius: 0 2% 2% 2%; */
   border-color: gray;
   border-style: solid;
-  border-left-width: 3px;
+  border-left-width: 1px;
   border-left-color: black;
   border-right-width: 1px;
   border-top-width: 0;
