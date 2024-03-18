@@ -16,8 +16,6 @@ const Selection = ({
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
-  // const [openDropdown, setOpenDropdown] = useState(null);
-  // Adjusted to manage open state of multiple dropdowns
   const [openDropdown, setOpenDropdown] = useState({
     category: false,
     day: false,

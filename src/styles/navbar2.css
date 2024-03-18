@@ -17,13 +17,19 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 10px;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-bottom-width: 0;
+  border-top-width: 1px;
+  border-color: gray;
+  border-style: solid;
 }
 
 .active-filters-label {
   font-size: 14px;
   color: gray;
   font-family: "Inter", sans-serif;
-  margin: 20px 0 0 0;
+  /* margin: 20px 0 0 0; */
   text-align: center;
 }
 
@@ -62,6 +68,65 @@
   letter-spacing: 1px;
 }
 
+.active {
+  position: relative;
+  border-bottom: none;
+  margin: 0 5px -2px 0;
+  color: black !important;
+  border-style: solid;
+  /* border-color: rgb(170, 228, 198); */
+  border-top-width: 5px;
+  border-right-width: 1px;
+  border-bottom-width: 3px;
+  border-bottom-color: white !important;
+  border-left-width: 6px;
+}
+
+/* .active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; 
+  box-shadow: 0 0 8px rgb(154, 184, 152), 0 0 10px rgb(154, 184, 152),
+    0 0 12px rgb(154, 184, 152), 0 0 14px rgb(154, 184, 152);
+  z-index: -1; 
+  border-radius: inherit; 
+} */
+
+.tab-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 20px;
+  border-bottom: 1px solid gray;
+}
+
+.dormant {
+  color: gray !important;
+  border-top-width: 5px;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.dormant,
+.active {
+  padding: 5px;
+  font-family: "Inter", sans-serif;
+  background-color: white;
+  z-index: 9;
+  width: 50%;
+  text-align: center;
+  margin-right: 0;
+  justify-content: center;
+  display: flex;
+}
+
+.tab-buttons div:hover {
+  cursor: pointer;
+}
+
 .split-nav {
   display: flex;
   flex-direction: column;
@@ -78,10 +143,15 @@
 }
 
 .list-container {
-  max-height: 69vh;
+  max-height: 65vh;
   overflow-y: scroll;
   border-radius: 0 2% 2% 2%;
-  border: 1px solid rgb(174, 161, 161);
+  border-color: gray;
+  border-style: solid;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-top-width: 0;
+  border-bottom-width: 1px;
 }
 
 .list-container ul {
@@ -127,33 +197,6 @@
 .favorites-scroll {
   height: 30vh;
   overflow-y: scroll;
-}
-
-.active {
-  color: blue !important;
-  border-bottom: none;
-  box-shadow: none !important;
-  margin: 0 5px -2px 0 !important;
-}
-
-.tab-buttons {
-  display: flex;
-}
-
-.tab-buttons div {
-  border: 1px solid gray;
-  border-bottom: none !important;
-  color: gray;
-  margin: 0 5px 0 0;
-  padding: 5px;
-  font-family: "Inter", sans-serif;
-  background-color: white;
-  z-index: 9;
-  border-radius: 20px 20px 20px 0;
-}
-
-.tab-buttons div:hover {
-  cursor: pointer;
 }
 
 .nav-div {

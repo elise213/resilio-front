@@ -106,12 +106,12 @@ const Navbar2 = ({
   }) => {
     return (
       <>
-        {/* <p>User Selected Filter? {userSelectedFilter ? "Yes" : "No"}</p> */}
         {(searchQuery ||
           selectedDays.length > 0 ||
           selectedCategories.length > 0) && (
           <>
-            <p className="active-filters-label">Your Active Filters:</p>
+            {/* <div> */}
+            {/* <p className="active-filters-label">Your Active Filters:</p> */}
             <div className="active-filters">
               {searchQuery && (
                 <div className="active-filter">
@@ -144,6 +144,7 @@ const Navbar2 = ({
                 </div>
               ))}
             </div>
+            {/* </div> */}
           </>
         )}
       </>
@@ -284,16 +285,6 @@ const Navbar2 = ({
                   )}
                 </div>
 
-                {/* Show combined active filters */}
-                <CombinedFilters
-                  searchQuery={searchQuery}
-                  clearSearchQuery={clearSearchQuery}
-                  selectedCategories={selectedCategories}
-                  clearSelectedCategory={clearSelectedCategory}
-                  selectedDays={selectedDays}
-                  clearSelectedDay={clearSelectedDay}
-                />
-
                 <div
                   className={
                     "nav-div-list" + (isLoggedIn ? "" : " more-margin")
@@ -302,13 +293,22 @@ const Navbar2 = ({
                   {isLoggedIn && (
                     <div className="tab-buttons">
                       <div
-                        className={activeTab === "AllResources" ? "active" : ""}
+                        className={
+                          activeTab === "AllResources" ? "active" : "dormant"
+                        }
                         onClick={() => setActiveTab("AllResources")}
                       >
-                        All Resources
+                        {!userSelectedFilter && !searchQuery ? (
+                          <p>Map boundary</p>
+                        ) : (
+                          <p>Filtered Results</p>
+                        )}
                       </div>
                       <div
-                        className={activeTab === "Favorites" ? "active" : ""}
+                        style={{ textAlign: "end" }}
+                        className={
+                          activeTab === "Favorites" ? "active" : "dormant"
+                        }
                         onClick={() => setActiveTab("Favorites")}
                       >
                         Favorites
@@ -316,36 +316,48 @@ const Navbar2 = ({
                     </div>
                   )}
                   {activeTab === "AllResources" && (
-                    <div className="list-container">
-                      <ul>
-                        {Array.isArray(store.mapResults) &&
-                          store.boundaryResults
-                            .filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
+                    <>
+                      <CombinedFilters
+                        searchQuery={searchQuery}
+                        clearSearchQuery={clearSearchQuery}
+                        selectedCategories={selectedCategories}
+                        clearSelectedCategory={clearSelectedCategory}
+                        selectedDays={selectedDays}
+                        clearSelectedDay={clearSelectedDay}
+                      />
+                      <div className="list-container">
+                        <ul>
+                          {Array.isArray(store.mapResults) &&
+                            store.boundaryResults
+                              .filter(
+                                (resource) =>
+                                  resource.name
                                     .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
-                            .map((resource, index) => (
-                              <ResourceCard
-                                key={resource.id}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                                setFavorites={setFavorites}
-                              />
-                            ))}
-                      </ul>
-                    </div>
+                                    .includes(searchQuery.toLowerCase()) ||
+                                  (resource.description &&
+                                    resource.description
+                                      .toLowerCase()
+                                      .includes(searchQuery.toLowerCase()))
+                              )
+                              .map((resource, index) => (
+                                <ResourceCard
+                                  key={resource.id}
+                                  item={resource}
+                                  openModal={openModal}
+                                  closeModal={closeModal}
+                                  modalIsOpen={modalIsOpen}
+                                  setModalIsOpen={setModalIsOpen}
+                                  selectedResources={selectedResources}
+                                  addSelectedResource={addSelectedResource}
+                                  removeSelectedResource={
+                                    removeSelectedResource
+                                  }
+                                  setFavorites={setFavorites}
+                                />
+                              ))}
+                        </ul>
+                      </div>
+                    </>
                   )}
                   {activeTab === "Favorites" && isLoggedIn && (
                     <div className="list-container">
