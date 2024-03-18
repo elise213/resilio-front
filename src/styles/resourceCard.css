@@ -10,15 +10,15 @@
   user-select: none;
   background-color: white;
   border-radius: 2%;
-  transition: 0.5s;
+  transition: 0.3s;
   overflow: hidden;
   font-family: "Inter", sans-serif;
   border: 2px solid transparent;
 }
 
 .my-resource-card:hover {
-  /* background-color: lightpink !important; */
-  background-color: #8fafce !important;
+  background-color: lightpink !important;
+  /* background-color: #b1e2b7 !important; */
   border-color: #1976d2;
   border-radius: 3px !important;
   cursor: pointer;
