@@ -11,6 +11,11 @@
   color: gray;
   font-family: "Inter", sans-serif;
   margin: 10px 0 0 0;
+  background-color: transparent;
+}
+
+.dropdown-button:hover {
+  cursor: pointer;
 }
 
 .dropdowns-container {

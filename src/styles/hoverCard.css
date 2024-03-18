@@ -1,0 +1,14 @@
+.hover-card-inside {
+  background-color: white;
+  z-index: 99999999 !important;
+  border-radius: 3px;
+  padding: 5px;
+  border: 1px solid gray;
+  min-width: 150px;
+  display: flex;
+}
+
+.hover-title {
+  font-size: 20px;
+  /* position: relative; */
+}

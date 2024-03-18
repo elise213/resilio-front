@@ -46,30 +46,30 @@ const ResourceCard = (props) => {
     categories = [];
   }
 
-  const toggleFavorite = (event) => {
-    event.stopPropagation();
-    setIsFavorited(!isFavorited);
+  // const toggleFavorite = (event) => {
+  //   event.stopPropagation();
+  //   setIsFavorited(!isFavorited);
 
-    if (isFavorited) {
-      actions.removeFavorite(props.item.name, props.setFavorites);
-    } else {
-      actions.addFavorite(props.item.name, props.setFavorites);
-    }
-  };
+  //   if (isFavorited) {
+  //     actions.removeFavorite(props.item.name, props.setFavorites);
+  //   } else {
+  //     actions.addFavorite(props.item.name, props.setFavorites);
+  //   }
+  // };
 
-  const isSelected =
-    Array.isArray(props.selectedResources) &&
-    props.selectedResources.some((resource) => resource.id === props.item.id);
+  // const isSelected =
+  //   Array.isArray(props.selectedResources) &&
+  //   props.selectedResources.some((resource) => resource.id === props.item.id);
 
-  const handleToggleSelectResource = (event) => {
-    event.stopPropagation();
-    console.log("hnadleToggleSelectR");
-    if (isSelected) {
-      handleDeselectResource(props.item.id);
-    } else {
-      handleSelectResource(props.item);
-    }
-  };
+  // const handleToggleSelectResource = (event) => {
+  //   event.stopPropagation();
+  //   console.log("hnadleToggleSelectR");
+  //   if (isSelected) {
+  //     handleDeselectResource(props.item.id);
+  //   } else {
+  //     handleSelectResource(props.item);
+  //   }
+  // };
 
   return (
     <div

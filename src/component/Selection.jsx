@@ -4,34 +4,55 @@ import styles from "../styles/selection.css";
 import MyCheckbox from "./MyCheckbox";
 import Report from "./Report";
 
-const Selection = ({ categories, setCategories, days, setDays }) => {
+const Selection = ({
+  categories,
+  setCategories,
+  days,
+  setDays,
+  areAllUnchecked,
+}) => {
   const { store, actions } = useContext(Context);
   const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
-  // const [openDropdown, setOpenDropdown] = useState(null);
-  // Adjusted to manage open state of multiple dropdowns
   const [openDropdown, setOpenDropdown] = useState({
     category: false,
     day: false,
   });
 
-  // Other state initializations remain unchanged
+  // function Dropdown({ id, title, children }) {
+
+  //   const isOpen = openDropdown[id];
+
+  //   const toggleDropdown = () => {
+  //     setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
+  //   };
+
+  //   return (
+  //     <div className="dropdown">
+  //       <button onClick={toggleDropdown} className="dropdown-button">
+  //         {title} <span className="material-symbols-outlined">expand_more</span>
+  //       </button>
+  //       {isOpen && <div className="dropdown-content">{children}</div>}
+  //     </div>
+  //   );
+  // }
 
   function Dropdown({ id, title, children }) {
-    // Adjusted to check if this dropdown is open
     const isOpen = openDropdown[id];
 
-    // Adjusted to toggle the specific dropdown open state
     const toggleDropdown = () => {
       setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
     };
 
+    // Conditionally set the icon based on the isOpen state
+    const icon = isOpen ? "expand_more" : "chevron_right";
+
     return (
       <div className="dropdown">
         <button onClick={toggleDropdown} className="dropdown-button">
-          {title} <span className="material-symbols-outlined">expand_more</span>
+          {title} <span className="material-symbols-outlined">{icon}</span>
         </button>
         {isOpen && <div className="dropdown-content">{children}</div>}
       </div>
@@ -85,22 +106,6 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
         );
       });
   };
-
-  // function Dropdown({ id, title, children }) {
-  //   const isOpen = openDropdown === id;
-  //   const toggleDropdown = () => {
-  //     setOpenDropdown(isOpen ? null : id);
-  //   };
-
-  //   return (
-  //     <div className="dropdown">
-  //       <button onClick={toggleDropdown} className="dropdown-button">
-  //         {title} <span className="material-symbols-outlined">expand_more</span>
-  //       </button>
-  //       {isOpen && <div className="dropdown-content">{children}</div>}
-  //     </div>
-  //   );
-  // }
 
   const renderDropdownColumn = (type, state, setState) => {
     const ids =
@@ -228,9 +233,9 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     return ids.some((id) => stateObj[id]);
   };
 
-  const areAllUnchecked = (stateObj, ids) => {
-    return ids.every((id) => !stateObj[id]);
-  };
+  // const areAllUnchecked = (stateObj, ids) => {
+  //   return ids.every((id) => !stateObj[id]);
+  // };
 
   const handleToggle = (setFn, stateObj, id) => {
     setFn({
@@ -239,17 +244,9 @@ const Selection = ({ categories, setCategories, days, setDays }) => {
     });
   };
 
-  // const toggleLocation = () => {
-  //   setIsLocationOpen(!isLocationOpen);
-  // };
-
   return (
     <>
       <Report />
-      {/* <div className={"selected-filters-container"}>
-        {renderSelectedFilters(categories, "category")}
-        {renderSelectedFilters(days, "day")}
-      </div> */}
       <div className={"dropdowns-container"}>
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}
