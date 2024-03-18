@@ -1,27 +1,15 @@
 "use client";
 import React, { useState, useContext, useRef, useEffect } from "react";
 import styles from "../styles/contact.css";
-import CircleType from "circletype";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 
 const Contact = () => {
-  const circleInstance = useRef();
   const form = useRef();
   const SERVICE_ID = "service_betnze8";
   const TEMPLATE_ID = "template_99iigjc";
   const PUBLIC_KEY = "bSrh0TD_khQU1Jash";
-
-  // useEffect(() => {
-  //   let circle1;
-  //   if (circleInstance.current) {
-  //     circle1 = new CircleType(circleInstance.current).radius(300);
-  //   }
-  //   return () => {
-  //     circle1 && circle1.destroy();
-  //   };
-  // }, []);
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -48,12 +36,6 @@ const Contact = () => {
 
   return (
     <>
-      {/* <div className="contact-call">
-        <span className="circle-font scroll-title" ref={circleInstance}>
-          Get In Touch !
-        </span>
-      </div> */}
-
       <form ref={form} onSubmit={sendEmail} className="contact-form">
         <div className="contact-form-div">
           <p className="intro">We would love to hear from you</p>
@@ -75,8 +57,6 @@ const Contact = () => {
               placeholder="Email address"
             />
           </div>
-          {/* </div>
-        <div className="contact-form-div"> */}
           <div className="form-col-full">
             <textarea
               id="contactTextArea"
@@ -86,9 +66,6 @@ const Contact = () => {
             ></textarea>
           </div>
         </div>
-
-        {/* <div className="contact-submit">
-        </div> */}
       </form>
       <Button
         variant="contained"

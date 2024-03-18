@@ -20,7 +20,6 @@ const Navbar2 = ({
   days,
   groups,
   handleZipInputChange,
-  // isNavOpen,
   modalIsOpen,
   openLoginModal,
   openModal,
@@ -150,31 +149,6 @@ const Navbar2 = ({
       </>
     );
   };
-
-  // function LocationDropdown() {
-  //   return (
-  //     <div className="dropdown">
-  //       <button className="dropdown-button" onClick={toggleLocationDropdown}>
-  //         Location
-  //         <span className="material-symbols-outlined">
-  //           {isLocationDropdownOpen ? "expand_less" : "expand_more"}
-  //         </span>
-  //       </button>
-  //       {isLocationDropdownOpen && (
-  //         <div className="dropdown-content">
-  //           <input
-  //             type="text"
-  //             id="zipcode"
-  //             value={zipInput}
-  //             onChange={handleZipInputChange}
-  //             maxLength="5"
-  //             placeholder="Zip Code"
-  //           />
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // }
 
   function LocationDropdown() {
     // Toggle function to change the state of isLocationDropdownOpen
