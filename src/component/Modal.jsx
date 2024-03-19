@@ -25,8 +25,6 @@ const Modal = ({
   const [rating, setRating] = useState(0);
 
   const resourceId = resource.id;
-  // const tokenExists = sessionStorage.getItem("token");
-
   const validUserIds = [1, 2, 3, 4];
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
@@ -80,35 +78,6 @@ const Modal = ({
     actions.getComments(resource.id, setComments);
   }, [resource.id, actions]);
 
-  // const handleCommentSubmit = () => {
-  //   if (comment.trim().length > 280) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Comment Too Long",
-  //       text: "Your comment must be less than 280 characters.",
-  //     });
-  //     return; // Exit the function if the comment is too long
-  //   }
-
-  //   actions.createComment(resource.id, comment, (response) => {
-  //     if (response && response.status === "true") {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Comment Submitted",
-  //         text: "Your comment has been successfully submitted.",
-  //       });
-  //       setComment("");
-  //     } else {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Failed to Submit Comment",
-  //         text:
-  //           response.message || "There was an issue submitting your comment.",
-  //       });
-  //     }
-  //   });
-  // };
-
   // REFS
   // const modalContentRef = useRef(null);
   const ratingModalRef = useRef(null);
@@ -119,30 +88,6 @@ const Modal = ({
     3: "Good",
     4: "Very Good",
     5: "Exceptional",
-  };
-
-  const handleRatingSubmit = () => {
-    console.log("handle rating submit!");
-    let resourceId = resource.id;
-    actions.createRating(resourceId, rating, (response) => {
-      setRatingResponse(response);
-      if (response && response.status === "true") {
-        Swal.fire({
-          title: "Success!",
-          text: "Your rating has been submitted.",
-          // icon: "success",
-          confirmButtonText: "Ok",
-        });
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text:
-            response.message || "There was an issue submitting your rating.",
-          // icon: "error",
-          confirmButtonText: "Ok",
-        });
-      }
-    });
   };
 
   useEffect(() => {
@@ -210,7 +155,7 @@ const Modal = ({
 
       {comments.length > 0 && (
         <div className="comments-display">
-          <span className="user-reviews">User Reviews</span>
+          <span className="user-reviews">Reviews</span>
           {comments.map((comment, index) => {
             const date = new Date(comment.created_at);
             const formattedDate =
@@ -240,6 +185,13 @@ const Modal = ({
                       <p className="comment-info-content">{formattedDate}</p>
                     </div>
                     <div className="comment-content-div">
+                      <Rating
+                        style={{ flexDirection: "row" }}
+                        name="read-only"
+                        value={comment.rating_value}
+                        precision={0.5}
+                        readOnly
+                      />
                       <p className="comment-content">{comment.comment_cont}</p>
                     </div>
                   </div>

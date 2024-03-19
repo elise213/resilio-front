@@ -246,6 +246,7 @@ textarea {
 .modal-center {
   font-family: "Inter", sans-serif;
   font-size: 12px;
+  margin: 20px 0;
 }
 
 body.modal-open {
