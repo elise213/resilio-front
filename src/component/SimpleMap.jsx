@@ -132,10 +132,6 @@ const SimpleMap = ({
     );
   };
 
-  useEffect(() => {
-    actions.popFavorites(setFavorites);
-  }, [store.favorites]);
-
   return (
     <>
       <div className={`map-frame`}>

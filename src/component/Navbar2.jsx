@@ -328,8 +328,8 @@ const Navbar2 = ({
                       />
                       <div
                         style={{
-                          borderTop: isLoggedIn ? "" : "1px solid #ddd", // Add top border if not logged in
-                          marginTop: isLoggedIn ? "" : "20px", // Add margin-top if not logged in
+                          borderTop: isLoggedIn ? "" : "1px solid #ddd",
+                          marginTop: isLoggedIn ? "" : "20px",
                           borderTopColor: isLoggedIn ? "" : "black",
                           borderLeftWidth: isLoggedIn ? "" : "1px",
                         }}

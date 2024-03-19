@@ -826,46 +826,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // submitRatingAndComment: async (
-      //   resourceId,
-      //   commentContent,
-      //   ratingValue
-      // ) => {
-      //   const store = getStore();
-      //   const url = getStore().current_back_url + "/api/createCommentAndRating";
-      //   const token = sessionStorage.getItem("token");
-
-      //   if (!token) {
-      //     return Promise.reject(new Error("User is not logged in."));
-      //   }
-
-      //   try {
-      //     const response = await fetch(url, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //       body: JSON.stringify({
-      //         resource_id: resourceId,
-      //         comment_content: commentContent,
-      //         rating_value: ratingValue,
-      //       }),
-      //     });
-
-      //     if (!response.ok) {
-      //       throw new Error("Network response was not ok.");
-      //     }
-
-      //     const data = await response.json();
-      //     // Handle success
-      //     return data;
-      //   } catch (error) {
-      //     // Handle error
-      //     console.error("Error submitting rating and comment:", error);
-      //     return Promise.reject(error);
-      //   }
-      // },
       submitRatingAndComment: async (
         resourceId,
         commentContent,
@@ -934,81 +894,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      createRating: (resourceId, ratingValue, setRatingResponse) => {
-        const current_back_url = getStore().current_back_url;
-        const token = sessionStorage.getItem("token");
-        if (token) {
-          const opts = {
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
-            mode: "cors",
-            method: "POST",
-            body: JSON.stringify({
-              resource_id: resourceId,
-              rating_value: ratingValue,
-            }),
-          };
-          fetch(`${current_back_url}/api/rating`, opts)
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status === "true") {
-                // The rating was successfully created
-                setRatingResponse(data);
-              } else {
-                // Handle failure (e.g., invalid rating value)
-                throw new Error(data.message || "Failed to create rating");
-              }
-            })
-            .catch((error) => {
-              console.error("Error creating rating:", error);
-            });
-        }
-      },
-
-      createComment: async (resourceId, commentContent, callback) => {
-        const current_back_url = getStore().current_back_url;
-        const token = sessionStorage.getItem("token");
-
-        const opts = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify({
-            resource_id: resourceId,
-            comment_cont: commentContent,
-          }),
-        };
-
-        try {
-          const response = await fetch(
-            `${current_back_url}/api/createComment`,
-            opts
-          );
-          if (response.status !== 200) {
-            const data = await response.json();
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: data.message || "Failed to submit the comment.",
-            });
-            return;
-          }
-          const data = await response.json();
-          callback(data);
-        } catch (error) {
-          console.error("Error:", error);
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "An error occurred while submitting the comment.",
-          });
-        }
-      },
-
       getComments: async (resourceId, setCommentsCallback) => {
         const current_back_url = getStore().current_back_url;
 
@@ -1020,14 +905,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             throw new Error("Failed to get comments");
           }
           const data = await response.json();
-          setCommentsCallback(data.comments); // Update the comments in the Modal component
+          setCommentsCallback(data.comments);
         } catch (error) {
           console.error("Error:", error);
-          // Handle the error (e.g., show an error message)
         }
       },
 
-      addFavorite: (resourceName, setFavorites) => {
+      addFavorite: (resource, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
         if (token) {
@@ -1037,9 +921,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify({
-              name: resourceName,
-            }),
+            body: JSON.stringify(resource), // Assuming 'resource' contains all necessary details
           };
           fetch(`${current_back_url}/api/addFavorite`, opts)
             .then((response) => response.json())
@@ -1073,15 +955,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
-      popFavorites: (setFavorites, faveList, faveOffers) => {
-        if (faveList && faveList.length) {
-          setStore({ favorites: faveList });
-        }
-        if (faveOffers && faveOffers.length) {
-          setStore({ favoriteOfferings: faveOffers });
-        }
-      },
-
       removeFavorite: (resourceName, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
@@ -1125,21 +998,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             })
             .catch((error) => console.error(error));
         }
-      },
-
-      initializeScreenSize: () => {
-        setStore({
-          isLargeScreen: window.innerWidth > 1000,
-          isClient: true,
-          windowWidth: window.innerWidth,
-        });
-      },
-
-      updateScreenSize: () => {
-        setStore({
-          isLargeScreen: window.innerWidth > 1000,
-          windowWidth: window.innerWidth,
-        });
       },
     },
   };

@@ -4,17 +4,17 @@ import Styles from "../styles/resourceCard.css";
 import Button from "@mui/material/Button";
 
 const ResourceCard = (props) => {
-  const { actions, store } = useContext(Context);
+  // const { actions, store } = useContext(Context);
 
   const [isFavorited, setIsFavorited] = useState(false);
 
-  const handleSelectResource = (resource) => {
-    props.addSelectedResource(resource);
-  };
+  // const handleSelectResource = (resource) => {
+  //   props.addSelectedResource(resource);
+  // };
 
-  const handleDeselectResource = (resourceId) => {
-    props.removeSelectedResource(resourceId);
-  };
+  // const handleDeselectResource = (resourceId) => {
+  //   props.removeSelectedResource(resourceId);
+  // };
 
   useEffect(() => {
     const storedFavorites = JSON.parse(
@@ -46,31 +46,6 @@ const ResourceCard = (props) => {
     categories = [];
   }
 
-  // const toggleFavorite = (event) => {
-  //   event.stopPropagation();
-  //   setIsFavorited(!isFavorited);
-
-  //   if (isFavorited) {
-  //     actions.removeFavorite(props.item.name, props.setFavorites);
-  //   } else {
-  //     actions.addFavorite(props.item.name, props.setFavorites);
-  //   }
-  // };
-
-  // const isSelected =
-  //   Array.isArray(props.selectedResources) &&
-  //   props.selectedResources.some((resource) => resource.id === props.item.id);
-
-  // const handleToggleSelectResource = (event) => {
-  //   event.stopPropagation();
-  //   console.log("hnadleToggleSelectR");
-  //   if (isSelected) {
-  //     handleDeselectResource(props.item.id);
-  //   } else {
-  //     handleSelectResource(props.item);
-  //   }
-  // };
-
   return (
     <div
       className="my-resource-card"
@@ -86,19 +61,6 @@ const ResourceCard = (props) => {
           alt="profile picture"
         />
       )}
-
-      {/* <div className="icons-container">
-        {categories.map((category, index) => {
-          const colorStyle = actions.getColorForCategory(category);
-          return (
-            <i
-              key={index}
-              className={`card-icon ${actions.getIconForCategory(category)}`}
-              style={colorStyle ? colorStyle : {}}
-            />
-          );
-        })}
-      </div> */}
       <div className="card-description">
         <span>
           {(props.item.description || "").length > 80
