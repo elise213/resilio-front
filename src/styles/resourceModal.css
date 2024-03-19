@@ -26,6 +26,11 @@
   padding-right: 50px;
 }
 
+.account-circle {
+  font-size: 25px;
+  margin: 0 10px 0 0;
+}
+
 .fa-arrow-right {
   margin: 6px 0px 0px 10px;
   animation: wiggle 5s infinite;
@@ -38,7 +43,7 @@
 
 .info-address a {
   font-family: "Inter", sans-serif;
-  font-size: 14px;
+  /* font-size: 14px; */
   width: unset !important;
   color: blue;
 }
@@ -102,10 +107,6 @@
   justify-content: flex-end;
 }
 
-.resource-rating:hover {
-  cursor: pointer;
-}
-
 .read-more:hover {
   cursor: pointer;
   color: darkblue;
@@ -117,6 +118,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+.resource-rating:hover {
+  cursor: pointer;
 }
 
 .resource-info {
@@ -167,6 +173,10 @@ p {
   font-family: "Inter", sans-serif;
 }
 
+.comment-info div p {
+  font-size: 12px;
+}
+
 .comment-info-date {
   font-size: 12px;
   color: gray;
@@ -175,17 +185,23 @@ p {
 }
 
 .comment-user-info {
-  font-size: 13px;
+  font-size: 12px;
   color: gray;
   text-align: start;
 }
 
+.user-reviews {
+  text-align: center;
+  /* text-decoration: underline; */
+}
+
 .comments-display {
-  /* margin: 30px 0; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   width: 100%;
+  margin: 35px 0;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 textarea {
@@ -218,12 +234,18 @@ textarea {
   font-size: 12px;
 }
 
+.here {
+  text-decoration: underline;
+  color: rgb(68, 138, 255);
+}
+
 .problem-link {
   text-decoration: none !important;
 }
 
 .modal-center {
   font-family: "Inter", sans-serif;
+  font-size: 12px;
 }
 
 body.modal-open {
@@ -256,6 +278,10 @@ body.modal-open {
   display: flex;
   justify-content: center;
   position: relative;
+}
+
+.modal-description {
+  font-size: 12px;
 }
 
 .carousel {
@@ -305,6 +331,7 @@ body.modal-open {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 30px 0;
 }
 
 .modal-map {

@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { ModalMap } from "./ModalMap";
 import Carousel from "./Carousel";
 import Button from "@mui/material/Button";
+import styles from "../styles/resourceModal.css";
 
 export const ModalInfo = ({
   res,
@@ -217,27 +218,6 @@ export const ModalInfo = ({
         </p>
       )}
 
-      {!isGeneratedMapModalOpen && isLoggedIn && (
-        <Button
-          variant="contained"
-          color="primary"
-          className="add-favorite"
-          onClick={(event) => toggleFavorite(event)}
-        >
-          {isFavorited ? (
-            <>
-              <span className="material-symbols-outlined">remove</span>
-              <span>remove from favorites</span>
-            </>
-          ) : (
-            <>
-              <span className="material-symbols-outlined">add</span>{" "}
-              <span> add to favorites</span>
-            </>
-          )}
-        </Button>
-      )}
-
       <div className="details-column">
         {/* WEBSITE */}
         {res.website && (
@@ -257,111 +237,7 @@ export const ModalInfo = ({
           </div>
         )}
 
-        {/* SCHEDULE */}
-        {/* {Object.keys(formattedSchedule).length > 0 && (
-          <div className=" info">
-            {Object.entries(formattedSchedule).map(([day, schedule], index) => (
-              <p
-                key={index}
-                className="modal-center"
-                style={{
-                  color: schedule !== "Closed" ? "green" : "grey",
-                }}
-              >
-                {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-              </p>
-            ))}
-          </div>
-        )} */}
-
-        {/* {Object.keys(formattedSchedule).length > 0 && (
-          <div className="info">
-            {everydaySameSchedule ? (
-              <p
-                className="modal-center"
-                style={{
-                  color:
-                    formattedSchedule.monday !== "Closed" ? "green" : "grey",
-                }}
-              >
-                Everyday: {formattedSchedule.monday}
-              </p>
-            ) : (
-              Object.entries(formattedSchedule).map(
-                ([day, schedule], index) => (
-                  <p
-                    key={index}
-                    className="modal-center"
-                    style={{
-                      color: schedule !== "Closed" ? "green" : "grey",
-                    }}
-                  >
-                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-                  </p>
-                )
-              )
-            )}
-          </div>
-        )} */}
-
-        {/* {Object.keys(formattedSchedule).length > 0 && (
-          <div className="info">
-            {everydaySameSchedule && formattedSchedule.monday === "Closed" ? (
-              <p className="modal-center" style={{ color: "grey" }}>
-                Closed Everyday
-              </p>
-            ) : everydaySameSchedule &&
-              formattedSchedule.monday === "24 Hours" ? (
-              <p className="modal-center" style={{ color: "green" }}>
-                Open 24 Hours
-              </p>
-            ) : (
-              Object.entries(formattedSchedule).map(
-                ([day, schedule], index) => (
-                  <p
-                    key={index}
-                    className="modal-center"
-                    style={{
-                      color:
-                        schedule !== "Closed" && schedule !== "24 Hours"
-                          ? "green"
-                          : "grey",
-                    }}
-                  >
-                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-                  </p>
-                )
-              )
-            )}
-          </div>
-        )} */}
-        {/* {Object.keys(formattedSchedule).length > 0 && (
-          <div className="info">
-            {everydaySameSchedule && formattedSchedule.monday === "Closed" ? (
-              <p className="modal-center" style={{ color: "grey" }}>
-                Closed Everyday
-              </p>
-            ) : everydaySameSchedule ? (
-              <p className="modal-center" style={{ color: "green" }}>
-                {formattedSchedule.monday}
-              </p>
-            ) : (
-              Object.entries(formattedSchedule).map(
-                ([day, schedule], index) => (
-                  <p
-                    key={index}
-                    className="modal-center"
-                    style={{
-                      color: schedule !== "Closed" ? "green" : "grey",
-                    }}
-                  >
-                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-                  </p>
-                )
-              )
-            )}
-          </div>
-        )} */}
+        {/*SCHEDULE*/}
 
         {Object.keys(formattedSchedule).length > 0 && (
           <div className="info">
@@ -408,6 +284,26 @@ export const ModalInfo = ({
 
         <Carousel res={res} />
       </div>
+      {!isGeneratedMapModalOpen && isLoggedIn && (
+        <Button
+          variant="contained"
+          color="primary"
+          className="add-favorite"
+          onClick={(event) => toggleFavorite(event)}
+        >
+          {isFavorited ? (
+            <>
+              <span className="material-symbols-outlined">remove</span>
+              <span>remove from favorites</span>
+            </>
+          ) : (
+            <>
+              <span className="material-symbols-outlined">add</span>{" "}
+              <span> add to favorites</span>
+            </>
+          )}
+        </Button>
+      )}
     </>
   );
 };
