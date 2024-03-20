@@ -851,35 +851,35 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      createRatingAndComment: async (
-        resourceId,
-        commentContent,
-        ratingValue
-      ) => {
-        const token = sessionStorage.getItem("token");
+      // createRatingAndComment: async (
+      //   resourceId,
+      //   commentContent,
+      //   ratingValue
+      // ) => {
+      //   const token = sessionStorage.getItem("token");
 
-        const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      //   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-        if (token) {
-          fetch(`${backendUrl}/api/createCommentAndRating`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              resource_id: resourceId,
-              comment_content: commentContent,
-              rating_value: ratingValue,
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {})
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-      },
+      //   if (token) {
+      //     fetch(`${backendUrl}/api/createCommentAndRating`, {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //       body: JSON.stringify({
+      //         resource_id: resourceId,
+      //         comment_content: commentContent,
+      //         rating_value: ratingValue,
+      //       }),
+      //     })
+      //       .then((response) => response.json())
+      //       .then((data) => {})
+      //       .catch((error) => {
+      //         console.error("Error:", error);
+      //       });
+      //   }
+      // },
 
       getComments: async (resourceId, setCommentsCallback) => {
         const current_back_url = getStore().current_back_url;

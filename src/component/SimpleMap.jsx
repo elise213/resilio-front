@@ -10,52 +10,16 @@ import Button from "@mui/material/Button";
 import HoverCard from "./HoverCard";
 
 const SimpleMap = ({
-  // favorites,
-  setFavorites,
   openModal,
   handleBoundsChange,
-  // isFavoritesOpen,
-  // setIsFavoritesOpen,
-  // isToolBoxOpen,
-  // setIsToolBoxOpen,
-  // isNavOpen,
-  // isDeckOpen,
-  // setIsDeckOpen,
   city,
-  // geoFindMe,
-  // handleZipInputChange,
-  // zipInput,
   userLocation,
-  // closeModal,
-  // modalIsOpen,
-  // setModalIsOpen,
-  // selectedResource,
-  // isGeneratedMapModalOpen,
-  // setIsGeneratedMapModalOpen,
-  // selectedResources,
-  // setSelectedResources,
-  // hoveredItem,
   setHoveredItem,
-  // addSelectedResource,
-  // removeSelectedResource,
-  // setBackSide,
-  // backSide,
-  // toggleNav,
-  // togglefavorites,
-  // toggleCardDeck,
-  // toggleFavoritesButtonRef,
-  // toggleToolButtonRef,
-  // toggleDeckButtonRef,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
 
   const mapContainerRef = useRef(null);
-
-  useEffect(() => {
-    setFavorites(store.favorites);
-    console.log("store favoritres updated!");
-  }, [store.favorites]);
 
   useEffect(() => {
     const fetchMarkers = async () => {};

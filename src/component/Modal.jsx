@@ -15,8 +15,6 @@ const Modal = ({
   selectedResources,
   addSelectedResource,
   setFavorites,
-  showRating,
-  setShowRating,
   setShowContactModal,
   setAboutModalIsOpen,
 }) => {
@@ -24,7 +22,7 @@ const Modal = ({
 
   // const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
-
+  const [showRating, setShowRating] = useState(false);
   const validUserIds = [1, 2, 3, 4];
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
@@ -41,6 +39,38 @@ const Modal = ({
   function toggleRatingModal() {
     setShowRating(!showRating);
   }
+
+  // const handleSubmitRatingAndComment = () => {
+  //   console.log("Submit button clicked");
+  //   actions
+  //     .submitRatingAndComment(resource.id, comment, rating)
+  //     .then((response) => {
+  //       console.log("Success", response);
+  //       Swal.fire("Success", "Your review has been submitted!", "success");
+
+  //       // Reset form state here if needed
+  //       setRating(0);
+  //       setComment("");
+
+  //       // Refetch the latest comments and average rating
+  //       fetchLatestCommentsAndRatings();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error submitting review:", error);
+  //       Swal.fire("Error", "Failed to submit your review.", "error");
+  //     });
+  // };
+
+  // Function to fetch the latest comments and average rating
+  const fetchLatestCommentsAndRatings = () => {
+    actions.getAverageRating(resource.id, setAverageRating);
+    actions.getComments(resource.id, setComments);
+  };
+
+  // UseEffect to initially fetch comments and ratings
+  useEffect(() => {
+    fetchLatestCommentsAndRatings();
+  }, [resource.id, actions]);
 
   // USE EFFECTS
   useEffect(() => {
@@ -76,27 +106,6 @@ const Modal = ({
     4: "Very Good",
     5: "Exceptional",
   };
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (
-        showRating &&
-        ratingModalRef.current &&
-        !ratingModalRef.current.contains(event.target)
-      ) {
-        console.log("Clicked outside the rating modal!");
-        toggleRatingModal();
-      }
-    };
-
-    // Attaching the event listener
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    // Cleanup  event listener
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [showRating]);
 
   return (
     <>
@@ -151,7 +160,7 @@ const Modal = ({
               day: "numeric",
             });
             return (
-              <div key={comment.id} className="comment-div">
+              <div key={`${comment.id}-${index}`} className="comment-div">
                 <div className="comment-info">
                   <div className="comment-user-info">
                     <span className="material-symbols-outlined account-circle">
@@ -254,29 +263,54 @@ const Modal = ({
                     color="primary"
                     className="submit"
                     onClick={() => {
-                      console.log("Submit button clicked"); // Debug log
+                      // Check if rating or comment is missing and show an alert
+                      if (!rating || rating <= 0) {
+                        Swal.fire({
+                          icon: "warning",
+                          title: "Oops...",
+                          text: "You must include a rating.",
+                        });
+                        return; // Exit the function early to prevent submission and preserve current input
+                      }
+
+                      if (!comment.trim()) {
+                        Swal.fire({
+                          icon: "warning",
+                          title: "Oops...",
+                          text: "You must include a comment.",
+                        });
+                        return; // Exit the function early to prevent submission and preserve current input
+                      }
+
+                      console.log("Submit button clicked");
                       actions
                         .submitRatingAndComment(resource.id, comment, rating)
                         .then((response) => {
-                          // Handle successful submission
                           console.log("Success", response);
-                          Swal.fire(
-                            "Success",
-                            "Your review has been submitted!",
-                            "success"
-                          );
+                          Swal.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: "Your review has been submitted!",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              setShowRating(false); // Close the rating modal upon successful submission
+                            }
+                          });
+
                           // Reset form state here if needed
                           setRating(0);
                           setComment("");
+
+                          // Refresh comments and ratings
+                          fetchLatestCommentsAndRatings();
                         })
                         .catch((error) => {
-                          // Handle error case
                           console.error("Error submitting review:", error);
-                          Swal.fire(
-                            "Error",
-                            "Failed to submit your review.",
-                            "error"
-                          );
+                          Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Failed to submit your review.",
+                          });
                         });
                     }}
                   >
