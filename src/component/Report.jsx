@@ -94,16 +94,16 @@ const Report = () => {
       In your area:
       <div className="grid-container">
         {Object.entries(report).map(([key, value], index) => {
-          const colorStyle = actions.getColorForCategory(key);
+          // const colorStyle = actions.getColorForCategory(key);
           return (
             <div className="grid-item" key={index}>
               <div>
                 <span>{value}</span>
-                <span
+                {/* <span
                   className={`report-icon ${actions.getIconForCategory(key)}`}
                   style={colorStyle ? colorStyle : {}}
-                ></span>
-                <span>{getLabelForCategory(key)} </span>
+                ></span> */}
+                {/* <span>{getLabelForCategory(key)} </span> */}
               </div>
             </div>
           );

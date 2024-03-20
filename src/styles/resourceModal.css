@@ -27,7 +27,7 @@
 }
 
 .account-circle {
-  font-size: 25px;
+  font-size: 40px;
   margin: 0 10px 0 0;
 }
 
@@ -126,7 +126,7 @@
 }
 
 .resource-info {
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 10px;
 }
 
@@ -148,7 +148,7 @@
 .comment-section {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 25px;
   height: 100px;
   width: 100%;
 }
@@ -181,7 +181,7 @@ p {
   font-size: 12px;
   color: gray;
   display: flex;
-  margin-left: 10px;
+  /* margin-left: 10px; */
   justify-content: space-between;
 }
 
@@ -189,6 +189,7 @@ p {
   font-size: 12px;
   color: gray;
   text-align: start;
+  /* margin-top: 20px; */
 }
 
 .user-reviews {
@@ -286,14 +287,13 @@ body.modal-open {
   font-size: 12px;
 }
 
-.carousel {
+/* .carousel {
   display: flex;
   justify-content: center;
   position: relative;
-
   overflow: hidden;
   margin: 10px 0 30px 0;
-}
+} */
 
 .carousel-description-div {
   flex-direction: column;
@@ -301,7 +301,7 @@ body.modal-open {
 
 .carousel-image {
   width: 300px;
-  height: 100px;
+  /* height: 100px; */
   /* height: 100%; */
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;

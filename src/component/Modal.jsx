@@ -18,6 +18,7 @@ const Modal = ({
   showRating,
   setShowRating,
   setShowContactModal,
+  setAboutModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -52,25 +53,12 @@ const Modal = ({
   }, [store.token, modalIsOpen]);
 
   useEffect(() => {
-    const storedFavorites = JSON.parse(
-      sessionStorage.getItem("favorites") || "[]"
-    );
+    const storedFavorites = store.favorites;
     const isItemFavorited = storedFavorites.some(
       (favorite) => favorite.id === resource.id
     );
     setIsFavorited(isItemFavorited);
   }, []);
-
-  const toggleFavorite = (event) => {
-    event.stopPropagation();
-    // setIsFavorited(!isFavorited);
-    console.log("sending favorite id", resource.id);
-    if (isFavorited) {
-      actions.removeFavorite(resource.id, setFavorites);
-    } else {
-      actions.addFavorite(resource.id, setFavorites);
-    }
-  };
 
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
@@ -141,15 +129,15 @@ const Modal = ({
           schedule={resource.schedule}
           res={resource}
           isFavorited={isFavorited}
+          setIsFavorited={setIsFavorited}
           setShowRating={setShowRating}
-          toggleFavorite={toggleFavorite}
-          // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+          // toggleFavorite={toggleFavorite}
           addSelectedResource={addSelectedResource}
           removeSelectedResource={removeSelectedResource}
           selectedResource={resource}
           selectedResources={selectedResources}
+          setAboutModalIsOpen={setAboutModalIsOpen}
         />
-        {/* <div className="full-comments-section"> */}
       </div>
 
       {comments.length > 0 && (
@@ -157,45 +145,35 @@ const Modal = ({
           <span className="user-reviews">Reviews</span>
           {comments.map((comment, index) => {
             const date = new Date(comment.created_at);
-            const formattedDate =
-              date.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              }) +
-              ", " +
-              date.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-              });
-
+            const formattedDate = date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
             return (
-              <>
-                <div key={comment.id} className="comment-div">
-                  <div className="comment-info">
-                    <div className="comment-user-info">
-                      <span className="material-symbols-outlined account-circle">
-                        account_circle
-                      </span>
-                      {comment.user_id}{" "}
-                    </div>
-                    <div className="comment-info-date">
-                      <Rating
-                        style={{ flexDirection: "row" }}
-                        name="read-only"
-                        value={comment.rating_value}
-                        precision={0.5}
-                        readOnly
-                      />
-                      <p className="comment-info-content">{formattedDate}</p>
-                    </div>
-                    <div className="comment-content-div">
-                      <p className="comment-content">{comment.comment_cont}</p>
-                    </div>
+              <div key={comment.id} className="comment-div">
+                <div className="comment-info">
+                  <div className="comment-user-info">
+                    <span className="material-symbols-outlined account-circle">
+                      account_circle
+                    </span>
+                    {comment.user_id}{" "}
+                  </div>
+                  <div className="comment-info-date">
+                    <Rating
+                      style={{ flexDirection: "row" }}
+                      name="read-only"
+                      value={comment.rating_value}
+                      precision={0.5}
+                      readOnly
+                    />
+                    <p className="comment-info-content">{formattedDate}</p>
+                  </div>
+                  <div className="comment-content-div">
+                    <p className="comment-content">{comment.comment_cont}</p>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
@@ -207,6 +185,8 @@ const Modal = ({
           <span
             onClick={() => {
               setShowContactModal(true);
+              setAboutModalIsOpen(false);
+              setDonationModalIsOpen(false);
             }}
             className="here"
           >

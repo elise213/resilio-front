@@ -4,11 +4,9 @@ import { Context } from "../store/appContext";
 import Login from "./Login";
 import ResourceCard from "./ResourceCard";
 import Contact from "../component/Contact";
-import EmailList from "../component/EmailList";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
 import Buttons from "../component/Buttons";
-import Modal from "../component/Modal";
 
 const Navbar2 = ({
   INITIAL_DAY_STATE,
@@ -28,7 +26,6 @@ const Navbar2 = ({
   selectedResources,
   setCategories,
   setDays,
-  setFavorites,
   setGroups,
   setModalIsOpen,
   setOpenLoginModal,
@@ -55,13 +52,16 @@ const Navbar2 = ({
   };
 
   useEffect(() => {
+    actions.fetchFavorites();
+  }, [store.favorites]);
+
+  useEffect(() => {
     const noCategorySelected = areAllUnchecked(categories);
     const noDaySelected = areAllUnchecked(days);
 
     setUserSelectedFilter(!(noCategorySelected && noDaySelected));
   }, [categories, days]);
 
-  // Function to clear selected categories
   const clearSelectedCategory = (category) => {
     setCategories((prevCategories) => {
       const updatedCategories = { ...prevCategories };
@@ -70,7 +70,6 @@ const Navbar2 = ({
     });
   };
 
-  // Function to clear selected days
   const clearSelectedDay = (day) => {
     setDays((prevDays) => {
       const updatedDays = { ...prevDays };
@@ -79,19 +78,17 @@ const Navbar2 = ({
     });
   };
 
-  const toggleLocationDropdown = () => {
-    setIsLocationDropdownOpen(!isLocationDropdownOpen);
-  };
+  useEffect(() => {
+    console.log(store.favorites);
+  }, [store.favorites]);
 
   useEffect(() => {
-    // Set the selected categories whenever the categories state changes
     setSelectedCategories(
       Object.keys(categories).filter((key) => categories[key])
     );
   }, [categories]);
 
   useEffect(() => {
-    // Set the selected days whenever the days state changes
     setSelectedDays(Object.keys(days).filter((key) => days[key]));
   }, [days]);
 
@@ -109,8 +106,6 @@ const Navbar2 = ({
           selectedDays.length > 0 ||
           selectedCategories.length > 0) && (
           <>
-            {/* <div> */}
-            {/* <p className="active-filters-label">Your Active Filters:</p> */}
             <div className="active-filters">
               {searchQuery && (
                 <div className="active-filter">
@@ -143,7 +138,6 @@ const Navbar2 = ({
                 </div>
               ))}
             </div>
-            {/* </div> */}
           </>
         )}
       </>
@@ -151,12 +145,10 @@ const Navbar2 = ({
   };
 
   function LocationDropdown() {
-    // Toggle function to change the state of isLocationDropdownOpen
     const toggleLocationDropdown = () => {
       setIsLocationDropdownOpen(!isLocationDropdownOpen);
     };
 
-    // Determine the icon based on the dropdown's state
     const locationDropdownIcon = isLocationDropdownOpen
       ? "expand_more"
       : "chevron_right";
@@ -190,7 +182,6 @@ const Navbar2 = ({
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
     };
-
     checkLoginStatus();
   }, [store.token]);
 
@@ -201,7 +192,6 @@ const Navbar2 = ({
   }, [store.boundaryResults]);
 
   useEffect(() => {
-    // Set the selected categories whenever the categories state changes
     setSelectedCategories(
       Object.keys(categories).filter((key) => categories[key])
     );
@@ -209,11 +199,9 @@ const Navbar2 = ({
   }, [categories]);
 
   useEffect(() => {
-    // Set the selected days whenever the days state changes
     setSelectedDays(Object.keys(days).filter((key) => days[key]));
   }, [days]);
 
-  // Function to clear search query
   const clearSearchQuery = () => {
     setSearchQuery("");
   };
@@ -222,7 +210,6 @@ const Navbar2 = ({
     <>
       <nav className={`new-navbar open-nav`}>
         <div className={`navbar-content`}>
-          {/* <div className={`nav-div-row`}></div> */}
           <div className="logo-div">
             <img
               className="top-logo"
@@ -237,7 +224,6 @@ const Navbar2 = ({
           <p className="tag-line">Free services in your neighborhood</p>
 
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
-            // !userSelectedFilter &&
             <>
               <div className=" nav-div">
                 <div className="side-by">
@@ -361,13 +347,45 @@ const Navbar2 = ({
                                   removeSelectedResource={
                                     removeSelectedResource
                                   }
-                                  setFavorites={setFavorites}
+                                  // setFavorites={setFavorites}
                                 />
                               ))}
                         </ul>
                       </div>
                     </>
                   )}
+                  {/* {activeTab === "Favorites" && isLoggedIn && (
+                    <div className="list-container">
+                      <ul>
+                        {Array.isArray(store.mapResults) &&
+                          store.favorites
+                            .filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            )
+                            .map((resource, index) => (
+                              <ResourceCard
+                                key={`${resource.id}-${index}`}
+                                item={resource}
+                                openModal={openModal}
+                                closeModal={closeModal}
+                                modalIsOpen={modalIsOpen}
+                                setModalIsOpen={setModalIsOpen}
+                                selectedResources={selectedResources}
+                                addSelectedResource={addSelectedResource}
+                                removeSelectedResource={removeSelectedResource}
+                                // setFavorites={setFavorites}
+                              />
+                            ))}
+                      </ul>
+                    </div>
+                  )} */}
                   {activeTab === "Favorites" && isLoggedIn && (
                     <div className="list-container">
                       <ul>
@@ -394,7 +412,7 @@ const Navbar2 = ({
                                 selectedResources={selectedResources}
                                 addSelectedResource={addSelectedResource}
                                 removeSelectedResource={removeSelectedResource}
-                                setFavorites={setFavorites}
+                                // setFavorites={setFavorites}
                               />
                             ))}
                       </ul>
@@ -424,11 +442,19 @@ const Navbar2 = ({
                   </span>
                   Back to search
                 </p>
-                <p className="intro">
-                  We are a 501(c)3, in need of donations and community support.
-                  Please Email resourcemap001@gmail.com to connect with us.
-                  Thank you very much.
-                </p>
+
+                <iframe
+                  title="Donation form powered by Zeffy"
+                  style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    width: "100%",
+                    height: "1200px",
+                  }}
+                  src="https://www.zeffy.com/en-US/embed/donation-form/cc33bc68-a2e1-4fd3-a1c6-88afd0cae253"
+                  allowpaymentrequest
+                  allowtransparency="true"
+                ></iframe>
               </div>
             </>
           )}
