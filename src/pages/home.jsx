@@ -78,23 +78,6 @@ const Home = () => {
 
   // FUNCTIONS
 
-  // useEffect(() => {
-  //   const body = document.body;
-  //   if (isNavOpen || showContactModal) {
-  //     body.classList.add("no-scroll");
-  //   } else {
-  //     body.classList.remove("no-scroll");
-  //   }
-  // }, [isNavOpen, showContactModal]);
-
-  // const toggleNav = () => {
-  //   setIsNavOpen(!isNavOpen);
-  // };
-
-  // const togglefavorites = () => {
-  //   setIsFavoritesOpen(!isFavoritesOpen);
-  // };
-
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
   };
@@ -381,10 +364,6 @@ const Home = () => {
     };
     fetchData();
   }, [categories, days, city, groups, searchingToday]);
-
-  useEffect(() => {
-    actions.initializeScreenSize();
-  }, []);
 
   useEffect(() => {
     const handleResize = actions.updateScreenSize;

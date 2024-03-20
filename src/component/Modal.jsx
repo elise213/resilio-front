@@ -18,14 +18,12 @@ const Modal = ({
   showRating,
   setShowRating,
   setShowContactModal,
+  setAboutModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
-  const [ratingResponse, setRatingResponse] = useState(null);
+  // const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
-
-  const resourceId = resource.id;
-  // const tokenExists = sessionStorage.getItem("token");
 
   const validUserIds = [1, 2, 3, 4];
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
@@ -55,59 +53,17 @@ const Modal = ({
   }, [store.token, modalIsOpen]);
 
   useEffect(() => {
-    const storedFavorites = JSON.parse(
-      sessionStorage.getItem("favorites") || "[]"
-    );
+    const storedFavorites = store.favorites;
     const isItemFavorited = storedFavorites.some(
-      (favorite) => favorite.name === resource.name
+      (favorite) => favorite.id === resource.id
     );
     setIsFavorited(isItemFavorited);
   }, []);
-
-  const toggleFavorite = (event) => {
-    event.stopPropagation();
-    setIsFavorited(!isFavorited);
-
-    if (isFavorited) {
-      actions.removeFavorite(resource.name, setFavorites);
-    } else {
-      actions.addFavorite(resource.name, setFavorites);
-    }
-  };
 
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
     actions.getComments(resource.id, setComments);
   }, [resource.id, actions]);
-
-  // const handleCommentSubmit = () => {
-  //   if (comment.trim().length > 280) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Comment Too Long",
-  //       text: "Your comment must be less than 280 characters.",
-  //     });
-  //     return; // Exit the function if the comment is too long
-  //   }
-
-  //   actions.createComment(resource.id, comment, (response) => {
-  //     if (response && response.status === "true") {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Comment Submitted",
-  //         text: "Your comment has been successfully submitted.",
-  //       });
-  //       setComment("");
-  //     } else {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Failed to Submit Comment",
-  //         text:
-  //           response.message || "There was an issue submitting your comment.",
-  //       });
-  //     }
-  //   });
-  // };
 
   // REFS
   // const modalContentRef = useRef(null);
@@ -119,30 +75,6 @@ const Modal = ({
     3: "Good",
     4: "Very Good",
     5: "Exceptional",
-  };
-
-  const handleRatingSubmit = () => {
-    console.log("handle rating submit!");
-    let resourceId = resource.id;
-    actions.createRating(resourceId, rating, (response) => {
-      setRatingResponse(response);
-      if (response && response.status === "true") {
-        Swal.fire({
-          title: "Success!",
-          text: "Your rating has been submitted.",
-          // icon: "success",
-          confirmButtonText: "Ok",
-        });
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text:
-            response.message || "There was an issue submitting your rating.",
-          // icon: "error",
-          confirmButtonText: "Ok",
-        });
-      }
-    });
   };
 
   useEffect(() => {
@@ -197,54 +129,51 @@ const Modal = ({
           schedule={resource.schedule}
           res={resource}
           isFavorited={isFavorited}
+          setIsFavorited={setIsFavorited}
           setShowRating={setShowRating}
-          toggleFavorite={toggleFavorite}
-          // isGeneratedMapModalOpen={isGeneratedMapModalOpen}
+          // toggleFavorite={toggleFavorite}
           addSelectedResource={addSelectedResource}
           removeSelectedResource={removeSelectedResource}
           selectedResource={resource}
           selectedResources={selectedResources}
+          setAboutModalIsOpen={setAboutModalIsOpen}
         />
-        {/* <div className="full-comments-section"> */}
       </div>
 
       {comments.length > 0 && (
         <div className="comments-display">
-          <span className="user-reviews">User Reviews</span>
+          <span className="user-reviews">Reviews</span>
           {comments.map((comment, index) => {
             const date = new Date(comment.created_at);
-            const formattedDate =
-              date.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              }) +
-              ", " +
-              date.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-                hour12: true,
-              });
-
+            const formattedDate = date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
             return (
-              <>
-                <div key={comment.id} className="comment-div">
-                  <div className="comment-info">
-                    <div className="comment-user-info">
-                      <span class="material-symbols-outlined account-circle">
-                        account_circle
-                      </span>
-                      {comment.user_id}{" "}
-                    </div>
-                    <div className="comment-info-date">
-                      <p className="comment-info-content">{formattedDate}</p>
-                    </div>
-                    <div className="comment-content-div">
-                      <p className="comment-content">{comment.comment_cont}</p>
-                    </div>
+              <div key={comment.id} className="comment-div">
+                <div className="comment-info">
+                  <div className="comment-user-info">
+                    <span className="material-symbols-outlined account-circle">
+                      account_circle
+                    </span>
+                    {comment.user_id}{" "}
+                  </div>
+                  <div className="comment-info-date">
+                    <Rating
+                      style={{ flexDirection: "row" }}
+                      name="read-only"
+                      value={comment.rating_value}
+                      precision={0.5}
+                      readOnly
+                    />
+                    <p className="comment-info-content">{formattedDate}</p>
+                  </div>
+                  <div className="comment-content-div">
+                    <p className="comment-content">{comment.comment_cont}</p>
                   </div>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
@@ -256,6 +185,8 @@ const Modal = ({
           <span
             onClick={() => {
               setShowContactModal(true);
+              setAboutModalIsOpen(false);
+              setDonationModalIsOpen(false);
             }}
             className="here"
           >
@@ -274,7 +205,7 @@ const Modal = ({
 
             <p className="problem">
               Click {""}
-              <Link to={`/edit/${resourceId}`}>here</Link>
+              <Link to={`/edit/${resource.id}`}>here</Link>
               {""} to edit this resource
             </p>
           </>

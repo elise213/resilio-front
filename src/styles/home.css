@@ -63,7 +63,7 @@
   border: none;
   flex-direction: column;
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   padding: 15px;
   box-sizing: border-box;
   overflow-y: scroll !important;
