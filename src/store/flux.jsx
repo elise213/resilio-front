@@ -12,14 +12,14 @@ const getState = ({ getStore, getActions, setStore }) => {
       name: null,
       avatarID: null,
       user_id: null,
-      avatarImages: [
-        "fas fa-robot",
-        "fas fa-user-astronaut",
-        "fas fa-user-ninja",
-        "fas fa-snowman",
-        "fas fa-user-secret",
-        "fas fa-hippo",
-      ],
+      // avatarImages: [
+      //   "fas fa-robot",
+      //   "fas fa-user-astronaut",
+      //   "fas fa-user-ninja",
+      //   "fas fa-snowman",
+      //   "fas fa-user-secret",
+      //   "fas fa-hippo",
+      // ],
       austin: [
         {
           center: { lat: 30.2672, lng: -97.7431 },
@@ -193,55 +193,54 @@ const getState = ({ getStore, getActions, setStore }) => {
         return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
       },
 
-      getIconForCategory: (category) => {
-        switch (category) {
-          case "health":
-            return "fa-solid fa-stethoscope";
-          // return "fa-solid fa-user-doctor";
-          case "food":
-            return "fa-solid fa-bowl-rice";
-          case "hygiene":
-            return "fa-solid fa-soap";
-          case "bathroom":
-            return "fa-solid fa-toilet";
-          case "work":
-            return "fa-solid fa-people-carry-box";
-          case "wifi":
-            return "fa-solid fa-wifi";
-          case "crisis":
-            return "fa-solid fa-exclamation-triangle";
-          case "substance":
-            return "fa-solid fa-wine-bottle";
-          case "legal":
-            return "fa-solid fa-gavel";
-          case "sex":
-            return "fa-solid fa-people-arrows";
-          case "mental":
-            return "fa-solid fa-brain";
-          case "shelter":
-            return "fa-solid fa-person-shelter";
-          case "clothing":
-            return "fa-solid fa-shirt";
-          case "babies":
-            return "fa-solid fa-baby";
-          case "migrant":
-            return "fa-solid fa-users";
-          case "vets":
-            return "fa-solid fa-person-military-rifle";
-          case "women":
-            return "fa-solid fa-female";
-          case "kids":
-            return "fa-solid fa-child";
-          case "youth":
-            return "fa-solid fa-person-rays";
-          case "seniors":
-            return "fa-solid fa-user-plus";
-          case "lgbtq":
-            return "fa-solid fa-rainbow";
-          default:
-            return "fa-solid fa-question";
-        }
-      },
+      // getIconForCategory: (category) => {
+      //   switch (category) {
+      //     case "health":
+      //       return "fa-solid fa-stethoscope";
+      //     case "food":
+      //       return "fa-solid fa-bowl-rice";
+      //     case "hygiene":
+      //       return "fa-solid fa-soap";
+      //     case "bathroom":
+      //       return "fa-solid fa-toilet";
+      //     case "work":
+      //       return "fa-solid fa-people-carry-box";
+      //     case "wifi":
+      //       return "fa-solid fa-wifi";
+      //     case "crisis":
+      //       return "fa-solid fa-exclamation-triangle";
+      //     case "substance":
+      //       return "fa-solid fa-wine-bottle";
+      //     case "legal":
+      //       return "fa-solid fa-gavel";
+      //     case "sex":
+      //       return "fa-solid fa-people-arrows";
+      //     case "mental":
+      //       return "fa-solid fa-brain";
+      //     case "shelter":
+      //       return "fa-solid fa-person-shelter";
+      //     case "clothing":
+      //       return "fa-solid fa-shirt";
+      //     case "babies":
+      //       return "fa-solid fa-baby";
+      //     case "migrant":
+      //       return "fa-solid fa-users";
+      //     case "vets":
+      //       return "fa-solid fa-person-military-rifle";
+      //     case "women":
+      //       return "fa-solid fa-female";
+      //     case "kids":
+      //       return "fa-solid fa-child";
+      //     case "youth":
+      //       return "fa-solid fa-person-rays";
+      //     case "seniors":
+      //       return "fa-solid fa-user-plus";
+      //     case "lgbtq":
+      //       return "fa-solid fa-rainbow";
+      //     default:
+      //       return "fa-solid fa-question";
+      //   }
+      // },
 
       // ________________________________________________________________LOGIN/TOKEN
 
@@ -291,10 +290,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             is_org: data.is_org,
             avatarID: data.avatar,
             name: data.name,
-            // favorites: data.favorites,
             favorites: data.favorites.map((fav) => fav.resource),
             user_id: data.user_id,
-            //       // favoriteOfferings: data.favoriteOfferings,
           });
 
           Swal.fire({
@@ -314,6 +311,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
+
       logout: () => {
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("is_org");
@@ -324,9 +322,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
-          onClose: () => {
-            // window.location.href = "/";
-          },
+          onClose: () => {},
         });
       },
 
@@ -603,7 +599,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setSchedules: () => {
-        // let controller = new AbortController();
         let url = getStore().current_back_url + `/api/getSchedules`;
         fetch(url, {
           method: "GET",
@@ -611,16 +606,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             "access-control-allow-origin": "*",
             "Content-Type": "application/json",
           },
-          // signal: controller.signal,
         })
           .then((response) => response.json())
           .then((data) => {
             setStore({ schedules: data });
           })
           .catch((error) => console.log(error));
-        return () => {
-          // controller.abort();
-        };
+        return () => {};
       },
 
       setMapResults: async (bounds) => {
@@ -906,7 +898,35 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      addFavorite: (resourceId, setFavorites) => {
+      fetchFavorites: function () {
+        console.log("fetch favorites was called");
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          fetch(`${current_back_url}/api/getFavorites`, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const favorites = data.favorites.map((fav) => ({
+                ...fav.resource,
+                favoriteId: fav.favoriteId,
+              }));
+              sessionStorage.setItem("favorites", JSON.stringify(favorites));
+              setStore({
+                favorites: favorites,
+              });
+            })
+            // .then(console.log("STORE FAVS", store.favorites))
+            .catch((error) => {
+              console.error("Error fetching updated favorites:", error);
+            });
+        }
+      },
+
+      addFavorite: function (resourceId) {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
         if (token) {
@@ -916,49 +936,31 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify({ resourceId: resourceId }),
+            body: JSON.stringify({ resourceId }),
           };
           fetch(`${current_back_url}/api/addFavorite`, opts)
             .then((response) => {
               if (response.status === 409) {
-                // If the status code is 409, it means the favorite already exists.
                 console.error("This item is already in your favorites.");
-                throw new Error("This item is already in your favorites.");
+                return Promise.reject(
+                  new Error("This item is already in your favorites.")
+                );
               } else if (!response.ok) {
-                // For any other non-OK response, log and throw an error.
                 console.error("Failed to add favorite due to server error.");
-                throw new Error("Failed to add favorite");
+                return Promise.reject(new Error("Failed to add favorite"));
               }
-              return response.json(); // Process the successful response.
+              return response.json();
             })
-            .then((data) => {
-              // Here you might want to update the state or perform any actions
-              // on successful addition of favorite.
-
-              // Fetch updated favorites list after adding new favorite
-              return fetch(`${current_back_url}/api/getFavorites`, {
-                headers: {
-                  Authorization: "Bearer " + token,
-                },
-              });
-            })
-            .then((response) => response.json()) // Parse the favorites response.
-            .then((data) => {
-              const favorites = data.favorites.map((fav) => fav.resource);
-              sessionStorage.setItem("favorites", JSON.stringify(favorites));
-              setStore((prevState) => ({
-                ...prevState,
-                favorites: favorites,
-              }));
-              setFavorites([...favorites]);
+            .then(() => {
+              getActions().fetchFavorites();
             })
             .catch((error) => {
-              console.error("Error fetching updated favorites:", error);
+              console.error("Error adding favorite:", error);
             });
         }
       },
 
-      removeFavorite: (resourceId, setFavorites) => {
+      removeFavorite: function (resourceId) {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
         if (token) {
@@ -968,38 +970,108 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             method: "DELETE",
-            body: JSON.stringify({ resourceId: resourceId }),
+            body: JSON.stringify({ resourceId }),
           };
           fetch(`${current_back_url}/api/removeFavorite`, opts)
             .then((response) => response.json())
             .then((data) => {
               if (data.message === "okay") {
-                // Refetch favorites to update session and store
-                fetch(`${current_back_url}/api/getFavorites`, {
-                  headers: {
-                    Authorization: "Bearer " + token,
-                  },
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    const favorites = data.favorites.map((fav) => fav.resource);
-                    sessionStorage.setItem(
-                      "favorites",
-                      JSON.stringify(favorites)
-                    );
-                    setStore((prevState) => ({
-                      ...prevState,
-                      favorites: favorites,
-                    }));
-                    if (setFavorites) {
-                      setFavorites(favorites);
-                    }
-                  });
+                // Use getActions to call fetchFavorites after successful removal
+                getActions().fetchFavorites();
               }
             })
-            .catch((error) => console.error(error));
+            .catch((error) => console.error("Error removing favorite:", error));
         }
       },
+      // addFavorite: (resourceId, setFavorites) => {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+      //   if (token) {
+      //     const opts = {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //         "Content-Type": "application/json",
+      //       },
+      //       method: "POST",
+      //       body: JSON.stringify({ resourceId: resourceId }),
+      //     };
+      //     fetch(`${current_back_url}/api/addFavorite`, opts)
+      //       .then((response) => {
+      //         if (response.status === 409) {
+      //           console.error("This item is already in your favorites.");
+      //           throw new Error("This item is already in your favorites.");
+      //         } else if (!response.ok) {
+      //           console.error("Failed to add favorite due to server error.");
+      //           throw new Error("Failed to add favorite");
+      //         }
+      //         return response.json(); // Process the successful response.
+      //       })
+      //       .then((data) => {
+      //         // Fetch updated favorites list after adding new favorite
+      //         return fetch(`${current_back_url}/api/getFavorites`, {
+      //           headers: {
+      //             Authorization: "Bearer " + token,
+      //           },
+      //         });
+      //       })
+      //       .then((response) => response.json()) // Parse the favorites response.
+      //       .then((data) => {
+      //         const favorites = data.favorites.map((fav) => fav.resource);
+      //         sessionStorage.setItem("favorites", JSON.stringify(favorites));
+      //         setStore((prevState) => ({
+      //           ...prevState,
+      //           favorites: favorites,
+      //         }));
+      //         setFavorites([...favorites]);
+      //       })
+      //       .catch((error) => {
+      //         console.error("Error fetching updated favorites:", error);
+      //       });
+      //   }
+      // },
+
+      // removeFavorite: (resourceId, setFavorites) => {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+      //   if (token) {
+      //     const opts = {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //         "Content-Type": "application/json",
+      //       },
+      //       method: "DELETE",
+      //       body: JSON.stringify({ resourceId: resourceId }),
+      //     };
+      //     fetch(`${current_back_url}/api/removeFavorite`, opts)
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         if (data.message === "okay") {
+      //           // Refetch favorites to update session and store
+      //           fetch(`${current_back_url}/api/getFavorites`, {
+      //             headers: {
+      //               Authorization: "Bearer " + token,
+      //             },
+      //           })
+      //             .then((response) => response.json())
+      //             .then((data) => {
+      //               const favorites = data.favorites.map((fav) => fav.resource);
+      //               sessionStorage.setItem(
+      //                 "favorites",
+      //                 JSON.stringify(favorites)
+      //               );
+      //               setStore((prevState) => ({
+      //                 ...prevState,
+      //                 favorites: favorites,
+      //               }));
+      //               if (setFavorites) {
+      //                 setFavorites(favorites);
+      //               }
+      //             });
+      //         }
+      //       })
+      //       .catch((error) => console.error(error));
+      //   }
+      // },
     },
   };
 };
