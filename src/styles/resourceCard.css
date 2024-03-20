@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 15px 0 0 0;
+  margin: 10px 5px 5px 5px;
   padding: 5px;
   z-index: 996 !important;
   position: static;
@@ -13,13 +13,15 @@
   transition: 0.3s;
   overflow: hidden;
   font-family: "Inter", sans-serif;
-  border: 2px solid transparent;
+  /* border: 4px double transparent; */
+  /* margin: 5px; */
 }
 
 .my-resource-card:hover {
-  background-color: lightpink !important;
-  /* background-color: #b1e2b7 !important; */
-  border-color: #1976d2;
+  transition: 0.2s;
+  box-shadow: 5px 5px 5px 5px rgba(0.2, 0.2, 0.2, 0.2) !important;
+  /* border: 4px double #1976d2 !important; */
+  /* background-color: #edd585 !important; */
   border-radius: 3px !important;
   cursor: pointer;
   cursor: pointer;
@@ -48,7 +50,7 @@ textarea {
 
 .category-span {
   padding-right: 10px;
-  color: #1976d2 !important;
+  color: #679c87 !important;
   font-size: 14px !important;
 }
 
@@ -56,7 +58,7 @@ textarea {
   object-fit: cover;
   margin-bottom: 5px;
   width: 100%;
-  max-height: 180px;
+  max-height: 130px;
   border-radius: 4px;
 }
 
@@ -105,9 +107,16 @@ textarea {
   color: black;
   width: 100%;
   font-family: "Inter", sans-serif;
-  /* letter-spacing: 0.5px; */
+  font-weight: bolder;
+  font-size: 14px;
+}
+
+.resource-card-number {
+  color: black;
+  font-family: "Inter", sans-serif;
   font-weight: bolder;
   font-size: 16px;
+  margin-right: 5px;
 }
 
 .fa-baby,

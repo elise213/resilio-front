@@ -19,8 +19,6 @@ const Home = () => {
 
   // console.log("user id", store.user_id);
 
-  const [showContactModal, setShowContactModal] = useState(false);
-
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
     return storedResources;
@@ -49,8 +47,12 @@ const Home = () => {
   const [isNavOpen, setIsNavOpen] = useState(true);
 
   const [city, setCity] = useState(INITIAL_CITY_STATE);
-  const [isLocating, setIsLocating] = useState(false);
+  // const [isLocating, setIsLocating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
+  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -428,6 +430,10 @@ const Home = () => {
                 setSelectedResource={setSelectedResource}
                 selectedResources={selectedResources}
                 setSelectedResources={setSelectedResources}
+                aboutModalIsOpen={aboutModalIsOpen}
+                setAboutModalIsOpen={setAboutModalIsOpen}
+                donationModalIsOpen={donationModalIsOpen}
+                setDonationModalIsOpen={setDonationModalIsOpen}
               />
             </ErrorBoundary>
           </>
@@ -453,6 +459,12 @@ const Home = () => {
             </div>
           </>
         )}
+
+        <Buttons
+          setAboutModalIsOpen={setAboutModalIsOpen}
+          setShowContactModal={setShowContactModal}
+          setDonationModalIsOpen={setDonationModalIsOpen}
+        />
       </div>
     </>
   );

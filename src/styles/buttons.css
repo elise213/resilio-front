@@ -4,3 +4,9 @@
   border: 1px solid var(--marascoral) !important;
   background-color: lavender !important;
 }
+
+.footer-container {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}
