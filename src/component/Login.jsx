@@ -176,12 +176,6 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
         <div className="custom-login-modal-body">
           <form>
             <>
-              {/* <label
-                htmlFor="exampleInputEmail1"
-                className="custom-form-label margin-cancel"
-              >
-                Email address
-              </label> */}
               <input
                 placeholder="Email"
                 type="text"
@@ -192,12 +186,6 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
               ></input>
             </>
             <div className="">
-              {/* <label
-                htmlFor="exampleInputPassword1"
-                className="custom-form-label"
-              >
-                Password
-              </label> */}
               <input
                 placeholder="Password"
                 type="password"

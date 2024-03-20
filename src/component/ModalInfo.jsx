@@ -10,7 +10,8 @@ export const ModalInfo = ({
   id,
   modalIsOpen,
   isFavorited,
-  toggleFavorite,
+  setIsFavorited,
+  // toggleFavorite,
   isGeneratedMapModalOpen,
 }) => {
   const { store, actions } = useContext(Context);
@@ -21,6 +22,18 @@ export const ModalInfo = ({
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
+  };
+
+  const toggleFavorite = (event) => {
+    event.stopPropagation();
+
+    console.log("sending favorite id", id);
+    if (isFavorited) {
+      actions.removeFavorite(id);
+    } else {
+      actions.addFavorite(id);
+    }
+    setIsFavorited(!isFavorited);
   };
 
   const currentSchedule =
@@ -134,25 +147,6 @@ export const ModalInfo = ({
     return "Varied";
   }
 
-  // Consolidate the two formatTime functions into a single, corrected one
-  // function formatTime(time) {
-  //   if (time === "closed") {
-  //     return "Closed";
-  //   }
-  //   if (!time) {
-  //     return "";
-  //   }
-  //   let [hour, minute] = time.split(":");
-  //   let numericHour = parseInt(hour, 10);
-  //   let suffix = numericHour >= 12 ? "p.m." : "a.m.";
-  //   if (numericHour > 12) {
-  //     numericHour -= 12;
-  //   } else if (numericHour === 0) {
-  //     numericHour = 12; // Handle midnight as 12 AM
-  //   }
-  //   return `${numericHour}:${minute} ${suffix}`;
-  // }
-
   function formatTime(time) {
     if (!time || time === "closed") {
       return "Closed";
@@ -201,7 +195,7 @@ export const ModalInfo = ({
             rel="noopener noreferrer"
             className="modal-text"
           >
-            {res.address}
+            {res.address.replace(", USA", "")}
           </a>
         </div>
       )}
@@ -242,11 +236,11 @@ export const ModalInfo = ({
         {Object.keys(formattedSchedule).length > 0 && (
           <div className="info">
             {scheduleCategory === "Closed Everyday" ? (
-              <p className="modal-center" style={{ color: "grey" }}>
+              <p className="schedule-row" style={{ color: "grey" }}>
                 Closed Everyday
               </p>
             ) : scheduleCategory === "Open 24 Hours" ? (
-              <p className="modal-center" style={{ color: "green" }}>
+              <p className="schedule-row" style={{ color: "green" }}>
                 Open 24 Hours
               </p>
             ) : scheduleCategory === "Mixed Specific" ? (
@@ -255,7 +249,7 @@ export const ModalInfo = ({
                   ([day, schedule], index) => (
                     <p
                       key={index}
-                      className="modal-center"
+                      className=""
                       style={{
                         color: schedule === "24 Hours" ? "green" : "grey",
                       }}
@@ -271,7 +265,7 @@ export const ModalInfo = ({
                 ([day, schedule], index) => (
                   <p
                     key={index}
-                    className="modal-center"
+                    className=""
                     style={{ color: schedule !== "Closed" ? "green" : "grey" }}
                   >
                     {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
@@ -289,17 +283,17 @@ export const ModalInfo = ({
           variant="contained"
           color="primary"
           className="add-favorite"
-          onClick={(event) => toggleFavorite(event)}
+          onClick={toggleFavorite}
         >
           {isFavorited ? (
             <>
               <span className="material-symbols-outlined">remove</span>
-              <span>remove from favorites</span>
+              <span> Remove from favorites</span>
             </>
           ) : (
             <>
               <span className="material-symbols-outlined">add</span>{" "}
-              <span> add to favorites</span>
+              <span>Add to favorites</span>
             </>
           )}
         </Button>
