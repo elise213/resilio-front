@@ -31,6 +31,10 @@ const Navbar2 = ({
   setOpenLoginModal,
   setSearchingToday,
   zipInput,
+  aboutModalIsOpen,
+  setAboutModalIsOpen,
+  donationModalIsOpen,
+  setDonationModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,9 +42,6 @@ const Navbar2 = ({
   const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
   const [activeTab, setActiveTab] = useState("AllResources");
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-
-  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
-  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
@@ -77,10 +78,6 @@ const Navbar2 = ({
       return updatedDays;
     });
   };
-
-  // useEffect(() => {
-  //   console.log(store.favorites);
-  // }, [store.favorites]);
 
   useEffect(() => {
     setSelectedCategories(
@@ -144,39 +141,6 @@ const Navbar2 = ({
     );
   };
 
-  function LocationDropdown() {
-    const toggleLocationDropdown = () => {
-      setIsLocationDropdownOpen(!isLocationDropdownOpen);
-    };
-
-    const locationDropdownIcon = isLocationDropdownOpen
-      ? "expand_more"
-      : "chevron_right";
-
-    return (
-      <div className="dropdown">
-        <button className="dropdown-button" onClick={toggleLocationDropdown}>
-          Location{" "}
-          <span className="material-symbols-outlined">
-            {locationDropdownIcon}
-          </span>
-        </button>
-        {isLocationDropdownOpen && (
-          <div className="dropdown-content">
-            <input
-              type="text"
-              id="zipcode"
-              value={zipInput}
-              onChange={handleZipInputChange}
-              maxLength="5"
-              placeholder="Zip Code"
-            />
-          </div>
-        )}
-      </div>
-    );
-  }
-
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
@@ -225,9 +189,23 @@ const Navbar2 = ({
 
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
             <>
+              {store.boundaryResults &&
+                // store.boundaryResults > 1 &&
+                !userSelectedFilter && (
+                  <div className="search-bar">
+                    <span className="material-symbols-outlined search-icon">
+                      search
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                )}
               <div className=" nav-div">
                 <div className="side-by">
-                  <LocationDropdown />
                   {store.CATEGORY_OPTIONS &&
                   store.DAY_OPTIONS &&
                   store.GROUP_OPTIONS &&
@@ -249,28 +227,14 @@ const Navbar2 = ({
                         zipInput={zipInput}
                         handleZipInputChange={handleZipInputChange}
                         areAllUnchecked={areAllUnchecked}
+                        isLocationDropdownOpen={isLocationDropdownOpen}
+                        setIsLocationDropdownOpen={setIsLocationDropdownOpen}
                       />
                     </ErrorBoundary>
                   ) : (
                     <p>Loading selection options...</p>
                   )}
                 </div>
-
-                {store.boundaryResults &&
-                  // store.boundaryResults > 1 &&
-                  !userSelectedFilter && (
-                    <div className="search-bar">
-                      <span className="material-symbols-outlined search-icon">
-                        search
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Search"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                  )}
 
                 <div
                   className={
@@ -336,6 +300,7 @@ const Navbar2 = ({
                               )
                               .map((resource, index) => (
                                 <ResourceCard
+                                  number={index + 1}
                                   key={resource.id}
                                   item={resource}
                                   openModal={openModal}
@@ -354,56 +319,29 @@ const Navbar2 = ({
                       </div>
                     </>
                   )}
-                  {/* {activeTab === "Favorites" && isLoggedIn && (
-                    <div className="list-container">
-                      <ul>
-                        {Array.isArray(store.mapResults) &&
-                          store.favorites
-                            .filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
-                            .map((resource, index) => (
-                              <ResourceCard
-                                key={`${resource.id}-${index}`}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                                // setFavorites={setFavorites}
-                              />
-                            ))}
-                      </ul>
-                    </div>
-                  )} */}
+
                   {activeTab === "Favorites" && isLoggedIn && (
                     <div className="list-container">
                       <ul>
-                        {Array.isArray(store.mapResults) &&
+                        {Array.isArray(store.favorites) &&
                           store.favorites
-                            .filter(
-                              (resource) =>
+                            .filter((resource) => {
+                              const nameMatches =
+                                resource.name &&
                                 resource.name
                                   .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
+                                  .includes(searchQuery.toLowerCase());
+                              const descriptionMatches =
+                                resource.description &&
+                                resource.description
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase());
+                              return nameMatches || descriptionMatches;
+                            })
                             .map((resource, index) => (
                               <ResourceCard
                                 key={`${resource.id}-${index}`}
+                                number={index + 1}
                                 item={resource}
                                 openModal={openModal}
                                 closeModal={closeModal}
@@ -412,18 +350,12 @@ const Navbar2 = ({
                                 selectedResources={selectedResources}
                                 addSelectedResource={addSelectedResource}
                                 removeSelectedResource={removeSelectedResource}
-                                // setFavorites={setFavorites}
                               />
                             ))}
                       </ul>
                     </div>
                   )}
                 </div>
-                <Buttons
-                  setAboutModalIsOpen={setAboutModalIsOpen}
-                  setShowContactModal={setShowContactModal}
-                  setDonationModalIsOpen={setDonationModalIsOpen}
-                />
               </div>
             </>
           )}

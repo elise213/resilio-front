@@ -99,12 +99,15 @@
   z-index: 999;
   width: 100%;
   justify-content: space-between;
+  background-color: white;
+  flex-direction: column;
 }
 
 .all-rights {
   font-family: "Inter", sans-serif;
   font-size: 12px;
   color: rgb(149, 149, 149);
+  display: none;
 }
 
 .geo-button {
@@ -137,9 +140,10 @@
 
 .search-bar input,
 #zipcode {
-  width: 100%;
-  padding: 5px;
-  /* border-radius: 3px; */
+  /* width: 100%;
+  padding: 5px; */
+  border-radius: 3px;
+  border: 1px solid gray;
 }
 
 #zipcode {
@@ -153,14 +157,15 @@
   position: relative;
   background: white;
   border: 1px solid gray; /*  mimic input */
-  /* border-radius: 4px; */
-  margin-top: 20px;
+  margin: 10px;
+  padding: 4px;
+  border-radius: 40px;
 }
 
 .search-bar input {
   border: none;
   padding-left: 40px;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .search-bar .search-icon {
@@ -187,8 +192,19 @@
     top: 0 !important;
   }
 
+  .all-rights {
+    display: none;
+  }
+
   .modal-div {
     width: 100% !important;
+    height: 70% !important;
+    bottom: 0 !important;
+    top: unset !important;
+  }
+
+  .function-buttons {
+    flex-direction: column;
   }
 }
 

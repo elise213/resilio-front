@@ -10,6 +10,10 @@ const Selection = ({
   days,
   setDays,
   areAllUnchecked,
+  isLocationDropdownOpen,
+  setIsLocationDropdownOpen,
+  zipInput,
+  handleZipInputChange,
 }) => {
   const { store, actions } = useContext(Context);
   const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
@@ -21,23 +25,38 @@ const Selection = ({
     day: false,
   });
 
-  // function Dropdown({ id, title, children }) {
+  function LocationDropdown() {
+    const toggleLocationDropdown = () => {
+      setIsLocationDropdownOpen(!isLocationDropdownOpen);
+    };
 
-  //   const isOpen = openDropdown[id];
+    const locationDropdownIcon = isLocationDropdownOpen
+      ? "expand_more"
+      : "chevron_right";
 
-  //   const toggleDropdown = () => {
-  //     setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
-  //   };
-
-  //   return (
-  //     <div className="dropdown">
-  //       <button onClick={toggleDropdown} className="dropdown-button">
-  //         {title} <span className="material-symbols-outlined">expand_more</span>
-  //       </button>
-  //       {isOpen && <div className="dropdown-content">{children}</div>}
-  //     </div>
-  //   );
-  // }
+    return (
+      <div className="dropdown">
+        <button className="dropdown-button" onClick={toggleLocationDropdown}>
+          Location{" "}
+          <span className="material-symbols-outlined">
+            {locationDropdownIcon}
+          </span>
+        </button>
+        {isLocationDropdownOpen && (
+          <div className="dropdown-content">
+            <input
+              type="text"
+              id="zipcode"
+              value={zipInput}
+              onChange={handleZipInputChange}
+              maxLength="5"
+              placeholder="Zip Code"
+            />
+          </div>
+        )}
+      </div>
+    );
+  }
 
   function Dropdown({ id, title, children }) {
     const isOpen = openDropdown[id];
@@ -233,10 +252,6 @@ const Selection = ({
     return ids.some((id) => stateObj[id]);
   };
 
-  // const areAllUnchecked = (stateObj, ids) => {
-  //   return ids.every((id) => !stateObj[id]);
-  // };
-
   const handleToggle = (setFn, stateObj, id) => {
     setFn({
       ...stateObj,
@@ -248,6 +263,8 @@ const Selection = ({
     <>
       <Report />
       <div className={"dropdowns-container"}>
+        <LocationDropdown />
+
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}
         {/* {visibleGroupCount > 0 &&
