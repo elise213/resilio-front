@@ -8,14 +8,6 @@ const ResourceCard = (props) => {
 
   const [isFavorited, setIsFavorited] = useState(false);
 
-  // const handleSelectResource = (resource) => {
-  //   props.addSelectedResource(resource);
-  // };
-
-  // const handleDeselectResource = (resourceId) => {
-  //   props.removeSelectedResource(resourceId);
-  // };
-
   useEffect(() => {
     const storedFavorites = JSON.parse(
       sessionStorage.getItem("favorites") || "[]"
@@ -51,9 +43,6 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
-      <div className="resource-card-header">
-        <p className="resource-title">{props.item.name}</p>
-      </div>
       {props.item.image && (
         <img
           className="card-img"
@@ -61,13 +50,19 @@ const ResourceCard = (props) => {
           alt="profile picture"
         />
       )}
-      <div className="card-description">
-        <span>
-          {(props.item.description || "").length > 80
-            ? `${(props.item.description || "").slice(0, 80)}...`
-            : props.item.description}
-        </span>
+      <div className="resource-card-header">
+        <p className="resource-title">{props.item.name}</p>
       </div>
+      {categories.length > 0 && (
+        <div className="card-description">
+          {/* Map through categories, capitalize each one, and render in individual spans */}
+          {categories.map((cat, index) => (
+            <span key={index} className="category-span">
+              {cat.charAt(0).toUpperCase() + cat.slice(1)}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

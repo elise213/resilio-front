@@ -187,8 +187,19 @@
     top: 0 !important;
   }
 
+  .all-rights {
+    display: none;
+  }
+
   .modal-div {
     width: 100% !important;
+    height: 70% !important;
+    bottom: 0 !important;
+    top: unset !important;
+  }
+
+  .function-buttons {
+    flex-direction: column;
   }
 }
 

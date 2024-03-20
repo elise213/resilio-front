@@ -61,24 +61,26 @@
   letter-spacing: 1px;
 }
 
+.active p,
 .active {
   position: relative;
-  border-bottom: none;
+  /* border-bottom: none; */
   margin: 0 5px -1px 0;
   color: black !important;
-  border-style: solid;
+  font-weight: bolder !important;
+  /* border-style: solid;
   border-top-width: 1px;
   border-right-width: 1px;
   border-bottom-width: 0px;
-  border-left-width: 1px;
+  border-left-width: 1px; */
 }
 
 .tab-buttons {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-top: 30px;
-  border-bottom: 1px solid gray;
+  margin-top: 20px;
+  /* border-bottom: 1px solid gray; */
 }
 
 .dormant {
@@ -99,6 +101,7 @@
   margin-right: 0;
   justify-content: center;
   display: flex;
+  align-items: center;
 }
 
 .tab-buttons div:hover {
@@ -124,13 +127,13 @@
   max-height: 65vh;
   overflow-y: scroll;
   /* border-radius: 0 2% 2% 2%; */
-  border-color: gray;
+  /* border-color: gray;
   border-style: solid;
   border-left-width: 1px;
   border-left-color: black;
   border-right-width: 1px;
   border-top-width: 0;
-  border-bottom-width: 1px;
+  border-bottom-width: 1px; */
 }
 
 .list-container ul {
@@ -357,9 +360,19 @@
 
 @media screen and (max-width: 700px) {
   .new-navbar {
-    top: 30vh !important;
+    top: unset !important;
     width: 100% !important;
-    height: 70vh !important;
+    height: 70% !important;
+    bottom: 0 !important;
+  }
+
+  .footer-container {
+    margin: 0 !important;
+    position: absolute;
+    top: -43%;
+    background-color: white;
+    border-radius: 3px;
+    left: 0;
   }
 
   .navbar-content {
@@ -368,5 +381,13 @@
 
   .list-container {
     max-height: 40vh !important;
+  }
+
+  .tag-line {
+    display: none !important;
+  }
+
+  .more-margin {
+    margin: 0 !important;
   }
 }

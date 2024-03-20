@@ -293,7 +293,7 @@ const Modal = ({
                             text: "Your review has been submitted!",
                           }).then((result) => {
                             if (result.isConfirmed) {
-                              setShowRating(false); // Close the rating modal upon successful submission
+                              setShowRating(false);
                             }
                           });
 
