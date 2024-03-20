@@ -21,10 +21,9 @@ const Modal = ({
 }) => {
   const { store, actions } = useContext(Context);
 
-  const [ratingResponse, setRatingResponse] = useState(null);
+  // const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
 
-  const resourceId = resource.id;
   const validUserIds = [1, 2, 3, 4];
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
@@ -57,19 +56,19 @@ const Modal = ({
       sessionStorage.getItem("favorites") || "[]"
     );
     const isItemFavorited = storedFavorites.some(
-      (favorite) => favorite.name === resource.name
+      (favorite) => favorite.id === resource.id
     );
     setIsFavorited(isItemFavorited);
   }, []);
 
   const toggleFavorite = (event) => {
     event.stopPropagation();
-    setIsFavorited(!isFavorited);
-
+    // setIsFavorited(!isFavorited);
+    console.log("sending favorite id", resource.id);
     if (isFavorited) {
-      actions.removeFavorite(resource.name, setFavorites);
+      actions.removeFavorite(resource.id, setFavorites);
     } else {
-      actions.addFavorite(resource.name, setFavorites);
+      actions.addFavorite(resource.id, setFavorites);
     }
   };
 
@@ -176,15 +175,12 @@ const Modal = ({
                 <div key={comment.id} className="comment-div">
                   <div className="comment-info">
                     <div className="comment-user-info">
-                      <span class="material-symbols-outlined account-circle">
+                      <span className="material-symbols-outlined account-circle">
                         account_circle
                       </span>
                       {comment.user_id}{" "}
                     </div>
                     <div className="comment-info-date">
-                      <p className="comment-info-content">{formattedDate}</p>
-                    </div>
-                    <div className="comment-content-div">
                       <Rating
                         style={{ flexDirection: "row" }}
                         name="read-only"
@@ -192,6 +188,9 @@ const Modal = ({
                         precision={0.5}
                         readOnly
                       />
+                      <p className="comment-info-content">{formattedDate}</p>
+                    </div>
+                    <div className="comment-content-div">
                       <p className="comment-content">{comment.comment_cont}</p>
                     </div>
                   </div>
@@ -226,7 +225,7 @@ const Modal = ({
 
             <p className="problem">
               Click {""}
-              <Link to={`/edit/${resourceId}`}>here</Link>
+              <Link to={`/edit/${resource.id}`}>here</Link>
               {""} to edit this resource
             </p>
           </>

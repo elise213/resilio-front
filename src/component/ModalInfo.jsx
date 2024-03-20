@@ -242,11 +242,11 @@ export const ModalInfo = ({
         {Object.keys(formattedSchedule).length > 0 && (
           <div className="info">
             {scheduleCategory === "Closed Everyday" ? (
-              <p className="modal-center" style={{ color: "grey" }}>
+              <p className="schedule-row" style={{ color: "grey" }}>
                 Closed Everyday
               </p>
             ) : scheduleCategory === "Open 24 Hours" ? (
-              <p className="modal-center" style={{ color: "green" }}>
+              <p className="schedule-row" style={{ color: "green" }}>
                 Open 24 Hours
               </p>
             ) : scheduleCategory === "Mixed Specific" ? (

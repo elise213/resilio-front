@@ -180,8 +180,9 @@ p {
 .comment-info-date {
   font-size: 12px;
   color: gray;
-  text-align: end;
+  display: flex;
   margin-left: 10px;
+  justify-content: space-between;
 }
 
 .comment-user-info {

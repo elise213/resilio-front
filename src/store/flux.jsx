@@ -811,18 +811,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await response.json();
           if (data.rating === "No ratings yet") {
-            setAverageRatingCallback("No ratings yet");
-          } else {
-            setAverageRatingCallback(data.rating);
-          }
-
-          if (data.rating === "No ratings yet") {
             setAverageRatingCallback(0);
           } else {
             setAverageRatingCallback(parseFloat(data.rating)); // Ensure it's a number
           }
         } catch (error) {
           console.error("Error:", error);
+          setAverageRatingCallback(0); // set a default value in case of an error
         }
       },
 
@@ -911,7 +906,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      addFavorite: (resource, setFavorites) => {
+      addFavorite: (resourceId, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
         if (token) {
@@ -921,23 +916,33 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify(resource), // Assuming 'resource' contains all necessary details
+            body: JSON.stringify({ resourceId: resourceId }),
           };
           fetch(`${current_back_url}/api/addFavorite`, opts)
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.message === "okay") {
-                // Refetch favorites to update session and store
-                return fetch(`${current_back_url}/api/getFavorites`, {
-                  headers: {
-                    Authorization: "Bearer " + token,
-                  },
-                });
-              } else {
+            .then((response) => {
+              if (response.status === 409) {
+                // If the status code is 409, it means the favorite already exists.
+                console.error("This item is already in your favorites.");
+                throw new Error("This item is already in your favorites.");
+              } else if (!response.ok) {
+                // For any other non-OK response, log and throw an error.
+                console.error("Failed to add favorite due to server error.");
                 throw new Error("Failed to add favorite");
               }
+              return response.json(); // Process the successful response.
             })
-            .then((response) => response.json())
+            .then((data) => {
+              // Here you might want to update the state or perform any actions
+              // on successful addition of favorite.
+
+              // Fetch updated favorites list after adding new favorite
+              return fetch(`${current_back_url}/api/getFavorites`, {
+                headers: {
+                  Authorization: "Bearer " + token,
+                },
+              });
+            })
+            .then((response) => response.json()) // Parse the favorites response.
             .then((data) => {
               const favorites = data.favorites.map((fav) => fav.resource);
               sessionStorage.setItem("favorites", JSON.stringify(favorites));
@@ -945,9 +950,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 ...prevState,
                 favorites: favorites,
               }));
-              return favorites;
-            })
-            .then((favorites) => {
               setFavorites([...favorites]);
             })
             .catch((error) => {
@@ -955,7 +957,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
-      removeFavorite: (resourceName, setFavorites) => {
+
+      removeFavorite: (resourceId, setFavorites) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
         if (token) {
@@ -965,9 +968,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             method: "DELETE",
-            body: JSON.stringify({
-              name: resourceName,
-            }),
+            body: JSON.stringify({ resourceId: resourceId }),
           };
           fetch(`${current_back_url}/api/removeFavorite`, opts)
             .then((response) => response.json())
