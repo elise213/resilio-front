@@ -17,7 +17,7 @@ const Home = () => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const INITIAL_CITY_STATE = store.austin[0];
 
-  console.log("user id", store.user_id);
+  // console.log("user id", store.user_id);
 
   const [showContactModal, setShowContactModal] = useState(false);
 
@@ -53,8 +53,6 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const [showRating, setShowRating] = useState(false);
 
   const [selectedResource, setSelectedResource] = useState(null);
 
@@ -449,8 +447,6 @@ const Home = () => {
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
                 setFavorites={setFavorites}
-                showRating={showRating}
-                setShowRating={setShowRating}
                 setShowContactModal={setShowContactModal}
                 showContactModal={showContactModal}
               />
