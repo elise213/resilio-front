@@ -51,9 +51,9 @@ const Navbar2 = ({
     return Object.values(stateObj).every((value) => !value);
   };
 
-  useEffect(() => {
-    actions.fetchFavorites();
-  }, [store.favorites]);
+  // useEffect(() => {
+  //   actions.fetchFavorites();
+  // }, [store.favorites]);
 
   useEffect(() => {
     const noCategorySelected = areAllUnchecked(categories);
@@ -78,9 +78,9 @@ const Navbar2 = ({
     });
   };
 
-  useEffect(() => {
-    console.log(store.favorites);
-  }, [store.favorites]);
+  // useEffect(() => {
+  //   console.log(store.favorites);
+  // }, [store.favorites]);
 
   useEffect(() => {
     setSelectedCategories(
