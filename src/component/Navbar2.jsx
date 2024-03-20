@@ -78,10 +78,6 @@ const Navbar2 = ({
     });
   };
 
-  // useEffect(() => {
-  //   console.log(store.favorites);
-  // }, [store.favorites]);
-
   useEffect(() => {
     setSelectedCategories(
       Object.keys(categories).filter((key) => categories[key])
@@ -386,21 +382,24 @@ const Navbar2 = ({
                       </ul>
                     </div>
                   )} */}
-                  {activeTab === "Favorites" && isLoggedIn && (
+                  {/* {activeTab === "Favorites" && isLoggedIn && (
                     <div className="list-container">
                       <ul>
                         {Array.isArray(store.mapResults) &&
                           store.favorites
-                            .filter(
-                              (resource) =>
+                            .filter((resource) => {
+                              const nameMatches =
+                                resource.name &&
                                 resource.name
                                   .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
+                                  .includes(searchQuery.toLowerCase());
+                              const descriptionMatches =
+                                resource.description &&
+                                resource.description
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase());
+                              return nameMatches || descriptionMatches;
+                            })
                             .map((resource, index) => (
                               <ResourceCard
                                 key={`${resource.id}-${index}`}
@@ -413,6 +412,40 @@ const Navbar2 = ({
                                 addSelectedResource={addSelectedResource}
                                 removeSelectedResource={removeSelectedResource}
                                 // setFavorites={setFavorites}
+                              />
+                            ))}
+                      </ul>
+                    </div>
+                  )} */}
+                  {activeTab === "Favorites" && isLoggedIn && (
+                    <div className="list-container">
+                      <ul>
+                        {Array.isArray(store.favorites) &&
+                          store.favorites
+                            .filter((resource) => {
+                              const nameMatches =
+                                resource.name &&
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase());
+                              const descriptionMatches =
+                                resource.description &&
+                                resource.description
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase());
+                              return nameMatches || descriptionMatches;
+                            })
+                            .map((resource, index) => (
+                              <ResourceCard
+                                key={`${resource.id}-${index}`}
+                                item={resource}
+                                openModal={openModal}
+                                closeModal={closeModal}
+                                modalIsOpen={modalIsOpen}
+                                setModalIsOpen={setModalIsOpen}
+                                selectedResources={selectedResources}
+                                addSelectedResource={addSelectedResource}
+                                removeSelectedResource={removeSelectedResource}
                               />
                             ))}
                       </ul>
