@@ -5,30 +5,26 @@
   justify-content: space-around;
   margin: 5px;
   padding: 5px;
-  z-index: 996 !important;
-  position: static;
+  z-index: 0 !important;
+  position: relative;
   user-select: none;
   background-color: white;
   border-radius: 2%;
   transition: 0.3s;
   overflow: hidden;
   font-family: "Inter", sans-serif;
-  /* border: 4px double transparent; */
-  /* margin: 5px; */
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 
 .my-resource-card:hover {
-  /* margin: 5px 0 0 0 !important; */
   transition: 0.2s;
   box-shadow: 5px 5px 5px 5px rgba(0.2, 0.2, 0.2, 0.2) !important;
   border-radius: 4px !important;
   cursor: pointer;
-  border: 1px solid #1976d2 !important; /* border-color: rgb(22, 22, 136) !important; */
+  border: 2px solid rgb(159, 222, 162) !important;
 }
 
 .add-favorite {
-  /* border-radius: 20px !important; */
   width: 100% !important;
   margin: 10px 0 !important;
 }
@@ -157,20 +153,4 @@ textarea {
   .card-icon {
     font-size: medium;
   }
-
-  /* .my-resource-card {
-    width: 200px !important;
-  } */
 }
-
-/* @media screen and (max-width: 800px) {
-  .my-resource-card {
-    width: 180px !important;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .my-resource-card {
-    width: 150px !important;
-  }
-} */
