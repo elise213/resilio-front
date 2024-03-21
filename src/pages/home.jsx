@@ -436,6 +436,8 @@ const Home = () => {
                 setFavorites={setFavorites}
                 setContactModalIsOpen={setContactModalIsOpen}
                 contactModalIsOpen={contactModalIsOpen}
+                setOpenLoginModal={setOpenLoginModal}
+                openLoginModal={openLoginModal}
               />
             </div>
           </>

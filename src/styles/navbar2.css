@@ -65,7 +65,7 @@
 
 .active {
   /* border: 4px double salmon; */
-  background-image: radial-gradient(circle closest-side, #1976d2, white);
+  background-image: radial-gradient(circle closest-side, #d29e19, white);
   height: 32px;
   letter-spacing: 1px;
   /* border: 1px double #1976d2; */
@@ -81,16 +81,16 @@
   color: black !important;
   font-weight: bolder !important;
   border-radius: 4px;
+  transition: 0.3s;
+  border: none;
+  letter-spacing: 0.5px;
 }
 
 .tab-buttons {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-top: 20px;
-  padding: 10px;
   box-sizing: border-box;
-  border-bottom: 1px solid gray;
 }
 
 .dormant {
@@ -98,6 +98,8 @@
   border-top-width: 5px;
   border-style: solid;
   border-color: transparent;
+  transition: 0.3s;
+  border: none;
 }
 
 .dormant,
@@ -156,7 +158,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* align-items: flex-start; */
 }
 
 .nav-list {
@@ -172,11 +173,9 @@
   z-index: 996;
   position: absolute;
   width: 350px !important;
-  /* left: -350px !important; */
   height: 100vh;
   display: flex;
   justify-content: flex-start;
-  transition: left 0.3s ease;
   background-color: white;
   border-radius: 15px 15px 0 0;
 }
@@ -368,9 +367,14 @@
   height: 100%;
   padding: 10px;
   z-index: 999999999999999999;
+  box-sizing: border-box;
 }
 
 @media screen and (max-width: 700px) {
+  .new-modal {
+    width: 100% !important;
+  }
+
   .new-navbar {
     top: unset !important;
     width: 100% !important;
@@ -389,9 +393,7 @@
 
   .navbar-content {
     width: 100%;
-  }
-
-  .navbar-content {
+    padding: 10px;
     height: unset !important;
   }
 
