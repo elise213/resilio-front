@@ -20,6 +20,14 @@ const Selection = ({
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
   const dayIds = store.DAY_OPTIONS.map((option) => option.id);
 
+  const COMBINED_OPTIONS = [
+    ...(store.CATEGORY_OPTIONS || []),
+    ...(store.GROUP_OPTIONS || []),
+  ];
+
+  // Extract IDs for category and group options (no longer necessary but kept for compatibility)
+  const categoryAndGroupIds = COMBINED_OPTIONS.map((option) => option.id);
+
   const [openDropdown, setOpenDropdown] = useState({
     category: false,
     day: false,
@@ -103,55 +111,42 @@ const Selection = ({
     });
   };
 
-  const renderSelectedFilters = (state, type) => {
-    return Object.entries(state)
-      .filter(([, isSelected]) => isSelected)
-      .map(([id]) => {
-        const label =
-          type === "category"
-            ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
-            : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
-        if (!label) return null; // If no label is found, don't render anything
-        return (
-          <div key={id} className="selected-filter">
-            {label}{" "}
-            <span
-              className="material-symbols-outlined"
-              onClick={() => handleRemoveFilter(id, type)}
-            >
-              close
-            </span>
-          </div>
-        );
-      });
-  };
+  // const renderSelectedFilters = (state, type) => {
+  //   return Object.entries(state)
+  //     .filter(([, isSelected]) => isSelected)
+  //     .map(([id]) => {
+  //       const label =
+  //         type === "category"
+  //           ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
+  //           : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
+  //       if (!label) return null; // If no label is found, don't render anything
+  //       return (
+  //         <div key={id} className="selected-filter">
+  //           {label}{" "}
+  //           <span
+  //             className="material-symbols-outlined"
+  //             onClick={() => handleRemoveFilter(id, type)}
+  //           >
+  //             close
+  //           </span>
+  //         </div>
+  //       );
+  //     });
+  // };
 
   const renderDropdownColumn = (type, state, setState) => {
-    const ids =
-      type === "category" ? categoryIds : type === "group" ? groupIds : dayIds;
-    const options =
-      type === "category"
-        ? store.CATEGORY_OPTIONS
-        : type === "group"
-        ? store.GROUP_OPTIONS
-        : store.DAY_OPTIONS;
-    const title = type.charAt(0).toUpperCase() + type.slice(1); // Capitalize the first letter
-    const counts = type === "day" ? dayCounts : categoryCounts; // Use dayCounts for "day" type, categoryCounts otherwise
+    const options = type === "category" ? COMBINED_OPTIONS : store.DAY_OPTIONS;
+    const title = type.charAt(0).toUpperCase() + type.slice(1);
+
+    // Use appropriate counts based on the type
+    const counts = type === "day" ? dayCounts : store.categoryCounts || {};
 
     return (
       <Dropdown id={type} title={`${title}`}>
-        <MyCheckbox
-          key={`all-${type}`}
-          id={`all-${type}`}
-          label="All"
-          isChecked={areAllUnchecked(state, ids)}
-          handleToggle={() => handleToggleAll(setState, state, ids)}
-        />
         {options
-          .filter((option) => counts[option.id] && counts[option.id] > 0)
+          .filter((option) => counts[option.id] && counts[option.id] > 0) // Filter options based on count
           .map((option) => {
-            // Filter options based on their count
-            const count = counts[option.id] || "";
+            const count = counts[option.id];
             return (
               <MyCheckbox
                 key={option.id}
@@ -264,10 +259,11 @@ const Selection = ({
       <Report />
       <LocationDropdown />
       <div className={"dropdowns-container"}>
-        {allCategories.length > 0 &&
-          renderDropdownColumn("category", categories, setCategories)}
+        {/* {allCategories.length > 0 && */}
+        {renderDropdownColumn("category", categories, setCategories)}
+        {/*} { */}
         {/* {visibleGroupCount > 0 &&
-          renderDropdownColumn("group", groups, setGroups)} */}
+          renderDropdownColumn("group", groups, setGroups)}  */}
         {Object.values(visibleDaysCounts).some((count) => count > 0) &&
           renderDropdownColumn("day", days, setDays)}
       </div>

@@ -58,7 +58,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "sex", value: "sex", label: "Sexual Health" },
         { id: "legal", value: "legal", label: "Legal Support" },
       ],
-
+      GROUP_OPTIONS: [
+        { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
+        { id: "women", value: "women", label: "Women" },
+        { id: "seniors", value: "seniors", label: "Seniors" },
+        { id: "babies", value: "babies", label: "Babies and Toddlers" },
+        { id: "kids", value: "kids", label: "Youth < 18" },
+        { id: "youth", value: "youth", label: "Youth 18-24" },
+        { id: "vets", value: "vets", label: "Veterans" },
+        { id: "migrant", value: "migrant", label: "Refugees & Migrants" },
+      ],
       DAY_OPTIONS: [
         { id: "monday", label: "Monday" },
         { id: "tuesday", label: "Tuesday" },
@@ -67,16 +76,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "friday", label: "Friday" },
         { id: "saturday", label: "Saturday" },
         { id: "sunday", label: "Sunday" },
-      ],
-      GROUP_OPTIONS: [
-        { id: "lgbtq", label: "LGBTQ+" },
-        { id: "women", label: "Women" },
-        { id: "seniors", label: "Seniors" },
-        { id: "babies", label: "Babies and Toddlers" },
-        { id: "kids", label: "Youth < 18" },
-        { id: "youth", label: "Youth 18-24" },
-        { id: "vets", label: "Veterans" },
-        { id: "migrant", label: "Refugees & Migrants" },
       ],
       losAngeles: [
         {
