@@ -6,12 +6,12 @@ const Report = () => {
   const { actions, store } = useContext(Context);
   const [report, setReport] = useState({});
 
-  const getLabelForCategory = (categoryId) => {
-    const category = store.CATEGORY_OPTIONS.find(
-      (cat) => cat.id === categoryId
-    );
-    return category ? category.label : categoryId; // Return ID as fallback if no label is found
-  };
+  // const getLabelForCategory = (categoryId) => {
+  //   const category = store.CATEGORY_OPTIONS.find(
+  //     (cat) => cat.id === categoryId
+  //   );
+  //   return category ? category.label : categoryId; // Return ID as fallback if no label is found
+  // };
 
   useEffect(() => {
     let categoryCounts = {};
@@ -27,17 +27,13 @@ const Report = () => {
     };
 
     if (store?.mapResults?.length > 0) {
-      // map results is all of the resources, without the filters
-
       store.mapResults.forEach((result) => {
         if (typeof result.category === "string") {
-          // init categories
           let categories = result.category.split(",").map((cat) => cat.trim());
           categories.forEach((cat) => {
             categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
           });
         }
-        // init schedule
         const schedule = store.schedules.find(
           (sched) => sched.resource_id === result.id
         );
@@ -94,16 +90,10 @@ const Report = () => {
       In your area:
       <div className="grid-container">
         {Object.entries(report).map(([key, value], index) => {
-          // const colorStyle = actions.getColorForCategory(key);
           return (
             <div className="grid-item" key={index}>
               <div>
                 <span>{value}</span>
-                {/* <span
-                  className={`report-icon ${actions.getIconForCategory(key)}`}
-                  style={colorStyle ? colorStyle : {}}
-                ></span> */}
-                {/* <span>{getLabelForCategory(key)} </span> */}
               </div>
             </div>
           );

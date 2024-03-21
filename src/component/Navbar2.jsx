@@ -172,7 +172,11 @@ const Navbar2 = ({
 
   return (
     <>
-      <nav className={`new-navbar open-nav`}>
+      <nav
+        className={`new-navbar open-nav ${
+          donationModalIsOpen ? "donation" : ""
+        }`}
+      >
         <div className={`navbar-content`}>
           <div className="logo-div">
             <img
@@ -352,7 +356,7 @@ const Navbar2 = ({
 
           {donationModalIsOpen && (
             <>
-              <div className="new-modal">
+              <div className="new-modal donation">
                 <p
                   className="close-modal"
                   onClick={() => setDonationModalIsOpen(false)}
