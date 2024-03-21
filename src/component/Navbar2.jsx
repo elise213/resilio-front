@@ -242,87 +242,78 @@ const Navbar2 = ({
                 </div>
 
                 <div className={"nav-div-list" + (isLoggedIn ? "" : "")}>
-                  {isLoggedIn && (
-                    <div className="tab-buttons">
-                      <div
-                        className={
-                          activeTab === "AllResources" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("AllResources")}
-                      >
-                        {!userSelectedFilter && !searchQuery ? (
-                          <p>Map boundary</p>
-                        ) : (
-                          <p>Filtered Results</p>
-                        )}
-                      </div>
-                      <div
-                        style={{ textAlign: "end" }}
-                        className={
-                          activeTab === "Favorites" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("Favorites")}
-                      >
-                        Favorites
-                      </div>
-                    </div>
-                  )}
                   {activeTab === "AllResources" && (
-                    <>
-                      <CombinedFilters
-                        searchQuery={searchQuery}
-                        clearSearchQuery={clearSearchQuery}
-                        selectedCategories={selectedCategories}
-                        clearSelectedCategory={clearSelectedCategory}
-                        selectedDays={selectedDays}
-                        clearSelectedDay={clearSelectedDay}
-                      />
-                      <div
-                        className={`list-container ${
-                          isLoggedIn ? "logged-in" : ""
-                        }`}
-                      >
-                        <ul>
-                          {Array.isArray(store.mapResults) &&
-                            store.boundaryResults
-                              .filter(
-                                (resource) =>
-                                  resource.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (resource.description &&
-                                    resource.description
-                                      .toLowerCase()
-                                      .includes(searchQuery.toLowerCase()))
-                              )
-                              .map((resource, index) => (
-                                <ResourceCard
-                                  number={index + 1}
-                                  key={resource.id}
-                                  item={resource}
-                                  openModal={openModal}
-                                  closeModal={closeModal}
-                                  modalIsOpen={modalIsOpen}
-                                  setModalIsOpen={setModalIsOpen}
-                                  selectedResources={selectedResources}
-                                  addSelectedResource={addSelectedResource}
-                                  removeSelectedResource={
-                                    removeSelectedResource
-                                  }
-                                  // setFavorites={setFavorites}
-                                />
-                              ))}
-                        </ul>
-                      </div>
-                    </>
+                    <CombinedFilters
+                      searchQuery={searchQuery}
+                      clearSearchQuery={clearSearchQuery}
+                      selectedCategories={selectedCategories}
+                      clearSelectedCategory={clearSelectedCategory}
+                      selectedDays={selectedDays}
+                      clearSelectedDay={clearSelectedDay}
+                    />
                   )}
+                  <div
+                    className={`list-container ${
+                      isLoggedIn ? "logged-in" : ""
+                    }`}
+                  >
+                    {isLoggedIn && (
+                      <div className="tab-buttons">
+                        <div
+                          className={
+                            activeTab === "AllResources" ? "active" : "dormant"
+                          }
+                          onClick={() => setActiveTab("AllResources")}
+                        >
+                          {!userSelectedFilter && !searchQuery ? (
+                            <p>Map boundary</p>
+                          ) : (
+                            <p>Filtered Results</p>
+                          )}
+                        </div>
+                        <div
+                          style={{ textAlign: "end" }}
+                          className={
+                            activeTab === "Favorites" ? "active" : "dormant"
+                          }
+                          onClick={() => setActiveTab("Favorites")}
+                        >
+                          Favorites
+                        </div>
+                      </div>
+                    )}
+                    {activeTab === "AllResources" && (
+                      <ul>
+                        {Array.isArray(store.mapResults) &&
+                          store.boundaryResults
+                            .filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            )
+                            .map((resource, index) => (
+                              <ResourceCard
+                                number={index + 1}
+                                key={resource.id}
+                                item={resource}
+                                openModal={openModal}
+                                closeModal={closeModal}
+                                modalIsOpen={modalIsOpen}
+                                setModalIsOpen={setModalIsOpen}
+                                selectedResources={selectedResources}
+                                addSelectedResource={addSelectedResource}
+                                removeSelectedResource={removeSelectedResource}
+                              />
+                            ))}
+                      </ul>
+                    )}
 
-                  {activeTab === "Favorites" && isLoggedIn && (
-                    <div
-                      className={`list-container ${
-                        isLoggedIn ? "logged-in" : ""
-                      }`}
-                    >
+                    {activeTab === "Favorites" && isLoggedIn && (
                       <ul>
                         {Array.isArray(store.favorites) &&
                           store.favorites
@@ -354,8 +345,8 @@ const Navbar2 = ({
                               />
                             ))}
                       </ul>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             </>
