@@ -75,7 +75,7 @@
 
 .tab-buttons {
   display: flex;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .dormant {
@@ -124,6 +124,10 @@
   overflow-y: scroll;
   scroll-behavior: smooth;
   border: 3px solid black;
+}
+
+.logged-in {
+  max-height: calc(100% - 245px) !important;
 }
 
 .list-container ul {
@@ -334,7 +338,7 @@
 
 .top-logo {
   width: 250px;
-  margin: 15px 10px 10px 10px;
+  margin: 12px;
 }
 
 .logo-div {
