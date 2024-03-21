@@ -252,11 +252,7 @@ const Navbar2 = ({
                       clearSelectedDay={clearSelectedDay}
                     />
                   )}
-                  <div
-                    className={`list-container ${
-                      isLoggedIn ? "logged-in" : ""
-                    }`}
-                  >
+                  <div className={`list-container`}>
                     {isLoggedIn && (
                       <div className="tab-buttons">
                         <div
