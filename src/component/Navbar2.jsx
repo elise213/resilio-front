@@ -277,7 +277,11 @@ const Navbar2 = ({
                         selectedDays={selectedDays}
                         clearSelectedDay={clearSelectedDay}
                       />
-                      <div className="list-container">
+                      <div
+                        className={`list-container ${
+                          isLoggedIn ? "logged-in" : ""
+                        }`}
+                      >
                         <ul>
                           {Array.isArray(store.mapResults) &&
                             store.boundaryResults
@@ -314,7 +318,11 @@ const Navbar2 = ({
                   )}
 
                   {activeTab === "Favorites" && isLoggedIn && (
-                    <div className="list-container">
+                    <div
+                      className={`list-container ${
+                        isLoggedIn ? "logged-in" : ""
+                      }`}
+                    >
                       <ul>
                         {Array.isArray(store.favorites) &&
                           store.favorites
