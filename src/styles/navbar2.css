@@ -127,15 +127,11 @@
 
 .list-container {
   border-radius: 20px;
-  max-height: calc(100vh - 215px);
+  max-height: calc(100% - 200px);
   overflow-y: scroll;
   scroll-behavior: smooth;
   border: 3px solid black;
   min-height: 100px;
-}
-
-.logged-in {
-  max-height: calc(100vh - 245px) !important;
 }
 
 .list-container ul {
@@ -350,6 +346,7 @@
 
 .top-logo {
   width: 240px;
+  height: 50px;
   margin: 5px 10px 15px 10px;
 }
 
@@ -358,7 +355,6 @@
   flex-direction: column;
   width: 100%;
   margin: 0;
-  /* padding: 10px; */
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
