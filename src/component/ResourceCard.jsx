@@ -5,22 +5,44 @@ import Styles from "../styles/resourceCard.css";
 const ResourceCard = (props) => {
   const { store } = useContext(Context);
 
-  // Assume CATEGORY_OPTIONS and GROUP_OPTIONS are provided through context and are arrays
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
+  const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
+
+  // Combine CATEGORY_OPTIONS and GROUP_OPTIONS into a single array
+  const COMBINED_OPTIONS = [...CATEGORY_OPTIONS, ...GROUP_OPTIONS];
+
+  // Function to normalize categories into an array
+  const normalizeCategories = (categories) => {
+    if (!categories) return []; // Handle null, undefined, and empty string
+
+    // Check if categories is a string and contains commas
+    if (typeof categories === "string") {
+      if (categories.includes(",")) {
+        // Split the string into an array based on commas and trim whitespace
+        return categories.split(",").map((category) => category.trim());
+      } else {
+        // Handle a single category in a string (no commas)
+        return [categories.trim()];
+      }
+    }
+
+    // Handle the case where categories is already an array
+    if (Array.isArray(categories)) return categories;
+
+    // Fallback for unexpected category types
+    console.warn("Unexpected category type:", typeof categories);
+    return [];
+  };
 
   // Function to get label for a given category ID
   const getLabelForCategory = (catId) => {
-    const category = CATEGORY_OPTIONS.find((option) => option.id === catId);
+    const category = COMBINED_OPTIONS.find((option) => option.id === catId);
     return category ? category.label : catId; // Return the label if found; otherwise, return the ID
   };
 
   // Process category IDs to labels
   const categoryLabels = React.useMemo(() => {
-    if (!props.item.category) return [];
-    // Ensure we're working with an array of category IDs
-    const categoryIds = Array.isArray(props.item.category)
-      ? props.item.category
-      : [props.item.category];
+    const categoryIds = normalizeCategories(props.item.category);
     // Convert each ID to its label, capitalize the first letter of each label
     return categoryIds.map((catId) => {
       const label = getLabelForCategory(catId);
