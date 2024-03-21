@@ -11,8 +11,8 @@ import Buttons from "../component/Buttons";
 const Navbar2 = ({
   INITIAL_DAY_STATE,
   addSelectedResource,
-  showContactModal,
-  setShowContactModal,
+  contactModalIsOpen,
+  setContactModalIsOpen,
   categories,
   closeModal,
   days,
@@ -236,11 +236,7 @@ const Navbar2 = ({
                   )}
                 </div>
 
-                <div
-                  className={
-                    "nav-div-list" + (isLoggedIn ? "" : " more-margin")
-                  }
-                >
+                <div className={"nav-div-list" + (isLoggedIn ? "" : "")}>
                   {isLoggedIn && (
                     <div className="tab-buttons">
                       <div
@@ -276,15 +272,7 @@ const Navbar2 = ({
                         selectedDays={selectedDays}
                         clearSelectedDay={clearSelectedDay}
                       />
-                      <div
-                        // style={{
-                        //   borderTop: isLoggedIn ? "" : "1px solid #ddd",
-                        //   marginTop: isLoggedIn ? "" : "20px",
-                        //   borderTopColor: isLoggedIn ? "" : "black",
-                        //   borderLeftWidth: isLoggedIn ? "" : "1px",
-                        // }}
-                        className="list-container"
-                      >
+                      <div className="list-container">
                         <ul>
                           {Array.isArray(store.mapResults) &&
                             store.boundaryResults
@@ -364,7 +352,7 @@ const Navbar2 = ({
 
           {donationModalIsOpen && (
             <>
-              <div className="donation-modal">
+              <div className="new-modal">
                 <p
                   className="close-modal"
                   onClick={() => setDonationModalIsOpen(false)}
@@ -392,29 +380,25 @@ const Navbar2 = ({
           )}
 
           {aboutModalIsOpen && (
-            <>
-              <div className="donation-modal">
-                <p
-                  className="close-modal"
-                  onClick={() => setAboutModalIsOpen(false)}
-                >
-                  <span className="material-symbols-outlined">
-                    arrow_back_ios
-                  </span>
-                  Back to search
-                </p>
-                <p className="intro">
-                  Resilio is a 501(c)3 based in Austin, TX.
-                </p>
-              </div>
-            </>
-          )}
-
-          {showContactModal && (
-            <div className="donation-modal">
+            <div className="new-modal">
               <p
                 className="close-modal"
-                onClick={() => setShowContactModal(false)}
+                onClick={() => setAboutModalIsOpen(false)}
+              >
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                Back to search
+              </p>
+              <p className="intro">Resilio is a 501(c)3 based in Austin, TX.</p>
+            </div>
+          )}
+
+          {contactModalIsOpen && (
+            <div className="new-modal">
+              <p
+                className="close-modal"
+                onClick={() => setContactModalIsOpen(false)}
               >
                 <span className="material-symbols-outlined">
                   arrow_back_ios
