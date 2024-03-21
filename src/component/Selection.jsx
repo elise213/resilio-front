@@ -262,9 +262,8 @@ const Selection = ({
   return (
     <>
       <Report />
+      <LocationDropdown />
       <div className={"dropdowns-container"}>
-        <LocationDropdown />
-
         {allCategories.length > 0 &&
           renderDropdownColumn("category", categories, setCategories)}
         {/* {visibleGroupCount > 0 &&
