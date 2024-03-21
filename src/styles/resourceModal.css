@@ -125,6 +125,12 @@
   cursor: pointer;
 }
 
+.log-in {
+  color: blue;
+  text-decoration: underline;
+  padding: 0 5px;
+}
+
 .resource-info {
   margin-top: 30px;
   padding: 10px;

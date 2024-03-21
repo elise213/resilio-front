@@ -17,6 +17,8 @@ const Modal = ({
   // setFavorites,
   setContactModalIsOpen,
   setAboutModalIsOpen,
+  setOpenLoginModal,
+  openLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -224,7 +226,7 @@ const Modal = ({
       {/* Rating Modal */}
       {showRating && (
         <>
-          <div className="donation-modal" ref={ratingModalRef}>
+          <div className="new-modal" ref={ratingModalRef}>
             <div>
               <p className="close-rating" onClick={() => setShowRating(false)}>
                 <i className="fa-solid fa-x"></i>
@@ -318,7 +320,27 @@ const Modal = ({
                   </Button>
                 </div>
               ) : (
-                <div>Please log in to rate and review resources.</div>
+                <div>
+                  Please
+                  <span
+                    role="button"
+                    tabIndex={0} // Make it focusable
+                    className="log-in"
+                    onClick={() => {
+                      setOpenLoginModal(true);
+                      setShowRating(false);
+                      setModalIsOpen(false);
+                    }}
+                    // onKeyPress={(event) => {
+                    //   if (event.key === "Enter") {
+                    //     setOpenLoginModal(true);
+                    //   }
+                    // }}
+                  >
+                    log in
+                  </span>
+                  to rate and review resources.
+                </div>
               )}
             </div>
           </div>

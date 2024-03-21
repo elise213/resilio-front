@@ -202,9 +202,10 @@
 
   .modal-div {
     width: 100% !important;
-    height: 70% !important;
+    height: 90% !important;
     bottom: 0 !important;
     top: unset !important;
+    border-radius: 20px;
   }
 
   .function-buttons {
