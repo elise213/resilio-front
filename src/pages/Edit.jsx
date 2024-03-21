@@ -41,20 +41,45 @@ const Edit = () => {
   };
   const [formData, setFormData] = useState(initialFormData || {});
 
-  const categories = store.CATEGORY_OPTIONS;
+  const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
+  const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
+
+  // Combine CATEGORY_OPTIONS and GROUP_OPTIONS into a single array
+  const COMBINED_OPTIONS = [...CATEGORY_OPTIONS, ...GROUP_OPTIONS];
+
+  const categories = COMBINED_OPTIONS;
+
+  const [unrecognizedCategories, setUnrecognizedCategories] = useState([]);
 
   useEffect(() => {
     const fetchResourceData = async () => {
       try {
         const data = await actions.getResource(id);
-        console.log("data", data);
         if (data) {
+          // Assuming data.category is a string of category values separated by commas
+          const initialCategories = data.category
+            ? data.category.split(", ")
+            : [];
+          const knownCategoryValues = new Set(
+            COMBINED_OPTIONS.map((option) => option.value)
+          );
+
+          // Initialize an array for unrecognized categories
+          const _unrecognizedCategories = initialCategories
+            .filter((category) => !knownCategoryValues.has(category))
+            .map((category) => ({ category, keep: null })); // null indicates no decision made yet
+
+          setUnrecognizedCategories(_unrecognizedCategories);
+
+          // Proceed to set recognized categories and other form data
+          const recognizedCategories = initialCategories.filter((category) =>
+            knownCategoryValues.has(category)
+          );
           setFormData((prevData) => ({
             ...initialFormData,
             ...data,
-            category: data.category ? data.category.split(", ") : [], // Ensuring category is an array
+            category: recognizedCategories,
           }));
-          console.log(formData);
         } else {
           console.error("Data is null");
         }
@@ -63,10 +88,9 @@ const Edit = () => {
       }
     };
     fetchResourceData();
-  }, [actions, id]);
+  }, [actions, id, COMBINED_OPTIONS]);
 
   useEffect(() => {
-    // This will run only if the address changes
     if (formData.address) {
       handleSelect(formData.address);
     }
@@ -82,6 +106,14 @@ const Edit = () => {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  const handleUnrecognizedCategoryChange = (index, value) => {
+    setUnrecognizedCategories((current) =>
+      current.map((item, i) =>
+        i === index ? { ...item, keep: value === "keep" } : item
+      )
+    );
   };
 
   const handleDelete = async () => {
@@ -198,7 +230,7 @@ const Edit = () => {
     return "";
   };
 
-  // console.log("form data", formData);
+  console.log("form data", formData);
   return (
     <div className="form-container">
       <form className="geo-form" onSubmit={handleSubmit}>
@@ -308,6 +340,23 @@ const Edit = () => {
             onChange={(e) => handleChange("image2", e.target.value)}
             placeholder="URL for image 2"
           />
+        </div>
+
+        <div className="input-group">
+          {unrecognizedCategories.map((item, index) => (
+            <div key={index}>
+              <div>{`Unrecognized Category: ${item.category}`}</div>
+              <div
+                onChange={(e) =>
+                  handleUnrecognizedCategoryChange(index, e.target.value)
+                }
+              >
+                <input type="radio" value="keep" name={item.category} /> Keep
+                <input type="radio" value="delete" name={item.category} />{" "}
+                Delete
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="input-group">
