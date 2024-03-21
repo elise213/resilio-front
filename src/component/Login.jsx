@@ -60,7 +60,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     field = (
       <div className="custom-login-modal-content">
         <div className="custom-login-modal-header">
-          <span className="login-close" onClick={() => setLog("1")}>
+          <span className="close-modal" onClick={() => setLog("1")}>
             {" "}
             <span className="material-symbols-outlined">arrow_back_ios</span>
             Back to log in
@@ -166,7 +166,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
       <div className="custom-login-modal-content ">
         <div className="custom-login-modal-header">
           <span
-            className="login-close"
+            className="close-modal"
             onClick={() => setOpenLoginModal(false)}
           >
             <span className="material-symbols-outlined">arrow_back_ios</span>
