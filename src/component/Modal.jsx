@@ -14,8 +14,8 @@ const Modal = ({
   removeSelectedResource,
   selectedResources,
   addSelectedResource,
-  setFavorites,
-  setShowContactModal,
+  // setFavorites,
+  setContactModalIsOpen,
   setAboutModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
@@ -193,7 +193,7 @@ const Modal = ({
           Click {""}
           <span
             onClick={() => {
-              setShowContactModal(true);
+              setContactModalIsOpen(true);
               setAboutModalIsOpen(false);
               setDonationModalIsOpen(false);
             }}

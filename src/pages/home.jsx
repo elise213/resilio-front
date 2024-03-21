@@ -52,7 +52,7 @@ const Home = () => {
 
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
-  const [showContactModal, setShowContactModal] = useState(false);
+  const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -213,29 +213,6 @@ const Home = () => {
     }
   };
 
-  // const updateCityStateFromZip = async (zip) => {
-  //   try {
-  //     const data = await fetchBounds(zip, true);
-  //     const location = data.results[0]?.geometry?.location;
-  //     const bounds =
-  //       data.results[0]?.geometry?.bounds ||
-  //       data.results[0]?.geometry?.viewport;
-
-  //     if (location && bounds) {
-  //       const newCityState = {
-  //         ...city,
-  //         center: location,
-  //         bounds: bounds,
-  //       };
-  //       setCity(newCityState);
-  //       handleBoundsChange({ center: location, bounds: bounds });
-  //       await actions.setBoundaryResults(bounds, categories, days, groups);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching bounds:", error.message);
-  //   }
-  // };
-
   const updateCityStateFromZip = async (zip) => {
     try {
       const data = await fetchBounds(zip, true);
@@ -392,8 +369,12 @@ const Home = () => {
           geoFindMe={geoFindMe}
           handleZipInputChange={handleZipInputChange}
           zipInput={zipInput}
-          showContactModal={showContactModal}
-          setShowContactModal={setShowContactModal}
+          contactModalIsOpen={contactModalIsOpen}
+          setContactModalIsOpen={setContactModalIsOpen}
+          aboutModalIsOpen={aboutModalIsOpen}
+          setAboutModalIsOpen={setAboutModalIsOpen}
+          donationModalIsOpen={donationModalIsOpen}
+          setDonationModalIsOpen={setDonationModalIsOpen}
         />
         {loading != undefined && (
           <div className="loading">
@@ -453,8 +434,8 @@ const Home = () => {
                 closeModal={closeModal}
                 setModalIsOpen={setModalIsOpen}
                 setFavorites={setFavorites}
-                setShowContactModal={setShowContactModal}
-                showContactModal={showContactModal}
+                setContactModalIsOpen={setContactModalIsOpen}
+                contactModalIsOpen={contactModalIsOpen}
               />
             </div>
           </>
@@ -462,8 +443,11 @@ const Home = () => {
 
         <Buttons
           setAboutModalIsOpen={setAboutModalIsOpen}
-          setShowContactModal={setShowContactModal}
+          setContactModalIsOpen={setContactModalIsOpen}
           setDonationModalIsOpen={setDonationModalIsOpen}
+          donationModalIsOpen={donationModalIsOpen}
+          contactModalIsOpen={contactModalIsOpen}
+          aboutModalIsOpen={aboutModalIsOpen}
         />
       </div>
     </>

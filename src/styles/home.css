@@ -97,7 +97,7 @@
   bottom: 0;
   left: 0;
   z-index: 999;
-  width: 100%;
+  /* width: 100%; */
   justify-content: space-between;
   background-color: white;
   flex-direction: column;
@@ -122,12 +122,11 @@
   cursor: pointer;
 }
 
-.donation-modal {
+/* .donation-modal {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 9999999;
-  height: 100%;
+  z-index: 99999999999999;
   background-color: white;
   width: 350px;
   display: flex;
@@ -136,7 +135,7 @@
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
-}
+} */
 
 .search-bar input,
 #zipcode {
@@ -156,10 +155,11 @@
   align-items: center;
   position: relative;
   background: white;
-  border: 1px solid gray; /*  mimic input */
-  margin: 10px;
+  border: 1px solid gray;
+  margin: 5px 10px;
+  width: 300px;
+  align-self: center;
   padding: 4px;
-  /* border-radius: 40px; */
 }
 
 .search-bar input {
@@ -184,6 +184,10 @@
 }
 
 @media screen and (max-width: 700px) {
+  /* .donation-modal {
+    width: 100% !important;
+  } */
+
   .map-container {
     height: 30vh !important;
     width: 100vw !important;
