@@ -68,8 +68,6 @@
 
 .custom-login-modal-header {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 .custom-login-modal-content {

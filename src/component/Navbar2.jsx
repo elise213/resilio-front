@@ -185,7 +185,7 @@ const Navbar2 = ({
               setOpenLoginModal={setOpenLoginModal}
             />
           </div>
-          <p className="tag-line">Free services in your neighborhood</p>
+          <p className="tag-line">Free services in your neighborhood!</p>
 
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
             <>
@@ -277,12 +277,12 @@ const Navbar2 = ({
                         clearSelectedDay={clearSelectedDay}
                       />
                       <div
-                        style={{
-                          borderTop: isLoggedIn ? "" : "1px solid #ddd",
-                          marginTop: isLoggedIn ? "" : "20px",
-                          borderTopColor: isLoggedIn ? "" : "black",
-                          borderLeftWidth: isLoggedIn ? "" : "1px",
-                        }}
+                        // style={{
+                        //   borderTop: isLoggedIn ? "" : "1px solid #ddd",
+                        //   marginTop: isLoggedIn ? "" : "20px",
+                        //   borderTopColor: isLoggedIn ? "" : "black",
+                        //   borderLeftWidth: isLoggedIn ? "" : "1px",
+                        // }}
                         className="list-container"
                       >
                         <ul>

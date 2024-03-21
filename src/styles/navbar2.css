@@ -47,7 +47,7 @@
 .top-logo {
   height: 35px;
   width: 135px;
-  margin: 7px;
+  /* margin: 7px; */
 }
 
 .login-link:hover {
@@ -56,11 +56,11 @@
 
 .tag-line {
   text-align: center;
-  margin: 10px 0 20px 0;
+  /* margin: 10px 0 20px 0; */
   font-family: "Inter", sans-serif;
   font-weight: bolder;
   letter-spacing: 1px;
-  display: none;
+  /* display: none; */
 }
 
 .active {
@@ -68,7 +68,7 @@
   background-image: radial-gradient(circle closest-side, #1976d2, white);
   height: 32px;
   letter-spacing: 1px;
-  /* border: 4px double #1976d2; */
+  /* border: 1px double #1976d2; */
   border-radius: 20px !important;
   transition: 0.2s;
   /* background-color: salmon !important; */
@@ -90,6 +90,7 @@
   margin-top: 20px;
   padding: 10px;
   box-sizing: border-box;
+  border-bottom: 1px solid gray;
 }
 
 .dormant {
@@ -133,8 +134,10 @@
 }
 
 .list-container {
-  max-height: 100%;
+  max-height: calc(100% - 160px);
   overflow-y: scroll;
+  scroll-behavior: smooth;
+  /* border: 1px solid gray; */
 }
 
 .list-container ul {
@@ -329,11 +332,9 @@
   box-shadow: 8px 3px 3px 3px rgba(0, 0, 0, 0.1),
     3px 6px 20px 0 rgba(0, 0, 0, 0.1);
   width: 100%;
-  /* padding: 10px; */
   display: flex;
-  /* align-items: center; */
-  overflow-y: auto;
-  height: 100%;
+  overflow-y: hidden;
+  height: 100vh;
   box-sizing: border-box;
 }
 
