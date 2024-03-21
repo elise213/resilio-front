@@ -5,28 +5,31 @@ import EmailList from "./EmailList";
 
 const Buttons = ({
   setAboutModalIsOpen,
-  setShowContactModal,
+  setContactModalIsOpen,
   setDonationModalIsOpen,
+  donationModalIsOpen,
+  aboutModalIsOpen,
+  contactModalIsOpen,
 }) => {
   return (
     <div className="footer-container">
       <div className="function-buttons">
-        <span
+        {/* <span
           className="nav-item"
           onClick={() => {
             setDonationModalIsOpen(false);
             setAboutModalIsOpen(true);
-            setShowContactModal(false);
+            setContactModalIsOpen(false);
           }}
         >
           ABOUT
-        </span>
+        </span> */}
 
         <span
           className="nav-item"
           onClick={() => {
             setDonationModalIsOpen(false);
-            setShowContactModal(true);
+            setContactModalIsOpen(true);
             setAboutModalIsOpen(false);
           }}
         >
@@ -36,12 +39,16 @@ const Buttons = ({
         <span
           className="nav-item"
           onClick={() => {
+            console.log("donate called");
             setAboutModalIsOpen(false);
             setDonationModalIsOpen(true);
-            setShowContactModal(false);
+            setContactModalIsOpen(false);
           }}
         >
           DONATE
+          {/* {String(aboutModalIsOpen)}
+          {String(contactModalIsOpen)}
+          {String(donationModalIsOpen)} */}
         </span>
       </div>
       <div className="foot">
