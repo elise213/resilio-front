@@ -179,17 +179,18 @@ const Navbar2 = ({
       >
         <div className={`navbar-content`}>
           <div className="logo-div">
-            <img
-              className="top-logo"
-              src="/assets/RESILIOO.png"
-              alt="Resilio Logo"
-            />
             <Login
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
             />
+            <img
+              className="top-logo"
+              // src="/assets/RESILIOO.png"
+              src="/assets/OV.png"
+              alt="Resilio Logo"
+            />
           </div>
-          <p className="tag-line">Free services in your neighborhood!</p>
+          {/* <p className="tag-line">Free services in your neighborhood!</p> */}
 
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
             <>
