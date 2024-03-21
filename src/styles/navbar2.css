@@ -44,24 +44,16 @@
   height: 100%;
 }
 
-.top-logo {
-  height: 35px;
-  width: 135px;
-  /* margin: 7px; */
-}
-
 .login-link:hover {
   cursor: pointer;
 }
 
-.tag-line {
+/* .tag-line {
   text-align: center;
-  /* margin: 10px 0 20px 0; */
   font-family: "Inter", sans-serif;
   font-weight: bolder;
   letter-spacing: 1px;
-  /* display: none; */
-}
+} */
 
 .active {
   /* background-image: radial-gradient(circle closest-side, #5cfeb2, white); */
@@ -127,9 +119,11 @@
 }
 
 .list-container {
-  max-height: calc(100% - 200px);
+  border-radius: 20px;
+  max-height: calc(100% - 215px);
   overflow-y: scroll;
   scroll-behavior: smooth;
+  border: 3px solid black;
 }
 
 .list-container ul {
@@ -338,8 +332,14 @@
   display: flex;
 }
 
+.top-logo {
+  width: 250px;
+  margin: 10px;
+}
+
 .logo-div {
   display: flex;
+  flex-direction: column;
   width: 100%;
   margin: 0;
   padding: 10px;
@@ -383,7 +383,6 @@ iframe {
     top: -43%;
     background-color: white;
     border-radius: 3px;
-    /* left: 0; */
   }
 
   .navbar-content {
@@ -392,9 +391,9 @@ iframe {
     height: unset !important;
   }
 
-  .tag-line {
+  /* .tag-line {
     display: none !important;
-  }
+  } */
 
   .donation {
     height: 100% !important;
