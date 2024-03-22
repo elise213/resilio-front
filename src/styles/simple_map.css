@@ -1,7 +1,7 @@
 .treasureMap,
 .droppable-map-area,
 .treasureMapDiv,
-.map-container,
+/* .map-container, */
 .simple-map {
   width: 100% !important;
 }

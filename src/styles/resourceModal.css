@@ -14,6 +14,16 @@
   margin: 00px 20px 20px 20px;
 } */
 
+.rate {
+  height: calc(100vh * 0.86);
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+  left: 0;
+  padding: 10px;
+}
+
 .form-check {
   display: flex;
   justify-content: space-between;
@@ -62,7 +72,7 @@
 .close-modal {
   color: grey;
   font-family: "Inter", sans-serif;
-  margin: 20px 0;
+  margin: 10px 0 0 0;
   align-self: flex-start;
 }
 
@@ -129,6 +139,10 @@
   color: blue;
   text-decoration: underline;
   padding: 0 5px;
+}
+
+.log-in:hover {
+  cursor: pointer;
 }
 
 .resource-info {

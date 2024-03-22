@@ -7,9 +7,10 @@ const Buttons = ({
   setAboutModalIsOpen,
   setContactModalIsOpen,
   setDonationModalIsOpen,
-  donationModalIsOpen,
-  aboutModalIsOpen,
-  contactModalIsOpen,
+  // donationModalIsOpen,
+  // aboutModalIsOpen,
+  // contactModalIsOpen,
+  setModalIsOpen,
 }) => {
   return (
     <div className="footer-container">
@@ -43,6 +44,7 @@ const Buttons = ({
             setAboutModalIsOpen(false);
             setDonationModalIsOpen(true);
             setContactModalIsOpen(false);
+            setModalIsOpen(false);
           }}
         >
           DONATE
@@ -50,9 +52,6 @@ const Buttons = ({
           {String(contactModalIsOpen)}
           {String(donationModalIsOpen)} */}
         </span>
-      </div>
-      <div className="foot">
-        <p className="all-rights">2024 ©Resilio, All Rights Reserved</p>
       </div>
     </div>
   );

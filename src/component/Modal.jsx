@@ -85,12 +85,14 @@ const Modal = ({
   }, [store.token, modalIsOpen]);
 
   useEffect(() => {
-    const storedFavorites = store.favorites;
-    const isItemFavorited = storedFavorites.some(
-      (favorite) => favorite.id === resource.id
-    );
-    setIsFavorited(isItemFavorited);
-  }, []);
+    if (store.favorites) {
+      const storedFavorites = store.favorites;
+      const isItemFavorited = storedFavorites.some(
+        (favorite) => favorite.id === resource.id
+      );
+      setIsFavorited(isItemFavorited);
+    }
+  }, [store.favorites]);
 
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
@@ -122,6 +124,7 @@ const Modal = ({
           onClick={() => {
             toggleRatingModal();
           }}
+          title="Click here to rate and review this resource"
         >
           <span className="resource-title" style={{ textAlign: "center" }}>
             {resource.name}
@@ -134,6 +137,7 @@ const Modal = ({
             readOnly
           />
         </div>
+
         <ModalInfo
           modalIsOpen={modalIsOpen}
           id={resource.id}
@@ -226,123 +230,130 @@ const Modal = ({
       {/* Rating Modal */}
       {showRating && (
         <>
-          <div className="new-modal" ref={ratingModalRef}>
-            <div>
-              <p className="close-rating" onClick={() => setShowRating(false)}>
-                <i className="fa-solid fa-x"></i>
-              </p>
-              {isLoggedIn && (
-                <div className="rating-container">
-                  <span className="">
-                    What do You Think of {resource.name} ?
-                  </span>
-                  <div className="rating-label">
-                    {rating !== null && labels[hover !== -1 ? hover : rating]}
-                  </div>
-                  <Rating
-                    className="resource-rating"
-                    name="resource-rating"
-                    value={rating}
-                    precision={1}
-                    onChange={(event, newRating) => setRating(newRating)}
-                    onChangeActive={(event, newHover) => {
-                      setHover(newHover);
-                    }}
-                  />
-                </div>
-              )}
-              {isLoggedIn ? (
-                <div className="comment-section">
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder={`Please say something about ${resource.name}...`}
-                    maxLength="280"
-                  ></textarea>
+          <div className="rate" ref={ratingModalRef}>
+            <div className="custom-login-modal-header">
+              <span
+                className="close-modal"
+                onClick={() => setShowRating(false)}
+              >
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                Back to Search
+              </span>
 
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className="submit"
-                    onClick={() => {
-                      // Check if rating or comment is missing and show an alert
-                      if (!rating || rating <= 0) {
-                        Swal.fire({
-                          icon: "warning",
-                          title: "Oops...",
-                          text: "You must include a rating.",
-                        });
-                        return; // Exit the function early to prevent submission and preserve current input
-                      }
-
-                      if (!comment.trim()) {
-                        Swal.fire({
-                          icon: "warning",
-                          title: "Oops...",
-                          text: "You must include a comment.",
-                        });
-                        return; // Exit the function early to prevent submission and preserve current input
-                      }
-
-                      console.log("Submit button clicked");
-                      actions
-                        .submitRatingAndComment(resource.id, comment, rating)
-                        .then((response) => {
-                          console.log("Success", response);
-                          Swal.fire({
-                            icon: "success",
-                            title: "Success",
-                            text: "Your review has been submitted!",
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              setShowRating(false);
-                            }
-                          });
-
-                          // Reset form state here if needed
-                          setRating(0);
-                          setComment("");
-
-                          // Refresh comments and ratings
-                          fetchLatestCommentsAndRatings();
-                        })
-                        .catch((error) => {
-                          console.error("Error submitting review:", error);
-                          Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Failed to submit your review.",
-                          });
-                        });
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </div>
-              ) : (
-                <div>
-                  Please
-                  <span
-                    role="button"
-                    tabIndex={0} // Make it focusable
-                    className="log-in"
-                    onClick={() => {
-                      setOpenLoginModal(true);
-                      setShowRating(false);
-                      setModalIsOpen(false);
-                    }}
-                    // onKeyPress={(event) => {
-                    //   if (event.key === "Enter") {
-                    //     setOpenLoginModal(true);
-                    //   }
-                    // }}
-                  >
-                    log in
-                  </span>
-                  to rate and review resources.
-                </div>
-              )}
+              <div className="please-log">
+                Please
+                <span
+                  role="button"
+                  tabIndex={0} // Make it focusable
+                  className="log-in"
+                  onClick={() => {
+                    setOpenLoginModal(true);
+                    setShowRating(false);
+                    setModalIsOpen(false);
+                  }}
+                  // onKeyPress={(event) => {
+                  //   if (event.key === "Enter") {
+                  //     setOpenLoginModal(true);
+                  //   }
+                  // }}
+                >
+                  log in
+                </span>
+                to rate and review resources.
+              </div>
             </div>
+            {isLoggedIn && (
+              <div className="rating-container">
+                <span className="">What do You Think of {resource.name} ?</span>
+                <div className="rating-label">
+                  {rating !== null && labels[hover !== -1 ? hover : rating]}
+                </div>
+                <Rating
+                  className="resource-rating"
+                  name="resource-rating"
+                  value={rating}
+                  precision={1}
+                  onChange={(event, newRating) => setRating(newRating)}
+                  onChangeActive={(event, newHover) => {
+                    setHover(newHover);
+                  }}
+                />
+              </div>
+            )}
+            {isLoggedIn ? (
+              <div className="comment-section">
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder={`Please say something about ${resource.name}...`}
+                  maxLength="280"
+                ></textarea>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="submit"
+                  onClick={() => {
+                    // Check if rating or comment is missing and show an alert
+                    if (!rating || rating <= 0) {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Oops...",
+                        text: "You must include a rating.",
+                      });
+                      return; // Exit the function early to prevent submission and preserve current input
+                    }
+
+                    if (!comment.trim()) {
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Oops...",
+                        text: "You must include a comment.",
+                      });
+                      return; // Exit the function early to prevent submission and preserve current input
+                    }
+
+                    console.log("Submit button clicked");
+                    actions
+                      .submitRatingAndComment(resource.id, comment, rating)
+                      .then((response) => {
+                        console.log("Success", response);
+                        Swal.fire({
+                          icon: "success",
+                          title: "Success",
+                          text: "Your review has been submitted!",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            setShowRating(false);
+                          }
+                        });
+
+                        // Reset form state here if needed
+                        setRating(0);
+                        setComment("");
+
+                        // Refresh comments and ratings
+                        fetchLatestCommentsAndRatings();
+                      })
+                      .catch((error) => {
+                        console.error("Error submitting review:", error);
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error",
+                          text: "Failed to submit your review.",
+                        });
+                      });
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            ) : (
+              ""
+            )}
+            {/* </div> */}
           </div>
         </>
       )}

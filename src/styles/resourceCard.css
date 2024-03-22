@@ -3,8 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 5px;
-  padding: 5px;
+  box-sizing: border-box;
   z-index: 0 !important;
   position: relative;
   user-select: none;
@@ -14,6 +13,9 @@
   overflow: hidden;
   font-family: "Inter", sans-serif;
   border: 2px solid transparent;
+  width: 102%;
+  left: -2px;
+  margin-top: 20px;
 }
 
 .my-resource-card:hover {
@@ -33,14 +35,14 @@ textarea {
   font-family: "Inter", sans-serif;
 }
 
+.card-description {
+  padding: 0 10px 5px 10px;
+}
+
 .card-description span {
   color: gray;
   font-size: 12px;
   line-height: 0.5;
-}
-
-.resource-card-header {
-  display: flex;
 }
 
 .category-span {
@@ -54,7 +56,7 @@ textarea {
   margin-bottom: 5px;
   width: 100%;
   max-height: 130px;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .card-icon {
@@ -132,6 +134,8 @@ textarea {
   margin: 0;
   padding: 0;
   text-align: left;
+  display: flex;
+  padding: 0 10px 5px 10px;
 }
 
 .card-title-div {

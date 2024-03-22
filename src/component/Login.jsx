@@ -225,13 +225,6 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     <>
       {!openLoginModal &&
         (isLoggedIn ? (
-          // <Avatar
-          //   className="avatar-material-design"
-          //   onClick={handleLogout}
-          //   style={{ cursor: "pointer", backgroundColor: "#1976d2" }}
-          // >
-          //   <i className="fa fa-user" />
-          // </Avatar>
           <Button
             className="login-button-resilio"
             variant="contained"
@@ -250,7 +243,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             Log in
           </Button>
         ))}
-      {openLoginModal && <div className="centered">{field}</div>}
+      {openLoginModal && <div className="login-div">{field}</div>}
     </>
   );
 };
