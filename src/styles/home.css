@@ -60,7 +60,7 @@
   left: 0;
   background-color: white;
   z-index: 99999999;
-  border: none;
+  border: 3px solid black;
   flex-direction: column;
   display: flex;
   justify-content: space-between;
@@ -68,6 +68,8 @@
   box-sizing: border-box;
   overflow-y: scroll !important;
   scroll-behavior: smooth;
+  border-radius: 0 20px 0 0;
+  overflow: hidden;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-thumb {
@@ -86,16 +88,13 @@
 
 .map-container {
   border: 2px solid lavender;
-  min-height: 300px;
   overflow: hidden;
+  height: 100%;
 }
 
 .function-buttons {
   display: flex;
   box-sizing: border-box;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
   justify-content: space-between;
   background-color: white;
   flex-direction: column;
@@ -105,7 +104,7 @@
   font-family: "Inter", sans-serif;
   font-size: 12px;
   color: rgb(149, 149, 149);
-  display: none;
+  /* display: none; */
 }
 
 .geo-button {
@@ -136,10 +135,11 @@
   position: relative;
   background: white;
   border: 1px solid gray;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   width: 300px;
   align-self: center;
   padding: 4px;
+  margin: 5px 0 10px 0;
 }
 
 .search-bar input {
@@ -164,27 +164,23 @@
 
 @media screen and (max-width: 700px) {
   .map-container {
-    height: 15vh !important;
+    height: 30vh !important;
     width: 100vw !important;
     left: 0 !important;
     position: absolute !important;
     top: 0 !important;
   }
 
-  .all-rights {
+  /* .all-rights {
     display: none;
-  }
+  } */
 
   .modal-div {
     width: 100% !important;
     height: 90% !important;
     bottom: 0 !important;
     top: unset !important;
-    border-radius: 20px;
-  }
-
-  .function-buttons {
-    flex-direction: column;
+    border-radius: 20px 20px 0 0 !important;
   }
 }
 

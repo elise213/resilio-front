@@ -65,7 +65,6 @@ body {
   overflow: visible !important;
   min-height: 100vh;
   padding-left: 350px;
-  /* same as nav */
 }
 
 .form-check-inline {

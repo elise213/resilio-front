@@ -450,7 +450,12 @@ const Home = () => {
           donationModalIsOpen={donationModalIsOpen}
           contactModalIsOpen={contactModalIsOpen}
           aboutModalIsOpen={aboutModalIsOpen}
+          setModalIsOpen={setModalIsOpen}
         />
+
+        <div className="foot">
+          <p className="all-rights">© 2024 Open Village</p>
+        </div>
       </div>
     </>
   );

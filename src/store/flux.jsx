@@ -58,6 +58,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "sex", value: "sex", label: "Sexual Health" },
         { id: "legal", value: "legal", label: "Legal Support" },
       ],
+
       GROUP_OPTIONS: [
         { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
         { id: "women", value: "women", label: "Women" },
