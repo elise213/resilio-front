@@ -52,9 +52,9 @@ const Navbar2 = ({
     return Object.values(stateObj).every((value) => !value);
   };
 
-  // useEffect(() => {
-  //   actions.fetchFavorites();
-  // }, [store.favorites]);
+  useEffect(() => {
+    actions.fetchFavorites();
+  }, []);
 
   useEffect(() => {
     const noCategorySelected = areAllUnchecked(categories);
@@ -241,7 +241,7 @@ const Navbar2 = ({
                   )}
                 </div>
 
-                <div className={"nav-div-list" + (isLoggedIn ? "" : "")}>
+                <div className={"nav-div-list"}>
                   {activeTab === "AllResources" && (
                     <CombinedFilters
                       searchQuery={searchQuery}
@@ -253,31 +253,31 @@ const Navbar2 = ({
                     />
                   )}
                   <div className={`list-container`}>
-                    {isLoggedIn && (
-                      <div className="tab-buttons">
-                        <div
-                          className={
-                            activeTab === "AllResources" ? "active" : "dormant"
-                          }
-                          onClick={() => setActiveTab("AllResources")}
-                        >
-                          {!userSelectedFilter && !searchQuery ? (
-                            <p>Map boundary</p>
-                          ) : (
-                            <p>Filtered Results</p>
-                          )}
-                        </div>
-                        <div
-                          style={{ textAlign: "end" }}
-                          className={
-                            activeTab === "Favorites" ? "active" : "dormant"
-                          }
-                          onClick={() => setActiveTab("Favorites")}
-                        >
-                          Favorites
-                        </div>
+                    {/* {isLoggedIn && ( */}
+                    <div className="tab-buttons">
+                      <div
+                        className={
+                          activeTab === "AllResources" ? "active" : "dormant"
+                        }
+                        onClick={() => setActiveTab("AllResources")}
+                      >
+                        {!userSelectedFilter && !searchQuery ? (
+                          <p>Map boundary</p>
+                        ) : (
+                          <p>Filtered Results</p>
+                        )}
                       </div>
-                    )}
+                      <div
+                        style={{ textAlign: "end" }}
+                        className={
+                          activeTab === "Favorites" ? "active" : "dormant"
+                        }
+                        onClick={() => setActiveTab("Favorites")}
+                      >
+                        Favorites
+                      </div>
+                    </div>
+                    {/* )} */}
                     {activeTab === "AllResources" && (
                       <ul>
                         {Array.isArray(store.mapResults) &&
@@ -307,6 +307,9 @@ const Navbar2 = ({
                               />
                             ))}
                       </ul>
+                    )}
+                    {!isLoggedIn && (
+                      <p className="log">Please log in to save favorites.</p>
                     )}
 
                     {activeTab === "Favorites" && isLoggedIn && (
