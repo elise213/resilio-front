@@ -124,9 +124,12 @@ const Modal = ({
           onClick={() => {
             toggleRatingModal();
           }}
-          title="Click here to rate and review this resource"
+          title="Click to rate and review this resource"
         >
-          <span className="resource-title" style={{ textAlign: "center" }}>
+          <span
+            className="resource-title-modal"
+            style={{ textAlign: "center" }}
+          >
             {resource.name}
           </span>
           <Rating
