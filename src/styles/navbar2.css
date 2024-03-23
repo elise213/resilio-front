@@ -66,9 +66,10 @@
 
 .tab-buttons {
   display: flex;
-  position: absolute;
-  width: 100%;
-  z-index: 1;
+  position: sticky;
+  top: 0;
+  width: 110%;
+  z-index: 3;
   box-sizing: border-box;
   border-radius: 20px 20px 0 0;
   overflow: hidden;
@@ -126,8 +127,8 @@
 
 .list-container {
   border-radius: 20px;
-  max-height: calc(100% - 210px);
-  overflow-y: scroll;
+  max-height: calc(100% - 230px);
+  overflow-y: auto;
   scroll-behavior: smooth;
   border: 2px solid black;
   min-height: 100px;
@@ -135,6 +136,7 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  overflow-x: hidden;
 }
 
 .list-container ul {
@@ -147,6 +149,28 @@
   overflow-y: scroll;
   border-radius: 2%;
   border: 1px solid gray;
+}
+
+/* Targeting WebKit browsers like Chrome, Safari, and newer versions of Edge */
+/* .list-container::-webkit-scrollbar {
+  width: px;
+} */
+
+.list-container::-webkit-scrollbar {
+  display: none; /* Hides scrollbar for WebKit browsers */
+}
+
+.list-container::-webkit-scrollbar-track {
+  background: black; /* Makes the track (background) transparent */
+}
+
+.list-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+.list-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .dropdown {

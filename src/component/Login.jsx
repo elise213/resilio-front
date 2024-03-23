@@ -39,10 +39,33 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     actions.logout();
   }
 
-  function handleRegister(e) {
+  // function handleRegister(e) {
+  //   e.preventDefault();
+  //   actions.createUser(is_org, name, email, password, userAvatar);
+  //   setLog("1");
+  // }
+  async function handleRegister(e) {
     e.preventDefault();
-    actions.createUser(is_org, name, email, password, userAvatar);
-    setLog("1");
+
+    // Wait for createUser to complete and check its return value
+    const userCreated = await actions.createUser(
+      is_org,
+      name,
+      email,
+      password,
+      userAvatar
+    );
+
+    if (userCreated) {
+      // If createUser was successful, proceed to log the user in
+      await actions.login(email, password);
+      setOpenLoginModal(false);
+      // setLog("1");
+    } else {
+      // Handle the case where createUser failed
+      console.error("User creation failed.");
+      // Optionally, setLog to a different value or handle the failure case differently
+    }
   }
 
   function handleSelectImage(id) {

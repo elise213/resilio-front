@@ -1,12 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { Context } from "../store/appContext";
-// import MapBack from "./MapBack2";
-// import Buttons from "./Buttons";
-import ResourceCard from "./ResourceCard";
-// import MapSettings from "./MapSettings";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
-import Button from "@mui/material/Button";
 import HoverCard from "./HoverCard";
 
 const SimpleMap = ({

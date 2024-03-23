@@ -9,62 +9,36 @@ const Selection = ({
   setCategories,
   days,
   setDays,
-  areAllUnchecked,
-  isLocationDropdownOpen,
-  setIsLocationDropdownOpen,
-  zipInput,
-  handleZipInputChange,
+  fetchBounds,
+  handleBoundsChange,
+  groups,
 }) => {
   const { store, actions } = useContext(Context);
-  const categoryIds = store.CATEGORY_OPTIONS.map((option) => option.id);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
-  const dayIds = store.DAY_OPTIONS.map((option) => option.id);
+
+  // const [localZipInput, setLocalZipInput] = useState("");
+
+  // const handleZipInputChange = (e) => {
+  //   const value = e.target.value;
+  //   setLocalZipInput(value);
+  // };
+
+  useEffect(() => {
+    console.log("Selection component mounted");
+    return () => {
+      console.log("Selection component unmounted");
+    };
+  }, []);
 
   const COMBINED_OPTIONS = [
     ...(store.CATEGORY_OPTIONS || []),
     ...(store.GROUP_OPTIONS || []),
   ];
 
-  // Extract IDs for category and group options (no longer necessary but kept for compatibility)
-  const categoryAndGroupIds = COMBINED_OPTIONS.map((option) => option.id);
-
   const [openDropdown, setOpenDropdown] = useState({
     category: false,
     day: false,
   });
-
-  function LocationDropdown() {
-    const toggleLocationDropdown = () => {
-      setIsLocationDropdownOpen(!isLocationDropdownOpen);
-    };
-
-    const locationDropdownIcon = isLocationDropdownOpen
-      ? "expand_more"
-      : "chevron_right";
-
-    return (
-      <div className="dropdown">
-        <button className="dropdown-button" onClick={toggleLocationDropdown}>
-          Location{" "}
-          <span className="material-symbols-outlined">
-            {locationDropdownIcon}
-          </span>
-        </button>
-        {isLocationDropdownOpen && (
-          <div className="dropdown-content">
-            <input
-              type="text"
-              id="zipcode"
-              value={zipInput}
-              onChange={handleZipInputChange}
-              maxLength="5"
-              placeholder="Zip Code"
-            />
-          </div>
-        )}
-      </div>
-    );
-  }
 
   function Dropdown({ id, title, children }) {
     const isOpen = openDropdown[id];
@@ -72,8 +46,6 @@ const Selection = ({
     const toggleDropdown = () => {
       setOpenDropdown((prev) => ({ ...prev, [id]: !prev[id] }));
     };
-
-    // Conditionally set the icon based on the isOpen state
     const icon = isOpen ? "expand_more" : "chevron_right";
 
     return (
@@ -110,29 +82,6 @@ const Selection = ({
       [id]: false,
     });
   };
-
-  // const renderSelectedFilters = (state, type) => {
-  //   return Object.entries(state)
-  //     .filter(([, isSelected]) => isSelected)
-  //     .map(([id]) => {
-  //       const label =
-  //         type === "category"
-  //           ? store.CATEGORY_OPTIONS.find((option) => option.id === id)?.label
-  //           : store.DAY_OPTIONS.find((option) => option.id === id)?.label;
-  //       if (!label) return null; // If no label is found, don't render anything
-  //       return (
-  //         <div key={id} className="selected-filter">
-  //           {label}{" "}
-  //           <span
-  //             className="material-symbols-outlined"
-  //             onClick={() => handleRemoveFilter(id, type)}
-  //           >
-  //             close
-  //           </span>
-  //         </div>
-  //       );
-  //     });
-  // };
 
   const renderDropdownColumn = (type, state, setState) => {
     const options = type === "category" ? COMBINED_OPTIONS : store.DAY_OPTIONS;
@@ -257,13 +206,8 @@ const Selection = ({
   return (
     <>
       <Report />
-      <LocationDropdown />
       <div className={"dropdowns-container"}>
-        {/* {allCategories.length > 0 && */}
         {renderDropdownColumn("category", categories, setCategories)}
-        {/*} { */}
-        {/* {visibleGroupCount > 0 &&
-          renderDropdownColumn("group", groups, setGroups)}  */}
         {Object.values(visibleDaysCounts).some((count) => count > 0) &&
           renderDropdownColumn("day", days, setDays)}
       </div>

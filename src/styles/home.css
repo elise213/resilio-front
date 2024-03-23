@@ -66,10 +66,10 @@
   justify-content: space-between;
   padding: 15px;
   box-sizing: border-box;
-  overflow-y: scroll !important;
+  overflow-y: auto;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   border-radius: 0 20px 0 0;
-  overflow: hidden;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-thumb {
@@ -119,14 +119,15 @@
 }
 
 .search-bar input,
-#zipcode {
+.zipcode {
   border-radius: 3px;
   border: 1px solid gray;
 }
 
-#zipcode {
+.zipcode {
   max-width: 100px;
   align-self: center;
+  direction: ltr;
 }
 
 .search-bar {
@@ -135,7 +136,6 @@
   position: relative;
   background: white;
   border: 1px solid gray;
-  /* margin-bottom: 10px; */
   width: 300px;
   align-self: center;
   padding: 4px;
@@ -154,9 +154,9 @@
   font-size: 20px;
 }
 
-.search-bar input:focus {
+/* .search-bar input:focus {
   outline: none;
-}
+} */
 
 .search-bar input::placeholder {
   color: gray;
