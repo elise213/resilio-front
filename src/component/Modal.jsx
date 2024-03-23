@@ -253,11 +253,6 @@ const Modal = ({
                     setShowRating(false);
                     setModalIsOpen(false);
                   }}
-                  // onKeyPress={(event) => {
-                  //   if (event.key === "Enter") {
-                  //     setOpenLoginModal(true);
-                  //   }
-                  // }}
                 >
                   log in
                 </span>
