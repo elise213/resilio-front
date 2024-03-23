@@ -259,21 +259,6 @@ const Navbar2 = ({
                   // store.boundaryResults > 1 &&
                   groups ? (
                     <ErrorBoundary>
-                      <Selection
-                        handleBoundsChange={handleBoundsChange}
-                        fetchBounds={fetchBounds}
-                        categories={categories}
-                        setCategories={setCategories}
-                        groups={groups}
-                        setGroups={setGroups}
-                        days={days}
-                        setDays={setDays}
-                        searchingToday={searchingToday}
-                        setSearchingToday={setSearchingToday}
-                        INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                        areAllUnchecked={areAllUnchecked}
-                      />
-
                       <div className="dropdown">
                         <button
                           className="dropdown-button"
@@ -297,6 +282,21 @@ const Navbar2 = ({
                             />
                           </div>
                         )}
+
+                        <Selection
+                          handleBoundsChange={handleBoundsChange}
+                          fetchBounds={fetchBounds}
+                          categories={categories}
+                          setCategories={setCategories}
+                          groups={groups}
+                          setGroups={setGroups}
+                          days={days}
+                          setDays={setDays}
+                          searchingToday={searchingToday}
+                          setSearchingToday={setSearchingToday}
+                          INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                          areAllUnchecked={areAllUnchecked}
+                        />
                       </div>
                     </ErrorBoundary>
                   ) : (

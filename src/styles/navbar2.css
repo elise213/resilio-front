@@ -124,6 +124,21 @@
   left: 50%;
   transform: translateX(-50%);
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-gutter: 0;
+  scrollbar-color: rgba(136, 136, 136, 0.9) transparent;
+}
+
+.list-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* .list-container::-webkit-scrollbar {
+  width: 8px;
+} */
+
+.list-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .list-container ul {
@@ -136,18 +151,6 @@
   overflow-y: scroll;
   border-radius: 2%;
   border: 1px solid gray;
-}
-
-.list-container::-webkit-scrollbar-track {
-  background: transparent !important;
-  /* display: none; */
-}
-
-.list-container {
-  scrollbar-width: thin;
-  scrollbar-gutter: 0;
-  scrollbar-color: rgba(136, 136, 136, 0.9) transparent;
-  /* scrollbar-base-color: transparent; */
 }
 
 .dropdown {
@@ -350,7 +353,7 @@
 
 .top-logo {
   width: 240px;
-  height: 45px;
+  height: 50px;
   margin: 10px;
 }
 
