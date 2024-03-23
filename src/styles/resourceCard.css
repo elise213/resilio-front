@@ -53,10 +53,8 @@ textarea {
 
 .card-img {
   object-fit: cover;
-  margin-bottom: 5px;
-  width: 100%;
+  width: 110%;
   max-height: 130px;
-  /* border-radius: 4px; */
 }
 
 .card-icon {
