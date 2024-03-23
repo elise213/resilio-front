@@ -12,6 +12,11 @@
   font-family: "Inter", sans-serif;
   padding: 0;
   background-color: transparent;
+  margin-bottom: 5px;
+}
+
+.dropdown-content {
+  margin-bottom: 5px;
 }
 
 .dropdown-button:hover {
@@ -21,7 +26,6 @@
 .dropdowns-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
 }
 
 .material-symbols-outlined {
@@ -32,7 +36,6 @@
   max-height: 30vh;
   overflow-y: scroll;
   overflow-x: hidden;
-  /* position: relative; */
 }
 
 .selection-head {

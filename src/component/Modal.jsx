@@ -195,7 +195,7 @@ const Modal = ({
       )}
 
       <div className="modal-footer">
-        <p className="problem">
+        {/* <p className="problem">
           Click {""}
           <span
             onClick={() => {
@@ -208,7 +208,7 @@ const Modal = ({
             here
           </span>{" "}
           if there is a problem with this information.
-        </p>
+        </p> */}
 
         {isAuthorizedUser && (
           <>
