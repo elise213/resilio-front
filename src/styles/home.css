@@ -135,7 +135,8 @@
   align-items: center;
   position: relative;
   background: white;
-  border: 1px solid gray;
+  border: 1px solid #afafaf;
+  border-radius: 2px;
   width: 300px;
   align-self: center;
   padding: 4px;

@@ -7,22 +7,10 @@
   font-family: "Inter", sans-serif;
 }
 
-/* .footer-container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-} */
-
 .active-filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 5px;
-  /* border-right-width: 1px;
-  border-left-width: 1px; */
-  /* border-bottom-width: 0;
-  border-top-width: 0;
-  border-color: black;
-  border-style: solid; */
 }
 
 .active-filter {
@@ -105,7 +93,6 @@
   justify-content: center;
   display: flex;
   align-items: center;
-  /* border-radius: 20px; */
 }
 
 .tab-buttons div:hover {
@@ -137,6 +124,21 @@
   left: 50%;
   transform: translateX(-50%);
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-gutter: 0;
+  scrollbar-color: rgba(136, 136, 136, 0.9) transparent;
+}
+
+.list-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* .list-container::-webkit-scrollbar {
+  width: 8px;
+} */
+
+.list-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .list-container ul {
@@ -149,28 +151,6 @@
   overflow-y: scroll;
   border-radius: 2%;
   border: 1px solid gray;
-}
-
-/* Targeting WebKit browsers like Chrome, Safari, and newer versions of Edge */
-/* .list-container::-webkit-scrollbar {
-  width: px;
-} */
-
-.list-container::-webkit-scrollbar {
-  display: none; /* Hides scrollbar for WebKit browsers */
-}
-
-.list-container::-webkit-scrollbar-track {
-  background: black; /* Makes the track (background) transparent */
-}
-
-.list-container::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 6px;
-}
-
-.list-container::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 
 .dropdown {
@@ -220,8 +200,6 @@
 .nav-div-list {
   width: 100%;
   height: 100%;
-  /* display: flex;
-  justify-content: center; */
 }
 
 .nav-item,
@@ -375,7 +353,7 @@
 
 .top-logo {
   width: 240px;
-  height: 45px;
+  height: 50px;
   margin: 10px;
 }
 
@@ -446,10 +424,6 @@ iframe {
     height: unset !important;
     border-radius: 30px 30px 0 0 !important;
   }
-
-  /* .tag-line {
-    display: none !important;
-  } */
 
   .donation {
     height: 100% !important;
