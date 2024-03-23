@@ -1,14 +1,10 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Navbar2 from "../component/Navbar2";
-// import CardDeck from "../component/CardDeck";
-// import Favorites from "../component/Favorites";
 import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Buttons from "../component/Buttons";
-import Button from "@mui/material/Button";
-import Contact from "../component/Contact";
 
 import { Modal } from "../component";
 
@@ -16,8 +12,6 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const INITIAL_CITY_STATE = store.austin[0];
-
-  // console.log("user id", store.user_id);
 
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
@@ -40,32 +34,19 @@ const Home = () => {
   // STATES
 
   const [loading, setLoading] = useState(false);
-  const [backSide, setBackSide] = useState(false);
-
   const [userLocation, setUserLocation] = useState(null);
-  const [isGeneratedMapModalOpen, setIsGeneratedMapModalOpen] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(true);
-
   const [city, setCity] = useState(INITIAL_CITY_STATE);
-  // const [isLocating, setIsLocating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
   const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
   const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const [selectedResource, setSelectedResource] = useState(null);
-
-  const [zipInput, setZipInput] = useState("");
   const [hoveredItem, setHoveredItem] = useState(null);
-
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
   );
   const [searchingToday, setSearchingToday] = useState(false);
-
   const [categories, setCategories] = useState(
     INITIAL_CATEGORY_STATE(store.CATEGORY_OPTIONS)
   );
@@ -205,45 +186,6 @@ const Home = () => {
     }
   };
 
-  const handleZipInputChange = async (e) => {
-    const value = e.target.value;
-    setZipInput(value);
-    if (value.length === 5) {
-      await updateCityStateFromZip(value);
-    }
-  };
-
-  const updateCityStateFromZip = async (zip) => {
-    try {
-      const data = await fetchBounds(zip, true);
-      console.log("API Response:", data); // Add this line for debugging
-      const location = data.results[0]?.geometry?.location;
-      const bounds =
-        data.results[0]?.geometry?.bounds ||
-        data.results[0]?.geometry?.viewport;
-
-      if (location && bounds) {
-        // const newCityState = {
-        //   ...city,
-        //   center: location,
-        //   bounds: bounds,
-        // };
-        // setCity(newCityState);
-        // console.log("New City State:", newCityState); // Add this line for debugging
-        handleBoundsChange({ center: location, bounds: bounds });
-        await actions.setBoundaryResults(bounds, categories, days, groups);
-      }
-    } catch (error) {
-      console.error("Error fetching bounds:", error.message);
-    }
-  };
-
-  useEffect(() => {
-    if (zipInput && zipInput.length === 5) {
-      updateCityStateFromZip(zipInput);
-    }
-  }, [zipInput]); // Ensure zipInput is triggering this effect
-
   const openModal = (resource) => {
     setSelectedResource(resource);
     setModalIsOpen(true);
@@ -319,12 +261,6 @@ const Home = () => {
   }, [city]);
 
   useEffect(() => {
-    if (zipInput && zipInput.length === 5) {
-      updateCityStateFromZip(zipInput);
-    }
-  }, [zipInput]);
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         if (categories && days && city.bounds) {
@@ -367,14 +303,14 @@ const Home = () => {
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
           openModal={openModal}
           geoFindMe={geoFindMe}
-          handleZipInputChange={handleZipInputChange}
-          zipInput={zipInput}
           contactModalIsOpen={contactModalIsOpen}
           setContactModalIsOpen={setContactModalIsOpen}
           aboutModalIsOpen={aboutModalIsOpen}
           setAboutModalIsOpen={setAboutModalIsOpen}
           donationModalIsOpen={donationModalIsOpen}
           setDonationModalIsOpen={setDonationModalIsOpen}
+          fetchBounds={fetchBounds}
+          handleBoundsChange={handleBoundsChange}
         />
         {loading != undefined && (
           <div className="loading">
@@ -392,12 +328,11 @@ const Home = () => {
                 setFavorites={setFavorites}
                 hoveredItem={hoveredItem}
                 setHoveredItem={setHoveredItem}
-                handleBoundsChange={handleBoundsChange}
                 openModal={openModal}
                 city={city}
-                zipInput={zipInput}
                 categories={categories}
                 days={days}
+                handleBoundsChange={handleBoundsChange}
                 groups={groups}
                 setCategories={setCategories}
                 setGroups={setGroups}

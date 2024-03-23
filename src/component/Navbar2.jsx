@@ -17,7 +17,6 @@ const Navbar2 = ({
   closeModal,
   days,
   groups,
-  handleZipInputChange,
   modalIsOpen,
   openLoginModal,
   setOpenLoginModal,
@@ -30,23 +29,56 @@ const Navbar2 = ({
   setGroups,
   setModalIsOpen,
   setSearchingToday,
-  zipInput,
   aboutModalIsOpen,
   setAboutModalIsOpen,
   donationModalIsOpen,
   setDonationModalIsOpen,
+  fetchBounds,
+  handleBoundsChange,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
   const [activeTab, setActiveTab] = useState("AllResources");
-  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
 
+  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
+
+  const [localZipInput, setLocalZipInput] = useState("");
+
+  const handleZipInputChange = (e) => {
+    const value = e.target.value;
+    setLocalZipInput(value);
+  };
+
+  useEffect(() => {
+    if (localZipInput.length === 5) {
+      updateCityStateFromZip(localZipInput);
+    }
+  }, [localZipInput]);
+
+  const updateCityStateFromZip = async (zip) => {
+    try {
+      const data = await fetchBounds(zip, true);
+      console.log("API Response:", data); // Add this line for debugging
+      const location = data.results[0]?.geometry?.location;
+      const bounds =
+        data.results[0]?.geometry?.bounds ||
+        data.results[0]?.geometry?.viewport;
+
+      if (location && bounds) {
+        handleBoundsChange({ center: location, bounds: bounds });
+        await actions.setBoundaryResults(bounds, categories, days, groups);
+      }
+    } catch (error) {
+      console.error("Error fetching bounds:", error.message);
+    }
+  };
 
   const areAllUnchecked = (stateObj) => {
     return Object.values(stateObj).every((value) => !value);
@@ -170,6 +202,14 @@ const Navbar2 = ({
     setSearchQuery("");
   };
 
+  const toggleLocationDropdown = () => {
+    setIsLocationDropdownOpen(!isLocationDropdownOpen);
+  };
+
+  const locationDropdownIcon = isLocationDropdownOpen
+    ? "expand_more"
+    : "chevron_right";
+
   return (
     <>
       <nav
@@ -220,6 +260,8 @@ const Navbar2 = ({
                   groups ? (
                     <ErrorBoundary>
                       <Selection
+                        handleBoundsChange={handleBoundsChange}
+                        fetchBounds={fetchBounds}
                         categories={categories}
                         setCategories={setCategories}
                         groups={groups}
@@ -229,12 +271,33 @@ const Navbar2 = ({
                         searchingToday={searchingToday}
                         setSearchingToday={setSearchingToday}
                         INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                        zipInput={zipInput}
-                        handleZipInputChange={handleZipInputChange}
                         areAllUnchecked={areAllUnchecked}
-                        isLocationDropdownOpen={isLocationDropdownOpen}
-                        setIsLocationDropdownOpen={setIsLocationDropdownOpen}
                       />
+
+                      <div className="dropdown">
+                        <button
+                          className="dropdown-button"
+                          onClick={toggleLocationDropdown}
+                        >
+                          Location{" "}
+                          <span className="material-symbols-outlined">
+                            {locationDropdownIcon}
+                          </span>
+                        </button>
+                        {isLocationDropdownOpen && (
+                          <div className="dropdown-content">
+                            <input
+                              type="text"
+                              key="zip-code-input"
+                              className="zipcode"
+                              value={localZipInput}
+                              onChange={handleZipInputChange}
+                              maxLength="5"
+                              placeholder="Zip Code"
+                            />
+                          </div>
+                        )}
+                      </div>
                     </ErrorBoundary>
                   ) : (
                     <p>Loading selection options...</p>
@@ -253,7 +316,6 @@ const Navbar2 = ({
                     />
                   )}
                   <div className={`list-container`}>
-                    {/* {isLoggedIn && ( */}
                     <div className="tab-buttons">
                       <div
                         className={
