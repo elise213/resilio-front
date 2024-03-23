@@ -322,7 +322,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
-          onClose: () => {},
+          willClose: () => {},
         });
       },
 

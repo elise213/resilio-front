@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import styles from "../styles/edit.css";
@@ -45,7 +45,11 @@ const Edit = () => {
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
 
   // Combine CATEGORY_OPTIONS and GROUP_OPTIONS into a single array
-  const COMBINED_OPTIONS = [...CATEGORY_OPTIONS, ...GROUP_OPTIONS];
+  // const COMBINED_OPTIONS = [...CATEGORY_OPTIONS, ...GROUP_OPTIONS];
+  const COMBINED_OPTIONS = useMemo(
+    () => [...CATEGORY_OPTIONS, ...GROUP_OPTIONS],
+    [CATEGORY_OPTIONS, GROUP_OPTIONS]
+  );
 
   const categories = COMBINED_OPTIONS;
 
@@ -230,7 +234,7 @@ const Edit = () => {
     return "";
   };
 
-  console.log("form data", formData);
+  // console.log("form data", formData);
   return (
     <div className="form-container">
       <form className="geo-form" onSubmit={handleSubmit}>
