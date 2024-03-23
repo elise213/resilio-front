@@ -6,7 +6,7 @@ import ResourceCard from "./ResourceCard";
 import Contact from "../component/Contact";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
-import Buttons from "../component/Buttons";
+// import Buttons from "../component/Buttons";
 
 const Navbar2 = ({
   INITIAL_DAY_STATE,
@@ -261,7 +261,7 @@ const Navbar2 = ({
                     <ErrorBoundary>
                       <div className="dropdown">
                         <button
-                          className="dropdown-button"
+                          className="dropdown-button location"
                           onClick={toggleLocationDropdown}
                         >
                           Location{" "}
@@ -316,7 +316,7 @@ const Navbar2 = ({
                     />
                   )}
                   <div className={`list-container`}>
-                    <div className="tab-buttons">
+                    {/* <div className="tab-buttons">
                       <div
                         className={
                           activeTab === "AllResources" ? "active" : "dormant"
@@ -338,8 +338,64 @@ const Navbar2 = ({
                       >
                         Favorites
                       </div>
+                    </div> */}
+                    <div className="tab-buttons">
+                      <div
+                        className={
+                          activeTab === "AllResources" ? "active" : "dormant"
+                        }
+                        onClick={() => setActiveTab("AllResources")}
+                      >
+                        {!userSelectedFilter && !searchQuery ? (
+                          <p>
+                            Map Boundary
+                            {store.boundaryResults.length > 0
+                              ? ` (${store.boundaryResults.length})`
+                              : ""}
+                          </p>
+                        ) : (
+                          <p>
+                            Filtered Results
+                            {store.boundaryResults.filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            ).length > 0
+                              ? ` (${
+                                  store.boundaryResults.filter(
+                                    (resource) =>
+                                      resource.name
+                                        .toLowerCase()
+                                        .includes(searchQuery.toLowerCase()) ||
+                                      (resource.description &&
+                                        resource.description
+                                          .toLowerCase()
+                                          .includes(searchQuery.toLowerCase()))
+                                  ).length
+                                })`
+                              : ""}
+                          </p>
+                        )}
+                      </div>
+                      <div
+                        style={{ textAlign: "end" }}
+                        className={
+                          activeTab === "Favorites" ? "active" : "dormant"
+                        }
+                        onClick={() => setActiveTab("Favorites")}
+                      >
+                        Favorites
+                        {store.favorites.length > 0
+                          ? ` (${store.favorites.length})`
+                          : ""}
+                      </div>
                     </div>
-                    {/* )} */}
+
                     {activeTab === "AllResources" && (
                       <ul>
                         {Array.isArray(store.mapResults) &&
@@ -370,8 +426,25 @@ const Navbar2 = ({
                             ))}
                       </ul>
                     )}
-                    {!isLoggedIn && (
-                      <p className="log">Please log in to save favorites.</p>
+                    {!isLoggedIn && activeTab === "Favorites" && (
+                      // <p className="log">Please log in to save favorites.</p>
+
+                      <div className="please-log">
+                        Please
+                        <span
+                          role="button"
+                          tabIndex={0} // Make it focusable
+                          className="log-in"
+                          onClick={() => {
+                            setOpenLoginModal(true);
+                            setShowRating(false);
+                            setModalIsOpen(false);
+                          }}
+                        >
+                          log in
+                        </span>
+                        to rate and review resources.
+                      </div>
                     )}
 
                     {activeTab === "Favorites" && isLoggedIn && (

@@ -71,17 +71,17 @@ const Selection = ({
   });
   const [allCategories, setAllCategories] = useState([]);
 
-  const categoryCounts = store.categoryCounts || {};
+  // const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
 
-  const handleRemoveFilter = (id, type) => {
-    const setState = type === "category" ? setCategories : setDays;
-    const stateObj = type === "category" ? categories : days;
-    setState({
-      ...stateObj,
-      [id]: false,
-    });
-  };
+  // const handleRemoveFilter = (id, type) => {
+  //   const setState = type === "category" ? setCategories : setDays;
+  //   const stateObj = type === "category" ? categories : days;
+  //   setState({
+  //     ...stateObj,
+  //     [id]: false,
+  //   });
+  // };
 
   const renderDropdownColumn = (type, state, setState) => {
     const options = type === "category" ? COMBINED_OPTIONS : store.DAY_OPTIONS;
@@ -182,19 +182,19 @@ const Selection = ({
     return Array.from(categorySet);
   };
 
-  const handleToggleAll = (setFn, stateObj, ids) => {
-    if (isAnyChecked(stateObj, ids)) {
-      const newState = {};
-      ids.forEach((id) => {
-        newState[id] = false;
-      });
-      setFn(newState);
-    }
-  };
+  // const handleToggleAll = (setFn, stateObj, ids) => {
+  //   if (isAnyChecked(stateObj, ids)) {
+  //     const newState = {};
+  //     ids.forEach((id) => {
+  //       newState[id] = false;
+  //     });
+  //     setFn(newState);
+  //   }
+  // };
 
-  const isAnyChecked = (stateObj, ids) => {
-    return ids.some((id) => stateObj[id]);
-  };
+  // const isAnyChecked = (stateObj, ids) => {
+  //   return ids.some((id) => stateObj[id]);
+  // };
 
   const handleToggle = (setFn, stateObj, id) => {
     setFn({

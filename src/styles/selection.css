@@ -15,12 +15,16 @@
   margin-bottom: 5px;
 }
 
-.dropdown-content {
-  margin-bottom: 5px;
-}
-
 .dropdown-button:hover {
   cursor: pointer;
+}
+
+.dropdowns-container {
+  margin-bottom: 6px;
+}
+
+.dropdown-content {
+  margin-bottom: 5px;
 }
 
 .dropdowns-container {
