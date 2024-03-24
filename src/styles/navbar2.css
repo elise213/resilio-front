@@ -114,7 +114,7 @@
 
 .list-container {
   border-radius: 20px;
-  max-height: calc(100% - 230px);
+  max-height: calc(100% - 20px);
   overflow-y: auto;
   scroll-behavior: smooth;
   border: 2px solid black;
@@ -199,7 +199,7 @@
 
 .nav-div-list {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 210px);
 }
 
 .nav-item,

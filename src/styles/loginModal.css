@@ -109,7 +109,7 @@
 .please-log {
   text-align: center;
   margin-top: 40px;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: white;
 }
 
