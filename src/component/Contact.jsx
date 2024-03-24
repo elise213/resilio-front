@@ -38,7 +38,7 @@ const Contact = () => {
     <>
       <form ref={form} onSubmit={sendEmail} className="contact-form">
         <div className="contact-form-div">
-          <p className="intro">We would love to hear from you</p>
+          {/* <p className="intro">We would love to hear from you</p> */}
           <div className="form-col">
             <input
               type="text"
