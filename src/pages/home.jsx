@@ -12,6 +12,7 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const INITIAL_CITY_STATE = store.austin[0];
+  const [showRating, setShowRating] = useState(false);
 
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
@@ -290,6 +291,7 @@ const Home = () => {
     <>
       <div className="grand-resilio-container">
         <Navbar2
+          setShowRating={setShowRating}
           setOpenLoginModal={setOpenLoginModal}
           openLoginModal={openLoginModal}
           categories={categories}
@@ -361,6 +363,7 @@ const Home = () => {
           <>
             <div className="modal-div">
               <Modal
+                setShowRating={setShowRating}
                 removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
                 selectedResources={selectedResources}
