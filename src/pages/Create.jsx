@@ -14,32 +14,32 @@ const Create = () => {
   const { store, actions } = useContext(Context);
   
 
-  useEffect(() => {
-    const scriptId = "google-maps-script";
+//   useEffect(() => {
+//     const scriptId = "google-maps-script";
+// console.log("loading google maps");
+//     // Check if the script is already added
+//     if (!document.getElementById(scriptId)) {
+//       const script = document.createElement("script");
+//       script.type = "text/javascript";
+//       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+//       script.id = scriptId;
+//       script.async = true;  // Ensure script is loaded asynchronously
+//       script.defer = true;  // Script executes after the document has been parsed
+//       script.onload = () => setGoogleMapsLoaded(true);
+//       document.body.appendChild(script);
+//     } else {
+//       // If the script exists, immediately set the map as loaded
+//       setGoogleMapsLoaded(true);
+    // }
 
-    // Check if the script is already added
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.id = scriptId;
-      script.async = true;  // Ensure script is loaded asynchronously
-      script.defer = true;  // Script executes after the document has been parsed
-      script.onload = () => setGoogleMapsLoaded(true);
-      document.body.appendChild(script);
-    } else {
-      // If the script exists, immediately set the map as loaded
-      setGoogleMapsLoaded(true);
-    }
-
-    return () => {
-      // Cleanup the script when the component unmounts
-      const script = document.getElementById(scriptId);
-      if (script) {
-        script.remove();
-      }
-    };
-  }, [apiKey]); 
+  //   return () => {
+  //     // Cleanup the script when the component unmounts
+  //     const script = document.getElementById(scriptId);
+  //     if (script) {
+  //       script.remove();
+  //     }
+  //   };
+  // }, [apiKey]); 
 
   const daysOfWeek = [
     "monday",
@@ -221,7 +221,7 @@ const Create = () => {
           ></textarea>
         </div>
 
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="image">image 1</label>
           <input
             className="geo-input"
@@ -232,9 +232,9 @@ const Create = () => {
             onChange={(e) => handleChange("image", e.target.value)}
             placeholder="URL for image 1"
           />
-        </div>
+        </div> */}
 
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="image2">image 2</label>
           <input
             className="geo-input"
@@ -245,7 +245,7 @@ const Create = () => {
             onChange={(e) => handleChange("image2", e.target.value)}
             placeholder="URL for image 2"
           />
-        </div>
+        </div> */}
 
         <div className="input-group">
           {categories.map((resource) => (
