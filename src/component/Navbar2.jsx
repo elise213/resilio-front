@@ -29,6 +29,7 @@ const Navbar2 = ({
   setGroups,
   setModalIsOpen,
   setSearchingToday,
+  setShowRating,
   aboutModalIsOpen,
   setAboutModalIsOpen,
   donationModalIsOpen,
@@ -443,7 +444,7 @@ const Navbar2 = ({
                         >
                           log in
                         </span>
-                        to rate and review resources.
+                        to save favorites.
                       </div>
                     )}
 

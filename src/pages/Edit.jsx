@@ -174,6 +174,7 @@ const Edit = () => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
+
   const handleCategoryChange = (value) => {
     setFormData((prevData) => {
       if (prevData && prevData.category) {
@@ -213,18 +214,37 @@ const Edit = () => {
   if (!formData) {
     return <div>Loading...</div>;
   }
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => setGoogleMapsLoaded(true);
-    document.head.appendChild(script);
 
+
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]')) {
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+        script.onload = () => setGoogleMapsLoaded(true);
+    }
     return () => {
-      document.head.removeChild(script);
+        const script = document.querySelector('script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]');
+        if (script) document.head.removeChild(script);
     };
-  }, [apiKey]);
+}, [apiKey]); 
+
+
+
+const handleAddressChange = actions.debounce(async (address) => {
+  handleChange("address", address);
+  try {
+    const results = await geocodeByAddress(address);
+    const latLng = await getLatLng(results[0]);
+    handleChange("latitude", latLng.lat || null);
+    handleChange("longitude", latLng.lng || null);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}, 900);  // Adjust the delay as necessary, here it's 500 milliseconds
+
 
   const formatTime = (time) => {
     if (time) {
@@ -253,47 +273,67 @@ const Edit = () => {
 
         <div className="input-group">
           <label htmlFor="address">Address</label>
+
           {isGoogleMapsLoaded && (
+            // <PlacesAutocomplete
+            //   value={formData.address || ""}
+            //   // onChange={(address) => handleChange("address", address)}
+            //   onChange={handleAddressChange}
+            //   onSelect={handleSelect}
+            // >
+            //   {({
+            //     getInputProps,
+            //     suggestions,
+            //     getSuggestionItemProps,
+            //     loading,
+            //   }) => (
+            //     <div>
+            //       <input
+            //         {...getInputProps({
+            //           className: "geo-input",
+            //           id: "address",
+            //           placeholder: "Resource Address",
+            //         })}
+            //       />
+            //       <div>
+            //         {loading ? <div>Loading...</div> : null}
+            //         {suggestions.map((suggestion, index) => {
+            //           const className = suggestion.active
+            //             ? "suggestion-item--active"
+            //             : "suggestion-item";
+            //           return (
+            //             <div
+            //               {...getSuggestionItemProps(suggestion, {
+            //                 className,
+            //               })}
+            //               key={index}
+            //             >
+            //               {suggestion.description}
+            //             </div>
+            //           );
+            //         })}
+            //       </div>
+            //     </div>
+            //   )}
+            // </PlacesAutocomplete>
             <PlacesAutocomplete
-              value={formData.address || ""}
-              onChange={(address) => handleChange("address", address)}
-              onSelect={handleSelect}
-            >
-              {({
-                getInputProps,
-                suggestions,
-                getSuggestionItemProps,
-                loading,
-              }) => (
+            value={formData.address}
+            onChange={handleAddressChange}
+          >
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+              <div>
+                <input {...getInputProps({ placeholder: "Type address" })} />
                 <div>
-                  <input
-                    {...getInputProps({
-                      className: "geo-input",
-                      id: "address",
-                      placeholder: "Resource Address",
-                    })}
-                  />
-                  <div>
-                    {loading ? <div>Loading...</div> : null}
-                    {suggestions.map((suggestion, index) => {
-                      const className = suggestion.active
-                        ? "suggestion-item--active"
-                        : "suggestion-item";
-                      return (
-                        <div
-                          {...getSuggestionItemProps(suggestion, {
-                            className,
-                          })}
-                          key={index}
-                        >
-                          {suggestion.description}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map(suggestion => (
+                    <div {...getSuggestionItemProps(suggestion)} key={suggestion.placeId}>
+                      {suggestion.description}
+                    </div>
+                  ))}
                 </div>
-              )}
-            </PlacesAutocomplete>
+              </div>
+            )}
+          </PlacesAutocomplete>
           )}
         </div>
 
