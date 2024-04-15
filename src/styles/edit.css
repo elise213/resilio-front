@@ -1,10 +1,14 @@
 .form-container {
-  width: 80%;
-  margin: 2em auto;
-  padding: 2em;
+  width: 90%;
+  margin: 1px auto;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   background-color: #f7f7f7;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .input-group label {
@@ -21,15 +25,13 @@
   width: 225px;
 }
 
-.form-container {
-  /* padding: 20px; */
-  overflow-y: scroll;
-  height: 95vh;
-  box-sizing: border-box;
-}
 
 .geo-form .input-group {
-  margin-bottom: 1em;
+  margin: 20px 0;
+}
+
+.geo-form {
+  margin: 30px 0;
 }
 
 .geo-input {
@@ -38,6 +40,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
 .geo-input:focus {
