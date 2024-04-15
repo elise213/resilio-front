@@ -10,23 +10,37 @@ import PlacesAutocomplete, {
 const Create = () => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
-  useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      if (!document.getElementById("google-maps")) {
-        const script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-        script.id = "google-maps";
-        script.onload = () => setGoogleMapsLoaded(true);
-        document.body.appendChild(script);
-      } else {
-        setGoogleMapsLoaded(true);
-      }
-    };
-    loadGoogleMapsScript();
-  }, []);
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
+  
+
+//   useEffect(() => {
+//     const scriptId = "google-maps-script";
+// console.log("loading google maps");
+//     // Check if the script is already added
+//     if (!document.getElementById(scriptId)) {
+//       const script = document.createElement("script");
+//       script.type = "text/javascript";
+//       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+//       script.id = scriptId;
+//       script.async = true;  // Ensure script is loaded asynchronously
+//       script.defer = true;  // Script executes after the document has been parsed
+//       script.onload = () => setGoogleMapsLoaded(true);
+//       document.body.appendChild(script);
+//     } else {
+//       // If the script exists, immediately set the map as loaded
+//       setGoogleMapsLoaded(true);
+    // }
+
+  //   return () => {
+  //     // Cleanup the script when the component unmounts
+  //     const script = document.getElementById(scriptId);
+  //     if (script) {
+  //       script.remove();
+  //     }
+  //   };
+  // }, [apiKey]); 
+
   const daysOfWeek = [
     "monday",
     "tuesday",
@@ -42,19 +56,7 @@ const Create = () => {
     return acc;
   }, {});
 
-  useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      if (!document.getElementById("google-maps")) {
-        const script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-        script.id = "google-maps";
-        document.body.appendChild(script);
-      }
-    };
 
-    loadGoogleMapsScript();
-  }, []);
 
   // const categories = store.CATEGORY_OPTIONS;
   const categories = [
@@ -89,29 +91,20 @@ const Create = () => {
   };
   const [formData, setFormData] = useState(initialFormData);
 
-  // const handleSelect = async (address) => {
-  //   handleChange("address", address);
-  //   try {
-  //     const results = await geocodeByAddress(address);
-  //     const latLng = await getLatLng(results[0]);
-  //     handleChange("latitude", latLng.lat.toString());
-  //     handleChange("longitude", latLng.lng.toString());
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
-  const handleSelect = async (address) => {
-    handleChange("address", address);
-    try {
-      const results = await geocodeByAddress(address);
-      const latLng = await getLatLng(results[0]);
-      handleChange("latitude", latLng.lat);
-      handleChange("longitude", latLng.lng);
-    } catch (error) {
-      console.error("Error:", error);
+  const handleSelect = actions.debounce(async (address) => {
+    if (address !== formData.address) { // Check if the address has actually changed
+      handleChange("address", address);
+      try {
+        const results = await geocodeByAddress(address);
+        const latLng = await getLatLng(results[0]);
+        handleChange("latitude", latLng.lat);
+        handleChange("longitude", latLng.lng);
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
-  };
+  }, 500); // 500ms debounce delay
+  
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -228,7 +221,7 @@ const Create = () => {
           ></textarea>
         </div>
 
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="image">image 1</label>
           <input
             className="geo-input"
@@ -239,9 +232,9 @@ const Create = () => {
             onChange={(e) => handleChange("image", e.target.value)}
             placeholder="URL for image 1"
           />
-        </div>
+        </div> */}
 
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="image2">image 2</label>
           <input
             className="geo-input"
@@ -252,7 +245,7 @@ const Create = () => {
             onChange={(e) => handleChange("image2", e.target.value)}
             placeholder="URL for image 2"
           />
-        </div>
+        </div> */}
 
         <div className="input-group">
           {categories.map((resource) => (
@@ -294,36 +287,6 @@ const Create = () => {
             />
           </div>
         ))}
-
-        {/* <div className="input-group">
-          <label htmlFor="latitude">Latitude</label>
-          <input
-            className="geo-input"
-            id="latitude"
-            name="latitude"
-            type="number"
-            value={formData.latitude}
-            onChange={(e) =>
-              handleChange("latitude", parseFloat(e.target.value))
-            } // Added parseFloat
-            title="Provide the latitude"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="longitude">Longitude</label>
-          <input
-            className="geo-input"
-            id="longitude"
-            name="longitude"
-            type="number"
-            value={formData.longitude}
-            onChange={(e) =>
-              handleChange("longitude", parseFloat(e.target.value))
-            } 
-            title="Provide the longitude"
-          />
-        </div> */}
 
         <Button
           variant="contained"

@@ -93,7 +93,7 @@ const Selection = ({
     return (
       <Dropdown id={type} title={`${title}`}>
         {options
-          .filter((option) => counts[option.id] && counts[option.id] > 0) // Filter options based on count
+          .filter((option) => counts[option.id] && counts[option.id] > 0)
           .map((option) => {
             const count = counts[option.id];
             return (

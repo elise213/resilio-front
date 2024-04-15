@@ -19,16 +19,17 @@ const Modal = ({
   setAboutModalIsOpen,
   setOpenLoginModal,
   openLoginModal,
+  showRating,
+  setShowRating,
 }) => {
   const { store, actions } = useContext(Context);
 
-  // const [ratingResponse, setRatingResponse] = useState(null);
   const [rating, setRating] = useState(0);
-  const [showRating, setShowRating] = useState(false);
+
   const validUserIds = [1, 2, 3, 4, 8];
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
-  // Get user ID from session storage and convert it to a number
+
   const isAuthorizedUser = validUserIds.includes(userIdFromSession);
 
   const [hover, setHover] = useState(-1);
@@ -63,13 +64,13 @@ const Modal = ({
   //     });
   // };
 
-  // Function to fetch the latest comments and average rating
+
   const fetchLatestCommentsAndRatings = () => {
     actions.getAverageRating(resource.id, setAverageRating);
     actions.getComments(resource.id, setComments);
   };
 
-  // UseEffect to initially fetch comments and ratings
+
   useEffect(() => {
     fetchLatestCommentsAndRatings();
   }, [resource.id, actions]);
@@ -100,7 +101,6 @@ const Modal = ({
   }, [resource.id, actions]);
 
   // REFS
-  // const modalContentRef = useRef(null);
   const ratingModalRef = useRef(null);
 
   const labels = {
@@ -117,7 +117,6 @@ const Modal = ({
         <span className="material-symbols-outlined">arrow_back_ios</span>
         Back to search
       </p>
-
       <div className="resource-info">
         <div
           className="resource-rating"
@@ -149,7 +148,6 @@ const Modal = ({
           isFavorited={isFavorited}
           setIsFavorited={setIsFavorited}
           setShowRating={setShowRating}
-          // toggleFavorite={toggleFavorite}
           addSelectedResource={addSelectedResource}
           removeSelectedResource={removeSelectedResource}
           selectedResource={resource}
@@ -310,7 +308,7 @@ const Modal = ({
                         title: "Oops...",
                         text: "You must include a comment.",
                       });
-                      return; // Exit the function early to prevent submission and preserve current input
+                      return; 
                     }
 
                     console.log("Submit button clicked");
@@ -351,7 +349,6 @@ const Modal = ({
             ) : (
               ""
             )}
-            {/* </div> */}
           </div>
         </>
       )}
