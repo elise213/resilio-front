@@ -5,6 +5,7 @@ import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Buttons from "../component/Buttons";
+import { debounce } from 'lodash';
 
 import { Modal } from "../component";
 
@@ -12,6 +13,7 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const INITIAL_CITY_STATE = store.austin[0];
+  const [showRating, setShowRating] = useState(false);
 
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
@@ -95,7 +97,10 @@ const Home = () => {
     });
   };
 
-  const handleBoundsChange = (data) => {
+
+
+
+  const handleBoundsChange = debounce((data) => {
     setCity((prevState) => ({
       ...prevState,
       bounds: data.bounds,
@@ -104,7 +109,18 @@ const Home = () => {
         lng: normalizeLongitude(data.center.lng),
       },
     }));
-  };
+  }, 500); 
+
+  // const handleBoundsChange = (data) => {
+  //   setCity((prevState) => ({
+  //     ...prevState,
+  //     bounds: data.bounds,
+  //     center: {
+  //       lat: data.center.lat,
+  //       lng: normalizeLongitude(data.center.lng),
+  //     },
+  //   }));
+  // };
 
   const getTrueCategories = () => {
     const trueCategoryIds = Object.keys(categories).filter(
@@ -258,7 +274,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [city]);
+  }, [city.bounds]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -290,6 +306,7 @@ const Home = () => {
     <>
       <div className="grand-resilio-container">
         <Navbar2
+          setShowRating={setShowRating}
           setOpenLoginModal={setOpenLoginModal}
           openLoginModal={openLoginModal}
           categories={categories}
@@ -361,6 +378,7 @@ const Home = () => {
           <>
             <div className="modal-div">
               <Modal
+                setShowRating={setShowRating}
                 removeSelectedResource={removeSelectedResource}
                 resource={selectedResource}
                 selectedResources={selectedResources}

@@ -122,6 +122,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
 
+      debounce: (func, delay) => {
+        let timerId;
+        return (...args) => {
+          clearTimeout(timerId);
+          timerId = setTimeout(() => {
+            func(...args);
+          }, delay);
+        };
+      },
+
       processCategory: (category) => {
         let categories = category;
         if (typeof categories === "string" && categories.includes(",")) {
@@ -192,55 +202,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           : hourInt;
         return `${formattedHour}:${minute} ${isPM ? "PM" : "AM"}`;
       },
-
-      // getIconForCategory: (category) => {
-      //   switch (category) {
-      //     case "health":
-      //       return "fa-solid fa-stethoscope";
-      //     case "food":
-      //       return "fa-solid fa-bowl-rice";
-      //     case "hygiene":
-      //       return "fa-solid fa-soap";
-      //     case "bathroom":
-      //       return "fa-solid fa-toilet";
-      //     case "work":
-      //       return "fa-solid fa-people-carry-box";
-      //     case "wifi":
-      //       return "fa-solid fa-wifi";
-      //     case "crisis":
-      //       return "fa-solid fa-exclamation-triangle";
-      //     case "substance":
-      //       return "fa-solid fa-wine-bottle";
-      //     case "legal":
-      //       return "fa-solid fa-gavel";
-      //     case "sex":
-      //       return "fa-solid fa-people-arrows";
-      //     case "mental":
-      //       return "fa-solid fa-brain";
-      //     case "shelter":
-      //       return "fa-solid fa-person-shelter";
-      //     case "clothing":
-      //       return "fa-solid fa-shirt";
-      //     case "babies":
-      //       return "fa-solid fa-baby";
-      //     case "migrant":
-      //       return "fa-solid fa-users";
-      //     case "vets":
-      //       return "fa-solid fa-person-military-rifle";
-      //     case "women":
-      //       return "fa-solid fa-female";
-      //     case "kids":
-      //       return "fa-solid fa-child";
-      //     case "youth":
-      //       return "fa-solid fa-person-rays";
-      //     case "seniors":
-      //       return "fa-solid fa-user-plus";
-      //     case "lgbtq":
-      //       return "fa-solid fa-rainbow";
-      //     default:
-      //       return "fa-solid fa-question";
-      //   }
-      // },
 
       // ________________________________________________________________LOGIN/TOKEN
 
@@ -502,8 +463,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           console.log("Error Swal triggered");
           const data = await response.json();
-
-          // console.log("Response data:", data);
 
           if (response.status >= 400 || data.status === "error") {
             Swal.fire({
@@ -851,36 +810,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // createRatingAndComment: async (
-      //   resourceId,
-      //   commentContent,
-      //   ratingValue
-      // ) => {
-      //   const token = sessionStorage.getItem("token");
-
-      //   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-      //   if (token) {
-      //     fetch(`${backendUrl}/api/createCommentAndRating`, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${token}`,
-      //       },
-      //       body: JSON.stringify({
-      //         resource_id: resourceId,
-      //         comment_content: commentContent,
-      //         rating_value: ratingValue,
-      //       }),
-      //     })
-      //       .then((response) => response.json())
-      //       .then((data) => {})
-      //       .catch((error) => {
-      //         console.error("Error:", error);
-      //       });
-      //   }
-      // },
-
       getComments: async (resourceId, setCommentsCallback) => {
         const current_back_url = getStore().current_back_url;
 
@@ -976,102 +905,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             .then((response) => response.json())
             .then((data) => {
               if (data.message === "okay") {
-                // Use getActions to call fetchFavorites after successful removal
                 getActions().fetchFavorites();
               }
             })
             .catch((error) => console.error("Error removing favorite:", error));
         }
       },
-      // addFavorite: (resourceId, setFavorites) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify({ resourceId: resourceId }),
-      //     };
-      //     fetch(`${current_back_url}/api/addFavorite`, opts)
-      //       .then((response) => {
-      //         if (response.status === 409) {
-      //           console.error("This item is already in your favorites.");
-      //           throw new Error("This item is already in your favorites.");
-      //         } else if (!response.ok) {
-      //           console.error("Failed to add favorite due to server error.");
-      //           throw new Error("Failed to add favorite");
-      //         }
-      //         return response.json(); // Process the successful response.
-      //       })
-      //       .then((data) => {
-      //         // Fetch updated favorites list after adding new favorite
-      //         return fetch(`${current_back_url}/api/getFavorites`, {
-      //           headers: {
-      //             Authorization: "Bearer " + token,
-      //           },
-      //         });
-      //       })
-      //       .then((response) => response.json()) // Parse the favorites response.
-      //       .then((data) => {
-      //         const favorites = data.favorites.map((fav) => fav.resource);
-      //         sessionStorage.setItem("favorites", JSON.stringify(favorites));
-      //         setStore((prevState) => ({
-      //           ...prevState,
-      //           favorites: favorites,
-      //         }));
-      //         setFavorites([...favorites]);
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error fetching updated favorites:", error);
-      //       });
-      //   }
-      // },
-
-      // removeFavorite: (resourceId, setFavorites) => {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "DELETE",
-      //       body: JSON.stringify({ resourceId: resourceId }),
-      //     };
-      //     fetch(`${current_back_url}/api/removeFavorite`, opts)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         if (data.message === "okay") {
-      //           // Refetch favorites to update session and store
-      //           fetch(`${current_back_url}/api/getFavorites`, {
-      //             headers: {
-      //               Authorization: "Bearer " + token,
-      //             },
-      //           })
-      //             .then((response) => response.json())
-      //             .then((data) => {
-      //               const favorites = data.favorites.map((fav) => fav.resource);
-      //               sessionStorage.setItem(
-      //                 "favorites",
-      //                 JSON.stringify(favorites)
-      //               );
-      //               setStore((prevState) => ({
-      //                 ...prevState,
-      //                 favorites: favorites,
-      //               }));
-      //               if (setFavorites) {
-      //                 setFavorites(favorites);
-      //               }
-      //             });
-      //         }
-      //       })
-      //       .catch((error) => console.error(error));
-      //   }
-      // },
     },
   };
 };
