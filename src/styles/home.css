@@ -53,7 +53,7 @@
 }
 
 .modal-div {
-  width: 350px;
+  width: 380px;
   height: 100%;
   position: absolute;
   top: 0;
@@ -63,7 +63,6 @@
   border: 3px solid black;
   flex-direction: column;
   display: flex;
-  /* justify-content: space-between; */
   padding: 15px;
   box-sizing: border-box;
   overflow-y: auto;
@@ -103,14 +102,14 @@
 .all-rights {
   font-family: "Inter", sans-serif;
   font-size: 12px;
-  color: rgb(149, 149, 149);
-  /* display: none; */
+  /* color: rgb(149, 149, 149); */
 }
 
 .geo-button {
   border-radius: 3px;
   text-align: center;
   height: 30px;
+  background-color: lightgreen;
 }
 
 .geo-button:hover {

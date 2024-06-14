@@ -37,15 +37,7 @@ const styles = StyleSheet.create({
 
 function filterNonNullValues(schedule) {
   const result = {};
-  const daysOfWeek = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
+  const daysOfWeek = store.daysOfWeek;
   daysOfWeek.forEach((day) => {
     if (!schedule) return;
     const startKey = `${day}Start`;

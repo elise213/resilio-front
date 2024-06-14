@@ -64,12 +64,10 @@ const Modal = ({
   //     });
   // };
 
-
   const fetchLatestCommentsAndRatings = () => {
     actions.getAverageRating(resource.id, setAverageRating);
     actions.getComments(resource.id, setComments);
   };
-
 
   useEffect(() => {
     fetchLatestCommentsAndRatings();
@@ -308,7 +306,7 @@ const Modal = ({
                         title: "Oops...",
                         text: "You must include a comment.",
                       });
-                      return; 
+                      return;
                     }
 
                     console.log("Submit button clicked");

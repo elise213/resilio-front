@@ -11,7 +11,6 @@ export const ModalInfo = ({
   modalIsOpen,
   isFavorited,
   setIsFavorited,
-  // toggleFavorite,
   isGeneratedMapModalOpen,
 }) => {
   const { store, actions } = useContext(Context);
@@ -66,7 +65,7 @@ export const ModalInfo = ({
     const start = schedule2[`${day}Start`];
     const end = schedule2[`${day}End`];
 
-    // Check for "24 Hours" condition explicitly
+    // Check for "24 Hours" condition
     const scheduleString =
       start === "00:00" && end === "23:59"
         ? "24 Hours"
@@ -90,15 +89,7 @@ export const ModalInfo = ({
 
   function filterNonNullValues(schedule) {
     const result = {};
-    const daysOfWeek = [
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-      "sunday",
-    ];
+    const daysOfWeek = store.daysOfWeek;
     daysOfWeek.forEach((day) => {
       if (!schedule) return;
       const startKey = `${day}Start`;
@@ -119,15 +110,7 @@ export const ModalInfo = ({
   }
 
   function categorizeSchedule(schedule) {
-    const daysOfWeek = [
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-      "sunday",
-    ];
+    const daysOfWeek = store.daysOfWeek;
     let closedDays = 0,
       open24HoursDays = 0;
 
@@ -186,7 +169,6 @@ export const ModalInfo = ({
       {/* ADDRESS */}
       {res.address && (
         <div className="info-address">
-          {/* <i className="fa-solid fa-map-pin"></i> */}
           <a
             href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
               res.address
@@ -232,7 +214,6 @@ export const ModalInfo = ({
         )}
 
         {/*SCHEDULE*/}
-
         {Object.keys(formattedSchedule).length > 0 && (
           <div className="info">
             {scheduleCategory === "Closed Everyday" ? (
@@ -261,14 +242,30 @@ export const ModalInfo = ({
               </>
             ) : (
               // Handle "Varied" with specific day and time listings
+              // Object.entries(formattedSchedule).map(
+              //   ([day, schedule], index) => (
+              //     <p
+              //       key={index}
+              //       className="openHours"
+              //       style={{ color: schedule !== "Closed" ? "green" : "grey" }}
+              //     >
+              //       {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
+              //     </p>
+              //   )
+              // )
               Object.entries(formattedSchedule).map(
                 ([day, schedule], index) => (
-                  <p
-                    key={index}
-                    className=""
-                    style={{ color: schedule !== "Closed" ? "green" : "grey" }}
-                  >
-                    {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
+                  <p key={index} className="openHours">
+                    <span style={{ color: "black" }}>
+                      {day.charAt(0).toUpperCase() + day.slice(1)}:
+                    </span>
+                    <span
+                      style={{
+                        color: schedule !== "Closed" ? "green" : "grey",
+                      }}
+                    >
+                      {` ${schedule}`}
+                    </span>
                   </p>
                 )
               )

@@ -1,24 +1,16 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Context } from "../store/appContext";
-import Navbar2 from "../component/Navbar2";
+import Sidebar from "../component/Sidebar";
 import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Buttons from "../component/Buttons";
-import { debounce } from 'lodash';
-
+import { debounce } from "lodash";
 import { Modal } from "../component";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
-  const INITIAL_CITY_STATE = store.austin[0];
-  const [showRating, setShowRating] = useState(false);
-
-  const [selectedResources, setSelectedResources] = useState(() => {
-    const storedResources = actions.getSessionSelectedResources();
-    return storedResources;
-  });
 
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
@@ -35,6 +27,13 @@ const Home = () => {
 
   // STATES
 
+  const INITIAL_CITY_STATE = store.austin[0];
+  const [showRating, setShowRating] = useState(false);
+
+  const [selectedResources, setSelectedResources] = useState(() => {
+    const storedResources = actions.getSessionSelectedResources();
+    return storedResources;
+  });
   const [loading, setLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [city, setCity] = useState(INITIAL_CITY_STATE);
@@ -48,18 +47,16 @@ const Home = () => {
   const [favorites, setFavorites] = useState(
     JSON.parse(sessionStorage.getItem("favorites")) || []
   );
+
   const [searchingToday, setSearchingToday] = useState(false);
   const [categories, setCategories] = useState(
     INITIAL_CATEGORY_STATE(store.CATEGORY_OPTIONS)
   );
-  const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
   const [groups, setGroups] = useState(
     INITIAL_GROUP_STATE(store.GROUP_OPTIONS)
   );
-
+  const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
   const [openLoginModal, setOpenLoginModal] = useState(false);
-
-  // FUNCTIONS
 
   const updateSessionStorage = (resources) => {
     sessionStorage.setItem("selectedResources", JSON.stringify(resources));
@@ -73,7 +70,6 @@ const Home = () => {
     setSelectedResources((prevResources) => {
       if (prevResources.length >= 10) {
         Swal.fire({
-          // icon: "error",
           title: "Please limit the plan to 10 resources at a time",
         });
         return prevResources;
@@ -97,50 +93,19 @@ const Home = () => {
     });
   };
 
-
-
-
-  const handleBoundsChange = debounce((data) => {
-    setCity((prevState) => ({
-      ...prevState,
-      bounds: data.bounds,
-      center: {
-        lat: data.center.lat,
-        lng: normalizeLongitude(data.center.lng),
-      },
-    }));
-  }, 500); 
-
-  // const handleBoundsChange = (data) => {
-  //   setCity((prevState) => ({
-  //     ...prevState,
-  //     bounds: data.bounds,
-  //     center: {
-  //       lat: data.center.lat,
-  //       lng: normalizeLongitude(data.center.lng),
-  //     },
-  //   }));
-  // };
-
-  const getTrueCategories = () => {
-    const trueCategoryIds = Object.keys(categories).filter(
-      (key) => categories[key]
-    );
-    if (trueCategoryIds.length === 0) {
-      return "";
-    }
-    const trueCategoryLabels = trueCategoryIds.map(
-      (id) => store.CATEGORY_OPTIONS.find((cat) => cat.id === id)?.label
-    );
-    if (trueCategoryLabels.length === 1) {
-      return trueCategoryLabels[0];
-    } else if (trueCategoryLabels.length === 2) {
-      return trueCategoryLabels.join(" and ");
-    } else {
-      const lastCategory = trueCategoryLabels.pop();
-      return `${trueCategoryLabels.join(", ")}, and ${lastCategory}`;
-    }
-  };
+  const handleBoundsChange = useCallback(
+    debounce((data) => {
+      setCity((prevState) => ({
+        ...prevState,
+        bounds: data.bounds,
+        center: {
+          lat: data.center.lat,
+          lng: normalizeLongitude(data.center.lng),
+        },
+      }));
+    }, 600),
+    []
+  );
 
   const normalizeLongitude = (lng) => {
     if (lng > 180) {
@@ -183,9 +148,21 @@ const Home = () => {
     return data;
   };
 
+  const fetchCachedBounds = async (query) => {
+    const cacheKey = `bounds-${JSON.stringify(query)}`;
+    const cachedData = sessionStorage.getItem(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+
+    let data = await fetchBounds(query); // Your existing fetch function
+    sessionStorage.setItem(cacheKey, JSON.stringify(data));
+    return data;
+  };
+
   const updateCityStateFromCoords = async (lat, lng) => {
     try {
-      const data = await fetchBounds({ lat, lng });
+      const data = await fetchCachedBounds({ lat, lng });
       const location = data.results[0]?.geometry?.location;
       const bounds =
         data.results[0]?.geometry?.bounds ||
@@ -305,7 +282,7 @@ const Home = () => {
   return (
     <>
       <div className="grand-resilio-container">
-        <Navbar2
+        <Sidebar
           setShowRating={setShowRating}
           setOpenLoginModal={setOpenLoginModal}
           openLoginModal={openLoginModal}
@@ -326,7 +303,7 @@ const Home = () => {
           setAboutModalIsOpen={setAboutModalIsOpen}
           donationModalIsOpen={donationModalIsOpen}
           setDonationModalIsOpen={setDonationModalIsOpen}
-          fetchBounds={fetchBounds}
+          fetchCachedBounds={fetchCachedBounds}
           handleBoundsChange={handleBoundsChange}
         />
         {loading != undefined && (
