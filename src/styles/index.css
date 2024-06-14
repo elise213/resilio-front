@@ -45,6 +45,8 @@ body {
   position: relative;
   overflow: hidden !important;
   font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  height: 100%;
 }
 
 .radio {

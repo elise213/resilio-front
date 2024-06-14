@@ -1,7 +1,6 @@
 .form-container {
-  width: 90%;
+  width: 95%;
   margin: 1px auto;
-  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   background-color: #f7f7f7;
@@ -9,6 +8,29 @@
   overflow-x: hidden;
   height: 100vh;
   box-sizing: border-box;
+  padding-right: 10px;
+
+  /* Styles for the scrollbar */
+  scrollbar-width: auto;
+  scrollbar-color: green transparent; /* thumb and track color */
+}
+
+/* Styles for WebKit browsers like Chrome, Safari */
+.form-container::-webkit-scrollbar {
+  width: 10px; 
+}
+
+.form-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+  background-color: green; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+}
+
+#description {
+  height: 120px;
 }
 
 .input-group label {

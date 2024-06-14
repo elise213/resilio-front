@@ -12,25 +12,24 @@ const Create = () => {
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
-  
 
-//   useEffect(() => {
-//     const scriptId = "google-maps-script";
-// console.log("loading google maps");
-//     // Check if the script is already added
-//     if (!document.getElementById(scriptId)) {
-//       const script = document.createElement("script");
-//       script.type = "text/javascript";
-//       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-//       script.id = scriptId;
-//       script.async = true;  // Ensure script is loaded asynchronously
-//       script.defer = true;  // Script executes after the document has been parsed
-//       script.onload = () => setGoogleMapsLoaded(true);
-//       document.body.appendChild(script);
-//     } else {
-//       // If the script exists, immediately set the map as loaded
-//       setGoogleMapsLoaded(true);
-    // }
+  //   useEffect(() => {
+  //     const scriptId = "google-maps-script";
+  // console.log("loading google maps");
+  //     // Check if the script is already added
+  //     if (!document.getElementById(scriptId)) {
+  //       const script = document.createElement("script");
+  //       script.type = "text/javascript";
+  //       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+  //       script.id = scriptId;
+  //       script.async = true;  // Ensure script is loaded asynchronously
+  //       script.defer = true;  // Script executes after the document has been parsed
+  //       script.onload = () => setGoogleMapsLoaded(true);
+  //       document.body.appendChild(script);
+  //     } else {
+  //       // If the script exists, immediately set the map as loaded
+  //       setGoogleMapsLoaded(true);
+  // }
 
   //   return () => {
   //     // Cleanup the script when the component unmounts
@@ -39,24 +38,15 @@ const Create = () => {
   //       script.remove();
   //     }
   //   };
-  // }, [apiKey]); 
+  // }, [apiKey]);
 
-  const daysOfWeek = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
+  const daysOfWeek = store.daysOfWeek;
+
   // const daysOfWeek = store.DAY_OPTIONS.map(option => option.id);
   const initialDaysState = daysOfWeek.reduce((acc, day) => {
     acc[day] = { start: "", end: "" };
     return acc;
   }, {});
-
-
 
   // const categories = store.CATEGORY_OPTIONS;
   const categories = [
@@ -92,7 +82,8 @@ const Create = () => {
   const [formData, setFormData] = useState(initialFormData);
 
   const handleSelect = actions.debounce(async (address) => {
-    if (address !== formData.address) { // Check if the address has actually changed
+    if (address !== formData.address) {
+      // Check if the address has actually changed
       handleChange("address", address);
       try {
         const results = await geocodeByAddress(address);
@@ -104,7 +95,6 @@ const Create = () => {
       }
     }
   }, 500); // 500ms debounce delay
-  
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -220,32 +210,6 @@ const Create = () => {
             onChange={(e) => handleChange("description", e.target.value)}
           ></textarea>
         </div>
-
-        {/* <div className="input-group">
-          <label htmlFor="image">image 1</label>
-          <input
-            className="geo-input"
-            id="image"
-            name="image"
-            type="text"
-            value={formData.image}
-            onChange={(e) => handleChange("image", e.target.value)}
-            placeholder="URL for image 1"
-          />
-        </div> */}
-
-        {/* <div className="input-group">
-          <label htmlFor="image2">image 2</label>
-          <input
-            className="geo-input"
-            id="image2"
-            name="image2"
-            type="text"
-            value={formData.image2}
-            onChange={(e) => handleChange("image2", e.target.value)}
-            placeholder="URL for image 2"
-          />
-        </div> */}
 
         <div className="input-group">
           {categories.map((resource) => (
