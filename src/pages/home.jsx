@@ -266,19 +266,6 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (city.bounds) {
-          await actions.setMapResults(city.bounds);
-        }
-      } catch (error) {
-        console.error("Error in fetching map results:", error);
-      }
-    };
-    fetchData();
-  }, [city.bounds]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
         if (categories && days && city.bounds) {
           await actions.setBoundaryResults(
             city.bounds,
