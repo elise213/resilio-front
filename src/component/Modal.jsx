@@ -65,15 +65,15 @@ const Modal = ({
   // };
 
 
-  const fetchLatestCommentsAndRatings = () => {
-    actions.getAverageRating(resource.id, setAverageRating);
-    actions.getComments(resource.id, setComments);
-  };
-
-
-  useEffect(() => {
-    fetchLatestCommentsAndRatings();
-  }, [resource.id, actions]);
+  // const fetchLatestCommentsAndRatings = () => {
+  //   actions.getAverageRating(resource.id, setAverageRating);
+  //   actions.getComments(resource.id, setComments);
+  // };
+  //
+  //
+  // useEffect(() => {
+  //   fetchLatestCommentsAndRatings();
+  // }, [resource.id, actions]);
 
   // USE EFFECTS
   useEffect(() => {
@@ -98,7 +98,7 @@ const Modal = ({
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
     actions.getComments(resource.id, setComments);
-  }, [resource.id, actions]);
+  }, []);
 
   // REFS
   const ratingModalRef = useRef(null);
