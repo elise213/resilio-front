@@ -14,9 +14,15 @@ const SimpleMap = ({
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-  const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(true); //fix this
+  const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(true); //not finished
 
   const mapContainerRef = useRef(null);
+
+  const createMapOptions = (maps) => {
+    return {
+      scrollwheel: false,
+    };
+  };
 
   useEffect(() => {
     const fetchMarkers = async () => {};
@@ -25,7 +31,6 @@ const SimpleMap = ({
     }
   }, [city.bounds]);
 
-
   // Function to calculate the closest corner
   const calculateClosestCorner = (cursorX, cursorY) => {
     const mapRect = mapContainerRef.current.getBoundingClientRect();
@@ -33,120 +38,75 @@ const SimpleMap = ({
     const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
 
     if (isCloserToTop && isCloserToLeft) {
-      // console.log("top left");
+      console.log("top left");
       return "corner-top-left";
     } else if (isCloserToTop && !isCloserToLeft) {
-      // console.log("top right");
+      console.log("top right");
       return "corner-top-right";
     } else if (!isCloserToTop && isCloserToLeft) {
-      // console.log("bottom left");
+      console.log("bottom left");
       return "corner-bottom-left";
     } else {
-      // console.log("bottom right");
+      console.log("bottom right");
       return "corner-bottom-right";
     }
   };
 
+  const Marker = React.memo(
+    ({ text, id, result, markerColor }) => {
+      const [isHovered, setIsHovered] = useState(false);
+      const [closestCornerClass, setClosestCornerClass] = useState("");
 
+      const handleMouseEnter = (event) => {
+        setIsHovered(true);
+        setHoveredItem(result);
 
-  const Marker = React.memo(({ text, id, result, markerColor }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [closestCornerClass, setClosestCornerClass] = useState("");
+        // Calculate the position relative to the marker
+        const markerRect = event.currentTarget.getBoundingClientRect();
+        const cornerClass = calculateClosestCorner(
+          markerRect.left + markerRect.width / 2,
+          markerRect.top + markerRect.height / 2
+        );
+        setClosestCornerClass(cornerClass);
+      };
 
-    const handleMouseEnter = (event) => {
-      setIsHovered(true);
-      setHoveredItem(result);
+      const handleMouseLeave = () => {
+        setIsHovered(false);
+        setHoveredItem(null);
+      };
 
-      // Calculate the position relative to the marker
-      const markerRect = event.currentTarget.getBoundingClientRect();
-      const cornerClass = calculateClosestCorner(
-        markerRect.left + markerRect.width / 2,
-        markerRect.top + markerRect.height / 2
+      const color = "red";
+      let iconClass = "fa-solid fa-map-pin";
+
+      return (
+        <div
+          className="marker"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={result ? () => openModal(result) : undefined}
+        >
+          {isHovered && result && (
+            <div className={`hover-card ${closestCornerClass}`}>
+              <HoverCard key={result.id} item={result} openModal={openModal} />
+            </div>
+          )}
+
+          {!isHovered && result && (
+            <div className="marker-icon">
+              <i className={iconClass} style={{ color }}></i>
+            </div>
+          )}
+        </div>
       );
-      setClosestCornerClass(cornerClass);
-    };
+    },
+    (prevProps, nextProps) => {
+      return (
+        prevProps.id === nextProps.id &&
+        prevProps.isHovered === nextProps.isHovered
+      );
+    }
+  );
 
-    const handleMouseLeave = () => {
-      setIsHovered(false);
-      setHoveredItem(null);
-    };
-
-    const color = "red";
-    let iconClass = "fa-solid fa-map-pin";
-
-    return (
-      <div
-        className="marker"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={result ? () => openModal(result) : undefined}
-      >
-        {isHovered && result && (
-          <div className={`hover-card ${closestCornerClass}`}>
-            <HoverCard key={result.id} item={result} openModal={openModal} />
-          </div>
-        )}
-
-        {!isHovered && result && (
-          <div className="marker-icon">
-            <i className={iconClass} style={{ color }}></i>
-          </div>
-        )}
-      </div>
-    );
-  }, (prevProps, nextProps) => {
-    return prevProps.id === nextProps.id && prevProps.isHovered === nextProps.isHovered;
-  });
-  
-
-  // const Marker = React.memo(({ text, id, result, markerColor }) => {
-  //   const [isHovered, setIsHovered] = useState(false);
-  //   const [closestCornerClass, setClosestCornerClass] = useState("");
-
-  //   const handleMouseEnter = (event) => {
-  //     setIsHovered(true);
-  //     setHoveredItem(result);
-
-  //     // Calculate the position relative to the marker
-  //     const markerRect = event.currentTarget.getBoundingClientRect();
-  //     const cornerClass = calculateClosestCorner(
-  //       markerRect.left + markerRect.width / 2,
-  //       markerRect.top + markerRect.height / 2
-  //     );
-  //     setClosestCornerClass(cornerClass);
-  //   };
-
-  //   const handleMouseLeave = () => {
-  //     setIsHovered(false);
-  //     setHoveredItem(null);
-  //   };
-
-  //   const color = "red";
-  //   let iconClass = "fa-solid fa-map-pin";
-
-  //   return (
-  //     <div
-  //       className="marker"
-  //       onMouseEnter={handleMouseEnter}
-  //       onMouseLeave={handleMouseLeave}
-  //       onClick={result ? () => openModal(result) : undefined}
-  //     >
-  //       {isHovered && result && (
-  //         <div className={`hover-card ${closestCornerClass}`}>
-  //           <HoverCard key={result.id} item={result} openModal={openModal} />
-  //         </div>
-  //       )}
-
-  //       {!isHovered && result && (
-  //         <div className="marker-icon">
-  //           <i className={iconClass} style={{ color }}></i>
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // })
-  
-  
   return (
     <>
       <div className={`map-frame`}>
@@ -154,72 +114,41 @@ const SimpleMap = ({
           ref={mapContainerRef}
           className="map-container"
           style={{ height: "100vh", width: "calc(100vw - 350px)" }}
-          >
-          {/* <GoogleMapReact
-            bootstrapURLKeys={{ key: apiKey }}
-            center={city.center}
-            bounds={city.bounds}
-            defaultZoom={9}
-            onChange={(e) => handleBoundsChange(e)}
-            >
-            {store.boundaryResults.map((result, i) => (
-              <Marker
-              lat={result.latitude}
-              lng={result.longitude}
-              text={result.name}
-              key={i}
-              id={result.id}
-              openModal={openModal}
-              result={result}
-              />
-            ))}
-
-            {userLocation && (
-              <Marker
-              lat={userLocation.lat}
-              lng={userLocation.lng}
-              text="You are here!"
-              color="maroon"
-              />
-            )}
-          </GoogleMapReact> */}
+        >
           {isGoogleMapsLoaded && (
-  <GoogleMapReact
-    bootstrapURLKeys={{ key: apiKey }}
-    center={city.center}
-    bounds={city.bounds}
-    defaultZoom={9}
-    onChange={handleBoundsChange}
-  >
-    {store.boundaryResults.map((result, i) => (
-      <Marker
-        lat={result.latitude}
-        lng={result.longitude}
-        text={result.name}
-        key={i}
-        id={result.id}
-        openModal={openModal}
-        result={result}
-      />
-    ))}
-    {userLocation && (
-      <Marker
-        lat={userLocation.lat}
-        lng={userLocation.lng}
-        text="You are here!"
-        color="maroon"
-      />
-    )}
-  </GoogleMapReact>
-)}
-
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: apiKey }}
+              center={city.center}
+              bounds={city.bounds}
+              defaultZoom={9}
+              options={createMapOptions}
+              onChange={handleBoundsChange}
+            >
+              {store.boundaryResults.map((result, i) => (
+                <Marker
+                  lat={result.latitude}
+                  lng={result.longitude}
+                  text={result.name}
+                  key={i}
+                  id={result.id}
+                  openModal={openModal}
+                  result={result}
+                />
+              ))}
+              {userLocation && (
+                <Marker
+                  lat={userLocation.lat}
+                  lng={userLocation.lng}
+                  text="You are here!"
+                  color="maroon"
+                />
+              )}
+            </GoogleMapReact>
+          )}
         </div>
-    
-        <div className="simple-selection"></div>
       </div>
     </>
   );
 };
 
 export default React.memo(SimpleMap);
-

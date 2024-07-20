@@ -5,7 +5,7 @@ import UserProfile from "./pages/UserProfile";
 // import Donate from "./pages/Donate";
 import Create from "./pages/Create";
 import Edit from "./pages/Edit";
-import Footer from "./component/Footer2";
+// import Footer from "./component/Footer2";
 import ScrollToTop from "./component/scrollToTop";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
@@ -15,7 +15,6 @@ const Layout = () => {
   const { store, actions } = useContext(Context);
 
   return (
-    // <div className="new-container">
     <BrowserRouter basename={basename}>
       <ScrollToTop>
         <Routes>
@@ -25,10 +24,8 @@ const Layout = () => {
           {/* <Route element={<Donate />} path="/donate" /> */}
           <Route element={<Edit />} path="/edit/:id" />
         </Routes>
-        {/* <Footer /> */}
       </ScrollToTop>
     </BrowserRouter>
-    // </div>
   );
 };
 
