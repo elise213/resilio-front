@@ -1,7 +1,6 @@
 .treasureMap,
 .droppable-map-area,
 .treasureMapDiv,
-/* .map-container, */
 .simple-map {
   width: 100% !important;
 }
@@ -29,9 +28,7 @@ marker:hover, .hover-card:hover {
   cursor: pointer !important;
 }
 
-
-
-.corner-top-left {
+/* .corner-top-left {
   top: 0;
   left: 0;
 }
@@ -49,15 +46,42 @@ marker:hover, .hover-card:hover {
 .corner-bottom-right {
   bottom: 0;
   right: 0;
+} */
+
+
+.corner-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-100%, -100%);
 }
+
+.corner-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(100%, -100%);
+}
+
+.corner-bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(-100%, 100%);
+}
+
+.corner-bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(100%, 100%);
+}
+
 
 .map-frame {
   width: 100%;
 }
 
-/* .map-frame.flipped {
-  transform: rotateY(180deg);
-} */
 
 .stack {
 display: flex;

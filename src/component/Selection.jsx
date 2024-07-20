@@ -9,7 +9,6 @@ const Selection = ({
   setCategories,
   days,
   setDays,
-  fetchBounds,
   handleBoundsChange,
   groups,
 }) => {
@@ -71,17 +70,7 @@ const Selection = ({
   });
   const [allCategories, setAllCategories] = useState([]);
 
-  // const categoryCounts = store.categoryCounts || {};
   const dayCounts = store.dayCounts || {};
-
-  // const handleRemoveFilter = (id, type) => {
-  //   const setState = type === "category" ? setCategories : setDays;
-  //   const stateObj = type === "category" ? categories : days;
-  //   setState({
-  //     ...stateObj,
-  //     [id]: false,
-  //   });
-  // };
 
   const renderDropdownColumn = (type, state, setState) => {
     const options = type === "category" ? COMBINED_OPTIONS : store.DAY_OPTIONS;
@@ -132,15 +121,7 @@ const Selection = ({
   }, [allCategories, store.mapResults]);
 
   useEffect(() => {
-    const daysOfWeek = [
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-      "sunday",
-    ];
+    const daysOfWeek = store.daysOfWeek;
 
     const visibleDaysCounts = {
       monday: 0,

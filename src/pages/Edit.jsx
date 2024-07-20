@@ -44,8 +44,6 @@ const Edit = () => {
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
 
-  // Combine CATEGORY_OPTIONS and GROUP_OPTIONS into a single array
-  // const COMBINED_OPTIONS = [...CATEGORY_OPTIONS, ...GROUP_OPTIONS];
   const COMBINED_OPTIONS = useMemo(
     () => [...CATEGORY_OPTIONS, ...GROUP_OPTIONS],
     [CATEGORY_OPTIONS, GROUP_OPTIONS]
@@ -174,7 +172,6 @@ const Edit = () => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
-
   const handleCategoryChange = (value) => {
     setFormData((prevData) => {
       if (prevData && prevData.category) {
@@ -215,36 +212,38 @@ const Edit = () => {
     return <div>Loading...</div>;
   }
 
+  useEffect(() => {
+    if (
+      !document.querySelector(
+        'script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]'
+      )
+    ) {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+      script.onload = () => setGoogleMapsLoaded(true);
+    }
+    return () => {
+      const script = document.querySelector(
+        'script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]'
+      );
+      if (script) document.head.removeChild(script);
+    };
+  }, [apiKey]);
 
-//   useEffect(() => {
-//     if (!document.querySelector('script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]')) {
-//         const script = document.createElement("script");
-//         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-//         script.async = true;
-//         script.defer = true;
-//         document.head.appendChild(script);
-//         script.onload = () => setGoogleMapsLoaded(true);
-//     }
-//     return () => {
-//         const script = document.querySelector('script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]');
-//         if (script) document.head.removeChild(script);
-//     };
-// }, [apiKey]); 
-
-
-
-const handleAddressChange = actions.debounce(async (address) => {
-  handleChange("address", address);
-  try {
-    const results = await geocodeByAddress(address);
-    const latLng = await getLatLng(results[0]);
-    handleChange("latitude", latLng.lat || null);
-    handleChange("longitude", latLng.lng || null);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}, 900);  // Adjust the delay as necessary, here it's 500 milliseconds
-
+  const handleAddressChange = actions.debounce(async (address) => {
+    handleChange("address", address);
+    try {
+      const results = await geocodeByAddress(address);
+      const latLng = await getLatLng(results[0]);
+      handleChange("latitude", latLng.lat || null);
+      handleChange("longitude", latLng.lng || null);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }, 600); // Adjust the delay as necessary
 
   const formatTime = (time) => {
     if (time) {
@@ -317,23 +316,31 @@ const handleAddressChange = actions.debounce(async (address) => {
             //   )}
             // </PlacesAutocomplete>
             <PlacesAutocomplete
-            value={formData.address}
-            onChange={handleAddressChange}
-          >
-            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-              <div>
-                <input {...getInputProps({ placeholder: "Type address" })} />
+              value={formData.address}
+              onChange={handleAddressChange}
+            >
+              {({
+                getInputProps,
+                suggestions,
+                getSuggestionItemProps,
+                loading,
+              }) => (
                 <div>
-                  {loading && <div>Loading...</div>}
-                  {suggestions.map(suggestion => (
-                    <div {...getSuggestionItemProps(suggestion)} key={suggestion.placeId}>
-                      {suggestion.description}
-                    </div>
-                  ))}
+                  <input {...getInputProps({ placeholder: "Type address" })} />
+                  <div>
+                    {loading && <div>Loading...</div>}
+                    {suggestions.map((suggestion) => (
+                      <div
+                        {...getSuggestionItemProps(suggestion)}
+                        key={suggestion.placeId}
+                      >
+                        {suggestion.description}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </PlacesAutocomplete>
+              )}
+            </PlacesAutocomplete>
           )}
         </div>
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import styles from "../styles/navbar2.css";
+import styles from "../styles/sidebar.css";
 import { Context } from "../store/appContext";
 import Login from "./Login";
 import ResourceCard from "./ResourceCard";
-import Contact from "../component/Contact";
-import ErrorBoundary from "../component/ErrorBoundary";
+import Contact from "./Contact";
+import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
 // import Buttons from "../component/Buttons";
 
-const Navbar2 = ({
+const Sidebar = ({
   INITIAL_DAY_STATE,
   addSelectedResource,
   contactModalIsOpen,
@@ -16,6 +16,7 @@ const Navbar2 = ({
   categories,
   closeModal,
   days,
+
   groups,
   modalIsOpen,
   openLoginModal,
@@ -34,7 +35,7 @@ const Navbar2 = ({
   setAboutModalIsOpen,
   donationModalIsOpen,
   setDonationModalIsOpen,
-  fetchBounds,
+  fetchCachedBounds,
   handleBoundsChange,
 }) => {
   const { store, actions } = useContext(Context);
@@ -65,7 +66,7 @@ const Navbar2 = ({
 
   const updateCityStateFromZip = async (zip) => {
     try {
-      const data = await fetchBounds(zip, true);
+      const data = await fetchCachedBounds(zip, true);
       console.log("API Response:", data); // Add this line for debugging
       const location = data.results[0]?.geometry?.location;
       const bounds =
@@ -286,7 +287,6 @@ const Navbar2 = ({
 
                         <Selection
                           handleBoundsChange={handleBoundsChange}
-                          fetchBounds={fetchBounds}
                           categories={categories}
                           setCategories={setCategories}
                           groups={groups}
@@ -306,6 +306,62 @@ const Navbar2 = ({
                 </div>
 
                 <div className={"nav-div-list"}>
+                  <div className="tab-buttons">
+                    <div
+                      className={
+                        activeTab === "AllResources" ? "active" : "dormant"
+                      }
+                      onClick={() => setActiveTab("AllResources")}
+                    >
+                      {!userSelectedFilter && !searchQuery ? (
+                        <p>
+                          Map Boundary
+                          {store.boundaryResults.length > 0
+                            ? ` (${store.boundaryResults.length})`
+                            : ""}
+                        </p>
+                      ) : (
+                        <p>
+                          Filtered Results
+                          {store.boundaryResults.filter(
+                            (resource) =>
+                              resource.name
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()) ||
+                              (resource.description &&
+                                resource.description
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()))
+                          ).length > 0
+                            ? ` (${
+                                store.boundaryResults.filter(
+                                  (resource) =>
+                                    resource.name
+                                      .toLowerCase()
+                                      .includes(searchQuery.toLowerCase()) ||
+                                    (resource.description &&
+                                      resource.description
+                                        .toLowerCase()
+                                        .includes(searchQuery.toLowerCase()))
+                                ).length
+                              })`
+                            : ""}
+                        </p>
+                      )}
+                    </div>
+                    <div
+                      style={{ textAlign: "end" }}
+                      className={
+                        activeTab === "Favorites" ? "active" : "dormant"
+                      }
+                      onClick={() => setActiveTab("Favorites")}
+                    >
+                      Favorites
+                      {store.favorites.length > 0
+                        ? ` (${store.favorites.length})`
+                        : ""}
+                    </div>
+                  </div>
                   {activeTab === "AllResources" && (
                     <CombinedFilters
                       searchQuery={searchQuery}
@@ -317,86 +373,6 @@ const Navbar2 = ({
                     />
                   )}
                   <div className={`list-container`}>
-                    {/* <div className="tab-buttons">
-                      <div
-                        className={
-                          activeTab === "AllResources" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("AllResources")}
-                      >
-                        {!userSelectedFilter && !searchQuery ? (
-                          <p>Map boundary</p>
-                        ) : (
-                          <p>Filtered Results</p>
-                        )}
-                      </div>
-                      <div
-                        style={{ textAlign: "end" }}
-                        className={
-                          activeTab === "Favorites" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("Favorites")}
-                      >
-                        Favorites
-                      </div>
-                    </div> */}
-                    <div className="tab-buttons">
-                      <div
-                        className={
-                          activeTab === "AllResources" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("AllResources")}
-                      >
-                        {!userSelectedFilter && !searchQuery ? (
-                          <p>
-                            Map Boundary
-                            {store.boundaryResults.length > 0
-                              ? ` (${store.boundaryResults.length})`
-                              : ""}
-                          </p>
-                        ) : (
-                          <p>
-                            Filtered Results
-                            {store.boundaryResults.filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            ).length > 0
-                              ? ` (${
-                                  store.boundaryResults.filter(
-                                    (resource) =>
-                                      resource.name
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase()) ||
-                                      (resource.description &&
-                                        resource.description
-                                          .toLowerCase()
-                                          .includes(searchQuery.toLowerCase()))
-                                  ).length
-                                })`
-                              : ""}
-                          </p>
-                        )}
-                      </div>
-                      <div
-                        style={{ textAlign: "end" }}
-                        className={
-                          activeTab === "Favorites" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("Favorites")}
-                      >
-                        Favorites
-                        {store.favorites.length > 0
-                          ? ` (${store.favorites.length})`
-                          : ""}
-                      </div>
-                    </div>
-
                     {activeTab === "AllResources" && (
                       <ul>
                         {Array.isArray(store.mapResults) &&
@@ -553,4 +529,4 @@ const Navbar2 = ({
   );
 };
 
-export default Navbar2;
+export default Sidebar;

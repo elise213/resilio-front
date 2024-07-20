@@ -9,13 +9,18 @@
   user-select: none;
   background-color: white;
   border-radius: 2%;
-  transition: 0.3s;
+  transition: 0.2s;
   overflow: hidden;
   font-family: "Inter", sans-serif;
-  border: 2px solid transparent;
-  width: 102%;
-  left: -2px;
-  margin-top: 13px;
+  margin: 10px 0px 0 10px;
+  box-sizing: border-box;
+  border-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+  margin-right: 10px;
+  /* background-color: rgb(237, 237, 237); */
+  border: 1px solid gray;
+  box-shadow: 2px 2px 2px 2px rgba(0.2, 0.2, 0.2, 0.2) !important;
 }
 
 .my-resource-card:hover {
@@ -23,7 +28,8 @@
   box-shadow: 5px 5px 5px 5px rgba(0.2, 0.2, 0.2, 0.2) !important;
   border-radius: 4px !important;
   cursor: pointer;
-  border: 2px solid rgb(159, 222, 162) !important;
+  /* border: 1px solid rgb(159, 222, 162) !important; */
+  background-color: rgb(175, 245, 179) !important;
 }
 
 .add-favorite {
@@ -53,7 +59,7 @@ textarea {
 
 .card-img {
   object-fit: cover;
-  width: 110%;
+  /* width: 110%; */
   max-height: 130px;
 }
 
