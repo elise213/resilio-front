@@ -13,32 +13,32 @@ const Create = () => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
 
-  //   useEffect(() => {
-  //     const scriptId = "google-maps-script";
-  // console.log("loading google maps");
-  //     // Check if the script is already added
-  //     if (!document.getElementById(scriptId)) {
-  //       const script = document.createElement("script");
-  //       script.type = "text/javascript";
-  //       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-  //       script.id = scriptId;
-  //       script.async = true;  // Ensure script is loaded asynchronously
-  //       script.defer = true;  // Script executes after the document has been parsed
-  //       script.onload = () => setGoogleMapsLoaded(true);
-  //       document.body.appendChild(script);
-  //     } else {
-  //       // If the script exists, immediately set the map as loaded
-  //       setGoogleMapsLoaded(true);
-  // }
+  useEffect(() => {
+    const scriptId = "google-maps-script";
+    console.log("loading google maps");
+    // Check if the script is already added
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.id = scriptId;
+      script.async = true; // Ensure script is loaded asynchronously
+      script.defer = true; // Script executes after the document has been parsed
+      script.onload = () => setGoogleMapsLoaded(true);
+      document.body.appendChild(script);
+    } else {
+      // If the script exists, immediately set the map as loaded
+      setGoogleMapsLoaded(true);
+    }
 
-  //   return () => {
-  //     // Cleanup the script when the component unmounts
-  //     const script = document.getElementById(scriptId);
-  //     if (script) {
-  //       script.remove();
-  //     }
-  //   };
-  // }, [apiKey]);
+    return () => {
+      // Cleanup the script when the component unmounts
+      const script = document.getElementById(scriptId);
+      if (script) {
+        script.remove();
+      }
+    };
+  }, [apiKey]);
 
   const daysOfWeek = store.daysOfWeek;
 
