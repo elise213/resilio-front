@@ -212,20 +212,26 @@ const Edit = () => {
     return <div>Loading...</div>;
   }
 
-  //   useEffect(() => {
-  //     if (!document.querySelector('script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]')) {
-  //         const script = document.createElement("script");
-  //         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-  //         script.async = true;
-  //         script.defer = true;
-  //         document.head.appendChild(script);
-  //         script.onload = () => setGoogleMapsLoaded(true);
-  //     }
-  //     return () => {
-  //         const script = document.querySelector('script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]');
-  //         if (script) document.head.removeChild(script);
-  //     };
-  // }, [apiKey]);
+  useEffect(() => {
+    if (
+      !document.querySelector(
+        'script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]'
+      )
+    ) {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+      script.onload = () => setGoogleMapsLoaded(true);
+    }
+    return () => {
+      const script = document.querySelector(
+        'script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]'
+      );
+      if (script) document.head.removeChild(script);
+    };
+  }, [apiKey]);
 
   const handleAddressChange = actions.debounce(async (address) => {
     handleChange("address", address);

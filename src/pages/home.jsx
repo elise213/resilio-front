@@ -159,10 +159,9 @@ const Home = () => {
     sessionStorage.setItem(cacheKey, JSON.stringify(data));
     return data;
   };
-
   const updateCityStateFromCoords = async (lat, lng) => {
     try {
-      const data = await fetchCachedBounds({ lat, lng });
+      const data = await fetchBounds({ lat, lng });
       const location = data.results[0]?.geometry?.location;
       const bounds =
         data.results[0]?.geometry?.bounds ||
@@ -239,19 +238,6 @@ const Home = () => {
   useEffect(() => {
     actions.setSchedules();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (city.bounds) {
-          await actions.setMapResults(city.bounds);
-        }
-      } catch (error) {
-        console.error("Error in fetching map results:", error);
-      }
-    };
-    fetchData();
-  }, [city.bounds]);
 
   useEffect(() => {
     const fetchData = async () => {
