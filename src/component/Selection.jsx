@@ -15,19 +15,80 @@ const Selection = ({
   const { store, actions } = useContext(Context);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
 
-  // const [localZipInput, setLocalZipInput] = useState("");
-
-  // const handleZipInputChange = (e) => {
-  //   const value = e.target.value;
-  //   setLocalZipInput(value);
-  // };
-
   useEffect(() => {
     console.log("Selection component mounted");
+    console.log("store.CATEGORY_OPTIONS:", store.CATEGORY_OPTIONS);
+    console.log("store.GROUP_OPTIONS:", store.GROUP_OPTIONS);
     return () => {
       console.log("Selection component unmounted");
     };
   }, []);
+
+  useEffect(() => {
+    let categoryCounts = {};
+    let dayCounts = {
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+      sunday: 0,
+    };
+
+    if (store?.boundaryResults?.length > 0) {
+      console.log("boundaryResults:", store.boundaryResults);
+      console.log("schedules:", store.schedules);
+
+      store.boundaryResults.forEach((result) => {
+        if (typeof result.category === "string") {
+          let categories = result.category.split(",").map((cat) => cat.trim());
+          categories.forEach((cat) => {
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+          });
+        }
+        const schedule = store.schedules.find(
+          (sched) => sched.resource_id === result.id
+        );
+
+        if (schedule) {
+          Object.keys(dayCounts).forEach((day) => {
+            if (
+              schedule[`${day}Start`] !== "closed" &&
+              schedule[`${day}End`] !== "closed"
+            ) {
+              dayCounts[day]++;
+            }
+          });
+        }
+      });
+
+      console.log("categoryCounts before filtering:", categoryCounts);
+
+      const validCategories = store.CATEGORY_OPTIONS.map((option) => option.id);
+
+      const filteredCategoryCounts = Object.keys(categoryCounts)
+        .filter((key) => validCategories.includes(key.toLowerCase()))
+        .reduce((obj, key) => {
+          obj[key] = categoryCounts[key];
+          return obj;
+        }, {});
+
+      console.log(
+        "filteredCategoryCounts before action:",
+        filteredCategoryCounts
+      );
+
+      actions.setCategoryCounts(filteredCategoryCounts);
+      actions.setDayCounts(dayCounts);
+    } else {
+      console.log("No boundaryResults found");
+    }
+  }, [store?.boundaryResults, store?.schedules]);
+
+  useEffect(() => {
+    console.log("Updated store.categoryCounts:", store.categoryCounts);
+  }, [store.categoryCounts]);
 
   const COMBINED_OPTIONS = [
     ...(store.CATEGORY_OPTIONS || []),
@@ -79,6 +140,9 @@ const Selection = ({
     // Use appropriate counts based on the type
     const counts = type === "day" ? dayCounts : store.categoryCounts || {};
 
+    console.log(`Rendering ${type} dropdown with options:`, options);
+    console.log(`Counts for ${type}:`, counts);
+
     return (
       <Dropdown id={type} title={`${title}`}>
         {options
@@ -100,7 +164,7 @@ const Selection = ({
   };
 
   useEffect(() => {
-    if (Array.isArray(store.mapResults)) {
+    if (Array.isArray(store.boundaryResults)) {
       const uniqueCategories = getUniqueCategoriesFromResults();
       setActiveCategoryIds(uniqueCategories);
       const allCats = uniqueCategories.flatMap((category) => {
@@ -111,14 +175,14 @@ const Selection = ({
       });
       setAllCategories(allCats);
     }
-  }, [store.mapResults]);
+  }, [store.boundaryResults]);
 
   useEffect(() => {
     if (allCategories.length > 0) {
       const visibleGroups = groupIds.filter((id) => allCategories.includes(id));
       setVisibleGroupCount(visibleGroups.length);
     }
-  }, [allCategories, store.mapResults]);
+  }, [allCategories, store.boundaryResults]);
 
   useEffect(() => {
     const daysOfWeek = store.daysOfWeek;
@@ -133,7 +197,7 @@ const Selection = ({
       sunday: 0,
     };
 
-    store.mapResults.forEach((item) => {
+    store.boundaryResults.forEach((item) => {
       const schedule = store.schedules.find(
         (schedule) => schedule.resource_id === item.id
       );
@@ -153,29 +217,21 @@ const Selection = ({
 
     setVisibleDaysCounts(visibleDaysCounts);
     actions.setDayCounts(visibleDaysCounts);
-  }, [store.mapResults, store.schedules]);
+  }, [store.boundaryResults, store.schedules]);
 
   const getUniqueCategoriesFromResults = () => {
     const categorySet = new Set();
-    if (Array.isArray(store.mapResults)) {
-      store.mapResults.forEach((item) => categorySet.add(item.category));
+    if (Array.isArray(store.boundaryResults)) {
+      store.boundaryResults.forEach((item) => {
+        if (typeof item.category === "string") {
+          item.category
+            .split(",")
+            .forEach((cat) => categorySet.add(cat.trim()));
+        }
+      });
     }
     return Array.from(categorySet);
   };
-
-  // const handleToggleAll = (setFn, stateObj, ids) => {
-  //   if (isAnyChecked(stateObj, ids)) {
-  //     const newState = {};
-  //     ids.forEach((id) => {
-  //       newState[id] = false;
-  //     });
-  //     setFn(newState);
-  //   }
-  // };
-
-  // const isAnyChecked = (stateObj, ids) => {
-  //   return ids.some((id) => stateObj[id]);
-  // };
 
   const handleToggle = (setFn, stateObj, id) => {
     setFn({

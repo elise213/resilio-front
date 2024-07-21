@@ -43,7 +43,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       mapResults: [],
       name: null,
       offerings: [],
-      searchResults: [],
+      // searchResults: [],
       token: null,
       user_id: null,
       schedules: [],
@@ -564,8 +564,111 @@ const getState = ({ getStore, getActions, setStore }) => {
         return () => {};
       },
 
+      // setMapResults: async (bounds) => {
+      //   const store = getStore();
+      //   // If there's an ongoing request, abort it
+      //   if (store.abortController2) {
+      //     store.abortController2.abort();
+      //   }
+
+      //   // Create a new abort controller for the new request
+      //   const newAbortController = new AbortController(); // AbortC
+      //   setStore({ abortController2: newAbortController });
+
+      //   // Normalize longitude
+      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+      //   neLng = neLng % 360;
+      //   if (neLng > 180) {
+      //     neLng -= 360;
+      //   }
+
+      //   swLng = swLng % 360;
+      //   if (swLng > 180) {
+      //     swLng -= 360;
+      //   }
+
+      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+      //   const resources = {
+      //     food: false,
+      //     health: false,
+      //     shelter: false,
+      //     hygiene: false,
+      //     crisis: false,
+      //     mental: false,
+      //     work: false,
+      //     bathroom: false,
+      //     wifi: false,
+      //     substance: false,
+      //     sex: false,
+      //     legal: false,
+      //     lgbtq: false,
+      //     women: false,
+      //     seniors: false,
+      //     babies: false,
+      //     kids: false,
+      //     youth: false,
+      //     vets: false,
+      //     migrant: false,
+      //   };
+
+      //   const days = {
+      //     monday: false,
+      //     tuesday: false,
+      //     wednesday: false,
+      //     thursday: false,
+      //     friday: false,
+      //     saturday: false,
+      //     sunday: false,
+      //   };
+
+      //   const url = getStore().current_back_url + "/api/getBResults";
+
+      //   try {
+      //     setStore({ loading: true });
+      //     let response = await fetch(url, {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         neLat,
+      //         neLng,
+      //         swLat,
+      //         swLng,
+      //         resources,
+      //         days,
+      //       }),
+      //       signal: newAbortController.signal,
+      //     });
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
+      //     }
+
+      //     const data = await response.json();
+      //     setStore({ mapResults: data.data, loading: false });
+
+      //     return data.data;
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("Fetch aborted");
+      //     } else {
+      //       setStore({ loading: false });
+      //       console.error("Error fetching data:", error);
+      //     }
+      //   }
+      // },
+
       setMapResults: async (bounds) => {
         const store = getStore();
+        console.log("setMapResults called with bounds:", bounds);
+
         // If there's an ongoing request, abort it
         if (store.abortController2) {
           store.abortController2.abort();
@@ -591,6 +694,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+        console.log("Normalized coordinates:", { neLat, neLng, swLat, swLng });
+
         const resources = {
           food: false,
           health: false,
@@ -625,6 +730,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
 
         const url = getStore().current_back_url + "/api/getBResults";
+        console.log("Fetching from URL:", url);
 
         try {
           setStore({ loading: true });
@@ -646,12 +752,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           if (!response.ok) {
             const text = await response.text();
+            console.error("Response text:", text);
             throw new Error(
               `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
             );
           }
 
           const data = await response.json();
+          console.log("Fetched data:", data);
           setStore({ mapResults: data.data, loading: false });
 
           return data.data;
