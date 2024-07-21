@@ -210,7 +210,7 @@
 
 .nav-div-list {
   width: 100%;
-  height: calc(100% - 120px);
+  height: calc(100% - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
