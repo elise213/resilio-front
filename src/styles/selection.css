@@ -8,7 +8,7 @@
 
 .dropdown-button {
   border: none;
-  color: gray;
+  /* color: gray; */
   font-family: "Inter", sans-serif;
   padding: 0;
   background-color: transparent;

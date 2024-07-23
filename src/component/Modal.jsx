@@ -26,7 +26,8 @@ const Modal = ({
 
   const [rating, setRating] = useState(0);
 
-  const validUserIds = [1, 2, 3, 4, 8];
+  const validUserIds = [1, 3]; //Mike and Mara
+
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
 
@@ -64,15 +65,14 @@ const Modal = ({
   //     });
   // };
 
-  // const fetchLatestCommentsAndRatings = () => {
-  //   actions.getAverageRating(resource.id, setAverageRating);
-  //   actions.getComments(resource.id, setComments);
-  // };
-  //
-  //
-  // useEffect(() => {
-  //   fetchLatestCommentsAndRatings();
-  // }, [resource.id, actions]);
+  const fetchLatestCommentsAndRatings = () => {
+    actions.getAverageRating(resource.id, setAverageRating);
+    actions.getComments(resource.id, setComments);
+  };
+
+  useEffect(() => {
+    fetchLatestCommentsAndRatings();
+  }, [resource.id, actions]);
 
   // USE EFFECTS
   useEffect(() => {
@@ -97,7 +97,7 @@ const Modal = ({
   useEffect(() => {
     actions.getAverageRating(resource.id, setAverageRating);
     actions.getComments(resource.id, setComments);
-  }, []);
+  }, [resource.id, actions]);
 
   // REFS
   const ratingModalRef = useRef(null);

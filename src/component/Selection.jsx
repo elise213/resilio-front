@@ -11,18 +11,11 @@ const Selection = ({
   setDays,
   handleBoundsChange,
   groups,
+  openDropdown,
+  setOpenDropdown,
 }) => {
   const { store, actions } = useContext(Context);
   const groupIds = store.GROUP_OPTIONS.map((option) => option.id);
-
-  useEffect(() => {
-    console.log("Selection component mounted");
-    console.log("store.CATEGORY_OPTIONS:", store.CATEGORY_OPTIONS);
-    console.log("store.GROUP_OPTIONS:", store.GROUP_OPTIONS);
-    return () => {
-      console.log("Selection component unmounted");
-    };
-  }, []);
 
   useEffect(() => {
     let categoryCounts = {};
@@ -37,9 +30,6 @@ const Selection = ({
     };
 
     if (store?.boundaryResults?.length > 0) {
-      console.log("boundaryResults:", store.boundaryResults);
-      console.log("schedules:", store.schedules);
-
       store.boundaryResults.forEach((result) => {
         if (typeof result.category === "string") {
           let categories = result.category.split(",").map((cat) => cat.trim());
@@ -63,10 +53,7 @@ const Selection = ({
         }
       });
 
-      console.log("categoryCounts before filtering:", categoryCounts);
-
       const validCategories = store.CATEGORY_OPTIONS.map((option) => option.id);
-
       const filteredCategoryCounts = Object.keys(categoryCounts)
         .filter((key) => validCategories.includes(key.toLowerCase()))
         .reduce((obj, key) => {
@@ -74,31 +61,15 @@ const Selection = ({
           return obj;
         }, {});
 
-      console.log(
-        "filteredCategoryCounts before action:",
-        filteredCategoryCounts
-      );
-
       actions.setCategoryCounts(filteredCategoryCounts);
       actions.setDayCounts(dayCounts);
-    } else {
-      console.log("No boundaryResults found");
     }
   }, [store?.boundaryResults, store?.schedules]);
-
-  useEffect(() => {
-    console.log("Updated store.categoryCounts:", store.categoryCounts);
-  }, [store.categoryCounts]);
 
   const COMBINED_OPTIONS = [
     ...(store.CATEGORY_OPTIONS || []),
     ...(store.GROUP_OPTIONS || []),
   ];
-
-  const [openDropdown, setOpenDropdown] = useState({
-    category: false,
-    day: false,
-  });
 
   function Dropdown({ id, title, children }) {
     const isOpen = openDropdown[id];
@@ -136,12 +107,7 @@ const Selection = ({
   const renderDropdownColumn = (type, state, setState) => {
     const options = type === "category" ? COMBINED_OPTIONS : store.DAY_OPTIONS;
     const title = type.charAt(0).toUpperCase() + type.slice(1);
-
-    // Use appropriate counts based on the type
     const counts = type === "day" ? dayCounts : store.categoryCounts || {};
-
-    console.log(`Rendering ${type} dropdown with options:`, options);
-    console.log(`Counts for ${type}:`, counts);
 
     return (
       <Dropdown id={type} title={`${title}`}>
@@ -239,6 +205,9 @@ const Selection = ({
       [id]: !stateObj[id],
     });
   };
+
+  // Check if the category dropdown is open
+  const isCategoryDropdownOpen = openDropdown.category;
 
   return (
     <>
