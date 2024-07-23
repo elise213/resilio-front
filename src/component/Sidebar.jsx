@@ -6,7 +6,6 @@ import ResourceCard from "./ResourceCard";
 import Contact from "./Contact";
 import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
-// import Buttons from "../component/Buttons";
 
 const Sidebar = ({
   INITIAL_DAY_STATE,
@@ -16,7 +15,6 @@ const Sidebar = ({
   categories,
   closeModal,
   days,
-
   groups,
   modalIsOpen,
   openLoginModal,
@@ -43,15 +41,15 @@ const Sidebar = ({
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
   const [activeTab, setActiveTab] = useState("AllResources");
-
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
-
   const [localZipInput, setLocalZipInput] = useState("");
+  const [openDropdown, setOpenDropdown] = useState({
+    category: false,
+    day: false,
+  });
 
   const handleZipInputChange = (e) => {
     const value = e.target.value;
@@ -212,6 +210,13 @@ const Sidebar = ({
     ? "expand_more"
     : "chevron_right";
 
+  // Determine the class name based on the state of openDropdown
+  const navDivListClassName = openDropdown.category
+    ? "nav-div-list open-dropdown"
+    : openDropdown.day
+    ? "nav-div-list open-dropday"
+    : "nav-div-list";
+
   return (
     <>
       <nav
@@ -286,6 +291,8 @@ const Sidebar = ({
                         )}
 
                         <Selection
+                          openDropdown={openDropdown}
+                          setOpenDropdown={setOpenDropdown}
                           handleBoundsChange={handleBoundsChange}
                           categories={categories}
                           setCategories={setCategories}
@@ -305,7 +312,7 @@ const Sidebar = ({
                   )}
                 </div>
 
-                <div className={"nav-div-list"}>
+                <div className={navDivListClassName}>
                   <div className="tab-buttons">
                     <div
                       className={
@@ -420,7 +427,7 @@ const Sidebar = ({
                         >
                           log in
                         </span>
-                        to save favorites.
+                        to save favorites
                       </div>
                     )}
 

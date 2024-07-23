@@ -110,13 +110,10 @@
 }
 
 .list-container {
-  display: flex;
-  /* align-items: center; */
-  width: 100%;
+  /* width: 100%; */
   max-height: calc(100% - 100px);
   overflow-y: auto;
   scroll-behavior: smooth;
-  min-height: 100px;
   max-width: 500px;
   position: relative;
   left: 50%;
@@ -126,6 +123,10 @@
   box-sizing: border-box;
   direction: rtl;
   margin-right: 15px;
+  /* Edge */
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  /* Firefox */
+  scrollbar-color: transparent;
 }
 
 .list-container ul {
@@ -148,16 +149,6 @@
 .list-container::-webkit-scrollbar-thumb {
   background-color: gray;
   border-radius: 10px;
-}
-
-/* Edge */
-.list-container {
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-}
-
-/* Firefox */
-.list-container {
-  scrollbar-color: transparent;
 }
 
 .list-container:hover {
@@ -199,21 +190,22 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* margin-top: 10px; */
-}
-
-.nav-div-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
 }
 
 .nav-div-list {
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 130px);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.open-dropdown {
+  height: calc(100% - 450px) !important;
+}
+
+.open-dropday {
+  height: calc(100% - 350px) !important;
 }
 
 .nav-item,
