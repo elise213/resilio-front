@@ -319,6 +319,7 @@ body.modal-open {
   width: 300px;
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
+  margin-top: 20px;
 }
 
 .arrow-button {
