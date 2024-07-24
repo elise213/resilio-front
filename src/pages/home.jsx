@@ -27,6 +27,8 @@ const Home = () => {
 
   // STATES
 
+  const [layout, setLayout] = useState("split-view"); // options: 'fullscreen-map', 'fullscreen-sidebar', 'split-view'
+
   const INITIAL_CITY_STATE = store.austin[0];
   const [showRating, setShowRating] = useState(false);
 
@@ -267,98 +269,89 @@ const Home = () => {
 
   return (
     <>
-      <div className="grand-resilio-container">
-        <Sidebar
-          setShowRating={setShowRating}
-          setOpenLoginModal={setOpenLoginModal}
-          openLoginModal={openLoginModal}
-          categories={categories}
-          setCategories={setCategories}
-          groups={groups}
-          setGroups={setGroups}
-          favorites={favorites}
-          days={days}
-          setDays={setDays}
-          setSearchingToday={setSearchingToday}
-          INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-          openModal={openModal}
-          geoFindMe={geoFindMe}
-          contactModalIsOpen={contactModalIsOpen}
-          setContactModalIsOpen={setContactModalIsOpen}
-          aboutModalIsOpen={aboutModalIsOpen}
-          setAboutModalIsOpen={setAboutModalIsOpen}
-          donationModalIsOpen={donationModalIsOpen}
-          setDonationModalIsOpen={setDonationModalIsOpen}
-          fetchCachedBounds={fetchCachedBounds}
-          handleBoundsChange={handleBoundsChange}
-        />
-        {loading != undefined && (
-          <div className="loading">
-            <p>{loading}</p>
+      <div className={`grand-resilio-container`}>
+        <div className="sidebar-container">
+          <Sidebar
+            layout={layout}
+            setLayout={setLayout}
+            setShowRating={setShowRating}
+            setOpenLoginModal={setOpenLoginModal}
+            openLoginModal={openLoginModal}
+            categories={categories}
+            setCategories={setCategories}
+            groups={groups}
+            setGroups={setGroups}
+            favorites={favorites}
+            days={days}
+            setDays={setDays}
+            setSearchingToday={setSearchingToday}
+            INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+            openModal={openModal}
+            geoFindMe={geoFindMe}
+            contactModalIsOpen={contactModalIsOpen}
+            setContactModalIsOpen={setContactModalIsOpen}
+            aboutModalIsOpen={aboutModalIsOpen}
+            setAboutModalIsOpen={setAboutModalIsOpen}
+            donationModalIsOpen={donationModalIsOpen}
+            setDonationModalIsOpen={setDonationModalIsOpen}
+            fetchCachedBounds={fetchCachedBounds}
+            handleBoundsChange={handleBoundsChange}
+          />
+        </div>
+        <div className="grand-map-container">
+          <ErrorBoundary>
+            <SimpleMap
+              layout={layout}
+              addSelectedResource={addSelectedResource}
+              removeSelectedResource={removeSelectedResource}
+              favorites={favorites}
+              setFavorites={setFavorites}
+              hoveredItem={hoveredItem}
+              setHoveredItem={setHoveredItem}
+              openModal={openModal}
+              city={city}
+              categories={categories}
+              days={days}
+              handleBoundsChange={handleBoundsChange}
+              groups={groups}
+              setCategories={setCategories}
+              setGroups={setGroups}
+              setDays={setDays}
+              setSearchingToday={setSearchingToday}
+              INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+              closeModal={closeModal}
+              modalIsOpen={modalIsOpen}
+              setModalIsOpen={setModalIsOpen}
+              selectedResource={selectedResource}
+              setSelectedResource={setSelectedResource}
+              selectedResources={selectedResources}
+              setSelectedResources={setSelectedResources}
+              aboutModalIsOpen={aboutModalIsOpen}
+              setAboutModalIsOpen={setAboutModalIsOpen}
+              donationModalIsOpen={donationModalIsOpen}
+              setDonationModalIsOpen={setDonationModalIsOpen}
+            />
+          </ErrorBoundary>
+        </div>
+        {modalIsOpen && (
+          <div className="modal-div">
+            <Modal
+              setShowRating={setShowRating}
+              removeSelectedResource={removeSelectedResource}
+              resource={selectedResource}
+              selectedResources={selectedResources}
+              addSelectedResource={addSelectedResource}
+              modalIsOpen={modalIsOpen}
+              closeModal={closeModal}
+              setModalIsOpen={setModalIsOpen}
+              setFavorites={setFavorites}
+              setContactModalIsOpen={setContactModalIsOpen}
+              contactModalIsOpen={contactModalIsOpen}
+              setOpenLoginModal={setOpenLoginModal}
+              openLoginModal={openLoginModal}
+            />
           </div>
         )}
-
-        <div className="grand-map-container">
-          <>
-            <ErrorBoundary>
-              <SimpleMap
-                addSelectedResource={addSelectedResource}
-                removeSelectedResource={removeSelectedResource}
-                favorites={favorites}
-                setFavorites={setFavorites}
-                hoveredItem={hoveredItem}
-                setHoveredItem={setHoveredItem}
-                openModal={openModal}
-                city={city}
-                categories={categories}
-                days={days}
-                handleBoundsChange={handleBoundsChange}
-                groups={groups}
-                setCategories={setCategories}
-                setGroups={setGroups}
-                setDays={setDays}
-                setSearchingToday={setSearchingToday}
-                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                closeModal={closeModal}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                selectedResource={selectedResource}
-                setSelectedResource={setSelectedResource}
-                selectedResources={selectedResources}
-                setSelectedResources={setSelectedResources}
-                aboutModalIsOpen={aboutModalIsOpen}
-                setAboutModalIsOpen={setAboutModalIsOpen}
-                donationModalIsOpen={donationModalIsOpen}
-                setDonationModalIsOpen={setDonationModalIsOpen}
-              />
-            </ErrorBoundary>
-          </>
-          {/* )
-          } */}
-        </div>
-
-        {modalIsOpen && (
-          <>
-            <div className="modal-div">
-              <Modal
-                setShowRating={setShowRating}
-                removeSelectedResource={removeSelectedResource}
-                resource={selectedResource}
-                selectedResources={selectedResources}
-                addSelectedResource={addSelectedResource}
-                modalIsOpen={modalIsOpen}
-                closeModal={closeModal}
-                setModalIsOpen={setModalIsOpen}
-                setFavorites={setFavorites}
-                setContactModalIsOpen={setContactModalIsOpen}
-                contactModalIsOpen={contactModalIsOpen}
-                setOpenLoginModal={setOpenLoginModal}
-                openLoginModal={openLoginModal}
-              />
-            </div>
-          </>
-        )}
-
         <Buttons
           setAboutModalIsOpen={setAboutModalIsOpen}
           setContactModalIsOpen={setContactModalIsOpen}
@@ -368,7 +361,6 @@ const Home = () => {
           aboutModalIsOpen={aboutModalIsOpen}
           setModalIsOpen={setModalIsOpen}
         />
-
         <div className="foot">
           <p className="all-rights">© 2024 Open Village</p>
         </div>

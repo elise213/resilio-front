@@ -8,6 +8,8 @@ import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
 
 const Sidebar = ({
+  layout,
+  setLayout,
   INITIAL_DAY_STATE,
   addSelectedResource,
   contactModalIsOpen,
@@ -50,6 +52,8 @@ const Sidebar = ({
     category: false,
     day: false,
   });
+
+  // Manage layout state within the Sidebar component
 
   const handleZipInputChange = (e) => {
     const value = e.target.value;
@@ -220,50 +224,50 @@ const Sidebar = ({
   return (
     <>
       <nav
-        className={`new-navbar open-nav ${
+        className={`new-navbar ${
           donationModalIsOpen ? "donation" : ""
-        }`}
+        } ${layout}`}
       >
         <div className={`navbar-content`}>
-          <div className="logo-div">
+          <div className="button-container-sidebar">
+            <button onClick={() => setLayout("split-view")}>Split View</button>
+            <button onClick={() => setLayout("fullscreen-map")}>
+              Fullscreen Map
+            </button>
+            <button onClick={() => setLayout("fullscreen-sidebar")}>
+              Fullscreen List
+            </button>
             <Login
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
             />
-            <img
-              className="top-logo"
-              // src="/assets/RESILIOO.png"
-              src="/assets/OV.png"
-              alt="Resilio Logo"
-            />
           </div>
-          {/* <p className="tag-line">Free services in your neighborhood!</p> */}
+          <div className="logo-div">
+            <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
+          </div>
 
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
             <>
-              {store.boundaryResults &&
-                // store.boundaryResults > 1 &&
-                !userSelectedFilter && (
-                  <div className="search-bar">
-                    <span className="material-symbols-outlined search-icon">
-                      search
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                )}
               <div className=" nav-div">
                 <div className="side-by">
+                  {store.boundaryResults && !userSelectedFilter && (
+                    <div className="search-bar">
+                      <span className="material-symbols-outlined search-icon">
+                        search
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                  )}
                   {store.CATEGORY_OPTIONS &&
                   store.DAY_OPTIONS &&
                   store.GROUP_OPTIONS &&
                   categories &&
                   days &&
-                  // store.boundaryResults > 1 &&
                   groups ? (
                     <ErrorBoundary>
                       <div className="dropdown">
@@ -411,13 +415,11 @@ const Sidebar = ({
                       </ul>
                     )}
                     {!isLoggedIn && activeTab === "Favorites" && (
-                      // <p className="log">Please log in to save favorites.</p>
-
                       <div className="please-log">
                         Please
                         <span
                           role="button"
-                          tabIndex={0} // Make it focusable
+                          tabIndex={0}
                           className="log-in"
                           onClick={() => {
                             setOpenLoginModal(true);

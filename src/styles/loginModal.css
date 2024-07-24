@@ -26,6 +26,7 @@
   background-color: #1976d2;
   border-radius: 20px !important;
   align-self: flex-end;
+  margin: 5px !important;
 }
 
 .login-button-resilio:hover {
