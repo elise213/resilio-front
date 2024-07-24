@@ -7,25 +7,11 @@ const Buttons = ({
   setAboutModalIsOpen,
   setContactModalIsOpen,
   setDonationModalIsOpen,
-  // donationModalIsOpen,
-  // aboutModalIsOpen,
-  // contactModalIsOpen,
   setModalIsOpen,
 }) => {
   return (
     <div className="footer-container">
       <div className="function-buttons">
-        {/* <span
-          className="nav-item"
-          onClick={() => {
-            setDonationModalIsOpen(false);
-            setAboutModalIsOpen(true);
-            setContactModalIsOpen(false);
-          }}
-        >
-          ABOUT
-        </span> */}
-
         <span
           className="nav-item"
           onClick={() => {
@@ -48,9 +34,6 @@ const Buttons = ({
           }}
         >
           DONATE
-          {/* {String(aboutModalIsOpen)}
-          {String(contactModalIsOpen)}
-          {String(donationModalIsOpen)} */}
         </span>
       </div>
     </div>

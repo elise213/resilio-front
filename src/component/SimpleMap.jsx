@@ -6,6 +6,7 @@ import HoverCard from "./HoverCard";
 import { debounce } from "lodash";
 
 const SimpleMap = ({
+  layout,
   openModal,
   handleBoundsChange,
   city,
@@ -112,7 +113,7 @@ const SimpleMap = ({
       <div className={`map-frame`}>
         <div
           ref={mapContainerRef}
-          className="map-container"
+          className={`map-container ${layout}map`}
           style={{ height: "100vh", width: "calc(100vw - 350px)" }}
         >
           {isGoogleMapsLoaded && (
