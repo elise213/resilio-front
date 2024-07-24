@@ -8,11 +8,10 @@
 
 .dropdown-button {
   border: none;
-  /* color: gray; */
   font-family: "Inter", sans-serif;
   padding: 0;
   background-color: transparent;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 .dropdown-button:hover {
@@ -166,11 +165,11 @@
   background-color: transparent;
 }
 
-.side-car {
+/* .side-car {
   margin: 55px 0;
   display: flex;
   justify-content: center;
-}
+} */
 
 .selected-filters-container {
   display: flex;
