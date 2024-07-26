@@ -14,9 +14,7 @@ export const ModalInfo = ({
   isGeneratedMapModalOpen,
 }) => {
   const { store, actions } = useContext(Context);
-
   const [isLoggedIn, setIsLoggedIn] = useState(null);
-
   const [isReadMore, setIsReadMore] = useState(true);
 
   const toggleReadMore = () => {
