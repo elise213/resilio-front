@@ -470,7 +470,7 @@ iframe {
 
   .button-container-sidebar {
     display: flex !important;
-    justify-content: center !important;
+    justify-content: space-between !important;
   }
 
   .split-view {
