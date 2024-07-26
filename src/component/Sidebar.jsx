@@ -230,18 +230,25 @@ const Sidebar = ({
       >
         <div className={`navbar-content`}>
           <div className="button-container-sidebar">
-            <button onClick={() => setLayout("split-view")}>Split View</button>
-            <button onClick={() => setLayout("fullscreen-map")}>
-              Fullscreen Map
-            </button>
-            <button onClick={() => setLayout("fullscreen-sidebar")}>
-              Fullscreen List
-            </button>
+            {!openLoginModal && (
+              <>
+                <button onClick={() => setLayout("split-view")}>
+                  Split View
+                </button>
+                <button onClick={() => setLayout("fullscreen-map")}>
+                  Fullscreen Map
+                </button>
+                <button onClick={() => setLayout("fullscreen-sidebar")}>
+                  Fullscreen List
+                </button>
+              </>
+            )}
             <Login
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
             />
           </div>
+
           <div className="logo-div">
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>

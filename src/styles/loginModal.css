@@ -269,4 +269,13 @@ body.loginModal-open {
   .centered {
     width: 100% !important;
   }
+  .login-button-resilio {
+    margin: 0 0 5px 5px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .login-button-resilio {
+    font-size: 9px !important;
+  }
 }
