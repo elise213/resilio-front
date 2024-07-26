@@ -197,7 +197,7 @@ export const ModalInfo = ({
       <div className="details-column">
         {/* WEBSITE */}
         {res.website && (
-          <div className="info">
+          <div className="info" style={{ flexDirection: "row" }}>
             <i
               style={{ color: "blue" }}
               className="fa-solid fa-earth-americas"
@@ -206,7 +206,7 @@ export const ModalInfo = ({
               href={`https://www.${res.website}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="modal-text"
+              className="modal-text-website"
             >
               Visit Website
             </a>
