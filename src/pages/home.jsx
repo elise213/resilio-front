@@ -275,8 +275,8 @@ const Home = () => {
             layout={layout}
             setLayout={setLayout}
             setShowRating={setShowRating}
-            setOpenLoginModal={setOpenLoginModal}
             openLoginModal={openLoginModal}
+            setOpenLoginModal={setOpenLoginModal}
             categories={categories}
             setCategories={setCategories}
             groups={groups}
