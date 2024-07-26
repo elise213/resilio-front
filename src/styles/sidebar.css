@@ -139,7 +139,6 @@
 }
 
 .list-container {
-  /* width: 100%; */
   max-height: calc(100% - 60px);
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -163,7 +162,6 @@
 /* WebKit Browsers */
 .list-container::-webkit-scrollbar {
   width: 12px;
-  /* color: transparent; */
   background: transparent;
 }
 
@@ -179,6 +177,46 @@
 .list-container:hover {
   scrollbar-color: gray;
 }
+
+/* .list-container {
+  max-height: calc(100% - 60px);
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  max-width: 400px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  scrollbar-gutter: stable;
+  scrollbar-color: gray;
+  box-sizing: border-box;
+  direction: rtl;
+  margin-right: 15px;
+}
+
+.list-container ul {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+
+.list-container::-webkit-scrollbar {
+  width: 12px;
+  background: transparent;
+}
+
+.list-container:hover::-webkit-scrollbar {
+  color: gray !important;
+}
+
+.list-container::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 10px;
+}
+
+.list-container:hover {
+  scrollbar-color: gray;
+} */
 
 .dropdown {
   display: flex;
@@ -453,7 +491,7 @@ iframe {
 
   .button-container-sidebar {
     display: flex !important;
-    justify-content: space-between;
+    justify-content: center !important;
   }
 
   .split-view {
