@@ -387,10 +387,15 @@ body.modal-open {
   font-family: "Inter", sans-serif;
 }
 
-.modal-text {
+.modal-text,
+.modal-text-website {
   text-decoration: none !important;
   color: black;
   font-size: 12px;
+}
+
+.modal-text-website:hover {
+  color: blue !important;
 }
 
 .sched-div {
