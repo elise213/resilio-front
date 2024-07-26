@@ -67,7 +67,6 @@
 .tab-buttons div {
   position: relative;
   box-sizing: border-box;
-  /* margin: 0 0 0 10px; */
   padding: 0;
 }
 
@@ -97,9 +96,9 @@
   content: "";
   position: absolute;
   top: 0;
-  right: 0;
+  right: 10px;
   bottom: 0;
-  left: 0;
+  left: 10px;
   background: inherit;
   z-index: -1;
 }
@@ -114,6 +113,10 @@
   justify-content: center;
 }
 
+.dormant:hover {
+  background-color: rgb(226, 249, 230) !important;
+}
+
 .dormant,
 .active {
   font-family: "Inter", sans-serif;
@@ -124,7 +127,7 @@
   border-top: none;
   border-left: none;
   z-index: 9;
-  max-width: 200px;
+  /* max-width: 200px; */
   text-align: center;
   margin-right: 0;
   display: flex;
