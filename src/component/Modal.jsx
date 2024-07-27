@@ -26,7 +26,7 @@ const Modal = ({
 
   const [rating, setRating] = useState(0);
 
-  const validUserIds = [1, 3]; //Mike and Mara
+  const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
 
   // const isAuthorizedUser = validUserIds.includes(store.user_id);
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
