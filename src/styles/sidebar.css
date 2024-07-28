@@ -387,6 +387,7 @@
   border: 3px solid black;
   border-bottom-color: transparent !important;
   background-color: white;
+  align-items: center;
 }
 
 .close-icon-nav,
