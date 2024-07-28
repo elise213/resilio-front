@@ -236,9 +236,9 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
           <div className="forgot-password" onClick={() => setLog("2")}>
             Register for an account
           </div>
-          {/* <div className="forgot-password" onClick={() => setLog("3")}>
+          <div className="forgot-password" onClick={() => setLog("3")}>
             I forgot my password
-          </div> */}
+          </div>
         </div>
       </div>
     );
