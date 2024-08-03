@@ -39,11 +39,32 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     actions.logout();
   }
 
-  // function handleRegister(e) {
-  //   e.preventDefault();
-  //   actions.createUser(is_org, name, email, password, userAvatar);
-  //   setLog("1");
-  // }
+  function handleForgotPassword(e) {
+    e.preventDefault();
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${sessionStorage.getItem("token")}`
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      recipient_email: e.currentTarget.forgotEmail.value,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${store.current_back_url}/api/forgot-password`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
+
   async function handleRegister(e) {
     e.preventDefault();
 
@@ -236,9 +257,49 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
           <div className="forgot-password" onClick={() => setLog("2")}>
             Register for an account
           </div>
-          {/* <div className="forgot-password" onClick={() => setLog("3")}>
+          <div className="forgot-password" onClick={() => setLog("3")}>
             I forgot my password
-          </div> */}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (log == "3") {
+    field = (
+      <div className="custom-login-modal-content ">
+        <div className="custom-login-modal-header">
+          <span
+            className="close-modal"
+            onClick={() => setOpenLoginModal(false)}
+          >
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            Back to Search
+          </span>
+        </div>
+        <div className="custom-login-modal-body">
+          <form onSubmit={handleForgotPassword}>
+            <>
+              <input
+                placeholder="Email"
+                type="text"
+                className="custom-form-control"
+                id="exampleInputEmail1"
+                name="forgotEmail"
+              ></input>
+            </>
+            <div style={{ width: "100%", marginTop: "10px" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className="submit"
+                // onClick={(e) => handleForgotPassword(e)}
+              >
+                Send Email
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
     );
