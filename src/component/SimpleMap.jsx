@@ -121,7 +121,7 @@ const SimpleMap = ({
               bootstrapURLKeys={{ key: apiKey }}
               center={city.center}
               bounds={city.bounds}
-              defaultZoom={9}
+              defaultZoom={11}
               options={createMapOptions}
               onChange={handleBoundsChange}
             >
