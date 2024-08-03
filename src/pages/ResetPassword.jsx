@@ -8,14 +8,12 @@ class ResetPassword extends React.Component {
 
   handleResetPassword(e) {
     e.preventDefault();
-
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       `Bearer ${sessionStorage.getItem("token")}`
     );
     myHeaders.append("Content-Type", "application/json");
-
     var raw = JSON.stringify({
       changePassword: e.currentTarget.newPassword.value,
     });
@@ -31,7 +29,6 @@ class ResetPassword extends React.Component {
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        // Redirect to login page after password change
         window.location.href = "/login";
       })
       .catch((error) => console.log("error", error));

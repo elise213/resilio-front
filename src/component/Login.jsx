@@ -83,9 +83,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
       setOpenLoginModal(false);
       // setLog("1");
     } else {
-      // Handle the case where createUser failed
       console.error("User creation failed.");
-      // Optionally, setLog to a different value or handle the failure case differently
     }
   }
 
@@ -288,15 +286,14 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
                 name="forgotEmail"
               ></input>
             </>
-            <div style={{ width: "100%", marginTop: "10px" }}>
+            <div className="password-submit-div">
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
-                className="submit"
-                // onClick={(e) => handleForgotPassword(e)}
+                className="submit-forgot-password"
               >
-                Send Email
+                Submit email to reset password
               </Button>
             </div>
           </form>
