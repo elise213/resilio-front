@@ -43,7 +43,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       mapResults: [],
       name: null,
       offerings: [],
-      // searchResults: [],
       token: null,
       user_id: null,
       schedules: [],
