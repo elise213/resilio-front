@@ -431,14 +431,12 @@ iframe {
 }
 
 .donation {
-  /* border: 3px solid black; */
   box-sizing: unset !important;
   z-index: 9999;
 }
 
 .button-container-sidebar {
   display: flex;
-  /* justify-content: flex-end; */
   margin-top: 10px;
 }
 
@@ -459,7 +457,7 @@ iframe {
     display: flex;
     max-height: 35px;
     border-radius: 3px;
-    margin: 5px;
+    margin: 0 5px;
     border: none;
   }
 
