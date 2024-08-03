@@ -72,14 +72,14 @@
 
 .tab-buttons div:first-child {
   clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
-  margin-right: -20px;
-  width: 53%;
+  margin-right: -10px;
+  width: 55%;
 }
 
 .tab-buttons div:last-child {
   clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
-  margin-left: -20px;
-  width: 53%;
+  margin-left: -10px;
+  width: 55%;
 }
 
 .tab-buttons div p {
@@ -511,6 +511,14 @@ iframe {
   .donation {
     height: 100% !important;
     border: none !important;
+  }
+
+  .tab-buttons div:first-child {
+    margin-right: -20px !important;
+  }
+
+  .tab-buttons div:last-child {
+    margin-left: -20px !important;
   }
 }
 
