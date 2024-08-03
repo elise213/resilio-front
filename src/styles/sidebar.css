@@ -71,17 +71,15 @@
 }
 
 .tab-buttons div:first-child {
-  /* border-radius: 10px 0 0 10px; */
   clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
   margin-right: -20px;
-  width: 65%;
+  width: 53%;
 }
 
 .tab-buttons div:last-child {
-  /* border-radius: 0 10px 10px 0; */
   clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
   margin-left: -20px;
-  width: 65%;
+  width: 53%;
 }
 
 .tab-buttons div p {
@@ -440,7 +438,7 @@ iframe {
 
 .button-container-sidebar {
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   margin-top: 10px;
 }
 
