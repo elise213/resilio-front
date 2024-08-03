@@ -229,7 +229,13 @@ const Sidebar = ({
         } ${layout}`}
       >
         <div className={`navbar-content`}>
-          <div className="button-container-sidebar">
+          <div
+            className="button-container-sidebar"
+            style={{
+              display: "flex",
+              justifyContent: openLoginModal ? "center" : "flex-end",
+            }}
+          >
             {!openLoginModal && (
               <>
                 <button onClick={() => setLayout("split-view")}>
