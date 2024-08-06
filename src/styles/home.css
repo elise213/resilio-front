@@ -92,17 +92,11 @@
 
 .function-buttons {
   display: none;
-  /* display: flex; */
+
   box-sizing: border-box;
   justify-content: space-between;
   background-color: white;
   flex-direction: column;
-}
-
-.all-rights {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  /* color: rgb(149, 149, 149); */
 }
 
 .geo-button {

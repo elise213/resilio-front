@@ -45,8 +45,6 @@
 }
 
 .info-address a {
-  font-family: "Inter", sans-serif;
-  /* font-size: 14px; */
   width: unset !important;
   color: blue;
 }
@@ -64,7 +62,6 @@
 
 .close-modal {
   color: grey;
-  font-family: "Inter", sans-serif;
   margin: 10px 0 0 0;
   align-self: flex-start;
 }
@@ -81,10 +78,6 @@
   height: 100%;
   align-items: center;
   justify-content: center;
-}
-
-.modal-title-div span {
-  font-family: "Inter", sans-serif;
 }
 
 .modal-header-icon {
@@ -180,10 +173,6 @@ p {
   width: 100%;
 }
 
-.comment-content {
-  font-family: "Inter", sans-serif;
-}
-
 .comment-info div p {
   font-size: 12px;
 }
@@ -240,7 +229,6 @@ textarea {
 }
 
 .problem {
-  font-family: "Inter", sans-serif;
   color: gray;
   text-decoration: none;
   font-size: 14px;
@@ -256,7 +244,6 @@ textarea {
 }
 
 .modal-center {
-  font-family: "Inter", sans-serif;
   font-size: 12px;
   margin: 20px 0;
 }
@@ -270,7 +257,7 @@ body.modal-open {
 
 .resource-title-modal {
   font-size: 18px;
-  font-family: "Inter", sans-serif;
+
   font-weight: bolder;
   margin-bottom: 5px;
 }
@@ -279,7 +266,7 @@ body.modal-open {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  font-family: "Inter", sans-serif;
+
   padding: 0;
 }
 
@@ -370,7 +357,6 @@ body.modal-open {
 }
 
 .description {
-  font-family: "Inter", sans-serif;
   line-height: 2;
   display: flex;
   margin: 0;
@@ -381,10 +367,6 @@ body.modal-open {
 .description-heading {
   font-weight: bolder;
   font-size: 23px;
-}
-
-.resource-card-text {
-  font-family: "Inter", sans-serif;
 }
 
 .modal-text,
