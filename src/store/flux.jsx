@@ -247,7 +247,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           Swal.fire({
             icon: "success",
             title: "Logged in Successfully",
-          }).then(() => {});
+          }).then(() => {
+            window.location.href = "/";
+          });
 
           return true;
         } catch (error) {
@@ -269,10 +271,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("favorites");
         sessionStorage.removeItem("selectedResources");
         setStore({ token: null, is_org: null, name: null, favorites: null });
+
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
-          willClose: () => {},
+          willClose: () => {
+            window.location.href = "/";
+          },
         });
       },
 
@@ -322,6 +327,59 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Oops...",
             text: `An error occurred: ${error.message}`,
           });
+        }
+      },
+
+      resetPassword: async (newPassword) => {
+        try {
+          const current_back_url = getStore().current_back_url;
+          const token = getStore().token;
+
+          const opts = {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              password: newPassword,
+            }),
+          };
+
+          const response = await fetch(
+            `${current_back_url}/api/change-password`,
+            opts
+          );
+
+          if (response.status !== 200) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Failed to reset password",
+            });
+            return false;
+          }
+
+          const result = await response.json();
+          console.log(result);
+
+          Swal.fire({
+            icon: "success",
+            title: "Password Reset Successfully",
+          }).then(() => {
+            window.location.href = "/";
+          });
+
+          return true;
+        } catch (error) {
+          console.error("Error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong",
+            text: error.message,
+          });
+
+          return false;
         }
       },
 
@@ -563,107 +621,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         return () => {};
       },
 
-      // setMapResults: async (bounds) => {
-      //   const store = getStore();
-      //   // If there's an ongoing request, abort it
-      //   if (store.abortController2) {
-      //     store.abortController2.abort();
-      //   }
-
-      //   // Create a new abort controller for the new request
-      //   const newAbortController = new AbortController(); // AbortC
-      //   setStore({ abortController2: newAbortController });
-
-      //   // Normalize longitude
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) {
-      //     neLng -= 360;
-      //   }
-
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) {
-      //     swLng -= 360;
-      //   }
-
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-      //   const resources = {
-      //     food: false,
-      //     health: false,
-      //     shelter: false,
-      //     hygiene: false,
-      //     crisis: false,
-      //     mental: false,
-      //     work: false,
-      //     bathroom: false,
-      //     wifi: false,
-      //     substance: false,
-      //     sex: false,
-      //     legal: false,
-      //     lgbtq: false,
-      //     women: false,
-      //     seniors: false,
-      //     babies: false,
-      //     kids: false,
-      //     youth: false,
-      //     vets: false,
-      //     migrant: false,
-      //   };
-
-      //   const days = {
-      //     monday: false,
-      //     tuesday: false,
-      //     wednesday: false,
-      //     thursday: false,
-      //     friday: false,
-      //     saturday: false,
-      //     sunday: false,
-      //   };
-
-      //   const url = getStore().current_back_url + "/api/getBResults";
-
-      //   try {
-      //     setStore({ loading: true });
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources,
-      //         days,
-      //       }),
-      //       signal: newAbortController.signal,
-      //     });
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-      //       );
-      //     }
-
-      //     const data = await response.json();
-      //     setStore({ mapResults: data.data, loading: false });
-
-      //     return data.data;
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted");
-      //     } else {
-      //       setStore({ loading: false });
-      //       console.error("Error fetching data:", error);
-      //     }
-      //   }
-      // },
-
       setMapResults: async (bounds) => {
         const store = getStore();
         console.log("setMapResults called with bounds:", bounds);
@@ -848,8 +805,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // ____________________________COMMENTS FAVORITES RATINGS
-
       getAverageRating: async (resourceId, setAverageRatingCallback) => {
         const current_back_url = getStore().current_back_url;
 
@@ -945,7 +900,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 favorites: favorites,
               });
             })
-            // .then(console.log("STORE FAVS", store.favorites))
+
             .catch((error) => {
               console.error("Error fetching updated favorites:", error);
             });

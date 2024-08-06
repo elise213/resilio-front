@@ -7,6 +7,7 @@ import Edit from "./pages/Edit";
 import ScrollToTop from "./component/scrollToTop";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
+import ResetPassword from "./pages/ResetPassword";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
@@ -19,7 +20,7 @@ const Layout = () => {
           <Route element={<Home />} path="/" />
           <Route element={<UserProfile />} path="/profile" />
           <Route element={<Create />} path="/create" />
-          {/* <Route element={<Donate />} path="/donate" /> */}
+          <Route element={<ResetPassword />} path="/reset-password" />
           <Route element={<Edit />} path="/edit/:id" />
         </Routes>
       </ScrollToTop>

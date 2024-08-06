@@ -10,6 +10,7 @@ import { Modal } from "../component";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
+
   const apiKey = import.meta.env.VITE_GOOGLE;
 
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>

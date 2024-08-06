@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import styles from "../styles/loginModal.css";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar";
 
 const Login = ({ openLoginModal, setOpenLoginModal }) => {
   const { store, actions } = useContext(Context);
@@ -15,6 +14,8 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
   const [userAvatar, setUserAvatar] = useState("");
   const [email, setEmail] = useState("");
   const [is_org, setIs_org] = useState("");
+
+  console.log("log", log);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -39,36 +40,61 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     actions.logout();
   }
 
-  function handleForgotPassword(e) {
+  async function handleForgotPassword(e) {
     e.preventDefault();
-    var myHeaders = new Headers();
+    const forgotEmail = e.currentTarget.forgotEmail.value;
+    const myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       `Bearer ${sessionStorage.getItem("token")}`
     );
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      recipient_email: e.currentTarget.forgotEmail.value,
+    const raw = JSON.stringify({
+      recipient_email: forgotEmail,
     });
 
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
 
-    fetch(`${store.current_back_url}/api/forgot-password`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+    try {
+      const response = await fetch(
+        `${store.current_back_url}/api/forgot-password`,
+        requestOptions
+      );
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        Swal.fire({
+          icon: "success",
+          title: "Email Sent",
+          text: "Please check your email to reset your password",
+        }).then(() => {
+          setOpenLoginModal(false);
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to send reset email. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+        text: error.message,
+      });
+    }
   }
 
   async function handleRegister(e) {
     e.preventDefault();
-
-    // Wait for createUser to complete and check its return value
     const userCreated = await actions.createUser(
       is_org,
       name,
@@ -78,23 +104,12 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
     );
 
     if (userCreated) {
-      // If createUser was successful, proceed to log the user in
       await actions.login(email, password);
       setOpenLoginModal(false);
-      // setLog("1");
+      setLog("1");
     } else {
       console.error("User creation failed.");
     }
-  }
-
-  function handleSelectImage(id) {
-    store.avatarImages.forEach((i, idx) => {
-      let img = document.querySelector(`#avatar${idx}`);
-      img.classList.remove("avatarImageSelected");
-    });
-    let newselect = document.querySelector(`#avatar${id}`);
-    newselect.classList.add("avatarImageSelected");
-    setUserAvatar(id);
   }
 
   let field = null;
