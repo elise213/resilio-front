@@ -271,34 +271,34 @@ const Home = () => {
   return (
     <>
       <div className={`grand-resilio-container`}>
-        <div className="sidebar-container">
-          <Sidebar
-            layout={layout}
-            setLayout={setLayout}
-            setShowRating={setShowRating}
-            openLoginModal={openLoginModal}
-            setOpenLoginModal={setOpenLoginModal}
-            categories={categories}
-            setCategories={setCategories}
-            groups={groups}
-            setGroups={setGroups}
-            favorites={favorites}
-            days={days}
-            setDays={setDays}
-            setSearchingToday={setSearchingToday}
-            INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-            openModal={openModal}
-            geoFindMe={geoFindMe}
-            contactModalIsOpen={contactModalIsOpen}
-            setContactModalIsOpen={setContactModalIsOpen}
-            aboutModalIsOpen={aboutModalIsOpen}
-            setAboutModalIsOpen={setAboutModalIsOpen}
-            donationModalIsOpen={donationModalIsOpen}
-            setDonationModalIsOpen={setDonationModalIsOpen}
-            fetchCachedBounds={fetchCachedBounds}
-            handleBoundsChange={handleBoundsChange}
-          />
-        </div>
+        {/* <div className="sidebar-container"> */}
+        <Sidebar
+          layout={layout}
+          setLayout={setLayout}
+          setShowRating={setShowRating}
+          openLoginModal={openLoginModal}
+          setOpenLoginModal={setOpenLoginModal}
+          categories={categories}
+          setCategories={setCategories}
+          groups={groups}
+          setGroups={setGroups}
+          favorites={favorites}
+          days={days}
+          setDays={setDays}
+          setSearchingToday={setSearchingToday}
+          INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+          openModal={openModal}
+          geoFindMe={geoFindMe}
+          contactModalIsOpen={contactModalIsOpen}
+          setContactModalIsOpen={setContactModalIsOpen}
+          aboutModalIsOpen={aboutModalIsOpen}
+          setAboutModalIsOpen={setAboutModalIsOpen}
+          donationModalIsOpen={donationModalIsOpen}
+          setDonationModalIsOpen={setDonationModalIsOpen}
+          fetchCachedBounds={fetchCachedBounds}
+          handleBoundsChange={handleBoundsChange}
+        />
+        {/* </div> */}
         <div className="grand-map-container">
           <ErrorBoundary>
             <SimpleMap

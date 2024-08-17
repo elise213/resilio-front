@@ -225,11 +225,7 @@ const Sidebar = ({
 
   return (
     <>
-      <nav
-        className={`new-navbar ${
-          donationModalIsOpen ? "donation" : ""
-        } ${layout}`}
-      >
+      <nav className={`new-navbar  ${layout}`}>
         <div className={`navbar-content`}>
           <div
             className="button-container-sidebar"

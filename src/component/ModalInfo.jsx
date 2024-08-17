@@ -45,19 +45,6 @@ export const ModalInfo = ({
 
   const formattedSchedule = {};
 
-  // Object.keys(schedule2).forEach((key) => {
-  //   const day = key.replace(/End|Start/g, "");
-  //   const start = schedule2[`${day}Start`];
-  //   const end = schedule2[`${day}End`];
-  //   const formattedStart = formatTime(start);
-  //   const formattedEnd = formatTime(end);
-  //   const scheduleString =
-  //     start && end && formattedStart !== "closed"
-  //       ? `${formattedStart} - ${formattedEnd}`
-  //       : "Closed";
-  //   formattedSchedule[day] = scheduleString;
-  // });
-
   Object.keys(schedule2).forEach((key) => {
     const day = key.replace(/End|Start/g, "");
     const start = schedule2[`${day}Start`];
@@ -164,6 +151,27 @@ export const ModalInfo = ({
 
   return (
     <>
+      {isLoggedIn && (
+        <Button
+          variant="contained"
+          color="primary"
+          className="add-favorite"
+          onClick={toggleFavorite}
+        >
+          {isFavorited ? (
+            <>
+              <span className="material-symbols-outlined">remove</span>
+              <span> Remove from favorites</span>
+            </>
+          ) : (
+            <>
+              <span className="material-symbols-outlined">add</span>{" "}
+              <span>Add to favorites</span>
+            </>
+          )}
+        </Button>
+      )}
+
       {/* ADDRESS */}
       {res.address && (
         <div className="info-address">
@@ -239,18 +247,6 @@ export const ModalInfo = ({
                 )}
               </>
             ) : (
-              // Handle "Varied" with specific day and time listings
-              // Object.entries(formattedSchedule).map(
-              //   ([day, schedule], index) => (
-              //     <p
-              //       key={index}
-              //       className="openHours"
-              //       style={{ color: schedule !== "Closed" ? "green" : "grey" }}
-              //     >
-              //       {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-              //     </p>
-              //   )
-              // )
               Object.entries(formattedSchedule).map(
                 ([day, schedule], index) => (
                   <p key={index} className="openHours">
@@ -273,26 +269,6 @@ export const ModalInfo = ({
 
         <Carousel res={res} />
       </div>
-      {!isGeneratedMapModalOpen && isLoggedIn && (
-        <Button
-          variant="contained"
-          color="primary"
-          className="add-favorite"
-          onClick={toggleFavorite}
-        >
-          {isFavorited ? (
-            <>
-              <span className="material-symbols-outlined">remove</span>
-              <span> Remove from favorites</span>
-            </>
-          ) : (
-            <>
-              <span className="material-symbols-outlined">add</span>{" "}
-              <span>Add to favorites</span>
-            </>
-          )}
-        </Button>
-      )}
     </>
   );
 };
