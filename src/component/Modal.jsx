@@ -140,6 +140,8 @@ const Modal = ({
         </div>
 
         <ModalInfo
+          setModalIsOpen={setModalIsOpen}
+          setOpenLoginModal={setOpenLoginModal}
           modalIsOpen={modalIsOpen}
           id={resource.id}
           schedule={resource.schedule}
@@ -168,13 +170,7 @@ const Modal = ({
             return (
               <div key={`${comment.id}-${index}`} className="comment-div">
                 <div className="comment-info">
-                  <div className="comment-user-info">
-                    <span className="material-symbols-outlined account-circle">
-                      account_circle
-                    </span>
-                    {comment.user_id}{" "}
-                  </div>
-                  <div className="comment-info-date">
+                  <div className="comment-and-rating">
                     <Rating
                       style={{ flexDirection: "row" }}
                       name="read-only"
@@ -182,10 +178,16 @@ const Modal = ({
                       precision={0.5}
                       readOnly
                     />
-                    <p className="comment-info-content">{formattedDate}</p>
+                    <p className="comment-content">{comment.comment_cont}</p>
                   </div>
                   <div className="comment-content-div">
-                    <p className="comment-content">{comment.comment_cont}</p>
+                    <p className="comment-date">{formattedDate}</p>
+                    <div className="comment-user-info">
+                      <span className="material-symbols-outlined account-circle">
+                        account_circle
+                      </span>
+                      {comment.user_id}{" "}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -195,27 +197,29 @@ const Modal = ({
       )}
 
       <div className="modal-footer">
-        {/* <p className="problem">
-          Click {""}
-          <span
-            onClick={() => {
-              setContactModalIsOpen(true);
-              setAboutModalIsOpen(false);
-              setDonationModalIsOpen(false);
-            }}
-            className="here"
-          >
-            here
-          </span>{" "}
-          if there is a problem with this information.
-        </p> */}
-
+        {!isLoggedIn && (
+          <div className="please-log" style={{ margin: "30px" }}>
+            <span
+              role="button"
+              tabIndex={0}
+              className="log-in"
+              onClick={() => {
+                setOpenLoginModal(true);
+                setShowRating(false);
+                setModalIsOpen(false);
+              }}
+            >
+              Log in
+            </span>
+            to add this resource to your favorites
+          </div>
+        )}
         {isAuthorizedUser && (
           <>
             <p className="problem">
               Click {""}
               <Link to="/create">here</Link>
-              {""} to create a new resource listing.
+              {""} to create a new resource listing
             </p>
 
             <p className="problem">
@@ -298,7 +302,7 @@ const Modal = ({
                         title: "Oops...",
                         text: "You must include a rating.",
                       });
-                      return; // Exit the function early to prevent submission and preserve current input
+                      return;
                     }
 
                     if (!comment.trim()) {

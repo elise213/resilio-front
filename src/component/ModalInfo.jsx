@@ -12,6 +12,7 @@ export const ModalInfo = ({
   isFavorited,
   setIsFavorited,
   isGeneratedMapModalOpen,
+  setOpenLoginModal,
 }) => {
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -172,6 +173,24 @@ export const ModalInfo = ({
         </Button>
       )}
 
+      {!isLoggedIn && (
+        <div className="please-log" style={{ margin: "30px" }}>
+          <span
+            role="button"
+            tabIndex={0}
+            className="log-in"
+            onClick={() => {
+              setOpenLoginModal(true);
+              setShowRating(false);
+              setModalIsOpen(false);
+            }}
+          >
+            Log in
+          </span>
+          to add this resource to your favorites
+        </div>
+      )}
+
       {/* ADDRESS */}
       {res.address && (
         <div className="info-address">
@@ -218,7 +237,7 @@ export const ModalInfo = ({
             </a>
           </div>
         )}
-
+        <Carousel res={res} />
         {/*SCHEDULE*/}
         {Object.keys(formattedSchedule).length > 0 && (
           <div className="info">
@@ -266,8 +285,6 @@ export const ModalInfo = ({
             )}
           </div>
         )}
-
-        <Carousel res={res} />
       </div>
     </>
   );
