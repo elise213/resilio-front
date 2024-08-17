@@ -1,7 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-// import arrow from "/assets/coralarrow.png";
-import arrow from "/assets/coralarrow.png";
 import styles from "../styles/resourceModal.css";
 
 const Carousel = ({ res }) => {
@@ -15,24 +13,8 @@ const Carousel = ({ res }) => {
     res.image5,
   ].filter(Boolean);
 
-  // function changeImage(newIndex) {
-  //   const imageElement = document.querySelector(".carousel-image");
-  //   imageElement.style.opacity = "0";
-
-  //   setTimeout(() => {
-  //     setCurrentImageIndex(newIndex);
-  //     imageElement.style.opacity = "1";
-  //   }, 300);
-  // }
-
   function changeImage(newIndex) {
-    // const imageElement = document.querySelector(".carousel-image");
-    // imageElement.style.opacity = "0";
-
-    // setTimeout(() => {
     setCurrentImageIndex(newIndex);
-    // imageElement.style.opacity = "1";
-    // }, 300);
   }
 
   function shiftLeft() {
@@ -51,7 +33,7 @@ const Carousel = ({ res }) => {
     <>
       {images.length > 0 && (
         <div className="carousel-container">
-          {images.length > 1 && (
+          {/* {images.length > 1 && (
             <button
               className="arrow-button"
               onClick={() => {
@@ -60,7 +42,7 @@ const Carousel = ({ res }) => {
             >
               <img className="left-arrow" src={arrow}></img>
             </button>
-          )}
+          )} */}
 
           <div className="carousel">
             <img
@@ -70,7 +52,7 @@ const Carousel = ({ res }) => {
             />
           </div>
 
-          {images.length > 1 && (
+          {/* {images.length > 1 && (
             <button
               className="arrow-button"
               onClick={() => {
@@ -79,7 +61,7 @@ const Carousel = ({ res }) => {
             >
               <img className="right-arrow" src={arrow}></img>
             </button>
-          )}
+          )} */}
         </div>
       )}
     </>

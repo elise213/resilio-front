@@ -43,10 +43,9 @@ const ResourceCard = (props) => {
   // Process category IDs to labels
   const categoryLabels = React.useMemo(() => {
     const categoryIds = normalizeCategories(props.item.category);
-    // Convert each ID to its label, capitalize the first letter of each label
     return categoryIds.map((catId) => {
       const label = getLabelForCategory(catId);
-      return label.charAt(0).toUpperCase() + label.slice(1); // Capitalize first letter
+      return label.charAt(0).toUpperCase() + label.slice(1);
     });
   }, [props.item.category, CATEGORY_OPTIONS]);
 
@@ -76,9 +75,9 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
-      <div className="resource-card-header">
-        <span className="resource-title">{props.item.name}</span>
-      </div>
+      {/* <div className="resource-card-header"> */}
+      <span className="resource-title">{props.item.name}</span>
+      {/* </div> */}
       {props.item.image && (
         <img
           className="card-img"

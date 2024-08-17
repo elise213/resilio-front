@@ -18,6 +18,7 @@ const Sidebar = ({
   closeModal,
   days,
   groups,
+  log,
   modalIsOpen,
   openLoginModal,
   setOpenLoginModal,
@@ -28,6 +29,7 @@ const Sidebar = ({
   setCategories,
   setDays,
   setGroups,
+  setLog,
   setModalIsOpen,
   setSearchingToday,
   setShowRating,
@@ -223,11 +225,7 @@ const Sidebar = ({
 
   return (
     <>
-      <nav
-        className={`new-navbar ${
-          donationModalIsOpen ? "donation" : ""
-        } ${layout}`}
-      >
+      <nav className={`new-navbar  ${layout}`}>
         <div className={`navbar-content`}>
           <div
             className="button-container-sidebar"
@@ -238,18 +236,29 @@ const Sidebar = ({
           >
             {!openLoginModal && (
               <>
-                <button onClick={() => setLayout("split-view")}>
+                <button
+                  className="screen-divider-button"
+                  onClick={() => setLayout("split-view")}
+                >
                   Split View
                 </button>
-                <button onClick={() => setLayout("fullscreen-map")}>
+                <button
+                  className="screen-divider-button"
+                  onClick={() => setLayout("fullscreen-map")}
+                >
                   Fullscreen Map
                 </button>
-                <button onClick={() => setLayout("fullscreen-sidebar")}>
+                <button
+                  className="screen-divider-button"
+                  onClick={() => setLayout("fullscreen-sidebar")}
+                >
                   Fullscreen List
                 </button>
               </>
             )}
             <Login
+              log={log}
+              setLog={setLog}
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
             />
