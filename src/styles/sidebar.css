@@ -4,20 +4,22 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 5px;
+  width: 100%;
+  justify-content: start;
 }
 
 .active-filter {
   display: flex;
-  align-items: center;
   background-color: transparent;
-  border-radius: 5px;
-  color: green;
+  color: blue;
   padding: 0 5px 5px 5px;
+  text-align: center;
 }
 
 .active-filter > div {
   margin-left: 5px;
   cursor: pointer;
+  color: red;
 }
 
 .no-scroll {
@@ -45,6 +47,7 @@
 .tab-buttons {
   display: flex;
   width: 100%;
+  min-height: 25px;
   z-index: 3;
   box-sizing: border-box;
   justify-content: center;
@@ -84,7 +87,7 @@
 
 .tab-buttons div p {
   font-size: 14px;
-  font-family: "Inter", sans-serif;
+
   text-align: center;
   margin: 0;
 }
@@ -117,7 +120,6 @@
 
 .dormant,
 .active {
-  font-family: "Inter", sans-serif;
   border-color: black;
   border-style: solid;
   border-width: 0;
@@ -125,7 +127,6 @@
   border-top: none;
   border-left: none;
   z-index: 9;
-  /* max-width: 200px; */
   text-align: center;
   margin-right: 0;
   display: flex;
@@ -148,6 +149,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  flex-grow: 0;
 }
 
 .dropdown {
@@ -162,30 +164,23 @@
 }
 
 .new-navbar {
-  display: flex;
-  justify-content: space-between;
-  transition: left 0.3s ease, height 0.3s ease;
-  top: 0;
-  z-index: 996;
-  position: absolute;
-  width: 380px !important;
+  height: 100vh;
   display: flex;
   justify-content: flex-start;
+  position: relative;
+
+  z-index: 996;
+  position: absolute;
+  width: 400px !important;
   border-radius: 15px 15px 0 0;
 }
 
 .list-container {
-  max-height: calc(100% - 60px);
+  max-height: auto;
   overflow-y: auto;
   scroll-behavior: smooth;
-  max-width: 400px;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  scrollbar-gutter: stable;
-  scrollbar-color: gray;
+  max-width: 300px;
   box-sizing: border-box;
-  /* direction: rtl; */
   margin-right: 15px;
 }
 
@@ -208,7 +203,7 @@
   background-color: gray;
   border-radius: 10px;
   border: 2px solid transparent;
-  box-shadow: inset 0 0 0 1px gray; /* Ensure visibility */
+  box-shadow: inset 0 0 0 1px gray;
 }
 
 .list-container:hover::-webkit-scrollbar-thumb {
@@ -217,7 +212,6 @@
 
 /* For non-WebKit browsers */
 .list-container {
-  /* scrollbar-width: thin; */
   scrollbar-color: gray transparent;
 }
 
@@ -231,21 +225,19 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .nav-div-list {
-  width: 100%;
-  height: calc(100% - 150px);
+  margin-bottom: 30px;
+  box-sizing: border-box;
+  height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.open-dropdown {
-  height: calc(100% - 450px) !important;
-}
-
-.open-dropday {
-  height: calc(100% - 350px) !important;
+  align-items: center;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 100px;
 }
 
 .nav-item,
@@ -255,7 +247,6 @@
   text-decoration: none;
   font-size: 12px;
   z-index: 995;
-  font-family: "Inter", sans-serif;
   margin: 7px;
 }
 .nav-item:hover,
@@ -355,7 +346,6 @@
 }
 
 .dropdown-content {
-  /* padding: 0 25px; */
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -372,7 +362,7 @@
   width: 100%;
   display: flex;
   overflow: hidden;
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
   border-radius: 0 20px 0 0;
   border: 3px solid black;
@@ -404,6 +394,8 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  flex-grow: 0;
+  /* text-align: center; */
 }
 
 .new-modal {
@@ -431,35 +423,31 @@ iframe {
 }
 
 .donation {
-  /* border: 3px solid black; */
   box-sizing: unset !important;
   z-index: 9999;
 }
 
 .button-container-sidebar {
   display: flex;
-  /* justify-content: flex-end; */
   margin-top: 10px;
+
+  flex-grow: 0;
 }
 
 .button-container-sidebar button {
   align-items: center;
 }
 
-.button-container-sidebar button:nth-child(1),
-.button-container-sidebar button:nth-child(2),
-.button-container-sidebar button:nth-child(3) {
+.screen-divider-button {
   display: none;
 }
 
 @media screen and (max-width: 700px) {
-  .button-container-sidebar button:nth-child(1),
-  .button-container-sidebar button:nth-child(2),
-  .button-container-sidebar button:nth-child(3) {
+  .screen-divider-button {
     display: flex;
     max-height: 35px;
     border-radius: 3px;
-    margin: 5px;
+    margin: 0 5px;
     border: none;
   }
 
@@ -502,7 +490,6 @@ iframe {
 
   .navbar-content {
     width: 100%;
-    /* padding: 10px; */
     height: unset !important;
     border-radius: 30px 30px 0 0 !important;
     align-items: center;
@@ -530,13 +517,6 @@ iframe {
 }
 
 .grand-map-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-}
-
-.sidebar-container {
   flex: 1;
   display: flex;
   flex-direction: column;

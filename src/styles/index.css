@@ -44,7 +44,6 @@
 body {
   position: relative;
   overflow: hidden !important;
-  font-family: "Inter", sans-serif;
   box-sizing: border-box;
   height: 100%;
 }
@@ -99,7 +98,6 @@ body {
 }
 
 .form-check-label {
-  font-family: "Inter", sans-serif;
   font-size: 18px;
   letter-spacing: 1.4x;
 }
@@ -113,10 +111,8 @@ body {
 /* _____________________________________________________________BUTTONS */
 
 .submit {
-  /* font-family: "Inter", sans-serif; */
   width: 100%;
   color: white;
-  /* background-color: #1976d2; */
 }
 
 .submit:hover {

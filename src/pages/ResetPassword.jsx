@@ -1,53 +1,63 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
-class ResetPassword extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleResetPassword = this.handleResetPassword.bind(this);
-  }
+const ResetPassword = () => {
+  const { store, actions } = useContext(Context);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  handleResetPassword(e) {
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get("token");
+
+  const handleResetPassword = (e) => {
     e.preventDefault();
-
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      `Bearer ${sessionStorage.getItem("token")}`
-    );
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      changePassword: e.currentTarget.newPassword.value,
+    const raw = JSON.stringify({
+      password: e.currentTarget.newPassword.value,
     });
 
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
 
-    fetch("/change-changePassword", requestOptions)
+    fetch(store.current_back_url + "/api/change-password", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        // Redirect to login page after password change
-        window.location.href = "/login";
+        Swal.fire({
+          icon: "success",
+          title: "Password Reset",
+          text: "Your password has been reset successfully.",
+        }).then(() => {
+          setOpenLoginModal(false); // Close the login modal
+        });
       })
-      .catch((error) => console.log("error", error));
-  }
+      .catch((error) => {
+        console.log("error", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to reset password. Please try again.",
+        });
+      });
+  };
 
-  render() {
-    return (
-      <form onSubmit={this.handleResetPassword}>
-        <div>
-          <label htmlFor="newPassword">New Password:</label>
-          <input type="password" id="newPassword" name="newPassword" required />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleResetPassword}>
+      <div>
+        <label htmlFor="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required />
+      </div>
+      <button type="submit">Reset Password</button>
+    </form>
+  );
+};
 
 export default ResetPassword;
