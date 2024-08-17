@@ -115,63 +115,66 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
   let field = null;
   if (log == "2") {
     field = (
-      <div className="custom-login-modal-content">
-        <div className="custom-login-modal-header">
-          <span className="close-modal" onClick={() => setLog("1")}>
-            {" "}
+      <div className="login-modal-content">
+        <div className="login-modal-header">
+          <span
+            className="close-modal"
+            onClick={() => {
+              setOpenLoginModal(false);
+              setLog("1");
+            }}
+          >
             <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to log in
+            Back to Search
           </span>
         </div>
-        <div className="custom-login-modal-body">
+        <div className="login-modal-body">
           <form>
-            <div className="">
-              <label htmlFor="name" className="custom-form-label less-margin">
+            <div className="form-section">
+              <label htmlFor="name" className="form-label less-margin">
                 Name
               </label>
               <input
                 type="text"
-                className="custom-form-control"
+                className="form-input"
                 id="name"
                 aria-describedby="emailHelp"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               ></input>
             </div>
-            <div className="">
-              <label htmlFor="email1" className="custom-form-label">
+            <div className="form-section">
+              <label htmlFor="email1" className="form-label">
                 Email
               </label>
               <input
                 type="email"
-                className="custom-form-control"
+                className="form-input"
                 id="email"
                 aria-describedby="emailHelp"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               ></input>
             </div>
-            <div className="">
-              <label htmlFor="password" className="custom-form-label">
+            <div className="form-section">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
               <input
                 type="password"
-                className="custom-form-control"
+                className="form-input"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
-            <div className="center-header">
-              <span className="custom-form-label" id="exampleloginModalLabel">
+            <div className="form-section">
+              <span className="form-label" id="exampleloginModalLabel">
                 Do you represent an organization?
               </span>
-            </div>
-            <div className="yes-or-no">
-              <div className="custom-form-check">
+              <div className="form-check">
                 <input
-                  className="custom-form-check-input radio"
+                  className="form-check-input radio"
                   type="radio"
                   name="orgRadio"
                   id="orgRadio1"
@@ -179,16 +182,15 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
                   onChange={() => setIs_org("true")}
                 />
                 <label
-                  className="custom-form-label radio-label"
+                  className="form-label radio-label"
                   htmlFor="exampleRadios1"
                 >
                   Yes
                 </label>
               </div>
-
-              <div className="custom-form-check">
+              <div className="form-check">
                 <input
-                  className="custom-form-check-input radio"
+                  className="form-check-input radio"
                   type="radio"
                   name="orgRadio"
                   id="orgRadio2"
@@ -196,7 +198,7 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
                   onChange={() => setIs_org("false")}
                 />
                 <label
-                  className="custom-form-label radio-label"
+                  className="form-label radio-label"
                   htmlFor="exampleRadios1"
                 >
                   No
@@ -208,65 +210,81 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
               variant="contained"
               color="primary"
               type="submit"
-              className="submit"
+              className="form-button"
               onClick={handleRegister}
             >
               Register
             </Button>
           </form>
+          <span
+            className="forgot-password"
+            onClick={() => {
+              setLog("1");
+            }}
+            style={{ marginTop: "20px" }}
+          >
+            Return to Login
+          </span>
         </div>
       </div>
     );
   }
   if (log == "1") {
     field = (
-      <div className="custom-login-modal-content ">
-        <div className="custom-login-modal-header">
+      <div className="login-modal-content ">
+        <div className="login-modal-header">
           <span
             className="close-modal"
-            onClick={() => setOpenLoginModal(false)}
+            onClick={() => {
+              setOpenLoginModal(false);
+              setLog("1");
+            }}
           >
             <span className="material-symbols-outlined">arrow_back_ios</span>
             Back to Search
           </span>
         </div>
-        <div className="custom-login-modal-body">
+        <div className="login-modal-body">
           <form>
             <>
-              <input
-                placeholder="Email"
-                type="text"
-                className="custom-form-control"
-                id="exampleInputEmail1"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              ></input>
+              <div className="form-section">
+                <label htmlFor="inputEmail1" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  className="form-input"
+                  id="inputEmail1"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></input>
+              </div>
             </>
-            <div className="">
+            <div className="form-section">
+              <label htmlFor="inputPassword1" className="form-label">
+                Password
+              </label>
               <input
-                placeholder="Password"
                 type="password"
-                className="custom-form-control"
-                id="exampleInputPassword1"
+                className="form-input"
+                id="inputPassword1"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
-
-            <div style={{ width: "100%", marginTop: "10px" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                className="submit"
-                onClick={(e) => handleLogin(e)}
-              >
-                Log In
-              </Button>
-            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              className="form-button"
+              onClick={(e) => handleLogin(e)}
+            >
+              Log In
+            </Button>
           </form>
         </div>
-        <div className="custom-login-modal-footer">
+
+        <div className="login-modal-footer">
           <div className="forgot-password" onClick={() => setLog("2")}>
             Register for an account
           </div>
@@ -280,35 +298,42 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
 
   if (log == "3") {
     field = (
-      <div className="custom-login-modal-content ">
-        <div className="custom-login-modal-header">
+      <div className="login-modal-content ">
+        <div className="login-modal-header">
           <span
             className="close-modal"
-            onClick={() => setOpenLoginModal(false)}
+            onClick={() => {
+              setOpenLoginModal(false);
+              setLog("1");
+            }}
           >
             <span className="material-symbols-outlined">arrow_back_ios</span>
             Back to Search
           </span>
         </div>
-        <div className="custom-login-modal-body">
+        <div className="login-modal-body">
           <form onSubmit={handleForgotPassword}>
             <>
-              <input
-                placeholder="Email"
-                type="text"
-                className="custom-form-control"
-                id="exampleInputEmail1"
-                name="forgotEmail"
-              ></input>
+              <div className="form-section">
+                <label htmlFor="forgotPasswordEmail" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="text"
+                  className="form-input"
+                  id="forgotPasswordEmail"
+                  name="forgotEmail"
+                ></input>
+              </div>
             </>
             <div className="password-submit-div">
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
-                className="submit-forgot-password"
+                className="form-button"
               >
-                Submit email to reset password
+                Reset Password
               </Button>
             </div>
           </form>
