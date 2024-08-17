@@ -4,20 +4,22 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 5px;
+  width: 100%;
+  justify-content: start;
 }
 
 .active-filter {
   display: flex;
-  align-items: center;
   background-color: transparent;
-  border-radius: 5px;
-  color: green;
+  color: blue;
   padding: 0 5px 5px 5px;
+  text-align: center;
 }
 
 .active-filter > div {
   margin-left: 5px;
   cursor: pointer;
+  color: red;
 }
 
 .no-scroll {
@@ -147,6 +149,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  flex-grow: 0;
 }
 
 .dropdown {
@@ -161,28 +164,22 @@
 }
 
 .new-navbar {
-  display: flex;
-  justify-content: space-between;
-  transition: left 0.3s ease, height 0.3s ease;
-  top: 0;
-  z-index: 996;
-  position: absolute;
-  width: 380px !important;
+  height: 100vh;
   display: flex;
   justify-content: flex-start;
+  position: relative;
+
+  z-index: 996;
+  position: absolute;
+  width: 400px !important;
   border-radius: 15px 15px 0 0;
 }
 
 .list-container {
-  max-height: 100%;
+  max-height: auto;
   overflow-y: auto;
   scroll-behavior: smooth;
   max-width: 300px;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  scrollbar-gutter: stable;
-  scrollbar-color: gray;
   box-sizing: border-box;
   margin-right: 15px;
 }
@@ -228,13 +225,19 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .nav-div-list {
-  width: 100%;
-  height: calc(100% - 180px);
+  margin-bottom: 30px;
+  box-sizing: border-box;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 100px;
 }
 
 .nav-item,
@@ -343,7 +346,6 @@
 }
 
 .dropdown-content {
-  /* padding: 0 25px; */
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -360,7 +362,7 @@
   width: 100%;
   display: flex;
   overflow: hidden;
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
   border-radius: 0 20px 0 0;
   border: 3px solid black;
@@ -392,6 +394,8 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  flex-grow: 0;
+  /* text-align: center; */
 }
 
 .new-modal {
@@ -426,6 +430,8 @@ iframe {
 .button-container-sidebar {
   display: flex;
   margin-top: 10px;
+
+  flex-grow: 0;
 }
 
 .button-container-sidebar button {
@@ -484,7 +490,6 @@ iframe {
 
   .navbar-content {
     width: 100%;
-    /* padding: 10px; */
     height: unset !important;
     border-radius: 30px 30px 0 0 !important;
     align-items: center;
@@ -512,13 +517,6 @@ iframe {
 }
 
 .grand-map-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-}
-
-.sidebar-container {
   flex: 1;
   display: flex;
   flex-direction: column;

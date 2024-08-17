@@ -179,9 +179,9 @@ p {
 
 .comment-info-date {
   font-size: 12px;
-  color: gray;
-  display: flex;
-  justify-content: space-between;
+  color: rgb(200, 198, 198);
+  /* display: flex;
+  justify-content: space-between; */
 }
 
 .comment-user-info {
