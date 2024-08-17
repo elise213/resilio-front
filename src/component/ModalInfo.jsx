@@ -13,6 +13,7 @@ export const ModalInfo = ({
   setIsFavorited,
   isGeneratedMapModalOpen,
   setOpenLoginModal,
+  setModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -171,24 +172,6 @@ export const ModalInfo = ({
             </>
           )}
         </Button>
-      )}
-
-      {!isLoggedIn && (
-        <div className="please-log" style={{ margin: "30px" }}>
-          <span
-            role="button"
-            tabIndex={0}
-            className="log-in"
-            onClick={() => {
-              setOpenLoginModal(true);
-              setShowRating(false);
-              setModalIsOpen(false);
-            }}
-          >
-            Log in
-          </span>
-          to add this resource to your favorites
-        </div>
       )}
 
       {/* ADDRESS */}
