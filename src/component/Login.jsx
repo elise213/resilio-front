@@ -337,6 +337,15 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
               </Button>
             </div>
           </form>
+          <span
+            className="forgot-password"
+            onClick={() => {
+              setLog("1");
+            }}
+            style={{ marginTop: "20px" }}
+          >
+            Return to Login
+          </span>
         </div>
       </div>
     );
