@@ -55,6 +55,7 @@
 .modal-div {
   width: 100% !important;
   height: 100% !important;
+  justify-content: space-between;
   position: absolute;
   background-color: white;
   z-index: 99999999;

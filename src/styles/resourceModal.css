@@ -22,17 +22,12 @@
   justify-content: space-between;
 }
 
-.description-buttons {
+/* .description-buttons {
   width: 50%;
   display: flex;
   flex-direction: column;
   padding-right: 50px;
-}
-
-.account-circle {
-  font-size: 40px;
-  margin: 0 10px 0 0;
-}
+} */
 
 .fa-arrow-right {
   margin: 6px 0px 0px 10px;
@@ -52,7 +47,7 @@
 .info-address i {
   padding: 0 3px 0 0;
   color: red;
-  font-size: 15px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -133,6 +128,9 @@
 .resource-info {
   margin-top: 30px;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .rating-label {
@@ -166,6 +164,10 @@ p {
   margin-top: 10px;
 }
 
+.comment-content {
+  color: black;
+}
+
 .full-comments-section {
   padding: 15px;
   display: flex;
@@ -174,26 +176,32 @@ p {
 }
 
 .comment-info div p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
-.comment-info-date {
-  font-size: 12px;
+.comment-and-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.comment-date {
+  font-size: 14px;
   color: rgb(200, 198, 198);
-  /* display: flex;
-  justify-content: space-between; */
 }
 
 .comment-user-info {
-  font-size: 12px;
-  color: gray;
-  text-align: start;
+  font-size: 14px;
+  color: #cccccc;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .user-reviews {
   text-align: center;
   text-decoration: underline;
-  font-size: 16px;
+  font-size: 15px;
+  margin-bottom: 20px;
 }
 
 .comments-display {
@@ -224,12 +232,8 @@ textarea {
   margin-top: 25px;
 }
 
-.modal-title {
-  font-size: large;
-}
-
 .problem {
-  color: gray;
+  /* color: gray; */
   text-decoration: none;
   font-size: 14px;
 }
@@ -243,11 +247,6 @@ textarea {
   text-decoration: none !important;
 }
 
-.modal-center {
-  font-size: 12px;
-  margin: 20px 0;
-}
-
 body.modal-open {
   overflow: hidden;
   height: 100%;
@@ -256,10 +255,9 @@ body.modal-open {
 }
 
 .resource-title-modal {
-  font-size: 18px;
-
-  font-weight: bolder;
-  margin-bottom: 5px;
+  font-size: 30px;
+  line-height: normal;
+  margin-bottom: 10px;
 }
 
 .info {
@@ -271,12 +269,17 @@ body.modal-open {
 }
 
 .info i {
-  margin-right: 10px;
+  margin-right: 5px;
   padding: 0;
 }
 
 .info a {
   padding: 0;
+}
+
+.comment-content-div {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* ____________________________________________CAROUSEL  */
@@ -286,17 +289,14 @@ body.modal-open {
   position: relative;
 }
 
-.modal-description {
-  font-size: 12px;
+.account-circle {
+  font-size: 25px;
+  margin-right: 10px;
 }
 
-/* .carousel {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  margin: 10px 0 30px 0;
-} */
+.modal-description {
+  display: block;
+}
 
 .carousel-description-div {
   flex-direction: column;
@@ -306,7 +306,7 @@ body.modal-open {
   width: 300px;
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .arrow-button {
@@ -333,7 +333,7 @@ body.modal-open {
 
 .details-column {
   display: flex;
-  flex-direction: column;
+
   justify-content: center;
   margin: 30px 0;
 }
@@ -366,14 +366,14 @@ body.modal-open {
 
 .description-heading {
   font-weight: bolder;
-  font-size: 23px;
+  font-size: 20px;
 }
 
 .modal-text,
 .modal-text-website {
   text-decoration: none !important;
   color: black;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .modal-text-website:hover {
@@ -383,4 +383,10 @@ body.modal-open {
 .sched-div {
   padding: 5px;
   width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .details-column {
+    flex-direction: column;
+  }
 }
