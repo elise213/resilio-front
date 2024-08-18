@@ -44,13 +44,13 @@ const Carousel = ({ res }) => {
             </button>
           )} */}
 
-          <div className="carousel">
-            <img
-              className="carousel-image"
-              src={images[currentImageIndex]}
-              alt=""
-            />
-          </div>
+          {/* <div className="carousel"> */}
+          <img
+            className="carousel-image"
+            src={images[currentImageIndex]}
+            alt=""
+          />
+          {/* </div> */}
 
           {/* {images.length > 1 && (
             <button

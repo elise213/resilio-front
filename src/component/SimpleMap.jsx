@@ -96,7 +96,6 @@ const SimpleMap = ({
           {isHovered && result && (
             <div className={`hover-card ${closestCornerClass}`}>
               {/* <HoverCard key={result.id} item={result} openModal={openModal} /> */}
-
               <ResourceCard
                 // number={index + 1}
                 key={result.id}
