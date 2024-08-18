@@ -45,26 +45,14 @@
 }
 
 .tab-buttons {
-  display: flex;
   width: 100%;
   min-height: 25px;
   z-index: 3;
   box-sizing: border-box;
-  justify-content: center;
-  overflow: hidden;
-  padding: 0 10px;
-  margin: 0 5px;
-  box-sizing: border-box;
-}
-
-.tab-buttons {
+  padding: 0;
+  margin: 0 0 10px 0;
   display: flex;
   width: 100%;
-  z-index: 3;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 0;
-  margin: 10px 0;
 }
 
 .tab-buttons div {
@@ -237,7 +225,7 @@
   align-items: center;
   flex-grow: 1;
   overflow-y: auto;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 }
 
 .nav-item,

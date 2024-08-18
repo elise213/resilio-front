@@ -235,23 +235,23 @@ const Sidebar = ({
           >
             {!openLoginModal && (
               <>
-                <button
+                {/* <button
                   className="screen-divider-button"
                   onClick={() => setLayout("split-view")}
                 >
                   Split View
-                </button>
+                </button> */}
                 <button
                   className="screen-divider-button"
                   onClick={() => setLayout("fullscreen-map")}
                 >
-                  Fullscreen Map
+                  Map View
                 </button>
                 <button
                   className="screen-divider-button"
                   onClick={() => setLayout("fullscreen-sidebar")}
                 >
-                  Fullscreen List
+                  Resource View
                 </button>
               </>
             )}
