@@ -152,7 +152,162 @@ export const ModalInfo = ({
   const scheduleCategory = categorizeSchedule(schedule2);
 
   return (
+    // <>
+    //   <Carousel res={res} />
+    //   {isLoggedIn && (
+    //     <Button
+    //       variant="contained"
+    //       color="primary"
+    //       className="add-favorite"
+    //       onClick={toggleFavorite}
+    //     >
+    //       {isFavorited ? (
+    //         <>
+    //           <span className="material-symbols-outlined">remove</span>
+    //           <span> Remove from favorites</span>
+    //         </>
+    //       ) : (
+    //         <>
+    //           <span className="material-symbols-outlined">add</span>{" "}
+    //           <span>Add to favorites</span>
+    //         </>
+    //       )}
+    //     </Button>
+    //   )}
+
+    //   <div className="info-groups">
+    //     <div className="group-info">
+    //       {res.address && (
+    //         <>
+
+    //           <div className="info-address">
+    //             <span className="modal-text">
+    //               {res.address.replace(", USA", "")}
+    //             </span>
+
+    //             <span
+    //               className="copy-icon"
+    //               style={{ cursor: "pointer", marginLeft: "10px" }}
+    //               onClick={() => navigator.clipboard.writeText(res.address)}
+    //               title="Copy Address"
+    //             >
+    //               <span class="material-icons">content_copy</span>
+    //             </span>
+    //           </div>
+
+    //           <span
+    //             className="info-address"
+    //             title="Open Google Maps"
+    //             onClick={() =>
+    //               window.open(
+    //                 `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    //                   res.address
+    //                 )}`,
+    //                 "_blank"
+    //               )
+    //             }
+    //           >
+    //             Get Directions
+    //             <span
+    //               class="material-icons"
+    //               style={{
+    //                 fontSize: "30px",
+    //               }}
+    //             >
+    //               turn_sharp_right
+    //             </span>
+    //           </span>
+    //         </>
+    //       )}
+
+    //       {res.website && (
+    //         <div className="info-address">
+    //           <span
+    //             className="info-address"
+    //             title="Open Website"
+    //             onClick={() =>
+    //               window.open(
+    //                 `https://www.${res.website}`,
+    //                 "_blank",
+    //                 "noopener,noreferrer"
+    //               )
+    //             }
+    //           >
+    //             Visit Website
+    //           </span>
+
+    //           <span
+    //             style={{
+    //               fontSize: "30px",
+    //             }}
+    //             class="material-icons"
+    //           >
+    //             link
+    //           </span>
+    //         </div>
+    //       )}
+    //     </div>
+
+    //     {Object.keys(formattedSchedule).length > 0 && (
+    //       <div className="schedule-info">
+    //         {scheduleCategory === "Closed Everyday" ? (
+    //           <p className="schedule-row" style={{ color: "grey" }}>
+    //             Closed Everyday
+    //           </p>
+    //         ) : scheduleCategory === "Open 24 Hours" ? (
+    //           <p className="schedule-row" style={{ color: "black" }}>
+    //             Open 24/7
+    //             <span
+    //               style={{ marginLeft: "10px", fontSize: "25px" }}
+    //               class="material-icons"
+    //             >
+    //               schedule
+    //             </span>
+    //           </p>
+    //         ) : (
+    //           <div className="schedule-table">
+    //             <div className="schedule-column">
+    //               {Object.keys(formattedSchedule).map((day, index) => (
+    //                 <div key={index} className="schedule-day">
+    //                   {day.charAt(0).toUpperCase() + day.slice(1)}
+    //                 </div>
+    //               ))}
+    //             </div>
+    //             <div className="schedule-column">
+    //               {Object.values(formattedSchedule).map((schedule, index) => (
+    //                 <div
+    //                   key={index}
+    //                   className="schedule-time"
+    //                   style={{
+    //                     color: schedule !== "Closed" ? "green" : "grey",
+    //                   }}
+    //                 >
+    //                   {schedule}
+    //                 </div>
+    //               ))}
+    //             </div>
+    //           </div>
+    //         )}
+    //       </div>
+    //     )}
+    //   </div>
+
+    //   {res.description && (
+    //     <span
+    //       className="info-address"
+    //       style={{ display: "block", marginTop: "30px" }}
+    //     >
+    //       {isReadMore ? `${res.description.slice(0, 200)}...` : res.description}
+    //       {res.description.length > 200 && (
+    //         <span onClick={toggleReadMore} className="read-more">
+    //           {isReadMore ? "(Read more)" : "(Show less)"}
+    //         </span>
+    //       )}
+    //     </span>
+    //   )}
+    // </>
     <>
+      <Carousel res={res} />
       {isLoggedIn && (
         <Button
           variant="contained"
@@ -174,106 +329,148 @@ export const ModalInfo = ({
         </Button>
       )}
 
-      {/* ADDRESS */}
-      {res.address && (
-        <div className="info-address">
-          <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-              res.address
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="modal-text"
-          >
-            {res.address.replace(", USA", "")}
-          </a>
+      <div className="info-groups">
+        <div className="group-info">
+          {res.address && (
+            <>
+              {/* ADDRESS */}
+              <div className="info-address">
+                <span className="modal-text">
+                  {res.address.replace(", USA", "")}
+                </span>
+
+                <span
+                  className="copy-icon"
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
+                  onClick={() => navigator.clipboard.writeText(res.address)}
+                  title="Copy Address"
+                >
+                  <span className="material-icons">content_copy</span>
+                </span>
+              </div>
+
+              <span
+                className="info-address"
+                title="Open Google Maps"
+                onClick={() =>
+                  window.open(
+                    `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                      res.address
+                    )}`,
+                    "_blank"
+                  )
+                }
+              >
+                Get Directions
+                <span
+                  className="material-icons"
+                  style={{
+                    fontSize: "30px",
+                  }}
+                >
+                  turn_sharp_right
+                </span>
+              </span>
+            </>
+          )}
+
+          {/* WEBSITE */}
+          {res.website && (
+            <div className="info-address">
+              <span
+                className="info-address"
+                title="Open Website"
+                onClick={() =>
+                  window.open(
+                    `https://www.${res.website}`,
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
+              >
+                Visit Website
+              </span>
+
+              <span
+                style={{
+                  fontSize: "30px",
+                }}
+                class="material-icons"
+              >
+                link
+              </span>
+            </div>
+          )}
+
+          {/* Move simple schedule info to info-groups */}
+          {scheduleCategory === "Closed Everyday" && (
+            <p className="info-address" style={{ color: "black" }}>
+              Closed Everyday
+              <span
+                style={{ marginLeft: "10px", fontSize: "25px" }}
+                class="material-icons"
+              >
+                schedule
+              </span>
+            </p>
+          )}
+          {scheduleCategory === "Open 24 Hours" && (
+            <p className="info-address" style={{ color: "black" }}>
+              Open 24/7
+              <span
+                style={{ marginLeft: "10px", fontSize: "25px" }}
+                class="material-icons"
+              >
+                schedule
+              </span>
+            </p>
+          )}
         </div>
-      )}
+
+        {/* Detailed schedule stays here */}
+        {Object.keys(formattedSchedule).length > 0 &&
+          scheduleCategory === "Varied" && (
+            <div className="schedule-info">
+              <div className="schedule-table">
+                <div className="schedule-column">
+                  {Object.keys(formattedSchedule).map((day, index) => (
+                    <div key={index} className="schedule-day">
+                      {day.charAt(0).toUpperCase() + day.slice(1)}
+                    </div>
+                  ))}
+                </div>
+                <div className="schedule-column">
+                  {Object.values(formattedSchedule).map((schedule, index) => (
+                    <div
+                      key={index}
+                      className="schedule-time"
+                      style={{
+                        color: schedule !== "Closed" ? "green" : "grey",
+                      }}
+                    >
+                      {schedule}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+      </div>
 
       {/* DESCRIPTION */}
       {res.description && (
-        <p className="modal-description">
+        <span
+          className="info-address"
+          style={{ display: "block", marginTop: "30px" }}
+        >
           {isReadMore ? `${res.description.slice(0, 200)}...` : res.description}
           {res.description.length > 200 && (
             <span onClick={toggleReadMore} className="read-more">
               {isReadMore ? "(Read more)" : "(Show less)"}
             </span>
           )}
-        </p>
+        </span>
       )}
-
-      <div className="details-column">
-        {/* WEBSITE */}
-        {res.website && (
-          <div className="info" style={{ flexDirection: "row" }}>
-            <i
-              style={{ color: "blue" }}
-              className="fa-solid fa-earth-americas"
-            ></i>
-            <a
-              href={`https://www.${res.website}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="modal-text-website"
-            >
-              Visit Website
-            </a>
-          </div>
-        )}
-        <Carousel res={res} />
-        {/*SCHEDULE*/}
-        {Object.keys(formattedSchedule).length > 0 && (
-          <div className="info">
-            {scheduleCategory === "Closed Everyday" ? (
-              <p className="schedule-row" style={{ color: "grey" }}>
-                Closed Everyday
-              </p>
-            ) : scheduleCategory === "Open 24 Hours" ? (
-              <p className="schedule-row" style={{ color: "green" }}>
-                Open 24 Hours
-              </p>
-            ) : scheduleCategory === "Mixed Specific" ? (
-              <>
-                {Object.entries(formattedSchedule).map(
-                  ([day, schedule], index) => (
-                    <p
-                      key={index}
-                      className=""
-                      style={{
-                        color: schedule === "24 Hours" ? "green" : "grey",
-                      }}
-                    >
-                      {day.charAt(0).toUpperCase() + day.slice(1)}: {schedule}
-                    </p>
-                  )
-                )}
-              </>
-            ) : (
-              Object.entries(formattedSchedule).map(
-                ([day, schedule], index) => (
-                  <p key={index} className="openHours">
-                    {/* <span style={{ color: "black" }}> */}
-                    <span
-                      style={{
-                        color: schedule !== "Closed" ? "black" : "grey",
-                      }}
-                    >
-                      {day.charAt(0).toUpperCase() + day.slice(1)}:
-                    </span>
-                    <span
-                      style={{
-                        color: schedule !== "Closed" ? "green" : "grey",
-                      }}
-                    >
-                      {` ${schedule}`}
-                    </span>
-                  </p>
-                )
-              )
-            )}
-          </div>
-        )}
-      </div>
     </>
   );
 };

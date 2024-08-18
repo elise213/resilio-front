@@ -4,6 +4,7 @@ import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
 import HoverCard from "./HoverCard";
 import { debounce } from "lodash";
+import ResourceCard from "../component/ResourceCard";
 
 const SimpleMap = ({
   layout,
@@ -12,6 +13,12 @@ const SimpleMap = ({
   city,
   userLocation,
   setHoveredItem,
+  closeModal,
+  modalIsOpen,
+  setModalIsOpen,
+  selectedResources,
+  addSelectedResource,
+  removeSelectedResource,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
@@ -88,7 +95,19 @@ const SimpleMap = ({
         >
           {isHovered && result && (
             <div className={`hover-card ${closestCornerClass}`}>
-              <HoverCard key={result.id} item={result} openModal={openModal} />
+              {/* <HoverCard key={result.id} item={result} openModal={openModal} /> */}
+              <ResourceCard
+                // number={index + 1}
+                key={result.id}
+                item={result}
+                openModal={openModal}
+                closeModal={closeModal}
+                modalIsOpen={modalIsOpen}
+                setModalIsOpen={setModalIsOpen}
+                selectedResources={selectedResources}
+                addSelectedResource={addSelectedResource}
+                removeSelectedResource={removeSelectedResource}
+              />
             </div>
           )}
 

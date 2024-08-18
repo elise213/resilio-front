@@ -31,7 +31,7 @@ const Home = () => {
   const [layout, setLayout] = useState("split-view"); // options: 'fullscreen-map', 'fullscreen-sidebar', 'split-view'
 
   const INITIAL_CITY_STATE = store.austin[0];
-  const [showRating, setShowRating] = useState(false);
+  // const [showRating, setShowRating] = useState(false);
 
   const [selectedResources, setSelectedResources] = useState(() => {
     const storedResources = actions.getSessionSelectedResources();
@@ -275,7 +275,7 @@ const Home = () => {
         <Sidebar
           layout={layout}
           setLayout={setLayout}
-          setShowRating={setShowRating}
+          // setShowRating={setShowRating}
           openLoginModal={openLoginModal}
           setOpenLoginModal={setOpenLoginModal}
           categories={categories}
@@ -337,7 +337,7 @@ const Home = () => {
         {modalIsOpen && (
           <div className="modal-div">
             <Modal
-              setShowRating={setShowRating}
+              // setShowRating={setShowRating}
               removeSelectedResource={removeSelectedResource}
               resource={selectedResource}
               selectedResources={selectedResources}

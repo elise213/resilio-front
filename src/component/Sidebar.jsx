@@ -32,7 +32,6 @@ const Sidebar = ({
   setLog,
   setModalIsOpen,
   setSearchingToday,
-  setShowRating,
   aboutModalIsOpen,
   setAboutModalIsOpen,
   donationModalIsOpen,
@@ -445,7 +444,6 @@ const Sidebar = ({
                           className="log-in"
                           onClick={() => {
                             setOpenLoginModal(true);
-                            setShowRating(false);
                             setModalIsOpen(false);
                           }}
                         >
