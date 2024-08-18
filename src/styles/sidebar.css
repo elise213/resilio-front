@@ -418,8 +418,12 @@ iframe {
 .button-container-sidebar {
   display: flex;
   margin-top: 10px;
-
   flex-grow: 0;
+  height: 30px;
+  min-width: 300px;
+  margin: 10px 0;
+  width: 100%;
+  justify-content: space-around !important;
 }
 
 .button-container-sidebar button {
@@ -437,11 +441,6 @@ iframe {
     border-radius: 3px;
     margin: 0 5px;
     border: none;
-  }
-
-  .button-container-sidebar {
-    display: flex !important;
-    justify-content: space-between !important;
   }
 
   .split-view {
