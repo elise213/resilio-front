@@ -30,7 +30,7 @@
 }
 
 .add-favorite {
-  width: 100% !important;
+  /* width: 100% !important; */
   margin: 10px 0 !important;
 }
 
@@ -39,7 +39,7 @@
   margin: 0 10px 10px 10px;
 }
 
-.card-description span {
+.category-span {
   color: gray;
   font-size: 12px;
   line-height: 0.5;

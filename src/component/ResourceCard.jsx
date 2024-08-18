@@ -96,16 +96,15 @@ const ResourceCard = (props) => {
               {label}
             </span>
           ))}
+          <Rating
+            style={{ flexDirection: "row" }}
+            name="read-only"
+            value={averageRating2}
+            precision={0.5}
+            readOnly
+          />
         </div>
       )}
-
-      <Rating
-        style={{ flexDirection: "row" }}
-        name="read-only"
-        value={averageRating2}
-        precision={0.5}
-        readOnly
-      />
     </div>
   );
 };
