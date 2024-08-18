@@ -1,6 +1,10 @@
 .login-div {
   height: 100vh;
   width: 300px;
+  background-color: white;
+  z-index: 999;
+  width: 100%;
+  padding: 20px;
 }
 
 .login-modal-content {
@@ -37,7 +41,7 @@
   background-color: #1976d2;
   border-radius: 20px !important;
   align-self: flex-end;
-  margin: 5px !important;
+  margin: 0 10px !important;
 }
 
 .login-button-resilio:hover {
