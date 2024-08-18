@@ -252,7 +252,12 @@ export const ModalInfo = ({
               Object.entries(formattedSchedule).map(
                 ([day, schedule], index) => (
                   <p key={index} className="openHours">
-                    <span style={{ color: "black" }}>
+                    {/* <span style={{ color: "black" }}> */}
+                    <span
+                      style={{
+                        color: schedule !== "Closed" ? "black" : "grey",
+                      }}
+                    >
                       {day.charAt(0).toUpperCase() + day.slice(1)}:
                     </span>
                     <span
