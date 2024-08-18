@@ -9,7 +9,7 @@
   box-sizing: border-box;
   padding-right: 10px;
   scrollbar-width: auto;
-  scrollbar-color: green transparent; /* thumb and track color */
+  scrollbar-color: green transparent;
 }
 
 /* Styles for WebKit browsers like Chrome, Safari */

@@ -8,13 +8,16 @@
 }
 
 .rate {
-  height: calc(100vh * 0.86);
+  height: 100%;
   position: absolute;
   width: 100%;
   background-color: white;
   box-sizing: border-box;
   left: 0;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form-check {
@@ -28,20 +31,15 @@
 }
 
 .info-address {
-  margin: 10px 0;
+  margin: 10px 10px 0 0;
   padding: 0;
+  align-items: center;
+  display: flex;
+  text-align: justify;
 }
 
-.info-address a {
-  width: unset !important;
-  color: blue;
-}
-
-.info-address i {
-  padding: 0 3px 0 0;
-  color: red;
-  font-size: 14px;
-  text-align: center;
+.info-address:hover {
+  cursor: pointer;
 }
 
 .modal-open {
@@ -131,8 +129,12 @@
   min-height: 25px;
 }
 
+.rating-prompt {
+  margin-bottom: 15px;
+}
+
 .rating-container {
-  padding-top: 10px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,10 +144,15 @@
   flex-direction: row !important;
 }
 
+.comment-text-area {
+  margin-bottom: 20px;
+  min-height: 100px;
+}
+
 .comment-section {
   display: flex;
   flex-direction: column;
-  margin-top: 25px;
+  /* margin-top: 25px; */
   height: 100px;
   width: 100%;
 }
@@ -205,6 +212,7 @@ p {
   margin: 35px 0;
   padding: 5px;
   box-sizing: border-box;
+  max-width: 600px;
 }
 
 textarea {
@@ -224,6 +232,10 @@ textarea {
 
 .modal-footer {
   margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
 }
 
 .problem {
@@ -249,16 +261,23 @@ body.modal-open {
 }
 
 .resource-title-modal {
-  font-size: 30px;
+  font-size: 25px;
   line-height: normal;
   margin-bottom: 10px;
 }
 
-.info {
+.info-groups {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.schedule-info {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 20px 0;
+  /* margin: 20px 0; */
   padding: 0;
 }
 
@@ -281,6 +300,9 @@ body.modal-open {
   display: flex;
   justify-content: center;
   position: relative;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 .account-circle {
@@ -297,10 +319,11 @@ body.modal-open {
 }
 
 .carousel-image {
-  width: 300px;
+  max-width: 400px;
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
-  margin-bottom: 20px;
+  margin: 10px 0;
+  border-radius: 3px;
 }
 
 .arrow-button {
@@ -363,24 +386,40 @@ body.modal-open {
   font-size: 20px;
 }
 
-.modal-text,
-.modal-text-website {
-  text-decoration: none !important;
-  color: black;
-  font-size: 14px;
-}
-
-.modal-text-website:hover {
-  color: blue !important;
-}
-
 .sched-div {
   padding: 5px;
   width: 100%;
 }
 
-@media screen and (max-width: 600px) {
+.schedule-table {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.schedule-column {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+}
+
+.schedule-day {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.schedule-time {
+  margin-bottom: 5px;
+}
+
+@media screen and (max-width: 700px) {
   .details-column {
     flex-direction: column;
+  }
+  .info-groups {
+    flex-direction: column;
+  }
+  .schedule-table {
+    margin-top: 30px !important;
   }
 }
