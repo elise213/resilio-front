@@ -1,9 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
+import Rating from "@mui/material/Rating";
 
 const ResourceCard = (props) => {
-  const { store } = useContext(Context);
+  const { store, actions } = useContext(Context);
+  const [averageRating2, setAverageRating2] = useState(0);
+
+  useEffect(() => {
+    actions.getAverageRating(props.item.id, setAverageRating2);
+  }, [props.item.id, actions]);
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
@@ -75,9 +81,7 @@ const ResourceCard = (props) => {
       className="my-resource-card"
       onClick={() => props.openModal(props.item)}
     >
-      {/* <div className="resource-card-header"> */}
       <span className="resource-title">{props.item.name}</span>
-      {/* </div> */}
       {props.item.image && (
         <img
           className="card-img"
@@ -94,6 +98,14 @@ const ResourceCard = (props) => {
           ))}
         </div>
       )}
+
+      <Rating
+        style={{ flexDirection: "row" }}
+        name="read-only"
+        value={averageRating2}
+        precision={0.5}
+        readOnly
+      />
     </div>
   );
 };
