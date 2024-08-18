@@ -5,6 +5,9 @@
   z-index: 999;
   width: 100%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login-modal-content {
@@ -13,6 +16,10 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .login-modal-header {
