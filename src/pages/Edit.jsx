@@ -274,47 +274,6 @@ const Edit = () => {
           <label htmlFor="address">Address</label>
 
           {isGoogleMapsLoaded && (
-            // <PlacesAutocomplete
-            //   value={formData.address || ""}
-            //   // onChange={(address) => handleChange("address", address)}
-            //   onChange={handleAddressChange}
-            //   onSelect={handleSelect}
-            // >
-            //   {({
-            //     getInputProps,
-            //     suggestions,
-            //     getSuggestionItemProps,
-            //     loading,
-            //   }) => (
-            //     <div>
-            //       <input
-            //         {...getInputProps({
-            //           className: "geo-input",
-            //           id: "address",
-            //           placeholder: "Resource Address",
-            //         })}
-            //       />
-            //       <div>
-            //         {loading ? <div>Loading...</div> : null}
-            //         {suggestions.map((suggestion, index) => {
-            //           const className = suggestion.active
-            //             ? "suggestion-item--active"
-            //             : "suggestion-item";
-            //           return (
-            //             <div
-            //               {...getSuggestionItemProps(suggestion, {
-            //                 className,
-            //               })}
-            //               key={index}
-            //             >
-            //               {suggestion.description}
-            //             </div>
-            //           );
-            //         })}
-            //       </div>
-            //     </div>
-            //   )}
-            // </PlacesAutocomplete>
             <PlacesAutocomplete
               value={formData.address}
               onChange={handleAddressChange}
@@ -326,7 +285,10 @@ const Edit = () => {
                 loading,
               }) => (
                 <div>
-                  <input {...getInputProps({ placeholder: "Type address" })} />
+                  <input
+                    className="geo-input"
+                    {...getInputProps({ placeholder: "Type address" })}
+                  />
                   <div>
                     {loading && <div>Loading...</div>}
                     {suggestions.map((suggestion) => (
@@ -391,23 +353,6 @@ const Edit = () => {
             onChange={(e) => handleChange("image2", e.target.value)}
             placeholder="URL for image 2"
           />
-        </div>
-
-        <div className="input-group">
-          {unrecognizedCategories.map((item, index) => (
-            <div key={index}>
-              <div>{`Unrecognized Category: ${item.category}`}</div>
-              <div
-                onChange={(e) =>
-                  handleUnrecognizedCategoryChange(index, e.target.value)
-                }
-              >
-                <input type="radio" value="keep" name={item.category} /> Keep
-                <input type="radio" value="delete" name={item.category} />{" "}
-                Delete
-              </div>
-            </div>
-          ))}
         </div>
 
         <div className="input-group">

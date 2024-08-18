@@ -22,13 +22,6 @@
   justify-content: space-between;
 }
 
-/* .description-buttons {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  padding-right: 50px;
-} */
-
 .fa-arrow-right {
   margin: 6px 0px 0px 10px;
   animation: wiggle 5s infinite;
@@ -131,6 +124,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 600px;
 }
 
 .rating-label {
@@ -262,9 +256,9 @@ body.modal-open {
 
 .info {
   display: flex;
-  justify-content: center;
+  align-items: center;
   flex-direction: column;
-
+  margin: 20px 0;
   padding: 0;
 }
 
@@ -333,7 +327,7 @@ body.modal-open {
 
 .details-column {
   display: flex;
-
+  flex-direction: column;
   justify-content: center;
   margin: 30px 0;
 }
