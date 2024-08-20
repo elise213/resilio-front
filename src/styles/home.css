@@ -1,13 +1,38 @@
-.deckopen-icon-nav {
-  border-radius: 3px;
+.loading-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  border-radius: 8px;
   text-align: center;
-  z-index: 9999;
-  margin: 3px;
-  display: flex;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.deckopen-icon-nav:hover {
-  color: var(--marascoral) !important;
+.loading-alert::after {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  width: 50px;
+  height: 4px;
+  background-color: #fff;
+  animation: loading 2.2s infinite ease-in-out;
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 50px;
+  }
+  100% {
+    width: 0;
+  }
 }
 
 .grand-resilio-container {
@@ -101,7 +126,7 @@
 .geo-button {
   max-width: 200px;
   align-self: center;
-  margin: 10px;
+  margin: 10px 0 0 0 !important;
 }
 
 .geo-button:hover {

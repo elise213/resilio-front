@@ -4,7 +4,7 @@ import styles from "../styles/loginModal.css";
 import Swal from "sweetalert2";
 import Button from "@mui/material/Button";
 
-const Login = ({ openLoginModal, setOpenLoginModal }) => {
+const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
   const { store, actions } = useContext(Context);
 
   const [log, setLog] = useState("1");
@@ -359,7 +359,10 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             className="login-button-resilio"
             variant="contained"
             color="primary"
-            onClick={() => handleLogout()}
+            onClick={() => {
+              handleLogout();
+              setLayout("fullscreen-sidebar");
+            }}
           >
             Log out
           </Button>
@@ -368,7 +371,10 @@ const Login = ({ openLoginModal, setOpenLoginModal }) => {
             className="login-button-resilio"
             variant="contained"
             color="primary"
-            onClick={() => setOpenLoginModal(true)}
+            onClick={() => {
+              setOpenLoginModal(true);
+              setLayout("fullscreen-sidebar");
+            }}
           >
             Log in
           </Button>
