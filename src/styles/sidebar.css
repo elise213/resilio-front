@@ -167,15 +167,18 @@
   max-height: auto;
   overflow-y: auto;
   scroll-behavior: smooth;
-  max-width: 300px;
   box-sizing: border-box;
-  margin-right: 15px;
+  margin: 0 15px;
+  width: 100%;
 }
 
 .list-container ul {
   padding: 0;
   margin: 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* WebKit Browsers */
@@ -226,6 +229,7 @@
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 80px;
+  overflow-x: hidden;
 }
 
 .nav-item,

@@ -11,15 +11,16 @@
   border-radius: 2%;
   transition: 0.2s;
   overflow: hidden;
-  margin: 10px 0px 0 10px;
+  margin: 10px 0px;
   box-sizing: border-box;
   border-color: transparent;
   border-width: 1px;
   border-style: solid;
-  margin-right: 10px;
   border: 1px solid gray;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  max-width: 300px;
+  width: 100%;
 }
 
 .my-resource-card:hover {
