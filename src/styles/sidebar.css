@@ -338,7 +338,8 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  z-index: 99999999;
+  z-index: 9999;
+  align-items: center;
 }
 
 .navbar-content {
@@ -423,7 +424,7 @@ iframe {
   min-width: 300px;
   margin: 10px 0;
   width: 100%;
-  justify-content: space-around !important;
+  justify-content: flex-end !important;
 }
 
 .button-container-sidebar button {
@@ -435,6 +436,10 @@ iframe {
 }
 
 @media screen and (max-width: 700px) {
+  .button-container-sidebar {
+    justify-content: space-around !important;
+  }
+
   .screen-divider-button {
     display: flex;
     max-height: 35px;

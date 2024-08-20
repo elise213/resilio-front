@@ -27,7 +27,7 @@ const Home = () => {
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
   // STATES
-
+  const [zipInput, setZipInput] = useState("");
   const [layout, setLayout] = useState("split-view"); // options: 'fullscreen-map', 'fullscreen-sidebar', 'split-view'
 
   const INITIAL_CITY_STATE = store.austin[0];
@@ -96,11 +96,62 @@ const Home = () => {
     });
   };
 
+  const updateCityStateFromZip = async (zip) => {
+    console.log(`updateCityStateFromZip called with zip: ${zip}`);
+
+    const data = await fetchCachedBounds(zip, true); // Fetch bounds for the zip code
+
+    if (!data || !data.results.length) {
+      console.error("Failed to fetch bounds or invalid zip code.");
+      return;
+    }
+
+    console.log(`Fetched data for zip: `, data);
+
+    const location = data.results[0]?.geometry?.location;
+    const bounds =
+      data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
+
+    if (location && bounds) {
+      console.log("Updating center to:", location, "Bounds:", bounds);
+
+      // Update the map center and bounds
+      handleBoundsChange({
+        center: { lat: location.lat, lng: location.lng },
+        bounds: {
+          ne: bounds.northeast,
+          sw: bounds.southwest,
+        },
+      });
+
+      await actions.setBoundaryResults(bounds, categories, days, groups);
+    } else {
+      console.error("Location or bounds missing from the response");
+    }
+  };
+
+  useEffect(() => {
+    if (zipInput && zipInput.length === 5) {
+      updateCityStateFromZip(zipInput);
+    }
+  }, [zipInput]);
+
+  const handleZipInputChange = async (e) => {
+    const value = e.target.value;
+    setZipInput(value);
+    if (value.length === 5) {
+      await updateCityStateFromZip(value);
+    }
+  };
+
   const handleBoundsChange = useCallback(
     debounce((data) => {
       setCity((prevState) => ({
         ...prevState,
-        bounds: data.bounds,
+        bounds: {
+          ne: data.bounds.ne, // Northeast corner of bounds
+          sw: data.bounds.sw, // Southwest corner of bounds
+        },
         center: {
           lat: data.center.lat,
           lng: normalizeLongitude(data.center.lng),
@@ -120,48 +171,77 @@ const Home = () => {
     return lng;
   };
 
+  //   let apiUrl;
+  //   if (isZip) {
+  //     apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
+  //   } else {
+  //     apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
+  //   }
+  //   const response = await fetch(apiUrl);
+  //   const data = await response.json();
+
+  //   const location = data.results[0]?.geometry?.location;
+  //   let bounds =
+  //     data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
+
+  //   if (!bounds && location) {
+  //     const offset = 0.01;
+  //     bounds = {
+  //       ne: {
+  //         lat: location.lat + offset,
+  //         lng: normalizeLongitude(location.lng + offset),
+  //       },
+  //       sw: {
+  //         lat: location.lat - offset,
+  //         lng: normalizeLongitude(location.lng - offset),
+  //       },
+  //     };
+  //   }
+  //   return data;
+  // };
+
   const fetchBounds = async (query, isZip = false) => {
     let apiUrl;
+
+    // Use 'address' for zip code search and 'latlng' for lat/lng search
     if (isZip) {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
     } else {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
     }
-    const response = await fetch(apiUrl);
-    const data = await response.json();
 
-    const location = data.results[0]?.geometry?.location;
-    let bounds =
-      data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
+    console.log("Fetching bounds with URL:", apiUrl); // Log the full API URL
 
-    // Fallback logic
-    if (!bounds && location) {
-      const offset = 0.01;
-      bounds = {
-        ne: {
-          lat: location.lat + offset,
-          lng: normalizeLongitude(location.lng + offset),
-        },
-        sw: {
-          lat: location.lat - offset,
-          lng: normalizeLongitude(location.lng - offset),
-        },
-      };
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+      // Check for errors in the response and handle them
+      if (data.status !== "OK") {
+        console.error(`Error fetching data: ${data.status}`, data);
+        return null; // Return null to handle cases where no valid data is found
+      }
+
+      console.log("Fetched data:", data); // Log full response data for debugging
+      return data; // Return the raw data for further processing
+    } catch (error) {
+      console.error("Error fetching bounds:", error);
+      return null;
     }
-    return data;
   };
 
-  const fetchCachedBounds = async (query) => {
+  const fetchCachedBounds = async (query, isZip = false) => {
     const cacheKey = `bounds-${JSON.stringify(query)}`;
     const cachedData = sessionStorage.getItem(cacheKey);
     if (cachedData) {
       return JSON.parse(cachedData);
     }
 
-    let data = await fetchBounds(query); // Your existing fetch function
+    let data = await fetchBounds(query, isZip); // Fetch bounds using zip code
     sessionStorage.setItem(cacheKey, JSON.stringify(data));
     return data;
   };
+
   const updateCityStateFromCoords = async (lat, lng) => {
     try {
       const data = await fetchBounds({ lat, lng });
@@ -195,6 +275,7 @@ const Home = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log("Position:", position.coords); // Check if you get the coordinates here
           setUserLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -288,7 +369,6 @@ const Home = () => {
           setSearchingToday={setSearchingToday}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
           openModal={openModal}
-          geoFindMe={geoFindMe}
           contactModalIsOpen={contactModalIsOpen}
           setContactModalIsOpen={setContactModalIsOpen}
           aboutModalIsOpen={aboutModalIsOpen}
@@ -297,11 +377,17 @@ const Home = () => {
           setDonationModalIsOpen={setDonationModalIsOpen}
           fetchCachedBounds={fetchCachedBounds}
           handleBoundsChange={handleBoundsChange}
+          userLocation={userLocation}
+          setUserLocation={setUserLocation}
+          geoFindMe={geoFindMe}
+          updateCityStateFromZip={updateCityStateFromZip}
         />
         {/* </div> */}
         <div className="grand-map-container">
           <ErrorBoundary>
             <SimpleMap
+              handleZipInputChange={handleZipInputChange}
+              zipInput={zipInput}
               layout={layout}
               addSelectedResource={addSelectedResource}
               removeSelectedResource={removeSelectedResource}
@@ -331,6 +417,9 @@ const Home = () => {
               setAboutModalIsOpen={setAboutModalIsOpen}
               donationModalIsOpen={donationModalIsOpen}
               setDonationModalIsOpen={setDonationModalIsOpen}
+              userLocation={userLocation}
+              setUserLocation={setUserLocation}
+              geoFindMe={geoFindMe}
             />
           </ErrorBoundary>
         </div>
