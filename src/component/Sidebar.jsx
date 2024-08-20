@@ -251,6 +251,7 @@ const Sidebar = ({
               setLog={setLog}
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
+              setLayout={setLayout}
             />
           </div>
 

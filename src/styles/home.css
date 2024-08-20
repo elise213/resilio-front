@@ -126,7 +126,7 @@
 .geo-button {
   max-width: 200px;
   align-self: center;
-  margin: 10px;
+  margin: 10px 0 0 0 !important;
 }
 
 .geo-button:hover {
