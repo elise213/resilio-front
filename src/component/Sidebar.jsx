@@ -232,15 +232,17 @@ const Sidebar = ({
                 </button> */}
                 <button
                   className="screen-divider-button"
-                  onClick={() => setLayout("fullscreen-map")}
+                  onClick={() =>
+                    setLayout(
+                      layout === "fullscreen-map"
+                        ? "fullscreen-sidebar"
+                        : "fullscreen-map"
+                    )
+                  }
                 >
-                  Map View
-                </button>
-                <button
-                  className="screen-divider-button"
-                  onClick={() => setLayout("fullscreen-sidebar")}
-                >
-                  Resource View
+                  {layout === "fullscreen-map"
+                    ? "View List of Resources"
+                    : "View Resources on the Map"}
                 </button>
               </>
             )}
@@ -249,6 +251,7 @@ const Sidebar = ({
               setLog={setLog}
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
+              setLayout={setLayout}
             />
           </div>
 
@@ -355,62 +358,70 @@ const Sidebar = ({
                 </div>
 
                 <div className={navDivListClassName}>
-                  <div className="tab-buttons">
-                    <div
-                      className={
-                        activeTab === "AllResources" ? "active" : "dormant"
-                      }
-                      onClick={() => setActiveTab("AllResources")}
-                    >
-                      {!userSelectedFilter && !searchQuery ? (
-                        <p>
-                          Map Boundary
-                          {store.boundaryResults.length > 0
-                            ? ` (${store.boundaryResults.length})`
-                            : ""}
-                        </p>
-                      ) : (
-                        <p>
-                          Filtered Results
-                          {store.boundaryResults.filter(
-                            (resource) =>
-                              resource.name
-                                .toLowerCase()
-                                .includes(searchQuery.toLowerCase()) ||
-                              (resource.description &&
-                                resource.description
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()))
-                          ).length > 0
-                            ? ` (${
-                                store.boundaryResults.filter(
-                                  (resource) =>
-                                    resource.name
+                  {isLoggedIn && (
+                    <>
+                      <div className="tab-buttons">
+                        <div
+                          className={
+                            activeTab === "AllResources" ? "active" : "dormant"
+                          }
+                          onClick={() => setActiveTab("AllResources")}
+                        >
+                          {!userSelectedFilter && !searchQuery ? (
+                            <p>
+                              Map Boundary
+                              {store.boundaryResults.length > 0
+                                ? ` (${store.boundaryResults.length})`
+                                : ""}
+                            </p>
+                          ) : (
+                            <p>
+                              Filtered Results
+                              {store.boundaryResults.filter(
+                                (resource) =>
+                                  resource.name
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()) ||
+                                  (resource.description &&
+                                    resource.description
                                       .toLowerCase()
-                                      .includes(searchQuery.toLowerCase()) ||
-                                    (resource.description &&
-                                      resource.description
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase()))
-                                ).length
-                              })`
+                                      .includes(searchQuery.toLowerCase()))
+                              ).length > 0
+                                ? ` (${
+                                    store.boundaryResults.filter(
+                                      (resource) =>
+                                        resource.name
+                                          .toLowerCase()
+                                          .includes(
+                                            searchQuery.toLowerCase()
+                                          ) ||
+                                        (resource.description &&
+                                          resource.description
+                                            .toLowerCase()
+                                            .includes(
+                                              searchQuery.toLowerCase()
+                                            ))
+                                    ).length
+                                  })`
+                                : ""}
+                            </p>
+                          )}
+                        </div>
+                        <div
+                          style={{ textAlign: "end" }}
+                          className={
+                            activeTab === "Favorites" ? "active" : "dormant"
+                          }
+                          onClick={() => setActiveTab("Favorites")}
+                        >
+                          Favorites
+                          {store.favorites.length > 0
+                            ? ` (${store.favorites.length})`
                             : ""}
-                        </p>
-                      )}
-                    </div>
-                    <div
-                      style={{ textAlign: "end" }}
-                      className={
-                        activeTab === "Favorites" ? "active" : "dormant"
-                      }
-                      onClick={() => setActiveTab("Favorites")}
-                    >
-                      Favorites
-                      {store.favorites.length > 0
-                        ? ` (${store.favorites.length})`
-                        : ""}
-                    </div>
-                  </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                   {activeTab === "AllResources" && (
                     <CombinedFilters
                       searchQuery={searchQuery}

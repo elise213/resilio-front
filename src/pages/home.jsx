@@ -28,7 +28,7 @@ const Home = () => {
 
   // STATES
   const [zipInput, setZipInput] = useState("");
-  const [layout, setLayout] = useState("split-view"); // options: 'fullscreen-map', 'fullscreen-sidebar', 'split-view'
+  const [layout, setLayout] = useState("fullscreen-sidebar"); // options: 'fullscreen-map', 'fullscreen-sidebar', 'split-view'
 
   const INITIAL_CITY_STATE = store.austin[0];
   // const [showRating, setShowRating] = useState(false);
@@ -271,8 +271,13 @@ const Home = () => {
     setModalIsOpen(false);
   };
 
+  const [loadingLocation, setLoadingLocation] = useState(false); // Add loading state
+
   const geoFindMe = async () => {
     if (navigator.geolocation) {
+      setLayout("fullscreen-map");
+      setLoadingLocation(true); // Show the loading alert
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log("Position:", position.coords); // Check if you get the coordinates here
@@ -284,10 +289,12 @@ const Home = () => {
             position.coords.latitude,
             position.coords.longitude
           );
+          setLoadingLocation(false); // Hide the loading alert after location is found
         },
         (error) => {
           console.log("Error getting position", error);
           alert("Unable to retrieve your location");
+          setLoadingLocation(false); // Hide the loading alert if there's an error
         }
       );
     } else {
@@ -351,6 +358,10 @@ const Home = () => {
 
   return (
     <>
+      {loadingLocation && (
+        <div className="loading-alert">Finding your location...</div>
+      )}
+
       <div className={`grand-resilio-container`}>
         {/* <div className="sidebar-container"> */}
         <Sidebar
