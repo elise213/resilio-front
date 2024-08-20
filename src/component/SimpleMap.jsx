@@ -10,6 +10,7 @@ const SimpleMap = ({
   layout,
   openModal,
   handleBoundsChange,
+  handleZipInputChange,
   city,
   userLocation,
   setHoveredItem,
@@ -19,11 +20,14 @@ const SimpleMap = ({
   selectedResources,
   addSelectedResource,
   removeSelectedResource,
+  // setUserLocation,
+  // geoFindMe,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(true); //not finished
-
+  const [mapCenter, setMapCenter] = useState(city.center);
+  const [mapZoom, setMapZoom] = useState(11); // Default zoom level
   const mapContainerRef = useRef(null);
 
   const createMapOptions = (maps) => {
@@ -33,13 +37,41 @@ const SimpleMap = ({
   };
 
   useEffect(() => {
+    if (city.center) {
+      setMapCenter({
+        lat: city.center.lat,
+        lng: city.center.lng,
+      });
+    }
+  }, [city.center]);
+
+  useEffect(() => {
+    console.log("City center updated to:", city.center);
+    if (city.center) {
+      setMapCenter({
+        lat: city.center.lat,
+        lng: city.center.lng,
+      });
+    }
+  }, [city.center]);
+
+  useEffect(() => {
     const fetchMarkers = async () => {};
     if (city && city.bounds) {
       fetchMarkers();
     }
   }, [city.bounds]);
 
-  // Function to calculate the closest corner
+  useEffect(() => {
+    if (userLocation) {
+      setMapCenter({
+        lat: userLocation.lat,
+        lng: userLocation.lng,
+      });
+      setMapZoom(13);
+    }
+  }, [userLocation]);
+
   const calculateClosestCorner = (cursorX, cursorY) => {
     const mapRect = mapContainerRef.current.getBoundingClientRect();
     const isCloserToTop = cursorY < (mapRect.top + mapRect.bottom) / 2;
@@ -95,9 +127,7 @@ const SimpleMap = ({
         >
           {isHovered && result && (
             <div className={`hover-card ${closestCornerClass}`}>
-              {/* <HoverCard key={result.id} item={result} openModal={openModal} /> */}
               <ResourceCard
-                // number={index + 1}
                 key={result.id}
                 item={result}
                 openModal={openModal}
@@ -138,8 +168,8 @@ const SimpleMap = ({
           {isGoogleMapsLoaded && (
             <GoogleMapReact
               bootstrapURLKeys={{ key: apiKey }}
-              center={city.center}
-              bounds={city.bounds}
+              center={mapCenter}
+              zoom={mapZoom} // Use the dynamic zoom level here
               defaultZoom={11}
               options={createMapOptions}
               onChange={handleBoundsChange}
