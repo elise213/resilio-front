@@ -92,7 +92,6 @@
 
 .function-buttons {
   display: none;
-
   box-sizing: border-box;
   justify-content: space-between;
   background-color: white;
@@ -100,15 +99,13 @@
 }
 
 .geo-button {
-  border-radius: 3px;
-  text-align: center;
-  height: 30px;
-  background-color: lightgreen;
+  max-width: 200px;
+  align-self: center;
+  margin: 10px;
 }
 
 .geo-button:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 4px 10px 0 rgba(0, 0, 0, 0.29);
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .search-bar input,
@@ -133,7 +130,7 @@
   width: 230px;
   align-self: center;
   padding: 4px;
-  margin: 5px 0 10px 0;
+  margin: 5px 0;
 }
 
 .search-bar input {

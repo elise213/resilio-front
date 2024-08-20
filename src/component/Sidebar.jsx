@@ -6,6 +6,7 @@ import ResourceCard from "./ResourceCard";
 import Contact from "./Contact";
 import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
+import Button from "@mui/material/Button";
 
 const Sidebar = ({
   layout,
@@ -38,6 +39,10 @@ const Sidebar = ({
   setDonationModalIsOpen,
   fetchCachedBounds,
   handleBoundsChange,
+  // userLocation,
+  // setUserLocation,
+  geoFindMe,
+  updateCityStateFromZip,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,34 +59,18 @@ const Sidebar = ({
     day: false,
   });
 
-  // Manage layout state within the Sidebar component
-
-  const handleZipInputChange = (e) => {
-    const value = e.target.value;
-    setLocalZipInput(value);
-  };
-
   useEffect(() => {
     if (localZipInput.length === 5) {
       updateCityStateFromZip(localZipInput);
     }
   }, [localZipInput]);
 
-  const updateCityStateFromZip = async (zip) => {
-    try {
-      const data = await fetchCachedBounds(zip, true);
-      console.log("API Response:", data); // Add this line for debugging
-      const location = data.results[0]?.geometry?.location;
-      const bounds =
-        data.results[0]?.geometry?.bounds ||
-        data.results[0]?.geometry?.viewport;
+  const handleZipInputChange = (e) => {
+    const value = e.target.value;
+    setLocalZipInput(value);
 
-      if (location && bounds) {
-        handleBoundsChange({ center: location, bounds: bounds });
-        await actions.setBoundaryResults(bounds, categories, days, groups);
-      }
-    } catch (error) {
-      console.error("Error fetching bounds:", error.message);
+    if (value.length === 5) {
+      updateCityStateFromZip(value);
     }
   };
 
@@ -267,6 +256,15 @@ const Sidebar = ({
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>
 
+          {!hasBoundaryResults && !store.boundaryResults.length > 0 && (
+            <>
+              <span style={{ margin: "20px" }}>
+                {" "}
+                No results. Please zoom out or move the map to find resources{" "}
+              </span>
+            </>
+          )}
+
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
             <>
               <div className=" nav-div">
@@ -292,7 +290,15 @@ const Sidebar = ({
                   groups ? (
                     <ErrorBoundary>
                       <div className="dropdown">
-                        <button
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={geoFindMe}
+                          className="geo-button"
+                        >
+                          Find My Location
+                        </Button>
+                        {/* <button
                           className="dropdown-button location"
                           onClick={toggleLocationDropdown}
                         >
@@ -312,8 +318,19 @@ const Sidebar = ({
                               maxLength="5"
                               placeholder="Zip Code"
                             />
+                            <button className="geo-button" onClick={geoFindMe}>
+                              Get My Location
+                            </button>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={geoFindMe}
+                              className="geo-button"
+                            >
+                              Find My Location
+                            </Button>
                           </div>
-                        )}
+                        )} */}
 
                         <Selection
                           openDropdown={openDropdown}

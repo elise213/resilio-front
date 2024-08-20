@@ -17,14 +17,7 @@
 }
 
 .dropdowns-container {
-  margin-bottom: 6px;
-}
-
-.dropdown-content {
-  margin-bottom: 5px;
-}
-
-.dropdowns-container {
+  margin: 5px 0;
   display: flex;
   justify-content: center;
 }
