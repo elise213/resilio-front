@@ -126,7 +126,7 @@
 .geo-button {
   max-width: 200px;
   align-self: center;
-  margin: 10px 0 0 0 !important;
+  /* margin: 10px 0 0 0 !important; */
 }
 
 .geo-button:hover {
@@ -155,7 +155,7 @@
   width: 230px;
   align-self: center;
   padding: 4px;
-  margin: 5px 0;
+  margin: 15px 5px;
 }
 
 .search-bar input {
