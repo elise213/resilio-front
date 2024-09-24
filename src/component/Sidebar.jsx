@@ -240,12 +240,11 @@ const Sidebar = ({
                     )
                   }
                 >
-                  {layout === "fullscreen-map"
-                    ? "View List of Resources"
-                    : "View Resources on the Map"}
+                  {layout === "fullscreen-map" ? "List View" : "Map View"}
                 </button>
               </>
             )}
+
             <Login
               log={log}
               setLog={setLog}
@@ -254,7 +253,7 @@ const Sidebar = ({
               setLayout={setLayout}
             />
           </div>
-
+          <img className="resilio-logo" src="/assets/RESILIO2.png" />
           <div className="logo-div">
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>
