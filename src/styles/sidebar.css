@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
+.resilio-logo {
+  height: 30px;
+  width: auto;
+}
+
 .active-filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
