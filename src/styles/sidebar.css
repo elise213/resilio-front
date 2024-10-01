@@ -2,7 +2,7 @@
 
 .resilio-logo {
   height: 30px;
-  width: auto;
+  width: 160px;
 }
 
 .active-filters {
@@ -366,6 +366,7 @@
   border: 3px solid black;
   border-bottom-color: transparent !important;
   background-color: white;
+  align-items: center;
 }
 
 .close-icon-nav,
