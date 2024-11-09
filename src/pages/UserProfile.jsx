@@ -15,16 +15,16 @@ const UserProfile = () => {
           </p>
           <div className="favorites-col">
             <ul className="favorites-list" style={{ listStyleType: "none" }}>
-              {store.favorites.map((result, i) => (
+              {store.favorites.map((resource, index) => (
                 <li key={i}>
                   <ResourceCard
-                    category={result.category}
-                    key={result.id}
-                    name={result.name}
-                    logo={result.logo}
-                    image={result.image}
-                    description={result.description}
-                    id={result.id}
+                    number={index + 1}
+                    key={resource.id}
+                    item={resource}
+                    openModal={openModal}
+                    closeModal={closeModal}
+                    modalIsOpen={modalIsOpen}
+                    setModalIsOpen={setModalIsOpen}
                   />
                 </li>
               ))}

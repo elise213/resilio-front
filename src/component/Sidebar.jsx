@@ -12,26 +12,20 @@ const Sidebar = ({
   layout,
   setLayout,
   INITIAL_DAY_STATE,
-  addSelectedResource,
   contactModalIsOpen,
   setContactModalIsOpen,
   categories,
-  closeModal,
   days,
   groups,
   log,
   modalIsOpen,
   openLoginModal,
   setOpenLoginModal,
-  openModal,
-  removeSelectedResource,
   searchingToday,
-  selectedResources,
   setCategories,
   setDays,
   setGroups,
   setLog,
-  setModalIsOpen,
   setSearchingToday,
   aboutModalIsOpen,
   setAboutModalIsOpen,
@@ -225,12 +219,6 @@ const Sidebar = ({
           >
             {!openLoginModal && (
               <>
-                {/* <button
-                  className="screen-divider-button"
-                  onClick={() => setLayout("split-view")}
-                >
-                  Split View
-                </button> */}
                 <button
                   className="screen-divider-button"
                   onClick={() =>
@@ -366,7 +354,7 @@ const Sidebar = ({
                 )}
 
                 <div className={navDivListClassName}>
-                  {isLoggedIn && (
+                  {/* {isLoggedIn && (
                     <>
                       <div className="tab-buttons">
                         <div
@@ -429,7 +417,7 @@ const Sidebar = ({
                         </div>
                       </div>
                     </>
-                  )}
+                  )} */}
                   {activeTab === "AllResources" && (
                     <CombinedFilters
                       searchQuery={searchQuery}
@@ -460,64 +448,9 @@ const Sidebar = ({
                                 number={index + 1}
                                 key={resource.id}
                                 item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
+                                openModal={store.openModal}
+                                closeModal={store.closeModal}
                                 modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                              />
-                            ))}
-                      </ul>
-                    )}
-                    {!isLoggedIn && activeTab === "Favorites" && (
-                      <div className="please-log">
-                        Please
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          className="log-in"
-                          onClick={() => {
-                            setOpenLoginModal(true);
-                            setModalIsOpen(false);
-                          }}
-                        >
-                          log in
-                        </span>
-                        to save favorites
-                      </div>
-                    )}
-
-                    {activeTab === "Favorites" && isLoggedIn && (
-                      <ul>
-                        {Array.isArray(store.favorites) &&
-                          store.favorites
-                            .filter((resource) => {
-                              const nameMatches =
-                                resource.name &&
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase());
-                              const descriptionMatches =
-                                resource.description &&
-                                resource.description
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase());
-                              return nameMatches || descriptionMatches;
-                            })
-                            .map((resource, index) => (
-                              <ResourceCard
-                                key={`${resource.id}-${index}`}
-                                number={index + 1}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
                               />
                             ))}
                       </ul>

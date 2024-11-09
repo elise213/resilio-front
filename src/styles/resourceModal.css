@@ -31,15 +31,14 @@
 }
 
 .info-address {
-  margin: 10px 10px 0 0;
-  padding: 0;
+  padding: 6px;
+  width: 100%;
   align-items: center;
   display: flex;
   text-align: justify;
-}
-
-.info-address:hover {
-  cursor: pointer;
+  justify-content: space-between;
+  border-bottom: 1px solid gray;
+  text-decoration: none;
 }
 
 .modal-open {
@@ -89,6 +88,12 @@
   justify-content: flex-end;
 }
 
+.read-more {
+  font-size: 11px;
+  color: gray;
+  /* margin-left: 10px; */
+}
+
 .read-more:hover {
   cursor: pointer;
   color: darkblue;
@@ -118,11 +123,9 @@
 
 .resource-info {
   margin-top: 30px;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 600px;
 }
 
 .rating-label {
@@ -192,7 +195,7 @@ p {
 }
 
 .comment-user-info {
-  font-size: 14px;
+  font-size: 11px;
   color: #cccccc;
   display: flex;
   justify-content: flex-end;
@@ -200,19 +203,22 @@ p {
 
 .user-reviews {
   text-align: center;
-  text-decoration: underline;
-  font-size: 15px;
-  margin-bottom: 20px;
+  /* text-decoration: underline; */
+  font-size: 20px;
+  padding: 8px;
+  border-bottom: 1px solid black;
 }
 
 .comments-display {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 35px 0;
-  padding: 5px;
+  width: 450px;
+  margin: 135px 0 0 0;
   box-sizing: border-box;
   max-width: 600px;
+  border: 1px solid black;
+  border-radius: 4px;
+  align-self: center;
 }
 
 textarea {
@@ -263,14 +269,16 @@ body.modal-open {
 .resource-title-modal {
   font-size: 25px;
   line-height: normal;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .info-groups {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  width: 450px;
 }
 
 .schedule-info {
@@ -292,22 +300,14 @@ body.modal-open {
 
 .comment-content-div {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 /* ____________________________________________CAROUSEL  */
-.carousel-container {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-}
 
 .account-circle {
-  font-size: 25px;
-  margin-right: 10px;
+  font-size: 15px;
+  align-self: center;
 }
 
 .modal-description {
@@ -393,23 +393,23 @@ body.modal-open {
 
 .schedule-table {
   display: flex;
-  justify-content: flex-start;
-  margin-top: 10px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .schedule-column {
   display: flex;
   flex-direction: column;
-  padding-right: 20px;
 }
 
 .schedule-day {
-  font-weight: bold;
+  /* font-weight: bold; */
   margin-bottom: 5px;
 }
 
 .schedule-time {
   margin-bottom: 5px;
+  text-align: end;
 }
 
 @media screen and (max-width: 700px) {
@@ -418,6 +418,7 @@ body.modal-open {
   }
   .info-groups {
     flex-direction: column;
+    width: auto;
   }
   .schedule-table {
     margin-top: 30px !important;

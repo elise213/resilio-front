@@ -7,24 +7,13 @@ import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 
-const Modal = ({
-  resource,
-  modalIsOpen,
-  setModalIsOpen,
-  removeSelectedResource,
-  selectedResources,
-  addSelectedResource,
-  setAboutModalIsOpen,
-  setOpenLoginModal,
-
-}) => {
+const Modal = ({ setOpenLoginModal }) => {
   const { store, actions } = useContext(Context);
 
   const [rating, setRating] = useState(0);
   const [showRating, setShowRating] = useState(false);
 
   const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
-
 
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
 
@@ -34,21 +23,15 @@ const Modal = ({
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
+
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  const resource = store.selectedResource;
 
   function toggleRatingModal() {
     setShowRating(!showRating);
   }
-
-  useEffect(() => {
-    actions.getAverageRating(resource.id, setAverageRating);
-    actions.getComments(resource.id, setComments);
-  }, [resource.id, actions]);
-
-  useEffect(() => {
-    console.log("showRating", showRating);
-  }, [showRating]);
 
   const fetchLatestCommentsAndRatings = () => {
     actions.getAverageRating(resource.id, setAverageRating);
@@ -59,7 +42,9 @@ const Modal = ({
     fetchLatestCommentsAndRatings();
   }, [resource.id, actions]);
 
-
+  useEffect(() => {
+    console.log("resource", resource);
+  }, []);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -68,7 +53,7 @@ const Modal = ({
     };
 
     checkLoginStatus();
-  }, [store.token, modalIsOpen]);
+  }, [store.token, store.modalIsOpen]);
 
   useEffect(() => {
     if (store.favorites) {
@@ -79,8 +64,6 @@ const Modal = ({
       setIsFavorited(isItemFavorited);
     }
   }, [store.favorites]);
-
-
 
   // REFS
   const ratingModalRef = useRef(null);
@@ -95,48 +78,27 @@ const Modal = ({
 
   return (
     <>
-      <p className="close-modal" onClick={() => setModalIsOpen(false)}>
+      <p
+        className="close-modal"
+        onClick={() => {
+          actions.closeModal();
+        }}
+      >
         <span className="material-symbols-outlined">arrow_back_ios</span>
         Back to search
       </p>
       <div className="resource-info">
-        <div
-          className="resource-rating"
-          onClick={() => {
-            toggleRatingModal();
-          }}
-          title="Click to rate and review this resource"
-        >
-          <span
-            className="resource-title-modal"
-            style={{ textAlign: "center" }}
-          >
-            {resource.name}
-          </span>
-          <Rating
-            style={{ flexDirection: "row", fontSize: "30px" }}
-            name="read-only"
-            value={averageRating}
-            precision={0.5}
-            readOnly
-          />
-        </div>
-
         <ModalInfo
-          setModalIsOpen={setModalIsOpen}
           setOpenLoginModal={setOpenLoginModal}
-          modalIsOpen={modalIsOpen}
-          id={resource.id}
           schedule={resource.schedule}
           res={resource}
           isFavorited={isFavorited}
           setIsFavorited={setIsFavorited}
           setShowRating={setShowRating}
-          addSelectedResource={addSelectedResource}
-          removeSelectedResource={removeSelectedResource}
-          selectedResource={resource}
-          selectedResources={selectedResources}
-          setAboutModalIsOpen={setAboutModalIsOpen}
+          setComments={setComments}
+          averageRating={averageRating}
+          setAverageRating={setAverageRating}
+          toggleRatingModal={toggleRatingModal}
         />
       </div>
 
@@ -164,12 +126,12 @@ const Modal = ({
                     <p className="comment-content">{comment.comment_cont}</p>
                   </div>
                   <div className="comment-content-div">
-                    <p className="comment-date">{formattedDate}</p>
                     <div className="comment-user-info">
                       <span className="material-symbols-outlined account-circle">
                         account_circle
                       </span>
-                      {comment.user_id}{" "}
+                      {comment.user_id} {"   "}
+                      {formattedDate}
                     </div>
                   </div>
                 </div>
@@ -189,7 +151,7 @@ const Modal = ({
               onClick={() => {
                 setOpenLoginModal(true);
                 setShowRating(false);
-                setModalIsOpen(false);
+                actions.closeModal;
               }}
             >
               Log in
@@ -218,7 +180,6 @@ const Modal = ({
       {showRating && (
         <>
           <div className="rate" ref={ratingModalRef}>
-            {/* <div className="custom-login-modal-header"> */}
             <span className="close-modal" onClick={() => setShowRating(false)}>
               <span className="material-symbols-outlined">arrow_back_ios</span>
               Back to Resource Listing
@@ -234,7 +195,7 @@ const Modal = ({
                   onClick={() => {
                     setOpenLoginModal(true);
                     setShowRating(false);
-                    setModalIsOpen(false);
+                    actions.closeModal;
                   }}
                 >
                   log in
