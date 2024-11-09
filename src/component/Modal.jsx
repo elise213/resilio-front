@@ -14,13 +14,9 @@ const Modal = ({
   removeSelectedResource,
   selectedResources,
   addSelectedResource,
-  // setFavorites,
-  setContactModalIsOpen,
   setAboutModalIsOpen,
   setOpenLoginModal,
-  openLoginModal,
-  // showRating,
-  // setShowRating,
+
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -29,7 +25,7 @@ const Modal = ({
 
   const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
 
-  // const isAuthorizedUser = validUserIds.includes(store.user_id);
+
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
 
   const isAuthorizedUser = validUserIds.includes(userIdFromSession);
@@ -45,26 +41,10 @@ const Modal = ({
     setShowRating(!showRating);
   }
 
-  // const handleSubmitRatingAndComment = () => {
-  //   console.log("Submit button clicked");
-  //   actions
-  //     .submitRatingAndComment(resource.id, comment, rating)
-  //     .then((response) => {
-  //       console.log("Success", response);
-  //       Swal.fire("Success", "Your review has been submitted!", "success");
-
-  //       // Reset form state here if needed
-  //       setRating(0);
-  //       setComment("");
-
-  //       // Refetch the latest comments and average rating
-  //       fetchLatestCommentsAndRatings();
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error submitting review:", error);
-  //       Swal.fire("Error", "Failed to submit your review.", "error");
-  //     });
-  // };
+  useEffect(() => {
+    actions.getAverageRating(resource.id, setAverageRating);
+    actions.getComments(resource.id, setComments);
+  }, [resource.id, actions]);
 
   useEffect(() => {
     console.log("showRating", showRating);
@@ -79,7 +59,8 @@ const Modal = ({
     fetchLatestCommentsAndRatings();
   }, [resource.id, actions]);
 
-  // USE EFFECTS
+
+
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
@@ -99,10 +80,7 @@ const Modal = ({
     }
   }, [store.favorites]);
 
-  useEffect(() => {
-    actions.getAverageRating(resource.id, setAverageRating);
-    actions.getComments(resource.id, setComments);
-  }, [resource.id, actions]);
+
 
   // REFS
   const ratingModalRef = useRef(null);
