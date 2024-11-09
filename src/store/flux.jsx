@@ -807,22 +807,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       getAverageRating: async (resourceId, setAverageRatingCallback) => {
         const current_back_url = getStore().current_back_url;
-
+    
         try {
-          const response = await fetch(
-            `${current_back_url}/api/rating?resource=${resourceId}`
-          );
-          const data = await response.json();
-          if (data.rating === "No ratings yet") {
-            setAverageRatingCallback(0);
-          } else {
-            setAverageRatingCallback(parseFloat(data.rating)); // Ensure it's a number
-          }
+            const response = await fetch(
+                `${current_back_url}/api/rating?resource=${resourceId}`
+            );
+    
+            // Check if response is ok (status code 200-299)
+            if (!response.ok) {
+                console.error(`Server Error: ${response.status} ${response.statusText}`);
+                setAverageRatingCallback(0);
+                return;
+            }
+    
+            // Try parsing the JSON response
+            const data = await response.json().catch((e) => {
+                console.error("Invalid JSON response:", e);
+                setAverageRatingCallback(0);
+                return;
+            });
+    
+            if (data && data.rating === "No ratings yet") {
+                setAverageRatingCallback(0);
+            } else if (data && typeof data.rating !== "undefined") {
+                setAverageRatingCallback(parseFloat(data.rating)); // Ensure it's a number
+            } else {
+                console.warn("Unexpected response structure:", data);
+                setAverageRatingCallback(0);
+            }
         } catch (error) {
-          console.error("Error:", error);
-          setAverageRatingCallback(0); // set a default value in case of an error
+            console.error("Network Error:", error);
+            setAverageRatingCallback(0); // Set a default value in case of an error
         }
-      },
+    },
+    
 
       submitRatingAndComment: async (
         resourceId,
