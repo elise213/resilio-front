@@ -8,27 +8,21 @@ import ResourceCard from "../component/ResourceCard";
 
 const SimpleMap = ({
   layout,
-  openModal,
   handleBoundsChange,
-  handleZipInputChange,
   city,
   userLocation,
   setHoveredItem,
-  closeModal,
-  modalIsOpen,
-  setModalIsOpen,
-  selectedResources,
-  addSelectedResource,
-  removeSelectedResource,
-  // setUserLocation,
-  // geoFindMe,
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(true); //not finished
   const [mapCenter, setMapCenter] = useState(city.center);
-  const [mapZoom, setMapZoom] = useState(11); // Default zoom level
+  const [mapZoom, setMapZoom] = useState(11);
   const mapContainerRef = useRef(null);
+  const selectedResources = store.selectedResources;
+
+  const closeModal = actions.closeModal;
+  const openModal = actions.openModal;
 
   const createMapOptions = (maps) => {
     return {
@@ -132,11 +126,6 @@ const SimpleMap = ({
                 item={result}
                 openModal={openModal}
                 closeModal={closeModal}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                selectedResources={selectedResources}
-                addSelectedResource={addSelectedResource}
-                removeSelectedResource={removeSelectedResource}
               />
             </div>
           )}
@@ -169,7 +158,7 @@ const SimpleMap = ({
             <GoogleMapReact
               bootstrapURLKeys={{ key: apiKey }}
               center={mapCenter}
-              zoom={mapZoom} // Use the dynamic zoom level here
+              zoom={mapZoom} // dynamic zoom level
               defaultZoom={11}
               options={createMapOptions}
               onChange={handleBoundsChange}

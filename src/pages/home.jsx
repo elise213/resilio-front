@@ -4,14 +4,19 @@ import Sidebar from "../component/Sidebar";
 import SimpleMap from "../component/SimpleMap";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
-import Buttons from "../component/Buttons";
+
 import { debounce } from "lodash";
 import { Modal } from "../component";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
-
   const apiKey = import.meta.env.VITE_GOOGLE;
+  const [isModalOpen, setIsModalOpen] = useState(store.modalIsOpen);
+
+  // Use effect to monitor store changes and update local state
+  useEffect(() => {
+    setIsModalOpen(store.modalIsOpen);
+  }, [store.modalIsOpen]);
 
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
@@ -28,28 +33,17 @@ const Home = () => {
 
   // STATES
   const [zipInput, setZipInput] = useState("");
-  const [layout, setLayout] = useState("fullscreen-sidebar"); // options: 'fullscreen-map', 'fullscreen-sidebar', 'split-view'
+  const [layout, setLayout] = useState("fullscreen-sidebar");
 
   const INITIAL_CITY_STATE = store.austin[0];
-  // const [showRating, setShowRating] = useState(false);
-
-  const [selectedResources, setSelectedResources] = useState(() => {
-    const storedResources = actions.getSessionSelectedResources();
-    return storedResources;
-  });
   const [loading, setLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
-  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
-  const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedResource, setSelectedResource] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
-  const [favorites, setFavorites] = useState(
-    JSON.parse(sessionStorage.getItem("favorites")) || []
-  );
+
+  const favorites = store.favorites;
+  // );
 
   const [searchingToday, setSearchingToday] = useState(false);
   const [categories, setCategories] = useState(
@@ -61,72 +55,35 @@ const Home = () => {
   const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
   const [openLoginModal, setOpenLoginModal] = useState(false);
 
-  const updateSessionStorage = (resources) => {
-    sessionStorage.setItem("selectedResources", JSON.stringify(resources));
-  };
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = sessionStorage.getItem("token") || store.token;
+      setIsLoggedIn(!!token);
+    };
 
-  const addSelectedResource = (resource) => {
-    if (!resource) {
-      console.error("Resource is undefined");
-      return;
-    }
-    setSelectedResources((prevResources) => {
-      if (prevResources.length >= 10) {
-        Swal.fire({
-          title: "Please limit the plan to 10 resources at a time",
-        });
-        return prevResources;
-      }
+    checkLoginStatus();
+  }, [store.token]);
 
-      if (!prevResources.some((r) => r.id === resource.id)) {
-        const updatedResources = [...prevResources, resource];
-        console.log("Updated Resources", updatedResources);
-        updateSessionStorage(updatedResources);
-        return updatedResources;
-      }
-      return prevResources;
-    });
-  };
-
-  const removeSelectedResource = (resourceId) => {
-    setSelectedResources((prevResources) => {
-      const updatedResources = prevResources.filter((r) => r.id !== resourceId);
-      updateSessionStorage(updatedResources);
-      return updatedResources;
-    });
-  };
+  // const updateCityStateFromZip = async (zip) => {
 
   const updateCityStateFromZip = async (zip) => {
-    console.log(`updateCityStateFromZip called with zip: ${zip}`);
+    const data = await fetchCachedBounds(zip, true);
+    if (data && data.results.length) {
+      const location = data.results[0]?.geometry?.location;
+      const bounds =
+        data.results[0]?.geometry?.bounds ||
+        data.results[0]?.geometry?.viewport;
 
-    const data = await fetchCachedBounds(zip, true); // Fetch bounds for the zip code
-
-    if (!data || !data.results.length) {
-      console.error("Failed to fetch bounds or invalid zip code.");
-      return;
-    }
-
-    console.log(`Fetched data for zip: `, data);
-
-    const location = data.results[0]?.geometry?.location;
-    const bounds =
-      data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
-
-    if (location && bounds) {
-      console.log("Updating center to:", location, "Bounds:", bounds);
-
-      // Update the map center and bounds
-      handleBoundsChange({
-        center: { lat: location.lat, lng: location.lng },
-        bounds: {
-          ne: bounds.northeast,
-          sw: bounds.southwest,
-        },
-      });
-
-      await actions.setBoundaryResults(bounds, categories, days, groups);
-    } else {
-      console.error("Location or bounds missing from the response");
+      if (location && bounds) {
+        actions.setBoundaryResults(bounds, categories, days, groups); // Update boundary results
+        handleBoundsChange({
+          center: { lat: location.lat, lng: location.lng },
+          bounds: {
+            ne: bounds.northeast,
+            sw: bounds.southwest,
+          },
+        });
+      }
     }
   };
 
@@ -146,19 +103,20 @@ const Home = () => {
 
   const handleBoundsChange = useCallback(
     debounce((data) => {
-      setCity((prevState) => ({
-        ...prevState,
+      actions.setBoundaryResults(data.bounds, categories, days, groups); // Call Flux action to update boundary results
+      setCity({
+        ...city,
         bounds: {
-          ne: data.bounds.ne, // Northeast corner of bounds
-          sw: data.bounds.sw, // Southwest corner of bounds
+          ne: data.bounds.ne,
+          sw: data.bounds.sw,
         },
         center: {
           lat: data.center.lat,
           lng: normalizeLongitude(data.center.lng),
         },
-      }));
+      });
     }, 600),
-    []
+    [categories, days, groups]
   );
 
   const normalizeLongitude = (lng) => {
@@ -171,59 +129,28 @@ const Home = () => {
     return lng;
   };
 
-  //   let apiUrl;
-  //   if (isZip) {
-  //     apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
-  //   } else {
-  //     apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
-  //   }
-  //   const response = await fetch(apiUrl);
-  //   const data = await response.json();
-
-  //   const location = data.results[0]?.geometry?.location;
-  //   let bounds =
-  //     data.results[0]?.geometry?.bounds || data.results[0]?.geometry?.viewport;
-
-  //   if (!bounds && location) {
-  //     const offset = 0.01;
-  //     bounds = {
-  //       ne: {
-  //         lat: location.lat + offset,
-  //         lng: normalizeLongitude(location.lng + offset),
-  //       },
-  //       sw: {
-  //         lat: location.lat - offset,
-  //         lng: normalizeLongitude(location.lng - offset),
-  //       },
-  //     };
-  //   }
-  //   return data;
-  // };
-
   const fetchBounds = async (query, isZip = false) => {
     let apiUrl;
 
-    // Use 'address' for zip code search and 'latlng' for lat/lng search
     if (isZip) {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
     } else {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
     }
 
-    console.log("Fetching bounds with URL:", apiUrl); // Log the full API URL
+    console.log("Fetching bounds with URL:", apiUrl);
 
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      // Check for errors in the response and handle them
       if (data.status !== "OK") {
         console.error(`Error fetching data: ${data.status}`, data);
-        return null; // Return null to handle cases where no valid data is found
+        return null;
       }
 
-      console.log("Fetched data:", data); // Log full response data for debugging
-      return data; // Return the raw data for further processing
+      console.log("Fetched data:", data);
+      return data;
     } catch (error) {
       console.error("Error fetching bounds:", error);
       return null;
@@ -237,7 +164,7 @@ const Home = () => {
       return JSON.parse(cachedData);
     }
 
-    let data = await fetchBounds(query, isZip); // Fetch bounds using zip code
+    let data = await fetchBounds(query, isZip);
     sessionStorage.setItem(cacheKey, JSON.stringify(data));
     return data;
   };
@@ -261,26 +188,45 @@ const Home = () => {
     }
   };
 
-  const openModal = (resource) => {
-    setSelectedResource(resource);
-    setModalIsOpen(true);
-  };
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
-  const closeModal = () => {
-    setSelectedResource(null);
-    setModalIsOpen(false);
-  };
+  // const geoFindMe = async () => {
+  //   if (navigator.geolocation) {
+  //     setLayout("fullscreen-map");
+  //     setLoadingLocation(true);
 
-  const [loadingLocation, setLoadingLocation] = useState(false); // Add loading state
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         console.log("Position:", position.coords);
+  //         setUserLocation({
+  //           lat: position.coords.latitude,
+  //           lng: position.coords.longitude,
+  //         });
+  //         updateCityStateFromCoords(
+  //           position.coords.latitude,
+  //           position.coords.longitude
+  //         );
+  //         setLoadingLocation(false);
+  //       },
+  //       (error) => {
+  //         console.log("Error getting position", error);
+  //         alert("Unable to retrieve your location");
+  //         setLoadingLocation(false);
+  //       }
+  //     );
+  //   } else {
+  //     alert("Geolocation is not supported by your browser");
+  //   }
+  // };
+
+  // USE EFFECTS
 
   const geoFindMe = async () => {
     if (navigator.geolocation) {
-      setLayout("fullscreen-map");
-      setLoadingLocation(true); // Show the loading alert
+      setLoadingLocation(true);
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log("Position:", position.coords); // Check if you get the coordinates here
           setUserLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -289,20 +235,18 @@ const Home = () => {
             position.coords.latitude,
             position.coords.longitude
           );
-          setLoadingLocation(false); // Hide the loading alert after location is found
+          setLoadingLocation(false);
         },
         (error) => {
           console.log("Error getting position", error);
           alert("Unable to retrieve your location");
-          setLoadingLocation(false); // Hide the loading alert if there's an error
+          setLoadingLocation(false);
         }
       );
     } else {
       alert("Geolocation is not supported by your browser");
     }
   };
-
-  // USE EFFECTS
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -363,11 +307,9 @@ const Home = () => {
       )}
 
       <div className={`grand-resilio-container`}>
-        {/* <div className="sidebar-container"> */}
         <Sidebar
           layout={layout}
           setLayout={setLayout}
-          // setShowRating={setShowRating}
           openLoginModal={openLoginModal}
           setOpenLoginModal={setOpenLoginModal}
           categories={categories}
@@ -379,13 +321,6 @@ const Home = () => {
           setDays={setDays}
           setSearchingToday={setSearchingToday}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-          openModal={openModal}
-          contactModalIsOpen={contactModalIsOpen}
-          setContactModalIsOpen={setContactModalIsOpen}
-          aboutModalIsOpen={aboutModalIsOpen}
-          setAboutModalIsOpen={setAboutModalIsOpen}
-          donationModalIsOpen={donationModalIsOpen}
-          setDonationModalIsOpen={setDonationModalIsOpen}
           fetchCachedBounds={fetchCachedBounds}
           handleBoundsChange={handleBoundsChange}
           userLocation={userLocation}
@@ -400,13 +335,9 @@ const Home = () => {
               handleZipInputChange={handleZipInputChange}
               zipInput={zipInput}
               layout={layout}
-              addSelectedResource={addSelectedResource}
-              removeSelectedResource={removeSelectedResource}
               favorites={favorites}
-              setFavorites={setFavorites}
               hoveredItem={hoveredItem}
               setHoveredItem={setHoveredItem}
-              openModal={openModal}
               city={city}
               categories={categories}
               days={days}
@@ -417,51 +348,22 @@ const Home = () => {
               setDays={setDays}
               setSearchingToday={setSearchingToday}
               INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-              closeModal={closeModal}
-              modalIsOpen={modalIsOpen}
-              setModalIsOpen={setModalIsOpen}
-              selectedResource={selectedResource}
-              setSelectedResource={setSelectedResource}
-              selectedResources={selectedResources}
-              setSelectedResources={setSelectedResources}
-              aboutModalIsOpen={aboutModalIsOpen}
-              setAboutModalIsOpen={setAboutModalIsOpen}
-              donationModalIsOpen={donationModalIsOpen}
-              setDonationModalIsOpen={setDonationModalIsOpen}
               userLocation={userLocation}
               setUserLocation={setUserLocation}
               geoFindMe={geoFindMe}
             />
           </ErrorBoundary>
         </div>
-        {modalIsOpen && (
+
+        {isModalOpen && (
           <div className="modal-div">
             <Modal
-              // setShowRating={setShowRating}
-              removeSelectedResource={removeSelectedResource}
-              resource={selectedResource}
-              selectedResources={selectedResources}
-              addSelectedResource={addSelectedResource}
-              modalIsOpen={modalIsOpen}
-              closeModal={closeModal}
-              setModalIsOpen={setModalIsOpen}
-              setFavorites={setFavorites}
-              setContactModalIsOpen={setContactModalIsOpen}
-              contactModalIsOpen={contactModalIsOpen}
               setOpenLoginModal={setOpenLoginModal}
               openLoginModal={openLoginModal}
             />
           </div>
         )}
-        <Buttons
-          setAboutModalIsOpen={setAboutModalIsOpen}
-          setContactModalIsOpen={setContactModalIsOpen}
-          setDonationModalIsOpen={setDonationModalIsOpen}
-          donationModalIsOpen={donationModalIsOpen}
-          contactModalIsOpen={contactModalIsOpen}
-          aboutModalIsOpen={aboutModalIsOpen}
-          setModalIsOpen={setModalIsOpen}
-        />
+
         <div className="foot">
           <p className="all-rights">© 2024 Open Village</p>
         </div>

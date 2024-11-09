@@ -6,7 +6,6 @@ import ResourceCard from "./ResourceCard";
 import Contact from "../component/Contact";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Selection from "./Selection";
-// import Buttons from "../component/Buttons";
 
 const Navbar2 = ({
   INITIAL_DAY_STATE,
@@ -66,7 +65,7 @@ const Navbar2 = ({
   const updateCityStateFromZip = async (zip) => {
     try {
       const data = await fetchBounds(zip, true);
-      console.log("API Response:", data); // Add this line for debugging
+      console.log("API Response:", data); // debugging
       const location = data.results[0]?.geometry?.location;
       const bounds =
         data.results[0]?.geometry?.bounds ||
@@ -224,32 +223,24 @@ const Navbar2 = ({
               openLoginModal={openLoginModal}
               setOpenLoginModal={setOpenLoginModal}
             />
-            <img
-              className="top-logo"
-              // src="/assets/RESILIOO.png"
-              src="/assets/OV.png"
-              alt="Resilio Logo"
-            />
+            <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>
-          {/* <p className="tag-line">Free services in your neighborhood!</p> */}
 
           {hasBoundaryResults && store.boundaryResults.length > 0 && (
             <>
-              {store.boundaryResults &&
-                // store.boundaryResults > 1 &&
-                !userSelectedFilter && (
-                  <div className="search-bar">
-                    <span className="material-symbols-outlined search-icon">
-                      search
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                )}
+              {store.boundaryResults && !userSelectedFilter && (
+                <div className="search-bar">
+                  <span className="material-symbols-outlined search-icon">
+                    search
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              )}
               <div className=" nav-div">
                 <div className="side-by">
                   {store.CATEGORY_OPTIONS &&
@@ -257,7 +248,6 @@ const Navbar2 = ({
                   store.GROUP_OPTIONS &&
                   categories &&
                   days &&
-                  // store.boundaryResults > 1 &&
                   groups ? (
                     <ErrorBoundary>
                       <div className="dropdown">
@@ -306,130 +296,45 @@ const Navbar2 = ({
                 </div>
 
                 <div className={"nav-div-list"}>
-                  {activeTab === "AllResources" && (
-                    <CombinedFilters
-                      searchQuery={searchQuery}
-                      clearSearchQuery={clearSearchQuery}
-                      selectedCategories={selectedCategories}
-                      clearSelectedCategory={clearSelectedCategory}
-                      selectedDays={selectedDays}
-                      clearSelectedDay={clearSelectedDay}
-                    />
-                  )}
+                  <CombinedFilters
+                    searchQuery={searchQuery}
+                    clearSearchQuery={clearSearchQuery}
+                    selectedCategories={selectedCategories}
+                    clearSelectedCategory={clearSelectedCategory}
+                    selectedDays={selectedDays}
+                    clearSelectedDay={clearSelectedDay}
+                  />
                   <div className={`list-container`}>
-                    {/* <div className="tab-buttons">
-                      <div
-                        className={
-                          activeTab === "AllResources" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("AllResources")}
-                      >
-                        {!userSelectedFilter && !searchQuery ? (
-                          <p>Map boundary</p>
-                        ) : (
-                          <p>Filtered Results</p>
-                        )}
-                      </div>
-                      <div
-                        style={{ textAlign: "end" }}
-                        className={
-                          activeTab === "Favorites" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("Favorites")}
-                      >
-                        Favorites
-                      </div>
-                    </div> */}
-                    <div className="tab-buttons">
-                      <div
-                        className={
-                          activeTab === "AllResources" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("AllResources")}
-                      >
-                        {!userSelectedFilter && !searchQuery ? (
-                          <p>
-                            Map Boundary
-                            {store.boundaryResults.length > 0
-                              ? ` (${store.boundaryResults.length})`
-                              : ""}
-                          </p>
-                        ) : (
-                          <p>
-                            Filtered Results
-                            {store.boundaryResults.filter(
-                              (resource) =>
-                                resource.name
+                    <ul>
+                      {Array.isArray(store.mapResults) &&
+                        store.boundaryResults
+                          .filter(
+                            (resource) =>
+                              resource.name
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()) ||
+                              (resource.description &&
+                                resource.description
                                   .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            ).length > 0
-                              ? ` (${
-                                  store.boundaryResults.filter(
-                                    (resource) =>
-                                      resource.name
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase()) ||
-                                      (resource.description &&
-                                        resource.description
-                                          .toLowerCase()
-                                          .includes(searchQuery.toLowerCase()))
-                                  ).length
-                                })`
-                              : ""}
-                          </p>
-                        )}
-                      </div>
-                      <div
-                        style={{ textAlign: "end" }}
-                        className={
-                          activeTab === "Favorites" ? "active" : "dormant"
-                        }
-                        onClick={() => setActiveTab("Favorites")}
-                      >
-                        Favorites
-                        {store.favorites.length > 0
-                          ? ` (${store.favorites.length})`
-                          : ""}
-                      </div>
-                    </div>
-
-                    {activeTab === "AllResources" && (
-                      <ul>
-                        {Array.isArray(store.mapResults) &&
-                          store.boundaryResults
-                            .filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
-                            .map((resource, index) => (
-                              <ResourceCard
-                                number={index + 1}
-                                key={resource.id}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                              />
-                            ))}
-                      </ul>
-                    )}
+                                  .includes(searchQuery.toLowerCase()))
+                          )
+                          .map((resource, index) => (
+                            <ResourceCard
+                              number={index + 1}
+                              key={resource.id}
+                              item={resource}
+                              openModal={openModal}
+                              closeModal={closeModal}
+                              modalIsOpen={modalIsOpen}
+                              setModalIsOpen={setModalIsOpen}
+                              selectedResources={selectedResources}
+                              addSelectedResource={addSelectedResource}
+                              removeSelectedResource={removeSelectedResource}
+                            />
+                          ))}
+                    </ul>
+                    {/* )} */}
                     {!isLoggedIn && activeTab === "Favorites" && (
-                      // <p className="log">Please log in to save favorites.</p>
-
                       <div className="please-log">
                         Please
                         <span
@@ -446,40 +351,6 @@ const Navbar2 = ({
                         </span>
                         to save favorites.
                       </div>
-                    )}
-
-                    {activeTab === "Favorites" && isLoggedIn && (
-                      <ul>
-                        {Array.isArray(store.favorites) &&
-                          store.favorites
-                            .filter((resource) => {
-                              const nameMatches =
-                                resource.name &&
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase());
-                              const descriptionMatches =
-                                resource.description &&
-                                resource.description
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase());
-                              return nameMatches || descriptionMatches;
-                            })
-                            .map((resource, index) => (
-                              <ResourceCard
-                                key={`${resource.id}-${index}`}
-                                number={index + 1}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                              />
-                            ))}
-                      </ul>
                     )}
                   </div>
                 </div>

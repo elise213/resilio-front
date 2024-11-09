@@ -385,8 +385,8 @@
 }
 
 .filter-button {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   background: none;
   cursor: pointer;
   border: 1px solid gray;
@@ -394,6 +394,7 @@
   justify-content: center;
   display: flex;
   align-items: center;
+  align-self: center;
 }
 
 .dropdown {
@@ -698,7 +699,7 @@ iframe {
 
 @media screen and (max-width: 700px) {
   .button-container-sidebar {
-    justify-content: space-around !important;
+    justify-content: space-between !important;
   }
 
   .screen-divider-button {
