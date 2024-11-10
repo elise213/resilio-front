@@ -6,6 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       avatarID: null,
       // Modal states
       modalIsOpen: false,
+      loginModalIsOpen: false,
       aboutModalIsOpen: false,
       donationModalIsOpen: false,
       contactModalIsOpen: false,
@@ -154,11 +155,21 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       openModal: () => {
+        console.log("called from flux - open");
         setStore({ modalIsOpen: true });
       },
 
       closeModal: () => {
         setStore({ modalIsOpen: false });
+      },
+
+      openLoginModal: () => {
+        console.log("called from flux - open");
+        setStore({ loginModalIsOpen: true });
+      },
+
+      closeLoginModal: () => {
+        setStore({ loginModalIsOpen: false });
       },
 
       openAboutModal: () => {

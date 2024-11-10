@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import styles from "../styles/loginModal.css";
 
-const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
+const Login = ({ setLayout }) => {
   const { store, actions } = useContext(Context);
 
   const [log, setLog] = useState("1");
@@ -16,6 +16,12 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
   const [email, setEmail] = useState("");
   const [is_org, setIs_org] = useState("");
   const [anchorEl, setAnchorEl] = useState(null); // State for dropdown
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(
+    store.loginModalIsOpen
+  );
+  useEffect(() => {
+    setIsLoginModalOpen(store.loginModalIsOpen);
+  }, [store.loginModalIsOpen]);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -30,7 +36,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
     e.preventDefault();
     const loginSuccessful = await actions.login(email, password);
     if (loginSuccessful) {
-      setOpenLoginModal(false);
+      actions.closeLoginModal();
     }
   };
 
@@ -67,7 +73,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           title: "Email Sent",
           text: "Please check your email to reset your password",
         }).then(() => {
-          setOpenLoginModal(false);
+          actions.closeLoginModal();
         });
       } else {
         Swal.fire({
@@ -102,7 +108,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           <span
             className="close-modal"
             onClick={() => {
-              setOpenLoginModal(false);
+              actions.closeLoginModal();
               setLog("1");
             }}
           >
@@ -218,7 +224,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           <span
             className="close-modal"
             onClick={() => {
-              setOpenLoginModal(false);
+              actions.closeLoginModal();
               setLog("1");
             }}
           >
@@ -285,7 +291,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           <span
             className="close-modal"
             onClick={() => {
-              setOpenLoginModal(false);
+              actions.closeLoginModal();
               setLog("1");
             }}
           >
@@ -335,7 +341,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
 
   return (
     <>
-      {!openLoginModal && isLoggedIn ? (
+      {!isLoginModalOpen && isLoggedIn ? (
         <>
           {/* Profile Circle for logged-in users */}
           <IconButton onClick={handleProfileClick}>
@@ -383,14 +389,14 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           variant="contained"
           color="primary"
           onClick={() => {
-            setOpenLoginModal(true);
+            actions.openLoginModal();
             setLayout("fullscreen-sidebar");
           }}
         >
           Log in
         </Button>
       )}
-      {openLoginModal && <div className="login-div">{field}</div>}
+      {isLoginModalOpen && <div className="login-div">{field}</div>}
     </>
   );
 };

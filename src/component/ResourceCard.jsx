@@ -54,21 +54,13 @@ const ResourceCard = (props) => {
     setIsFavorited(isItemFavorited);
   }, [props.item.name]);
 
-  useEffect(() => {
-    if (store.modalIsOpen) {
-      document.body.classList.add("modal-open");
-    } else {
-      document.body.classList.remove("modal-open");
-    }
-    return () => document.body.classList.remove("modal-open");
-  }, [store.modalIsOpen]);
-
   return (
     <div
       className="my-resource-card"
       onClick={() => {
-        actions.openModal(props.item);
         actions.setSelectedResource(props.item);
+        actions.openModal();
+        console.log("called from resource card - open");
       }}
     >
       <span className="resource-title">{props.item.name}</span>
@@ -81,17 +73,20 @@ const ResourceCard = (props) => {
       )}
       {categoryLabels.length > 0 && (
         <div className="card-description">
-          {categoryLabels.map((label, index) => (
-            <span key={index} className="category-span">
-              {label}
-            </span>
-          ))}
+          <div>
+            {categoryLabels.map((label, index) => (
+              <span key={index} className="category-span">
+                {label}
+              </span>
+            ))}
+          </div>
           <Rating
             style={{ flexDirection: "row" }}
             name="read-only"
             value={averageRating2}
             precision={0.5}
             readOnly
+            className="star"
           />
         </div>
       )}

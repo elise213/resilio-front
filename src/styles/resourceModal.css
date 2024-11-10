@@ -18,6 +18,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 9;
 }
 
 .form-check {
@@ -46,13 +47,13 @@
 }
 
 .close-modal {
-  color: grey;
+  color: black;
   margin: 10px 0 0 0;
   align-self: flex-start;
 }
 
 .close-modal:hover {
-  color: black;
+  color: gray;
   cursor: pointer;
 }
 
@@ -206,16 +207,16 @@ p {
   /* text-decoration: underline; */
   font-size: 20px;
   padding: 8px;
-  border-bottom: 1px solid black;
+  border-top: 1px solid black;
 }
 
 .comments-display {
   display: flex;
   flex-direction: column;
-  width: 450px;
+  /* width: 450px; */
   margin: 135px 0 0 0;
   box-sizing: border-box;
-  max-width: 600px;
+  /* max-width: 600px; */
   border: 1px solid black;
   border-radius: 4px;
   align-self: center;
@@ -319,7 +320,7 @@ body.modal-open {
 }
 
 .carousel-image {
-  max-width: 400px;
+  max-width: 450px;
   object-fit: cover;
   transition: opacity 0.3s ease-in-out;
   margin: 10px 0;
