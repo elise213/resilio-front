@@ -53,7 +53,6 @@ const Home = () => {
     INITIAL_GROUP_STATE(store.GROUP_OPTIONS)
   );
   const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
-  const [openLoginModal, setOpenLoginModal] = useState(false);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -310,8 +309,6 @@ const Home = () => {
         <Sidebar
           layout={layout}
           setLayout={setLayout}
-          openLoginModal={openLoginModal}
-          setOpenLoginModal={setOpenLoginModal}
           categories={categories}
           setCategories={setCategories}
           groups={groups}
@@ -357,10 +354,7 @@ const Home = () => {
 
         {isModalOpen && (
           <div className="modal-div">
-            <Modal
-              setOpenLoginModal={setOpenLoginModal}
-              openLoginModal={openLoginModal}
-            />
+            <Modal />
           </div>
         )}
 

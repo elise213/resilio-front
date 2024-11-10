@@ -7,11 +7,14 @@ import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 
-const Modal = ({ setOpenLoginModal }) => {
+import GoogleMapReact from "google-map-react"; // Import GoogleMapReact
+
+const Modal = ({}) => {
   const { store, actions } = useContext(Context);
 
   const [rating, setRating] = useState(0);
   const [showRating, setShowRating] = useState(false);
+  const apiKey = import.meta.env.VITE_GOOGLE;
 
   const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
 
@@ -28,6 +31,26 @@ const Modal = ({ setOpenLoginModal }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   const resource = store.selectedResource;
+  const mapCenter = {
+    lat: resource?.latitude || 0, // Default to 0 if no latitude
+    lng: resource?.longitude || 0, // Default to 0 if no longitude
+  };
+  const mapZoom = 13;
+
+  const Marker = React.memo(({ result }) => {
+    return (
+      <div
+        className="marker"
+        onClick={result ? () => openModal(result) : undefined}
+      >
+        {/* {!isHovered && result && ( */}
+        <div className="marker-icon">
+          <i className="fa-solid fa-map-pin" style={{ color: "red" }}></i>
+        </div>
+        {/* )} */}
+      </div>
+    );
+  });
 
   function toggleRatingModal() {
     setShowRating(!showRating);
@@ -85,11 +108,10 @@ const Modal = ({ setOpenLoginModal }) => {
         }}
       >
         <span className="material-symbols-outlined">arrow_back_ios</span>
-        Back to search
+        Back
       </p>
       <div className="resource-info">
         <ModalInfo
-          setOpenLoginModal={setOpenLoginModal}
           schedule={resource.schedule}
           res={resource}
           isFavorited={isFavorited}
@@ -100,6 +122,26 @@ const Modal = ({ setOpenLoginModal }) => {
           setAverageRating={setAverageRating}
           toggleRatingModal={toggleRatingModal}
         />
+      </div>
+
+      <div
+        className="map-container"
+        style={{ height: "500px", width: "500px" }}
+      >
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: apiKey }}
+          defaultCenter={mapCenter}
+          defaultZoom={mapZoom}
+        >
+          {/* Add a Marker for the resource */}
+          <Marker
+            lat={resource.latitude}
+            lng={resource.longitude}
+            text={resource.name}
+            id={resource.id}
+            result={resource}
+          />
+        </GoogleMapReact>
       </div>
 
       {comments.length > 0 && (
@@ -149,7 +191,7 @@ const Modal = ({ setOpenLoginModal }) => {
               tabIndex={0}
               className="log-in"
               onClick={() => {
-                setOpenLoginModal(true);
+                actions.openLoginModal();
                 setShowRating(false);
                 actions.closeModal;
               }}
@@ -193,7 +235,7 @@ const Modal = ({ setOpenLoginModal }) => {
                   tabIndex={0} // Make it focusable
                   className="log-in"
                   onClick={() => {
-                    setOpenLoginModal(true);
+                    actions.openLoginModal();
                     setShowRating(false);
                     actions.closeModal;
                   }}

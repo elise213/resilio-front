@@ -19,8 +19,6 @@ const Sidebar = ({
   groups,
   log,
   modalIsOpen,
-  openLoginModal,
-  setOpenLoginModal,
   searchingToday,
   setCategories,
   setDays,
@@ -214,10 +212,10 @@ const Sidebar = ({
             className="button-container-sidebar"
             style={{
               display: "flex",
-              justifyContent: openLoginModal ? "center" : "flex-end",
+              justifyContent: store.loginModalIsOpen ? "center" : "flex-end",
             }}
           >
-            {!openLoginModal && (
+            {!store.loginModalisOpen && (
               <>
                 <button
                   className="screen-divider-button"
@@ -234,13 +232,7 @@ const Sidebar = ({
               </>
             )}
 
-            <Login
-              log={log}
-              setLog={setLog}
-              openLoginModal={openLoginModal}
-              setOpenLoginModal={setOpenLoginModal}
-              setLayout={setLayout}
-            />
+            <Login log={log} setLog={setLog} setLayout={setLayout} />
           </div>
           {/* <img className="resilio-logo" src="/assets/RESILIO2.png" /> */}
           <div className="logo-div">
@@ -444,14 +436,7 @@ const Sidebar = ({
                                     .includes(searchQuery.toLowerCase()))
                             )
                             .map((resource, index) => (
-                              <ResourceCard
-                                number={index + 1}
-                                key={resource.id}
-                                item={resource}
-                                openModal={store.openModal}
-                                closeModal={store.closeModal}
-                                modalIsOpen={modalIsOpen}
-                              />
+                              <ResourceCard item={resource} />
                             ))}
                       </ul>
                     )}
