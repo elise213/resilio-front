@@ -12,26 +12,18 @@ const Sidebar = ({
   layout,
   setLayout,
   INITIAL_DAY_STATE,
-  addSelectedResource,
   contactModalIsOpen,
   setContactModalIsOpen,
   categories,
-  closeModal,
   days,
   groups,
   log,
   modalIsOpen,
-  openLoginModal,
-  setOpenLoginModal,
-  openModal,
-  removeSelectedResource,
   searchingToday,
-  selectedResources,
   setCategories,
   setDays,
   setGroups,
   setLog,
-  setModalIsOpen,
   setSearchingToday,
   aboutModalIsOpen,
   setAboutModalIsOpen,
@@ -220,17 +212,11 @@ const Sidebar = ({
             className="button-container-sidebar"
             style={{
               display: "flex",
-              justifyContent: openLoginModal ? "center" : "flex-end",
+              justifyContent: store.loginModalIsOpen ? "center" : "flex-end",
             }}
           >
-            {!openLoginModal && (
+            {!store.loginModalisOpen && (
               <>
-                {/* <button
-                  className="screen-divider-button"
-                  onClick={() => setLayout("split-view")}
-                >
-                  Split View
-                </button> */}
                 <button
                   className="screen-divider-button"
                   onClick={() =>
@@ -246,13 +232,7 @@ const Sidebar = ({
               </>
             )}
 
-            <Login
-              log={log}
-              setLog={setLog}
-              openLoginModal={openLoginModal}
-              setOpenLoginModal={setOpenLoginModal}
-              setLayout={setLayout}
-            />
+            <Login log={log} setLog={setLog} setLayout={setLayout} />
           </div>
           {/* <img className="resilio-logo" src="/assets/RESILIO2.png" /> */}
           <div className="logo-div">
@@ -366,7 +346,7 @@ const Sidebar = ({
                 )}
 
                 <div className={navDivListClassName}>
-                  {isLoggedIn && (
+                  {/* {isLoggedIn && (
                     <>
                       <div className="tab-buttons">
                         <div
@@ -429,7 +409,7 @@ const Sidebar = ({
                         </div>
                       </div>
                     </>
-                  )}
+                  )} */}
                   {activeTab === "AllResources" && (
                     <CombinedFilters
                       searchQuery={searchQuery}
@@ -456,69 +436,7 @@ const Sidebar = ({
                                     .includes(searchQuery.toLowerCase()))
                             )
                             .map((resource, index) => (
-                              <ResourceCard
-                                number={index + 1}
-                                key={resource.id}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                              />
-                            ))}
-                      </ul>
-                    )}
-                    {!isLoggedIn && activeTab === "Favorites" && (
-                      <div className="please-log">
-                        Please
-                        <span
-                          role="button"
-                          tabIndex={0}
-                          className="log-in"
-                          onClick={() => {
-                            setOpenLoginModal(true);
-                            setModalIsOpen(false);
-                          }}
-                        >
-                          log in
-                        </span>
-                        to save favorites
-                      </div>
-                    )}
-
-                    {activeTab === "Favorites" && isLoggedIn && (
-                      <ul>
-                        {Array.isArray(store.favorites) &&
-                          store.favorites
-                            .filter((resource) => {
-                              const nameMatches =
-                                resource.name &&
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase());
-                              const descriptionMatches =
-                                resource.description &&
-                                resource.description
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase());
-                              return nameMatches || descriptionMatches;
-                            })
-                            .map((resource, index) => (
-                              <ResourceCard
-                                key={`${resource.id}-${index}`}
-                                number={index + 1}
-                                item={resource}
-                                openModal={openModal}
-                                closeModal={closeModal}
-                                modalIsOpen={modalIsOpen}
-                                setModalIsOpen={setModalIsOpen}
-                                selectedResources={selectedResources}
-                                addSelectedResource={addSelectedResource}
-                                removeSelectedResource={removeSelectedResource}
-                              />
+                              <ResourceCard item={resource} />
                             ))}
                       </ul>
                     )}

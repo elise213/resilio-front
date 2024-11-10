@@ -32,37 +32,11 @@ const Carousel = ({ res }) => {
   return (
     <>
       {images.length > 0 && (
-        <div className="carousel-container">
-          {/* {images.length > 1 && (
-            <button
-              className="arrow-button"
-              onClick={() => {
-                shiftLeft;
-              }}
-            >
-              <img className="left-arrow" src={arrow}></img>
-            </button>
-          )} */}
-
-          {/* <div className="carousel"> */}
-          <img
-            className="carousel-image"
-            src={images[currentImageIndex]}
-            alt=""
-          />
-          {/* </div> */}
-
-          {/* {images.length > 1 && (
-            <button
-              className="arrow-button"
-              onClick={() => {
-                shiftRight;
-              }}
-            >
-              <img className="right-arrow" src={arrow}></img>
-            </button>
-          )} */}
-        </div>
+        <img
+          className="carousel-image"
+          src={images[currentImageIndex]}
+          alt=""
+        />
       )}
     </>
   );

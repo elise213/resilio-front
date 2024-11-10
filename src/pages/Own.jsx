@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Own = () => {
-    return (
-        <div>
+  return <div>Hi</div>;
+};
 
-        </div>
-    )
-}
-
-export default Own
+export default Own;

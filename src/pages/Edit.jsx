@@ -58,7 +58,6 @@ const Edit = () => {
       try {
         const data = await actions.getResource(id);
         if (data) {
-          // Assuming data.category is a string of category values separated by commas
           const initialCategories = data.category
             ? data.category.split(", ")
             : [];

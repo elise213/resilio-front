@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import styles from "../styles/loginModal.css";
+import { Avatar, Menu, MenuItem, IconButton, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import Button from "@mui/material/Button";
+import styles from "../styles/loginModal.css";
 
-const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
+const Login = ({ setLayout }) => {
   const { store, actions } = useContext(Context);
 
   const [log, setLog] = useState("1");
@@ -14,8 +15,13 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
   const [userAvatar, setUserAvatar] = useState("");
   const [email, setEmail] = useState("");
   const [is_org, setIs_org] = useState("");
-
-  console.log("log", log);
+  const [anchorEl, setAnchorEl] = useState(null); // State for dropdown
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(
+    store.loginModalIsOpen
+  );
+  useEffect(() => {
+    setIsLoginModalOpen(store.loginModalIsOpen);
+  }, [store.loginModalIsOpen]);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -26,21 +32,21 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
     checkLoginStatus();
   }, [store.token]);
 
-  const hasToken = store.token;
-
-  async function handleLogin(e) {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const loginSuccessful = await actions.login(email, password);
     if (loginSuccessful) {
-      setOpenLoginModal(false);
+      actions.closeLoginModal();
     }
-  }
+  };
 
-  function handleLogout() {
+  const handleLogout = () => {
     actions.logout();
-  }
+    setAnchorEl(null); // Close dropdown on logout
+    setLayout("fullscreen-sidebar");
+  };
 
-  async function handleForgotPassword(e) {
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
     const forgotEmail = e.currentTarget.forgotEmail.value;
     const myHeaders = new Headers();
@@ -50,15 +56,10 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
     );
     myHeaders.append("Content-Type", "application/json");
 
-    const raw = JSON.stringify({
-      recipient_email: forgotEmail,
-    });
-
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
-      body: raw,
-      redirect: "follow",
+      body: JSON.stringify({ recipient_email: forgotEmail }),
     };
 
     try {
@@ -67,14 +68,12 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
         requestOptions
       );
       if (response.ok) {
-        const result = await response.json();
-        console.log(result);
         Swal.fire({
           icon: "success",
           title: "Email Sent",
           text: "Please check your email to reset your password",
         }).then(() => {
-          setOpenLoginModal(false);
+          actions.closeLoginModal();
         });
       } else {
         Swal.fire({
@@ -91,26 +90,15 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
         text: error.message,
       });
     }
-  }
+  };
 
-  async function handleRegister(e) {
-    e.preventDefault();
-    const userCreated = await actions.createUser(
-      is_org,
-      name,
-      email,
-      password,
-      userAvatar
-    );
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget); // Open the dropdown
+  };
 
-    if (userCreated) {
-      await actions.login(email, password);
-      setOpenLoginModal(false);
-      setLog("1");
-    } else {
-      console.error("User creation failed.");
-    }
-  }
+  const handleProfileClose = () => {
+    setAnchorEl(null); // Close the dropdown
+  };
 
   let field = null;
   if (log == "2") {
@@ -120,7 +108,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           <span
             className="close-modal"
             onClick={() => {
-              setOpenLoginModal(false);
+              actions.closeLoginModal();
               setLog("1");
             }}
           >
@@ -236,7 +224,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           <span
             className="close-modal"
             onClick={() => {
-              setOpenLoginModal(false);
+              actions.closeLoginModal();
               setLog("1");
             }}
           >
@@ -303,7 +291,7 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
           <span
             className="close-modal"
             onClick={() => {
-              setOpenLoginModal(false);
+              actions.closeLoginModal();
               setLog("1");
             }}
           >
@@ -353,33 +341,62 @@ const Login = ({ openLoginModal, setOpenLoginModal, setLayout }) => {
 
   return (
     <>
-      {!openLoginModal &&
-        (isLoggedIn ? (
-          <Button
-            className="login-button-resilio"
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              handleLogout();
-              setLayout("fullscreen-sidebar");
-            }}
+      {!isLoginModalOpen && isLoggedIn ? (
+        <>
+          {/* Profile Circle for logged-in users */}
+          <IconButton onClick={handleProfileClick}>
+            <Avatar alt="Profile" src={userAvatar || "/default-avatar.jpg"} />
+          </IconButton>
+
+          {/* Dropdown Menu */}
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleProfileClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            transformOrigin={{ vertical: "top", horizontal: "center" }}
           >
-            Log out
-          </Button>
-        ) : (
-          <Button
-            className="login-button-resilio"
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setOpenLoginModal(true);
-              setLayout("fullscreen-sidebar");
-            }}
-          >
-            Log in
-          </Button>
-        ))}
-      {openLoginModal && <div className="login-div">{field}</div>}
+            <MenuItem onClick={handleProfileClose}>
+              <Link
+                to="/account"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Account
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleProfileClose}>
+              <Link
+                to="/profile"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Profile
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleProfileClose}>
+              <Link
+                to="/favorites"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Favorites
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <Button
+          className="login-button-resilio"
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            actions.openLoginModal();
+            setLayout("fullscreen-sidebar");
+          }}
+        >
+          Log in
+        </Button>
+      )}
+      {isLoginModalOpen && <div className="login-div">{field}</div>}
     </>
   );
 };
