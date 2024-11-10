@@ -4,6 +4,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       abortController: null,
       abortController2: null,
       avatarID: null,
+      // Modal states
+      modalIsOpen: false,
+      loginModalIsOpen: false,
+      aboutModalIsOpen: false,
+      donationModalIsOpen: false,
+      contactModalIsOpen: false,
       boundaryResults: [],
       categorySearch: [],
       CATEGORY_OPTIONS: [
@@ -46,7 +52,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       token: null,
       user_id: null,
       schedules: [],
-      selectedResources: [],
+      selectedResource: [],
 
       GROUP_OPTIONS: [
         { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
@@ -76,15 +82,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         },
       ],
-      bodhGaya: [
-        {
-          center: { lat: 24.681678475660995, lng: 84.99154781534179 },
-          bounds: {
-            ne: { lat: 25.0, lng: 85.2 },
-            sw: { lat: 24.4, lng: 84.8 },
-          },
-        },
-      ],
 
       austin: [
         {
@@ -100,6 +97,105 @@ const getState = ({ getStore, getActions, setStore }) => {
       dayCounts: {},
     },
     actions: {
+      // Action to update `selectedResource`
+      setSelectedResource: (resource) => {
+        sessionStorage.setItem("selectedResource", JSON.stringify(resource));
+        setStore({ selectedResource: resource });
+      },
+
+      // Action to set `favorites`
+      setFavorites: (favorites) => {
+        sessionStorage.setItem("favorites", JSON.stringify(favorites));
+        setStore({ favorites });
+      },
+
+      // Action to add a resource to `favorites`
+      addFavorite: (resource) => {
+        const store = getStore();
+        const updatedFavorites = [...store.favorites, resource];
+        sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        setStore({ favorites: updatedFavorites });
+      },
+
+      // Action to remove a resource from `favorites`
+      removeFavorite: (resourceId) => {
+        const store = getStore();
+        const updatedFavorites = store.favorites.filter(
+          (f) => f.id !== resourceId
+        );
+        sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        setStore({ favorites: updatedFavorites });
+      },
+
+      // Function to fetch favorites from the backend and update the store
+      fetchFavorites: async () => {
+        const store = getStore();
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          try {
+            const response = await fetch(
+              `${store.current_back_url}/api/getFavorites`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (!response.ok) {
+              throw new Error("Failed to fetch favorites");
+            }
+            const data = await response.json();
+            const favorites = data.favorites.map((fav) => fav.resource);
+            sessionStorage.setItem("favorites", JSON.stringify(favorites));
+            setStore({ favorites });
+          } catch (error) {
+            console.error("Error fetching favorites:", error);
+          }
+        }
+      },
+
+      openModal: () => {
+        console.log("called from flux - open");
+        setStore({ modalIsOpen: true });
+      },
+
+      closeModal: () => {
+        setStore({ modalIsOpen: false });
+      },
+
+      openLoginModal: () => {
+        console.log("called from flux - open");
+        setStore({ loginModalIsOpen: true });
+      },
+
+      closeLoginModal: () => {
+        setStore({ loginModalIsOpen: false });
+      },
+
+      openAboutModal: () => {
+        setStore({ aboutModalIsOpen: true });
+      },
+
+      closeAboutModal: () => {
+        setStore({ aboutModalIsOpen: false });
+      },
+
+      openDonationModal: () => {
+        setStore({ donationModalIsOpen: true });
+      },
+
+      closeDonationModal: () => {
+        setStore({ donationModalIsOpen: false });
+      },
+
+      openContactModal: () => {
+        setStore({ contactModalIsOpen: true });
+      },
+
+      closeContactModal: () => {
+        setStore({ contactModalIsOpen: false });
+      },
+
       setCategoryCounts: (categoryCounts) => {
         setStore({
           categoryCounts: categoryCounts,
@@ -152,10 +248,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         if (colors[category]) {
           return { color: colors[category] };
         } else return { color: "red" };
-      },
-
-      getSessionSelectedResources: () => {
-        return JSON.parse(sessionStorage.getItem("selectedResources")) || [];
       },
 
       getFormattedSchedule: (schedule) => {
@@ -247,8 +339,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           Swal.fire({
             icon: "success",
             title: "Logged in Successfully",
-          }).then(() => {
-            window.location.href = "/";
           });
 
           return true;
@@ -269,7 +359,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("is_org");
         sessionStorage.removeItem("name");
         sessionStorage.removeItem("favorites");
-        sessionStorage.removeItem("selectedResources");
         setStore({ token: null, is_org: null, name: null, favorites: null });
 
         Swal.fire({
@@ -807,40 +896,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       getAverageRating: async (resourceId, setAverageRatingCallback) => {
         const current_back_url = getStore().current_back_url;
-    
+
         try {
-            const response = await fetch(
-                `${current_back_url}/api/rating?resource=${resourceId}`
+          const response = await fetch(
+            `${current_back_url}/api/rating?resource=${resourceId}`
+          );
+
+          if (!response.ok) {
+            console.error(
+              `Server Error: ${response.status} ${response.statusText}`
             );
-    
-            // Check if response is ok (status code 200-299)
-            if (!response.ok) {
-                console.error(`Server Error: ${response.status} ${response.statusText}`);
-                setAverageRatingCallback(0);
-                return;
-            }
-    
-            // Try parsing the JSON response
-            const data = await response.json().catch((e) => {
-                console.error("Invalid JSON response:", e);
-                setAverageRatingCallback(0);
-                return;
-            });
-    
-            if (data && data.rating === "No ratings yet") {
-                setAverageRatingCallback(0);
-            } else if (data && typeof data.rating !== "undefined") {
-                setAverageRatingCallback(parseFloat(data.rating)); // Ensure it's a number
-            } else {
-                console.warn("Unexpected response structure:", data);
-                setAverageRatingCallback(0);
-            }
+            setAverageRatingCallback(0);
+            return;
+          }
+
+          const data = await response.json().catch((e) => {
+            console.error("Invalid JSON response:", e);
+            setAverageRatingCallback(0);
+            return;
+          });
+
+          if (data && data.rating === "No ratings yet") {
+            setAverageRatingCallback(0);
+          } else if (data && typeof data.rating !== "undefined") {
+            setAverageRatingCallback(parseFloat(data.rating));
+          } else {
+            console.warn("Unexpected response structure:", data);
+            setAverageRatingCallback(0);
+          }
         } catch (error) {
-            console.error("Network Error:", error);
-            setAverageRatingCallback(0); // Set a default value in case of an error
+          console.error("Network Error:", error);
+          setAverageRatingCallback(0); // Default value in case of an error
         }
-    },
-    
+      },
 
       submitRatingAndComment: async (
         resourceId,

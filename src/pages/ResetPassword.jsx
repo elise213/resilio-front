@@ -2,10 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-const ResetPassword = () => {
+const resetpassword = () => {
   const { store, actions } = useContext(Context);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
@@ -36,7 +35,7 @@ const ResetPassword = () => {
           title: "Password Reset",
           text: "Your password has been reset successfully.",
         }).then(() => {
-          setOpenLoginModal(false); // Close the login modal
+          setOpenLoginModal(false);
         });
       })
       .catch((error) => {
@@ -60,4 +59,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default resetpassword;
