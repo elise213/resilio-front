@@ -38,16 +38,32 @@ const Modal = ({}) => {
   const mapZoom = 13;
 
   const Marker = React.memo(({ result }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Function to open Google Maps directions
+    const openGoogleMaps = () => {
+      if (result) {
+        const { latitude, longitude } = result;
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+        window.open(url, "_blank");
+      }
+    };
+
     return (
       <div
         className="marker"
-        onClick={result ? () => openModal(result) : undefined}
+        onClick={openGoogleMaps}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* {!isHovered && result && ( */}
         <div className="marker-icon">
           <i className="fa-solid fa-map-pin" style={{ color: "red" }}></i>
         </div>
-        {/* )} */}
+        {isHovered && result && (
+          <div className="marker-address">
+            {result.address || "Address not available"}
+          </div>
+        )}
       </div>
     );
   });
@@ -125,8 +141,8 @@ const Modal = ({}) => {
       </div>
 
       <div
-        className="map-container"
-        style={{ height: "500px", width: "500px" }}
+        className="map-container-modal"
+        style={{ height: "300px", width: "500px", justifySelf: "center" }}
       >
         <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey }}
@@ -192,8 +208,7 @@ const Modal = ({}) => {
               className="log-in"
               onClick={() => {
                 actions.openLoginModal();
-                setShowRating(false);
-                actions.closeModal;
+                actions.closeModal();
               }}
             >
               Log in
@@ -201,7 +216,7 @@ const Modal = ({}) => {
             to add this resource to your favorites
           </div>
         )}
-        {isAuthorizedUser && (
+        {isAuthorizedUser && isLoggedIn && (
           <>
             <p className="problem">
               Click {""}

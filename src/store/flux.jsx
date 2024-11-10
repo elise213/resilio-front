@@ -164,7 +164,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       openLoginModal: () => {
-        console.log("called from flux - open");
+        console.log("called from flux - open login");
         setStore({ loginModalIsOpen: true });
       },
 
@@ -364,9 +364,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
-          willClose: () => {
-            window.location.href = "/";
-          },
         });
       },
 
