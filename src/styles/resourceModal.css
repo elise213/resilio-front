@@ -5,6 +5,7 @@
 
 .map-container-modal {
   margin: 10px;
+  position: static;
 }
 
 .rate {
@@ -19,6 +20,19 @@
   flex-direction: column;
   align-items: center;
   z-index: 9;
+}
+
+.marker-address {
+  position: absolute;
+  max-width: 200px;
+  min-width: 100px;
+  top: -90px;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  /* white-space: nowrap; */
 }
 
 .form-check {
@@ -238,10 +252,10 @@ textarea {
 }
 
 .modal-footer {
-  margin-top: 25px;
+  /* margin-top: 25px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-end; */
   width: 100%;
 }
 

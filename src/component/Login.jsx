@@ -32,6 +32,12 @@ const Login = ({ setLayout }) => {
     checkLoginStatus();
   }, [store.token]);
 
+  function handleRegister(e) {
+    e.preventDefault();
+    actions.createUser(is_org, name, email, password, userAvatar);
+    setLog("1");
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const loginSuccessful = await actions.login(email, password);
@@ -48,17 +54,11 @@ const Login = ({ setLayout }) => {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    const forgotEmail = e.currentTarget.forgotEmail.value;
-    const myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      `Bearer ${sessionStorage.getItem("token")}`
-    );
-    myHeaders.append("Content-Type", "application/json");
+    const forgotEmail = email; // Use the email state directly
 
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ recipient_email: forgotEmail }),
     };
 
@@ -67,6 +67,7 @@ const Login = ({ setLayout }) => {
         `${store.current_back_url}/api/forgot-password`,
         requestOptions
       );
+
       if (response.ok) {
         Swal.fire({
           icon: "success",
@@ -76,10 +77,14 @@ const Login = ({ setLayout }) => {
           actions.closeLoginModal();
         });
       } else {
+        const errorMessage =
+          response.status === 403
+            ? "Authorization failed. Please log in again."
+            : "Failed to send reset email. Please try again.";
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "Failed to send reset email. Please try again.",
+          text: errorMessage,
         });
       }
     } catch (error) {
@@ -87,7 +92,7 @@ const Login = ({ setLayout }) => {
       Swal.fire({
         icon: "error",
         title: "Something went wrong",
-        text: error.message,
+        text: "Network error. Please check your internet connection and try again.",
       });
     }
   };
@@ -284,9 +289,9 @@ const Login = ({ setLayout }) => {
     );
   }
 
-  if (log == "3") {
+  if (log === "3") {
     field = (
-      <div className="login-modal-content ">
+      <div className="login-modal-content">
         <div className="login-modal-header">
           <span
             className="close-modal"
@@ -301,19 +306,19 @@ const Login = ({ setLayout }) => {
         </div>
         <div className="login-modal-body">
           <form onSubmit={handleForgotPassword}>
-            <>
-              <div className="form-section">
-                <label htmlFor="forgotPasswordEmail" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  className="form-input"
-                  id="forgotPasswordEmail"
-                  name="forgotEmail"
-                ></input>
-              </div>
-            </>
+            <div className="form-section">
+              <label htmlFor="forgotPasswordEmail" className="form-label">
+                Email
+              </label>
+              <input
+                type="email"
+                className="form-input"
+                id="forgotPasswordEmail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
             <div className="password-submit-div">
               <Button
                 variant="contained"
@@ -327,9 +332,7 @@ const Login = ({ setLayout }) => {
           </form>
           <span
             className="forgot-password"
-            onClick={() => {
-              setLog("1");
-            }}
+            onClick={() => setLog("1")}
             style={{ marginTop: "20px" }}
           >
             Return to Login

@@ -11,9 +11,13 @@ const Favorites = () => {
   return (
     <>
       <p className="close-modal">
-        <Link to={`/`}>Back</Link>
+        <Link to={`/`}>
+          <span className="material-symbols-outlined">arrow_back_ios</span>
+          Back to Search
+        </Link>
       </p>
       <div className="scroll-favorites">
+        <p>YOUR FAVORITE RESOURCES</p>
         <ul>
           {Array.isArray(store.favorites) &&
             store.favorites
