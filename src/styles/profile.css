@@ -1,0 +1,24 @@
+.profile-container {
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-review-profile {
+  border: 1px solid black;
+  width: 270px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.delete-button-profile {
+  float: inline-end;
+  color: maroon;
+  border: 1px solid red;
+  background-color: salmon;
+  /* margin: 10px; */
+  padding: 3px;
+  border-radius: 3px;
+}

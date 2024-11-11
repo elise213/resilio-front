@@ -12,12 +12,12 @@ export const ModalInfo = ({
   id,
   isFavorited,
   setIsFavorited,
-  setComments,
+  // setComments,
   averageRating,
-  setAverageRating,
+  // setAverageRating,
   toggleRatingModal,
   ratingCount,
-  setRatingCount,
+  // setRatingCount,
 }) => {
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -28,6 +28,14 @@ export const ModalInfo = ({
   };
 
   const res = store.selectedResource;
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(res.address);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const toggleFavorite = (event) => {
     event.stopPropagation();
@@ -163,22 +171,48 @@ export const ModalInfo = ({
       <div className="info-groups">
         {/* Name */}
         <div className="info-address">
-          <span>Name</span>
+          <span className="modal-info-title">Name</span>
           <span>{res.name}</span>
         </div>
         {/* ADDRESS */}
-        <div className="info-address">
+        {/* <div className="info-address">
           <span>Address</span>
           <div>
             <span
-              style={{ cursor: "pointer", marginLeft: "10px" }}
+              style={{ marginLeft: "10px" }}
               onClick={() => navigator.clipboard.writeText(res.address)}
               title="Copy Address"
               className="modal-text"
             >
               {res.address.replace(", USA", "")} {"  "}
             </span>
-            <span class="material-symbols-outlined">content_copy</span>
+            <span
+              style={{ cursor: "pointer" }}
+              class="material-symbols-outlined"
+            >
+              content_copy
+            </span>
+          </div>
+        </div> */}
+        <div className="info-address">
+          <span className="modal-info-title">Address</span>
+          <div>
+            <span
+              style={{ marginLeft: "10px", cursor: "pointer" }}
+              onClick={handleCopy}
+              title="Copy Address"
+              className="modal-info-value"
+            >
+              {res.address.replace(", USA", "")} {"  "}
+            </span>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={handleCopy}
+              className="material-symbols-outlined"
+            >
+              content_copy
+            </span>
+            {copied && <span style={{ marginLeft: "10px" }}>Copied!</span>}
           </div>
         </div>
         {/* Rating */}
@@ -189,7 +223,7 @@ export const ModalInfo = ({
             toggleRatingModal();
           }}
         >
-          <span>Rating</span>
+          <span className="modal-info-title">Rating</span>
           <div className="rating-div">
             <Rating
               style={{
@@ -209,7 +243,9 @@ export const ModalInfo = ({
         {res.description && (
           <>
             <div className="info-address">
-              <span style={{ alignSelf: "start" }}>About</span>
+              <span className="modal-info-title" style={{ alignSelf: "start" }}>
+                About
+              </span>
               <span className="modal-text" style={{ maxWidth: "300px" }}>
                 {isReadMore
                   ? `${res.description.slice(0, 200)}...`
@@ -238,11 +274,11 @@ export const ModalInfo = ({
                 )
               }
             >
-              Directions
+              <span className="modal-info-title">Directions</span>
               <span
                 className="material-icons"
                 style={{
-                  fontSize: "30px",
+                  fontSize: "25px",
                   cursor: "pointer",
                 }}
               >
@@ -256,6 +292,7 @@ export const ModalInfo = ({
         {res.website && (
           <div className="info-address">
             <span
+              className="modal-info-title"
               title="Open Website"
               style={{ cursor: "pointer" }}
               onClick={() =>
@@ -268,10 +305,12 @@ export const ModalInfo = ({
             >
               Website
             </span>
+            {/* <span>{res.website}</span> */}
 
             <span
               style={{
-                fontSize: "30px",
+                fontSize: "25px",
+                cursor: "pointer",
               }}
               class="material-icons"
             >
@@ -283,14 +322,14 @@ export const ModalInfo = ({
         {scheduleCategory === "Closed Everyday" && (
           <>
             <span className="info-address" style={{ color: "black" }}>
-              <span>Schedule</span>
+              <span className="modal-info-title">Schedule</span>
               Closed Everyday
             </span>
           </>
         )}
         {scheduleCategory === "Open 24 Hours" && (
           <span className="info-address" style={{ color: "black" }}>
-            <span>Hours</span>
+            <span className="modal-info-title">Hours</span>
             Open 24/7
           </span>
         )}
@@ -334,7 +373,10 @@ export const ModalInfo = ({
           >
             {isFavorited ? (
               <>
-                <span className="modal-text" style={{ marginRight: "7px" }}>
+                <span
+                  className="modal-info-title"
+                  style={{ marginRight: "7px" }}
+                >
                   {" "}
                   {/* You Favorited This Resource */}
                   Favorited

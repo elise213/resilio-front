@@ -61,6 +61,7 @@
   justify-content: space-between;
   border-bottom: 1px solid gray;
   text-decoration: none;
+  font-weight: 100;
 }
 
 .info-address p,
@@ -84,6 +85,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
+  font-weight: 100;
 }
 
 .close-modal:hover {
@@ -213,6 +215,7 @@ p {
 
 .comment-content {
   color: black;
+  font-weight: 100;
 }
 
 .full-comments-section {
@@ -239,17 +242,13 @@ p {
 
 .comment-user-info {
   font-size: 11px;
-  /* color: #cccccc;
-  display: flex; */
-  /* justify-content: flex-end; */
 }
 
 .user-reviews {
   text-align: center;
-  /* text-decoration: underline; */
   font-size: 20px;
   padding: 8px;
-  /* border-top: 1px solid black; */
+  font-weight: 100;
 }
 
 .comments-display {
@@ -287,8 +286,12 @@ textarea {
   width: 100%;
 }
 
-.modal-text {
-  font-size: 12px;
+.modal-info-title {
+  font-size: 14px;
+}
+
+.modal-info-value {
+  font-weight: 100;
 }
 
 .problem {

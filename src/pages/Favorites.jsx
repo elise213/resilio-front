@@ -17,24 +17,12 @@ const Favorites = () => {
         </Link>
       </p>
       <div className="scroll-favorites">
-        <p>YOUR FAVORITE RESOURCES</p>
+        <p style={{ marginTop: "50px" }}>YOUR FAVORITE RESOURCES</p>
         <ul>
           {Array.isArray(store.favorites) &&
-            store.favorites
-              // .filter((resource) => {
-              //   const nameMatches =
-              //     resource.name &&
-              //     resource.name.toLowerCase().includes(searchQuery.toLowerCase());
-              //   const descriptionMatches =
-              //     resource.description &&
-              //     resource.description
-              //       .toLowerCase()
-              //       .includes(searchQuery.toLowerCase());
-              //   return nameMatches || descriptionMatches;
-              // })
-              .map((resource, index) => (
-                <ResourceCard key={`${resource.id}-${index}`} item={resource} />
-              ))}
+            store.favorites.map((resource, index) => (
+              <ResourceCard key={`${resource.id}-${index}`} item={resource} />
+            ))}
         </ul>
 
         {store.modalIsOpen && (
