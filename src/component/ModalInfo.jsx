@@ -16,6 +16,8 @@ export const ModalInfo = ({
   averageRating,
   setAverageRating,
   toggleRatingModal,
+  ratingCount,
+  setRatingCount,
 }) => {
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -26,11 +28,6 @@ export const ModalInfo = ({
   };
 
   const res = store.selectedResource;
-
-  useEffect(() => {
-    actions.getAverageRating(res.id, setAverageRating);
-    actions.getComments(res.id, setComments);
-  }, [res.id]);
 
   const toggleFavorite = (event) => {
     event.stopPropagation();
@@ -172,14 +169,17 @@ export const ModalInfo = ({
         {/* ADDRESS */}
         <div className="info-address">
           <span>Address</span>
-          <span
-            style={{ cursor: "pointer", marginLeft: "10px" }}
-            onClick={() => navigator.clipboard.writeText(res.address)}
-            title="Copy Address"
-            className="modal-text"
-          >
-            {res.address.replace(", USA", "")}
-          </span>
+          <div>
+            <span
+              style={{ cursor: "pointer", marginLeft: "10px" }}
+              onClick={() => navigator.clipboard.writeText(res.address)}
+              title="Copy Address"
+              className="modal-text"
+            >
+              {res.address.replace(", USA", "")} {"  "}
+            </span>
+            <span class="material-symbols-outlined">content_copy</span>
+          </div>
         </div>
         {/* Rating */}
         <div
@@ -190,16 +190,19 @@ export const ModalInfo = ({
           }}
         >
           <span>Rating</span>
-          <Rating
-            style={{
-              flexDirection: "row",
-              fontSize: "20px",
-            }}
-            name="read-only"
-            value={averageRating}
-            precision={0.5}
-            readOnly
-          />
+          <div className="rating-div">
+            <Rating
+              style={{
+                flexDirection: "row",
+                fontSize: "20px",
+              }}
+              name="read-only"
+              value={averageRating}
+              precision={0.5}
+              readOnly
+            />
+            <span>({ratingCount})</span>
+          </div>
         </div>
 
         {/* DESCRIPTION */}
@@ -207,16 +210,17 @@ export const ModalInfo = ({
           <>
             <div className="info-address">
               <span style={{ alignSelf: "start" }}>About</span>
-              <p style={{ maxWidth: "300px" }}>
+              <span className="modal-text" style={{ maxWidth: "300px" }}>
                 {isReadMore
                   ? `${res.description.slice(0, 200)}...`
                   : res.description}
                 {res.description.length > 200 && (
-                  <p onClick={toggleReadMore} className="read-more">
+                  <span onClick={toggleReadMore} className="read-more">
+                    {"  "}
                     {isReadMore ? "(Show more)" : "(Show less)"}
-                  </p>
+                  </span>
                 )}
-              </p>
+              </span>
             </div>
           </>
         )}
@@ -278,17 +282,17 @@ export const ModalInfo = ({
 
         {scheduleCategory === "Closed Everyday" && (
           <>
-            <p className="info-address" style={{ color: "black" }}>
+            <span className="info-address" style={{ color: "black" }}>
               <span>Schedule</span>
               Closed Everyday
-            </p>
+            </span>
           </>
         )}
         {scheduleCategory === "Open 24 Hours" && (
-          <p className="info-address" style={{ color: "black" }}>
+          <span className="info-address" style={{ color: "black" }}>
             <span>Hours</span>
             Open 24/7
-          </p>
+          </span>
         )}
 
         {Object.keys(formattedSchedule).length > 0 &&
@@ -335,7 +339,7 @@ export const ModalInfo = ({
                   {/* You Favorited This Resource */}
                   Favorited
                 </span>
-                <FavoriteIcon style={{ color: "red" }} />
+                <FavoriteIcon style={{ color: "red", cursor: "pointer" }} />
               </>
             ) : (
               <>
@@ -344,7 +348,7 @@ export const ModalInfo = ({
                   Not Favorited
                 </span>{" "}
                 {"  "}
-                <FavoriteBorderIcon />
+                <FavoriteBorderIcon style={{ cursor: "pointer" }} />
               </>
             )}
           </div>
