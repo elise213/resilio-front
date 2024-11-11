@@ -164,7 +164,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       openLoginModal: () => {
-        console.log("called from flux - open");
+        console.log("called from flux - open login");
         setStore({ loginModalIsOpen: true });
       },
 
@@ -364,9 +364,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
-          willClose: () => {
-            window.location.href = "/";
-          },
         });
       },
 
@@ -894,39 +891,91 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      getAverageRating: async (resourceId, setAverageRatingCallback) => {
+      // getAverageRating: async (resourceId, setAverageRatingCallback) => {
+      //   const current_back_url = getStore().current_back_url;
+
+      //   try {
+      //     const response = await fetch(
+      //       `${current_back_url}/api/rating?resource=${resourceId}`
+      //     );
+
+      //     if (!response.ok) {
+      //       console.error(
+      //         `Server Error: ${response.status} ${response.statusText}`
+      //       );
+      //       setAverageRatingCallback(0);
+      //       return;
+      //     }
+
+      //     const data = await response.json().catch((e) => {
+      //       console.error("Invalid JSON response:", e);
+      //       setAverageRatingCallback(0);
+      //       return;
+      //     });
+
+      //     if (data && data.rating === "No ratings yet") {
+      //       setAverageRatingCallback(0);
+      //     } else if (data && typeof data.rating !== "undefined") {
+      //       setAverageRatingCallback(parseFloat(data.rating));
+      //     } else {
+      //       console.warn("Unexpected response structure:", data);
+      //       setAverageRatingCallback(0);
+      //     }
+      //   } catch (error) {
+      //     console.error("Network Error:", error);
+      //     setAverageRatingCallback(0);
+      //   }
+      // },
+
+      getAverageRating: async (
+        resourceId,
+        setAverageRatingCallback,
+        setRatingCountCallback
+      ) => {
+        console.log(
+          "setAverageRatingCallback is:",
+          typeof setAverageRatingCallback
+        );
+        console.log(
+          "setRatingCountCallback is:",
+          typeof setRatingCountCallback
+        );
+
         const current_back_url = getStore().current_back_url;
 
         try {
           const response = await fetch(
             `${current_back_url}/api/rating?resource=${resourceId}`
           );
-
           if (!response.ok) {
             console.error(
               `Server Error: ${response.status} ${response.statusText}`
             );
-            setAverageRatingCallback(0);
+            if (typeof setAverageRatingCallback === "function")
+              setAverageRatingCallback(0);
+            if (typeof setRatingCountCallback === "function")
+              setRatingCountCallback(0);
             return;
           }
 
-          const data = await response.json().catch((e) => {
-            console.error("Invalid JSON response:", e);
-            setAverageRatingCallback(0);
-            return;
-          });
-
+          const data = await response.json();
           if (data && data.rating === "No ratings yet") {
-            setAverageRatingCallback(0);
-          } else if (data && typeof data.rating !== "undefined") {
-            setAverageRatingCallback(parseFloat(data.rating));
+            if (typeof setAverageRatingCallback === "function")
+              setAverageRatingCallback(0);
+            if (typeof setRatingCountCallback === "function")
+              setRatingCountCallback(0);
           } else {
-            console.warn("Unexpected response structure:", data);
-            setAverageRatingCallback(0);
+            if (typeof setAverageRatingCallback === "function")
+              setAverageRatingCallback(data.rating);
+            if (typeof setRatingCountCallback === "function")
+              setRatingCountCallback(data.count);
           }
         } catch (error) {
           console.error("Network Error:", error);
-          setAverageRatingCallback(0); // Default value in case of an error
+          if (typeof setAverageRatingCallback === "function")
+            setAverageRatingCallback(0);
+          if (typeof setRatingCountCallback === "function")
+            setRatingCountCallback(0);
         }
       },
 

@@ -79,21 +79,16 @@
 
 .modal-div {
   width: 100%;
-  height: 100%;
-  justify-content: space-between;
-  position: absolute;
+  height: 100vh;
+  position: fixed;
   background-color: white;
   z-index: 99999999;
-  border: 3px solid black;
-  border-radius: 0 20px 0 0;
-  display: flex;
   flex-direction: column;
   padding: 15px;
   box-sizing: border-box;
   overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  align-items: center;
+  top: 0;
+  left: 0;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-thumb {
