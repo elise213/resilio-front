@@ -23,6 +23,12 @@
   width: 100%;
 }
 
+.page-title {
+  text-align: center;
+  font-size: 25px;
+  margin: 20px 0;
+}
+
 .my-resource-card:hover {
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2) !important;
   transition: 0.2s;

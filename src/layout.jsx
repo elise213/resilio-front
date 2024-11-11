@@ -9,7 +9,8 @@ import Account from "./pages/Account";
 import ScrollToTop from "./component/scrollToTop";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
-import ResetPassword from "./pages/ResetPassword";
+import ResetPassword from "./pages/ProfileSettings";
+import ProfileSettings from "./pages/ProfileSettings";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
@@ -20,12 +21,13 @@ const Layout = () => {
       <ScrollToTop>
         <Routes>
           <Route element={<Home />} path="/" />
-          <Route element={<UserProfile />} path="/profile" />
+          <Route element={<UserProfile />} path="/profile/:id" />
           <Route element={<Create />} path="/create" />
           <Route element={<ResetPassword />} path="/resetpassword" />
           <Route element={<Account />} path="/account" />
           <Route element={<Favorites />} path="/favorites" />
           <Route element={<Edit />} path="/edit/:id" />
+          <Route element={<ProfileSettings />} path="/profilesettings/:id" />
         </Routes>
       </ScrollToTop>
     </BrowserRouter>
