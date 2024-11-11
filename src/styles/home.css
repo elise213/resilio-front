@@ -87,6 +87,8 @@
   padding: 15px;
   box-sizing: border-box;
   overflow-y: auto;
+  top: 0;
+  left: 0;
 }
 
 .scroll-search-results ul::-webkit-scrollbar-thumb {
