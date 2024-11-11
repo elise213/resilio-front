@@ -17,15 +17,7 @@ const UserProfile = () => {
             <ul className="favorites-list" style={{ listStyleType: "none" }}>
               {store.favorites.map((resource, index) => (
                 <li key={i}>
-                  <ResourceCard
-                    number={index + 1}
-                    key={resource.id}
-                    item={resource}
-                    openModal={openModal}
-                    closeModal={closeModal}
-                    modalIsOpen={modalIsOpen}
-                    setModalIsOpen={setModalIsOpen}
-                  />
+                  <ResourceCard item={resource} />
                 </li>
               ))}
             </ul>

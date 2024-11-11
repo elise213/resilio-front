@@ -68,12 +68,7 @@
   color: gray;
   font-size: 12px;
   line-height: 0.5;
-}
-
-.category-span {
   padding-right: 10px;
-  color: #679c87 !important;
-  font-size: 14px !important;
 }
 
 .card-img {
@@ -126,8 +121,20 @@
 .resource-title {
   color: black;
   font-weight: bolder;
-  font-size: 16px;
-  margin: 10px;
+  font-size: 14px;
+  margin: 10px 0;
+  /* text-align: justify; */
+  text-align: center;
+}
+
+.rating-div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ratingCount {
+  font-weight: 100 !important;
+  font-size: 12px;
 }
 
 .resource-card-number {

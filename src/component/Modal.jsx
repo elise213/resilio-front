@@ -13,6 +13,9 @@ const Modal = ({}) => {
   const { store, actions } = useContext(Context);
 
   const [rating, setRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
+  const [ratingCount, setRatingCount] = useState(0);
+
   const [showRating, setShowRating] = useState(false);
   const apiKey = import.meta.env.VITE_GOOGLE;
 
@@ -25,7 +28,6 @@ const Modal = ({}) => {
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const [averageRating, setAverageRating] = useState(0);
 
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -38,16 +40,32 @@ const Modal = ({}) => {
   const mapZoom = 13;
 
   const Marker = React.memo(({ result }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Function to open Google Maps directions
+    const openGoogleMaps = () => {
+      if (result) {
+        const { latitude, longitude } = result;
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+        window.open(url, "_blank");
+      }
+    };
+
     return (
       <div
         className="marker"
-        onClick={result ? () => openModal(result) : undefined}
+        onClick={openGoogleMaps}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* {!isHovered && result && ( */}
         <div className="marker-icon">
           <i className="fa-solid fa-map-pin" style={{ color: "red" }}></i>
         </div>
-        {/* )} */}
+        {isHovered && result && (
+          <div className="marker-address">
+            {result.address || "Address not available"}
+          </div>
+        )}
       </div>
     );
   });
@@ -56,14 +74,12 @@ const Modal = ({}) => {
     setShowRating(!showRating);
   }
 
-  const fetchLatestCommentsAndRatings = () => {
-    actions.getAverageRating(resource.id, setAverageRating);
-    actions.getComments(resource.id, setComments);
-  };
-
   useEffect(() => {
-    fetchLatestCommentsAndRatings();
-  }, [resource.id, actions]);
+    console.log("setAverageRating:", typeof setAverageRating); // should log "function"
+    console.log("setRatingCount:", typeof setRatingCount); // should log "function"
+    actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
+    actions.getComments(resource.id, setComments);
+  }, [resource.id]);
 
   useEffect(() => {
     console.log("resource", resource);
@@ -110,38 +126,41 @@ const Modal = ({}) => {
         <span className="material-symbols-outlined">arrow_back_ios</span>
         Back
       </p>
-      <div className="resource-info">
-        <ModalInfo
-          schedule={resource.schedule}
-          res={resource}
-          isFavorited={isFavorited}
-          setIsFavorited={setIsFavorited}
-          setShowRating={setShowRating}
-          setComments={setComments}
-          averageRating={averageRating}
-          setAverageRating={setAverageRating}
-          toggleRatingModal={toggleRatingModal}
-        />
-      </div>
-
-      <div
-        className="map-container"
-        style={{ height: "500px", width: "500px" }}
-      >
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey }}
-          defaultCenter={mapCenter}
-          defaultZoom={mapZoom}
-        >
-          {/* Add a Marker for the resource */}
-          <Marker
-            lat={resource.latitude}
-            lng={resource.longitude}
-            text={resource.name}
-            id={resource.id}
-            result={resource}
+      <div className="group-1">
+        <div className="resource-info">
+          <ModalInfo
+            schedule={resource.schedule}
+            res={resource}
+            isFavorited={isFavorited}
+            setIsFavorited={setIsFavorited}
+            setShowRating={setShowRating}
+            setComments={setComments}
+            averageRating={averageRating}
+            setAverageRating={setAverageRating}
+            toggleRatingModal={toggleRatingModal}
+            ratingCount={ratingCount}
+            setRatingCount={setRatingCount}
           />
-        </GoogleMapReact>
+        </div>
+        <div
+          className="map-container-modal"
+          style={{ height: "300px", width: "500px", justifySelf: "center" }}
+        >
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: apiKey }}
+            defaultCenter={mapCenter}
+            defaultZoom={mapZoom}
+          >
+            {/* Add a Marker for the resource */}
+            <Marker
+              lat={resource.latitude}
+              lng={resource.longitude}
+              text={resource.name}
+              id={resource.id}
+              result={resource}
+            />
+          </GoogleMapReact>
+        </div>
       </div>
 
       {comments.length > 0 && (
@@ -192,8 +211,7 @@ const Modal = ({}) => {
               className="log-in"
               onClick={() => {
                 actions.openLoginModal();
-                setShowRating(false);
-                actions.closeModal;
+                actions.closeModal();
               }}
             >
               Log in
@@ -201,7 +219,7 @@ const Modal = ({}) => {
             to add this resource to your favorites
           </div>
         )}
-        {isAuthorizedUser && (
+        {isAuthorizedUser && isLoggedIn && (
           <>
             <p className="problem">
               Click {""}
@@ -224,7 +242,7 @@ const Modal = ({}) => {
           <div className="rate" ref={ratingModalRef}>
             <span className="close-modal" onClick={() => setShowRating(false)}>
               <span className="material-symbols-outlined">arrow_back_ios</span>
-              Back to Resource Listing
+              Back
             </span>
 
             {!isLoggedIn && (
@@ -249,9 +267,9 @@ const Modal = ({}) => {
             {isLoggedIn && (
               <>
                 <div className="rating-container">
-                  <span className="rating-prompt">
+                  {/* <span className="rating-prompt">
                     What did You Think of {resource.name}?
-                  </span>
+                  </span> */}
                   <Rating
                     className="resource-rating"
                     name="resource-rating"
@@ -319,7 +337,7 @@ const Modal = ({}) => {
                             setComment("");
 
                             // Refresh comments and ratings
-                            fetchLatestCommentsAndRatings();
+                            // fetchLatestCommentsAndRatings();
                           })
                           .catch((error) => {
                             console.error("Error submitting review:", error);

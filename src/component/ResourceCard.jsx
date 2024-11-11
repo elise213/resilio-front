@@ -6,6 +6,7 @@ import Rating from "@mui/material/Rating";
 const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
   const [averageRating2, setAverageRating2] = useState(0);
+  const [ratingCount2, setRatingCount2] = useState(0);
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
@@ -14,8 +15,16 @@ const ResourceCard = (props) => {
 
   useEffect(() => {
     console.log("Fetching average rating for resource ID:", props.item.id);
-    actions.getAverageRating(props.item.id, setAverageRating2);
+    actions.getAverageRating(
+      props.item.id,
+      setAverageRating2,
+      props.setRatingCount
+    );
   }, []);
+
+  useEffect(() => {
+    actions.getAverageRating(props.item.id, setAverageRating2, setRatingCount2); // Pass both callbacks
+  }, [props.item.id]);
 
   const normalizeCategories = (categories) => {
     if (!categories) return [];
@@ -80,14 +89,17 @@ const ResourceCard = (props) => {
               </span>
             ))}
           </div>
-          <Rating
-            style={{ flexDirection: "row" }}
-            name="read-only"
-            value={averageRating2}
-            precision={0.5}
-            readOnly
-            className="star"
-          />
+          <div className="rating-div">
+            <Rating
+              style={{ flexDirection: "row" }}
+              name="read-only"
+              value={averageRating2}
+              precision={0.5}
+              readOnly
+              className="star"
+            />
+            <p className="ratingCount">({ratingCount2})</p>
+          </div>
         </div>
       )}
     </div>
