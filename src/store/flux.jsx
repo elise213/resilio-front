@@ -12,6 +12,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       contactModalIsOpen: false,
       boundaryResults: [],
       categorySearch: [],
+      selectedResource: null,
+      averageRating: 0,
+      comments: [],
       CATEGORY_OPTIONS: [
         { id: "food", value: "food", label: "Food" },
         { id: "health", value: "health", label: "Medical Care" },
@@ -97,13 +100,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       dayCounts: {},
     },
     actions: {
-      // Action to update `selectedResource`
       setSelectedResource: (resource) => {
         sessionStorage.setItem("selectedResource", JSON.stringify(resource));
         setStore({ selectedResource: resource });
       },
 
-      // Action to set `favorites`
       setFavorites: (favorites) => {
         sessionStorage.setItem("favorites", JSON.stringify(favorites));
         setStore({ favorites });
@@ -498,7 +499,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Deleted",
             text: "Resource deleted successfully!",
           });
-          navigate("/");
+          actions.closeModal;
         } catch (error) {
           console.error("Error during resource deletion:", error);
           Swal.fire({
@@ -891,56 +892,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // getAverageRating: async (resourceId, setAverageRatingCallback) => {
-      //   const current_back_url = getStore().current_back_url;
-
-      //   try {
-      //     const response = await fetch(
-      //       `${current_back_url}/api/rating?resource=${resourceId}`
-      //     );
-
-      //     if (!response.ok) {
-      //       console.error(
-      //         `Server Error: ${response.status} ${response.statusText}`
-      //       );
-      //       setAverageRatingCallback(0);
-      //       return;
-      //     }
-
-      //     const data = await response.json().catch((e) => {
-      //       console.error("Invalid JSON response:", e);
-      //       setAverageRatingCallback(0);
-      //       return;
-      //     });
-
-      //     if (data && data.rating === "No ratings yet") {
-      //       setAverageRatingCallback(0);
-      //     } else if (data && typeof data.rating !== "undefined") {
-      //       setAverageRatingCallback(parseFloat(data.rating));
-      //     } else {
-      //       console.warn("Unexpected response structure:", data);
-      //       setAverageRatingCallback(0);
-      //     }
-      //   } catch (error) {
-      //     console.error("Network Error:", error);
-      //     setAverageRatingCallback(0);
-      //   }
-      // },
-
       getAverageRating: async (
         resourceId,
         setAverageRatingCallback,
         setRatingCountCallback
       ) => {
-        console.log(
-          "setAverageRatingCallback is:",
-          typeof setAverageRatingCallback
-        );
-        console.log(
-          "setRatingCountCallback is:",
-          typeof setRatingCountCallback
-        );
-
         const current_back_url = getStore().current_back_url;
 
         try {
@@ -1010,10 +966,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          return data; // Handle success as needed
+          return data;
         } catch (error) {
           console.error("Error submitting rating and comment:", error);
-          throw error; // Handle error as needed
+          throw error;
         }
       },
 
@@ -1031,6 +987,78 @@ const getState = ({ getStore, getActions, setStore }) => {
           setCommentsCallback(data.comments);
         } catch (error) {
           console.error("Error:", error);
+        }
+      },
+
+      // In appContext.js or wherever actions are defined
+
+      getCommentsAndRatingsForUser: async (
+        userId,
+        setUserCommentsAndRatings
+      ) => {
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/comments-ratings/user/${userId}`
+          );
+          if (!response.ok) {
+            console.error("Failed to fetch user comments and ratings");
+            return;
+          }
+          const data = await response.json();
+          setUserCommentsAndRatings(data.comments);
+        } catch (error) {
+          console.error("Error fetching user comments and ratings:", error);
+        }
+      },
+
+      // In appContext.js or wherever actions are defined
+
+      deleteComment: async (commentId) => {
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+
+        if (!token) {
+          console.error("User is not logged in.");
+          return { success: false };
+        }
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/deleteComment/${commentId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to delete comment");
+          }
+
+          return { success: true };
+        } catch (error) {
+          console.error("Error deleting comment:", error);
+          return { success: false };
+        }
+      },
+
+      getUserInfo: async (userId) => {
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/user/${userId}`
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch user info");
+          }
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+          return { name: "Unknown" };
         }
       },
 

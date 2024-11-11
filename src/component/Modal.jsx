@@ -20,9 +20,7 @@ const Modal = ({}) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
 
   const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
-
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
-
   const isAuthorizedUser = validUserIds.includes(userIdFromSession);
 
   const [hover, setHover] = useState(-1);
@@ -33,11 +31,47 @@ const Modal = ({}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   const resource = store.selectedResource;
+
   const mapCenter = {
     lat: resource?.latitude || 0, // Default to 0 if no latitude
     lng: resource?.longitude || 0, // Default to 0 if no longitude
   };
   const mapZoom = 13;
+
+  const handleSubmitReview = () => {
+    if (!rating || !comment.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "You must include a rating and a comment.",
+      });
+      return;
+    }
+
+    actions
+      .submitRatingAndComment(resource.id, comment, rating)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Your review has been submitted!",
+        });
+        setRating(0);
+        setComment("");
+        setShowRating(false);
+
+        // Refresh comments and ratings after submission
+        actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
+        actions.getComments(resource.id, setComments);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to submit your review.",
+        });
+      });
+  };
 
   const Marker = React.memo(({ result }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -75,11 +109,11 @@ const Modal = ({}) => {
   }
 
   useEffect(() => {
-    console.log("setAverageRating:", typeof setAverageRating); // should log "function"
-    console.log("setRatingCount:", typeof setRatingCount); // should log "function"
-    actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
-    actions.getComments(resource.id, setComments);
-  }, [resource.id]);
+    if (resource?.id) {
+      actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
+      actions.getComments(resource.id, setComments);
+    }
+  }, [resource]);
 
   useEffect(() => {
     console.log("resource", resource);
@@ -296,58 +330,7 @@ const Modal = ({}) => {
                     <Button
                       variant="contained"
                       color="primary"
-                      className="submit"
-                      onClick={() => {
-                        // Check if rating or comment is missing and show an alert
-                        if (!rating || rating <= 0) {
-                          Swal.fire({
-                            icon: "warning",
-                            title: "Oops...",
-                            text: "You must include a rating.",
-                          });
-                          return;
-                        }
-
-                        if (!comment.trim()) {
-                          Swal.fire({
-                            icon: "warning",
-                            title: "Oops...",
-                            text: "You must include a comment.",
-                          });
-                          return;
-                        }
-
-                        console.log("Submit button clicked");
-                        actions
-                          .submitRatingAndComment(resource.id, comment, rating)
-                          .then((response) => {
-                            console.log("Success", response);
-                            Swal.fire({
-                              icon: "success",
-                              title: "Success",
-                              text: "Your review has been submitted!",
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                setShowRating(false);
-                              }
-                            });
-
-                            // Reset form state here if needed
-                            setRating(0);
-                            setComment("");
-
-                            // Refresh comments and ratings
-                            // fetchLatestCommentsAndRatings();
-                          })
-                          .catch((error) => {
-                            console.error("Error submitting review:", error);
-                            Swal.fire({
-                              icon: "error",
-                              title: "Error",
-                              text: "Failed to submit your review.",
-                            });
-                          });
-                      }}
+                      onClick={handleSubmitReview}
                     >
                       Submit
                     </Button>

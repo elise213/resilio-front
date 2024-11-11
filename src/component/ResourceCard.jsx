@@ -14,7 +14,6 @@ const ResourceCard = (props) => {
   const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
-    console.log("Fetching average rating for resource ID:", props.item.id);
     actions.getAverageRating(
       props.item.id,
       setAverageRating2,
