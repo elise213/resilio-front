@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import UserProfile from "./pages/UserProfile";
 import Create from "./pages/Create";
-import Emergency from "./pages/Emergency";
 import Edit from "./pages/Edit";
 import Favorites from "./pages/Favorites";
 import Account from "./pages/Account";
@@ -25,7 +24,6 @@ const Layout = () => {
           <Route element={<Create />} path="/create" />
           <Route element={<ResetPassword />} path="/resetpassword" />
           <Route element={<Account />} path="/account" />
-          <Route element={<Emergency />} path="/emergency" />
           <Route element={<Favorites />} path="/favorites" />
           <Route element={<Edit />} path="/edit/:id" />
         </Routes>
