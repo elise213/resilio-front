@@ -1,0 +1,17 @@
+.settings-container {
+  justify-self: center;
+}
+
+.form-row {
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+button {
+  align-self: end;
+}
+
+form {
+  padding: 5px;
+}

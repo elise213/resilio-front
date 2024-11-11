@@ -19,6 +19,8 @@ const Login = ({ setLayout }) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(
     store.loginModalIsOpen
   );
+  const userId2 = parseInt(sessionStorage.getItem("user_id"), 10);
+
   useEffect(() => {
     setIsLoginModalOpen(store.loginModalIsOpen);
   }, [store.loginModalIsOpen]);
@@ -361,15 +363,15 @@ const Login = ({ setLayout }) => {
           >
             <MenuItem onClick={handleProfileClose}>
               <Link
-                to="/account"
+                to={`/profilesettings/${userId2}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                Account
+                Settings
               </Link>
             </MenuItem>
             <MenuItem onClick={handleProfileClose}>
               <Link
-                to="/profile"
+                to={`/profile/${userId2}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 Profile
