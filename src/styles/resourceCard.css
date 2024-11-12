@@ -30,10 +30,20 @@
 }
 
 .my-resource-card:hover {
-  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2) !important;
-  transition: 0.2s;
+  box-shadow: 0px 0px 5px 5px rgba(37, 8, 184, 0.2) !important;
+  transition: 0.3s;
   cursor: pointer;
-  background-color: rgb(181, 255, 185) !important;
+  /* background: radial-gradient(
+    circle,
+    rgba(184, 255, 217, 0) 0%,
+    rgb(178, 255, 214) 100%
+  ) !important; */
+  background: radial-gradient(
+    circle,
+    rgba(184, 255, 217, 0) 30%,
+    rgba(184, 255, 217, 0.7) 60%,
+    rgba(184, 255, 217, 1) 100%
+  ) !important;
 }
 
 /* .modal-div {
@@ -191,3 +201,7 @@
     font-size: medium;
   }
 }
+
+/* .like-icon {
+  width: 50px;
+} */

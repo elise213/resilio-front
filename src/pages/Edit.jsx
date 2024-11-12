@@ -33,6 +33,7 @@ const Edit = () => {
     category: [],
     website: "",
     description: "",
+    alert: "",
     latitude: null,
     longitude: null,
     image: "",
@@ -326,6 +327,18 @@ const Edit = () => {
             onChange={(e) => handleChange("website", e.target.value)}
             placeholder="Resource Website URL"
           />
+        </div>
+        {/* Alert field */}
+        <div className="input-group">
+          <label htmlFor="alert">Alert</label>
+          <textarea
+            className="geo-input"
+            id="alert"
+            rows="2"
+            value={formData.alert || ""}
+            onChange={(e) => handleChange("alert", e.target.value)}
+            placeholder="Alert message for this resource"
+          ></textarea>
         </div>
 
         <div className="input-group">

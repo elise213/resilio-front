@@ -126,9 +126,10 @@
 }
 
 .read-more {
-  font-size: 11px;
+  /* font-size: 11px; */
   color: blue;
   /* margin-left: 10px; */
+  text-align: end;
 }
 
 .read-more:hover {
@@ -142,6 +143,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.like-button {
+  border: none !important;
+  background-color: transparent !important;
 }
 
 .resource-rating:hover {
@@ -209,8 +215,21 @@ p {
   margin: 0;
 }
 
+.comment-header {
+  align-self: end;
+}
+
+.comment-actions {
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  display: flex;
+}
+
 .comment-div {
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .comment-content {
@@ -223,6 +242,17 @@ p {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.comment-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 5px;
 }
 
 .comment-info div p {
@@ -254,11 +284,8 @@ p {
 .comments-display {
   display: flex;
   flex-direction: column;
-  /* width: 450px; */
-  margin: 135px 0 0 0;
+  margin: 80px 0 0 0;
   box-sizing: border-box;
-  /* max-width: 600px; */
-  /* border: 1px solid black; */
   border-radius: 4px;
   align-self: center;
 }
@@ -352,8 +379,7 @@ body.modal-open {
 .comment-content-div {
   display: flex;
   justify-content: center;
-  /* justify-content: flex-end; */
-  margin-left: 250px;
+  margin-left: 150px;
 }
 
 /* ____________________________________________CAROUSEL  */
