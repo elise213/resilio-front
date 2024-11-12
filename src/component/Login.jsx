@@ -350,7 +350,7 @@ const Login = ({ setLayout }) => {
         <>
           {/* Profile Circle for logged-in users */}
           <IconButton onClick={handleProfileClick}>
-            <Avatar alt="Profile" src={userAvatar || "/default-avatar.jpg"} />
+            <Avatar alt="Profile" src={"/default-avatar.jpg"} />
           </IconButton>
 
           {/* Dropdown Menu */}
