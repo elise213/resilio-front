@@ -178,7 +178,6 @@ const Sidebar = ({
     setSelectedCategories(
       Object.keys(categories).filter((key) => categories[key])
     );
-    console.log("SC", selectedCategories);
   }, [categories]);
 
   useEffect(() => {
@@ -269,7 +268,9 @@ const Sidebar = ({
                       onClick={() => setIsModalOpen(true)}
                       className="filter-button"
                     >
-                      <span class="material-symbols-outlined">page_info</span>
+                      <span className="material-symbols-outlined">
+                        page_info
+                      </span>
                     </button>
                   </>
                   {/* )} */}
@@ -436,7 +437,7 @@ const Sidebar = ({
                                     .includes(searchQuery.toLowerCase()))
                             )
                             .map((resource, index) => (
-                              <ResourceCard item={resource} />
+                              <ResourceCard item={resource} key={index + 5} />
                             ))}
                       </ul>
                     )}

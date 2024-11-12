@@ -15,7 +15,7 @@ const SimpleMap = ({
 }) => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const { store, actions } = useContext(Context);
-  const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(true); //not finished
+  const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(true); //didn't finish this
   const [mapCenter, setMapCenter] = useState(city.center);
   const [mapZoom, setMapZoom] = useState(11);
   const mapContainerRef = useRef(null);
@@ -40,7 +40,6 @@ const SimpleMap = ({
   }, [city.center]);
 
   useEffect(() => {
-    console.log("City center updated to:", city.center);
     if (city.center) {
       setMapCenter({
         lat: city.center.lat,

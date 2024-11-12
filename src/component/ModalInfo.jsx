@@ -188,7 +188,7 @@ export const ModalInfo = ({
             </span>
             <span
               style={{ cursor: "pointer" }}
-              class="material-symbols-outlined"
+              className="material-symbols-outlined"
             >
               content_copy
             </span>
@@ -312,7 +312,7 @@ export const ModalInfo = ({
                 fontSize: "25px",
                 cursor: "pointer",
               }}
-              class="material-icons"
+              className="material-icons"
             >
               link
             </span>
