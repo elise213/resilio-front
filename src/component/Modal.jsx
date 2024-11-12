@@ -6,6 +6,8 @@ import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 
 import GoogleMapReact from "google-map-react"; // Import GoogleMapReact
 
@@ -41,6 +43,15 @@ const Modal = ({}) => {
     lng: resource?.longitude || 0, // Default to 0 if no longitude
   };
   const mapZoom = 13;
+
+  const handleDelete = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this resource? This action cannot be undone."
+    );
+    if (confirm) {
+      await actions.deleteResource(id, navigate);
+    }
+  };
 
   const handleSubmitReview = () => {
     if (!rating || !comment.trim()) {
@@ -112,6 +123,67 @@ const Modal = ({}) => {
     setShowRating(!showRating);
   }
 
+  const toggleLikeComment = (commentId) => {
+    setComments((prevComments) =>
+      prevComments.map((comment) => {
+        if (comment.comment_id === commentId) {
+          const isLiked = comment.likes?.some(
+            (like) => like.user_id === userIdFromSession
+          );
+
+          // Toggle the like/unlike based on the current state
+          if (isLiked) {
+            // If liked, unlike it
+            actions
+              .unlikeComment(commentId)
+              .then(() => {
+                setComments((currentComments) =>
+                  currentComments.map((c) =>
+                    c.comment_id === commentId
+                      ? {
+                          ...c,
+                          like_count: c.like_count - 1,
+                          likes: c.likes.filter(
+                            (like) => like.user_id !== userIdFromSession
+                          ),
+                        }
+                      : c
+                  )
+                );
+              })
+              .catch((error) => {
+                Swal.fire("Error", "Unable to unlike comment.", "error");
+              });
+          } else {
+            // If not liked, like it
+            actions
+              .likeComment(commentId)
+              .then(() => {
+                setComments((currentComments) =>
+                  currentComments.map((c) =>
+                    c.comment_id === commentId
+                      ? {
+                          ...c,
+                          like_count: c.like_count + 1,
+                          likes: [
+                            ...(c.likes || []),
+                            { user_id: userIdFromSession },
+                          ],
+                        }
+                      : c
+                  )
+                );
+              })
+              .catch((error) => {
+                Swal.fire("Error", "Unable to like comment.", "error");
+              });
+          }
+        }
+        return comment;
+      })
+    );
+  };
+
   useEffect(() => {
     if (resource?.id) {
       actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
@@ -141,9 +213,6 @@ const Modal = ({}) => {
       setIsFavorited(isItemFavorited);
     }
   }, [store.favorites]);
-
-  // REFS
-  const ratingModalRef = useRef(null);
 
   const labels = {
     1: "Poor",
@@ -204,26 +273,27 @@ const Modal = ({}) => {
       {comments.length > 0 && (
         <div className="comments-display">
           <span className="user-reviews">User Reviews</span>
-          {comments.map((comment, index) => {
+          {comments.map((comment) => {
             const date = new Date(comment.created_at);
             const formattedDate = date.toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
               day: "numeric",
             });
+            const isLiked = comment.likes?.some(
+              (like) => like.user_id === userIdFromSession
+            );
+
             return (
-              <div key={`${comment.id}-${index}`} className="comment-div">
+              <div key={comment.comment_id} className="comment-div">
                 <div className="comment-info">
-                  <div className="comment-and-rating">
-                    <Rating
-                      style={{ flexDirection: "row" }}
-                      name="read-only"
-                      value={comment.rating_value}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <p className="comment-content">{comment.comment_cont}</p>
-                  </div>
+                  <Rating
+                    name="read-only"
+                    value={comment.rating_value}
+                    precision={0.5}
+                    readOnly
+                  />
+                  <p className="comment-content">{comment.comment_cont}</p>
                   <div className="comment-content-div">
                     <div className="comment-user-info">
                       <span className="material-symbols-outlined account-circle">
@@ -232,6 +302,30 @@ const Modal = ({}) => {
                       {comment.user_name} {"   "}
                       {formattedDate}
                     </div>
+                  </div>
+                  <div className="comment-actions">
+                    {parseInt(comment.user_id) === userIdFromSession && (
+                      <button
+                        onClick={() => handleDelete(item.comment_id)}
+                        className="delete-button"
+                      >
+                        Delete
+                      </button>
+                    )}
+                    <button
+                      style={{ cursor: "pointer" }}
+                      onClick={() => toggleLikeComment(comment.comment_id)}
+                      className="like-button"
+                    >
+                      <div className="like-icon">
+                        {isLiked ? (
+                          <ThumbUpIcon fontSize="small" />
+                        ) : (
+                          <ThumbUpOffAltIcon fontSize="small" />
+                        )}{" "}
+                        {comment.like_count}
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>

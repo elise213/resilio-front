@@ -68,7 +68,7 @@ const UserProfile = () => {
           Back to Search
         </Link>
       </p>
-      <span>{userName}'s Thoughts</span>
+      <span>{userName}'s Reviews</span>
       {userCommentsAndRatings.length > 0 ? (
         userCommentsAndRatings.map((item, index) => (
           <div key={index} className="user-review-profile">
@@ -87,21 +87,24 @@ const UserProfile = () => {
               precision={0.5}
               readOnly
             />
+
             <p>
               <strong>Comment:</strong> {item.comment_cont}
             </p>
-            <p>
-              <strong>Date:</strong>{" "}
-              {new Date(item.created_at).toLocaleDateString()}
-            </p>
-            {parseInt(id) === loggedInUserId && (
-              <button
-                onClick={() => handleDelete(item.comment_id)}
-                className="delete-button"
-              >
-                Delete
-              </button>
-            )}
+            <div className="group-2">
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(item.created_at).toLocaleDateString()}
+              </p>
+              {parseInt(id) === loggedInUserId && (
+                <button
+                  onClick={() => handleDelete(item.comment_id)}
+                  className="delete-button"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
         ))
       ) : (
