@@ -375,7 +375,7 @@ const Login = ({ setLayout }) => {
                 style={{
                   textDecoration: "none",
                   color: "inherit",
-                  padding: "0 !important",
+                  margin: "0px",
                 }}
               >
                 Profile
