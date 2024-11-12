@@ -372,7 +372,11 @@ const Login = ({ setLayout }) => {
             <MenuItem onClick={handleProfileClose}>
               <Link
                 to={`/profile/${userId2}`}
-                style={{ textDecoration: "none", color: "inherit" }}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                  padding: "0 !important",
+                }}
               >
                 Profile
               </Link>

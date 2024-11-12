@@ -1,23 +1,18 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { ModalMap } from "./ModalMap";
 import Carousel from "./Carousel";
 import Button from "@mui/material/Button";
 import styles from "../styles/resourceModal.css";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Rating from "@mui/material/Rating";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
 export const ModalInfo = ({
-  id,
   isFavorited,
   setIsFavorited,
-  // setComments,
   averageRating,
-  // setAverageRating,
   toggleRatingModal,
   ratingCount,
-  // setRatingCount,
 }) => {
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -28,6 +23,8 @@ export const ModalInfo = ({
   };
 
   const res = store.selectedResource;
+  const id = res.id;
+  const scheduleStore = res.schedule;
 
   const [copied, setCopied] = useState(false);
 
@@ -49,17 +46,18 @@ export const ModalInfo = ({
     setIsFavorited(!isFavorited);
   };
 
-  const currentSchedule =
-    store.schedules.find((each) => each.resource_id === id) || null;
+  const currentSchedule = scheduleStore;
 
+  console.log("Current Schedule:", currentSchedule);
   const schedule2 = filterNonNullValues(currentSchedule);
+  console.log("Filtered Schedule (schedule2):", schedule2);
+
+  const formattedSchedule = {};
 
   const isEverydaySameSchedule = (formattedSchedule) => {
     const schedules = Object.values(formattedSchedule);
     return schedules.every((schedule) => schedule === schedules[0]);
   };
-
-  const formattedSchedule = {};
 
   Object.keys(schedule2).forEach((key) => {
     const day = key.replace(/End|Start/g, "");
@@ -76,7 +74,7 @@ export const ModalInfo = ({
 
     formattedSchedule[day] = scheduleString;
   });
-
+  console.log("Formatted Schedule:", formattedSchedule);
   const everydaySameSchedule = isEverydaySameSchedule(formattedSchedule);
 
   useEffect(() => {
@@ -91,20 +89,50 @@ export const ModalInfo = ({
   function filterNonNullValues(schedule) {
     const result = {};
     const daysOfWeek = store.daysOfWeek;
+
     daysOfWeek.forEach((day) => {
-      if (!schedule) return;
-      const startKey = `${day}Start`;
-      const endKey = `${day}End`;
-      if (schedule[startKey] !== null && schedule[endKey] !== null) {
-        result[startKey] = schedule[startKey];
-        result[endKey] = schedule[endKey];
+      if (!schedule || !schedule[day]) return;
+
+      const start = schedule[day].start;
+      const end = schedule[day].end;
+
+      // Treat empty strings or null values as "closed"
+      if (start && start !== "" && end && end !== "") {
+        result[`${day}Start`] = start;
+        result[`${day}End`] = end;
       } else {
-        result[startKey] = "closed";
-        result[endKey] = "closed";
+        result[`${day}Start`] = "closed";
+        result[`${day}End`] = "closed";
       }
+
+      // Log each day's start and end after processing
+      console.log(
+        `Day: ${day}, Start: ${result[`${day}Start`]}, End: ${
+          result[`${day}End`]
+        }`
+      );
     });
+
+    console.log("Filtered Schedule Result:", result);
     return result;
   }
+
+  Object.keys(schedule2).forEach((key) => {
+    const day = key.replace(/End|Start/g, "");
+    const start = schedule2[`${day}Start`];
+    const end = schedule2[`${day}End`];
+
+    // Check for "24 Hours" condition
+    if (start === "00:00" && end === "23:59") {
+      formattedSchedule[day] = "24 Hours";
+    } else if (start === "closed" || !start || !end) {
+      formattedSchedule[day] = "Closed";
+    } else {
+      formattedSchedule[day] = `${formatTime(start)} - ${formatTime(end)}`;
+    }
+  });
+
+  const scheduleCategory = categorizeSchedule(schedule2);
 
   function isDayClosed(start, end) {
     return !start || !end || start === "closed" || end === "closed";
@@ -162,8 +190,8 @@ export const ModalInfo = ({
     }
   });
 
-  const scheduleCategory = categorizeSchedule(schedule2);
-
+  // const scheduleCategory = categorizeSchedule(schedule2);
+  console.log("Schedule Category:", scheduleCategory);
   return (
     <>
       <Carousel res={res} />
@@ -175,25 +203,7 @@ export const ModalInfo = ({
           <span>{res.name}</span>
         </div>
         {/* ADDRESS */}
-        {/* <div className="info-address">
-          <span>Address</span>
-          <div>
-            <span
-              style={{ marginLeft: "10px" }}
-              onClick={() => navigator.clipboard.writeText(res.address)}
-              title="Copy Address"
-              className="modal-text"
-            >
-              {res.address.replace(", USA", "")} {"  "}
-            </span>
-            <span
-              style={{ cursor: "pointer" }}
-              className="material-symbols-outlined"
-            >
-              content_copy
-            </span>
-          </div>
-        </div> */}
+
         <div className="info-address">
           <span className="modal-info-title">Address</span>
           <div>
@@ -378,19 +388,17 @@ export const ModalInfo = ({
                   style={{ marginRight: "7px" }}
                 >
                   {" "}
-                  {/* You Favorited This Resource */}
-                  Favorited
+                  You follow this Resource
                 </span>
-                <FavoriteIcon style={{ color: "red", cursor: "pointer" }} />
+                <BookmarkIcon style={{ color: "green", cursor: "pointer" }} />
               </>
             ) : (
               <>
                 <span text="add to favorites" style={{ marginRight: "7px" }}>
-                  {/* Not in Your Favorites */}
-                  Not Favorited
+                  You do not follow this resource
                 </span>{" "}
                 {"  "}
-                <FavoriteBorderIcon style={{ cursor: "pointer" }} />
+                <BookmarkBorderIcon style={{ cursor: "pointer" }} />
               </>
             )}
           </div>

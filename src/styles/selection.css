@@ -680,17 +680,15 @@ iframe {
 
 .button-container-sidebar {
   display: flex;
-  margin-top: 10px;
-  flex-grow: 0;
-  height: 30px;
   min-width: 300px;
-  margin: 10px 0;
   width: 100%;
-  justify-content: flex-end !important;
+  /* margin: 8px; */
 }
 
 .button-container-sidebar button {
   align-items: center;
+  padding: 0 !important;
+  margin: 8px;
 }
 
 .screen-divider-button {
