@@ -233,7 +233,6 @@ const Sidebar = ({
 
             <Login log={log} setLog={setLog} setLayout={setLayout} />
           </div>
-          {/* <img className="resilio-logo" src="/assets/RESILIO2.png" /> */}
           <div className="logo-div">
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>

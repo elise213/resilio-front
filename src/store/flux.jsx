@@ -911,6 +911,46 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      likeComment: async (commentId) => {
+        const token = sessionStorage.getItem("token");
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/likeComment/${commentId}`,
+            {
+              method: "POST",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          if (response.status === 409) {
+            console.warn("Comment already liked.");
+            return; // Already liked; no further action needed.
+          }
+          if (!response.ok) throw new Error("Failed to like comment");
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+
+      unlikeComment: async (commentId) => {
+        const token = sessionStorage.getItem("token");
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/unlikeComment/${commentId}`,
+            {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          if (!response.ok) throw new Error("Failed to unlike comment");
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+
       getAverageRating: async (
         resourceId,
         setAverageRatingCallback,

@@ -11,6 +11,8 @@
   width: 270px;
   padding: 10px;
   margin: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .delete-button-profile {
@@ -21,4 +23,11 @@
   /* margin: 10px; */
   padding: 3px;
   border-radius: 3px;
+}
+
+.group-2 {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }

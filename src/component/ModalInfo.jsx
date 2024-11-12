@@ -25,7 +25,7 @@ export const ModalInfo = ({
   const res = store.selectedResource;
   const id = res.id;
   const scheduleStore = res.schedule;
-
+  const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -379,7 +379,7 @@ export const ModalInfo = ({
           <div
             className="info-address"
             onClick={toggleFavorite}
-            style={{ border: "none" }}
+            // style={{ border: "none" }}
           >
             {isFavorited ? (
               <>
@@ -403,6 +403,21 @@ export const ModalInfo = ({
             )}
           </div>
         )}
+        {/* // Alert */}
+        <div className="info-address">
+          <span className="modal-info-title">Alert</span>
+          {res.alert ? (
+            <>
+              <span className="modal-info-title" style={{ marginRight: "7px" }}>
+                {res.alert}
+              </span>
+            </>
+          ) : (
+            <>
+              <span text="add to favorites">No Alerts</span>
+            </>
+          )}
+        </div>
       </div>
     </>
   );
