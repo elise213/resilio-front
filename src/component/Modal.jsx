@@ -30,6 +30,10 @@ const Modal = ({}) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
+  useEffect(() => {
+    actions.fetchFavorites();
+  }, []);
+
   const resource = store.selectedResource;
 
   const mapCenter = {
@@ -225,7 +229,7 @@ const Modal = ({}) => {
                       <span className="material-symbols-outlined account-circle">
                         account_circle
                       </span>
-                      {comment.user_id} {"   "}
+                      {comment.user_name} {"   "}
                       {formattedDate}
                     </div>
                   </div>
