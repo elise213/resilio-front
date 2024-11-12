@@ -499,7 +499,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Deleted",
             text: "Resource deleted successfully!",
           });
-          actions.closeModal;
+
+          // Use getActions() to access other actions
+          const actions = getActions();
+          actions.closeModal(); // Ensure closeModal is called as a function
+
+          if (navigate) navigate("/"); // Redirect after deletion if navigate function is provided
         } catch (error) {
           console.error("Error during resource deletion:", error);
           Swal.fire({
@@ -1063,7 +1068,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       fetchFavorites: function () {
-        console.log("fetch favorites was called");
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
         if (token) {
