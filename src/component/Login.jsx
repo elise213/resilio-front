@@ -78,6 +78,14 @@ const Login = ({ setLayout }) => {
         }).then(() => {
           actions.closeLoginModal();
         });
+      } else if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error("Error details:", errorDetails);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorDetails.error || "An unexpected error occurred.",
+        });
       } else {
         const errorMessage =
           response.status === 403
