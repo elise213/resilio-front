@@ -25,6 +25,11 @@
   border-radius: 3px;
 }
 
+.profile-title {
+  margin-top: 30px;
+  font-size: 20px;
+}
+
 .group-2 {
   display: flex;
   width: 100%;

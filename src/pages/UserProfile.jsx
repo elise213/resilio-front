@@ -68,7 +68,7 @@ const UserProfile = () => {
           Back to Search
         </Link>
       </p>
-      <span>{userName}'s Reviews</span>
+      <span className="profile-title">{userName}'s Reviews</span>
       {userCommentsAndRatings.length > 0 ? (
         userCommentsAndRatings.map((item, index) => (
           <div key={index} className="user-review-profile">
