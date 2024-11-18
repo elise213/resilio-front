@@ -922,14 +922,15 @@ const getState = ({ getStore, getActions, setStore }) => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-          if (response.status === 409) {
+          if (response.ok) {
+            console.log("Comment liked successfully");
+          } else if (response.status === 409) {
             console.warn("Comment already liked.");
-            return; // Already liked; no further action needed.
+          } else {
+            throw new Error("Failed to like comment");
           }
-          if (!response.ok) throw new Error("Failed to like comment");
         } catch (error) {
-          console.error(error);
-          throw error;
+          console.error("Error in likeComment:", error);
         }
       },
 
@@ -944,10 +945,13 @@ const getState = ({ getStore, getActions, setStore }) => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-          if (!response.ok) throw new Error("Failed to unlike comment");
+          if (response.ok) {
+            console.log("Comment unliked successfully");
+          } else {
+            throw new Error("Failed to unlike comment");
+          }
         } catch (error) {
-          console.error(error);
-          throw error;
+          console.error("Error in unlikeComment:", error);
         }
       },
 

@@ -85,7 +85,7 @@ const Selection = ({
     return (
       <div className="modal">
         <div className="modal-filter-header">
-          <p>Filters</p>
+          {/* <p>Filters</p> */}
           <button className="close-filters" onClick={onClose}>
             X
           </button>

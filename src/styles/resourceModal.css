@@ -249,10 +249,11 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 300px;
-  border: 1px solid gray;
-  border-radius: 4px;
+  max-width: 300px;
+  min-width: 250px;
+  /* border-radius: 4px; */
   padding: 5px;
+  border-bottom: 1px solid gray;
 }
 
 .comment-info div p {
@@ -287,7 +288,8 @@ p {
   margin: 80px 0 0 0;
   box-sizing: border-box;
   border-radius: 4px;
-  align-self: center;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 textarea {
@@ -374,15 +376,18 @@ body.modal-open {
 
 .comment-content-div {
   display: flex;
-  justify-content: center;
-  margin-left: 150px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: end;
 }
 
 /* ____________________________________________CAROUSEL  */
 
 .account-circle {
-  font-size: 15px;
+  font-size: 25px;
+  color: gray;
   align-self: center;
+  margin-right: 3px;
 }
 
 .modal-description {

@@ -8,6 +8,8 @@ import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import GoogleMapReact from "google-map-react"; // Import GoogleMapReact
 
@@ -44,12 +46,12 @@ const Modal = ({}) => {
   };
   const mapZoom = 13;
 
-  const handleDelete = async () => {
+  const handleDelete = async (commentId) => {
     const confirm = window.confirm(
-      "Are you sure you want to delete this resource? This action cannot be undone."
+      "Are you sure you want to delete this comment? This action cannot be undone."
     );
     if (confirm) {
-      await actions.deleteResource(id, navigate);
+      await actions.deleteComment(commentId);
     }
   };
 
@@ -76,8 +78,14 @@ const Modal = ({}) => {
         setShowRating(false);
 
         // Refresh comments and ratings after submission
-        actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
-        actions.getComments(resource.id, setComments);
+        if (resource?.id) {
+          actions.getAverageRating(
+            resource.id,
+            setAverageRating,
+            setRatingCount
+          );
+          actions.getComments(resource.id, setComments);
+        }
       })
       .catch((error) => {
         Swal.fire({
@@ -85,6 +93,50 @@ const Modal = ({}) => {
           title: "Error",
           text: "Failed to submit your review.",
         });
+      });
+  };
+
+  const handleLike = (commentId) => {
+    actions
+      .likeComment(commentId)
+      .then(() => {
+        setComments((prevComments) =>
+          prevComments.map((c) =>
+            c.comment_id === commentId
+              ? {
+                  ...c,
+                  like_count: c.like_count + 1,
+                  likes: [...(c.likes || []), { user_id: userIdFromSession }],
+                }
+              : c
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error liking comment:", error);
+      });
+  };
+
+  const handleUnlike = (commentId) => {
+    actions
+      .unlikeComment(commentId)
+      .then(() => {
+        setComments((prevComments) =>
+          prevComments.map((c) =>
+            c.comment_id === commentId
+              ? {
+                  ...c,
+                  like_count: c.like_count - 1,
+                  likes: c.likes.filter(
+                    (like) => like.user_id !== userIdFromSession
+                  ),
+                }
+              : c
+          )
+        );
+      })
+      .catch((error) => {
+        console.error("Error unliking comment:", error);
       });
   };
 
@@ -123,66 +175,65 @@ const Modal = ({}) => {
     setShowRating(!showRating);
   }
 
-  const toggleLikeComment = (commentId) => {
-    setComments((prevComments) =>
-      prevComments.map((comment) => {
-        if (comment.comment_id === commentId) {
-          const isLiked = comment.likes?.some(
-            (like) => like.user_id === userIdFromSession
-          );
+  // const toggleLikeComment = (commentId) => {
+  //   setComments((prevComments) =>
+  //     prevComments.map((comment) => {
+  //       if (comment.comment_id === commentId) {
+  //         const isLiked = comment.likes?.some(
+  //           (like) => like.user_id === userIdFromSession
+  //         );
 
-          // Toggle the like/unlike based on the current state
-          if (isLiked) {
-            // If liked, unlike it
-            actions
-              .unlikeComment(commentId)
-              .then(() => {
-                setComments((currentComments) =>
-                  currentComments.map((c) =>
-                    c.comment_id === commentId
-                      ? {
-                          ...c,
-                          like_count: c.like_count - 1,
-                          likes: c.likes.filter(
-                            (like) => like.user_id !== userIdFromSession
-                          ),
-                        }
-                      : c
-                  )
-                );
-              })
-              .catch((error) => {
-                Swal.fire("Error", "Unable to unlike comment.", "error");
-              });
-          } else {
-            // If not liked, like it
-            actions
-              .likeComment(commentId)
-              .then(() => {
-                setComments((currentComments) =>
-                  currentComments.map((c) =>
-                    c.comment_id === commentId
-                      ? {
-                          ...c,
-                          like_count: c.like_count + 1,
-                          likes: [
-                            ...(c.likes || []),
-                            { user_id: userIdFromSession },
-                          ],
-                        }
-                      : c
-                  )
-                );
-              })
-              .catch((error) => {
-                Swal.fire("Error", "Unable to like comment.", "error");
-              });
-          }
-        }
-        return comment;
-      })
-    );
-  };
+  //         if (isLiked) {
+
+  //           actions
+  //             .unlikeComment(commentId)
+  //             .then(() => {
+  //               setComments((currentComments) =>
+  //                 currentComments.map((c) =>
+  //                   c.comment_id === commentId
+  //                     ? {
+  //                         ...c,
+  //                         like_count: c.like_count - 1,
+  //                         likes: c.likes.filter(
+  //                           (like) => like.user_id !== userIdFromSession
+  //                         ),
+  //                       }
+  //                     : c
+  //                 )
+  //               );
+  //             })
+  //             .catch((error) => {
+  //               Swal.fire("Error", "Unable to unlike comment.", "error");
+  //             });
+  //         } else {
+  //           // If not liked, like it
+  //           actions
+  //             .likeComment(commentId)
+  //             .then(() => {
+  //               setComments((currentComments) =>
+  //                 currentComments.map((c) =>
+  //                   c.comment_id === commentId
+  //                     ? {
+  //                         ...c,
+  //                         like_count: c.like_count + 1,
+  //                         likes: [
+  //                           ...(c.likes || []),
+  //                           { user_id: userIdFromSession },
+  //                         ],
+  //                       }
+  //                     : c
+  //                 )
+  //               );
+  //             })
+  //             .catch((error) => {
+  //               Swal.fire("Error", "Unable to like comment.", "error");
+  //             });
+  //         }
+  //       }
+  //       return comment;
+  //     })
+  //   );
+  // };
 
   useEffect(() => {
     if (resource?.id) {
@@ -280,10 +331,10 @@ const Modal = ({}) => {
               month: "short",
               day: "numeric",
             });
-            const isLiked = comment.likes?.some(
+            let isLiked = comment.likes?.some(
               (like) => like.user_id === userIdFromSession
             );
-
+            console.log("isliked", isLiked);
             return (
               <div key={comment.comment_id} className="comment-div">
                 <div className="comment-info">
@@ -296,36 +347,38 @@ const Modal = ({}) => {
                   <p className="comment-content">{comment.comment_cont}</p>
                   <div className="comment-content-div">
                     <div className="comment-user-info">
-                      <span className="material-symbols-outlined account-circle">
-                        account_circle
-                      </span>
-                      {comment.user_name} {"   "}
+                      <div>
+                        <span className="material-symbols-outlined account-circle">
+                          account_circle
+                        </span>
+                        {comment.user_name} {"   "}
+                      </div>
                       {formattedDate}
                     </div>
-                  </div>
-                  <div className="comment-actions">
                     {parseInt(comment.user_id) === userIdFromSession && (
                       <button
-                        onClick={() => handleDelete(item.comment_id)}
+                        onClick={() => handleDelete(comment.comment_id)}
                         className="delete-button"
                       >
                         Delete
                       </button>
                     )}
-                    <button
-                      style={{ cursor: "pointer" }}
-                      onClick={() => toggleLikeComment(comment.comment_id)}
-                      className="like-button"
-                    >
-                      <div className="like-icon">
-                        {isLiked ? (
-                          <ThumbUpIcon fontSize="small" />
-                        ) : (
-                          <ThumbUpOffAltIcon fontSize="small" />
-                        )}{" "}
-                        {comment.like_count}
-                      </div>
-                    </button>
+                    <div className="like-icon">
+                      {comment.likes?.some(
+                        (like) => like.user_id === userIdFromSession
+                      ) ? (
+                        <FavoriteIcon
+                          fontSize="small"
+                          onClick={() => handleUnlike(comment.comment_id)}
+                        />
+                      ) : (
+                        <FavoriteBorderIcon
+                          fontSize="small"
+                          onClick={() => handleLike(comment.comment_id)}
+                        />
+                      )}
+                      {comment.like_count}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -371,7 +424,7 @@ const Modal = ({}) => {
       {/* Rating Modal */}
       {showRating && (
         <>
-          <div className="rate" ref={ratingModalRef}>
+          <div className="rate">
             <span className="close-modal" onClick={() => setShowRating(false)}>
               <span className="material-symbols-outlined">arrow_back_ios</span>
               Back
