@@ -4,7 +4,8 @@
 }
 
 .map-container-modal {
-  width: 442px !important;
+  /* width: 442px !important; */
+  width: auto;
   height: 200px !important;
   position: static;
 }
@@ -53,7 +54,7 @@
 }
 
 .info-address {
-  padding: 6px;
+  padding: 6px 0px;
   width: 100%;
   align-items: center;
   display: flex;
@@ -69,13 +70,14 @@
   font-weight: 100 !important;
 }
 
-.info-address p {
-  text-align: justify;
-  font-size: 11px;
-}
-
 .modal-open {
   overflow: hidden;
+}
+
+.reviews-div {
+  width: 450px;
+  margin-top: 10px;
+  /* width: 100%; */
 }
 
 .close-modal {
@@ -179,10 +181,13 @@
 
 .rating-label {
   min-height: 25px;
+  font-weight: 100;
+  font-size: 12px;
 }
 
 .rating-prompt {
   margin-bottom: 15px;
+  font-size: 14px;
 }
 
 .rating-container {
@@ -201,6 +206,9 @@
 .comment-text-area {
   margin-bottom: 20px;
   min-height: 100px;
+  font-size: 14px;
+  font-weight: 100;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 .comment-section {
@@ -233,8 +241,38 @@ p {
 }
 
 .comment-content {
+  text-align: center;
   color: black;
   font-weight: 100;
+  font-size: 12px;
+  font-family: "Helvetica", "Arial", sans-serif;
+}
+
+.like-icon {
+  gap: 4px; /* Space between the icon and count */
+}
+
+.hollow-plus {
+  color: transparent; /* Make the fill transparent */
+  -webkit-text-stroke: 1px #000; /* Add an outline effect */
+  cursor: pointer;
+}
+
+.solid-plus {
+  color: #000; /* Solid black */
+  cursor: pointer;
+}
+
+.hollow-plus:hover,
+.solid-plus:hover {
+  color: #007bff; /* Change to blue on hover */
+  -webkit-text-stroke: none; /* Remove outline on hover */
+}
+
+.like-icon:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  color: red;
 }
 
 .full-comments-section {
@@ -244,20 +282,21 @@ p {
   width: 100%;
 }
 
+.comment-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 100px;
+}
+
 .comment-info {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  max-width: 300px;
-  min-width: 250px;
-  /* border-radius: 4px; */
   padding: 5px;
   border-bottom: 1px solid gray;
-}
-
-.comment-info div p {
-  font-size: 14px;
 }
 
 .comment-and-rating {
@@ -272,14 +311,25 @@ p {
 }
 
 .comment-user-info {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-weight: 100;
+  justify-content: space-around;
 }
 
 .user-reviews {
   text-align: center;
-  font-size: 20px;
-  padding: 8px;
+  font-size: 14px;
+  padding: 6px 0;
   font-weight: 100;
+  /* margin-top: 50px; */
 }
 
 .comments-display {
@@ -311,12 +361,12 @@ textarea {
   width: 100%;
 }
 
-.modal-info-title {
+.modal-info-key {
   font-size: 14px;
 }
 
 .modal-info-value {
-  font-weight: 100;
+  font-size: 12px !important;
 }
 
 .problem {
@@ -376,18 +426,28 @@ body.modal-open {
 
 .comment-content-div {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  /* width: 100%; */
   align-items: end;
+  /* justify-content: flex-end; */
+  flex-direction: column;
+  align-items: flex-start;
 }
 
+.comment-container {
+  border-radius: 4px;
+  border: 1px solid black;
+  max-height: 400px;
+  overflow-y: auto;
+}
 /* ____________________________________________CAROUSEL  */
 
 .account-circle {
   font-size: 25px;
-  color: gray;
+  /* color: gray; */
   align-self: center;
   margin-right: 3px;
+  background-color: salmon;
+  border-radius: 100%;
 }
 
 .modal-description {
@@ -483,7 +543,6 @@ body.modal-open {
 }
 
 .schedule-day {
-  /* font-weight: bold; */
   margin-bottom: 5px;
 }
 
@@ -500,8 +559,8 @@ body.modal-open {
     flex-direction: column;
     width: auto;
   }
-  .schedule-table {
-    margin-top: 30px !important;
+  .reviews-div {
+    width: auto;
   }
 }
 

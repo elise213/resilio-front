@@ -73,7 +73,7 @@ const UserProfile = () => {
         userCommentsAndRatings.map((item, index) => (
           <div key={index} className="user-review-profile">
             <div>
-              <strong>Resource:</strong>
+              {/* <strong>Resource:</strong> */}
               <span
                 onClick={() => handleOpenModal(item.resource_id)}
                 style={{ cursor: "pointer", color: "blue" }}
@@ -89,11 +89,12 @@ const UserProfile = () => {
             />
 
             <p>
-              <strong>Comment:</strong> {item.comment_cont}
+              {/* <strong>Comment:</strong> */}
+              {item.comment_cont}
             </p>
             <div className="group-2">
               <p>
-                <strong>Date:</strong>{" "}
+                {/* <strong>Date:</strong>{" "} */}
                 {new Date(item.created_at).toLocaleDateString()}
               </p>
               {parseInt(id) === loggedInUserId && (
