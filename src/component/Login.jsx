@@ -78,6 +78,14 @@ const Login = ({ setLayout }) => {
         }).then(() => {
           actions.closeLoginModal();
         });
+      } else if (!response.ok) {
+        const errorDetails = await response.json();
+        console.error("Error details:", errorDetails);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorDetails.error || "An unexpected error occurred.",
+        });
       } else {
         const errorMessage =
           response.status === 403
@@ -281,10 +289,10 @@ const Login = ({ setLayout }) => {
 
         <div className="login-modal-footer">
           <div className="forgot-password" onClick={() => setLog("2")}>
-            Register for an account
+            register for an account
           </div>
           <div className="forgot-password" onClick={() => setLog("3")}>
-            I forgot my password
+            forgot password
           </div>
         </div>
       </div>
@@ -349,8 +357,15 @@ const Login = ({ setLayout }) => {
       {!isLoginModalOpen && isLoggedIn ? (
         <>
           {/* Profile Circle for logged-in users */}
-          <IconButton onClick={handleProfileClick}>
-            <Avatar alt="Profile" src={"/default-avatar.jpg"} />
+          <IconButton>
+            {/* <Avatar alt="Profile" src={"/default-avatar.jpg"} /> */}
+            <span
+              className="material-symbols-outlined account-circle"
+              style={{ fontSize: "xx-large" }}
+              onClick={handleProfileClick}
+            >
+              account_circle
+            </span>
           </IconButton>
 
           {/* Dropdown Menu */}

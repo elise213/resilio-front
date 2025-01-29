@@ -13,6 +13,7 @@
   margin: 10px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .delete-button-profile {
@@ -25,9 +26,15 @@
   border-radius: 3px;
 }
 
+.profile-title {
+  margin-top: 30px;
+  font-size: 20px;
+}
+
 .group-2 {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  margin-top: 25px;
 }

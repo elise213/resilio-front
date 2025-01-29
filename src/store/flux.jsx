@@ -914,6 +914,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       likeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
+        console.log("Token:", token);
+        console.log("Backend URL:", current_back_url);
+        console.log("Comment ID:", commentId);
+
         try {
           const response = await fetch(
             `${current_back_url}/api/likeComment/${commentId}`,
@@ -922,20 +926,25 @@ const getState = ({ getStore, getActions, setStore }) => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-          if (response.status === 409) {
+          if (response.ok) {
+            console.log("Comment liked successfully");
+          } else if (response.status === 409) {
             console.warn("Comment already liked.");
-            return; // Already liked; no further action needed.
+          } else {
+            throw new Error("Failed to like comment");
           }
-          if (!response.ok) throw new Error("Failed to like comment");
         } catch (error) {
-          console.error(error);
-          throw error;
+          console.error("Error in likeComment:", error);
         }
       },
 
       unlikeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
+        console.log("Token:", token);
+        console.log("Backend URL:", current_back_url);
+        console.log("Comment ID:", commentId);
+
         try {
           const response = await fetch(
             `${current_back_url}/api/unlikeComment/${commentId}`,
@@ -944,10 +953,13 @@ const getState = ({ getStore, getActions, setStore }) => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-          if (!response.ok) throw new Error("Failed to unlike comment");
+          if (response.ok) {
+            console.log("Comment unliked successfully");
+          } else {
+            throw new Error("Failed to unlike comment");
+          }
         } catch (error) {
-          console.error(error);
-          throw error;
+          console.error("Error in unlikeComment:", error);
         }
       },
 
@@ -1071,16 +1083,19 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // In appContext.js or wherever actions are defined
-
       deleteComment: async (commentId) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
 
         if (!token) {
           console.error("User is not logged in.");
-          return { success: false };
+          return { success: false, message: "User is not logged in" };
         }
+        console.log("Token in deleteComment:", token);
+        console.log(
+          "URL:",
+          `${current_back_url}/api/deleteComment/${commentId}`
+        );
 
         try {
           const response = await fetch(
@@ -1094,13 +1109,19 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (!response.ok) {
-            throw new Error("Failed to delete comment");
+            const errorData = await response.json(); // Parse the error response from the backend
+            console.error("Failed to delete comment:", errorData.message);
+            return {
+              success: false,
+              message: errorData.message || "Unknown error",
+            };
           }
 
+          console.log("Comment deleted successfully");
           return { success: true };
         } catch (error) {
           console.error("Error deleting comment:", error);
-          return { success: false };
+          return { success: false, message: error.message || "Unknown error" };
         }
       },
 
