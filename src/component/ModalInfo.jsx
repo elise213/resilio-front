@@ -6,6 +6,7 @@ import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import GoogleMapReact from "google-map-react"; // Import GoogleMapReact
 
 export const ModalInfo = ({
   isFavorited,
@@ -17,6 +18,45 @@ export const ModalInfo = ({
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isReadMore, setIsReadMore] = useState(true);
+  const [comments, setComments] = useState([]);
+  const apiKey = import.meta.env.VITE_GOOGLE;
+  const resource = store.selectedResource;
+  const mapCenter = {
+    lat: resource?.latitude || 0, // Default to 0 if no latitude
+    lng: resource?.longitude || 0, // Default to 0 if no longitude
+  };
+  const mapZoom = 13;
+
+  const Marker = React.memo(({ result }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Function to open Google Maps directions
+    const openGoogleMaps = () => {
+      if (result) {
+        const { latitude, longitude } = result;
+        const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+        window.open(url, "_blank");
+      }
+    };
+
+    return (
+      <div
+        className="marker"
+        onClick={openGoogleMaps}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="marker-icon">
+          <i className="fa-solid fa-map-pin" style={{ color: "red" }}></i>
+        </div>
+        {isHovered && result && (
+          <div className="marker-address">
+            {result.address || "Address not available"}
+          </div>
+        )}
+      </div>
+    );
+  });
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -199,13 +239,13 @@ export const ModalInfo = ({
       <div className="info-groups">
         {/* Name */}
         <div className="info-address">
-          <span className="modal-info-title">Name</span>
-          <span>{res.name}</span>
+          <span className="modal-info-key">Name</span>
+          <span className="modal-info-value">{res.name}</span>
         </div>
         {/* ADDRESS */}
 
         <div className="info-address">
-          <span className="modal-info-title">Address</span>
+          <span className="modal-info-key">Address</span>
           <div>
             <span
               style={{ marginLeft: "10px", cursor: "pointer" }}
@@ -233,7 +273,7 @@ export const ModalInfo = ({
             toggleRatingModal();
           }}
         >
-          <span className="modal-info-title">Rating</span>
+          <span className="modal-info-key">Rating</span>
           <div className="rating-div">
             <Rating
               style={{
@@ -245,7 +285,7 @@ export const ModalInfo = ({
               precision={0.5}
               readOnly
             />
-            <span>({ratingCount})</span>
+            <span className="modal-info-value">({ratingCount})</span>
           </div>
         </div>
 
@@ -253,10 +293,10 @@ export const ModalInfo = ({
         {res.description && (
           <>
             <div className="info-address">
-              <span className="modal-info-title" style={{ alignSelf: "start" }}>
+              <span className="modal-info-key" style={{ alignSelf: "start" }}>
                 About
               </span>
-              <span className="modal-text" style={{ maxWidth: "300px" }}>
+              <span className="modal-info-value" style={{ maxWidth: "300px" }}>
                 {isReadMore
                   ? `${res.description.slice(0, 200)}...`
                   : res.description}
@@ -284,7 +324,7 @@ export const ModalInfo = ({
                 )
               }
             >
-              <span className="modal-info-title">Directions</span>
+              <span className="modal-info-key">Get Directions</span>
               <span
                 className="material-icons"
                 style={{
@@ -302,7 +342,7 @@ export const ModalInfo = ({
         {res.website && (
           <div className="info-address">
             <span
-              className="modal-info-title"
+              className="modal-info-key"
               title="Open Website"
               style={{ cursor: "pointer" }}
               onClick={() =>
@@ -315,8 +355,6 @@ export const ModalInfo = ({
             >
               Website
             </span>
-            {/* <span>{res.website}</span> */}
-
             <span
               style={{
                 fontSize: "25px",
@@ -332,14 +370,14 @@ export const ModalInfo = ({
         {scheduleCategory === "Closed Everyday" && (
           <>
             <span className="info-address" style={{ color: "black" }}>
-              <span className="modal-info-title">Schedule</span>
-              Closed Everyday
+              <span className="modal-info-key">Schedule</span>
+              <span className="modal-info-value">Closed Everyday</span>
             </span>
           </>
         )}
         {scheduleCategory === "Open 24 Hours" && (
           <span className="info-address" style={{ color: "black" }}>
-            <span className="modal-info-title">Hours</span>
+            <span className="modal-info-key">Hours</span>
             Open 24/7
           </span>
         )}
@@ -356,7 +394,10 @@ export const ModalInfo = ({
                       style={{ paddingRight: "10px" }}
                     >
                       {Object.keys(formattedSchedule).map((day, index) => (
-                        <div key={index} className="schedule-day">
+                        <div
+                          key={index}
+                          className="schedule-day modal-info-value"
+                        >
                           {day.charAt(0).toUpperCase() + day.slice(1)}:
                         </div>
                       ))}
@@ -364,7 +405,10 @@ export const ModalInfo = ({
                     <div className="schedule-column">
                       {Object.values(formattedSchedule).map(
                         (schedule, index) => (
-                          <div key={index} className="schedule-time">
+                          <div
+                            key={index}
+                            className="schedule-time modal-info-value"
+                          >
                             {schedule}
                           </div>
                         )
@@ -376,17 +420,10 @@ export const ModalInfo = ({
             </>
           )}
         {isLoggedIn && (
-          <div
-            className="info-address"
-            onClick={toggleFavorite}
-            // style={{ border: "none" }}
-          >
+          <div className="info-address" onClick={toggleFavorite}>
             {isFavorited ? (
               <>
-                <span
-                  className="modal-info-title"
-                  style={{ marginRight: "7px" }}
-                >
+                <span className="modal-info-key" style={{ marginRight: "7px" }}>
                   {" "}
                   You follow this Resource
                 </span>
@@ -405,18 +442,44 @@ export const ModalInfo = ({
         )}
         {/* // Alert */}
         <div className="info-address">
-          <span className="modal-info-title">Alert</span>
+          <span className="modal-info-key">Alert</span>
           {res.alert ? (
             <>
-              <span className="modal-info-title" style={{ marginRight: "7px" }}>
+              <span className="modal-info-key" style={{ marginRight: "7px" }}>
                 {res.alert}
               </span>
             </>
           ) : (
             <>
-              <span text="add to favorites">No Alerts</span>
+              <span text="add to favorites" className="modal-info-value">
+                No Alerts
+              </span>
             </>
           )}
+        </div>
+        <div
+          className="info-address"
+          style={{ borderBottom: "none", padding: "0px" }}
+        >
+          <div
+            className="map-container-modal"
+            style={{ height: "300px", width: "100%", justifySelf: "center" }}
+          >
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: apiKey }}
+              defaultCenter={mapCenter}
+              defaultZoom={mapZoom}
+            >
+              {/* Add a Marker for the resource */}
+              <Marker
+                lat={resource.latitude}
+                lng={resource.longitude}
+                text={resource.name}
+                id={resource.id}
+                result={resource}
+              />
+            </GoogleMapReact>
+          </div>
         </div>
       </div>
     </>

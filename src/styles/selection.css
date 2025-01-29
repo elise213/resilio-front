@@ -114,8 +114,11 @@
   display: flex;
   justify-content: flex-start;
   padding: 5px;
-
   font-size: 12px;
+}
+
+.form-label {
+  width: auto !important;
 }
 
 .my-label {
@@ -187,15 +190,13 @@
 }
 
 .modal-filter-header {
-  width: 100vw;
   display: flex;
   justify-content: space-between;
   background-color: white;
   border-top: 2px solid #000;
-  /* border-left: 1px solid #000;
-  border-right: 1px solid #000; */
   border-bottom: none;
   border-radius: 8px 8px 0 0;
+  width: 100%;
 }
 
 .modal {
@@ -203,11 +204,13 @@
   z-index: 1000;
   left: 0;
   bottom: 0;
-  width: 100%;
-  height: 95vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  width: 400px;
+  height: 100vh;
+  background: white;
+  border-radius: 8px;
 }
 
 .close-filters {
@@ -222,7 +225,7 @@
   padding: 20px;
   display: flex;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   justify-content: space-around;
   box-sizing: border-box;
 }
@@ -415,11 +418,11 @@
   display: flex;
   justify-content: flex-start;
   position: relative;
-
   z-index: 996;
   position: absolute;
   width: 400px !important;
   border-radius: 15px 15px 0 0;
+  transition: 1.4s ease;
 }
 
 .list-container {
@@ -689,12 +692,17 @@ iframe {
 
 .button-container-sidebar button {
   align-items: center;
-  padding: 0 !important;
-  margin: 8px;
+  /* padding: 0 !important;
+  margin: 8px; */
 }
 
 .screen-divider-button {
   display: none;
+}
+
+.screen-divider-button:hover {
+  color: gray;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {
@@ -708,6 +716,8 @@ iframe {
     border-radius: 3px;
     margin: 0 5px;
     border: none;
+    background-color: transparent;
+    align-self: center;
   }
 
   .split-view {
@@ -820,6 +830,9 @@ iframe {
 }
 
 @media screen and (max-width: 700px) {
+  .modal {
+    width: 100% !important;
+  }
 }
 
 @media screen and (max-width: 900px) {

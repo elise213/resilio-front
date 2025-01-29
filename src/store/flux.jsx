@@ -914,6 +914,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       likeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
+        console.log("Token:", token);
+        console.log("Backend URL:", current_back_url);
+        console.log("Comment ID:", commentId);
+
         try {
           const response = await fetch(
             `${current_back_url}/api/likeComment/${commentId}`,
@@ -937,6 +941,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       unlikeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
+        console.log("Token:", token);
+        console.log("Backend URL:", current_back_url);
+        console.log("Comment ID:", commentId);
+
         try {
           const response = await fetch(
             `${current_back_url}/api/unlikeComment/${commentId}`,
@@ -1075,16 +1083,19 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // In appContext.js or wherever actions are defined
-
       deleteComment: async (commentId) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
 
         if (!token) {
           console.error("User is not logged in.");
-          return { success: false };
+          return { success: false, message: "User is not logged in" };
         }
+        console.log("Token in deleteComment:", token);
+        console.log(
+          "URL:",
+          `${current_back_url}/api/deleteComment/${commentId}`
+        );
 
         try {
           const response = await fetch(
@@ -1098,13 +1109,19 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (!response.ok) {
-            throw new Error("Failed to delete comment");
+            const errorData = await response.json(); // Parse the error response from the backend
+            console.error("Failed to delete comment:", errorData.message);
+            return {
+              success: false,
+              message: errorData.message || "Unknown error",
+            };
           }
 
+          console.log("Comment deleted successfully");
           return { success: true };
         } catch (error) {
           console.error("Error deleting comment:", error);
-          return { success: false };
+          return { success: false, message: error.message || "Unknown error" };
         }
       },
 
