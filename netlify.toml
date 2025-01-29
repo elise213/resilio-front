@@ -17,3 +17,7 @@
   for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
+
+[build]
+  command = "pip install -r requirements.txt && python main.py"
+  python_version = "3.11"
