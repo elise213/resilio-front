@@ -58,6 +58,7 @@ const Home = () => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
+      console.log("Token:", token);
     };
 
     checkLoginStatus();
