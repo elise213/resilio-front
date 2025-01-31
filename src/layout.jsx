@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home.jsx";
-import UserProfile from "./pages/userprofile";
-import Create from "./pages/create";
-import Edit from "./pages/edit";
-import Account from "./pages/account";
+import UserProfile from "./pages/userprofile.jsx";
+import Create from "./pages/create.jsx";
+import Edit from "./pages/edit.jsx";
+import Account from "./pages/account.jsx";
 import ScrollToTop from "./component/scrollToTop";
 import injectContext, { Context } from "./store/appContext";
 import ResetPassword from "./pages/ResetPassword.jsx";
