@@ -835,50 +835,110 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      // setBoundaryResults: async (bounds, resources, days, groups) => {
+      //   // console.trace("setBoundaryResults called from:");
+      //   const store = getStore();
+
+      //   // If there's an ongoing request, abort it
+      //   if (store.abortController) {
+      //     store.abortController.abort();
+      //   }
+
+      //   // Create a new abort controller for the new request
+      //   const newAbortController = new AbortController(); // AbortC
+      //   setStore({ abortController: newAbortController });
+
+      //   // Normalize longitude
+      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+      //   neLng = neLng % 360;
+      //   if (neLng > 180) {
+      //     neLng -= 360;
+      //   }
+
+      //   swLng = swLng % 360;
+      //   if (swLng > 180) {
+      //     swLng -= 360;
+      //   }
+
+      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+
+      //   const url = getStore().current_back_url + "/api/getBResults";
+      //   const combinedResources = {
+      //     ...resources,
+      //     ...groups,
+      //   };
+
+      //   try {
+      //     setStore({ loading: true });
+
+      //     let response = await fetch(url, {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         neLat,
+      //         neLng,
+      //         swLat,
+      //         swLng,
+      //         resources: combinedResources || null,
+      //         days: days || null,
+      //       }),
+      //       signal: newAbortController.signal, // Use the new abort controller's signal
+      //     });
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
+      //     }
+
+      //     const data = await response.json();
+      //     setStore({ boundaryResults: data.data, loading: false });
+
+      //     return data.data;
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("Fetch aborted");
+      //     } else {
+      //       setStore({ loading: false });
+      //       console.error("Error fetching data:", error);
+      //     }
+      //   }
+      // },
       setBoundaryResults: async (bounds, resources, days, groups) => {
-        // console.trace("setBoundaryResults called from:");
         const store = getStore();
 
-        // If there's an ongoing request, abort it
         if (store.abortController) {
           store.abortController.abort();
         }
 
-        // Create a new abort controller for the new request
-        const newAbortController = new AbortController(); // AbortC
+        const newAbortController = new AbortController();
         setStore({ abortController: newAbortController });
 
-        // Normalize longitude
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
         neLng = neLng % 360;
-        if (neLng > 180) {
-          neLng -= 360;
-        }
-
+        if (neLng > 180) neLng -= 360;
         swLng = swLng % 360;
-        if (swLng > 180) {
-          swLng -= 360;
-        }
+        if (swLng > 180) swLng -= 360;
 
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
 
         const url = getStore().current_back_url + "/api/getBResults";
-        const combinedResources = {
-          ...resources,
-          ...groups,
-        };
+        const combinedResources = { ...resources, ...groups };
 
         try {
           setStore({ loading: true });
 
           let response = await fetch(url, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               neLat,
               neLng,
@@ -887,7 +947,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               resources: combinedResources || null,
               days: days || null,
             }),
-            signal: newAbortController.signal, // Use the new abort controller's signal
+            signal: newAbortController.signal,
           });
 
           if (!response.ok) {
@@ -898,7 +958,18 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          setStore({ boundaryResults: data.data, loading: false });
+
+          if (
+            !store.unfilteredMapResults ||
+            store.unfilteredMapResults.length === 0
+          ) {
+            setStore({ unfilteredMapResults: data.data || [] });
+          }
+
+          setStore({
+            boundaryResults: data.data || [],
+            loading: false,
+          });
 
           return data.data;
         } catch (error) {

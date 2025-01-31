@@ -7,6 +7,8 @@ import Rating from "@mui/material/Rating";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import GoogleMapReact from "google-map-react"; // Import GoogleMapReact
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"; // Hollow plus sign
+import AddCircleIcon from "@mui/icons-material/AddCircle"; // Solid plus sign
 
 export const ModalInfo = ({
   isFavorited,
@@ -14,18 +16,139 @@ export const ModalInfo = ({
   averageRating,
   toggleRatingModal,
   ratingCount,
+  comments,
+  setComments,
 }) => {
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isReadMore, setIsReadMore] = useState(true);
-  const [comments, setComments] = useState([]);
+  // const [comments, setComments] = useState([]);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const resource = store.selectedResource;
   const mapCenter = {
     lat: resource?.latitude || 0, // Default to 0 if no latitude
     lng: resource?.longitude || 0, // Default to 0 if no longitude
   };
+
+  const handleDelete = async (commentId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this comment? This action cannot be undone."
+    );
+
+    if (confirm) {
+      const result = await actions.deleteComment(commentId);
+      if (result.success) {
+        // Update the UI to reflect the deleted comment
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.comment_id !== commentId)
+        );
+        Swal.fire({
+          icon: "success",
+          title: "Deleted",
+          text: "Comment deleted successfully.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message || "Failed to delete the comment.",
+        });
+      }
+    }
+  };
+
   const mapZoom = 13;
+  const toggleLikeComment = async (commentId) => {
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+      Swal.fire({
+        icon: "info",
+        title: "Not Logged In",
+        text: "Please log in to like a comment.",
+        confirmButtonText: "Log In",
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          actions.closeModal();
+          actions.openLoginModal();
+        }
+      });
+      return;
+    }
+
+    const current_back_url = store.current_back_url;
+    const comment = comments.find((c) => c.comment_id === commentId);
+
+    if (!comment) {
+      console.error("Comment not found.");
+      return;
+    }
+
+    const isLiked = comment.likes?.some(
+      (like) => like.user_id === userIdFromSession
+    );
+
+    try {
+      setComments((prevComments) =>
+        prevComments.map((c) =>
+          c.comment_id === commentId ? { ...c, isLoading: true } : c
+        )
+      );
+
+      const response = await fetch(
+        `${current_back_url}/api/likeComment/${commentId}`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setComments((prevComments) =>
+          prevComments.map((c) =>
+            c.comment_id === commentId
+              ? {
+                  ...c,
+                  like_count:
+                    data.action === "like"
+                      ? c.like_count + 1
+                      : c.like_count - 1,
+                  likes:
+                    data.action === "like"
+                      ? [...(c.likes || []), { user_id: userIdFromSession }]
+                      : c.likes.filter(
+                          (like) => like.user_id !== userIdFromSession
+                        ),
+                }
+              : c
+          )
+        );
+      } else {
+        console.error("Failed to toggle like:", data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Unable to process your request.",
+        });
+      }
+    } catch (error) {
+      console.error("Error toggling like on comment:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Unable to process your request at this time.",
+      });
+    } finally {
+      setComments((prevComments) =>
+        prevComments.map((c) =>
+          c.comment_id === commentId ? { ...c, isLoading: false } : c
+        )
+      );
+    }
+  };
 
   const Marker = React.memo(({ result }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -45,9 +168,20 @@ export const ModalInfo = ({
         onClick={openGoogleMaps}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{
+          position: "absolute",
+          transform: "translate(-50%, -100%)", // Ensures correct marker positioning
+          cursor: "pointer",
+        }}
       >
         <div className="marker-icon">
-          <i className="fa-solid fa-map-pin" style={{ color: "red" }}></i>
+          <i
+            className="fa-solid fa-map-pin"
+            style={{
+              color: "red",
+              fontSize: "24px",
+            }}
+          ></i>
         </div>
         {isHovered && result && (
           <div className="marker-address">
@@ -205,7 +339,7 @@ export const ModalInfo = ({
     }
     let [hour, minute] = time.split(":");
     let numericHour = parseInt(hour, 10);
-    let suffix = numericHour >= 12 ? "p.m." : "a.m.";
+    let suffix = numericHour >= 12 ? "pm" : "am";
     if (numericHour > 12) {
       numericHour -= 12;
     } else if (numericHour === 0) {
@@ -239,13 +373,13 @@ export const ModalInfo = ({
       <div className="info-groups">
         {/* Name */}
         <div className="info-address">
-          <span className="modal-info-key">Name</span>
+          <span className="modal-info-key">NAME</span>
           <span className="modal-info-value">{res.name}</span>
         </div>
         {/* ADDRESS */}
 
         <div className="info-address">
-          <span className="modal-info-key">Address</span>
+          <span className="modal-info-key">ADDRESS</span>
           <div>
             <span
               style={{ marginLeft: "10px", cursor: "pointer" }}
@@ -253,8 +387,12 @@ export const ModalInfo = ({
               title="Copy Address"
               className="modal-info-value"
             >
-              {res.address.replace(", USA", "")} {"  "}
+              {res.address
+                ? res.address.replace(", USA", "")
+                : "Address not available"}{" "}
+              {"  "}
             </span>
+
             <span
               style={{ cursor: "pointer" }}
               onClick={handleCopy}
@@ -265,51 +403,6 @@ export const ModalInfo = ({
             {copied && <span style={{ marginLeft: "10px" }}>Copied!</span>}
           </div>
         </div>
-        {/* Rating */}
-        <div
-          className="info-address"
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            toggleRatingModal();
-          }}
-        >
-          <span className="modal-info-key">Rating</span>
-          <div className="rating-div">
-            <Rating
-              style={{
-                flexDirection: "row",
-                fontSize: "20px",
-              }}
-              name="read-only"
-              value={averageRating}
-              precision={0.5}
-              readOnly
-            />
-            <span className="modal-info-value">({ratingCount})</span>
-          </div>
-        </div>
-
-        {/* DESCRIPTION */}
-        {res.description && (
-          <>
-            <div className="info-address">
-              <span className="modal-info-key" style={{ alignSelf: "start" }}>
-                About
-              </span>
-              <span className="modal-info-value" style={{ maxWidth: "300px" }}>
-                {isReadMore
-                  ? `${res.description.slice(0, 200)}...`
-                  : res.description}
-                {res.description.length > 200 && (
-                  <span onClick={toggleReadMore} className="read-more">
-                    {"  "}
-                    {isReadMore ? "(Show more)" : "(Show less)"}
-                  </span>
-                )}
-              </span>
-            </div>
-          </>
-        )}
         {res.address && (
           <>
             <span
@@ -324,17 +417,84 @@ export const ModalInfo = ({
                 )
               }
             >
-              <span className="modal-info-key">Get Directions</span>
+              <span className="modal-info-key">DIRECTIONS</span>
               <span
                 className="material-icons"
                 style={{
-                  fontSize: "25px",
+                  fontSize: "20px",
                   cursor: "pointer",
                 }}
               >
                 turn_sharp_right
               </span>
             </span>
+          </>
+        )}
+        {/* Rating */}
+        <div
+          className="info-address"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            toggleRatingModal();
+          }}
+        >
+          <span className="modal-info-key">RATING</span>
+          <div className="rating-div">
+            <Rating
+              style={{
+                flexDirection: "row",
+                fontSize: "20px",
+              }}
+              name="read-only"
+              value={averageRating}
+              precision={0.5}
+              readOnly
+            />
+            <span className="modal-info-value">({ratingCount})</span>
+          </div>
+        </div>
+        {isLoggedIn && (
+          <div className="info-address" onClick={toggleFavorite}>
+            {isFavorited ? (
+              <>
+                <span className="modal-info-key" style={{ marginRight: "7px" }}>
+                  {" "}
+                  FOLLOWING
+                </span>
+                <BookmarkIcon style={{ color: "green", cursor: "pointer" }} />
+              </>
+            ) : (
+              <>
+                <span text="add to favorites" style={{ marginRight: "7px" }}>
+                  NOT FOLLOWING
+                </span>{" "}
+                {"  "}
+                <BookmarkBorderIcon
+                  style={{ cursor: "pointer", fontSize: "20px" }}
+                />
+              </>
+            )}
+          </div>
+        )}
+        {/* DESCRIPTION */}
+        {res.description && (
+          <>
+            <div className="info-address">
+              <span className="modal-info-key" style={{ alignSelf: "start" }}>
+                ABOUT
+              </span>
+              <span className="modal-info-value" style={{ maxWidth: "300px" }}>
+                {isReadMore
+                  ? `${res.description.slice(0, 200)}...`
+                  : res.description}
+                {res.description.length > 200 && (
+                  <span onClick={toggleReadMore} className="read-more">
+                    {"  "}
+                    {isReadMore ? "(Show more)" : "(Show less)"}
+                  </span>
+                )}
+              </span>
+            </div>
           </>
         )}
 
@@ -353,11 +513,11 @@ export const ModalInfo = ({
                 )
               }
             >
-              Website
+              WEBSITE
             </span>
             <span
               style={{
-                fontSize: "25px",
+                fontSize: "20px",
                 cursor: "pointer",
               }}
               className="material-icons"
@@ -386,7 +546,7 @@ export const ModalInfo = ({
           scheduleCategory === "Varied" && (
             <>
               <div className="info-address">
-                <span style={{ alignSelf: "self-start" }}>Hours</span>
+                <span style={{ alignSelf: "self-start" }}>HOURS</span>
                 <div className="schedule-info">
                   <div className="schedule-table">
                     <div
@@ -419,30 +579,10 @@ export const ModalInfo = ({
               </div>
             </>
           )}
-        {isLoggedIn && (
-          <div className="info-address" onClick={toggleFavorite}>
-            {isFavorited ? (
-              <>
-                <span className="modal-info-key" style={{ marginRight: "7px" }}>
-                  {" "}
-                  You follow this Resource
-                </span>
-                <BookmarkIcon style={{ color: "green", cursor: "pointer" }} />
-              </>
-            ) : (
-              <>
-                <span text="add to favorites" style={{ marginRight: "7px" }}>
-                  You do not follow this resource
-                </span>{" "}
-                {"  "}
-                <BookmarkBorderIcon style={{ cursor: "pointer" }} />
-              </>
-            )}
-          </div>
-        )}
+
         {/* // Alert */}
         <div className="info-address">
-          <span className="modal-info-key">Alert</span>
+          <span className="modal-info-key">ALERT</span>
           {res.alert ? (
             <>
               <span className="modal-info-key" style={{ marginRight: "7px" }}>
@@ -459,8 +599,15 @@ export const ModalInfo = ({
         </div>
         <div
           className="info-address"
-          style={{ borderBottom: "none", padding: "0px" }}
+          style={{
+            padding: "0px",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
         >
+          <span className="modal-info-key" style={{ padding: "6px 0" }}>
+            MAP
+          </span>
           <div
             className="map-container-modal"
             style={{ height: "300px", width: "100%", justifySelf: "center" }}
@@ -481,6 +628,102 @@ export const ModalInfo = ({
             </GoogleMapReact>
           </div>
         </div>
+        {comments.length > 0 && (
+          <>
+            <div className="info-address" style={{ borderBottom: "none" }}>
+              <span className="user-reviews">USER REVIEWS</span>
+            </div>
+            <div className="comment-container">
+              {comments
+                .slice() // Create a shallow copy to avoid mutating the original array
+                .sort((a, b) => b.like_count - a.like_count) // Sort by likes, descending order
+                .map((comment) => {
+                  const date = new Date(comment.created_at);
+                  const formattedDate = date.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  });
+
+                  let isLiked = comment.likes?.some(
+                    (like) => like.user_id === userIdFromSession
+                  );
+
+                  return (
+                    <div key={comment.comment_id} className="comment-div">
+                      <div className="comment-info">
+                        <div className="comment-label">
+                          <div
+                            style={{
+                              display: "flex",
+                              alignSelf: "flex-end",
+                              fontWeight: "100",
+                              fontSize: "12px",
+                            }}
+                          >
+                            <div className="like-icon">
+                              {comment.isLoading ? (
+                                <span>Loading...</span>
+                              ) : comment.likes?.some(
+                                  (like) => like.user_id === userIdFromSession
+                                ) ? (
+                                <AddCircleIcon
+                                  style={{ color: "green", marginRight: "5px" }}
+                                  fontSize="small"
+                                  onClick={() =>
+                                    toggleLikeComment(comment.comment_id)
+                                  }
+                                  titleAccess="Unlike this comment"
+                                />
+                              ) : (
+                                <AddCircleOutlineIcon
+                                  style={{ marginRight: "5px" }}
+                                  fontSize="small"
+                                  onClick={() =>
+                                    toggleLikeComment(comment.comment_id)
+                                  }
+                                  titleAccess="Like this comment"
+                                />
+                              )}
+                            </div>
+                            {comment.like_count}
+                          </div>
+                          <Rating
+                            name="read-only"
+                            value={comment.rating_value}
+                            precision={0.5}
+                            readOnly
+                          />
+                          <p className="comment-content">
+                            {comment.comment_cont}
+                          </p>
+                        </div>
+                        <div className="comment-content-div">
+                          <div className="comment-user-info">
+                            <div className="user-info">
+                              <span className="material-symbols-outlined account-circle">
+                                account_circle
+                              </span>
+                              {comment.user_name} {"   "}
+                            </div>
+                            {formattedDate}
+                          </div>
+                          {parseInt(comment.user_id) === userIdFromSession && (
+                            <button
+                              onClick={() => handleDelete(comment.comment_id)}
+                              className="delete-button"
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

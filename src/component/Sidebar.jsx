@@ -6,7 +6,9 @@ import ResourceCard from "./ResourceCard";
 import Contact from "./Contact";
 import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
-import Button from "@mui/material/Button";
+import { IconButton, Menu, MenuItem, Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Switch, Box } from "@mui/material";
 
 const Sidebar = ({
   layout,
@@ -18,7 +20,6 @@ const Sidebar = ({
   days,
   groups,
   log,
-  modalIsOpen,
   searchingToday,
   setCategories,
   setDays,
@@ -29,10 +30,7 @@ const Sidebar = ({
   setAboutModalIsOpen,
   donationModalIsOpen,
   setDonationModalIsOpen,
-  // fetchCachedBounds,
   handleBoundsChange,
-  // userLocation,
-  // setUserLocation,
   geoFindMe,
   updateCityStateFromZip,
 }) => {
@@ -51,6 +49,68 @@ const Sidebar = ({
     category: false,
     day: false,
   });
+
+  const NavigationMenu = () => {
+    const { store, actions } = useContext(Context);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
+
+    const handleMenuClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <>
+        {/* Menu Icon Button */}
+        <IconButton onClick={handleMenuClick}>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: "x-large" }}
+          >
+            menu
+          </span>
+        </IconButton>
+
+        {/* Dropdown Menu */}
+        <Menu
+          anchorEl={anchorEl}
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          transformOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <MenuItem onClick={handleMenuClose}>
+            <Link
+              to="/emergency-resources"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Emergency Resources
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Link
+              to="/donate"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Donate
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <Link
+              to="/about"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              About Us
+            </Link>
+          </MenuItem>
+        </Menu>
+      </>
+    );
+  };
 
   useEffect(() => {
     if (localZipInput.length === 5) {
@@ -207,29 +267,8 @@ const Sidebar = ({
     <>
       <nav className={`new-navbar  ${layout}`}>
         <div className={`navbar-content`}>
-          <div
-            className="button-container-sidebar"
-            style={{
-              display: "flex",
-              justifyContent: store.loginModalIsOpen ? "center" : "flex-end",
-            }}
-          >
-            {!store.loginModalisOpen && (
-              <>
-                <button
-                  className="screen-divider-button"
-                  onClick={() =>
-                    setLayout(
-                      layout === "fullscreen-map"
-                        ? "fullscreen-sidebar"
-                        : "fullscreen-map"
-                    )
-                  }
-                >
-                  {layout === "fullscreen-map" ? "List View" : "Map View"}
-                </button>
-              </>
-            )}
+          <div className="button-container-sidebar">
+            <NavigationMenu />
 
             <Login log={log} setLog={setLog} setLayout={setLayout} />
           </div>
@@ -237,59 +276,47 @@ const Sidebar = ({
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>
 
-          {!hasBoundaryResults && !store.boundaryResults.length > 0 && (
-            <>
-              <span style={{ margin: "20px" }}>
-                {" "}
-                No results. Please zoom out or move the map to find resources{" "}
-              </span>
-            </>
-          )}
+          <>
+            <div className=" nav-div">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={geoFindMe}
+                className="geo-button"
+              >
+                Find My Location
+              </Button>
+              <div className="side-by">
+                <>
+                  <div className="search-bar">
+                    <span className="material-symbols-outlined search-icon">
+                      search
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="filter-button"
+                  >
+                    <span className="material-symbols-outlined">page_info</span>
+                  </button>
+                </>
+                {/* )} */}
+              </div>
 
-          {hasBoundaryResults && store.boundaryResults.length > 0 && (
-            <>
-              <div className=" nav-div">
-                <div className="side-by">
-                  {/* {store.boundaryResults && ( */}
-                  <>
-                    <div className="search-bar">
-                      <span className="material-symbols-outlined search-icon">
-                        search
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Search"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                    <button
-                      onClick={() => setIsModalOpen(true)}
-                      className="filter-button"
-                    >
-                      <span className="material-symbols-outlined">
-                        page_info
-                      </span>
-                    </button>
-                  </>
-                  {/* )} */}
-                </div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={geoFindMe}
-                  className="geo-button"
-                >
-                  Find My Location
-                </Button>
-                {store.CATEGORY_OPTIONS &&
-                store.DAY_OPTIONS &&
-                store.GROUP_OPTIONS &&
-                categories &&
-                days &&
-                groups ? (
-                  <ErrorBoundary>
-                    {/* <button
+              {store.CATEGORY_OPTIONS &&
+              store.DAY_OPTIONS &&
+              store.GROUP_OPTIONS &&
+              categories &&
+              days &&
+              groups ? (
+                <ErrorBoundary>
+                  {/* <button
                             className="dropdown-button location"
                             onClick={toggleLocationDropdown}
                           >
@@ -323,103 +350,49 @@ const Sidebar = ({
                             </div>
                           )} */}
 
-                    <Selection
-                      openDropdown={openDropdown}
-                      setOpenDropdown={setOpenDropdown}
-                      handleBoundsChange={handleBoundsChange}
-                      categories={categories}
-                      setCategories={setCategories}
-                      groups={groups}
-                      setGroups={setGroups}
-                      days={days}
-                      setDays={setDays}
-                      searchingToday={searchingToday}
-                      setSearchingToday={setSearchingToday}
-                      INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                      areAllUnchecked={areAllUnchecked}
-                      isModalOpen={isModalOpen}
-                      setIsModalOpen={setIsModalOpen}
-                    />
-                  </ErrorBoundary>
-                ) : (
-                  <p>Loading selection options...</p>
-                )}
+                  <Selection
+                    openDropdown={openDropdown}
+                    setOpenDropdown={setOpenDropdown}
+                    handleBoundsChange={handleBoundsChange}
+                    categories={categories}
+                    setCategories={setCategories}
+                    groups={groups}
+                    setGroups={setGroups}
+                    days={days}
+                    setDays={setDays}
+                    searchingToday={searchingToday}
+                    setSearchingToday={setSearchingToday}
+                    INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                    areAllUnchecked={areAllUnchecked}
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                  />
+                </ErrorBoundary>
+              ) : (
+                <p>Loading selection options...</p>
+              )}
 
-                <div className={navDivListClassName}>
-                  {/* {isLoggedIn && (
-                    <>
-                      <div className="tab-buttons">
-                        <div
-                          className={
-                            activeTab === "AllResources" ? "active" : "dormant"
-                          }
-                          onClick={() => setActiveTab("AllResources")}
-                        >
-                          {!userSelectedFilter && !searchQuery ? (
-                            <p>
-                              Map Boundary
-                              {store.boundaryResults.length > 0
-                                ? ` (${store.boundaryResults.length})`
-                                : ""}
-                            </p>
-                          ) : (
-                            <p>
-                              Filtered Results
-                              {store.boundaryResults.filter(
-                                (resource) =>
-                                  resource.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (resource.description &&
-                                    resource.description
-                                      .toLowerCase()
-                                      .includes(searchQuery.toLowerCase()))
-                              ).length > 0
-                                ? ` (${
-                                    store.boundaryResults.filter(
-                                      (resource) =>
-                                        resource.name
-                                          .toLowerCase()
-                                          .includes(
-                                            searchQuery.toLowerCase()
-                                          ) ||
-                                        (resource.description &&
-                                          resource.description
-                                            .toLowerCase()
-                                            .includes(
-                                              searchQuery.toLowerCase()
-                                            ))
-                                    ).length
-                                  })`
-                                : ""}
-                            </p>
-                          )}
-                        </div>
-                        <div
-                          style={{ textAlign: "end" }}
-                          className={
-                            activeTab === "Favorites" ? "active" : "dormant"
-                          }
-                          onClick={() => setActiveTab("Favorites")}
-                        >
-                          Favorites
-                          {store.favorites.length > 0
-                            ? ` (${store.favorites.length})`
-                            : ""}
-                        </div>
-                      </div>
-                    </>
-                  )} */}
-                  {activeTab === "AllResources" && (
-                    <CombinedFilters
-                      searchQuery={searchQuery}
-                      clearSearchQuery={clearSearchQuery}
-                      selectedCategories={selectedCategories}
-                      clearSelectedCategory={clearSelectedCategory}
-                      selectedDays={selectedDays}
-                      clearSelectedDay={clearSelectedDay}
-                    />
-                  )}
+              <div className={navDivListClassName}>
+                {activeTab === "AllResources" && (
+                  <CombinedFilters
+                    searchQuery={searchQuery}
+                    clearSearchQuery={clearSearchQuery}
+                    selectedCategories={selectedCategories}
+                    clearSelectedCategory={clearSelectedCategory}
+                    selectedDays={selectedDays}
+                    clearSelectedDay={clearSelectedDay}
+                  />
+                )}
+                {!hasBoundaryResults && !store.boundaryResults.length > 0 && (
+                  <>
+                    <span className="no-results-text">
+                      {" "}
+                      No results match your query. Please move the map or adjust
+                      filters to find more resources{" "}
+                    </span>
+                  </>
+                )}
+                {hasBoundaryResults && store.boundaryResults.length > 0 && (
                   <div className={`list-container`}>
                     {activeTab === "AllResources" && (
                       <ul>
@@ -441,12 +414,33 @@ const Sidebar = ({
                       </ul>
                     )}
                   </div>
-                </div>
+                )}
               </div>
-            </>
-          )}
+              {!store.loginModalisOpen && (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  className="screen-divider-toggle"
+                >
+                  <span style={{ marginRight: "8px" }}>List View</span>
+                  <Switch
+                    checked={layout === "fullscreen-map"}
+                    onChange={() =>
+                      setLayout(
+                        layout === "fullscreen-map"
+                          ? "fullscreen-sidebar"
+                          : "fullscreen-map"
+                      )
+                    }
+                    color="primary"
+                  />
+                  <span style={{ marginLeft: "8px" }}>Map View</span>
+                </Box>
+              )}
+            </div>
+          </>
 
-          {/* MODALS!! */}
+          {/* MODALS*/}
 
           {donationModalIsOpen && (
             <>

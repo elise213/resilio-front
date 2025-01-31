@@ -58,13 +58,11 @@ const Home = () => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
-      console.log("Token:", token);
+      // console.log("Token:", token);
     };
 
     checkLoginStatus();
   }, [store.token]);
-
-  // const updateCityStateFromZip = async (zip) => {
 
   const updateCityStateFromZip = async (zip) => {
     const data = await fetchCachedBounds(zip, true);
@@ -103,7 +101,7 @@ const Home = () => {
 
   const handleBoundsChange = useCallback(
     debounce((data) => {
-      actions.setBoundaryResults(data.bounds, categories, days, groups); // Call Flux action to update boundary results
+      actions.setBoundaryResults(data.bounds, categories, days, groups);
       setCity({
         ...city,
         bounds: {
@@ -265,10 +263,6 @@ const Home = () => {
 
     checkLoadingStatus();
   }, [store.loading]);
-
-  // useEffect(() => {
-  //   geoFindMe();
-  // }, []);
 
   useEffect(() => {
     actions.setSchedules();
