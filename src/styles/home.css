@@ -118,10 +118,20 @@
   flex-direction: column;
 }
 
+.delete-button {
+  color: maroon;
+  border: 1px solid red;
+  background-color: salmon;
+  cursor: pointer;
+  padding: 3px;
+  border-radius: 3px;
+}
+
 .geo-button {
   max-width: 200px;
   align-self: center;
-  /* margin: 10px 0 0 0 !important; */
+  padding: 0 5px !important;
+  margin: 10px !important;
 }
 
 .geo-button:hover {
@@ -150,7 +160,7 @@
   width: 230px;
   align-self: center;
   padding: 4px;
-  margin: 15px 5px;
+  margin: 6px;
 }
 
 .search-bar input {
