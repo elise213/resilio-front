@@ -50,13 +50,15 @@
   color: #1976d2 !important;
   background-color: transparent !important;
   border-radius: 20px !important;
-  align-self: flex-end;
+  align-self: center !important;
   margin: 6px !important;
   padding: 0px !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
 .login-button-resilio:hover {
-  background-color: #1565c0;
+  color: darkblue !important;
 }
 
 .login-button-resilio p {

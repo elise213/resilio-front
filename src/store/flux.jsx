@@ -431,10 +431,64 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      // resetPassword: async (newPassword) => {
+      //   try {
+      //     const current_back_url = getStore().current_back_url;
+      //     const token = getStore().token;
+
+      //     const opts = {
+      //       method: "POST",
+      //       headers: {
+      //         Authorization: `Bearer ${token}`,
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         password: newPassword,
+      //       }),
+      //     };
+
+      //     const response = await fetch(
+      //       `${current_back_url}/api/change-password`,
+      //       opts
+      //     );
+
+      //     if (response.status !== 200) {
+      //       Swal.fire({
+      //         icon: "error",
+      //         title: "Error",
+      //         text: "Failed to reset password",
+      //       });
+      //       return false;
+      //     }
+
+      //     const result = await response.json();
+      //     console.log(result);
+
+      //     Swal.fire({
+      //       icon: "success",
+      //       title: "Password Reset Successfully",
+      //     }).then(() => {
+      //       window.location.href = "/";
+      //     });
+
+      //     return true;
+      //   } catch (error) {
+      //     console.error("Error:", error);
+      //     Swal.fire({
+      //       icon: "error",
+      //       title: "Something went wrong",
+      //       text: error.message,
+      //     });
+
+      //     return false;
+      //   }
+      // },
+
       resetPassword: async (newPassword) => {
         try {
-          const current_back_url = getStore().current_back_url;
-          const token = getStore().token;
+          const store = getStore();
+          const current_back_url = store.current_back_url;
+          const token = store.token;
 
           const opts = {
             method: "POST",
@@ -443,26 +497,32 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              password: newPassword,
+              password: newPassword, // Remove user_id
             }),
           };
+
+          console.log("🔄 Sending request to change password...");
+          console.log("🛠️ API URL:", `${current_back_url}/api/change-password`);
+          console.log("📨 Request Body:", opts.body);
 
           const response = await fetch(
             `${current_back_url}/api/change-password`,
             opts
           );
 
-          if (response.status !== 200) {
+          if (!response.ok) {
+            const result = await response.json();
+            console.error("❌ Error response:", result);
             Swal.fire({
               icon: "error",
               title: "Error",
-              text: "Failed to reset password",
+              text: result.error || "Failed to reset password",
             });
             return false;
           }
 
           const result = await response.json();
-          console.log(result);
+          console.log("✅ Password reset response:", result);
 
           Swal.fire({
             icon: "success",
@@ -473,7 +533,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           return true;
         } catch (error) {
-          console.error("Error:", error);
+          console.error("❌ Error:", error);
           Swal.fire({
             icon: "error",
             title: "Something went wrong",

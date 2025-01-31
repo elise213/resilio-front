@@ -79,18 +79,24 @@
 }
 
 .close-modal {
+  position: absolute;
+}
+
+.close-modal,
+.close-modal a {
   color: black;
   margin: 10px 0 0 0;
-  align-self: flex-start;
-  position: absolute;
+  /* align-self: flex-start; */
+  /* position: absolute; */
   top: 10px;
   left: 10px;
   font-weight: 100;
+  z-index: 99;
+  cursor: pointer;
 }
 
 .close-modal:hover {
-  color: gray;
-  cursor: pointer;
+  color: gray !important;
 }
 
 .modal-title-div {
