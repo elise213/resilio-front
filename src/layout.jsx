@@ -1,15 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home.jsx";
-import UserProfile from "./pages/UserProfile";
-import Create from "./pages/Create";
-import Edit from "./pages/Edit";
-import Account from "./pages/Account";
+import Home from "./pages/home.jsx";
+import UserProfile from "./pages/userprofile";
+import Create from "./pages/create";
+import Edit from "./pages/edit";
+import Account from "./pages/account";
 import ScrollToTop from "./component/scrollToTop";
-import injectContext from "./store/appContext";
-import { Context } from "./store/appContext";
-import ResetPassword from "./pages/ResetPassword";
-import ProfileSettings from "./pages/ProfileSettings";
+import injectContext, { Context } from "./store/appContext";
+import ResetPassword from "./pages/ResetPassword.jsx";
+import ProfileSettings from "./pages/ProfileSettings.jsx";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
