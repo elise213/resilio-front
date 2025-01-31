@@ -22,13 +22,37 @@ export const ModalInfo = ({
   const { store, actions } = useContext(Context);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isReadMore, setIsReadMore] = useState(true);
-  // const [comments, setComments] = useState([]);
+  const [isRatingLoading, setIsRatingLoading] = useState(true);
+  const [rating, setRating] = useState(null);
+  const [ratingCountLocal, setRatingCountLocal] = useState(0);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const resource = store.selectedResource;
   const mapCenter = {
-    lat: resource?.latitude || 0, // Default to 0 if no latitude
-    lng: resource?.longitude || 0, // Default to 0 if no longitude
+    lat: resource?.latitude || 0,
+    lng: resource?.longitude || 0,
   };
+
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        setIsRatingLoading(true);
+        const response = await fetch(
+          `${store.current_back_url}/api/rating?resource=${store.selectedResource.id}`
+        );
+        const data = await response.json();
+        setRating(data.rating !== "No ratings yet" ? data.rating : null);
+        setRatingCountLocal(data.count);
+      } catch (error) {
+        console.error("Error fetching rating:", error);
+      } finally {
+        setIsRatingLoading(false);
+      }
+    };
+
+    if (store.selectedResource.id) {
+      fetchRating();
+    }
+  }, [store.selectedResource.id]);
 
   const handleDelete = async (commentId) => {
     const confirm = window.confirm(
@@ -421,7 +445,7 @@ export const ModalInfo = ({
               <span
                 className="material-icons"
                 style={{
-                  fontSize: "20px",
+                  fontSize: "15px",
                   cursor: "pointer",
                 }}
               >
@@ -430,7 +454,7 @@ export const ModalInfo = ({
             </span>
           </>
         )}
-        {/* Rating */}
+        {/* Rating Section */}
         <div
           className="info-address"
           style={{ cursor: "pointer" }}
@@ -440,19 +464,28 @@ export const ModalInfo = ({
         >
           <span className="modal-info-key">RATING</span>
           <div className="rating-div">
-            <Rating
-              style={{
-                flexDirection: "row",
-                fontSize: "20px",
-              }}
-              name="read-only"
-              value={averageRating}
-              precision={0.5}
-              readOnly
-            />
-            <span className="modal-info-value">({ratingCount})</span>
+            {isRatingLoading ? (
+              <span className="loading-text">Loading...</span>
+            ) : rating !== null ? (
+              <>
+                <Rating
+                  style={{
+                    flexDirection: "row",
+                    fontSize: "20px",
+                  }}
+                  name="read-only"
+                  value={rating}
+                  precision={0.5}
+                  readOnly
+                />
+                <span className="modal-info-value">({ratingCountLocal})</span>
+              </>
+            ) : (
+              <span className="modal-info-value">No ratings yet</span>
+            )}
           </div>
         </div>
+
         {isLoggedIn && (
           <div className="info-address" onClick={toggleFavorite}>
             {isFavorited ? (
@@ -530,7 +563,7 @@ export const ModalInfo = ({
         {scheduleCategory === "Closed Everyday" && (
           <>
             <span className="info-address" style={{ color: "black" }}>
-              <span className="modal-info-key">Schedule</span>
+              <span className="modal-info-key">SCHEDULE</span>
               <span className="modal-info-value">Closed Everyday</span>
             </span>
           </>
@@ -653,41 +686,6 @@ export const ModalInfo = ({
                     <div key={comment.comment_id} className="comment-div">
                       <div className="comment-info">
                         <div className="comment-label">
-                          <div
-                            style={{
-                              display: "flex",
-                              alignSelf: "flex-end",
-                              fontWeight: "100",
-                              fontSize: "12px",
-                            }}
-                          >
-                            <div className="like-icon">
-                              {comment.isLoading ? (
-                                <span>Loading...</span>
-                              ) : comment.likes?.some(
-                                  (like) => like.user_id === userIdFromSession
-                                ) ? (
-                                <AddCircleIcon
-                                  style={{ color: "green", marginRight: "5px" }}
-                                  fontSize="small"
-                                  onClick={() =>
-                                    toggleLikeComment(comment.comment_id)
-                                  }
-                                  titleAccess="Unlike this comment"
-                                />
-                              ) : (
-                                <AddCircleOutlineIcon
-                                  style={{ marginRight: "5px" }}
-                                  fontSize="small"
-                                  onClick={() =>
-                                    toggleLikeComment(comment.comment_id)
-                                  }
-                                  titleAccess="Like this comment"
-                                />
-                              )}
-                            </div>
-                            {comment.like_count}
-                          </div>
                           <Rating
                             name="read-only"
                             value={comment.rating_value}
@@ -698,10 +696,52 @@ export const ModalInfo = ({
                             {comment.comment_cont}
                           </p>
                         </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignSelf: "flex-end",
+                            fontWeight: "100",
+                            fontSize: "12px",
+                          }}
+                        >
+                          <div className="like-icon">
+                            {comment.isLoading ? (
+                              <span>Loading...</span>
+                            ) : comment.likes?.some(
+                                (like) => like.user_id === userIdFromSession
+                              ) ? (
+                              <AddCircleIcon
+                                style={{ color: "green", marginRight: "5px" }}
+                                fontSize="small"
+                                onClick={() =>
+                                  toggleLikeComment(comment.comment_id)
+                                }
+                                titleAccess="Unlike this comment"
+                              />
+                            ) : (
+                              <AddCircleOutlineIcon
+                                style={{ marginRight: "5px" }}
+                                fontSize="small"
+                                onClick={() =>
+                                  toggleLikeComment(comment.comment_id)
+                                }
+                                titleAccess="Like this comment"
+                              />
+                            )}
+                          </div>
+                          {comment.like_count}
+                        </div>
                         <div className="comment-content-div">
                           <div className="comment-user-info">
                             <div className="user-info">
-                              <span className="material-symbols-outlined account-circle">
+                              <span
+                                style={{
+                                  fontSize: "20px",
+                                  backgroundColor: "white",
+                                  margin: "0",
+                                }}
+                                className="material-symbols-outlined account-circle"
+                              >
                                 account_circle
                               </span>
                               {comment.user_name} {"   "}
@@ -712,8 +752,14 @@ export const ModalInfo = ({
                             <button
                               onClick={() => handleDelete(comment.comment_id)}
                               className="delete-button"
+                              title="Delete this comment"
                             >
-                              Delete
+                              <span
+                                class="material-symbols-outlined"
+                                style={{ fontSize: "20px" }}
+                              >
+                                delete
+                              </span>
                             </button>
                           )}
                         </div>

@@ -6,13 +6,15 @@ import Swal from "sweetalert2";
 import "../styles/profile.css";
 import { Modal } from "../component";
 import ResourceCard from "../component/ResourceCard";
+import Switch from "@mui/material/Switch";
+import Box from "@mui/material/Box";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
   const [userCommentsAndRatings, setUserCommentsAndRatings] = useState([]);
   const [userName, setUserName] = useState("");
-  const [activeTab, setActiveTab] = useState("reviews"); // Default to "reviews"
+  const [showReviews, setShowReviews] = useState(true); // Default to Reviews
   const loggedInUserId = parseInt(sessionStorage.getItem("user_id"), 10);
 
   useEffect(() => {
@@ -66,35 +68,27 @@ const UserProfile = () => {
         </Link>
       </p>
       <div className="profile-container">
-        {/* Back Button */}
-
         {/* Toggle Switch */}
-        <div className="toggle-container">
-          <button
-            className={
-              activeTab === "reviews" ? "toggle-button active" : "toggle-button"
-            }
-            onClick={() => setActiveTab("reviews")}
-          >
-            Reviews
-          </button>
-          <button
-            className={
-              activeTab === "favorites"
-                ? "toggle-button active"
-                : "toggle-button"
-            }
-            onClick={() => setActiveTab("favorites")}
-          >
-            Following
-          </button>
-        </div>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          className="screen-divider-toggle"
+        >
+          <span style={{ marginRight: "8px" }}>My Reviews</span>
+          <Switch
+            checked={!showReviews}
+            onChange={() => setShowReviews(!showReviews)}
+            color="primary"
+          />
+          <span style={{ marginLeft: "8px" }}>Following</span>
+        </Box>
 
         {/* Content Switcher */}
         <div className="content-container">
-          {activeTab === "reviews" ? (
+          {showReviews ? (
             <div className="reviews-section">
-              <span className="reviews-heading">My Reviews</span>
+              {/* <span className="reviews-heading">My Reviews</span> */}
               {userCommentsAndRatings.length > 0 ? (
                 userCommentsAndRatings.map((item, index) => (
                   <div key={index} className="user-review-profile">
@@ -132,7 +126,7 @@ const UserProfile = () => {
             </div>
           ) : (
             <div className="favorites-section">
-              <span className="reviews-heading">Resources I'm Following </span>
+              {/* <span className="reviews-heading">Resources I'm Following</span> */}
               <ul className="favorites-list">
                 {Array.isArray(store.favorites) &&
                 store.favorites.length > 0 ? (

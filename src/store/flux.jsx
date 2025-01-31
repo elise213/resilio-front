@@ -3,18 +3,16 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       abortController: null,
       abortController2: null,
-      avatarID: null,
-      // Modal states
-      modalIsOpen: false,
-      loginModalIsOpen: false,
       aboutModalIsOpen: false,
-      donationModalIsOpen: false,
-      contactModalIsOpen: false,
-      boundaryResults: [],
-      categorySearch: [],
-      selectedResource: null,
+      avatarID: null,
       averageRating: 0,
+      boundaryResults: [],
+      categoryCounts: {},
+      categorySearch: [],
       comments: [],
+      contactModalIsOpen: false,
+      donationModalIsOpen: false,
+      dayCounts: {},
       CATEGORY_OPTIONS: [
         { id: "food", value: "food", label: "Food" },
         { id: "health", value: "health", label: "Medical Care" },
@@ -31,8 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
       checked: false,
       commentsList: [],
-      current_front_url: import.meta.env.VITE_FRONTEND_URL,
       current_back_url: import.meta.env.VITE_BACKEND_URL,
+      current_front_url: import.meta.env.VITE_FRONTEND_URL,
       daysOfWeek: [
         "monday",
         "tuesday",
@@ -41,30 +39,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         "friday",
         "saturday",
         "sunday",
-      ],
-      favorites: [],
-      favoriteOfferings: [],
-      isLargeScreen: false,
-      is_org: null,
-      latitude: null,
-      longitude: null,
-      loading: false,
-      mapResults: [],
-      name: null,
-      offerings: [],
-      token: null,
-      user_id: null,
-      schedules: [],
-
-      GROUP_OPTIONS: [
-        { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
-        { id: "women", value: "women", label: "Women" },
-        { id: "seniors", value: "seniors", label: "Seniors" },
-        { id: "babies", value: "babies", label: "Babies and Toddlers" },
-        { id: "kids", value: "kids", label: "Youth < 18" },
-        { id: "youth", value: "youth", label: "Youth 18-24" },
-        { id: "vets", value: "vets", label: "Veterans" },
-        { id: "migrant", value: "migrant", label: "Refugees & Migrants" },
       ],
       DAY_OPTIONS: [
         { id: "monday", label: "Monday" },
@@ -75,6 +49,34 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "saturday", label: "Saturday" },
         { id: "sunday", label: "Sunday" },
       ],
+      favorites: [],
+      favoriteOfferings: [],
+      GROUP_OPTIONS: [
+        { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
+        { id: "women", value: "women", label: "Women" },
+        { id: "seniors", value: "seniors", label: "Seniors" },
+        { id: "babies", value: "babies", label: "Babies and Toddlers" },
+        { id: "kids", value: "kids", label: "Youth < 18" },
+        { id: "youth", value: "youth", label: "Youth 18-24" },
+        { id: "vets", value: "vets", label: "Veterans" },
+        { id: "migrant", value: "migrant", label: "Refugees & Migrants" },
+      ],
+      isLargeScreen: false,
+      is_org: null,
+      latitude: null,
+      loginModalIsOpen: false,
+      longitude: null,
+      loading: false,
+      mapResults: [],
+      modalIsOpen: false,
+      name: null,
+      offerings: [],
+      schedules: [],
+      selectedResource: null,
+      token: null,
+      unfilteredMapResults: [],
+      user_id: null,
+
       losAngeles: [
         {
           center: { lat: 34.0522, lng: -118.2437 },
@@ -94,9 +96,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         },
       ],
-
-      categoryCounts: {},
-      dayCounts: {},
     },
     actions: {
       setSelectedResource: (resource) => {
@@ -895,49 +894,34 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       // setBoundaryResults: async (bounds, resources, days, groups) => {
-      //   // console.trace("setBoundaryResults called from:");
       //   const store = getStore();
 
-      //   // If there's an ongoing request, abort it
       //   if (store.abortController) {
       //     store.abortController.abort();
       //   }
 
-      //   // Create a new abort controller for the new request
-      //   const newAbortController = new AbortController(); // AbortC
+      //   const newAbortController = new AbortController();
       //   setStore({ abortController: newAbortController });
 
-      //   // Normalize longitude
       //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
       //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
       //   neLng = neLng % 360;
-      //   if (neLng > 180) {
-      //     neLng -= 360;
-      //   }
-
+      //   if (neLng > 180) neLng -= 360;
       //   swLng = swLng % 360;
-      //   if (swLng > 180) {
-      //     swLng -= 360;
-      //   }
+      //   if (swLng > 180) swLng -= 360;
 
       //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
       //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
 
       //   const url = getStore().current_back_url + "/api/getBResults";
-      //   const combinedResources = {
-      //     ...resources,
-      //     ...groups,
-      //   };
+      //   const combinedResources = { ...resources, ...groups };
 
       //   try {
       //     setStore({ loading: true });
 
       //     let response = await fetch(url, {
       //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
+      //       headers: { "Content-Type": "application/json" },
       //       body: JSON.stringify({
       //         neLat,
       //         neLng,
@@ -946,7 +930,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       //         resources: combinedResources || null,
       //         days: days || null,
       //       }),
-      //       signal: newAbortController.signal, // Use the new abort controller's signal
+      //       signal: newAbortController.signal,
       //     });
 
       //     if (!response.ok) {
@@ -957,7 +941,18 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     }
 
       //     const data = await response.json();
-      //     setStore({ boundaryResults: data.data, loading: false });
+
+      //     if (
+      //       !store.unfilteredMapResults ||
+      //       store.unfilteredMapResults.length === 0
+      //     ) {
+      //       setStore({ unfilteredMapResults: data.data || [] });
+      //     }
+
+      //     setStore({
+      //       boundaryResults: data.data || [],
+      //       loading: false,
+      //     });
 
       //     return data.data;
       //   } catch (error) {
@@ -971,13 +966,17 @@ const getState = ({ getStore, getActions, setStore }) => {
       // },
       setBoundaryResults: async (bounds, resources, days, groups) => {
         const store = getStore();
+        console.log("📡 Fetching new boundary results...");
 
         if (store.abortController) {
-          store.abortController.abort();
+          store.abortController.abort(); // Cancel previous request
         }
 
         const newAbortController = new AbortController();
-        setStore({ abortController: newAbortController });
+        setStore({
+          abortController: newAbortController,
+          boundaryLoading: true,
+        });
 
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
@@ -993,8 +992,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         const combinedResources = { ...resources, ...groups };
 
         try {
-          setStore({ loading: true });
-
           let response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -1017,26 +1014,21 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-
-          if (
-            !store.unfilteredMapResults ||
-            store.unfilteredMapResults.length === 0
-          ) {
-            setStore({ unfilteredMapResults: data.data || [] });
-          }
+          console.log("✅ Received Data:", data.data);
+          setStore({ unfilteredMapResults: data.data || [] });
 
           setStore({
             boundaryResults: data.data || [],
-            loading: false,
+            boundaryLoading: false,
           });
 
           return data.data;
         } catch (error) {
           if (error.name === "AbortError") {
-            console.log("Fetch aborted");
+            console.log("Fetch aborted - Keeping loading state...");
           } else {
-            setStore({ loading: false });
             console.error("Error fetching data:", error);
+            setStore({ boundaryLoading: false });
           }
         }
       },
@@ -1157,7 +1149,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             body: JSON.stringify({
               resource_id: resourceId,
-              comment_content: commentContent,
+              comment_cont: commentContent,
               rating_value: ratingValue,
             }),
           });
@@ -1301,40 +1293,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
-
-      // addFavorite: function (resourceId) {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify({ resourceId }),
-      //     };
-      //     fetch(`${current_back_url}/api/addFavorite`, opts)
-      //       .then((response) => {
-      //         if (response.status === 409) {
-      //           console.error("This item is already in your favorites.");
-      //           return Promise.reject(
-      //             new Error("This item is already in your favorites.")
-      //           );
-      //         } else if (!response.ok) {
-      //           console.error("Failed to add favorite due to server error.");
-      //           return Promise.reject(new Error("Failed to add favorite"));
-      //         }
-      //         return response.json();
-      //       })
-      //       .then(() => {
-      //         getActions().fetchFavorites();
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error adding favorite:", error);
-      //       });
-      //   }
-      // },
 
       addFavorite: function (resourceId) {
         const current_back_url = getStore().current_back_url;

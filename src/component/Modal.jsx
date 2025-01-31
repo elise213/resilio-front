@@ -184,11 +184,6 @@ const Modal = ({}) => {
       {showRating && (
         <>
           <div className="rate">
-            <span className="close-modal" onClick={() => setShowRating(false)}>
-              <span className="material-symbols-outlined">arrow_back_ios</span>
-              Back
-            </span>
-
             {!isLoggedIn && (
               <div className="please-log">
                 Please
@@ -207,14 +202,11 @@ const Modal = ({}) => {
                 to rate and review resources.
               </div>
             )}
-            {/* </div> */}
+
             {isLoggedIn && (
               <>
                 <div className="rating-container">
-                  <span className="rating-prompt">
-                    {/* What did You Think of */}
-                    {resource.name}
-                  </span>
+                  <span className="rating-prompt">{resource.name}</span>
                   <Rating
                     className="resource-rating"
                     name="resource-rating"
