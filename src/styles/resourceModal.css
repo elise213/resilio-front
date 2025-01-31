@@ -76,8 +76,6 @@
 
 .reviews-div {
   width: 450px;
-  margin-top: 10px;
-  /* width: 100%; */
 }
 
 .close-modal {
@@ -128,10 +126,8 @@
 }
 
 .read-more {
-  /* font-size: 11px; */
   color: blue;
-  /* margin-left: 10px; */
-  text-align: end;
+  float: inline-end;
 }
 
 .read-more:hover {
@@ -235,7 +231,7 @@ p {
 }
 
 .comment-div {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   display: flex;
   justify-content: center;
 }
@@ -287,7 +283,7 @@ p {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  margin: 0 100px;
+  /* margin: 0 100px; */
 }
 
 .comment-info {
@@ -297,6 +293,7 @@ p {
   justify-content: center;
   padding: 5px;
   border-bottom: 1px solid gray;
+  margin-top: 10px;
 }
 
 .comment-and-rating {
@@ -327,9 +324,7 @@ p {
 .user-reviews {
   text-align: center;
   font-size: 14px;
-  padding: 6px 0;
   font-weight: 100;
-  /* margin-top: 50px; */
 }
 
 .comments-display {
@@ -359,10 +354,12 @@ textarea {
 
 .modal-footer {
   width: 100%;
+  margin-top: 30px;
 }
 
 .modal-info-key {
   font-size: 14px;
+  margin-right: 10px;
 }
 
 .modal-info-value {
@@ -370,7 +367,7 @@ textarea {
 }
 
 .problem {
-  /* color: gray; */
+  text-align: end;
   text-decoration: none;
   font-size: 11px;
   color: black;
@@ -426,18 +423,19 @@ body.modal-open {
 
 .comment-content-div {
   display: flex;
-  /* width: 100%; */
+  width: 100%;
   align-items: end;
-  /* justify-content: flex-end; */
-  flex-direction: column;
+  justify-content: space-between;
+  /* flex-direction: column; */
   align-items: flex-start;
 }
 
 .comment-container {
   border-radius: 4px;
-  border: 1px solid black;
+  width: 100%;
   max-height: 400px;
   overflow-y: auto;
+  margin-top: 10px;
 }
 /* ____________________________________________CAROUSEL  */
 

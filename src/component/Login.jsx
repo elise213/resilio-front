@@ -361,7 +361,10 @@ const Login = ({ setLayout }) => {
             {/* <Avatar alt="Profile" src={"/default-avatar.jpg"} /> */}
             <span
               className="material-symbols-outlined account-circle"
-              style={{ fontSize: "xx-large" }}
+              style={{
+                fontSize: "x-large",
+                margin: "0 !important",
+              }}
               onClick={handleProfileClick}
             >
               account_circle
@@ -396,15 +399,12 @@ const Login = ({ setLayout }) => {
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleProfileClose}>
-              <Link
-                to="/favorites"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                Favorites
-              </Link>
+            <MenuItem
+              style={{ textDecoration: "none", color: "inherit" }}
+              onClick={handleLogout}
+            >
+              Logout
             </MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </>
       ) : (
