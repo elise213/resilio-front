@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../styles/Donate.css";
+import styles from "../styles/donate";
 
 const Donate = () => {
   return (

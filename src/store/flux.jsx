@@ -55,7 +55,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       token: null,
       user_id: null,
       schedules: [],
-      selectedResource: [],
 
       GROUP_OPTIONS: [
         { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
