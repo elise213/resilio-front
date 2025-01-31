@@ -23,6 +23,21 @@
   animation: loading 2.2s infinite ease-in-out;
 }
 
+.form-row-profile {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  margin: 3px 0;
+}
+
+.donation-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  justify-self: center;
+}
+
 @keyframes loading {
   0% {
     width: 0;

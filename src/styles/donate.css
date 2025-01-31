@@ -1,0 +1,26 @@
+.donation {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.donation-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin: 6px;
+}
+
+.iframe-container {
+  /* width: 90vh !important; */
+  border-radius: 8px;
+  border: 2px solid black;
+  margin: 20px;
+  padding: 5px;
+}
+
+.iframe {
+  height: 100%;
+}

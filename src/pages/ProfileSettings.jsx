@@ -1,75 +1,62 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
-import Styles from "../styles/settings.css";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProfileSettings = () => {
   const { store, actions } = useContext(Context);
-  const location = useLocation();
-  const { userId } = useParams();
-  const queryParams = new URLSearchParams(location.search);
-  const tokenFromUrl = queryParams.get("token");
-  const [newPassword, setNewPassword] = useState("");
+  const token = store.token; // Get token from context
+  const navigate = useNavigate();
+
+  // State for user profile fields
+  const [userId, setUserId] = useState(null);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [city, setCity] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Fetch user info on component mount
   useEffect(() => {
-    if (userId && store.user_id !== parseInt(userId, 10)) {
-      actions.getUserInfo(userId).then((userInfo) => {
-        setName(userInfo?.name || "");
-        setCity(userInfo?.city || "");
-      });
-    } else {
-      setName(store.name || "");
-      setCity(store.city || "");
-    }
-  }, [userId, store.user_id, store.name, store.city, actions]);
+    const fetchUserInfo = async () => {
+      if (!token) {
+        setError("Authentication error. Please log in again.");
+        return;
+      }
 
-  const handleResetPassword = async (e) => {
-    e.preventDefault();
-    const token = tokenFromUrl || sessionStorage.getItem("token");
-
-    try {
-      const response = await fetch(
-        `${store.current_back_url}/api/change-password`,
-        {
-          method: "POST",
+      try {
+        const response = await fetch(`${store.current_back_url}/api/me`, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ password: newPassword }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user information.");
         }
-      );
 
-      if (response.ok) {
-        Swal.fire({
-          icon: "success",
-          title: "Password Reset",
-          text: "Your password has been reset successfully.",
-        });
-        setNewPassword("");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to reset password. Please try again.",
-        });
+        const userData = await response.json();
+        setUserId(userData.id);
+        setName(userData.name);
+        setEmail(userData.email);
+        setCity(userData.city || "");
+      } catch (err) {
+        console.error("❌ Fetch user error:", err);
+        setError(err.message || "Failed to fetch user data.");
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to reset password. Please try again.",
-      });
-    }
-  };
+    };
 
-  const handleProfileUpdate = async (e) => {
-    e.preventDefault();
-    const token = sessionStorage.getItem("token");
+    fetchUserInfo();
+  }, [store.current_back_url, token]);
+
+  // Update profile information
+  const handleUpdateProfile = async () => {
+    setLoading(true);
+    setError("");
 
     try {
       const response = await fetch(
@@ -77,34 +64,98 @@ const ProfileSettings = () => {
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, city }),
+          body: JSON.stringify({ name, email, city }),
         }
       );
 
-      if (response.ok) {
-        Swal.fire({
-          icon: "success",
-          title: "Profile Updated",
-          text: "Your profile has been updated successfully.",
-        });
-        setName("");
-        setCity("");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to update profile. Please try again.",
-        });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to update profile.");
       }
-    } catch (error) {
+
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to update profile. Please try again.",
+        icon: "success",
+        title: "Profile Updated",
+        text: "Your profile information has been updated successfully.",
+      }).then(() => {
+        navigate("/"); // Redirect after update
       });
+    } catch (error) {
+      console.error("❌ Error updating profile:", error);
+      setError(error.message || "An error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reset password
+  const handleResetPassword = async () => {
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("New passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const authResponse = await fetch(`${store.current_back_url}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: currentPassword }),
+      });
+
+      const authData = await authResponse.json();
+      if (!authResponse.ok) {
+        throw new Error("Current password is incorrect.");
+      }
+
+      const newToken = authData.access_token;
+
+      const response = await fetch(
+        `${store.current_back_url}/api/change-password`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${newToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password: newPassword }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to reset password.");
+      }
+
+      setSuccess(true);
+      Swal.fire({
+        icon: "success",
+        title: "Password Updated",
+        text: "Your password has been changed successfully.",
+      }).then(() => {
+        navigate("/"); // Redirect after password reset
+      });
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error("❌ Error:", error);
+      setError(error.message || "An error occurred.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -118,9 +169,57 @@ const ProfileSettings = () => {
       </p>
       <p className="page-title">Settings</p>
 
-      {/* Password Reset Form */}
-      <form onSubmit={handleResetPassword}>
-        <div className="form-row">
+      {error && <p className="error-message">{error}</p>}
+
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="form-row-profile">
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="form-row-profile">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="form-row-profile">
+          <label htmlFor="city">City:</label>
+          <input
+            type="text"
+            id="city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </div>
+
+        <button onClick={handleUpdateProfile} disabled={loading}>
+          {loading ? "Updating..." : "Update Profile"}
+        </button>
+
+        <h3>Change Password</h3>
+
+        <div className="form-row-profile">
+          <label htmlFor="currentPassword">Current Password:</label>
+          <input
+            type="password"
+            id="currentPassword"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-row-profile">
           <label htmlFor="newPassword">New Password:</label>
           <input
             type="password"
@@ -130,33 +229,21 @@ const ProfileSettings = () => {
             required
           />
         </div>
-        <button type="submit">Reset Password</button>
-      </form>
 
-      <hr />
-
-      {/* Profile Update Form */}
-      <form onSubmit={handleProfileUpdate}>
-        <div className="form-row">
-          <label htmlFor="name">Name:</label>
+        <div className="form-row-profile">
+          <label htmlFor="confirmPassword">Confirm New Password:</label>
           <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
         </div>
-        <div className="form-row">
-          <label htmlFor="city">City:</label>
-          <input
-            type="text"
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </div>
-        <button type="submit">Update Profile</button>
+
+        <button onClick={handleResetPassword} disabled={loading}>
+          {loading ? "Updating..." : "Change Password"}
+        </button>
       </form>
     </div>
   );
