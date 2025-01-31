@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/home.jsx";
-import UserProfile from "./pages/userprofile.jsx";
-import Create from "./pages/create.jsx";
-import Edit from "./pages/edit.jsx";
-import Account from "./pages/account.jsx";
-import ScrollToTop from "./component/scrollToTop";
-import injectContext, { Context } from "./store/appContext";
+import UserProfile from "./pages/UserProfile.jsx";
+import Create from "./pages/Create.jsx";
+import Edit from "./pages/Edit.jsx";
+import Account from "./pages/Account.jsx";
+import ScrollToTop from "./component/scrollToTop.jsx";
+import injectContext, { Context } from "./store/appContext.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import ProfileSettings from "./pages/ProfileSettings.jsx";
 
