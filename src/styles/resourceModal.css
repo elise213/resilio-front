@@ -132,13 +132,13 @@
 }
 
 .read-more {
-  color: blue;
+  color: gray;
   float: inline-end;
 }
 
 .read-more:hover {
   cursor: pointer;
-  color: darkblue;
+  color: darkgray;
 }
 
 .resource-rating {
@@ -237,9 +237,12 @@ p {
 }
 
 .comment-div {
-  /* margin-top: 10px; */
   display: flex;
   justify-content: center;
+  max-width: 350px;
+  min-width: 200px;
+  justify-self: flex-end;
+  width: 100%;
 }
 
 .comment-content {
@@ -314,7 +317,7 @@ p {
 }
 
 .comment-user-info {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 100;
 }
 
@@ -365,7 +368,7 @@ textarea {
 
 .modal-info-key {
   font-size: 14px;
-  margin-right: 10px;
+  margin-right: 30px;
 }
 
 .modal-info-value {
@@ -432,16 +435,17 @@ body.modal-open {
   width: 100%;
   align-items: end;
   justify-content: space-between;
-  /* flex-direction: column; */
-  align-items: flex-start;
+  align-items: flex-end;
 }
 
 .comment-container {
   border-radius: 4px;
-  width: 100%;
-  max-height: 400px;
-  overflow-y: auto;
-  margin-top: 10px;
+  width: 250px;
+  /* max-height: 450px; */
+  overflow-x: hidden;
+  /* overflow-y: auto; */
+  justify-self: flex-end;
+  align-self: flex-end;
 }
 /* ____________________________________________CAROUSEL  */
 

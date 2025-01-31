@@ -23,6 +23,16 @@
   animation: loading 2.2s infinite ease-in-out;
 }
 
+.form-section {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 20px;
+  border: 1px solid black;
+  width: unset !important;
+}
+
 .form-row-profile {
   width: 300px;
   display: flex;
@@ -134,12 +144,10 @@
 }
 
 .delete-button {
-  color: maroon;
-  border: 1px solid red;
-  background-color: salmon;
+  color: red;
+  border: none;
   cursor: pointer;
-  padding: 3px;
-  border-radius: 3px;
+  background-color: transparent;
 }
 
 .geo-button {

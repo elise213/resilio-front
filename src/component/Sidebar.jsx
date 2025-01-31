@@ -316,40 +316,6 @@ const Sidebar = ({
               days &&
               groups ? (
                 <ErrorBoundary>
-                  {/* <button
-                            className="dropdown-button location"
-                            onClick={toggleLocationDropdown}
-                          >
-                            Location{" "}
-                            <span className="material-symbols-outlined">
-                              {locationDropdownIcon}
-                            </span>
-                          </button>
-                          {isLocationDropdownOpen && (
-                            <div className="dropdown-content">
-                              <input
-                                type="text"
-                                key="zip-code-input"
-                                className="zipcode"
-                                value={localZipInput}
-                                onChange={handleZipInputChange}
-                                maxLength="5"
-                                placeholder="Zip Code"
-                              />
-                              <button className="geo-button" onClick={geoFindMe}>
-                                Get My Location
-                              </button>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={geoFindMe}
-                                className="geo-button"
-                              >
-                                Find My Location
-                              </Button>
-                            </div>
-                          )} */}
-
                   <Selection
                     openDropdown={openDropdown}
                     setOpenDropdown={setOpenDropdown}
@@ -383,16 +349,23 @@ const Sidebar = ({
                     clearSelectedDay={clearSelectedDay}
                   />
                 )}
-                {!hasBoundaryResults && !store.boundaryResults.length > 0 && (
+                {/* {!hasBoundaryResults && !store.boundaryResults.length > 0 && (
                   <>
                     <span className="no-results-text">
                       {" "}
-                      No results match your query. Please move the map or adjust
-                      filters to find more resources{" "}
+                      No results. Please move the map or adjust filters to find
+                      more resources{" "}
                     </span>
                   </>
-                )}
-                {hasBoundaryResults && store.boundaryResults.length > 0 && (
+                )} */}
+                {/* {store.boundaryLoading ? (
+                  <span className="loading-text">Loading...</span>
+                ) : !hasBoundaryResults ? (
+                  <span className="no-results-text">
+                    No results. Please move the map or adjust filters to find
+                    more resources.
+                  </span>
+                ) : (
                   <div className={`list-container`}>
                     {activeTab === "AllResources" && (
                       <ul>
@@ -414,7 +387,61 @@ const Sidebar = ({
                       </ul>
                     )}
                   </div>
+                )} */}
+                {store.boundaryLoading || !store.boundaryResults ? (
+                  <span className="loading-text">Loading...</span>
+                ) : store.boundaryResults.length === 0 ? (
+                  <span className="no-results-text">
+                    No results. Please move the map or adjust filters to find
+                    more resources.
+                  </span>
+                ) : (
+                  <div className="list-container">
+                    {activeTab === "AllResources" && (
+                      <ul>
+                        {Array.isArray(store.mapResults) &&
+                          store.boundaryResults
+                            .filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            )
+                            .map((resource, index) => (
+                              <ResourceCard item={resource} key={index + 5} />
+                            ))}
+                      </ul>
+                    )}
+                  </div>
                 )}
+
+                {/* {hasBoundaryResults && store.boundaryResults.length > 0 && (
+                  <div className={`list-container`}>
+                    {activeTab === "AllResources" && (
+                      <ul>
+                        {Array.isArray(store.mapResults) &&
+                          store.boundaryResults
+                            .filter(
+                              (resource) =>
+                                resource.name
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()) ||
+                                (resource.description &&
+                                  resource.description
+                                    .toLowerCase()
+                                    .includes(searchQuery.toLowerCase()))
+                            )
+                            .map((resource, index) => (
+                              <ResourceCard item={resource} key={index + 5} />
+                            ))}
+                      </ul>
+                    )}
+                  </div>
+                )} */}
               </div>
               {!store.loginModalisOpen && (
                 <Box

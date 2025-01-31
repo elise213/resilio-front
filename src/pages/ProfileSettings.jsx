@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const ProfileSettings = () => {
   const { store, actions } = useContext(Context);
@@ -167,83 +168,97 @@ const ProfileSettings = () => {
           Back to Search
         </Link>
       </p>
-      <p className="page-title">Settings</p>
+      <p className="section-title"></p>
 
       {error && <p className="error-message">{error}</p>}
 
       <form onSubmit={(e) => e.preventDefault()}>
-        <div className="form-row-profile">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+        <div className="form-section">
+          <div className="form-row-profile">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="form-row-profile">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="form-row-profile">
+            <label htmlFor="city">City:</label>
+            <input
+              type="text"
+              id="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUpdateProfile}
+            disabled={loading}
+            className="geo-button"
+          >
+            {loading ? "Updating..." : "Update Profile"}
+          </Button>
         </div>
 
-        <div className="form-row-profile">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <div className="form-section">
+          <div className="form-row-profile">
+            <label htmlFor="currentPassword">Current Password:</label>
+            <input
+              type="password"
+              id="currentPassword"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-row-profile">
+            <label htmlFor="newPassword">New Password:</label>
+            <input
+              type="password"
+              id="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-row-profile">
+            <label htmlFor="confirmPassword">Confirm New Password:</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleResetPassword}
+            className="geo-button"
+            disabled={loading}
+          >
+            {loading ? "Updating..." : "Change Password"}
+          </Button>
         </div>
-
-        <div className="form-row-profile">
-          <label htmlFor="city">City:</label>
-          <input
-            type="text"
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </div>
-
-        <button onClick={handleUpdateProfile} disabled={loading}>
-          {loading ? "Updating..." : "Update Profile"}
-        </button>
-
-        <h3>Change Password</h3>
-
-        <div className="form-row-profile">
-          <label htmlFor="currentPassword">Current Password:</label>
-          <input
-            type="password"
-            id="currentPassword"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-row-profile">
-          <label htmlFor="newPassword">New Password:</label>
-          <input
-            type="password"
-            id="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-row-profile">
-          <label htmlFor="confirmPassword">Confirm New Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button onClick={handleResetPassword} disabled={loading}>
-          {loading ? "Updating..." : "Change Password"}
-        </button>
       </form>
     </div>
   );
