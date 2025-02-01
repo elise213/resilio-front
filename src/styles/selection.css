@@ -656,6 +656,11 @@
   margin: 5px;
 }
 
+.screen-divider-toggle-2 {
+  justify-content: center;
+  margin: 10px 0;
+}
+
 .screen-divider-toggle {
   justify-content: center;
   display: none !important;
@@ -729,7 +734,8 @@
     margin-bottom: 0px !important;
   }
 
-  .screen-divider-toggle {
+  .screen-divider-toggle,
+  .screen-divider-toggle-2 {
     display: flex !important;
   }
 
