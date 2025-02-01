@@ -24,9 +24,9 @@
   margin: 6px;
 }
 
-/* .iframe-container {
-  padding: 0 15px;
-} */
+.iframe-container {
+  width: 100%;
+}
 
 .iframe {
   height: 100% !important;

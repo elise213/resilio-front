@@ -33,6 +33,7 @@ const ProfileSettings = () => {
         const response = await fetch(`${store.current_back_url}/api/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         });
 
@@ -41,10 +42,16 @@ const ProfileSettings = () => {
         }
 
         const userData = await response.json();
-        setUserId(userData.id);
-        setName(userData.name);
-        setEmail(userData.email);
-        setCity(userData.city || "");
+
+        // Ensure we handle cases where userData may contain "user" object
+        if (userData && typeof userData === "object") {
+          setUserId(userData.id || userData.user?.id || null);
+          setName(userData.name || userData.user?.name || "");
+          setEmail(userData.email || userData.user?.email || "");
+          setCity(userData.city || userData.user?.city || "");
+        } else {
+          throw new Error("Invalid user data received.");
+        }
       } catch (err) {
         console.error("❌ Fetch user error:", err);
         setError(err.message || "Failed to fetch user data.");
