@@ -173,7 +173,7 @@ const ProfileSettings = () => {
       {error && <p className="error-message">{error}</p>}
 
       <form onSubmit={(e) => e.preventDefault()}>
-        <div className="form-section">
+        <div className="form-section-2">
           <div className="form-row-profile">
             <label htmlFor="name">Name:</label>
             <input
@@ -215,7 +215,7 @@ const ProfileSettings = () => {
           </Button>
         </div>
 
-        <div className="form-section">
+        <div className="form-section-2">
           <div className="form-row-profile">
             <label htmlFor="currentPassword">Current Password:</label>
             <input
