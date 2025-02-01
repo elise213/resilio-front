@@ -1,5 +1,8 @@
 .settings-container {
   justify-self: center;
+  height: 100vh;
+  /* display: flex; */
+  align-items: center;
 }
 
 .form-row {
