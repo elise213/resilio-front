@@ -59,6 +59,16 @@ const UserProfile = () => {
     }
   };
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      actions.getCommentsAndRatingsForUser(id, setUserCommentsAndRatings),
+      actions.getUserInfo(id).then((userInfo) => setUserName(userInfo.name)),
+    ]).finally(() => setLoading(false));
+  }, [id]);
+
   return (
     <>
       <p className="close-modal">
@@ -73,12 +83,19 @@ const UserProfile = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          className="screen-divider-toggle"
+          className="screen-divider-toggle-2"
         >
+          {console.log("Rendering Switch:", showReviews)}
+          {console.log("Favorites:", store.favorites)}
+          {console.log("Reviews:", userCommentsAndRatings)}
+
           <span style={{ marginRight: "8px" }}>My Reviews</span>
           <Switch
             checked={!showReviews}
-            onChange={() => setShowReviews(!showReviews)}
+            onChange={() => {
+              console.log("Toggling showReviews. Before:", showReviews);
+              setShowReviews((prev) => !prev);
+            }}
             color="primary"
           />
           <span style={{ marginLeft: "8px" }}>Following</span>
@@ -88,7 +105,6 @@ const UserProfile = () => {
         <div className="content-container">
           {showReviews ? (
             <div className="reviews-section">
-              {/* <span className="reviews-heading">My Reviews</span> */}
               {userCommentsAndRatings.length > 0 ? (
                 userCommentsAndRatings.map((item, index) => (
                   <div key={index} className="user-review-profile">
@@ -113,20 +129,27 @@ const UserProfile = () => {
                         <button
                           onClick={() => handleDelete(item.comment_id)}
                           className="delete-button"
+                          title="Delete this comment"
                         >
-                          Delete
+                          <span
+                            class="material-symbols-outlined"
+                            style={{ fontSize: "20px" }}
+                          >
+                            delete
+                          </span>
                         </button>
                       )}
                     </div>
                   </div>
                 ))
               ) : (
-                <p>No reviews found.</p>
+                <>
+                  {loading ? <span>Loading...</span> : <p>No reviews found.</p>}
+                </>
               )}
             </div>
           ) : (
             <div className="favorites-section">
-              {/* <span className="reviews-heading">Resources I'm Following</span> */}
               <ul className="favorites-list">
                 {Array.isArray(store.favorites) &&
                 store.favorites.length > 0 ? (
