@@ -764,7 +764,7 @@
   }
 
   .fullscreen-map {
-    top: calc(-100vh + 85px) !important;
+    top: calc(-100vh + 150px) !important;
     bottom: unset;
   }
 
