@@ -3,6 +3,8 @@ import Swal from "sweetalert2";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { jwtDecode } from "jwt-decode";
+import Styles from "../styles/settings.css";
 
 const ProfileSettings = () => {
   const { store, actions } = useContext(Context);
@@ -21,6 +23,36 @@ const ProfileSettings = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Decode JWT and extract user ID
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log("✅ Decoded JWT:", decoded);
+
+        // Fix: Extract `id` from `sub` object
+        if (
+          !decoded.sub ||
+          typeof decoded.sub !== "object" ||
+          !decoded.sub.id
+        ) {
+          console.error(
+            "❌ Invalid JWT: 'sub' field is missing or incorrect",
+            decoded
+          );
+          setError("Invalid authentication token. Please log in again.");
+          return;
+        }
+
+        setUserId(decoded.sub.id); // Store user ID
+        setEmail(decoded.sub.email || ""); // Store email
+      } catch (err) {
+        console.error("❌ Error decoding token:", err);
+        setError("Invalid token format. Please log in again.");
+      }
+    }
+  }, [token]);
+
   // Fetch user info on component mount
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -30,6 +62,22 @@ const ProfileSettings = () => {
       }
 
       try {
+        const decoded = jwtDecode(token);
+        console.log("✅ Decoded JWT:", decoded);
+
+        // Fix: Extract `id` from `sub` if it's an object
+        const userId =
+          typeof decoded.sub === "object" ? decoded.sub.id : decoded.sub;
+        if (!userId) {
+          throw new Error("Invalid token structure: User ID is missing.");
+        }
+
+        setUserId(userId);
+
+        console.log(
+          "🔄 Fetching user info from:",
+          `${store.current_back_url}/api/me`
+        );
         const response = await fetch(`${store.current_back_url}/api/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,21 +85,20 @@ const ProfileSettings = () => {
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch user information.");
-        }
-
         const userData = await response.json();
+        console.log("✅ API Response:", userData);
 
-        // Ensure we handle cases where userData may contain "user" object
-        if (userData && typeof userData === "object") {
-          setUserId(userData.id || userData.user?.id || null);
-          setName(userData.name || userData.user?.name || "");
-          setEmail(userData.email || userData.user?.email || "");
-          setCity(userData.city || userData.user?.city || "");
-        } else {
-          throw new Error("Invalid user data received.");
+        if (!response.ok) {
+          throw new Error(
+            userData.error ||
+              userData.msg ||
+              "Failed to fetch user information."
+          );
         }
+
+        setName(userData.name || "");
+        setEmail(userData.email || "");
+        setCity(userData.city || "");
       } catch (err) {
         console.error("❌ Fetch user error:", err);
         setError(err.message || "Failed to fetch user data.");
@@ -67,6 +114,8 @@ const ProfileSettings = () => {
     setError("");
 
     try {
+      console.log("📝 Updating profile...");
+
       const response = await fetch(
         `${store.current_back_url}/api/update-profile`,
         {
@@ -80,6 +129,7 @@ const ProfileSettings = () => {
       );
 
       const result = await response.json();
+      console.log("✅ Profile Update Response:", result);
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to update profile.");
@@ -90,7 +140,7 @@ const ProfileSettings = () => {
         title: "Profile Updated",
         text: "Your profile information has been updated successfully.",
       }).then(() => {
-        navigate("/"); // Redirect after update
+        navigate("/");
       });
     } catch (error) {
       console.error("❌ Error updating profile:", error);
@@ -116,6 +166,8 @@ const ProfileSettings = () => {
     setError("");
 
     try {
+      console.log("🔄 Authenticating user for password reset...");
+
       const authResponse = await fetch(`${store.current_back_url}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -123,11 +175,15 @@ const ProfileSettings = () => {
       });
 
       const authData = await authResponse.json();
+      console.log("✅ Login Response:", authData);
+
       if (!authResponse.ok) {
         throw new Error("Current password is incorrect.");
       }
 
       const newToken = authData.access_token;
+
+      console.log("🔄 Sending password reset request...");
 
       const response = await fetch(
         `${store.current_back_url}/api/change-password`,
@@ -142,6 +198,7 @@ const ProfileSettings = () => {
       );
 
       const result = await response.json();
+      console.log("✅ Password Change Response:", result);
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to reset password.");
@@ -153,7 +210,7 @@ const ProfileSettings = () => {
         title: "Password Updated",
         text: "Your password has been changed successfully.",
       }).then(() => {
-        navigate("/"); // Redirect after password reset
+        navigate("/");
       });
 
       setCurrentPassword("");
@@ -175,7 +232,6 @@ const ProfileSettings = () => {
           Back to Search
         </Link>
       </p>
-      <p className="section-title"></p>
 
       {error && <p className="error-message">{error}</p>}
 
@@ -191,15 +247,10 @@ const ProfileSettings = () => {
             />
           </div>
 
-          <div className="form-row-profile">
+          {/* <div className="form-row-profile">
             <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+            <input type="email" id="email" value={email} disabled />
+          </div> */}
 
           <div className="form-row-profile">
             <label htmlFor="city">City:</label>
@@ -216,52 +267,50 @@ const ProfileSettings = () => {
             color="primary"
             onClick={handleUpdateProfile}
             disabled={loading}
-            className="geo-button"
+            className="update-button"
           >
             {loading ? "Updating..." : "Update Profile"}
           </Button>
         </div>
 
         <div className="form-section-2">
+          {/* <p>Change Password</p> */}
           <div className="form-row-profile">
-            <label htmlFor="currentPassword">Current Password:</label>
+            <label htmlFor="current-password">Current Password:</label>
             <input
               type="password"
-              id="currentPassword"
+              id="current-password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              required
             />
           </div>
 
           <div className="form-row-profile">
-            <label htmlFor="newPassword">New Password:</label>
+            <label htmlFor="new-password">New Password:</label>
             <input
               type="password"
-              id="newPassword"
+              id="new-password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              required
             />
           </div>
 
           <div className="form-row-profile">
-            <label htmlFor="confirmPassword">Confirm New Password:</label>
+            <label htmlFor="confirm-password">Confirm New Password:</label>
             <input
               type="password"
-              id="confirmPassword"
+              id="confirm-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              required
             />
           </div>
 
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             onClick={handleResetPassword}
-            className="geo-button"
             disabled={loading}
+            className="update-button"
           >
             {loading ? "Updating..." : "Change Password"}
           </Button>

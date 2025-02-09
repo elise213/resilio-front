@@ -64,6 +64,37 @@
   text-decoration: none;
   font-weight: 100;
 }
+@keyframes scrollText {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.alert-container {
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100vw;
+  position: absolute;
+  background-color: red;
+  border: 2px solid maroon;
+  padding: 5px;
+  top: 100px;
+}
+
+.alert-div {
+  display: flex;
+  width: max-content;
+  animation: scrollText 20s linear infinite;
+}
+
+.alert-text {
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 50px; /* Space between repetitions */
+}
 
 .info-address p,
 .info-address span {

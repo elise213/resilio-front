@@ -146,14 +146,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setCategoryCounts: (categoryCounts) => {
-        setStore({
-          categoryCounts: categoryCounts,
-        });
+        console.log("📢 Updating categoryCounts in Flux:", categoryCounts);
+        setStore({ categoryCounts });
       },
+
       setDayCounts: (dayCounts) => {
-        setStore({
-          dayCounts: dayCounts,
-        });
+        console.log("📢 Updating dayCounts in Flux:", dayCounts);
+        setStore({ dayCounts });
       },
 
       debounce: (func, delay) => {
@@ -178,25 +177,164 @@ const getState = ({ getStore, getActions, setStore }) => {
         return categories;
       },
 
-      getColorForCategory: (category) => {
-        const colors = {
-          food: "DarkOrange",
-          health: "Indigo",
-          hygiene: "CornflowerBlue",
-          clothing: "Salmon",
-          shelter: "Maroon",
-          work: "Green",
-          wifi: "Orchid",
-          crisis: "Red",
-          legal: "Peru",
-          bathroom: "SlateGrey",
-          mental: "Coral",
-          substance: "DarkRed",
-          sex: "Tomato",
-        };
-        if (colors[category]) {
-          return { color: colors[category] };
-        } else return { color: "red" };
+      // fetchBResults: async (
+      //   neLat,
+      //   neLng,
+      //   swLat,
+      //   swLng,
+      //   resources,
+      //   days,
+      //   abortController
+      // ) => {
+      //   try {
+      //     let response = await fetch(
+      //       getStore().current_back_url + "/api/getBResults",
+      //       {
+      //         method: "POST",
+      //         headers: { "Content-Type": "application/json" },
+      //         body: JSON.stringify({
+      //           neLat,
+      //           neLng,
+      //           swLat,
+      //           swLng,
+      //           resources,
+      //           days,
+      //         }),
+      //         signal: abortController.signal,
+      //       }
+      //     );
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response: ${text}`
+      //       );
+      //     }
+
+      //     return await response.json();
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("Fetch aborted");
+      //     } else {
+      //       console.error("Error fetching data:", error);
+      //     }
+      //     return null;
+      //   }
+      // },
+      fetchBResults: async (
+        neLat,
+        neLng,
+        swLat,
+        swLng,
+        resources,
+        days,
+        abortController
+      ) => {
+        try {
+          let response = await fetch(
+            getStore().current_back_url + "/api/getBResults",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                neLat,
+                neLng,
+                swLat,
+                swLng,
+                resources,
+                days,
+              }),
+              signal: abortController.signal,
+            }
+          );
+
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(
+              `Network response was not ok. Status: ${response.statusText}. Response: ${text}`
+            );
+          }
+
+          const data = await response.json();
+
+          if (data) {
+            console.log(
+              "📍 Updating unfilteredMapResults in store:",
+              data.data
+            );
+            setStore({ unfilteredMapResults: data.data });
+
+            // Process counts after updating unfilteredMapResults
+            const store = getStore();
+            let categoryCounts = {};
+            let dayCounts = {
+              monday: 0,
+              tuesday: 0,
+              wednesday: 0,
+              thursday: 0,
+              friday: 0,
+              saturday: 0,
+              sunday: 0,
+            };
+            let groupCounts = {}; // Assuming you need to track groups separately
+
+            data.data.forEach((result) => {
+              // Count categories
+              if (typeof result.category === "string") {
+                let categories = result.category
+                  .split(",")
+                  .map((cat) => cat.trim());
+                categories.forEach((cat) => {
+                  categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+                });
+              }
+
+              // Count days based on schedule
+              const schedule = store.schedules[result.id];
+              if (schedule) {
+                Object.keys(dayCounts).forEach((day) => {
+                  const daySchedule = schedule[day];
+
+                  if (
+                    daySchedule &&
+                    daySchedule.start &&
+                    daySchedule.end &&
+                    daySchedule.start !== "closed" &&
+                    daySchedule.end !== "closed" &&
+                    daySchedule.start.trim() !== "" &&
+                    daySchedule.end.trim() !== ""
+                  ) {
+                    dayCounts[day]++;
+                  }
+                });
+              }
+
+              // Count groups if applicable
+              if (result.group) {
+                let groups = result.group.split(",").map((grp) => grp.trim());
+                groups.forEach((grp) => {
+                  groupCounts[grp] = (groupCounts[grp] || 0) + 1;
+                });
+              }
+            });
+
+            console.log("✅ Final categoryCounts:", categoryCounts);
+            console.log("✅ Final dayCounts:", dayCounts);
+            console.log("✅ Final groupCounts:", groupCounts);
+
+            // Update store with the computed counts
+            setStore({ categoryCounts, dayCounts, groupCounts });
+          }
+
+          return data;
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log("Fetch aborted");
+          } else {
+            console.error("Error fetching data:", error);
+          }
+          return null;
+        }
       },
 
       getFormattedSchedule: (schedule) => {
@@ -785,114 +923,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         return () => {};
       },
 
-      setMapResults: async (bounds) => {
-        const store = getStore();
-        console.log("setMapResults called with bounds:", bounds);
-
-        // If there's an ongoing request, abort it
-        if (store.abortController2) {
-          store.abortController2.abort();
-        }
-
-        // Create a new abort controller for the new request
-        const newAbortController = new AbortController(); // AbortC
-        setStore({ abortController2: newAbortController });
-
-        // Normalize longitude
-        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-        neLng = neLng % 360;
-        if (neLng > 180) {
-          neLng -= 360;
-        }
-
-        swLng = swLng % 360;
-        if (swLng > 180) {
-          swLng -= 360;
-        }
-
-        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-        console.log("Normalized coordinates:", { neLat, neLng, swLat, swLng });
-
-        const resources = {
-          food: false,
-          health: false,
-          shelter: false,
-          hygiene: false,
-          crisis: false,
-          mental: false,
-          work: false,
-          bathroom: false,
-          wifi: false,
-          substance: false,
-          sex: false,
-          legal: false,
-          lgbtq: false,
-          women: false,
-          seniors: false,
-          babies: false,
-          kids: false,
-          youth: false,
-          vets: false,
-          migrant: false,
-        };
-
-        const days = {
-          monday: false,
-          tuesday: false,
-          wednesday: false,
-          thursday: false,
-          friday: false,
-          saturday: false,
-          sunday: false,
-        };
-
-        const url = getStore().current_back_url + "/api/getBResults";
-        console.log("Fetching from URL:", url);
-
-        try {
-          setStore({ loading: true });
-          let response = await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              neLat,
-              neLng,
-              swLat,
-              swLng,
-              resources,
-              days,
-            }),
-            signal: newAbortController.signal,
-          });
-
-          if (!response.ok) {
-            const text = await response.text();
-            console.error("Response text:", text);
-            throw new Error(
-              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-            );
-          }
-
-          const data = await response.json();
-          console.log("Fetched data:", data);
-          setStore({ mapResults: data.data, loading: false });
-
-          return data.data;
-        } catch (error) {
-          if (error.name === "AbortError") {
-            console.log("Fetch aborted");
-          } else {
-            setStore({ loading: false });
-            console.error("Error fetching data:", error);
-          }
-        }
-      },
-
       // setBoundaryResults: async (bounds, resources, days, groups) => {
       //   const store = getStore();
 
@@ -964,73 +994,321 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     }
       //   }
       // },
+
+      // setMapResults: async (bounds) => {
+      //   const store = getStore();
+      //   console.log("setMapResults called with bounds:", bounds);
+
+      //   // If there's an ongoing request, abort it
+      //   if (store.abortController2) {
+      //     store.abortController2.abort();
+      //   }
+
+      //   // Create a new abort controller for the new request
+      //   const newAbortController = new AbortController(); // AbortC
+      //   setStore({ abortController2: newAbortController });
+
+      //   // Normalize longitude
+      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+      //   neLng = neLng % 360;
+      //   if (neLng > 180) {
+      //     neLng -= 360;
+      //   }
+
+      //   swLng = swLng % 360;
+      //   if (swLng > 180) {
+      //     swLng -= 360;
+      //   }
+
+      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+      //   console.log("Normalized coordinates:", { neLat, neLng, swLat, swLng });
+
+      //   const resources = {
+      //     food: false,
+      //     health: false,
+      //     shelter: false,
+      //     hygiene: false,
+      //     crisis: false,
+      //     mental: false,
+      //     work: false,
+      //     bathroom: false,
+      //     wifi: false,
+      //     substance: false,
+      //     sex: false,
+      //     legal: false,
+      //     lgbtq: false,
+      //     women: false,
+      //     seniors: false,
+      //     babies: false,
+      //     kids: false,
+      //     youth: false,
+      //     vets: false,
+      //     migrant: false,
+      //   };
+
+      //   const days = {
+      //     monday: false,
+      //     tuesday: false,
+      //     wednesday: false,
+      //     thursday: false,
+      //     friday: false,
+      //     saturday: false,
+      //     sunday: false,
+      //   };
+
+      //   const url = getStore().current_back_url + "/api/getBResults";
+      //   console.log("Fetching from URL:", url);
+
+      //   try {
+      //     setStore({ loading: true });
+      //     let response = await fetch(url, {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         neLat,
+      //         neLng,
+      //         swLat,
+      //         swLng,
+      //         resources,
+      //         days,
+      //       }),
+      //       signal: newAbortController.signal,
+      //     });
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       console.error("Response text:", text);
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
+      //     }
+
+      //     const data = await response.json();
+      //     console.log("Fetched data:", data);
+      //     setStore({ mapResults: data.data, loading: false });
+
+      //     return data.data;
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("Fetch aborted");
+      //     } else {
+      //       setStore({ loading: false });
+      //       console.error("Error fetching data:", error);
+      //     }
+      //   }
+      // },
+
+      // setBoundaryResults: async (bounds, resources, days, groups) => {
+      //   const store = getStore();
+      //   console.log("📡 Fetching new boundary results...");
+
+      //   if (store.abortController) {
+      //     store.abortController.abort(); // Cancel previous request
+      //   }
+
+      //   const newAbortController = new AbortController();
+      //   setStore({
+      //     abortController: newAbortController,
+      //     boundaryLoading: true,
+      //   });
+
+      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+      //   neLng = neLng % 360;
+      //   if (neLng > 180) neLng -= 360;
+      //   swLng = swLng % 360;
+      //   if (swLng > 180) swLng -= 360;
+
+      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+
+      //   const url = getStore().current_back_url + "/api/getBResults";
+      //   const combinedResources = { ...resources, ...groups };
+
+      //   try {
+      //     let response = await fetch(url, {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({
+      //         neLat,
+      //         neLng,
+      //         swLat,
+      //         swLng,
+      //         resources: combinedResources || null,
+      //         days: days || null,
+      //       }),
+      //       signal: newAbortController.signal,
+      //     });
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
+      //     }
+      //     console.log(
+      //       "🔍 Unfiltered Map Results BEFORE processing:",
+      //       store.unfilteredMapResults
+      //     );
+
+      //     const data = await response.json();
+      //     console.log("✅ Received Data:", data.data);
+      //     setStore({ unfilteredMapResults: data.data || [] });
+
+      //     setStore({
+      //       boundaryResults: data.data || [],
+      //       boundaryLoading: false,
+      //     });
+
+      //     return data.data;
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("Fetch aborted - Keeping loading state...");
+      //     } else {
+      //       console.error("Error fetching data:", error);
+      //       setStore({ boundaryLoading: false });
+      //     }
+      //   }
+      // },
+      setMapResults: async (bounds) => {
+        const store = getStore();
+        if (store.abortController2) store.abortController2.abort();
+
+        const newAbortController = new AbortController();
+        setStore({ abortController2: newAbortController });
+
+        const actions = getActions();
+        let neLng = actions.normalizeLongitude(
+          bounds?.northeast?.lng || bounds?.ne?.lng
+        );
+        let swLng = actions.normalizeLongitude(
+          bounds?.southwest?.lng || bounds?.sw?.lng
+        );
+        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat;
+        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat;
+
+        setStore({ loading: true });
+
+        // ❌ Do NOT pass resources or days filters here, fetch ALL resources in bounds
+        const data = await actions.fetchBResults(
+          neLat,
+          neLng,
+          swLat,
+          swLng,
+          {},
+          {},
+          newAbortController
+        );
+
+        if (data) {
+          console.log("📍 Setting TRUE unfiltered mapResults:", data.data);
+          setStore({
+            mapResults: data.data, // All resources in map boundary
+            unfilteredMapResults: data.data, // Keep a backup of all resources
+            loading: false,
+          });
+        }
+      },
+
       setBoundaryResults: async (bounds, resources, days, groups) => {
         const store = getStore();
-        console.log("📡 Fetching new boundary results...");
-
-        if (store.abortController) {
-          store.abortController.abort(); // Cancel previous request
-        }
+        if (store.abortController) store.abortController.abort();
 
         const newAbortController = new AbortController();
         setStore({
           abortController: newAbortController,
           boundaryLoading: true,
         });
+        const actions = getActions();
+        let neLng = actions.normalizeLongitude(
+          bounds?.northeast?.lng || bounds?.ne?.lng
+        );
+        let swLng = actions.normalizeLongitude(
+          bounds?.southwest?.lng || bounds?.sw?.lng
+        );
+        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat;
+        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat;
 
-        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-        neLng = neLng % 360;
-        if (neLng > 180) neLng -= 360;
-        swLng = swLng % 360;
-        if (swLng > 180) swLng -= 360;
-
-        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-
-        const url = getStore().current_back_url + "/api/getBResults";
         const combinedResources = { ...resources, ...groups };
 
+        const data = await actions.fetchBResults(
+          neLat,
+          neLng,
+          swLat,
+          swLng,
+          combinedResources,
+          days,
+          newAbortController
+        );
+
+        if (data)
+          setStore({ boundaryResults: data.data, boundaryLoading: false });
+      },
+
+      fetchBResults: async (
+        neLat,
+        neLng,
+        swLat,
+        swLng,
+        resources = {},
+        days = {},
+        abortController
+      ) => {
         try {
-          let response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              neLat,
-              neLng,
-              swLat,
-              swLng,
-              resources: combinedResources || null,
-              days: days || null,
-            }),
-            signal: newAbortController.signal,
-          });
+          let response = await fetch(
+            getStore().current_back_url + "/api/getBResults",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                neLat,
+                neLng,
+                swLat,
+                swLng,
+                resources,
+                days,
+              }),
+              signal: abortController.signal,
+            }
+          );
 
           if (!response.ok) {
             const text = await response.text();
             throw new Error(
-              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+              `Network error: ${response.statusText}. Response: ${text}`
             );
           }
 
           const data = await response.json();
-          console.log("✅ Received Data:", data.data);
-          setStore({ unfilteredMapResults: data.data || [] });
 
-          setStore({
-            boundaryResults: data.data || [],
-            boundaryLoading: false,
-          });
+          if (data) {
+            console.log("📍 Fetching ALL map boundary results:", data.data);
 
-          return data.data;
+            setStore({
+              unfilteredMapResults: data.data, // Store all resources in the boundary
+              mapResults: data.data, // Reset mapResults with everything in the boundary
+            });
+          }
+
+          return data;
         } catch (error) {
           if (error.name === "AbortError") {
-            console.log("Fetch aborted - Keeping loading state...");
+            console.log("Fetch aborted");
           } else {
             console.error("Error fetching data:", error);
-            setStore({ boundaryLoading: false });
           }
+          return null;
         }
+      },
+
+      normalizeLongitude: (lng) => {
+        lng = lng % 360;
+        return lng > 180 ? lng - 360 : lng;
       },
 
       likeComment: async (commentId) => {
@@ -1264,34 +1542,63 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      // fetchFavorites: function () {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+      //   if (token) {
+      //     fetch(`${current_back_url}/api/getFavorites`, {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //       },
+      //     })
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         // Map each favorite to include all resource details, including schedule
+      //         const favorites = data.favorites.map((fav) => ({
+      //           ...fav.resource, // Include full resource data
+      //         }));
+
+      //         // Save to session storage
+      //         sessionStorage.setItem("favorites", JSON.stringify(favorites));
+
+      //         // Update the store
+      //         setStore({
+      //           favorites: favorites,
+      //         });
+      //       })
+      //       .catch((error) => {
+      //         console.error("Error fetching updated favorites:", error);
+      //       });
+      //   }
+      // },
       fetchFavorites: function () {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
-        if (token) {
-          fetch(`${current_back_url}/api/getFavorites`, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
+
+        if (!token) return;
+
+        fetch(`${current_back_url}/api/getFavorites`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.favorites) {
+              console.warn("No favorites found.");
+              return;
+            }
+
+            // Extract full resource details
+            const favorites = data.favorites.map((fav) => fav.resource);
+
+            // Store favorites in session storage
+            sessionStorage.setItem("favorites", JSON.stringify(favorites));
+
+            // Update state
+            setStore({ favorites });
           })
-            .then((response) => response.json())
-            .then((data) => {
-              // Map each favorite to include all resource details, including schedule
-              const favorites = data.favorites.map((fav) => ({
-                ...fav.resource, // Include full resource data
-              }));
-
-              // Save to session storage
-              sessionStorage.setItem("favorites", JSON.stringify(favorites));
-
-              // Update the store
-              setStore({
-                favorites: favorites,
-              });
-            })
-            .catch((error) => {
-              console.error("Error fetching updated favorites:", error);
-            });
-        }
+          .catch((error) =>
+            console.error("Error fetching updated favorites:", error)
+          );
       },
 
       addFavorite: function (resourceId) {
