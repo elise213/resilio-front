@@ -7,6 +7,7 @@ const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
   const [averageRating2, setAverageRating2] = useState(0);
   const [ratingCount2, setRatingCount2] = useState(0);
+  const [loadingRating, setLoadingRating] = useState(true);
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
@@ -14,7 +15,14 @@ const ResourceCard = (props) => {
   const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
-    // console.log("Fetching average rating for resource ID:", props.item.id);
+    setLoadingRating(true); // Set loading to true when fetching starts
+    actions
+      .getAverageRating(props.item.id, setAverageRating2, setRatingCount2)
+      .then(() => setLoadingRating(false)) // Hide loading once fetch completes
+      .catch(() => setLoadingRating(false)); // Handle errors gracefully
+  }, [props.item.id]);
+
+  useEffect(() => {
     actions.getAverageRating(
       props.item.id,
       setAverageRating2,
@@ -81,25 +89,41 @@ const ResourceCard = (props) => {
         />
       )}
       {categoryLabels.length > 0 && (
+        // <div className="card-description">
+        //   <div>
+        //     {categoryLabels.map((label, index) => (
+        //       <span key={index} className="category-span">
+        //         {label}
+        //       </span>
+        //     ))}
+        //   </div>
+        //   <div className="rating-div">
+        //     <Rating
+        //       style={{ flexDirection: "row" }}
+        //       name="read-only"
+        //       value={averageRating2}
+        //       precision={0.5}
+        //       readOnly
+        //       className="star"
+        //     />
+        //     <p className="ratingCount">({ratingCount2})</p>
+        //   </div>
+        // </div>
         <div className="card-description">
-          <div>
-            {categoryLabels.map((label, index) => (
-              <span key={index} className="category-span">
-                {label}
-              </span>
-            ))}
-          </div>
-          <div className="rating-div">
-            <Rating
-              style={{ flexDirection: "row" }}
-              name="read-only"
-              value={averageRating2}
-              precision={0.5}
-              readOnly
-              className="star"
-            />
-            <p className="ratingCount">({ratingCount2})</p>
-          </div>
+          {loadingRating ? ( // 👈 Only show rating when it's ready
+            <p className="rating-loading">Loading rating...</p>
+          ) : (
+            <div className="rating-div">
+              <Rating
+                name="read-only"
+                value={averageRating2}
+                precision={0.5}
+                readOnly
+                className="star"
+              />
+              <p className="ratingCount">({ratingCount2})</p>
+            </div>
+          )}
         </div>
       )}
     </div>
