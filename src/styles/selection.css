@@ -191,8 +191,10 @@
 
 .modal-filter-header {
   justify-content: space-between;
-  background-color: transparent;
+  /* background-color: transparent; */
+  justify-content: flex-end;
   border-radius: 0px 8px 8px 0;
+  display: flex;
 }
 
 .modal {
@@ -206,9 +208,9 @@
   width: 400px;
   height: 100vh;
   background: white;
-  border-radius: 8px;
-  border-radius: 0 20px 0 0;
-  border: 2px solid black;
+  border-radius: 0 8px 0 0;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
 }
 
 .close-filters {
@@ -856,9 +858,9 @@
     margin: 0px 0px 0px 6px !important;
     font-size: small !important;
   }
-  .modal {
+  /* .modal {
     width: 100% !important;
-  }
+  } */
   .list-container {
     width: 90% !important;
     margin: 0 30px;
