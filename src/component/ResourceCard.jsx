@@ -101,7 +101,6 @@ const ResourceCard = (props) => {
                 readOnly
                 className="star"
               />
-              {/* <p className="ratingCount">({ratingCount2})</p> */}
               {ratingCount2 > 0 && (
                 <p className="ratingCount">({ratingCount2})</p>
               )}
