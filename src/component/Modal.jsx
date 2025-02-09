@@ -9,6 +9,12 @@ import Button from "@mui/material/Button";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
+  const resource = store.selectedResource;
+
+  // SAFETY CHECK
+  if (!resource) {
+    return <p>Loading resource...</p>; // Displays until `resource` is ready
+  }
 
   const [rating, setRating] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
@@ -31,8 +37,6 @@ const Modal = ({}) => {
   useEffect(() => {
     actions.fetchFavorites();
   }, []);
-
-  const resource = store.selectedResource;
 
   const handleSubmitReview = () => {
     if (!rating || !comment.trim()) {
