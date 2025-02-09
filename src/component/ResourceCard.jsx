@@ -89,28 +89,8 @@ const ResourceCard = (props) => {
         />
       )}
       {categoryLabels.length > 0 && (
-        // <div className="card-description">
-        //   <div>
-        //     {categoryLabels.map((label, index) => (
-        //       <span key={index} className="category-span">
-        //         {label}
-        //       </span>
-        //     ))}
-        //   </div>
-        //   <div className="rating-div">
-        //     <Rating
-        //       style={{ flexDirection: "row" }}
-        //       name="read-only"
-        //       value={averageRating2}
-        //       precision={0.5}
-        //       readOnly
-        //       className="star"
-        //     />
-        //     <p className="ratingCount">({ratingCount2})</p>
-        //   </div>
-        // </div>
         <div className="card-description">
-          {loadingRating ? ( // 👈 Only show rating when it's ready
+          {loadingRating ? (
             <p className="rating-loading">Loading rating...</p>
           ) : (
             <div className="rating-div">
@@ -121,7 +101,10 @@ const ResourceCard = (props) => {
                 readOnly
                 className="star"
               />
-              <p className="ratingCount">({ratingCount2})</p>
+              {/* <p className="ratingCount">({ratingCount2})</p> */}
+              {ratingCount2 > 0 && (
+                <p className="ratingCount">({ratingCount2})</p>
+              )}
             </div>
           )}
         </div>
