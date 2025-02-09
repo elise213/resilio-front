@@ -1,8 +1,17 @@
 .settings-container {
   justify-self: center;
   height: 100vh;
-  /* display: flex; */
+  margin-top: 80px !important;
   align-items: center;
+}
+
+.update-button {
+  padding: 0 5px !important;
+  margin: 5px !important;
+  font-weight: 100;
+  justify-self: center;
+  align-self: center;
+  font-size: 14px;
 }
 
 .form-row {

@@ -614,22 +614,25 @@ export const ModalInfo = ({
           )}
 
         {/* // Alert */}
-        <div className="info-address">
-          <span className="modal-info-key">ALERT</span>
-          {res.alert ? (
-            <>
-              <span className="modal-info-key" style={{ marginRight: "7px" }}>
-                {res.alert}
+        {res.alert ? (
+          <div className="alert-container">
+            <div className="alert-div">
+              <span className="alert-text">
+                {res.alert} &nbsp;&nbsp; — &nbsp;&nbsp;
               </span>
-            </>
-          ) : (
-            <>
-              <span text="add to favorites" className="modal-info-value">
-                No Alerts
+              <span className="alert-text">
+                {res.alert} &nbsp;&nbsp; — &nbsp;&nbsp;
               </span>
-            </>
-          )}
-        </div>
+              <span className="alert-text">
+                {res.alert} &nbsp;&nbsp; — &nbsp;&nbsp;
+              </span>
+              <span className="alert-text">
+                {res.alert} &nbsp;&nbsp; — &nbsp;&nbsp;
+              </span>
+            </div>
+          </div>
+        ) : null}
+
         <div
           className="info-address"
           style={{

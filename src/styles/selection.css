@@ -783,9 +783,9 @@
 
   .navbar-content {
     width: 100% !important;
-    height: 95vh !important;
+    height: 85vh !important;
     border-radius: 0 0 30px 30px !important;
-    align-items: center;
+    align-items: center !important;
     border-top-color: transparent !important;
   }
 
