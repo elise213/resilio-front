@@ -1,14 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styles from "../styles/donate.css";
 
 const Donate = () => {
   return (
     <>
       <div className="donation-page">
-        <Link to="/" className="close-modal">
+        {/* <Link to="/" className="close-modal">
           Back to Search
-        </Link>
+        </Link> */}
         <div className="donation">
           <div className="iframe-container">
             <iframe
