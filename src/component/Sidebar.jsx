@@ -3,6 +3,7 @@ import styles from "../styles/selection.css";
 import { Context } from "../store/appContext";
 import Login from "./Login";
 import ResourceCard from "./ResourceCard";
+import Donation from "../pages/Donate";
 import Contact from "./Contact";
 import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
@@ -26,10 +27,6 @@ const Sidebar = ({
   setGroups,
   setLog,
   setSearchingToday,
-  aboutModalIsOpen,
-  setAboutModalIsOpen,
-  donationModalIsOpen,
-  setDonationModalIsOpen,
   handleBoundsChange,
   geoFindMe,
   updateCityStateFromZip,
@@ -50,22 +47,57 @@ const Sidebar = ({
     day: false,
   });
 
-  const NavigationMenu = () => {
-    const { store, actions } = useContext(Context);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const isMenuOpen = Boolean(anchorEl);
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(menuAnchorEl);
 
-    const handleMenuClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
+  // 🌟 State for modals
+  const [emergencyModalOpen, setEmergencyModalOpen] = useState(false);
+  const [donationModalOpen, setDonationModalOpen] = useState(false);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
 
-    const handleMenuClose = () => {
-      setAnchorEl(null);
-    };
+  // 📌 Open/Close Menu
+  const handleMenuClick = (event) => {
+    console.log("🔥 Menu Clicked! Event Target:", event.currentTarget);
+    if (!event.currentTarget) {
+      console.error("❌ Invalid event target, anchorEl not set!");
+    }
+    setMenuAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => setMenuAnchorEl(null);
+
+  useEffect(() => {
+    console.log("🛑 Emergency Modal State:", emergencyModalOpen);
+  }, [emergencyModalOpen]);
+
+  useEffect(() => {
+    console.log("💰 Donation Modal State:", donationModalOpen);
+  }, [donationModalOpen]);
+
+  useEffect(() => {
+    console.log("📜 About Modal State:", aboutModalOpen);
+  }, [aboutModalOpen]);
+
+  // 📌 Open Modals
+  const openModal = (setModalState) => {
+    console.log("🚀 Opening Modal!");
+    handleMenuClose();
+    setModalState(true);
+  };
+
+  const NavigationMenu = ({
+    menuAnchorEl,
+    handleMenuClick,
+    handleMenuClose,
+    openModal,
+  }) => {
+    console.log(
+      "🔄 NavigationMenu Rendered! Menu Open:",
+      Boolean(menuAnchorEl)
+    );
 
     return (
       <>
-        {/* Menu Icon Button */}
         <IconButton onClick={handleMenuClick}>
           <span
             className="material-symbols-outlined"
@@ -75,39 +107,25 @@ const Sidebar = ({
           </span>
         </IconButton>
 
-        {/* Dropdown Menu */}
-        <Menu
-          anchorEl={anchorEl}
-          open={isMenuOpen}
-          onClose={handleMenuClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          transformOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <MenuItem onClick={handleMenuClose}>
-            <Link
-              to="/emergency-resources"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+        {menuAnchorEl && (
+          <Menu
+            anchorEl={menuAnchorEl}
+            open={Boolean(menuAnchorEl)}
+            onClose={handleMenuClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            transformOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <MenuItem onClick={() => openModal(setEmergencyModalOpen)}>
               Emergency Resources
-            </Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link
-              to="/donate"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+            </MenuItem>
+            <MenuItem onClick={() => openModal(setDonationModalOpen)}>
               Donate
-            </Link>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            <Link
-              to="/about"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
+            </MenuItem>
+            <MenuItem onClick={() => openModal(setAboutModalOpen)}>
               About Us
-            </Link>
-          </MenuItem>
-        </Menu>
+            </MenuItem>
+          </Menu>
+        )}
       </>
     );
   };
@@ -268,7 +286,12 @@ const Sidebar = ({
       <nav className={`new-navbar  ${layout}`}>
         <div className={`navbar-content`}>
           <div className="button-container-sidebar">
-            <NavigationMenu />
+            <NavigationMenu
+              menuAnchorEl={menuAnchorEl}
+              handleMenuClick={handleMenuClick}
+              handleMenuClose={handleMenuClose}
+              openModal={openModal}
+            />
 
             <Login log={log} setLog={setLog} setLayout={setLayout} />
           </div>
@@ -349,45 +372,6 @@ const Sidebar = ({
                     clearSelectedDay={clearSelectedDay}
                   />
                 )}
-                {/* {!hasBoundaryResults && !store.boundaryResults.length > 0 && (
-                  <>
-                    <span className="no-results-text">
-                      {" "}
-                      No results. Please move the map or adjust filters to find
-                      more resources{" "}
-                    </span>
-                  </>
-                )} */}
-                {/* {store.boundaryLoading ? (
-                  <span className="loading-text">Loading...</span>
-                ) : !hasBoundaryResults ? (
-                  <span className="no-results-text">
-                    No results. Please move the map or adjust filters to find
-                    more resources.
-                  </span>
-                ) : (
-                  <div className={`list-container`}>
-                    {activeTab === "AllResources" && (
-                      <ul>
-                        {Array.isArray(store.mapResults) &&
-                          store.boundaryResults
-                            .filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
-                            .map((resource, index) => (
-                              <ResourceCard item={resource} key={index + 5} />
-                            ))}
-                      </ul>
-                    )}
-                  </div>
-                )} */}
                 {store.boundaryLoading || !store.boundaryResults ? (
                   <span className="loading-text">Loading...</span>
                 ) : store.boundaryResults.length === 0 ? (
@@ -418,30 +402,6 @@ const Sidebar = ({
                     )}
                   </div>
                 )}
-
-                {/* {hasBoundaryResults && store.boundaryResults.length > 0 && (
-                  <div className={`list-container`}>
-                    {activeTab === "AllResources" && (
-                      <ul>
-                        {Array.isArray(store.mapResults) &&
-                          store.boundaryResults
-                            .filter(
-                              (resource) =>
-                                resource.name
-                                  .toLowerCase()
-                                  .includes(searchQuery.toLowerCase()) ||
-                                (resource.description &&
-                                  resource.description
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()))
-                            )
-                            .map((resource, index) => (
-                              <ResourceCard item={resource} key={index + 5} />
-                            ))}
-                      </ul>
-                    )}
-                  </div>
-                )} */}
               </div>
               {!store.loginModalisOpen && (
                 <Box
@@ -469,21 +429,6 @@ const Sidebar = ({
 
           {/* MODALS*/}
 
-          {aboutModalIsOpen && (
-            <div className="new-modal">
-              <p
-                className="close-modal"
-                onClick={() => setAboutModalIsOpen(false)}
-              >
-                <span className="material-symbols-outlined">
-                  arrow_back_ios
-                </span>
-                Back to search
-              </p>
-              <p className="intro">Resilio is a 501(c)3 based in Austin, TX.</p>
-            </div>
-          )}
-
           {contactModalIsOpen && (
             <div className="new-modal">
               <p
@@ -496,6 +441,55 @@ const Sidebar = ({
                 Back to search
               </p>
               <Contact />
+            </div>
+          )}
+
+          {emergencyModalOpen && (
+            <div className="new-modal">
+              <p
+                className="close-modal"
+                onClick={() => setEmergencyModalOpen(false)}
+              >
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                Back to search
+              </p>
+              <p className="intro" style={{ marginTop: "50px" }}>
+                Emergency resources information...
+              </p>
+            </div>
+          )}
+
+          {donationModalOpen && (
+            <div className="new-modal">
+              <p
+                className="close-modal"
+                onClick={() => setDonationModalOpen(false)}
+              >
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                Back to search
+              </p>
+              <Donation />
+            </div>
+          )}
+
+          {aboutModalOpen && (
+            <div className="new-modal">
+              <p
+                className="close-modal"
+                onClick={() => setAboutModalOpen(false)}
+              >
+                <span className="material-symbols-outlined">
+                  arrow_back_ios
+                </span>
+                Back to search
+              </p>
+              <p className="intro" style={{ marginTop: "50px" }}>
+                About Us...
+              </p>
             </div>
           )}
         </div>
