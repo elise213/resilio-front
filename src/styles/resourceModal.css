@@ -471,12 +471,9 @@ body.modal-open {
 
 .comment-container {
   border-radius: 4px;
-  width: 250px;
-  /* max-height: 450px; */
   overflow-x: hidden;
-  /* overflow-y: auto; */
-  justify-self: flex-end;
-  align-self: flex-end;
+  /* justify-self: center; */
+  align-self: center;
 }
 /* ____________________________________________CAROUSEL  */
 
