@@ -197,35 +197,6 @@ const Home = () => {
 
   const [loadingLocation, setLoadingLocation] = useState(false);
 
-  // const geoFindMe = async () => {
-  //   if (navigator.geolocation) {
-  //     setLayout("fullscreen-map");
-  //     setLoadingLocation(true);
-
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         console.log("Position:", position.coords);
-  //         setUserLocation({
-  //           lat: position.coords.latitude,
-  //           lng: position.coords.longitude,
-  //         });
-  //         updateCityStateFromCoords(
-  //           position.coords.latitude,
-  //           position.coords.longitude
-  //         );
-  //         setLoadingLocation(false);
-  //       },
-  //       (error) => {
-  //         console.log("Error getting position", error);
-  //         alert("Unable to retrieve your location");
-  //         setLoadingLocation(false);
-  //       }
-  //     );
-  //   } else {
-  //     alert("Geolocation is not supported by your browser");
-  //   }
-  // };
-
   // USE EFFECTS
 
   const geoFindMe = async () => {

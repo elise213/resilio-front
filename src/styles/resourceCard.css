@@ -58,7 +58,7 @@
 
 .card-img {
   object-fit: cover;
-  max-height: 120px;
+  max-height: 100px;
   margin: 0 10px 10px 10px;
   border: 1px solid black;
 }
