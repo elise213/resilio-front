@@ -8,7 +8,7 @@
   z-index: 9999999;
   left: 0;
   top: 0;
-  position: absolute;
+  position: fixed;
   border-radius: 0 20px 0 0;
   border: 3px solid black;
 }

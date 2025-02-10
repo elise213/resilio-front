@@ -257,7 +257,7 @@ const Selection = ({
                 type="button"
                 className="form-button"
                 onClick={clearFilters}
-                style={{ marginTop: "10px" }}
+                // style={{ marginTop: "10px" }}
               >
                 Clear Filters
               </Button>
