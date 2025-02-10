@@ -262,7 +262,9 @@
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 5px;
   width: 100%;
-  justify-content: start;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 .active-filter {

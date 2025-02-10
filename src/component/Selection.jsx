@@ -22,16 +22,16 @@ const Selection = ({
     setPendingDays(days);
   }, [categories, days]);
 
-  // Debugging: Log schedules
   useEffect(() => {
-    console.log("📢 Store Schedules:", store.schedules);
-  }, [store.schedules]);
-
-  useEffect(() => {
-    if (!store.mapResults || store.mapResults.length === 0) {
-      console.warn("⚠️ No map results available. Waiting for data...");
-      return;
-    }
+    // if (
+    //   !store.unfilteredMapResults ||
+    //   store.unfilteredMapResults.length === 0
+    // ) {
+    //   console.warn(
+    //     "⚠️ No unfiltered map results available. Waiting for data..."
+    //   );
+    //   return;
+    // }
 
     let categoryCounts = {};
     let dayCounts = {
@@ -44,7 +44,7 @@ const Selection = ({
       sunday: 0,
     };
 
-    store.mapResults.forEach((result) => {
+    store.unfilteredMapResults.forEach((result) => {
       // Count categories
       if (typeof result.category === "string") {
         let categories = result.category.split(",").map((cat) => cat.trim());
@@ -77,7 +77,7 @@ const Selection = ({
     // Update counts in store
     actions.setCategoryCounts(categoryCounts);
     actions.setDayCounts(dayCounts);
-  }, [store.mapResults, store.schedules]); // Ensure counts update when `mapResults` changes
+  }, [store.unfilteredMapResults, store.schedules]);
 
   const COMBINED_OPTIONS = [
     ...(store.CATEGORY_OPTIONS || []),
@@ -92,22 +92,20 @@ const Selection = ({
     }));
   };
 
+  // Filter Modal Component
   const applyFilters = () => {
     setCategories(pendingCategories);
     setDays(pendingDays);
 
-    // Fetch fresh results from backend instead of filtering locally
+    console.log("🔎 Applying filters...");
     actions.setBoundaryResults(
-      store.bounds,
-      pendingCategories,
-      pendingDays,
-      store.groups
+      Object.keys(pendingCategories).filter((key) => pendingCategories[key]), // Get only selected categories
+      Object.keys(pendingDays).filter((key) => pendingDays[key]) // Get only selected days
     );
 
     setIsModalOpen(false);
   };
 
-  // Filter Modal Component
   const FilterModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 

@@ -57,10 +57,6 @@ const Sidebar = ({
 
   // 📌 Open/Close Menu
   const handleMenuClick = (event) => {
-    console.log("🔥 Menu Clicked! Event Target:", event.currentTarget);
-    if (!event.currentTarget) {
-      console.error("❌ Invalid event target, anchorEl not set!");
-    }
     setMenuAnchorEl(event.currentTarget);
   };
 
@@ -91,11 +87,6 @@ const Sidebar = ({
     handleMenuClose,
     openModal,
   }) => {
-    console.log(
-      "🔄 NavigationMenu Rendered! Menu Open:",
-      Boolean(menuAnchorEl)
-    );
-
     return (
       <>
         <IconButton onClick={handleMenuClick}>
@@ -383,7 +374,7 @@ const Sidebar = ({
                   <div className="list-container">
                     {activeTab === "AllResources" && (
                       <ul>
-                        {Array.isArray(store.mapResults) &&
+                        {Array.isArray(store.boundaryResults) &&
                           store.boundaryResults
                             .filter(
                               (resource) =>
