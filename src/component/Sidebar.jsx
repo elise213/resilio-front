@@ -447,7 +447,7 @@ const Sidebar = ({
                 Back to search
               </p>
               <p className="intro" style={{ marginTop: "50px" }}>
-                Emergency resources information...
+                Emergency resources by state
               </p>
             </div>
           )}
