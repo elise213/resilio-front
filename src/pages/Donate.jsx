@@ -16,7 +16,8 @@ const Donate = () => {
                 position: "relative",
                 overflow: "hidden",
                 width: "100%",
-                height: "90vh",
+                height: "100%",
+                paddingBottom: "40px",
               }}
               src="https://www.zeffy.com/en-US/embed/donation-form/cc33bc68-a2e1-4fd3-a1c6-88afd0cae253"
               allowpaymentrequest

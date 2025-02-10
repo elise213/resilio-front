@@ -683,7 +683,7 @@
 .new-modal {
   position: absolute;
   left: 0;
-  top: -3px;
+  top: 0px;
   background-color: white;
   width: 400px;
   height: 100vh;
@@ -692,17 +692,13 @@
   box-sizing: border-box;
   overflow-y: hidden;
   border-radius: 0 20px 0 0;
-  border: 3px solid black;
+  border: 2px solid black;
 }
 
 .log {
   margin-top: 50px;
   text-align: center;
 }
-
-/* iframe {
-  height: calc(100% - 70px) !important;
-} */
 
 .button-container-sidebar {
   display: flex;
@@ -757,7 +753,9 @@
 
   .new-modal {
     width: 100% !important;
-    border-radius: 20px 20px 0 0 !important;
+    border-radius: 0 20px 0 0 !important;
+    border-right: none !important;
+    border-bottom: none !important;
   }
 
   .new-navbar {

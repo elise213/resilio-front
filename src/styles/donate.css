@@ -32,6 +32,6 @@
 
 .iframe {
   height: 100% !important;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
   padding-bottom: 30px;
 }
