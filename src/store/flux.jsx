@@ -67,7 +67,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       loginModalIsOpen: false,
       longitude: null,
       loading: false,
-      mapResults: [],
+      // mapResults: [],
       modalIsOpen: false,
       name: null,
       offerings: [],
@@ -177,50 +177,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         return categories;
       },
 
-      // fetchBResults: async (
-      //   neLat,
-      //   neLng,
-      //   swLat,
-      //   swLng,
-      //   resources,
-      //   days,
-      //   abortController
-      // ) => {
-      //   try {
-      //     let response = await fetch(
-      //       getStore().current_back_url + "/api/getBResults",
-      //       {
-      //         method: "POST",
-      //         headers: { "Content-Type": "application/json" },
-      //         body: JSON.stringify({
-      //           neLat,
-      //           neLng,
-      //           swLat,
-      //           swLng,
-      //           resources,
-      //           days,
-      //         }),
-      //         signal: abortController.signal,
-      //       }
-      //     );
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response: ${text}`
-      //       );
-      //     }
-
-      //     return await response.json();
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted");
-      //     } else {
-      //       console.error("Error fetching data:", error);
-      //     }
-      //     return null;
-      //   }
-      // },
       fetchBResults: async (
         neLat,
         neLng,
@@ -258,13 +214,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await response.json();
 
           if (data) {
-            console.log(
-              "📍 Updating unfilteredMapResults in store:",
-              data.data
-            );
-            setStore({ unfilteredMapResults: data.data });
-
-            // Process counts after updating unfilteredMapResults
+            // Process counts
             const store = getStore();
             let categoryCounts = {};
             let dayCounts = {
@@ -276,7 +226,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               saturday: 0,
               sunday: 0,
             };
-            let groupCounts = {}; // Assuming you need to track groups separately
+            let groupCounts = {};
 
             data.data.forEach((result) => {
               // Count categories
@@ -318,9 +268,12 @@ const getState = ({ getStore, getActions, setStore }) => {
               }
             });
 
-            console.log("✅ Final categoryCounts:", categoryCounts);
-            console.log("✅ Final dayCounts:", dayCounts);
-            console.log("✅ Final groupCounts:", groupCounts);
+            console.log(
+              "Fetch B Results Final categoryCounts:",
+              categoryCounts
+            );
+            console.log("Fetch B Results Final dayCounts:", dayCounts);
+            console.log("Fetch B Results Final groupCounts:", groupCounts);
 
             // Update store with the computed counts
             setStore({ categoryCounts, dayCounts, groupCounts });
@@ -923,266 +876,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         return () => {};
       },
 
-      // setBoundaryResults: async (bounds, resources, days, groups) => {
-      //   const store = getStore();
-
-      //   if (store.abortController) {
-      //     store.abortController.abort();
-      //   }
-
-      //   const newAbortController = new AbortController();
-      //   setStore({ abortController: newAbortController });
-
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) neLng -= 360;
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) swLng -= 360;
-
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   const combinedResources = { ...resources, ...groups };
-
-      //   try {
-      //     setStore({ loading: true });
-
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources: combinedResources || null,
-      //         days: days || null,
-      //       }),
-      //       signal: newAbortController.signal,
-      //     });
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-      //       );
-      //     }
-
-      //     const data = await response.json();
-
-      //     if (
-      //       !store.unfilteredMapResults ||
-      //       store.unfilteredMapResults.length === 0
-      //     ) {
-      //       setStore({ unfilteredMapResults: data.data || [] });
-      //     }
-
-      //     setStore({
-      //       boundaryResults: data.data || [],
-      //       loading: false,
-      //     });
-
-      //     return data.data;
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted");
-      //     } else {
-      //       setStore({ loading: false });
-      //       console.error("Error fetching data:", error);
-      //     }
-      //   }
-      // },
-
-      // setMapResults: async (bounds) => {
-      //   const store = getStore();
-      //   console.log("setMapResults called with bounds:", bounds);
-
-      //   // If there's an ongoing request, abort it
-      //   if (store.abortController2) {
-      //     store.abortController2.abort();
-      //   }
-
-      //   // Create a new abort controller for the new request
-      //   const newAbortController = new AbortController(); // AbortC
-      //   setStore({ abortController2: newAbortController });
-
-      //   // Normalize longitude
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) {
-      //     neLng -= 360;
-      //   }
-
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) {
-      //     swLng -= 360;
-      //   }
-
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-      //   console.log("Normalized coordinates:", { neLat, neLng, swLat, swLng });
-
-      //   const resources = {
-      //     food: false,
-      //     health: false,
-      //     shelter: false,
-      //     hygiene: false,
-      //     crisis: false,
-      //     mental: false,
-      //     work: false,
-      //     bathroom: false,
-      //     wifi: false,
-      //     substance: false,
-      //     sex: false,
-      //     legal: false,
-      //     lgbtq: false,
-      //     women: false,
-      //     seniors: false,
-      //     babies: false,
-      //     kids: false,
-      //     youth: false,
-      //     vets: false,
-      //     migrant: false,
-      //   };
-
-      //   const days = {
-      //     monday: false,
-      //     tuesday: false,
-      //     wednesday: false,
-      //     thursday: false,
-      //     friday: false,
-      //     saturday: false,
-      //     sunday: false,
-      //   };
-
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   console.log("Fetching from URL:", url);
-
-      //   try {
-      //     setStore({ loading: true });
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources,
-      //         days,
-      //       }),
-      //       signal: newAbortController.signal,
-      //     });
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       console.error("Response text:", text);
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-      //       );
-      //     }
-
-      //     const data = await response.json();
-      //     console.log("Fetched data:", data);
-      //     setStore({ mapResults: data.data, loading: false });
-
-      //     return data.data;
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted");
-      //     } else {
-      //       setStore({ loading: false });
-      //       console.error("Error fetching data:", error);
-      //     }
-      //   }
-      // },
-
-      // setBoundaryResults: async (bounds, resources, days, groups) => {
-      //   const store = getStore();
-      //   console.log("📡 Fetching new boundary results...");
-
-      //   if (store.abortController) {
-      //     store.abortController.abort(); // Cancel previous request
-      //   }
-
-      //   const newAbortController = new AbortController();
-      //   setStore({
-      //     abortController: newAbortController,
-      //     boundaryLoading: true,
-      //   });
-
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) neLng -= 360;
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) swLng -= 360;
-
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   const combinedResources = { ...resources, ...groups };
-
-      //   try {
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources: combinedResources || null,
-      //         days: days || null,
-      //       }),
-      //       signal: newAbortController.signal,
-      //     });
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-      //       );
-      //     }
-      //     console.log(
-      //       "🔍 Unfiltered Map Results BEFORE processing:",
-      //       store.unfilteredMapResults
-      //     );
-
-      //     const data = await response.json();
-      //     console.log("✅ Received Data:", data.data);
-      //     setStore({ unfilteredMapResults: data.data || [] });
-
-      //     setStore({
-      //       boundaryResults: data.data || [],
-      //       boundaryLoading: false,
-      //     });
-
-      //     return data.data;
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted - Keeping loading state...");
-      //     } else {
-      //       console.error("Error fetching data:", error);
-      //       setStore({ boundaryLoading: false });
-      //     }
-      //   }
-      // },
       setMapResults: async (bounds) => {
-        const store = getStore();
-        if (store.abortController2) store.abortController2.abort();
-
-        const newAbortController = new AbortController();
-        setStore({ abortController2: newAbortController });
-
         const actions = getActions();
+        const newAbortController = new AbortController(); // Use a separate abort controller
+
         let neLng = actions.normalizeLongitude(
           bounds?.northeast?.lng || bounds?.ne?.lng
         );
@@ -1192,30 +889,94 @@ const getState = ({ getStore, getActions, setStore }) => {
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat;
 
-        setStore({ loading: true });
+        console.log("📍 Fetching unfiltered map results...");
 
-        // ❌ Do NOT pass resources or days filters here, fetch ALL resources in bounds
-        const data = await actions.fetchBResults(
-          neLat,
-          neLng,
-          swLat,
-          swLng,
-          {},
-          {},
-          newAbortController
-        );
+        try {
+          const data = await actions.fetchUnfilteredBResults(
+            neLat,
+            neLng,
+            swLat,
+            swLng,
+            newAbortController
+          );
 
-        if (data) {
-          console.log("📍 Setting TRUE unfiltered mapResults:", data.data);
-          setStore({
-            mapResults: data.data, // All resources in map boundary
-            unfilteredMapResults: data.data, // Keep a backup of all resources
-            loading: false,
-          });
+          if (data && data.data) {
+            console.log(
+              "✅ Received unfiltered results from backend:",
+              data.data.length
+            );
+            setStore({
+              unfilteredMapResults: data.data,
+            });
+          } else {
+            console.warn("⚠️ No unfiltered map results found.");
+            setStore({
+              unfilteredMapResults: [],
+            });
+          }
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log("⏹ Fetch aborted for unfiltered results.");
+          } else {
+            console.error("❌ Error in setMapResults:", error);
+          }
+        } finally {
+          setStore({ boundaryLoading: false }); // Always reset loading state
         }
       },
 
-      setBoundaryResults: async (bounds, resources, days, groups) => {
+      fetchUnfilteredBResults: async (
+        neLat,
+        neLng,
+        swLat,
+        swLng,
+        abortController
+      ) => {
+        try {
+          console.log("🛰 fetchUnfilteredBResults:", {
+            neLat,
+            neLng,
+            swLat,
+            swLng,
+          });
+
+          const response = await fetch(
+            getStore().current_back_url + "/api/getUnfilteredBResults",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                neLat,
+                neLng,
+                swLat,
+                swLng,
+              }),
+              signal: abortController.signal,
+            }
+          );
+
+          if (!response.ok) {
+            const text = await response.text();
+            throw new Error(
+              `Network error: ${response.statusText}. Response: ${text}`
+            );
+          }
+
+          const data = await response.json();
+          console.log("✅ Received unfiltered resources from backend:", data);
+
+          return data;
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log("⏹ Fetch aborted");
+          } else {
+            console.error("❌ Error fetching unfiltered data:", error);
+          }
+          return null;
+        }
+      },
+
+      setBoundaryResults: async (bounds, categories, days, groups) => {
         const store = getStore();
         if (store.abortController) store.abortController.abort();
 
@@ -1234,7 +995,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat;
 
-        const combinedResources = { ...resources, ...groups };
+        const combinedResources = { ...categories, ...groups };
 
         const data = await actions.fetchBResults(
           neLat,
@@ -1255,12 +1016,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         neLng,
         swLat,
         swLng,
-        resources = {},
-        days = {},
+        resources,
+        days,
         abortController
       ) => {
         try {
-          let response = await fetch(
+          console.log("🛰 fetchBResults filters:", {
+            neLat,
+            neLng,
+            swLat,
+            swLng,
+            resources,
+            days,
+          });
+
+          const response = await fetch(
             getStore().current_back_url + "/api/getBResults",
             {
               method: "POST",
@@ -1285,22 +1055,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-
-          if (data) {
-            console.log("📍 Fetching ALL map boundary results:", data.data);
-
-            setStore({
-              unfilteredMapResults: data.data, // Store all resources in the boundary
-              mapResults: data.data, // Reset mapResults with everything in the boundary
-            });
-          }
+          console.log("✅ Received resources from backend:", data);
 
           return data;
         } catch (error) {
           if (error.name === "AbortError") {
-            console.log("Fetch aborted");
+            console.log("⏹ Fetch aborted");
           } else {
-            console.error("Error fetching data:", error);
+            console.error("❌ Error fetching data:", error);
           }
           return null;
         }

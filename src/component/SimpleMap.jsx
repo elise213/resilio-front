@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/simple_map.css";
-import HoverCard from "./HoverCard";
-import { debounce } from "lodash";
+// import HoverCard from "./HoverCard";
+// import { debounce } from "lodash";
 import ResourceCard from "../component/ResourceCard";
 
 const SimpleMap = ({
@@ -34,8 +34,8 @@ const SimpleMap = ({
     actions.setSchedules();
   }, []);
 
-  const debouncedHoverEnter = debounce(() => setIsHovered(true), 100);
-  const debouncedHoverLeave = debounce(() => setIsHovered(false), 100);
+  // const debouncedHoverEnter = debounce(() => setIsHovered(true), 100);
+  // const debouncedHoverLeave = debounce(() => setIsHovered(false), 100);
 
   useEffect(() => {
     if (city.center) {
@@ -78,16 +78,16 @@ const SimpleMap = ({
     const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
 
     if (isCloserToTop && isCloserToLeft) {
-      console.log("top left");
+      // console.log("top left");
       return "corner-top-left";
     } else if (isCloserToTop && !isCloserToLeft) {
-      console.log("top right");
+      // console.log("top right");
       return "corner-top-right";
     } else if (!isCloserToTop && isCloserToLeft) {
-      console.log("bottom left");
+      // console.log("bottom left");
       return "corner-bottom-left";
     } else {
-      console.log("bottom right");
+      // console.log("bottom right");
       return "corner-bottom-right";
     }
   };

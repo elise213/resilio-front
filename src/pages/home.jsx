@@ -58,9 +58,7 @@ const Home = () => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
-      // console.log("Token:", token);
     };
-
     checkLoginStatus();
   }, [store.token]);
 
@@ -73,7 +71,8 @@ const Home = () => {
         data.results[0]?.geometry?.viewport;
 
       if (location && bounds) {
-        actions.setBoundaryResults(bounds, categories, days, groups); // Update boundary results
+        actions.setBoundaryResults(bounds, categories, days, groups);
+        actions.setMapResults(city.bounds);
         handleBoundsChange({
           center: { lat: location.lat, lng: location.lng },
           bounds: {
@@ -102,6 +101,7 @@ const Home = () => {
   const handleBoundsChange = useCallback(
     debounce((data) => {
       actions.setBoundaryResults(data.bounds, categories, days, groups);
+      actions.setMapResults(data.bounds);
       setCity({
         ...city,
         bounds: {
@@ -113,6 +113,7 @@ const Home = () => {
           lng: normalizeLongitude(data.center.lng),
         },
       });
+      actions.setMapResults(city.bounds);
     }, 600),
     [categories, days, groups]
   );
@@ -278,6 +279,7 @@ const Home = () => {
             days,
             groups
           );
+          await actions.setMapResults(city.bounds);
         }
       } catch (error) {
         console.error("Error in fetching boundary results:", error);

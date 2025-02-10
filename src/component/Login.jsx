@@ -357,7 +357,7 @@ const Login = ({ setLayout }) => {
       {!isLoginModalOpen && isLoggedIn ? (
         <>
           {/* Profile Circle for logged-in users */}
-          <IconButton>
+          <IconButton onClick={handleProfileClick}>
             {/* <Avatar alt="Profile" src={"/default-avatar.jpg"} /> */}
             <span
               className="material-symbols-outlined account-circle"
@@ -365,7 +365,6 @@ const Login = ({ setLayout }) => {
                 fontSize: "x-large",
                 margin: "0 !important",
               }}
-              onClick={handleProfileClick}
             >
               account_circle
             </span>
