@@ -106,6 +106,92 @@ const Selection = ({
     setIsModalOpen(false);
   };
 
+  const clearFilters = () => {
+    setPendingCategories({});
+    setPendingDays({});
+    setCategories({});
+    setDays({});
+
+    console.log("🧹 Clearing filters...");
+    actions.setBoundaryResults({}, {}); // Fetch everything again
+
+    setIsModalOpen(false);
+  };
+
+  // const FilterModal = ({ isOpen, onClose }) => {
+  //   if (!isOpen) return null;
+
+  //   return (
+  //     <div className="modal">
+  //       <div className="modal-filter-header">
+  //         <button className="close-filters" onClick={onClose}>
+  //           X
+  //         </button>
+  //       </div>
+  //       <div className="modal-content">
+  //         {/* CATEGORIES SECTION */}
+  //         <div className="filter-section">
+  //           <p className="selection-titles">CATEGORIES</p>
+
+  //           {COMBINED_OPTIONS.filter(
+  //             (option) => store.categoryCounts[option.id] > 0
+  //           ).map((option) => (
+  //             <MyCheckbox
+  //               key={option.id}
+  //               id={option.id}
+  //               label={`${option.label} (${store.categoryCounts[option.id]})`}
+  //               isChecked={pendingCategories[option.id] || false}
+  //               handleToggle={() =>
+  //                 handleToggle(
+  //                   setPendingCategories,
+  //                   pendingCategories,
+  //                   option.id
+  //                 )
+  //               }
+  //             />
+  //           ))}
+  //         </div>
+
+  //         <div
+  //           style={{
+  //             display: "flex",
+  //             flexDirection: "column",
+  //             justifyContent: "space-between",
+  //           }}
+  //         >
+  //           {/* DAYS SECTION */}
+  //           <div className="filter-section">
+  //             <p className="selection-titles">DAYS</p>
+  //             {store.DAY_OPTIONS.filter(
+  //               (option) => store.dayCounts[option.id] > 0
+  //             ).map((option) => (
+  //               <MyCheckbox
+  //                 key={option.id}
+  //                 id={option.id}
+  //                 label={`${option.label} (${store.dayCounts[option.id]})`}
+  //                 isChecked={pendingDays[option.id] || false}
+  //                 handleToggle={() =>
+  //                   handleToggle(setPendingDays, pendingDays, option.id)
+  //                 }
+  //               />
+  //             ))}
+  //           </div>
+
+  //           <Button
+  //             variant="contained"
+  //             color="primary"
+  //             type="submit"
+  //             className="form-button"
+  //             onClick={applyFilters}
+  //           >
+  //             Apply Filters
+  //           </Button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   const FilterModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
@@ -117,10 +203,8 @@ const Selection = ({
           </button>
         </div>
         <div className="modal-content">
-          {/* CATEGORIES SECTION */}
           <div className="filter-section">
             <p className="selection-titles">CATEGORIES</p>
-
             {COMBINED_OPTIONS.filter(
               (option) => store.categoryCounts[option.id] > 0
             ).map((option) => (
@@ -140,40 +224,44 @@ const Selection = ({
             ))}
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* DAYS SECTION */}
-            <div className="filter-section">
-              <p className="selection-titles">DAYS</p>
-              {store.DAY_OPTIONS.filter(
-                (option) => store.dayCounts[option.id] > 0
-              ).map((option) => (
-                <MyCheckbox
-                  key={option.id}
-                  id={option.id}
-                  label={`${option.label} (${store.dayCounts[option.id]})`}
-                  isChecked={pendingDays[option.id] || false}
-                  handleToggle={() =>
-                    handleToggle(setPendingDays, pendingDays, option.id)
-                  }
-                />
-              ))}
-            </div>
-
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className="form-button"
-              onClick={applyFilters}
+          <div className="filter-section">
+            <p className="selection-titles">DAYS</p>
+            {store.DAY_OPTIONS.filter(
+              (option) => store.dayCounts[option.id] > 0
+            ).map((option) => (
+              <MyCheckbox
+                key={option.id}
+                id={option.id}
+                label={`${option.label} (${store.dayCounts[option.id]})`}
+                isChecked={pendingDays[option.id] || false}
+                handleToggle={() =>
+                  handleToggle(setPendingDays, pendingDays, option.id)
+                }
+              />
+            ))}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "5px" }}
             >
-              Apply Filters
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className="form-button"
+                onClick={applyFilters}
+              >
+                Apply Filters
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                type="button"
+                className="form-button"
+                onClick={clearFilters}
+                style={{ marginTop: "10px" }}
+              >
+                Clear Filters
+              </Button>
+            </div>
           </div>
         </div>
       </div>

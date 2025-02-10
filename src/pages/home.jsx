@@ -18,6 +18,14 @@ const Home = () => {
     setIsModalOpen(store.modalIsOpen);
   }, [store.modalIsOpen]);
 
+  // useEffect(() => {
+  //   console.log("updated boundaryResutls", store.boundaryResults);
+  // }, [store.boundaryResults]);
+
+  // useEffect(() => {
+  //   console.log("updated unfilteredMapResutls", store.unfilteredMapResults);
+  // }, [store.unfilteredMapResults]);
+
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
       return { ...acc, [curr.id]: false };
