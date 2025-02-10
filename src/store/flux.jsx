@@ -146,12 +146,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setCategoryCounts: (categoryCounts) => {
-        console.log("📢 Updating categoryCounts in Flux:", categoryCounts);
+        // console.log("📢 Updating categoryCounts in Flux:", categoryCounts);
         setStore({ categoryCounts });
       },
 
       setDayCounts: (dayCounts) => {
-        console.log("📢 Updating dayCounts in Flux:", dayCounts);
+        // console.log("📢 Updating dayCounts in Flux:", dayCounts);
         setStore({ dayCounts });
       },
 
@@ -901,10 +901,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (data && data.data) {
-            console.log(
-              "✅ Received unfiltered results from backend:",
-              data.data.length
-            );
+            // console.log(
+            //   "✅ Received unfiltered results from backend:",
+            //   data.data.length
+            // );
             setStore({
               unfilteredMapResults: data.data,
             });
@@ -963,7 +963,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          console.log("✅ Received unfiltered resources from backend:", data);
+          // console.log("✅ Received unfiltered resources from backend:", data);
 
           return data;
         } catch (error) {
@@ -1055,7 +1055,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          console.log("✅ Received resources from backend:", data);
+          // console.log("✅ Received resources from backend:", data);
 
           return data;
         } catch (error) {

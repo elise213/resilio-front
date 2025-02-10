@@ -273,6 +273,7 @@
   color: blue;
   padding: 0 5px 5px 5px;
   text-align: center;
+  justify-content: center;
 }
 
 .active-filter > div {
