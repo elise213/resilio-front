@@ -114,6 +114,10 @@ body {
   padding-bottom: 30px;
 }
 
+.category-container {
+  padding: 5px;
+}
+
 /* _____________________________________________________________BUTTONS */
 
 .submit {

@@ -88,6 +88,17 @@ const ResourceCard = (props) => {
           alt="profile picture"
         />
       )}
+
+      {categoryLabels.length > 0 && (
+        <div className="category-container">
+          {categoryLabels.map((label, index) => (
+            <span key={index} className="category-span">
+              {label}
+            </span>
+          ))}
+        </div>
+      )}
+
       {categoryLabels.length > 0 && (
         <div className="card-description">
           {loadingRating ? (
