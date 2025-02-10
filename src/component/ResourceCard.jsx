@@ -8,6 +8,7 @@ const ResourceCard = (props) => {
   const [averageRating2, setAverageRating2] = useState(0);
   const [ratingCount2, setRatingCount2] = useState(0);
   const [loadingRating, setLoadingRating] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
@@ -81,11 +82,13 @@ const ResourceCard = (props) => {
       }}
     >
       <span className="resource-title">{props.item.name}</span>
-      {props.item.image && (
+
+      {props.item.image && !imageError && (
         <img
           className="card-img"
           src={props.item.image}
           alt="profile picture"
+          onError={() => setImageError(true)} // Hide image if it fails to load
         />
       )}
 
