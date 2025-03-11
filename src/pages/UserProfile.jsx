@@ -12,11 +12,11 @@ const UserProfile = () => {
   const { id } = useParams();
   const [userCommentsAndRatings, setUserCommentsAndRatings] = useState([]);
   const [userName, setUserName] = useState("");
-  const [loading, setLoading] = useState(true); // <-- New loading state
+  const [loading, setLoading] = useState(true);
   const loggedInUserId = parseInt(sessionStorage.getItem("user_id"), 10);
 
   useEffect(() => {
-    setLoading(true); // Start loading before fetching data
+    setLoading(true);
 
     Promise.all([
       actions.getCommentsAndRatingsForUser(id, setUserCommentsAndRatings),
@@ -24,7 +24,7 @@ const UserProfile = () => {
         setUserName(userInfo.name);
       }),
     ]).finally(() => {
-      setLoading(false); // Stop loading once data is fetched
+      setLoading(false);
     });
   }, [id]);
 
