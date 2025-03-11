@@ -113,11 +113,11 @@ body {
 
 .button-container-sidebar {
   width: 100%;
-  justify-content: space-between !important;
+  justify-content: flex-end;
   align-items: center;
   z-index: 999;
   box-sizing: border-box;
-  padding: 5px 10px;
+  padding: 5px 10px 0;
 }
 
 .grand-map-container {
@@ -204,5 +204,9 @@ body {
 @media screen and (max-width: 700px) {
   .checkbox-row {
     margin: 0;
+  }
+
+  .button-container-sidebar {
+    justify-content: space-between !important;
   }
 }

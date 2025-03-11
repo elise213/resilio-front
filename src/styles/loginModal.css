@@ -1,262 +1,184 @@
-.login-div {
-  height: 100vh;
-  width: 100%;
-  background-color: white;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  left: 0;
+/* Full-screen dark overlay */
+.login-overlay {
+  position: fixed;
   top: 0;
-  position: absolute;
-  border-radius: 0 20px 0 0;
-  border: 3px solid black;
-}
-
-.login-modal-content {
-  min-height: 350px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  max-width: 500px;
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.login-modal-header {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.submit-forgot-password {
-  display: block !important;
-  width: 100%;
-  margin: 0 !important;
-}
-
-.password-submit-div {
-  margin-top: 5px;
-  width: 100%;
-}
-
-.yes-or-no div:first-child {
-  margin-left: 10px;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  z-index: 998; /* Below the modal, above everything else */
 }
 
 .login-button-resilio {
-  color: white;
-  background-color: #1976d2;
-  border-radius: 20px !important;
-  align-self: flex-end;
-  margin: 8px !important;
+  background-color: transparent;
+  border: none;
+  color: blue;
+  font-style: italic;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .login-button-resilio:hover {
-  background-color: #1565c0;
+  color: lightgreen !important;
 }
 
-.login-button-resilio p {
-  font-size: 12px !important;
-}
-
-.logOut-logIn {
-  text-align: center;
-}
-
-.form-check {
-  position: relative;
-  display: block;
-  cursor: pointer;
-  justify-content: center;
-}
-
-.form-input {
-  border-radius: 4px;
-  box-sizing: border-box;
-  padding: 5px;
-  margin: 0;
-  border: 1px solid gray;
-  width: 80%;
-  border: 1px solid #cccccc;
-  box-sizing: border-box;
-}
-
-.form-check-input {
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.header-div {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.please-log {
-  text-align: center;
-  margin-top: 40px;
-  background-color: white;
-}
-
-.loginModal-close-div {
-  display: flex;
-  justify-content: center;
-  align-items: start !important;
-}
-
-.loginModal-footer {
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 80px;
-  width: 100%;
-  flex-wrap: nowrap;
-  margin-top: 40px;
-}
-
-.loginModal-title {
-  font-size: xx-large;
-}
-
-.login-modal-body {
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  scroll-behavior: smooth;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  padding: 0px;
-}
-
-.login-modal-body form {
-  min-width: 250px;
-}
-
-.loginModal-div {
+/* Centered modal */
+.login-div {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
-  border: none;
-  background-color: transparent;
-  width: 100vw;
-  height: 100%;
+  background-color: white;
+  z-index: 999; /* Above the overlay */
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  max-width: 450px;
+  width: 90%;
 }
 
-body.loginModal-open {
+/* Ensures the body doesn't scroll when modal is open */
+body.modal-open {
   overflow: hidden;
-  height: 100%;
-  position: fixed;
-  width: 100%;
 }
 
-.form-section {
+/* Centered modal background */
+.login-div {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+  width: 90%;
+  max-width: 450px;
+  background-color: white;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* Content inside the modal */
+.login-modal-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header with close button */
+.login-modal-header {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  margin-top: 10px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
 }
 
-.forgot-password {
-  color: gray;
-  text-align: center;
-  margin: 5px 0;
-}
-
-.forgot-password:hover {
-  color: black;
+/* Close button styling */
+.close-login-modal {
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: color 0.2s;
 }
 
-.less-margin {
-  margin-top: 0px !important;
-}
-
-.login-logout {
-  font-size: large;
-  margin-left: 10px;
-}
-
-.margin-cancel {
-  margin-top: 0 !important;
-}
-
-.login-close {
-  color: gray;
-  transition: 0.3s;
-}
-
-.login-close:hover {
+.close-login-modal:hover {
   color: black;
-  cursor: pointer;
 }
 
-.open {
-  height: auto !important;
-  justify-content: center;
-  align-content: center;
-  height: 100vh !important;
-  display: grid;
-  width: 100vw;
-}
-
-/* CAHNGE PASSWORD */
-/* Container for the reset password form */
-.reset-password-container {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+/* Form styling */
+.login-modal-body {
   width: 100%;
-  margin: 20px;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Title */
-.reset-password-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333333;
-  text-align: center;
+.login-modal-body form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* Label */
-.form-label {
-  display: block;
-  color: #333333;
+/* Form inputs */
+.form-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   font-size: 14px;
 }
 
+/* Form section spacing */
+.form-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Labels */
+.form-label {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Yes/No radio buttons */
+.form-check {
+  align-items: center;
+  gap: 3px;
+  display: flex !important;
+  margin: 5px;
+}
+
+/* Buttons */
 .form-button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #007bff;
-  color: #ffffff;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-  margin-top: 20px !important;
+  text-align: center;
+  transition: background-color 0.3s;
 }
 
 .form-button:hover {
   background-color: #0056b3;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+/* Forgot password link */
+.forgot-password {
+  color: gray;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.forgot-password:hover {
+  color: black;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 600px) {
+  .login-div {
+    width: 95%;
+    border-radius: 15px;
+  }
 }

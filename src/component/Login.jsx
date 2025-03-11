@@ -7,7 +7,6 @@ import styles from "../styles/loginModal.css";
 
 const Login = ({ setLayout }) => {
   const { store, actions } = useContext(Context);
-
   const [log, setLog] = useState("1");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState("");
@@ -15,7 +14,7 @@ const Login = ({ setLayout }) => {
   const [userAvatar, setUserAvatar] = useState("");
   const [email, setEmail] = useState("");
   const [is_org, setIs_org] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null); // State for dropdown
+  const [anchorEl, setAnchorEl] = useState(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(
     store.loginModalIsOpen
   );
@@ -121,7 +120,7 @@ const Login = ({ setLayout }) => {
       <div className="login-modal-content">
         <div className="login-modal-header">
           <span
-            className="close-modal"
+            className="close-login-modal"
             onClick={() => {
               actions.closeLoginModal();
               setLog("1");
@@ -237,7 +236,7 @@ const Login = ({ setLayout }) => {
       <div className="login-modal-content ">
         <div className="login-modal-header">
           <span
-            className="close-modal"
+            className="close-login-modal"
             onClick={() => {
               actions.closeLoginModal();
               setLog("1");
@@ -304,7 +303,7 @@ const Login = ({ setLayout }) => {
       <div className="login-modal-content">
         <div className="login-modal-header">
           <span
-            className="close-modal"
+            className="close-login-modal"
             onClick={() => {
               actions.closeLoginModal();
               setLog("1");
@@ -356,15 +355,17 @@ const Login = ({ setLayout }) => {
     <>
       {!isLoginModalOpen && isLoggedIn ? (
         <>
-          <IconButton onClick={handleProfileClick} style={{ padding: "0" }}>
+          <IconButton
+            // className="avatar2"
+            onClick={handleProfileClick}
+            style={{ padding: "0" }}
+          >
             <Avatar
               alt="Profile"
               src={"/default-avatar.jpg"}
               sx={{ width: 30, height: 30 }}
             />
           </IconButton>
-
-          {/* Dropdown Menu */}
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -404,19 +405,31 @@ const Login = ({ setLayout }) => {
           </Menu>
         </>
       ) : (
-        <Button
+        <button
           className="login-button-resilio"
-          variant="contained"
-          color="primary"
           onClick={() => {
             actions.openLoginModal();
             setLayout("fullscreen-sidebar");
           }}
         >
-          Log in
-        </Button>
+          Log in!
+        </button>
       )}
-      {isLoginModalOpen && <div className="login-div">{field}</div>}
+      {isLoginModalOpen && (
+        <>
+          {/* Dark Overlay */}
+          <div
+            className="login-overlay"
+            onClick={() => {
+              actions.closeLoginModal();
+              document.body.classList.remove("modal-open"); // Allow scrolling again
+            }}
+          ></div>
+
+          {/* Login Modal */}
+          <div className="login-div">{field}</div>
+        </>
+      )}
     </>
   );
 };

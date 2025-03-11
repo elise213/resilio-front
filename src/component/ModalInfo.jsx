@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
-import Button from "@mui/material/Button";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import Tooltip from "@mui/material/Tooltip";
 
 export const ModalInfo = ({
   isFavorited,
@@ -25,7 +25,6 @@ export const ModalInfo = ({
   const res = store.selectedResource;
   const id = res.id;
   const scheduleStore = res.schedule;
-  // const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -48,16 +47,9 @@ export const ModalInfo = ({
 
   const currentSchedule = scheduleStore;
 
-  console.log("Current Schedule:", currentSchedule);
   const schedule2 = filterNonNullValues(currentSchedule);
-  console.log("Filtered Schedule (schedule2):", schedule2);
 
   const formattedSchedule = {};
-
-  const isEverydaySameSchedule = (formattedSchedule) => {
-    const schedules = Object.values(formattedSchedule);
-    return schedules.every((schedule) => schedule === schedules[0]);
-  };
 
   Object.keys(schedule2).forEach((key) => {
     const day = key.replace(/End|Start/g, "");
@@ -73,8 +65,6 @@ export const ModalInfo = ({
 
     formattedSchedule[day] = scheduleString;
   });
-  console.log("Formatted Schedule:", formattedSchedule);
-  const everydaySameSchedule = isEverydaySameSchedule(formattedSchedule);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -107,8 +97,6 @@ export const ModalInfo = ({
         }`
       );
     });
-
-    console.log("Filtered Schedule Result:", result);
     return result;
   }
 
@@ -184,10 +172,35 @@ export const ModalInfo = ({
     }
   });
 
-  // const scheduleCategory = categorizeSchedule(schedule2);
-  console.log("Schedule Category:", scheduleCategory);
   return (
     <>
+      {res.alert && (
+        <div className="alert-bar">
+          <marquee behavior="scroll" direction="left">
+            🚨 {res.alert}
+          </marquee>
+        </div>
+      )}
+
+      {isLoggedIn && (
+        <Tooltip
+          title={
+            isFavorited
+              ? "You follow this resource"
+              : "You don't follow this resource"
+          }
+          arrow
+        >
+          <div className="modal-favorite-icon" onClick={toggleFavorite}>
+            {isFavorited ? (
+              <BookmarkIcon style={{ color: "green", cursor: "pointer" }} />
+            ) : (
+              <BookmarkBorderIcon style={{ cursor: "pointer" }} />
+            )}
+          </div>
+        </Tooltip>
+      )}
+
       <Carousel res={res} />
 
       <div className="info-groups">
@@ -218,6 +231,34 @@ export const ModalInfo = ({
             {copied && <span style={{ marginLeft: "10px" }}>Copied!</span>}
           </div>
         </div>
+
+        {/* {res.address && (
+          <>
+            <span
+              className="info-address"
+              title="Open Google Maps"
+              onClick={() =>
+                window.open(
+                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    res.address
+                  )}`,
+                  "_blank"
+                )
+              }
+            >
+              <span className="modal-info-title">Directions</span>
+              <span
+                className="material-icons"
+                style={{
+                  fontSize: "25px",
+                  cursor: "pointer",
+                }}
+              >
+                turn_sharp_right
+              </span>
+            </span>
+          </>
+        )} */}
         {/* Rating */}
         <div
           className="info-address"
@@ -263,33 +304,6 @@ export const ModalInfo = ({
             </div>
           </>
         )}
-        {res.address && (
-          <>
-            <span
-              className="info-address"
-              title="Open Google Maps"
-              onClick={() =>
-                window.open(
-                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                    res.address
-                  )}`,
-                  "_blank"
-                )
-              }
-            >
-              <span className="modal-info-title">Directions</span>
-              <span
-                className="material-icons"
-                style={{
-                  fontSize: "25px",
-                  cursor: "pointer",
-                }}
-              >
-                turn_sharp_right
-              </span>
-            </span>
-          </>
-        )}
 
         {/* WEBSITE */}
         {res.website && (
@@ -297,7 +311,6 @@ export const ModalInfo = ({
             <span
               className="modal-info-title"
               title="Open Website"
-              style={{ cursor: "pointer" }}
               onClick={() =>
                 window.open(
                   `https://www.${res.website}`,
@@ -308,14 +321,14 @@ export const ModalInfo = ({
             >
               Website
             </span>
-            {/* <span>{res.website}</span> */}
 
             <span
               style={{
-                fontSize: "25px",
+                fontSize: "18px",
                 cursor: "pointer",
+                fontWeight: "100",
               }}
-              className="material-icons"
+              className="material-icons link-icon"
             >
               link
             </span>
@@ -324,7 +337,7 @@ export const ModalInfo = ({
 
         {scheduleCategory === "Closed Everyday" && (
           <>
-            <span className="info-address">
+            <span className="info-address" style={{ border: "none" }}>
               <span className="modal-info-title">Schedule</span>
               Closed Everyday
             </span>
@@ -340,8 +353,8 @@ export const ModalInfo = ({
         {Object.keys(formattedSchedule).length > 0 &&
           scheduleCategory === "Varied" && (
             <>
-              <div className="info-address">
-                <span style={{ alignSelf: "self-start" }}>Hours</span>
+              <div className="info-address" style={{ border: "none" }}>
+                <span className="modal-info-title">Hours</span>
                 <div className="schedule-info">
                   <div className="schedule-table">
                     <div
@@ -368,45 +381,6 @@ export const ModalInfo = ({
               </div>
             </>
           )}
-        {isLoggedIn && (
-          <div className="info-address" onClick={toggleFavorite}>
-            {isFavorited ? (
-              <>
-                <span
-                  className="modal-info-title"
-                  style={{ marginRight: "7px" }}
-                >
-                  {" "}
-                  You follow this Resource
-                </span>
-                <BookmarkIcon style={{ color: "green", cursor: "pointer" }} />
-              </>
-            ) : (
-              <>
-                <span text="add to favorites" style={{ marginRight: "7px" }}>
-                  You do not follow this resource
-                </span>{" "}
-                {"  "}
-                <BookmarkBorderIcon style={{ cursor: "pointer" }} />
-              </>
-            )}
-          </div>
-        )}
-        {/* // Alert */}
-        <div className="info-address">
-          <span className="modal-info-title">Alert</span>
-          {res.alert ? (
-            <>
-              <span className="modal-info-title" style={{ marginRight: "7px" }}>
-                {res.alert}
-              </span>
-            </>
-          ) : (
-            <>
-              <span text="add to favorites">No Alerts</span>
-            </>
-          )}
-        </div>
       </div>
     </>
   );
