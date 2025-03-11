@@ -4,7 +4,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       abortController: null,
       abortController2: null,
       avatarID: null,
-      // Modal states
       modalIsOpen: false,
       loginModalIsOpen: false,
       aboutModalIsOpen: false,
@@ -180,44 +179,20 @@ const getState = ({ getStore, getActions, setStore }) => {
         return categories;
       },
 
-      getColorForCategory: (category) => {
-        const colors = {
-          food: "DarkOrange",
-          health: "Indigo",
-          hygiene: "CornflowerBlue",
-          clothing: "Salmon",
-          shelter: "Maroon",
-          work: "Green",
-          wifi: "Orchid",
-          crisis: "Red",
-          legal: "Peru",
-          bathroom: "SlateGrey",
-          mental: "Coral",
-          substance: "DarkRed",
-          sex: "Tomato",
-        };
-        if (colors[category]) {
-          return { color: colors[category] };
-        } else return { color: "red" };
-      },
-
       getFormattedSchedule: (schedule) => {
         const formattedSchedule = {};
         Object.keys(schedule).forEach((day) => {
-          // Check if the day's schedule exists and is not null before accessing start and end
           if (schedule[day] && schedule[day].start && schedule[day].end) {
             const start = formatTime(schedule[day].start);
             const end = formatTime(schedule[day].end);
             formattedSchedule[day] = `${start} - ${end}`;
           } else {
-            // If the day's schedule doesn't exist or start/end is null, set to "Closed"
             formattedSchedule[day] = "Closed";
           }
         });
         return formattedSchedule;
       },
 
-      // A utility function to format the time into a 12-hour format with AM/PM
       formatTime: (time) => {
         if (!time || time.toLowerCase() === "closed") {
           return "Closed";
@@ -244,66 +219,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ token: token, favorites: favorites || [] });
         }
       },
-
-      // login: async (email, password) => {
-      //   try {
-      //     const current_back_url = getStore().current_back_url;
-      //     const opts = {
-      //       method: "POST",
-      //       mode: "cors",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         email: email,
-      //         password: password,
-      //       }),
-      //     };
-      //     const response = await fetch(`${current_back_url}/api/login`, opts);
-
-      //     if (response.status !== 200) {
-      //       Swal.fire({
-      //         icon: "error",
-      //         title: "",
-      //         text: "Incorrect email or password",
-      //       });
-      //       return false;
-      //     }
-
-      //     const data = await response.json();
-      //     sessionStorage.setItem("token", data.access_token);
-      //     sessionStorage.setItem("is_org", data.is_org);
-      //     sessionStorage.setItem("name", data.name);
-      //     sessionStorage.setItem("avatar", parseInt(data.avatar));
-      //     sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
-      //     sessionStorage.setItem("user_id", data.user_id);
-
-      //     setStore({
-      //       token: data.access_token,
-      //       is_org: data.is_org,
-      //       avatarID: data.avatar,
-      //       name: data.name,
-      //       favorites: data.favorites.map((fav) => fav.resource),
-      //       user_id: data.user_id,
-      //     });
-
-      //     Swal.fire({
-      //       icon: "success",
-      //       title: "Logged in Successfully",
-      //     });
-
-      //     return true;
-      //   } catch (error) {
-      //     console.error(error);
-      //     Swal.fire({
-      //       icon: "error",
-      //       title: "Something went wrong",
-      //       text: error.message,
-      //     });
-
-      //     return false;
-      //   }
-      // },
 
       login: async (email, password) => {
         try {
@@ -514,11 +429,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             text: "Resource deleted successfully!",
           });
 
-          // Use getActions() to access other actions
           const actions = getActions();
-          actions.closeModal(); // Ensure closeModal is called as a function
+          actions.closeModal();
 
-          if (navigate) navigate("/"); // Redirect after deletion if navigate function is provided
+          if (navigate) navigate("/");
         } catch (error) {
           console.error("Error during resource deletion:", error);
           Swal.fire({
@@ -675,18 +589,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             } else {
               console.error("Unexpected response received.");
             }
-
             return false;
           }
-
           const contentType = response.headers.get("content-type");
           if (!contentType || !contentType.includes("application/json")) {
             console.error("Invalid content type:", contentType);
             const text = await response.text();
-            // console.log("Response text:", text);
             return false;
           }
-
           const resources = await response.json();
           resources.forEach((resource) => {
             const { latitude, longitude } = resource;
@@ -730,17 +640,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       setMapResults: async (bounds) => {
         const store = getStore();
         console.log("setMapResults called with bounds:", bounds);
-
-        // If there's an ongoing request, abort it
         if (store.abortController2) {
           store.abortController2.abort();
         }
-
-        // Create a new abort controller for the new request
-        const newAbortController = new AbortController(); // AbortC
+        const newAbortController = new AbortController();
         setStore({ abortController2: newAbortController });
 
-        // Normalize longitude
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
 
@@ -836,19 +741,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       setBoundaryResults: async (bounds, resources, days, groups) => {
-        // console.trace("setBoundaryResults called from:");
         const store = getStore();
-
-        // If there's an ongoing request, abort it
         if (store.abortController) {
           store.abortController.abort();
         }
-
-        // Create a new abort controller for the new request
-        const newAbortController = new AbortController(); // AbortC
+        const newAbortController = new AbortController();
         setStore({ abortController: newAbortController });
 
-        // Normalize longitude
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
 
@@ -864,7 +763,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-
         const url = getStore().current_back_url + "/api/getBResults";
         const combinedResources = {
           ...resources,
@@ -873,7 +771,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         try {
           setStore({ loading: true });
-
           let response = await fetch(url, {
             method: "POST",
             headers: {
@@ -887,7 +784,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               resources: combinedResources || null,
               days: days || null,
             }),
-            signal: newAbortController.signal, // Use the new abort controller's signal
+            signal: newAbortController.signal,
           });
 
           if (!response.ok) {
@@ -896,7 +793,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
             );
           }
-
           const data = await response.json();
           setStore({ boundaryResults: data.data, loading: false });
 
@@ -1053,8 +949,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // In appContext.js or wherever actions are defined
-
       getCommentsAndRatingsForUser: async (
         userId,
         setUserCommentsAndRatings
@@ -1074,8 +968,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error fetching user comments and ratings:", error);
         }
       },
-
-      // In appContext.js or wherever actions are defined
 
       deleteComment: async (commentId) => {
         const current_back_url = getStore().current_back_url;
@@ -1136,15 +1028,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           })
             .then((response) => response.json())
             .then((data) => {
-              // Map each favorite to include all resource details, including schedule
               const favorites = data.favorites.map((fav) => ({
-                ...fav.resource, // Include full resource data
+                ...fav.resource,
               }));
-
-              // Save to session storage
               sessionStorage.setItem("favorites", JSON.stringify(favorites));
 
-              // Update the store
               setStore({
                 favorites: favorites,
               });
@@ -1154,40 +1042,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
         }
       },
-
-      // addFavorite: function (resourceId) {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify({ resourceId }),
-      //     };
-      //     fetch(`${current_back_url}/api/addFavorite`, opts)
-      //       .then((response) => {
-      //         if (response.status === 409) {
-      //           console.error("This item is already in your favorites.");
-      //           return Promise.reject(
-      //             new Error("This item is already in your favorites.")
-      //           );
-      //         } else if (!response.ok) {
-      //           console.error("Failed to add favorite due to server error.");
-      //           return Promise.reject(new Error("Failed to add favorite"));
-      //         }
-      //         return response.json();
-      //       })
-      //       .then(() => {
-      //         getActions().fetchFavorites();
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error adding favorite:", error);
-      //       });
-      //   }
-      // },
 
       addFavorite: function (resourceId) {
         const current_back_url = getStore().current_back_url;
@@ -1207,10 +1061,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify({ resourceId }),
           };
 
-          console.log("Request Options:", opts); // Log the request options to verify headers and payload
+          console.log("Request Options:", opts);
           fetch(`${current_back_url}/api/addFavorite`, opts)
             .then((response) => {
-              console.log("Response Status:", response.status); // Log response status for better debugging
+              console.log("Response Status:", response.status);
               if (response.status === 409) {
                 console.error("This item is already in your favorites.");
                 return Promise.reject(

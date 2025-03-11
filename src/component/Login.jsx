@@ -15,10 +15,81 @@ const Login = ({ setLayout }) => {
   const [email, setEmail] = useState("");
   const [is_org, setIs_org] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [resourceName, setResourceName] = useState("");
+  const [resourceCity, setResourceCity] = useState("");
+  const [resourceDocs, setResourceDocs] = useState(null);
+
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(
     store.loginModalIsOpen
   );
   const userId2 = parseInt(sessionStorage.getItem("user_id"), 10);
+
+  function handleRegister(e) {
+    e.preventDefault();
+
+    if (is_org === "1" && (!resourceName || !resourceCity)) {
+      Swal.fire({
+        icon: "error",
+        title: "Missing Fields",
+        text: "Please provide the resource name and city.",
+      });
+      return;
+    }
+
+    actions.createUser(is_org, name, email, password, userAvatar);
+
+    if (is_org === "1") {
+      sendOrgVerificationEmail(
+        name,
+        email,
+        resourceName,
+        resourceCity,
+        supportingDocs
+      );
+    }
+
+    setLog("1");
+  }
+
+  const sendOrgVerificationEmail = (
+    name,
+    email,
+    resourceName,
+    resourceCity,
+    supportingDocs
+  ) => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("resourceName", resourceName);
+    formData.append("resourceCity", resourceCity);
+
+    for (let i = 0; i < supportingDocs.length; i++) {
+      formData.append("supportingDocs", supportingDocs[i]);
+    }
+
+    fetch("/api/send-org-verification-email", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Verification Email Sent",
+            text: "Your information has been sent for verification.",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to send verification email.",
+          });
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  };
 
   useEffect(() => {
     setIsLoginModalOpen(store.loginModalIsOpen);
@@ -170,7 +241,7 @@ const Login = ({ setLayout }) => {
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
-            <div className="form-section">
+            {/* <div className="form-section">
               <span className="form-label" id="exampleloginModalLabel">
                 Do you represent an organization?
               </span>
@@ -206,7 +277,78 @@ const Login = ({ setLayout }) => {
                   No
                 </label>
               </div>
+            </div> */}
+            <div className="form-section">
+              <span className="form-label" id="exampleloginModalLabel">
+                Do you represent an organization?
+              </span>
+              <div className="form-check">
+                <input
+                  className="form-check-input radio"
+                  type="radio"
+                  name="orgRadio"
+                  id="orgRadio1"
+                  value="1"
+                  onChange={() => setIs_org("1")}
+                />
+                <label className="form-label radio-label" htmlFor="orgRadio1">
+                  Yes
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input radio"
+                  type="radio"
+                  name="orgRadio"
+                  id="orgRadio2"
+                  value="0"
+                  onChange={() => setIs_org("0")}
+                />
+                <label className="form-label radio-label" htmlFor="orgRadio2">
+                  No
+                </label>
+              </div>
             </div>
+
+            {is_org === "1" && (
+              <>
+                <div className="form-section">
+                  <label htmlFor="resource_name" className="form-label">
+                    Resource Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    id="resource_name"
+                    value={resourceName}
+                    onChange={(e) => setResourceName(e.target.value)}
+                  />
+                </div>
+                <div className="form-section">
+                  <label htmlFor="resource_city" className="form-label">
+                    Resource City
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    id="resource_city"
+                    value={resourceCity}
+                    onChange={(e) => setResourceCity(e.target.value)}
+                  />
+                </div>
+                <div className="form-section">
+                  <label className="form-label">
+                    Upload Supporting Documents
+                  </label>
+                  <input
+                    type="file"
+                    id="supportingDocs"
+                    multiple
+                    onChange={handleFileUpload}
+                  />
+                </div>
+              </>
+            )}
 
             <Button
               variant="contained"
@@ -355,16 +497,8 @@ const Login = ({ setLayout }) => {
     <>
       {!isLoginModalOpen && isLoggedIn ? (
         <>
-          <IconButton
-            // className="avatar2"
-            onClick={handleProfileClick}
-            style={{ padding: "0" }}
-          >
-            <Avatar
-              alt="Profile"
-              src={"/default-avatar.jpg"}
-              sx={{ width: 30, height: 30 }}
-            />
+          <IconButton onClick={handleProfileClick} style={{ padding: "0" }}>
+            <Avatar alt="Profile" sx={{ width: 30, height: 30 }} />
           </IconButton>
           <Menu
             anchorEl={anchorEl}
@@ -409,6 +543,7 @@ const Login = ({ setLayout }) => {
           className="login-button-resilio"
           onClick={() => {
             actions.openLoginModal();
+            actions.closeModal();
             setLayout("fullscreen-sidebar");
           }}
         >
@@ -422,7 +557,7 @@ const Login = ({ setLayout }) => {
             className="login-overlay"
             onClick={() => {
               actions.closeLoginModal();
-              document.body.classList.remove("modal-open"); // Allow scrolling again
+              document.body.classList.remove("modal-open");
             }}
           ></div>
 

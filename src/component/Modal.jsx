@@ -10,6 +10,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GoogleMapReact from "google-map-react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Login from "./Login";
+import FavoriteButton from "./FavoriteButton";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
@@ -203,8 +205,35 @@ const Modal = ({}) => {
     5: "Exceptional",
   };
 
+  const toggleFavorite = (event) => {
+    event.stopPropagation();
+
+    console.log("sending favorite id", id);
+    if (isFavorited) {
+      actions.removeFavorite(id);
+    } else {
+      actions.addFavorite(id);
+    }
+    setIsFavorited(!isFavorited);
+  };
+
   return (
     <>
+      {!isLoggedIn && <Login />}
+      {resource.alert && (
+        <div className="alert-bar">
+          <marquee behavior="scroll" direction="left">
+            🚨 {resource.alert}
+          </marquee>
+        </div>
+      )}
+
+      {isLoggedIn && (
+        <FavoriteButton
+          isFavorited={isFavorited}
+          toggleFavorite={toggleFavorite}
+        />
+      )}
       <p
         className="close-modal"
         onClick={() => {
@@ -267,6 +296,18 @@ const Modal = ({}) => {
             return (
               <div key={comment.comment_id} className="comment-div">
                 <div className="comment-info">
+                  <div className="comment-user-info">
+                    <div className="name-and-icon">
+                      <span
+                        // style={{ marginBottom: "-40px" }}
+                        className="material-symbols-outlined account-circle"
+                      >
+                        account_circle
+                      </span>
+                      {comment.user_name} {"   "}
+                    </div>
+                    {formattedDate}
+                  </div>
                   <Rating
                     name="read-only"
                     value={comment.rating_value}
@@ -275,22 +316,16 @@ const Modal = ({}) => {
                   />
                   <p className="comment-content">{comment.comment_cont}</p>
                   <div className="comment-content-div">
-                    <div className="comment-user-info">
-                      <div>
-                        <span className="material-symbols-outlined account-circle">
-                          account_circle
-                        </span>
-                        {comment.user_name} {"   "}
-                      </div>
-                      {formattedDate}
-                    </div>
-                    {parseInt(comment.user_id) === userIdFromSession && (
+                    {parseInt(comment.user_id) === userIdFromSession ? (
                       <DeleteIcon
                         fontSize="small"
                         onClick={() => handleDelete(comment.comment_id)}
                         style={{ cursor: "pointer", color: "gray" }}
                       />
+                    ) : (
+                      <div></div>
                     )}
+
                     <div className="like-icon">
                       {comment.likes?.some(
                         (like) => like.user_id === userIdFromSession
@@ -316,22 +351,6 @@ const Modal = ({}) => {
       )}
 
       <div className="modal-footer">
-        {!isLoggedIn && (
-          <div className="please-log" style={{ margin: "30px" }}>
-            <span
-              role="button"
-              tabIndex={0}
-              className="log-in"
-              onClick={() => {
-                actions.openLoginModal();
-                actions.closeModal();
-              }}
-            >
-              Log in
-            </span>
-            to add this resource to your favorites
-          </div>
-        )}
         {isAuthorizedUser && isLoggedIn && (
           <>
             <p className="problem">
