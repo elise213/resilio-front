@@ -3,9 +3,8 @@ import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import Tooltip from "@mui/material/Tooltip";
+import FavoriteButton from "./FavoriteButton";
+import ScheduleInfo from "./ScheduleInfo";
 
 export const ModalInfo = ({
   isFavorited,
@@ -183,22 +182,10 @@ export const ModalInfo = ({
       )}
 
       {isLoggedIn && (
-        <Tooltip
-          title={
-            isFavorited
-              ? "You follow this resource"
-              : "You don't follow this resource"
-          }
-          arrow
-        >
-          <div className="modal-favorite-icon" onClick={toggleFavorite}>
-            {isFavorited ? (
-              <BookmarkIcon style={{ color: "green", cursor: "pointer" }} />
-            ) : (
-              <BookmarkBorderIcon style={{ cursor: "pointer" }} />
-            )}
-          </div>
-        </Tooltip>
+        <FavoriteButton
+          isFavorited={isFavorited}
+          toggleFavorite={toggleFavorite}
+        />
       )}
 
       <Carousel res={res} />
