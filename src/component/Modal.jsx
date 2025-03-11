@@ -6,12 +6,9 @@ import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
-import GoogleMapReact from "google-map-react"; // Import GoogleMapReact
+import GoogleMapReact from "google-map-react";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
@@ -41,8 +38,8 @@ const Modal = ({}) => {
   const resource = store.selectedResource;
 
   const mapCenter = {
-    lat: resource?.latitude || 0, // Default to 0 if no latitude
-    lng: resource?.longitude || 0, // Default to 0 if no longitude
+    lat: resource?.latitude || 0,
+    lng: resource?.longitude || 0,
   };
   const mapZoom = 13;
 
@@ -76,8 +73,6 @@ const Modal = ({}) => {
         setRating(0);
         setComment("");
         setShowRating(false);
-
-        // Refresh comments and ratings after submission
         if (resource?.id) {
           actions.getAverageRating(
             resource.id,
@@ -142,8 +137,6 @@ const Modal = ({}) => {
 
   const Marker = React.memo(({ result }) => {
     const [isHovered, setIsHovered] = useState(false);
-
-    // Function to open Google Maps directions
     const openGoogleMaps = () => {
       if (result) {
         const { latitude, longitude } = result;
@@ -174,66 +167,6 @@ const Modal = ({}) => {
   function toggleRatingModal() {
     setShowRating(!showRating);
   }
-
-  // const toggleLikeComment = (commentId) => {
-  //   setComments((prevComments) =>
-  //     prevComments.map((comment) => {
-  //       if (comment.comment_id === commentId) {
-  //         const isLiked = comment.likes?.some(
-  //           (like) => like.user_id === userIdFromSession
-  //         );
-
-  //         if (isLiked) {
-
-  //           actions
-  //             .unlikeComment(commentId)
-  //             .then(() => {
-  //               setComments((currentComments) =>
-  //                 currentComments.map((c) =>
-  //                   c.comment_id === commentId
-  //                     ? {
-  //                         ...c,
-  //                         like_count: c.like_count - 1,
-  //                         likes: c.likes.filter(
-  //                           (like) => like.user_id !== userIdFromSession
-  //                         ),
-  //                       }
-  //                     : c
-  //                 )
-  //               );
-  //             })
-  //             .catch((error) => {
-  //               Swal.fire("Error", "Unable to unlike comment.", "error");
-  //             });
-  //         } else {
-  //           // If not liked, like it
-  //           actions
-  //             .likeComment(commentId)
-  //             .then(() => {
-  //               setComments((currentComments) =>
-  //                 currentComments.map((c) =>
-  //                   c.comment_id === commentId
-  //                     ? {
-  //                         ...c,
-  //                         like_count: c.like_count + 1,
-  //                         likes: [
-  //                           ...(c.likes || []),
-  //                           { user_id: userIdFromSession },
-  //                         ],
-  //                       }
-  //                     : c
-  //                 )
-  //               );
-  //             })
-  //             .catch((error) => {
-  //               Swal.fire("Error", "Unable to like comment.", "error");
-  //             });
-  //         }
-  //       }
-  //       return comment;
-  //     })
-  //   );
-  // };
 
   useEffect(() => {
     if (resource?.id) {
@@ -300,7 +233,7 @@ const Modal = ({}) => {
             setRatingCount={setRatingCount}
           />
         </div>
-        <div
+        {/* <div
           className="map-container-modal"
           style={{ height: "300px", width: "500px", justifySelf: "center" }}
         >
@@ -309,7 +242,6 @@ const Modal = ({}) => {
             defaultCenter={mapCenter}
             defaultZoom={mapZoom}
           >
-            {/* Add a Marker for the resource */}
             <Marker
               lat={resource.latitude}
               lng={resource.longitude}
@@ -318,7 +250,7 @@ const Modal = ({}) => {
               result={resource}
             />
           </GoogleMapReact>
-        </div>
+        </div> */}
       </div>
 
       {comments.length > 0 && (
@@ -435,7 +367,7 @@ const Modal = ({}) => {
                 Please
                 <span
                   role="button"
-                  tabIndex={0} // Make it focusable
+                  tabIndex={0}
                   className="log-in"
                   onClick={() => {
                     actions.openLoginModal();
@@ -448,13 +380,9 @@ const Modal = ({}) => {
                 to rate and review resources.
               </div>
             )}
-            {/* </div> */}
             {isLoggedIn && (
               <>
                 <div className="rating-container">
-                  {/* <span className="rating-prompt">
-                    What did You Think of {resource.name}?
-                  </span> */}
                   <Rating
                     className="resource-rating"
                     name="resource-rating"

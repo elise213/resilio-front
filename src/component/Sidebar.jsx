@@ -6,8 +6,9 @@ import ResourceCard from "./ResourceCard";
 import Contact from "./Contact";
 import ErrorBoundary from "./ErrorBoundary";
 import Selection from "./Selection";
-import Button from "@mui/material/Button";
+
 import { Switch, FormControlLabel } from "@mui/material";
+import { Tooltip, Icon } from "@mui/material";
 
 const Sidebar = ({
   layout,
@@ -196,14 +197,6 @@ const Sidebar = ({
     setSearchQuery("");
   };
 
-  const toggleLocationDropdown = () => {
-    setIsLocationDropdownOpen(!isLocationDropdownOpen);
-  };
-
-  const locationDropdownIcon = isLocationDropdownOpen
-    ? "expand_more"
-    : "chevron_right";
-
   const navDivListClassName = openDropdown.category
     ? "nav-div-list open-dropdown"
     : openDropdown.day
@@ -219,8 +212,8 @@ const Sidebar = ({
           <div className="button-container-sidebar" style={{ display: "flex" }}>
             {!store.loginModalisOpen && (
               <>
-                {/* ✅ Material-UI Toggle Switch */}
                 <FormControlLabel
+                  className="switcheroo"
                   control={
                     <Switch
                       checked={layout === "fullscreen-map"}
@@ -246,6 +239,12 @@ const Sidebar = ({
               <div className=" nav-div">
                 <div className="side-by">
                   <>
+                    <Tooltip title="Find My Location" arrow>
+                      <Icon onClick={geoFindMe} style={{ cursor: "pointer" }}>
+                        my_location
+                      </Icon>
+                    </Tooltip>
+
                     <div className="search-bar">
                       <span className="material-symbols-outlined search-icon">
                         search
@@ -257,25 +256,17 @@ const Sidebar = ({
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <button
-                      onClick={() => setIsModalOpen(true)}
-                      className="filter-button"
-                    >
-                      <span className="material-symbols-outlined">
-                        page_info
-                      </span>
-                    </button>
+                    <Tooltip title="Filter Resources" arrow>
+                      <Icon
+                        onClick={() => setIsModalOpen(true)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        tune
+                      </Icon>
+                    </Tooltip>
                   </>
-                  {/* )} */}
                 </div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={geoFindMe}
-                  className="geo-button"
-                >
-                  Find My Location
-                </Button>
+
                 {store.CATEGORY_OPTIONS &&
                 store.DAY_OPTIONS &&
                 store.GROUP_OPTIONS &&
@@ -283,40 +274,6 @@ const Sidebar = ({
                 days &&
                 groups ? (
                   <ErrorBoundary>
-                    {/* <button
-                            className="dropdown-button location"
-                            onClick={toggleLocationDropdown}
-                          >
-                            Location{" "}
-                            <span className="material-symbols-outlined">
-                              {locationDropdownIcon}
-                            </span>
-                          </button>
-                          {isLocationDropdownOpen && (
-                            <div className="dropdown-content">
-                              <input
-                                type="text"
-                                key="zip-code-input"
-                                className="zipcode"
-                                value={localZipInput}
-                                onChange={handleZipInputChange}
-                                maxLength="5"
-                                placeholder="Zip Code"
-                              />
-                              <button className="geo-button" onClick={geoFindMe}>
-                                Get My Location
-                              </button>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={geoFindMe}
-                                className="geo-button"
-                              >
-                                Find My Location
-                              </Button>
-                            </div>
-                          )} */}
-
                     <Selection
                       openDropdown={openDropdown}
                       setOpenDropdown={setOpenDropdown}
@@ -340,70 +297,6 @@ const Sidebar = ({
                 )}
 
                 <div className={navDivListClassName}>
-                  {/* {isLoggedIn && (
-                    <>
-                      <div className="tab-buttons">
-                        <div
-                          className={
-                            activeTab === "AllResources" ? "active" : "dormant"
-                          }
-                          onClick={() => setActiveTab("AllResources")}
-                        >
-                          {!userSelectedFilter && !searchQuery ? (
-                            <p>
-                              Map Boundary
-                              {store.boundaryResults.length > 0
-                                ? ` (${store.boundaryResults.length})`
-                                : ""}
-                            </p>
-                          ) : (
-                            <p>
-                              Filtered Results
-                              {store.boundaryResults.filter(
-                                (resource) =>
-                                  resource.name
-                                    .toLowerCase()
-                                    .includes(searchQuery.toLowerCase()) ||
-                                  (resource.description &&
-                                    resource.description
-                                      .toLowerCase()
-                                      .includes(searchQuery.toLowerCase()))
-                              ).length > 0
-                                ? ` (${
-                                    store.boundaryResults.filter(
-                                      (resource) =>
-                                        resource.name
-                                          .toLowerCase()
-                                          .includes(
-                                            searchQuery.toLowerCase()
-                                          ) ||
-                                        (resource.description &&
-                                          resource.description
-                                            .toLowerCase()
-                                            .includes(
-                                              searchQuery.toLowerCase()
-                                            ))
-                                    ).length
-                                  })`
-                                : ""}
-                            </p>
-                          )}
-                        </div>
-                        <div
-                          style={{ textAlign: "end" }}
-                          className={
-                            activeTab === "Favorites" ? "active" : "dormant"
-                          }
-                          onClick={() => setActiveTab("Favorites")}
-                        >
-                          Favorites
-                          {store.favorites.length > 0
-                            ? ` (${store.favorites.length})`
-                            : ""}
-                        </div>
-                      </div>
-                    </>
-                  )} */}
                   {activeTab === "AllResources" && (
                     <CombinedFilters
                       searchQuery={searchQuery}

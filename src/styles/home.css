@@ -82,9 +82,9 @@
   height: 100vh;
   position: fixed;
   background-color: white;
-  z-index: 99999999;
+  z-index: 99999;
   flex-direction: column;
-  padding: 15px;
+  padding: 0;
   box-sizing: border-box;
   overflow-y: auto;
   top: 0;
@@ -119,13 +119,17 @@
 }
 
 .geo-button {
-  max-width: 200px;
-  align-self: center;
-  /* margin: 10px 0 0 0 !important; */
+  cursor: pointer;
+  background: transparent !important;
+  color: gray !important;
+  border: none;
 }
 
-.geo-button:hover {
-  cursor: pointer !important;
+.switcheroo {
+  font-family: "Neutraface Text", sans-serif !important;
+  font-size: 12px !important;
+  margin: 0 !important;
+  display: none !important;
 }
 
 .search-bar input,
@@ -150,12 +154,13 @@
   width: 230px;
   align-self: center;
   padding: 4px;
-  margin: 15px 5px;
+  margin: 15px;
 }
 
 .search-bar input {
   border: none;
   padding-left: 40px;
+  width: 100%;
 }
 
 .search-bar .search-icon {
@@ -188,5 +193,9 @@
     left: 0 !important;
     position: absolute !important;
     top: 0 !important;
+  }
+
+  .switcheroo {
+    display: block !important;
   }
 }

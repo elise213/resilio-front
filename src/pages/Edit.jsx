@@ -408,7 +408,7 @@ const Edit = () => {
           </div>
         ))}
 
-        <button className="geo-button" type="submit">
+        <button className="update-button" type="submit">
           Update
         </button>
       </form>
