@@ -109,55 +109,59 @@ const ProfileSettings = () => {
   };
 
   return (
-    <div className="settings-container">
+    <div className="settings-page">
       <p className="close-modal">
         <Link to={`/`}>
           <span className="material-symbols-outlined">arrow_back_ios</span>
           Back to Search
         </Link>
       </p>
-      <p className="page-title">Settings</p>
+      <div className="settings-container">
+        <p className="page-title">Settings</p>
 
-      {/* Password Reset Form */}
-      <form onSubmit={handleResetPassword}>
-        <div className="form-row">
-          <label htmlFor="newPassword">New Password:</label>
-          <input
-            type="password"
-            id="newPassword"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
+        <form onSubmit={handleResetPassword}>
+          <div className="form-row">
+            <label htmlFor="newPassword">New Password:</label>
+            <input
+              type="password"
+              id="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button className="settings-submit" type="submit">
+            Reset Password
+          </button>
+        </form>
 
-      <hr />
+        <hr />
 
-      {/* Profile Update Form */}
-      <form onSubmit={handleProfileUpdate}>
-        <div className="form-row">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-row">
-          <label htmlFor="city">City:</label>
-          <input
-            type="text"
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </div>
-        <button type="submit">Update Profile</button>
-      </form>
+        <form onSubmit={handleProfileUpdate}>
+          <div className="form-row">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-row">
+            <label htmlFor="city">City:</label>
+            <input
+              type="text"
+              id="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <button className="settings-submit" type="submit">
+            Update Profile
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

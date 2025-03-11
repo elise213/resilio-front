@@ -835,110 +835,50 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // setBoundaryResults: async (bounds, resources, days, groups) => {
-      //   // console.trace("setBoundaryResults called from:");
-      //   const store = getStore();
-
-      //   // If there's an ongoing request, abort it
-      //   if (store.abortController) {
-      //     store.abortController.abort();
-      //   }
-
-      //   // Create a new abort controller for the new request
-      //   const newAbortController = new AbortController(); // AbortC
-      //   setStore({ abortController: newAbortController });
-
-      //   // Normalize longitude
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) {
-      //     neLng -= 360;
-      //   }
-
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) {
-      //     swLng -= 360;
-      //   }
-
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   const combinedResources = {
-      //     ...resources,
-      //     ...groups,
-      //   };
-
-      //   try {
-      //     setStore({ loading: true });
-
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources: combinedResources || null,
-      //         days: days || null,
-      //       }),
-      //       signal: newAbortController.signal, // Use the new abort controller's signal
-      //     });
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-      //       );
-      //     }
-
-      //     const data = await response.json();
-      //     setStore({ boundaryResults: data.data, loading: false });
-
-      //     return data.data;
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted");
-      //     } else {
-      //       setStore({ loading: false });
-      //       console.error("Error fetching data:", error);
-      //     }
-      //   }
-      // },
       setBoundaryResults: async (bounds, resources, days, groups) => {
+        // console.trace("setBoundaryResults called from:");
         const store = getStore();
 
+        // If there's an ongoing request, abort it
         if (store.abortController) {
           store.abortController.abort();
         }
 
-        const newAbortController = new AbortController();
+        // Create a new abort controller for the new request
+        const newAbortController = new AbortController(); // AbortC
         setStore({ abortController: newAbortController });
 
+        // Normalize longitude
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
         neLng = neLng % 360;
-        if (neLng > 180) neLng -= 360;
+        if (neLng > 180) {
+          neLng -= 360;
+        }
+
         swLng = swLng % 360;
-        if (swLng > 180) swLng -= 360;
+        if (swLng > 180) {
+          swLng -= 360;
+        }
 
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
 
         const url = getStore().current_back_url + "/api/getBResults";
-        const combinedResources = { ...resources, ...groups };
+        const combinedResources = {
+          ...resources,
+          ...groups,
+        };
 
         try {
           setStore({ loading: true });
 
           let response = await fetch(url, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify({
               neLat,
               neLng,
@@ -947,7 +887,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               resources: combinedResources || null,
               days: days || null,
             }),
-            signal: newAbortController.signal,
+            signal: newAbortController.signal, // Use the new abort controller's signal
           });
 
           if (!response.ok) {
@@ -958,18 +898,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-
-          if (
-            !store.unfilteredMapResults ||
-            store.unfilteredMapResults.length === 0
-          ) {
-            setStore({ unfilteredMapResults: data.data || [] });
-          }
-
-          setStore({
-            boundaryResults: data.data || [],
-            loading: false,
-          });
+          setStore({ boundaryResults: data.data, loading: false });
 
           return data.data;
         } catch (error) {
@@ -985,10 +914,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       likeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
-        console.log("Token:", token);
-        console.log("Backend URL:", current_back_url);
-        console.log("Comment ID:", commentId);
-
         try {
           const response = await fetch(
             `${current_back_url}/api/likeComment/${commentId}`,
@@ -1012,10 +937,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       unlikeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
-        console.log("Token:", token);
-        console.log("Backend URL:", current_back_url);
-        console.log("Comment ID:", commentId);
-
         try {
           const response = await fetch(
             `${current_back_url}/api/unlikeComment/${commentId}`,
@@ -1154,19 +1075,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      // In appContext.js or wherever actions are defined
+
       deleteComment: async (commentId) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
 
         if (!token) {
           console.error("User is not logged in.");
-          return { success: false, message: "User is not logged in" };
+          return { success: false };
         }
-        console.log("Token in deleteComment:", token);
-        console.log(
-          "URL:",
-          `${current_back_url}/api/deleteComment/${commentId}`
-        );
 
         try {
           const response = await fetch(
@@ -1180,19 +1098,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (!response.ok) {
-            const errorData = await response.json(); // Parse the error response from the backend
-            console.error("Failed to delete comment:", errorData.message);
-            return {
-              success: false,
-              message: errorData.message || "Unknown error",
-            };
+            throw new Error("Failed to delete comment");
           }
 
-          console.log("Comment deleted successfully");
           return { success: true };
         } catch (error) {
           console.error("Error deleting comment:", error);
-          return { success: false, message: error.message || "Unknown error" };
+          return { success: false };
         }
       },
 

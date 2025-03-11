@@ -1,5 +1,14 @@
 .settings-container {
   justify-self: center;
+  margin-top: 100px;
+}
+
+.settings-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .form-row {
@@ -8,10 +17,12 @@
   margin-bottom: 5px;
 }
 
-button {
-  align-self: end;
-}
-
 form {
   padding: 5px;
+}
+
+.settings-submit {
+  justify-self: flex-end;
+  align-self: flex-end;
+  margin-top: 10px;
 }

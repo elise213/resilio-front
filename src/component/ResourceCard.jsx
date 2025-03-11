@@ -73,13 +73,18 @@ const ResourceCard = (props) => {
       }}
     >
       <span className="resource-title">{props.item.name}</span>
+
       {props.item.image && (
         <img
           className="card-img"
           src={props.item.image}
           alt="profile picture"
+          onError={(e) => {
+            e.target.style.display = "none"; // Hides the broken image completely
+          }}
         />
       )}
+
       {categoryLabels.length > 0 && (
         <div className="card-description">
           <div>

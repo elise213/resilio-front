@@ -1,14 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home.jsx";
+import Home from "./pages/home";
 import UserProfile from "./pages/UserProfile";
 import Create from "./pages/Create";
 import Edit from "./pages/Edit";
+import Favorites from "./pages/Favorites";
 import Account from "./pages/Account";
-import ScrollToTop from "./component/scrollToTop";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
-import ResetPassword from "./pages/ResetPassword";
+import ResetPassword from "./pages/ProfileSettings";
 import ProfileSettings from "./pages/ProfileSettings";
 
 const Layout = () => {
@@ -17,17 +17,16 @@ const Layout = () => {
 
   return (
     <BrowserRouter basename={basename}>
-      <ScrollToTop>
-        <Routes>
-          <Route element={<Home />} path="/" />
-          <Route element={<UserProfile />} path="/profile/:id" />
-          <Route element={<Create />} path="/create" />
-          <Route element={<ResetPassword />} path="/reset-password" />
-          <Route element={<Account />} path="/account" />
-          <Route element={<Edit />} path="/edit/:id" />
-          <Route element={<ProfileSettings />} path="/profilesettings/:id" />
-        </Routes>
-      </ScrollToTop>
+      <Routes>
+        <Route element={<Home />} path="/" />
+        <Route element={<UserProfile />} path="/profile/:id" />
+        <Route element={<Create />} path="/create" />
+        <Route element={<ResetPassword />} path="/resetpassword" />
+        <Route element={<Account />} path="/account" />
+        <Route element={<Favorites />} path="/favorites" />
+        <Route element={<Edit />} path="/edit/:id" />
+        <Route element={<ProfileSettings />} path="/profilesettings/:id" />
+      </Routes>
     </BrowserRouter>
   );
 };

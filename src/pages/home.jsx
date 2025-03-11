@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Sidebar from "../component/Sidebar";
-import SimpleMap from "../component/SimpleMap";
+import Map from "../component/Map";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 
@@ -12,8 +12,8 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [isModalOpen, setIsModalOpen] = useState(store.modalIsOpen);
+  const [loadingResults, setLoadingResults] = useState(true); // <-- New loading state
 
-  // Use effect to monitor store changes and update local state
   useEffect(() => {
     setIsModalOpen(store.modalIsOpen);
   }, [store.modalIsOpen]);
@@ -58,7 +58,6 @@ const Home = () => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
-      // console.log("Token:", token);
     };
 
     checkLoginStatus();
@@ -73,7 +72,7 @@ const Home = () => {
         data.results[0]?.geometry?.viewport;
 
       if (location && bounds) {
-        actions.setBoundaryResults(bounds, categories, days, groups); // Update boundary results
+        actions.setBoundaryResults(bounds, categories, days, groups);
         handleBoundsChange({
           center: { lat: location.lat, lng: location.lng },
           bounds: {
@@ -188,6 +187,36 @@ const Home = () => {
 
   const [loadingLocation, setLoadingLocation] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("🚀 Fetch started, setting loadingResults to true...");
+      setLoadingResults(true);
+
+      try {
+        console.log("Fetching boundary results...");
+        const results = await actions.setBoundaryResults(
+          city.bounds,
+          categories,
+          days,
+          groups
+        );
+
+        // ✅ Only set loadingResults = false if results actually returned
+        if (results) {
+          console.log("✅ Fetch complete, updating UI...");
+          setLoadingResults(false);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching boundary results:", error);
+        setLoadingResults(false);
+      }
+    };
+
+    if (city.bounds) {
+      fetchData();
+    }
+  }, [categories, days, city.bounds, groups, searchingToday]);
+
   // const geoFindMe = async () => {
   //   if (navigator.geolocation) {
   //     setLayout("fullscreen-map");
@@ -255,36 +284,58 @@ const Home = () => {
     checkLoginStatus();
   }, [store.token]);
 
-  useEffect(() => {
-    const checkLoadingStatus = () => {
-      const loading = sessionStorage.getItem("loading");
-      setLoading(loading);
-    };
+  // useEffect(() => {
+  //   const checkLoadingStatus = () => {
+  //     const loading = sessionStorage.getItem("loading");
+  //     setLoading(loading);
+  //   };
 
-    checkLoadingStatus();
-  }, [store.loading]);
+  //   checkLoadingStatus();
+  // }, [store.loading]);
+
+  // useEffect(() => {
+  //   geoFindMe();
+  // }, []);
 
   useEffect(() => {
     actions.setSchedules();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (categories && days && city.bounds) {
+  //         await actions.setBoundaryResults(
+  //           city.bounds,
+  //           categories,
+  //           days,
+  //           groups
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error("Error in fetching boundary results:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [categories, days, city, groups, searchingToday]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (categories && days && city.bounds) {
-          await actions.setBoundaryResults(
-            city.bounds,
-            categories,
-            days,
-            groups
-          );
-        }
+        setLoadingResults(true);
+
+        await actions.setBoundaryResults(city.bounds, categories, days, groups);
       } catch (error) {
         console.error("Error in fetching boundary results:", error);
+      } finally {
+        setLoadingResults(false);
       }
     };
-    fetchData();
-  }, [categories, days, city, groups, searchingToday]);
+
+    if (city.bounds) {
+      fetchData();
+    }
+  }, [categories, days, city.bounds, groups, searchingToday]);
 
   useEffect(() => {
     const handleResize = actions.updateScreenSize;
@@ -293,6 +344,9 @@ const Home = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  console.log("Boundary results:", store.boundaryResults);
+  console.log("Loading results:", loadingResults);
 
   return (
     <>
@@ -319,11 +373,12 @@ const Home = () => {
           setUserLocation={setUserLocation}
           geoFindMe={geoFindMe}
           updateCityStateFromZip={updateCityStateFromZip}
+          loadingResults={loadingResults}
         />
-        {/* </div> */}
+
         <div className="grand-map-container">
           <ErrorBoundary>
-            <SimpleMap
+            <Map
               handleZipInputChange={handleZipInputChange}
               zipInput={zipInput}
               layout={layout}
