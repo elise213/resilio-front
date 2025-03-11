@@ -5,7 +5,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
   z-index: 998; /* Below the modal, above everything else */
 }
 
@@ -15,7 +15,9 @@
   color: blue;
   font-style: italic;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: 0.3sease;
+  align-self: flex-end;
+  padding: 5px;
 }
 
 .login-button-resilio:hover {

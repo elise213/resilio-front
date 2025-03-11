@@ -345,8 +345,8 @@ const Home = () => {
     };
   }, []);
 
-  console.log("Boundary results:", store.boundaryResults);
-  console.log("Loading results:", loadingResults);
+  // console.log("Boundary results:", store.boundaryResults);
+  // console.log("Loading results:", loadingResults);
 
   return (
     <>

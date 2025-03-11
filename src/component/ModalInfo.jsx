@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
-import FavoriteButton from "./FavoriteButton";
 import ScheduleInfo from "./ScheduleInfo";
 
 export const ModalInfo = ({
@@ -30,18 +29,6 @@ export const ModalInfo = ({
     navigator.clipboard.writeText(res.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const toggleFavorite = (event) => {
-    event.stopPropagation();
-
-    console.log("sending favorite id", id);
-    if (isFavorited) {
-      actions.removeFavorite(id);
-    } else {
-      actions.addFavorite(id);
-    }
-    setIsFavorited(!isFavorited);
   };
 
   const currentSchedule = scheduleStore;
@@ -90,11 +77,11 @@ export const ModalInfo = ({
         result[`${day}Start`] = "closed";
         result[`${day}End`] = "closed";
       }
-      console.log(
-        `Day: ${day}, Start: ${result[`${day}Start`]}, End: ${
-          result[`${day}End`]
-        }`
-      );
+      // console.log(
+      //   `Day: ${day}, Start: ${result[`${day}Start`]}, End: ${
+      //     result[`${day}End`]
+      //   }`
+      // );
     });
     return result;
   }
@@ -173,21 +160,6 @@ export const ModalInfo = ({
 
   return (
     <>
-      {res.alert && (
-        <div className="alert-bar">
-          <marquee behavior="scroll" direction="left">
-            🚨 {res.alert}
-          </marquee>
-        </div>
-      )}
-
-      {isLoggedIn && (
-        <FavoriteButton
-          isFavorited={isFavorited}
-          toggleFavorite={toggleFavorite}
-        />
-      )}
-
       <Carousel res={res} />
 
       <div className="info-groups">
