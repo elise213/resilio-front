@@ -6,8 +6,6 @@
 .contact-submit {
   margin-top: 27px;
   margin-left: 5px;
-  /* width: 98%; */
-  /* box-sizing: border-box; */
 }
 
 .contact-form-div p {
@@ -39,15 +37,10 @@
   box-sizing: border-box;
 }
 
-.submit {
-  color: white !important;
-}
-
 .form-col-full {
   height: 150px;
   padding: 5px;
   box-sizing: border-box;
-  /* margin-top: 10px; */
 }
 
 .message {

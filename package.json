@@ -22,7 +22,6 @@
     "circletype": "^2.3.0",
     "emailjs-com": "^3.2.0",
     "google-map-react": "^2.2.1",
-    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

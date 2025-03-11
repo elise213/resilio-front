@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
-import Styles from "../styles/simple_map.css";
-// import HoverCard from "./HoverCard";
-// import { debounce } from "lodash";
-import ResourceCard from "../component/ResourceCard";
+import Styles from "../styles/map.css";
+import HoverCard from "./HoverCard";
+import { debounce } from "lodash";
+import ResourceCard from "./ResourceCard";
 
-const SimpleMap = ({
+const Map = ({
   layout,
   handleBoundsChange,
   city,
@@ -34,8 +34,8 @@ const SimpleMap = ({
     actions.setSchedules();
   }, []);
 
-  // const debouncedHoverEnter = debounce(() => setIsHovered(true), 100);
-  // const debouncedHoverLeave = debounce(() => setIsHovered(false), 100);
+  const debouncedHoverEnter = debounce(() => setIsHovered(true), 100);
+  const debouncedHoverLeave = debounce(() => setIsHovered(false), 100);
 
   useEffect(() => {
     if (city.center) {
@@ -78,16 +78,16 @@ const SimpleMap = ({
     const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
 
     if (isCloserToTop && isCloserToLeft) {
-      // console.log("top left");
+      console.log("top left");
       return "corner-top-left";
     } else if (isCloserToTop && !isCloserToLeft) {
-      // console.log("top right");
+      console.log("top right");
       return "corner-top-right";
     } else if (!isCloserToTop && isCloserToLeft) {
-      // console.log("bottom left");
+      console.log("bottom left");
       return "corner-bottom-left";
     } else {
-      // console.log("bottom right");
+      console.log("bottom right");
       return "corner-bottom-right";
     }
   };
@@ -95,25 +95,22 @@ const SimpleMap = ({
   // const Marker = React.memo(
   //   ({ text, id, result, markerColor }) => {
   //     const [isHovered, setIsHovered] = useState(false);
-  //     const [hoverTimeout, setHoverTimeout] = useState(null);
   //     const [closestCornerClass, setClosestCornerClass] = useState("");
 
   //     const handleMouseEnter = (event) => {
-  //       const timeout = setTimeout(() => {
-  //         setIsHovered(true);
-  //         setHoveredItem(result);
-  //       }, 150); // Adjust delay as needed
+  //       setIsHovered(true);
+  //       setHoveredItem(result);
+
+  //       // Calculate the position relative to the marker
   //       const markerRect = event.currentTarget.getBoundingClientRect();
   //       const cornerClass = calculateClosestCorner(
   //         markerRect.left + markerRect.width / 2,
   //         markerRect.top + markerRect.height / 2
   //       );
   //       setClosestCornerClass(cornerClass);
-  //       setHoverTimeout(timeout);
   //     };
 
   //     const handleMouseLeave = () => {
-  //       clearTimeout(hoverTimeout);
   //       setIsHovered(false);
   //       setHoveredItem(null);
   //     };
@@ -126,25 +123,35 @@ const SimpleMap = ({
   //         onClick={result ? () => openModal(result) : undefined}
   //       >
   //         {isHovered && result && (
-  //           <div className={`hover-card ${closestCornerClass}`}>
-  //             <ResourceCard key={result.id} item={result} />
+  //           // <div className={`hover-card ${closestCornerClass}`}>
+  //           <div className={`hover-card`}>
+  //             <ResourceCard
+  //               key={result.id}
+  //               item={result}
+  //               openModal={openModal}
+  //               closeModal={closeModal}
+  //             />
   //           </div>
   //         )}
 
-  //         <div className="marker-icon">
-  //           <i
-  //             className="fa-solid fa-map-pin"
-  //             style={{ color: markerColor || "red" }}
-  //           ></i>
-  //         </div>
+  //         {!isHovered && result && (
+  //           <div className="marker-icon">
+  //             <i className="fa-solid fa-map-pin" style={{ color: "red" }}></i>
+  //           </div>
+  //         )}
   //       </div>
   //     );
   //   },
-  //   (prevProps, nextProps) => prevProps.id === nextProps.id
+  //   (prevProps, nextProps) => {
+  //     return (
+  //       prevProps.id === nextProps.id &&
+  //       prevProps.isHovered === nextProps.isHovered
+  //     );
+  //   }
   // );
 
   const Marker = React.memo(
-    ({ text, id, result, markerColor = "red", icon = "fa-map-pin" }) => {
+    ({ text, id, result, markerColor }) => {
       const [isHovered, setIsHovered] = useState(false);
       const [hoverTimeout, setHoverTimeout] = useState(null);
       const [closestCornerClass, setClosestCornerClass] = useState("");
@@ -153,7 +160,7 @@ const SimpleMap = ({
         const timeout = setTimeout(() => {
           setIsHovered(true);
           setHoveredItem(result);
-        }, 150);
+        }, 150); // Adjust delay as needed
         const markerRect = event.currentTarget.getBoundingClientRect();
         const cornerClass = calculateClosestCorner(
           markerRect.left + markerRect.width / 2,
@@ -175,11 +182,6 @@ const SimpleMap = ({
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClick={result ? () => openModal(result) : undefined}
-          style={{
-            position: "absolute",
-            transform: "translate(-50%, -100%)",
-            cursor: "pointer",
-          }}
         >
           {isHovered && result && (
             <div className={`hover-card ${closestCornerClass}`}>
@@ -189,11 +191,8 @@ const SimpleMap = ({
 
           <div className="marker-icon">
             <i
-              className={`fa-solid ${icon}`}
-              style={{
-                color: markerColor,
-                fontSize: "28px", // Larger size for user marker
-              }}
+              className="fa-solid fa-map-pin"
+              style={{ color: markerColor || "red" }}
             ></i>
           </div>
         </div>
@@ -201,65 +200,6 @@ const SimpleMap = ({
     },
     (prevProps, nextProps) => prevProps.id === nextProps.id
   );
-
-  // const Marker = React.memo(
-  //   ({ text, id, result, markerColor }) => {
-  //     const [isHovered, setIsHovered] = useState(false);
-  //     const [hoverTimeout, setHoverTimeout] = useState(null);
-  //     const [closestCornerClass, setClosestCornerClass] = useState("");
-
-  //     const handleMouseEnter = (event) => {
-  //       const timeout = setTimeout(() => {
-  //         setIsHovered(true);
-  //         setHoveredItem(result);
-  //       }, 150); // Adjust delay as needed
-  //       const markerRect = event.currentTarget.getBoundingClientRect();
-  //       const cornerClass = calculateClosestCorner(
-  //         markerRect.left + markerRect.width / 2,
-  //         markerRect.top + markerRect.height / 2
-  //       );
-  //       setClosestCornerClass(cornerClass);
-  //       setHoverTimeout(timeout);
-  //     };
-
-  //     const handleMouseLeave = () => {
-  //       clearTimeout(hoverTimeout);
-  //       setIsHovered(false);
-  //       setHoveredItem(null);
-  //     };
-
-  //     return (
-  //       <div
-  //         className="marker"
-  //         onMouseEnter={handleMouseEnter}
-  //         onMouseLeave={handleMouseLeave}
-  //         onClick={result ? () => openModal(result) : undefined}
-  //         style={{
-  //           position: "absolute",
-  //           transform: "translate(-50%, -100%)", // Shift the marker icon
-  //           cursor: "pointer",
-  //         }}
-  //       >
-  //         {isHovered && result && (
-  //           <div className={`hover-card ${closestCornerClass}`}>
-  //             <ResourceCard key={result.id} item={result} />
-  //           </div>
-  //         )}
-
-  //         <div className="marker-icon">
-  //           <i
-  //             className="fa-solid fa-map-pin"
-  //             style={{
-  //               color: markerColor || "red",
-  //               fontSize: "24px", // Adjust size as needed
-  //             }}
-  //           ></i>
-  //         </div>
-  //       </div>
-  //     );
-  //   },
-  //   (prevProps, nextProps) => prevProps.id === nextProps.id
-  // );
 
   return (
     <>
@@ -294,8 +234,7 @@ const SimpleMap = ({
                   lat={userLocation.lat}
                   lng={userLocation.lng}
                   text="You are here!"
-                  markerColor="blue" // Use blue for user location
-                  icon="fa-location-dot" // Different icon
+                  color="maroon"
                 />
               )}
             </GoogleMapReact>
@@ -306,4 +245,4 @@ const SimpleMap = ({
   );
 };
 
-export default React.memo(SimpleMap);
+export default React.memo(Map);

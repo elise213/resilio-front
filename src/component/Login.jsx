@@ -50,13 +50,13 @@ const Login = ({ setLayout }) => {
 
   const handleLogout = () => {
     actions.logout();
-    setAnchorEl(null); // Close dropdown on logout
+    setAnchorEl(null);
     setLayout("fullscreen-sidebar");
   };
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    const forgotEmail = email; // Use the email state directly
+    const forgotEmail = email;
 
     const requestOptions = {
       method: "POST",
@@ -108,11 +108,11 @@ const Login = ({ setLayout }) => {
   };
 
   const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget); // Open the dropdown
+    setAnchorEl(event.currentTarget);
   };
 
   const handleProfileClose = () => {
-    setAnchorEl(null); // Close the dropdown
+    setAnchorEl(null);
   };
 
   let field = null;
@@ -289,10 +289,10 @@ const Login = ({ setLayout }) => {
 
         <div className="login-modal-footer">
           <div className="forgot-password" onClick={() => setLog("2")}>
-            register for an account
+            Register for an account
           </div>
           <div className="forgot-password" onClick={() => setLog("3")}>
-            forgot password
+            I forgot my password
           </div>
         </div>
       </div>
@@ -356,18 +356,12 @@ const Login = ({ setLayout }) => {
     <>
       {!isLoginModalOpen && isLoggedIn ? (
         <>
-          {/* Profile Circle for logged-in users */}
-          <IconButton onClick={handleProfileClick}>
-            {/* <Avatar alt="Profile" src={"/default-avatar.jpg"} /> */}
-            <span
-              className="material-symbols-outlined account-circle"
-              style={{
-                fontSize: "x-large",
-                margin: "0 !important",
-              }}
-            >
-              account_circle
-            </span>
+          <IconButton onClick={handleProfileClick} style={{ padding: "0" }}>
+            <Avatar
+              alt="Profile"
+              src={"/default-avatar.jpg"}
+              sx={{ width: 30, height: 30 }}
+            />
           </IconButton>
 
           {/* Dropdown Menu */}
@@ -398,12 +392,15 @@ const Login = ({ setLayout }) => {
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem
-              style={{ textDecoration: "none", color: "inherit" }}
-              onClick={handleLogout}
-            >
-              Logout
+            <MenuItem onClick={handleProfileClose}>
+              <Link
+                to="/favorites"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Favorites
+              </Link>
             </MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </>
       ) : (

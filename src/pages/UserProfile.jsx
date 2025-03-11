@@ -1,25 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Rating from "@mui/material/Rating";
 import Swal from "sweetalert2";
-import "../styles/profile.css";
+import Styles from "../styles/profile.css";
 import { Modal } from "../component";
-import ResourceCard from "../component/ResourceCard";
-import Switch from "@mui/material/Switch";
-import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
   const [userCommentsAndRatings, setUserCommentsAndRatings] = useState([]);
   const [userName, setUserName] = useState("");
-  const [showReviews, setShowReviews] = useState(true); // Default to Reviews
+  const [loading, setLoading] = useState(true); // <-- New loading state
   const loggedInUserId = parseInt(sessionStorage.getItem("user_id"), 10);
 
   useEffect(() => {
-    actions.getCommentsAndRatingsForUser(id, setUserCommentsAndRatings);
-    actions.getUserInfo(id).then((userInfo) => setUserName(userInfo.name));
+    setLoading(true); // Start loading before fetching data
+
+    Promise.all([
+      actions.getCommentsAndRatingsForUser(id, setUserCommentsAndRatings),
+      actions.getUserInfo(id).then((userInfo) => {
+        setUserName(userInfo.name);
+      }),
+    ]).finally(() => {
+      setLoading(false); // Stop loading once data is fetched
+    });
   }, [id]);
 
   const handleDelete = (commentId) => {
@@ -55,126 +61,73 @@ const UserProfile = () => {
     const fullResource = await actions.getResource(resourceId);
     if (fullResource) {
       actions.setSelectedResource(fullResource);
-      setTimeout(() => actions.openModal(), 0);
+      setTimeout(() => {
+        actions.openModal();
+      }, 0);
     }
   };
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      actions.getCommentsAndRatingsForUser(id, setUserCommentsAndRatings),
-      actions.getUserInfo(id).then((userInfo) => setUserName(userInfo.name)),
-    ]).finally(() => setLoading(false));
-  }, [id]);
-
   return (
-    <>
+    <div className="profile-container">
       <p className="close-modal">
         <Link to={`/`}>
           <span className="material-symbols-outlined">arrow_back_ios</span>
           Back to Search
         </Link>
       </p>
-      <div className="profile-container">
-        {/* Toggle Switch */}
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          className="screen-divider-toggle-2"
-        >
-          {console.log("Rendering Switch:", showReviews)}
-          {console.log("Favorites:", store.favorites)}
-          {console.log("Reviews:", userCommentsAndRatings)}
+      <span className="profile-title">{userName}'s Reviews</span>
 
-          <span style={{ marginRight: "8px" }}>My Reviews</span>
-          <Switch
-            checked={!showReviews}
-            onChange={() => {
-              console.log("Toggling showReviews. Before:", showReviews);
-              setShowReviews((prev) => !prev);
-            }}
-            color="primary"
-          />
-          <span style={{ marginLeft: "8px" }}>Following</span>
-        </Box>
-
-        {/* Content Switcher */}
-        <div className="content-container">
-          {showReviews ? (
-            <div className="reviews-section">
-              {userCommentsAndRatings.length > 0 ? (
-                userCommentsAndRatings.map((item, index) => (
-                  <div key={index} className="user-review-profile">
-                    <div className="review-header">
-                      <p
-                        onClick={() => handleOpenModal(item.resource_id)}
-                        className="resource-link"
-                      >
-                        {item.resource_name}
-                      </p>
-                    </div>
-                    <p className="review-text">{item.comment_cont}</p>
-                    <Rating
-                      name="read-only"
-                      value={item.rating_value}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <div className="review-footer">
-                      <p>{new Date(item.created_at).toLocaleDateString()}</p>
-                      {parseInt(id) === loggedInUserId && (
-                        <button
-                          onClick={() => handleDelete(item.comment_id)}
-                          className="delete-button"
-                          title="Delete this comment"
-                        >
-                          <span
-                            class="material-symbols-outlined"
-                            style={{ fontSize: "20px" }}
-                          >
-                            delete
-                          </span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <>
-                  {loading ? <span>Loading...</span> : <p>No reviews found.</p>}
-                </>
+      {/* Show Loading State */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : userCommentsAndRatings.length > 0 ? (
+        userCommentsAndRatings.map((item, index) => (
+          <div key={index} className="user-review-profile">
+            <div>
+              <strong>Resource:</strong>
+              <span
+                onClick={() => handleOpenModal(item.resource_id)}
+                style={{ cursor: "pointer", color: "blue" }}
+              >
+                {item.resource_name}
+              </span>
+            </div>
+            <p>
+              <strong>Comment:</strong> {item.comment_cont}
+            </p>
+            <Rating
+              name="read-only"
+              value={item.rating_value}
+              precision={0.5}
+              readOnly
+              className="profile-rating"
+            />
+            <div className="group-2">
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(item.created_at).toLocaleDateString()}
+              </p>
+              {parseInt(id) === loggedInUserId && (
+                <button
+                  onClick={() => handleDelete(item.comment_id)}
+                  className="delete-button"
+                >
+                  Delete
+                </button>
               )}
             </div>
-          ) : (
-            <div className="favorites-section">
-              <ul className="favorites-list">
-                {Array.isArray(store.favorites) &&
-                store.favorites.length > 0 ? (
-                  store.favorites.map((resource, index) => (
-                    <ResourceCard
-                      key={`${resource.id}-${index}`}
-                      item={resource}
-                    />
-                  ))
-                ) : (
-                  <p>No favorite resources found.</p>
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        {/* Modal */}
-        {store.modalIsOpen && (
-          <div className="modal-div">
-            <Modal />
           </div>
-        )}
-      </div>
-    </>
+        ))
+      ) : (
+        <p>No comments or ratings found.</p>
+      )}
+
+      {store.modalIsOpen && (
+        <div className="modal-div">
+          <Modal />
+        </div>
+      )}
+    </div>
   );
 };
 

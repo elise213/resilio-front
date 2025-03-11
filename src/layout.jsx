@@ -1,15 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/home.jsx";
-import UserProfile from "./pages/UserProfile.jsx";
-import Create from "./pages/Create.jsx";
-import Edit from "./pages/Edit.jsx";
-import Donate from "./pages/Donate.jsx";
-import Account from "./pages/Account.jsx";
-import ScrollToTop from "./component/scrollToTop.jsx";
-import injectContext, { Context } from "./store/appContext.jsx";
-import ResetPassword from "./pages/ResetPassword.jsx";
-import ProfileSettings from "./pages/ProfileSettings.jsx";
+import Home from "./pages/home";
+import UserProfile from "./pages/UserProfile";
+import Create from "./pages/Create";
+import Edit from "./pages/Edit";
+import Favorites from "./pages/Favorites";
+import Account from "./pages/Account";
+import injectContext from "./store/appContext";
+import { Context } from "./store/appContext";
+import ResetPassword from "./pages/ProfileSettings";
+import ProfileSettings from "./pages/ProfileSettings";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
@@ -17,18 +17,16 @@ const Layout = () => {
 
   return (
     <BrowserRouter basename={basename}>
-      <ScrollToTop>
-        <Routes>
-          <Route element={<Home />} path="/" />
-          <Route element={<UserProfile />} path="/profile/:id" />
-          <Route element={<Create />} path="/create" />
-          <Route element={<ResetPassword />} path="/reset-password" />
-          <Route element={<Account />} path="/account" />
-          <Route element={<Edit />} path="/edit/:id" />
-          <Route element={<Donate />} path="/donate" />
-          <Route element={<ProfileSettings />} path="/profilesettings/:id" />
-        </Routes>
-      </ScrollToTop>
+      <Routes>
+        <Route element={<Home />} path="/" />
+        <Route element={<UserProfile />} path="/profile/:id" />
+        <Route element={<Create />} path="/create" />
+        <Route element={<ResetPassword />} path="/resetpassword" />
+        <Route element={<Account />} path="/account" />
+        <Route element={<Favorites />} path="/favorites" />
+        <Route element={<Edit />} path="/edit/:id" />
+        <Route element={<ProfileSettings />} path="/profilesettings/:id" />
+      </Routes>
     </BrowserRouter>
   );
 };
