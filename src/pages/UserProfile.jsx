@@ -77,14 +77,13 @@ const UserProfile = () => {
       </p>
       <span className="profile-title">{userName}'s Reviews</span>
 
-      {/* Show Loading State */}
       {loading ? (
         <p>Loading...</p>
       ) : userCommentsAndRatings.length > 0 ? (
         userCommentsAndRatings.map((item, index) => (
           <div key={index} className="user-review-profile">
             <div>
-              <strong>Resource:</strong>
+              <strong>Resource: </strong>
               <span
                 onClick={() => handleOpenModal(item.resource_id)}
                 style={{ cursor: "pointer", color: "blue" }}
