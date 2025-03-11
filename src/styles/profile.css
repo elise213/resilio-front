@@ -1,86 +1,23 @@
 .profile-container {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 40px;
-  box-sizing: border-box;
-}
-
-.back-button {
-  align-self: flex-start;
-}
-
-.resource-link {
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.review-header {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-.review-text {
-  margin: 10px 0 0 0;
-}
-
-.review-footer {
-  align-self: flex-end;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.review-footer p {
-  font-size: 11px;
-}
-
-.reviews-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.toggle-button {
-  background-color: transparent;
-  border-radius: 8px;
-  border-width: 1px;
-  cursor: pointer;
-  transition: 0.5s ease;
-}
-
-.toggle-button:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.reviews-heading {
-  margin: 10px 0;
-}
-.favorites-section {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.favorites-list {
-  padding: 0;
-  margin: 0;
 }
 
 .user-review-profile {
   border: 1px solid black;
   width: 270px;
-  padding: 8px;
-  margin: 0 0 15px 0;
+  padding: 10px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-radius: 8px;
+  border-radius: 3px;
+}
+
+.profile-rating {
+  font-size: 12px !important;
 }
 
 .delete-button-profile {
@@ -88,15 +25,13 @@
   color: maroon;
   border: 1px solid red;
   background-color: salmon;
-  /* margin: 10px; */
   padding: 3px;
   border-radius: 3px;
 }
 
 .profile-title {
   margin-top: 30px;
-  font-size: 14px;
-  font-weight: 100;
+  font-size: 20px;
 }
 
 .group-2 {
@@ -104,5 +39,4 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  margin-top: 25px;
 }

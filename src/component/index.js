@@ -1,4 +1,4 @@
-export { default as SimpleMap } from "./SimpleMap";
+export { default as Map } from "./Map";
 export { default as Selection } from "./Selection";
 export { default as ResourceCard } from "./ResourceCard";
 export { default as Modal } from "./Modal";

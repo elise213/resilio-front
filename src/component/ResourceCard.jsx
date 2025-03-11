@@ -7,8 +7,6 @@ const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
   const [averageRating2, setAverageRating2] = useState(0);
   const [ratingCount2, setRatingCount2] = useState(0);
-  const [loadingRating, setLoadingRating] = useState(true);
-  const [imageError, setImageError] = useState(false);
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
@@ -16,14 +14,7 @@ const ResourceCard = (props) => {
   const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
-    setLoadingRating(true); // Set loading to true when fetching starts
-    actions
-      .getAverageRating(props.item.id, setAverageRating2, setRatingCount2)
-      .then(() => setLoadingRating(false)) // Hide loading once fetch completes
-      .catch(() => setLoadingRating(false)); // Handle errors gracefully
-  }, [props.item.id]);
-
-  useEffect(() => {
+    // console.log("Fetching average rating for resource ID:", props.item.id);
     actions.getAverageRating(
       props.item.id,
       setAverageRating2,
@@ -83,43 +74,37 @@ const ResourceCard = (props) => {
     >
       <span className="resource-title">{props.item.name}</span>
 
-      {props.item.image && !imageError && (
+      {props.item.image && (
         <img
           className="card-img"
           src={props.item.image}
           alt="profile picture"
-          onError={() => setImageError(true)} // Hide image if it fails to load
+          onError={(e) => {
+            e.target.style.display = "none"; // Hides the broken image completely
+          }}
         />
       )}
 
       {categoryLabels.length > 0 && (
-        <div className="category-container">
-          {categoryLabels.map((label, index) => (
-            <span key={index} className="category-span">
-              {label}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {categoryLabels.length > 0 && (
         <div className="card-description">
-          {loadingRating ? (
-            <p className="rating-loading">Loading rating...</p>
-          ) : (
-            <div className="rating-div">
-              <Rating
-                name="read-only"
-                value={averageRating2}
-                precision={0.5}
-                readOnly
-                className="star"
-              />
-              {ratingCount2 > 0 && (
-                <p className="ratingCount">({ratingCount2})</p>
-              )}
-            </div>
-          )}
+          <div>
+            {categoryLabels.map((label, index) => (
+              <span key={index} className="category-span">
+                {label}
+              </span>
+            ))}
+          </div>
+          <div className="rating-div">
+            <Rating
+              style={{ flexDirection: "row" }}
+              name="read-only"
+              value={averageRating2}
+              precision={0.5}
+              readOnly
+              className="star"
+            />
+            <p className="ratingCount">({ratingCount2})</p>
+          </div>
         </div>
       )}
     </div>

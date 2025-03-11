@@ -1,3 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Light-Italic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Book.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Book-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Demi.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Demi-Italic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Bold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Neutraface Text";
+  src: url("/fonts/Neutraface-Text-Bold-Italic.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+}
+
 :root {
   --peruish: rgb(149, 84, 19);
   --newGreen: rgb(67, 172, 67);
@@ -8,8 +66,10 @@
   --green2: rgb(48, 129, 69);
   --yellow: #f9d783;
   --new: rgb(129, 100, 129);
-  width: 100vw;
-  overflow-x: hidden;
+}
+
+#root {
+  height: 100% !important;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
@@ -45,16 +105,19 @@ body {
   position: relative;
   overflow: hidden !important;
   box-sizing: border-box;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: "Neutraface Text", sans-serif;
 }
 
-.radio {
-  border-radius: 2px !important;
-  border: solid 1px lightgray;
-}
-
-.radio-label {
-  color: gray;
+.button-container-sidebar {
+  width: 100%;
+  justify-content: space-between !important;
+  align-items: center;
+  z-index: 999;
+  box-sizing: border-box;
+  padding: 5px 10px;
 }
 
 .grand-map-container {
@@ -108,18 +171,6 @@ body {
   margin-bottom: 10px;
 }
 
-.iframe {
-  height: 100% !important;
-  box-sizing: border-box !important;
-  padding-bottom: 30px;
-}
-
-.category-container {
-  padding: 5px;
-}
-
-/* _____________________________________________________________BUTTONS */
-
 .submit {
   width: 100%;
   color: white;
@@ -131,6 +182,21 @@ body {
 
 .swal2-container {
   z-index: 9999999999;
+}
+
+.list-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.list-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list-container::-webkit-scrollbar-thumb {
+  background-color: blue;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  box-shadow: inset 0 0 0 1px gray;
 }
 
 /* ______________________________________________________________SIZE < 700px */

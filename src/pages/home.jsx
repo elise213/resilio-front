@@ -1,7 +1,7 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Sidebar from "../component/Sidebar";
-import SimpleMap from "../component/SimpleMap";
+import Map from "../component/Map";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 
@@ -12,19 +12,11 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [isModalOpen, setIsModalOpen] = useState(store.modalIsOpen);
+  const [loadingResults, setLoadingResults] = useState(true); // <-- New loading state
 
-  // Use effect to monitor store changes and update local state
   useEffect(() => {
     setIsModalOpen(store.modalIsOpen);
   }, [store.modalIsOpen]);
-
-  // useEffect(() => {
-  //   console.log("updated boundaryResutls", store.boundaryResults);
-  // }, [store.boundaryResults]);
-
-  // useEffect(() => {
-  //   console.log("updated unfilteredMapResutls", store.unfilteredMapResults);
-  // }, [store.unfilteredMapResults]);
 
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
@@ -67,6 +59,7 @@ const Home = () => {
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
     };
+
     checkLoginStatus();
   }, [store.token]);
 
@@ -80,7 +73,6 @@ const Home = () => {
 
       if (location && bounds) {
         actions.setBoundaryResults(bounds, categories, days, groups);
-        actions.setMapResults(city.bounds);
         handleBoundsChange({
           center: { lat: location.lat, lng: location.lng },
           bounds: {
@@ -109,7 +101,6 @@ const Home = () => {
   const handleBoundsChange = useCallback(
     debounce((data) => {
       actions.setBoundaryResults(data.bounds, categories, days, groups);
-      actions.setMapResults(data.bounds);
       setCity({
         ...city,
         bounds: {
@@ -121,7 +112,6 @@ const Home = () => {
           lng: normalizeLongitude(data.center.lng),
         },
       });
-      actions.setMapResults(city.bounds);
     }, 600),
     [categories, days, groups]
   );
@@ -197,6 +187,65 @@ const Home = () => {
 
   const [loadingLocation, setLoadingLocation] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("🚀 Fetch started, setting loadingResults to true...");
+      setLoadingResults(true);
+
+      try {
+        console.log("Fetching boundary results...");
+        const results = await actions.setBoundaryResults(
+          city.bounds,
+          categories,
+          days,
+          groups
+        );
+
+        // ✅ Only set loadingResults = false if results actually returned
+        if (results) {
+          console.log("✅ Fetch complete, updating UI...");
+          setLoadingResults(false);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching boundary results:", error);
+        setLoadingResults(false);
+      }
+    };
+
+    if (city.bounds) {
+      fetchData();
+    }
+  }, [categories, days, city.bounds, groups, searchingToday]);
+
+  // const geoFindMe = async () => {
+  //   if (navigator.geolocation) {
+  //     setLayout("fullscreen-map");
+  //     setLoadingLocation(true);
+
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         console.log("Position:", position.coords);
+  //         setUserLocation({
+  //           lat: position.coords.latitude,
+  //           lng: position.coords.longitude,
+  //         });
+  //         updateCityStateFromCoords(
+  //           position.coords.latitude,
+  //           position.coords.longitude
+  //         );
+  //         setLoadingLocation(false);
+  //       },
+  //       (error) => {
+  //         console.log("Error getting position", error);
+  //         alert("Unable to retrieve your location");
+  //         setLoadingLocation(false);
+  //       }
+  //     );
+  //   } else {
+  //     alert("Geolocation is not supported by your browser");
+  //   }
+  // };
+
   // USE EFFECTS
 
   const geoFindMe = async () => {
@@ -235,37 +284,58 @@ const Home = () => {
     checkLoginStatus();
   }, [store.token]);
 
-  useEffect(() => {
-    const checkLoadingStatus = () => {
-      const loading = sessionStorage.getItem("loading");
-      setLoading(loading);
-    };
+  // useEffect(() => {
+  //   const checkLoadingStatus = () => {
+  //     const loading = sessionStorage.getItem("loading");
+  //     setLoading(loading);
+  //   };
 
-    checkLoadingStatus();
-  }, [store.loading]);
+  //   checkLoadingStatus();
+  // }, [store.loading]);
+
+  // useEffect(() => {
+  //   geoFindMe();
+  // }, []);
 
   useEffect(() => {
     actions.setSchedules();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (categories && days && city.bounds) {
+  //         await actions.setBoundaryResults(
+  //           city.bounds,
+  //           categories,
+  //           days,
+  //           groups
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error("Error in fetching boundary results:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [categories, days, city, groups, searchingToday]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (categories && days && city.bounds) {
-          await actions.setBoundaryResults(
-            city.bounds,
-            categories,
-            days,
-            groups
-          );
-          await actions.setMapResults(city.bounds);
-        }
+        setLoadingResults(true);
+
+        await actions.setBoundaryResults(city.bounds, categories, days, groups);
       } catch (error) {
         console.error("Error in fetching boundary results:", error);
+      } finally {
+        setLoadingResults(false);
       }
     };
-    fetchData();
-  }, [categories, days, city, groups, searchingToday]);
+
+    if (city.bounds) {
+      fetchData();
+    }
+  }, [categories, days, city.bounds, groups, searchingToday]);
 
   useEffect(() => {
     const handleResize = actions.updateScreenSize;
@@ -274,6 +344,9 @@ const Home = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  console.log("Boundary results:", store.boundaryResults);
+  console.log("Loading results:", loadingResults);
 
   return (
     <>
@@ -300,11 +373,12 @@ const Home = () => {
           setUserLocation={setUserLocation}
           geoFindMe={geoFindMe}
           updateCityStateFromZip={updateCityStateFromZip}
+          loadingResults={loadingResults}
         />
-        {/* </div> */}
+
         <div className="grand-map-container">
           <ErrorBoundary>
-            <SimpleMap
+            <Map
               handleZipInputChange={handleZipInputChange}
               zipInput={zipInput}
               layout={layout}
