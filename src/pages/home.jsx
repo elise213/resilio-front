@@ -403,9 +403,18 @@ const Home = () => {
         </div>
 
         {isModalOpen && (
-          <div className="modal-div">
-            <Modal />
-          </div>
+          <>
+            <div
+              className="login-overlay"
+              onClick={() => {
+                actions.closeModal();
+                document.body.classList.remove("modal-open");
+              }}
+            ></div>
+            <div className="modal-div">
+              <Modal />
+            </div>
+          </>
         )}
 
         <div className="foot">

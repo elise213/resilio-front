@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GoogleMapReact from "google-map-react";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
@@ -16,18 +17,14 @@ const Modal = ({}) => {
   const [rating, setRating] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCount, setRatingCount] = useState(0);
-
   const [showRating, setShowRating] = useState(false);
   const apiKey = import.meta.env.VITE_GOOGLE;
-
   const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
   const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
   const isAuthorizedUser = validUserIds.includes(userIdFromSession);
-
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-
   const [isFavorited, setIsFavorited] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
@@ -288,12 +285,11 @@ const Modal = ({}) => {
                       {formattedDate}
                     </div>
                     {parseInt(comment.user_id) === userIdFromSession && (
-                      <button
+                      <DeleteIcon
+                        fontSize="small"
                         onClick={() => handleDelete(comment.comment_id)}
-                        className="delete-button"
-                      >
-                        Delete
-                      </button>
+                        style={{ cursor: "pointer", color: "gray" }}
+                      />
                     )}
                     <div className="like-icon">
                       {comment.likes?.some(

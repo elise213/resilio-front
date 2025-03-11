@@ -123,7 +123,18 @@ const UserProfile = () => {
 
       {store.modalIsOpen && (
         <div className="modal-div">
-          <Modal />
+          <>
+            <div
+              className="login-overlay"
+              onClick={() => {
+                actions.closeModal();
+                document.body.classList.remove("modal-open");
+              }}
+            >
+              {" "}
+            </div>
+            <Modal />
+          </>
         </div>
       )}
     </div>
