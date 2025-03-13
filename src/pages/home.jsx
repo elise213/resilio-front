@@ -19,9 +19,6 @@ const Home = () => {
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [locationModalIsOpen, setLocationModalIsOpen] = useState(false);
-  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
-  const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
-  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
 
   // STATES
   const [zipInput, setZipInput] = useState("");
@@ -313,9 +310,6 @@ const Home = () => {
           geoFindMe={geoFindMe}
           updateCityStateFromZip={updateCityStateFromZip}
           loadingResults={loadingResults}
-          setAboutModalIsOpen={setAboutModalIsOpen}
-          setContactModalIsOpen={setContactModalIsOpen}
-          setDonationModalIsOpen={setDonationModalIsOpen}
         />
 
         <div className="grand-map-container">
@@ -344,7 +338,7 @@ const Home = () => {
         {isModalOpen && (
           <>
             <div
-              className="login-overlay"
+              className="resilio-overlay"
               onClick={() => {
                 actions.closeModal();
                 document.body.classList.remove("modal-open");
@@ -360,7 +354,7 @@ const Home = () => {
           (store.CATEGORY_OPTIONS && store.DAY_OPTIONS && categories && days ? (
             <ErrorBoundary>
               <div
-                className="login-overlay"
+                className="resilio-overlay"
                 onClick={() => {
                   setIsFilterModalOpen(false);
                   document.body.classList.remove("modal-open");
@@ -389,12 +383,12 @@ const Home = () => {
 
       {/* MODALS!! */}
 
-      {donationModalIsOpen && (
+      {store.donationModalIsOpen && (
         <>
           <div className="new-modal donation">
             <p
               className="close-new-modal"
-              onClick={() => setDonationModalIsOpen(false)}
+              onClick={() => actions.closeDonationModal()}
             >
               <span className="material-symbols-outlined">arrow_back_ios</span>
               Back to search
@@ -416,13 +410,13 @@ const Home = () => {
         </>
       )}
 
-      {aboutModalIsOpen && <About setAboutModalIsOpen={setAboutModalIsOpen} />}
+      {store.aboutModalIsOpen && <About />}
 
-      {contactModalIsOpen && (
+      {store.contactModalIsOpen && (
         <div className="new-modal">
           <p
             className="close-new-modal"
-            onClick={() => setContactModalIsOpen(false)}
+            onClick={() => actions.closeContactModal()}
           >
             <span className="material-symbols-outlined">arrow_back_ios</span>
             Back to search

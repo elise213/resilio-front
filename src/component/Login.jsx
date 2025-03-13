@@ -238,7 +238,7 @@ const Login = ({ setLayout }) => {
       {isLoginModalOpen && (
         <>
           <div
-            className="login-overlay"
+            className="resilio-overlay"
             onClick={() => {
               actions.closeLoginModal();
               document.body.classList.remove("modal-open");

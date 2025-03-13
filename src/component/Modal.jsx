@@ -12,6 +12,7 @@ import GoogleMapReact from "google-map-react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Login from "./Login";
 import FavoriteButton from "./FavoriteButton";
+import Tooltip from "@mui/material/Tooltip";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
@@ -92,7 +93,48 @@ const Modal = ({}) => {
       });
   };
 
+  // const handleLike = (commentId) => {
+  //   actions
+  //     .likeComment(commentId)
+  //     .then(() => {
+  //       setComments((prevComments) =>
+  //         prevComments.map((c) =>
+  //           c.comment_id === commentId
+  //             ? {
+  //                 ...c,
+  //                 like_count: c.like_count + 1,
+  //                 likes: [...(c.likes || []), { user_id: userIdFromSession }],
+  //               }
+  //             : c
+  //         )
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error liking comment:", error);
+  //     });
+  // };
+
   const handleLike = (commentId) => {
+    if (!isLoggedIn) {
+      Swal.fire({
+        icon: "info",
+        // title: "",
+        html: `You need to <a href="#" id="login-link">log in</a> to like this comment.`,
+        showConfirmButton: false,
+        didOpen: () => {
+          document
+            .getElementById("login-link")
+            .addEventListener("click", (e) => {
+              e.preventDefault();
+              Swal.close();
+              actions.openLoginModal();
+              actions.closeModal();
+            });
+        },
+      });
+      return;
+    }
+
     actions
       .likeComment(commentId)
       .then(() => {
@@ -245,23 +287,23 @@ const Modal = ({}) => {
         <span className="material-symbols-outlined">arrow_back_ios</span>
         Back
       </p>
-      <div className="group-1">
-        <div className="resource-info">
-          <ModalInfo
-            schedule={resource.schedule}
-            res={resource}
-            isFavorited={isFavorited}
-            setIsFavorited={setIsFavorited}
-            setShowRating={setShowRating}
-            setComments={setComments}
-            averageRating={averageRating}
-            setAverageRating={setAverageRating}
-            toggleRatingModal={toggleRatingModal}
-            ratingCount={ratingCount}
-            setRatingCount={setRatingCount}
-          />
-        </div>
+      {/* <div className="group-1"> */}
+      <div className="resource-info">
+        <ModalInfo
+          schedule={resource.schedule}
+          res={resource}
+          isFavorited={isFavorited}
+          setIsFavorited={setIsFavorited}
+          setShowRating={setShowRating}
+          setComments={setComments}
+          averageRating={averageRating}
+          setAverageRating={setAverageRating}
+          toggleRatingModal={toggleRatingModal}
+          ratingCount={ratingCount}
+          setRatingCount={setRatingCount}
+        />
       </div>
+      {/* </div> */}
 
       {comments.length > 0 && (
         <div className="comments-display">
@@ -297,16 +339,18 @@ const Modal = ({}) => {
                       </div>
                       {formattedDate}
                     </div>
+
                     {parseInt(comment.user_id) === userIdFromSession ? (
-                      <DeleteIcon
-                        fontSize="small"
-                        onClick={() => handleDelete(comment.comment_id)}
-                        style={{ cursor: "pointer", color: "gray" }}
-                      />
+                      <Tooltip title="Delete this comment" arrow>
+                        <DeleteIcon
+                          fontSize="small"
+                          onClick={() => handleDelete(comment.comment_id)}
+                          style={{ cursor: "pointer", color: "gray" }}
+                        />
+                      </Tooltip>
                     ) : (
                       ""
                     )}
-
                     <div className="like-icon">
                       {comment.likes?.some(
                         (like) => like.user_id === userIdFromSession
@@ -322,7 +366,6 @@ const Modal = ({}) => {
                         />
                       )}
 
-                      {/* Only show like count if it's greater than 0 */}
                       {comment.like_count > 0 && (
                         <span>{comment.like_count}</span>
                       )}

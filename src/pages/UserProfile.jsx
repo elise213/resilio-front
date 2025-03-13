@@ -6,6 +6,9 @@ import Swal from "sweetalert2";
 import Styles from "../styles/profile.css";
 import { Modal } from "../component";
 import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
@@ -101,18 +104,36 @@ const UserProfile = () => {
               readOnly
               className="profile-rating"
             />
+
+            <p>
+              <strong>Date:</strong>{" "}
+              {new Date(item.created_at).toLocaleDateString()}
+            </p>
+
             <div className="group-2">
-              <p>
-                <strong>Date:</strong>{" "}
-                {new Date(item.created_at).toLocaleDateString()}
-              </p>
-              {parseInt(id) === loggedInUserId && (
-                <button
+              <div className="like-icon">
+                {item.likes?.some((like) => like.user_id === loggedInUserId) ? (
+                  <FavoriteIcon
+                    fontSize="x-small"
+                    onClick={() => handleUnlike(item.comment_id)}
+                  />
+                ) : (
+                  <FavoriteBorderIcon
+                    fontSize="x-small"
+                    onClick={() => handleLike(item.comment_id)}
+                  />
+                )}
+
+                {item.like_count > 0 && <span>{item.like_count}</span>}
+              </div>
+              {parseInt(id) === loggedInUserId ? (
+                <DeleteIcon
+                  fontSize="small"
                   onClick={() => handleDelete(item.comment_id)}
-                  className="delete-button"
-                >
-                  Delete
-                </button>
+                  style={{ cursor: "pointer", color: "gray" }}
+                />
+              ) : (
+                ""
               )}
             </div>
           </div>
@@ -125,7 +146,7 @@ const UserProfile = () => {
         <div className="modal-div">
           <>
             <div
-              className="login-overlay"
+              className="resilio-overlay"
               onClick={() => {
                 actions.closeModal();
                 document.body.classList.remove("modal-open");

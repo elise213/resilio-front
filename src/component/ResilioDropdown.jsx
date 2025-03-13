@@ -2,12 +2,9 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 
-const ResilioDropdown = ({
-  setAboutModalIsOpen,
-  setContactModalIsOpen,
-  setDonationModalIsOpen,
-}) => {
+const ResilioDropdown = ({}) => {
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const { store, actions } = useContext(Context);
 
   return (
     <div>
@@ -29,7 +26,7 @@ const ResilioDropdown = ({
         <MenuItem
           onClick={() => {
             setAnchorEl2(null);
-            setAboutModalIsOpen(true);
+            actions.openAboutModal();
             console.log("setting about modal true");
           }}
         >
@@ -38,7 +35,7 @@ const ResilioDropdown = ({
         <MenuItem
           onClick={() => {
             setAnchorEl2(null);
-            setDonationModalIsOpen(true);
+            actions.openDonationModal();
           }}
         >
           Donate
@@ -46,7 +43,7 @@ const ResilioDropdown = ({
         <MenuItem
           onClick={() => {
             setAnchorEl2(null);
-            setContactModalIsOpen(true);
+            actions.openContactModal();
           }}
         >
           Contact

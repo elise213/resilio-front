@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../store/appContext";
 
-const About = ({ setAboutModalIsOpen }) => {
+const About = ({}) => {
+  const { store, actions } = useContext(Context);
   return (
     <>
       <div className="new-modal">
         <p
           className="close-new-modal"
-          onClick={() => setAboutModalIsOpen(false)}
+          onClick={() => actions.closeAboutModal()}
         >
           <span className="material-symbols-outlined">arrow_back_ios</span>
           Back to search

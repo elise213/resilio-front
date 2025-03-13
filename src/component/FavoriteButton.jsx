@@ -17,7 +17,7 @@ const FavoriteButton = ({ isFavorited, toggleFavorite }) => {
       <Tooltip
         title={
           isFavorited
-            ? "Click to unfollow this resource"
+            ? "You follow this resource. Click to unfollow"
             : "Click to follow this resource"
         }
         arrow

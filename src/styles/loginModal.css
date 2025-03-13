@@ -1,12 +1,13 @@
 /* Full-screen dark overlay */
-.login-overlay {
+.resilio-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
-  z-index: 998; /* Below the modal, above everything else */
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 998;
+  overflow: hidden;
 }
 
 .login-button-resilio {
