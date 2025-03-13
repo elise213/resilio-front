@@ -81,8 +81,10 @@
 .close-modal {
   align-self: flex-start;
   cursor: pointer;
-  margin: -30px 10px 10px 10px;
   z-index: 9999;
+  position: absolute;
+  top: 0;
+  padding: 10px;
 }
 
 .modal-favorite-icon {
