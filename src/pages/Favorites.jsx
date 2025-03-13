@@ -22,14 +22,20 @@ const Favorites = () => {
           <ul>
             {Array.isArray(store.favorites) &&
               store.favorites.map((resource, index) => (
-                <ResourceCard key={`${resource.id}-${index}`} item={resource} />
+                <ResourceCard
+                  key={`${resource.id}-${index}`}
+                  item={resource}
+                  setAboutModalIsOpen={setAboutModalIsOpen}
+                  setContactModalIsOpen={setContactModalIsOpen}
+                  setDonationModalIsOpen={setDonationModalIsOpen}
+                />
               ))}
           </ul>
 
           {store.modalIsOpen && (
             <>
               <div
-                className="login-overlay"
+                className="resilio-overlay"
                 onClick={() => {
                   actions.closeModal();
                   document.body.classList.remove("modal-open");

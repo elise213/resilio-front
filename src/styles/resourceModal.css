@@ -85,6 +85,8 @@
   position: absolute;
   top: 0;
   padding: 10px;
+  text-decoration: none;
+  color: black;
 }
 
 .modal-favorite-icon {

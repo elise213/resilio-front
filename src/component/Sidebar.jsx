@@ -24,9 +24,6 @@ const Sidebar = ({
   setIsFilterModalOpen,
   geoFindMe,
   updateCityStateFromZip,
-  setAboutModalIsOpen,
-  setContactModalIsOpen,
-  setDonationModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -200,11 +197,7 @@ const Sidebar = ({
               </>
             )}
             <div className="sidebar-dropdowns">
-              <ResilioDropdown
-                setAboutModalIsOpen={setAboutModalIsOpen}
-                setContactModalIsOpen={setContactModalIsOpen}
-                setDonationModalIsOpen={setDonationModalIsOpen}
-              />
+              <ResilioDropdown />
               <Login log={log} setLog={setLog} setLayout={setLayout} />
             </div>
           </div>
