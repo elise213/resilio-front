@@ -290,9 +290,9 @@ const Modal = ({}) => {
                   <div className="comment-content-div">
                     <div className="comment-user-info">
                       <div className="name-and-icon">
-                        <span className="material-symbols-outlined account-circle">
+                        {/* <span className="material-symbols-outlined account-circle">
                           account_circle
-                        </span>
+                        </span> */}
                         {comment.user_name} {"   "}
                       </div>
                       {formattedDate}

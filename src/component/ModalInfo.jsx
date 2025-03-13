@@ -168,28 +168,6 @@ export const ModalInfo = ({
           <span className="modal-info-title">Name</span>
           <span>{res.name}</span>
         </div>
-        {/* ADDRESS */}
-        <div className="info-address">
-          <span className="modal-info-title">Address</span>
-          <div>
-            <span
-              style={{ marginLeft: "10px", cursor: "pointer" }}
-              onClick={handleCopy}
-              title="Copy Address"
-              className="modal-info-value"
-            >
-              {res.address.replace(", USA", "")} {"  "}
-            </span>
-            <span
-              style={{ cursor: "pointer" }}
-              onClick={handleCopy}
-              className="material-symbols-outlined"
-            >
-              content_copy
-            </span>
-            {copied && <span style={{ marginLeft: "10px" }}>Copied!</span>}
-          </div>
-        </div>
 
         {/* Rating */}
         <div
@@ -215,27 +193,28 @@ export const ModalInfo = ({
           </div>
         </div>
 
-        {/* DESCRIPTION */}
-        {res.description && (
-          <>
-            <div className="info-address">
-              <span className="modal-info-title" style={{ alignSelf: "start" }}>
-                About
-              </span>
-              <span className="modal-text" style={{ marginLeft: "20px" }}>
-                {isReadMore
-                  ? `${res.description.slice(0, 200)}...`
-                  : res.description}
-                {res.description.length > 200 && (
-                  <span onClick={toggleReadMore} className="read-more">
-                    {"  "}
-                    {isReadMore ? "(Show more)" : "(Show less)"}
-                  </span>
-                )}
-              </span>
-            </div>
-          </>
-        )}
+        {/* ADDRESS */}
+        <div className="info-address">
+          <span className="modal-info-title">Address</span>
+          <div>
+            <span
+              style={{ marginLeft: "10px", cursor: "pointer" }}
+              onClick={handleCopy}
+              title="Copy Address"
+              className="modal-info-value"
+            >
+              {res.address.replace(", USA", "")} {"  "}
+            </span>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={handleCopy}
+              className="material-symbols-outlined"
+            >
+              content_copy
+            </span>
+            {copied && <span style={{ marginLeft: "10px" }}>Copied!</span>}
+          </div>
+        </div>
 
         {/* WEBSITE */}
         {res.website && (
@@ -253,7 +232,6 @@ export const ModalInfo = ({
             >
               Website
             </span>
-
             <span
               style={{
                 fontSize: "18px",
@@ -267,18 +245,22 @@ export const ModalInfo = ({
           </div>
         )}
 
+        {/* HOURS */}
+
         {scheduleCategory === "Closed Everyday" && (
           <>
-            <span className="info-address" style={{ border: "none" }}>
-              <span className="modal-info-title">Schedule</span>
+            <span className="info-address">
+              <span className="modal-info-title">Hours</span>
               Closed Everyday
             </span>
           </>
         )}
         {scheduleCategory === "Open 24 Hours" && (
           <>
-            <span className="modal-info-title">Hours</span>
-            <span className="info-address">Open 24/7</span>
+            <span className="info-address">
+              <span className="modal-info-title">Hours</span>
+              Open 24/7
+            </span>
           </>
         )}
 
@@ -313,6 +295,27 @@ export const ModalInfo = ({
               </div>
             </>
           )}
+        {/* DESCRIPTION */}
+        {res.description && (
+          <>
+            <div className="info-address" style={{ border: "none" }}>
+              <span className="modal-info-title" style={{ alignSelf: "start" }}>
+                About
+              </span>
+              <span className="modal-text" style={{ marginLeft: "20px" }}>
+                {isReadMore
+                  ? `${res.description.slice(0, 200)}...`
+                  : res.description}
+                {res.description.length > 200 && (
+                  <span onClick={toggleReadMore} className="read-more">
+                    {"  "}
+                    {isReadMore ? "(Show more)" : "(Show less)"}
+                  </span>
+                )}
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
