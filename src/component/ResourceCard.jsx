@@ -9,8 +9,7 @@ const ResourceCard = (props) => {
   const [ratingCount2, setRatingCount2] = useState(0);
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
-  const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
-  const COMBINED_OPTIONS = [...CATEGORY_OPTIONS, ...GROUP_OPTIONS];
+
   const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const ResourceCard = (props) => {
   };
 
   const getLabelForCategory = (catId) => {
-    const category = COMBINED_OPTIONS.find((option) => option.id === catId);
+    const category = CATEGORY_OPTIONS.find((option) => option.id === catId);
     return category ? category.label : catId;
   };
 
@@ -103,7 +102,7 @@ const ResourceCard = (props) => {
               readOnly
               className="star"
             />
-            <p className="ratingCount">({ratingCount2})</p>
+            {ratingCount2 > 0 && <span>({ratingCount2})</span>}
           </div>
         </div>
       )}

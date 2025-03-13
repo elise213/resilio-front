@@ -5,38 +5,28 @@ import Login from "./Login";
 import ResourceCard from "./ResourceCard";
 import Contact from "./Contact";
 import ErrorBoundary from "./ErrorBoundary";
-import Selection from "./Selection";
-
+// import Selection from "./Selection";
 import { Switch, FormControlLabel } from "@mui/material";
 import { Tooltip, Icon } from "@mui/material";
+import ResilioDropdown from "./ResilioDropdown";
 
 const Sidebar = ({
   layout,
   setLayout,
-  INITIAL_DAY_STATE,
-  contactModalIsOpen,
-  setContactModalIsOpen,
   categories,
   days,
-  groups,
   log,
   loadingResults,
-  searchingToday,
   setCategories,
   setDays,
-  setGroups,
   setLog,
-  setSearchingToday,
-  aboutModalIsOpen,
-  setAboutModalIsOpen,
-  donationModalIsOpen,
-  setDonationModalIsOpen,
-  // fetchCachedBounds,
-  handleBoundsChange,
-  // userLocation,
-  // setUserLocation,
+  IsFilterModalOpen,
+  setIsFilterModalOpen,
   geoFindMe,
   updateCityStateFromZip,
+  setAboutModalIsOpen,
+  setContactModalIsOpen,
+  setDonationModalIsOpen,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,11 +35,9 @@ const Sidebar = ({
   const [activeTab, setActiveTab] = useState("AllResources");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-  const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-  const [userSelectedFilter, setUserSelectedFilter] = useState(false);
-  const [localZipInput, setLocalZipInput] = useState("");
+  // const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [localZipInput, setLocalZipInput] = useState("");
   const [openDropdown, setOpenDropdown] = useState({
     category: false,
     day: false,
@@ -65,29 +53,14 @@ const Sidebar = ({
     }
   }, [localZipInput]);
 
-  const handleZipInputChange = (e) => {
-    const value = e.target.value;
-    setLocalZipInput(value);
+  // const handleZipInputChange = (e) => {
+  //   const value = e.target.value;
+  //   setLocalZipInput(value);
 
-    if (value.length === 5) {
-      updateCityStateFromZip(value);
-    }
-  };
-
-  const areAllUnchecked = (stateObj) => {
-    return Object.values(stateObj).every((value) => !value);
-  };
-
-  useEffect(() => {
-    actions.fetchFavorites();
-  }, []);
-
-  useEffect(() => {
-    const noCategorySelected = areAllUnchecked(categories);
-    const noDaySelected = areAllUnchecked(days);
-
-    setUserSelectedFilter(!(noCategorySelected && noDaySelected));
-  }, [categories, days]);
+  //   if (value.length === 5) {
+  //     updateCityStateFromZip(value);
+  //   }
+  // };
 
   const clearSelectedCategory = (category) => {
     setCategories((prevCategories) => {
@@ -197,13 +170,13 @@ const Sidebar = ({
     setSearchQuery("");
   };
 
-  const navDivListClassName = openDropdown.category
+  const dropCategory = openDropdown.category;
+
+  const navDivListClassName = dropCategory
     ? "nav-div-list open-dropdown"
     : openDropdown.day
     ? "nav-div-list open-dropday"
     : "nav-div-list";
-
-  console.log("📌 Sidebar received loadingResults:", loadingResults);
 
   return (
     <>
@@ -226,7 +199,14 @@ const Sidebar = ({
                 />
               </>
             )}
-            <Login log={log} setLog={setLog} setLayout={setLayout} />
+            <div className="sidebar-dropdowns">
+              <ResilioDropdown
+                setAboutModalIsOpen={setAboutModalIsOpen}
+                setContactModalIsOpen={setContactModalIsOpen}
+                setDonationModalIsOpen={setDonationModalIsOpen}
+              />
+              <Login log={log} setLog={setLog} setLayout={setLayout} />
+            </div>
           </div>
           <div className="logo-div">
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
@@ -258,7 +238,9 @@ const Sidebar = ({
                     </div>
                     <Tooltip title="Filter Resources" arrow>
                       <Icon
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => {
+                          setIsFilterModalOpen(true);
+                        }}
                         style={{ cursor: "pointer" }}
                       >
                         tune
@@ -266,35 +248,6 @@ const Sidebar = ({
                     </Tooltip>
                   </>
                 </div>
-
-                {store.CATEGORY_OPTIONS &&
-                store.DAY_OPTIONS &&
-                store.GROUP_OPTIONS &&
-                categories &&
-                days &&
-                groups ? (
-                  <ErrorBoundary>
-                    <Selection
-                      openDropdown={openDropdown}
-                      setOpenDropdown={setOpenDropdown}
-                      handleBoundsChange={handleBoundsChange}
-                      categories={categories}
-                      setCategories={setCategories}
-                      groups={groups}
-                      setGroups={setGroups}
-                      days={days}
-                      setDays={setDays}
-                      searchingToday={searchingToday}
-                      setSearchingToday={setSearchingToday}
-                      INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                      areAllUnchecked={areAllUnchecked}
-                      isModalOpen={isModalOpen}
-                      setIsModalOpen={setIsModalOpen}
-                    />
-                  </ErrorBoundary>
-                ) : (
-                  <p>Loading selection options...</p>
-                )}
 
                 <div className={navDivListClassName}>
                   {activeTab === "AllResources" && (
@@ -340,66 +293,6 @@ const Sidebar = ({
             <span style={{ margin: "20px" }}>
               No results. Please zoom out or move the map to find resources.
             </span>
-          )}
-          {/* MODALS!! */}
-
-          {donationModalIsOpen && (
-            <>
-              <div className="new-modal donation">
-                <p
-                  className="close-modal"
-                  onClick={() => setDonationModalIsOpen(false)}
-                >
-                  <span className="material-symbols-outlined">
-                    arrow_back_ios
-                  </span>
-                  Back to search
-                </p>
-
-                <iframe
-                  title="Donation form powered by Zeffy"
-                  style={{
-                    position: "relative",
-                    overflow: "hidden",
-                    width: "100%",
-                    height: "1200px",
-                  }}
-                  src="https://www.zeffy.com/en-US/embed/donation-form/cc33bc68-a2e1-4fd3-a1c6-88afd0cae253"
-                  allowpaymentrequest
-                  allowtransparency="true"
-                ></iframe>
-              </div>
-            </>
-          )}
-
-          {aboutModalIsOpen && (
-            <div className="new-modal">
-              <p
-                className="close-modal"
-                onClick={() => setAboutModalIsOpen(false)}
-              >
-                <span className="material-symbols-outlined">
-                  arrow_back_ios
-                </span>
-                Back to search
-              </p>
-              <p className="intro">Resilio is a 501(c)3 based in Austin, TX.</p>
-            </div>
-          )}
-
-          {contactModalIsOpen && (
-            <div className="new-modal">
-              <p
-                className="close-modal"
-                onClick={() => setContactModalIsOpen(false)}
-              >
-                <span className="material-symbols-outlined">
-                  arrow_back_ios
-                </span>
-                Back to search
-              </p>
-              <Contact />
-            </div>
           )}
         </div>
       </nav>

@@ -4,92 +4,19 @@ import { Avatar, Menu, MenuItem, IconButton, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import styles from "../styles/loginModal.css";
+import Register from "./Register";
 
 const Login = ({ setLayout }) => {
   const { store, actions } = useContext(Context);
   const [log, setLog] = useState("1");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
   const [email, setEmail] = useState("");
-  const [is_org, setIs_org] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [resourceName, setResourceName] = useState("");
-  const [resourceCity, setResourceCity] = useState("");
-  const [resourceDocs, setResourceDocs] = useState(null);
-
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(
     store.loginModalIsOpen
   );
   const userId2 = parseInt(sessionStorage.getItem("user_id"), 10);
-
-  function handleRegister(e) {
-    e.preventDefault();
-
-    if (is_org === "1" && (!resourceName || !resourceCity)) {
-      Swal.fire({
-        icon: "error",
-        title: "Missing Fields",
-        text: "Please provide the resource name and city.",
-      });
-      return;
-    }
-
-    actions.createUser(is_org, name, email, password, userAvatar);
-
-    if (is_org === "1") {
-      sendOrgVerificationEmail(
-        name,
-        email,
-        resourceName,
-        resourceCity,
-        supportingDocs
-      );
-    }
-
-    setLog("1");
-  }
-
-  const sendOrgVerificationEmail = (
-    name,
-    email,
-    resourceName,
-    resourceCity,
-    supportingDocs
-  ) => {
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("resourceName", resourceName);
-    formData.append("resourceCity", resourceCity);
-
-    for (let i = 0; i < supportingDocs.length; i++) {
-      formData.append("supportingDocs", supportingDocs[i]);
-    }
-
-    fetch("/api/send-org-verification-email", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          Swal.fire({
-            icon: "success",
-            title: "Verification Email Sent",
-            text: "Your information has been sent for verification.",
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Failed to send verification email.",
-          });
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  };
 
   useEffect(() => {
     setIsLoginModalOpen(store.loginModalIsOpen);
@@ -104,24 +31,12 @@ const Login = ({ setLayout }) => {
     checkLoginStatus();
   }, [store.token]);
 
-  function handleRegister(e) {
-    e.preventDefault();
-    actions.createUser(is_org, name, email, password, userAvatar);
-    setLog("1");
-  }
-
   const handleLogin = async (e) => {
     e.preventDefault();
     const loginSuccessful = await actions.login(email, password);
     if (loginSuccessful) {
       actions.closeLoginModal();
     }
-  };
-
-  const handleLogout = () => {
-    actions.logout();
-    setAnchorEl(null);
-    setLayout("fullscreen-sidebar");
   };
 
   const handleForgotPassword = async (e) => {
@@ -148,27 +63,15 @@ const Login = ({ setLayout }) => {
         }).then(() => {
           actions.closeLoginModal();
         });
-      } else if (!response.ok) {
+      } else {
         const errorDetails = await response.json();
-        console.error("Error details:", errorDetails);
         Swal.fire({
           icon: "error",
           title: "Error",
           text: errorDetails.error || "An unexpected error occurred.",
         });
-      } else {
-        const errorMessage =
-          response.status === 403
-            ? "Authorization failed. Please log in again."
-            : "Failed to send reset email. Please try again.";
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: errorMessage,
-        });
       }
     } catch (error) {
-      console.error("Error:", error);
       Swal.fire({
         icon: "error",
         title: "Something went wrong",
@@ -177,282 +80,23 @@ const Login = ({ setLayout }) => {
     }
   };
 
-  const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleProfileClose = () => {
+  const handleLogout = () => {
+    actions.logout();
     setAnchorEl(null);
+    setLayout("fullscreen-sidebar");
   };
 
   let field = null;
-  if (log == "2") {
+
+  if (log === "2") {
+    field = <Register setLog={setLog} log={log} />;
+  } else if (log === "3") {
     field = (
       <div className="login-modal-content">
         <div className="login-modal-header">
-          <span
-            className="close-login-modal"
-            onClick={() => {
-              actions.closeLoginModal();
-              setLog("1");
-            }}
-          >
+          <span className="close-login-modal" onClick={() => setLog("1")}>
             <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to Search
-          </span>
-        </div>
-        <div className="login-modal-body">
-          <form>
-            <div className="form-section">
-              <label htmlFor="name" className="form-label less-margin">
-                Name
-              </label>
-              <input
-                type="text"
-                className="form-input"
-                id="name"
-                aria-describedby="emailHelp"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></input>
-            </div>
-            <div className="form-section">
-              <label htmlFor="email1" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                className="form-input"
-                id="email"
-                aria-describedby="emailHelp"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              ></input>
-            </div>
-            <div className="form-section">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                className="form-input"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              ></input>
-            </div>
-            {/* <div className="form-section">
-              <span className="form-label" id="exampleloginModalLabel">
-                Do you represent an organization?
-              </span>
-              <div className="form-check">
-                <input
-                  className="form-check-input radio"
-                  type="radio"
-                  name="orgRadio"
-                  id="orgRadio1"
-                  value={is_org}
-                  onChange={() => setIs_org("true")}
-                />
-                <label
-                  className="form-label radio-label"
-                  htmlFor="exampleRadios1"
-                >
-                  Yes
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input radio"
-                  type="radio"
-                  name="orgRadio"
-                  id="orgRadio2"
-                  value={is_org}
-                  onChange={() => setIs_org("false")}
-                />
-                <label
-                  className="form-label radio-label"
-                  htmlFor="exampleRadios1"
-                >
-                  No
-                </label>
-              </div>
-            </div> */}
-            <div className="form-section">
-              <span className="form-label" id="exampleloginModalLabel">
-                Do you represent an organization?
-              </span>
-              <div className="form-check">
-                <input
-                  className="form-check-input radio"
-                  type="radio"
-                  name="orgRadio"
-                  id="orgRadio1"
-                  value="1"
-                  onChange={() => setIs_org("1")}
-                />
-                <label className="form-label radio-label" htmlFor="orgRadio1">
-                  Yes
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input radio"
-                  type="radio"
-                  name="orgRadio"
-                  id="orgRadio2"
-                  value="0"
-                  onChange={() => setIs_org("0")}
-                />
-                <label className="form-label radio-label" htmlFor="orgRadio2">
-                  No
-                </label>
-              </div>
-            </div>
-
-            {is_org === "1" && (
-              <>
-                <div className="form-section">
-                  <label htmlFor="resource_name" className="form-label">
-                    Resource Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    id="resource_name"
-                    value={resourceName}
-                    onChange={(e) => setResourceName(e.target.value)}
-                  />
-                </div>
-                <div className="form-section">
-                  <label htmlFor="resource_city" className="form-label">
-                    Resource City
-                  </label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    id="resource_city"
-                    value={resourceCity}
-                    onChange={(e) => setResourceCity(e.target.value)}
-                  />
-                </div>
-                <div className="form-section">
-                  <label className="form-label">
-                    Upload Supporting Documents
-                  </label>
-                  <input
-                    type="file"
-                    id="supportingDocs"
-                    multiple
-                    onChange={handleFileUpload}
-                  />
-                </div>
-              </>
-            )}
-
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className="form-button"
-              onClick={handleRegister}
-            >
-              Register
-            </Button>
-          </form>
-          <span
-            className="forgot-password"
-            onClick={() => {
-              setLog("1");
-            }}
-            style={{ marginTop: "20px" }}
-          >
-            Return to Login
-          </span>
-        </div>
-      </div>
-    );
-  }
-  if (log == "1") {
-    field = (
-      <div className="login-modal-content ">
-        <div className="login-modal-header">
-          <span
-            className="close-login-modal"
-            onClick={() => {
-              actions.closeLoginModal();
-              setLog("1");
-            }}
-          >
-            <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to Search
-          </span>
-        </div>
-        <div className="login-modal-body">
-          <form>
-            <>
-              <div className="form-section">
-                <label htmlFor="inputEmail1" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  className="form-input"
-                  id="inputEmail1"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                ></input>
-              </div>
-            </>
-            <div className="form-section">
-              <label htmlFor="inputPassword1" className="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                className="form-input"
-                id="inputPassword1"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              ></input>
-            </div>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className="form-button"
-              onClick={(e) => handleLogin(e)}
-            >
-              Log In
-            </Button>
-          </form>
-        </div>
-
-        <div className="login-modal-footer">
-          <div className="forgot-password" onClick={() => setLog("2")}>
-            Register for an account
-          </div>
-          <div className="forgot-password" onClick={() => setLog("3")}>
-            I forgot my password
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (log === "3") {
-    field = (
-      <div className="login-modal-content">
-        <div className="login-modal-header">
-          <span
-            className="close-login-modal"
-            onClick={() => {
-              actions.closeLoginModal();
-              setLog("1");
-            }}
-          >
-            <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to Search
+            Back to Login
           </span>
         </div>
         <div className="login-modal-body">
@@ -481,13 +125,65 @@ const Login = ({ setLayout }) => {
               </Button>
             </div>
           </form>
-          <span
-            className="forgot-password"
-            onClick={() => setLog("1")}
-            style={{ marginTop: "20px" }}
-          >
+          <span className="forgot-password" onClick={() => setLog("1")}>
             Return to Login
           </span>
+        </div>
+      </div>
+    );
+  } else {
+    field = (
+      <div className="login-modal-content">
+        <div className="login-modal-header">
+          <span className="close-login-modal" onClick={() => setLog("1")}>
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            Back to Search
+          </span>
+        </div>
+        <div className="login-modal-body">
+          <form>
+            <div className="form-section">
+              <label htmlFor="inputEmail1" className="form-label">
+                Email
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                id="inputEmail1"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="form-section">
+              <label htmlFor="inputPassword1" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-input"
+                id="inputPassword1"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              className="form-button"
+              onClick={(e) => handleLogin(e)}
+            >
+              Log In
+            </Button>
+          </form>
+        </div>
+        <div className="login-modal-footer">
+          <div className="forgot-password" onClick={() => setLog("2")}>
+            Register for an account
+          </div>
+          <div className="forgot-password" onClick={() => setLog("3")}>
+            I forgot my password
+          </div>
         </div>
       </div>
     );
@@ -497,42 +193,31 @@ const Login = ({ setLayout }) => {
     <>
       {!isLoginModalOpen && isLoggedIn ? (
         <>
-          <IconButton onClick={handleProfileClick} style={{ padding: "0" }}>
+          <IconButton
+            onClick={(e) => setAnchorEl(e.currentTarget)}
+            style={{ padding: "0" }}
+          >
             <Avatar alt="Profile" sx={{ width: 30, height: 30 }} />
           </IconButton>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
-            onClose={handleProfileClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            transformOrigin={{ vertical: "top", horizontal: "center" }}
+            onClose={() => setAnchorEl(null)}
           >
-            <MenuItem onClick={handleProfileClose}>
+            <MenuItem onClick={() => setAnchorEl(null)}>
               <Link
                 to={`/profilesettings/${userId2}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                Settings
+                Account
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleProfileClose}>
+            <MenuItem onClick={() => setAnchorEl(null)}>
               <Link
                 to={`/profile/${userId2}`}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  margin: "0px",
-                }}
-              >
-                Profile
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleProfileClose}>
-              <Link
-                to="/favorites"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                Favorites
+                Profile
               </Link>
             </MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
@@ -552,7 +237,6 @@ const Login = ({ setLayout }) => {
       )}
       {isLoginModalOpen && (
         <>
-          {/* Dark Overlay */}
           <div
             className="login-overlay"
             onClick={() => {
@@ -560,8 +244,6 @@ const Login = ({ setLayout }) => {
               document.body.classList.remove("modal-open");
             }}
           ></div>
-
-          {/* Login Modal */}
           <div className="login-div">{field}</div>
         </>
       )}

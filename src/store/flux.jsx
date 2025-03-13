@@ -27,11 +27,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         { id: "substance", value: "substance", label: "Drug Use" },
         { id: "sex", value: "sex", label: "Sexual Health" },
         { id: "legal", value: "legal", label: "Legal Support" },
+        { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
+        { id: "women", value: "women", label: "Women" },
+        { id: "seniors", value: "seniors", label: "Seniors" },
+        { id: "babies", value: "babies", label: "Babies and Toddlers" },
+        { id: "kids", value: "kids", label: "Youth < 18" },
+        { id: "youth", value: "youth", label: "Youth 18-24" },
+        { id: "vets", value: "vets", label: "Veterans" },
+        { id: "migrant", value: "migrant", label: "Refugees & Migrants" },
       ],
-      checked: false,
-      commentsList: [],
-      current_front_url: import.meta.env.VITE_FRONTEND_URL,
-      current_back_url: import.meta.env.VITE_BACKEND_URL,
+
       daysOfWeek: [
         "monday",
         "tuesday",
@@ -41,6 +46,20 @@ const getState = ({ getStore, getActions, setStore }) => {
         "saturday",
         "sunday",
       ],
+
+      DAY_OPTIONS: [
+        { id: "monday", label: "Monday" },
+        { id: "tuesday", label: "Tuesday" },
+        { id: "wednesday", label: "Wednesday" },
+        { id: "thursday", label: "Thursday" },
+        { id: "friday", label: "Friday" },
+        { id: "saturday", label: "Saturday" },
+        { id: "sunday", label: "Sunday" },
+      ],
+      checked: false,
+      commentsList: [],
+      current_front_url: import.meta.env.VITE_FRONTEND_URL,
+      current_back_url: import.meta.env.VITE_BACKEND_URL,
       favorites: [],
       favoriteOfferings: [],
       isLargeScreen: false,
@@ -56,25 +75,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       schedules: [],
       selectedResource: [],
 
-      GROUP_OPTIONS: [
-        { id: "lgbtq", value: "lgbtq", label: "LGBTQ+" },
-        { id: "women", value: "women", label: "Women" },
-        { id: "seniors", value: "seniors", label: "Seniors" },
-        { id: "babies", value: "babies", label: "Babies and Toddlers" },
-        { id: "kids", value: "kids", label: "Youth < 18" },
-        { id: "youth", value: "youth", label: "Youth 18-24" },
-        { id: "vets", value: "vets", label: "Veterans" },
-        { id: "migrant", value: "migrant", label: "Refugees & Migrants" },
-      ],
-      DAY_OPTIONS: [
-        { id: "monday", label: "Monday" },
-        { id: "tuesday", label: "Tuesday" },
-        { id: "wednesday", label: "Wednesday" },
-        { id: "thursday", label: "Thursday" },
-        { id: "friday", label: "Friday" },
-        { id: "saturday", label: "Saturday" },
-        { id: "sunday", label: "Sunday" },
-      ],
       losAngeles: [
         {
           center: { lat: 34.0522, lng: -118.2437 },
@@ -742,40 +742,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       setBoundaryResults: async (bounds, resources, days, groups) => {
         const store = getStore();
+        const currentTimestamp = Date.now();
+
+        // Abort the previous request only if another request is active
         if (store.abortController) {
+          console.log("⏳ Aborting previous fetch...");
           store.abortController.abort();
         }
+
         const newAbortController = new AbortController();
-        setStore({ abortController: newAbortController });
+        setStore({
+          abortController: newAbortController,
+          lastFetchTimestamp: currentTimestamp,
+        });
 
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
         let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
 
+        // Normalize longitude values
         neLng = neLng % 360;
-        if (neLng > 180) {
-          neLng -= 360;
-        }
-
+        if (neLng > 180) neLng -= 360;
         swLng = swLng % 360;
-        if (swLng > 180) {
-          swLng -= 360;
-        }
+        if (swLng > 180) swLng -= 360;
 
         const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+
         const url = getStore().current_back_url + "/api/getBResults";
-        const combinedResources = {
-          ...resources,
-          ...groups,
-        };
+        const combinedResources = { ...resources, ...groups };
+
+        console.log(
+          "✅ Sending combined categories & groups:",
+          combinedResources
+        );
 
         try {
           setStore({ loading: true });
+
           let response = await fetch(url, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               neLat,
               neLng,
@@ -793,19 +799,106 @@ const getState = ({ getStore, getActions, setStore }) => {
               `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
             );
           }
+
           const data = await response.json();
-          setStore({ boundaryResults: data.data, loading: false });
+
+          // Ensure only the latest fetch updates state
+          if (getStore().lastFetchTimestamp === currentTimestamp) {
+            setStore({ boundaryResults: data.data, loading: false });
+          } else {
+            console.log("⚠️ Ignoring outdated fetch results...");
+          }
+
+          console.log("🔍 Sending filters to backend:");
+          console.log("✅ Categories & Groups:", resources);
+          console.log("✅ Days:", days);
 
           return data.data;
         } catch (error) {
           if (error.name === "AbortError") {
-            console.log("Fetch aborted");
+            console.log("⚠️ Fetch was aborted.");
           } else {
             setStore({ loading: false });
-            console.error("Error fetching data:", error);
+            console.error("❌ Error fetching boundary results:", error);
           }
         }
       },
+
+      // setBoundaryResults: async (bounds, resources, days, groups) => {
+      //   const store = getStore();
+      //   if (store.abortController) {
+      //     store.abortController.abort();
+      //   }
+      //   const newAbortController = new AbortController();
+      //   setStore({ abortController: newAbortController });
+
+      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+      //   neLng = neLng % 360;
+      //   if (neLng > 180) {
+      //     neLng -= 360;
+      //   }
+
+      //   swLng = swLng % 360;
+      //   if (swLng > 180) {
+      //     swLng -= 360;
+      //   }
+
+      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+      //   const url = getStore().current_back_url + "/api/getBResults";
+      //   const combinedResources = {
+      //     ...resources,
+      //     ...groups,
+      //   };
+
+      //   console.log(
+      //     "✅ Sending combined categories & groups:",
+      //     combinedResources
+      //   );
+
+      //   try {
+      //     setStore({ loading: true });
+      //     let response = await fetch(url, {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         neLat,
+      //         neLng,
+      //         swLat,
+      //         swLng,
+      //         resources: combinedResources || null,
+      //         days: days || null,
+      //       }),
+      //       signal: newAbortController.signal,
+      //     });
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
+      //     }
+      //     const data = await response.json();
+      //     setStore({ boundaryResults: data.data, loading: false });
+
+      //     console.log("🔍 Sending filters to backend:");
+      //     console.log("✅ Categories & Groups:", resources);
+      //     console.log("✅ Days:", days);
+
+      //     return data.data;
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("Fetch aborted");
+      //     } else {
+      //       setStore({ loading: false });
+      //       console.error("Error fetching data:", error);
+      //     }
+      //   }
+      // },
 
       likeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");

@@ -1,71 +1,76 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import MyCheckbox from "./MyCheckbox";
+import styles from "../styles/selection.css";
 
 const Selection = ({
   categories,
   setCategories,
   days,
   setDays,
-  setIsModalOpen,
-  isModalOpen,
+  isFilterModalOpen,
+  setIsFilterModalOpen,
 }) => {
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
     let categoryCounts = {};
-    let dayCounts = {
-      monday: 0,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      sunday: 0,
-    };
 
-    if (store?.boundaryResults?.length > 0) {
-      store.boundaryResults.forEach((result) => {
-        if (typeof result.category === "string") {
-          let categories = result.category.split(",").map((cat) => cat.trim());
-          categories.forEach((cat) => {
+    if (!store.boundaryResults?.length) return;
+
+    store.boundaryResults.forEach((resource) => {
+      if (typeof resource.category === "string") {
+        let resourceCategories = resource.category
+          .split(",")
+          .map((cat) => cat.trim().toLowerCase());
+
+        resourceCategories.forEach((cat) => {
+          if (store.CATEGORY_OPTIONS.some((option) => option.id === cat)) {
             categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
-          });
+          }
+        });
+      }
+    });
+    actions.setCategoryCounts(categoryCounts);
+  }, [store.boundaryResults]);
+
+  // ---- DAY COUNTS ---- //
+  useEffect(() => {
+    let dayCounts = store.DAY_OPTIONS.reduce((acc, day) => {
+      acc[day.id] = 0;
+      return acc;
+    }, {});
+    if (!store.boundaryResults?.length) {
+      console.log("⚠️ No boundaryResults available.");
+      return;
+    }
+    store.boundaryResults.forEach((resource) => {
+      if (!resource.schedule) {
+        return;
+      }
+      store.DAY_OPTIONS.forEach((day) => {
+        const daySchedule = resource.schedule[day.id];
+        if (!daySchedule) {
+          return;
         }
-
-        const schedule = store.schedules.find(
-          (sched) => sched.resource_id === result.id
-        );
-
-        if (schedule) {
-          Object.keys(dayCounts).forEach((day) => {
-            if (
-              schedule[`${day}Start`] !== "closed" &&
-              schedule[`${day}End`] !== "closed"
-            ) {
-              dayCounts[day]++;
-            }
-          });
+        if (
+          daySchedule.start &&
+          daySchedule.start !== "closed" &&
+          daySchedule.start !== "" &&
+          daySchedule.end &&
+          daySchedule.end !== "closed" &&
+          daySchedule.end !== ""
+        ) {
+          dayCounts[day.id]++;
+        } else {
         }
       });
+    });
 
-      const validCategories = store.CATEGORY_OPTIONS.map((option) => option.id);
-      const filteredCategoryCounts = Object.keys(categoryCounts)
-        .filter((key) => validCategories.includes(key.toLowerCase()))
-        .reduce((obj, key) => {
-          obj[key] = categoryCounts[key];
-          return obj;
-        }, {});
+    actions.setDayCounts({ ...dayCounts });
+  }, [store.boundaryResults]);
 
-      actions.setCategoryCounts(filteredCategoryCounts);
-      actions.setDayCounts(dayCounts);
-    }
-  }, [store?.boundaryResults, store?.schedules]);
-
-  const COMBINED_OPTIONS = [
-    ...(store.CATEGORY_OPTIONS || []),
-    ...(store.GROUP_OPTIONS || []),
-  ];
+  const COMBINED_OPTIONS = [...(store.CATEGORY_OPTIONS || [])];
 
   const handleToggle = (setFn, stateObj, id) => {
     setFn({
@@ -78,15 +83,15 @@ const Selection = ({
     if (!isOpen) return null;
 
     return (
-      <div className="modal">
+      <div className="filter-modal">
         <div className="modal-filter-header">
           <button className="close-filters" onClick={onClose}>
             X
           </button>
         </div>
-        <div className="modal-content">
+        <div className="filter-modal-content">
           <div className="filter-section">
-            <h3>Categories</h3>
+            <p className="selection-heading">Categories</p>
             {COMBINED_OPTIONS.map((option) => (
               <MyCheckbox
                 key={option.id}
@@ -102,7 +107,7 @@ const Selection = ({
             ))}
           </div>
           <div className="filter-section">
-            <h3>Days</h3>
+            <p className="selection-heading">Days</p>
             {store.DAY_OPTIONS.map((option) => (
               <MyCheckbox
                 key={option.id}
@@ -120,7 +125,10 @@ const Selection = ({
 
   return (
     <>
-      <FilterModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <FilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+      />
     </>
   );
 };

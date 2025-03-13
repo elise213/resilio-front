@@ -4,56 +4,50 @@ import Sidebar from "../component/Sidebar";
 import Map from "../component/Map";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
-
+import Selection from "../component/Selection";
 import { debounce } from "lodash";
-import { Modal } from "../component";
+import Modal from "../component/Modal";
+import Contact from "../component/Contact";
+import About from "../component/About";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [isModalOpen, setIsModalOpen] = useState(store.modalIsOpen);
-  const [loadingResults, setLoadingResults] = useState(true); // <-- New loading state
-
-  useEffect(() => {
-    setIsModalOpen(store.modalIsOpen);
-  }, [store.modalIsOpen]);
-
-  const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
-    CATEGORY_OPTIONS.reduce((acc, curr) => {
-      return { ...acc, [curr.id]: false };
-    }, {});
-
-  const INITIAL_GROUP_STATE = (GROUP_OPTIONS) =>
-    GROUP_OPTIONS.reduce((acc, curr) => {
-      return { ...acc, [curr.id]: false };
-    }, {});
-
-  const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
-    DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
+  const [loadingResults, setLoadingResults] = useState(true);
+  const [loadingLocation, setLoadingLocation] = useState(false);
+  const [userSelectedFilter, setUserSelectedFilter] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [locationModalIsOpen, setLocationModalIsOpen] = useState(false);
+  const [aboutModalIsOpen, setAboutModalIsOpen] = useState(false);
+  const [contactModalIsOpen, setContactModalIsOpen] = useState(false);
+  const [donationModalIsOpen, setDonationModalIsOpen] = useState(false);
 
   // STATES
   const [zipInput, setZipInput] = useState("");
   const [layout, setLayout] = useState("fullscreen-sidebar");
 
   const INITIAL_CITY_STATE = store.austin[0];
-  const [loading, setLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
 
   const favorites = store.favorites;
-  // );
+  const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
+    CATEGORY_OPTIONS.reduce((acc, curr) => {
+      return { ...acc, [curr.id]: false };
+    }, {});
 
-  const [searchingToday, setSearchingToday] = useState(false);
+  const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
+    DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
+
   const [categories, setCategories] = useState(
     INITIAL_CATEGORY_STATE(store.CATEGORY_OPTIONS)
   );
-  const [groups, setGroups] = useState(
-    INITIAL_GROUP_STATE(store.GROUP_OPTIONS)
-  );
   const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
 
+  // USE EFFECTS
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = sessionStorage.getItem("token") || store.token;
@@ -62,6 +56,57 @@ const Home = () => {
 
     checkLoginStatus();
   }, [store.token]);
+
+  useEffect(() => {
+    setIsModalOpen(store.modalIsOpen);
+  }, [store.modalIsOpen]);
+
+  useEffect(() => {
+    if (zipInput && zipInput.length === 5) {
+      updateCityStateFromZip(zipInput);
+    }
+  }, [zipInput]);
+
+  useEffect(() => {
+    actions.fetchFavorites();
+  }, []);
+
+  useEffect(() => {
+    const noCategorySelected = areAllUnchecked(categories);
+    const noDaySelected = areAllUnchecked(days);
+
+    setUserSelectedFilter(!(noCategorySelected && noDaySelected));
+  }, [categories, days]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("🚀 Fetch started, setting loadingResults to true...");
+      setLoadingResults(true);
+
+      try {
+        console.log("Fetching boundary results...");
+        const results = await actions.setBoundaryResults(
+          city.bounds,
+          categories,
+          days
+        );
+
+        if (results) {
+          console.log("✅ Fetch complete, updating UI...");
+          setLoadingResults(false);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching boundary results:", error);
+        setLoadingResults(false);
+      }
+    };
+
+    if (city.bounds) {
+      fetchData();
+    }
+  }, [categories, days, city.bounds]);
+
+  // FUNCTIONS
 
   const updateCityStateFromZip = async (zip) => {
     const data = await fetchCachedBounds(zip, true);
@@ -72,7 +117,7 @@ const Home = () => {
         data.results[0]?.geometry?.viewport;
 
       if (location && bounds) {
-        actions.setBoundaryResults(bounds, categories, days, groups);
+        actions.setBoundaryResults(bounds, categories, days);
         handleBoundsChange({
           center: { lat: location.lat, lng: location.lng },
           bounds: {
@@ -84,12 +129,6 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    if (zipInput && zipInput.length === 5) {
-      updateCityStateFromZip(zipInput);
-    }
-  }, [zipInput]);
-
   const handleZipInputChange = async (e) => {
     const value = e.target.value;
     setZipInput(value);
@@ -100,7 +139,7 @@ const Home = () => {
 
   const handleBoundsChange = useCallback(
     debounce((data) => {
-      actions.setBoundaryResults(data.bounds, categories, days, groups);
+      actions.setBoundaryResults(data.bounds, categories, days);
       setCity({
         ...city,
         bounds: {
@@ -113,7 +152,7 @@ const Home = () => {
         },
       });
     }, 600),
-    [categories, days, groups]
+    [categories, days]
   );
 
   const normalizeLongitude = (lng) => {
@@ -128,15 +167,12 @@ const Home = () => {
 
   const fetchBounds = async (query, isZip = false) => {
     let apiUrl;
-
     if (isZip) {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
     } else {
       apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
     }
-
     console.log("Fetching bounds with URL:", apiUrl);
-
     try {
       const response = await fetch(apiUrl);
       const data = await response.json();
@@ -145,7 +181,6 @@ const Home = () => {
         console.error(`Error fetching data: ${data.status}`, data);
         return null;
       }
-
       console.log("Fetched data:", data);
       return data;
     } catch (error) {
@@ -160,7 +195,6 @@ const Home = () => {
     if (cachedData) {
       return JSON.parse(cachedData);
     }
-
     let data = await fetchBounds(query, isZip);
     sessionStorage.setItem(cacheKey, JSON.stringify(data));
     return data;
@@ -185,68 +219,9 @@ const Home = () => {
     }
   };
 
-  const [loadingLocation, setLoadingLocation] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log("🚀 Fetch started, setting loadingResults to true...");
-      setLoadingResults(true);
-
-      try {
-        console.log("Fetching boundary results...");
-        const results = await actions.setBoundaryResults(
-          city.bounds,
-          categories,
-          days,
-          groups
-        );
-
-        // ✅ Only set loadingResults = false if results actually returned
-        if (results) {
-          console.log("✅ Fetch complete, updating UI...");
-          setLoadingResults(false);
-        }
-      } catch (error) {
-        console.error("❌ Error fetching boundary results:", error);
-        setLoadingResults(false);
-      }
-    };
-
-    if (city.bounds) {
-      fetchData();
-    }
-  }, [categories, days, city.bounds, groups, searchingToday]);
-
-  // const geoFindMe = async () => {
-  //   if (navigator.geolocation) {
-  //     setLayout("fullscreen-map");
-  //     setLoadingLocation(true);
-
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         console.log("Position:", position.coords);
-  //         setUserLocation({
-  //           lat: position.coords.latitude,
-  //           lng: position.coords.longitude,
-  //         });
-  //         updateCityStateFromCoords(
-  //           position.coords.latitude,
-  //           position.coords.longitude
-  //         );
-  //         setLoadingLocation(false);
-  //       },
-  //       (error) => {
-  //         console.log("Error getting position", error);
-  //         alert("Unable to retrieve your location");
-  //         setLoadingLocation(false);
-  //       }
-  //     );
-  //   } else {
-  //     alert("Geolocation is not supported by your browser");
-  //   }
-  // };
-
-  // USE EFFECTS
+  const areAllUnchecked = (stateObj) => {
+    return Object.values(stateObj).every((value) => !value);
+  };
 
   const geoFindMe = async () => {
     if (navigator.geolocation) {
@@ -284,47 +259,16 @@ const Home = () => {
     checkLoginStatus();
   }, [store.token]);
 
-  // useEffect(() => {
-  //   const checkLoadingStatus = () => {
-  //     const loading = sessionStorage.getItem("loading");
-  //     setLoading(loading);
-  //   };
-
-  //   checkLoadingStatus();
-  // }, [store.loading]);
-
-  // useEffect(() => {
-  //   geoFindMe();
-  // }, []);
-
   useEffect(() => {
     actions.setSchedules();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (categories && days && city.bounds) {
-  //         await actions.setBoundaryResults(
-  //           city.bounds,
-  //           categories,
-  //           days,
-  //           groups
-  //         );
-  //       }
-  //     } catch (error) {
-  //       console.error("Error in fetching boundary results:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [categories, days, city, groups, searchingToday]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoadingResults(true);
 
-        await actions.setBoundaryResults(city.bounds, categories, days, groups);
+        await actions.setBoundaryResults(city.bounds, categories, days);
       } catch (error) {
         console.error("Error in fetching boundary results:", error);
       } finally {
@@ -335,7 +279,7 @@ const Home = () => {
     if (city.bounds) {
       fetchData();
     }
-  }, [categories, days, city.bounds, groups, searchingToday]);
+  }, [categories, days, city.bounds]);
 
   useEffect(() => {
     const handleResize = actions.updateScreenSize;
@@ -345,9 +289,6 @@ const Home = () => {
     };
   }, []);
 
-  // console.log("Boundary results:", store.boundaryResults);
-  // console.log("Loading results:", loadingResults);
-
   return (
     <>
       {loadingLocation && (
@@ -356,16 +297,14 @@ const Home = () => {
 
       <div className={`grand-resilio-container`}>
         <Sidebar
+          setIsFilterModalOpen={setIsFilterModalOpen}
           layout={layout}
           setLayout={setLayout}
           categories={categories}
           setCategories={setCategories}
-          groups={groups}
-          setGroups={setGroups}
           favorites={favorites}
           days={days}
           setDays={setDays}
-          setSearchingToday={setSearchingToday}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
           fetchCachedBounds={fetchCachedBounds}
           handleBoundsChange={handleBoundsChange}
@@ -374,6 +313,9 @@ const Home = () => {
           geoFindMe={geoFindMe}
           updateCityStateFromZip={updateCityStateFromZip}
           loadingResults={loadingResults}
+          setAboutModalIsOpen={setAboutModalIsOpen}
+          setContactModalIsOpen={setContactModalIsOpen}
+          setDonationModalIsOpen={setDonationModalIsOpen}
         />
 
         <div className="grand-map-container">
@@ -389,11 +331,8 @@ const Home = () => {
               categories={categories}
               days={days}
               handleBoundsChange={handleBoundsChange}
-              groups={groups}
               setCategories={setCategories}
-              setGroups={setGroups}
               setDays={setDays}
-              setSearchingToday={setSearchingToday}
               INITIAL_DAY_STATE={INITIAL_DAY_STATE}
               userLocation={userLocation}
               setUserLocation={setUserLocation}
@@ -417,10 +356,80 @@ const Home = () => {
           </>
         )}
 
+        {isFilterModalOpen &&
+          (store.CATEGORY_OPTIONS && store.DAY_OPTIONS && categories && days ? (
+            <ErrorBoundary>
+              <div
+                className="login-overlay"
+                onClick={() => {
+                  setIsFilterModalOpen(false);
+                  document.body.classList.remove("modal-open");
+                }}
+              ></div>
+              <Selection
+                handleBoundsChange={handleBoundsChange}
+                categories={categories}
+                setCategories={setCategories}
+                days={days}
+                setDays={setDays}
+                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
+                areAllUnchecked={areAllUnchecked}
+                isFilterModalOpen={isFilterModalOpen}
+                setIsFilterModalOpen={setIsFilterModalOpen}
+              />
+            </ErrorBoundary>
+          ) : (
+            <p>Loading selection options...</p>
+          ))}
+
         <div className="foot">
-          <p className="all-rights">© 2024 Open Village</p>
+          <p className="all-rights">© 2024 Open House</p>
         </div>
       </div>
+
+      {/* MODALS!! */}
+
+      {donationModalIsOpen && (
+        <>
+          <div className="new-modal donation">
+            <p
+              className="close-new-modal"
+              onClick={() => setDonationModalIsOpen(false)}
+            >
+              <span className="material-symbols-outlined">arrow_back_ios</span>
+              Back to search
+            </p>
+
+            <iframe
+              title="Donation form powered by Zeffy"
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                width: "100%",
+                height: "1200px",
+              }}
+              src="https://www.zeffy.com/en-US/embed/donation-form/cc33bc68-a2e1-4fd3-a1c6-88afd0cae253"
+              allowpaymentrequest
+              allowtransparency="true"
+            ></iframe>
+          </div>
+        </>
+      )}
+
+      {aboutModalIsOpen && <About setAboutModalIsOpen={setAboutModalIsOpen} />}
+
+      {contactModalIsOpen && (
+        <div className="new-modal">
+          <p
+            className="close-new-modal"
+            onClick={() => setContactModalIsOpen(false)}
+          >
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            Back to search
+          </p>
+          <Contact />
+        </div>
+      )}
     </>
   );
 };
