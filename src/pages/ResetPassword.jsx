@@ -2,12 +2,9 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
-  const [searchParams] = useSearchParams();
-  // const token = searchParams.get("token");
-  const token = searchParams.get("token")?.replace(/^b'|'$/g, "");
-
   const navigate = useNavigate();
-
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,9 +14,9 @@ const ResetPassword = () => {
   useEffect(() => {
     if (!token) {
       setError("Invalid or missing token.");
-      console.error("❌ No token found in URL"); // Debugging
+      console.error("❌ No token found in URL");
     } else {
-      console.log("✅ Token found:", token); // Debugging
+      console.log("✅ Token found:", token);
     }
   }, [token]);
 
@@ -64,7 +61,7 @@ const ResetPassword = () => {
       }
 
       setSuccess(true);
-      setTimeout(() => navigate("/"), 3000); // Redirect after success
+      setTimeout(() => navigate("/"), 3000);
     } catch (err) {
       console.error("❌ Error resetting password:", err);
       setError(err.message);

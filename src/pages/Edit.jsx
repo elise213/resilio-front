@@ -43,14 +43,8 @@ const Edit = () => {
   const [formData, setFormData] = useState(initialFormData || {});
 
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
-  const GROUP_OPTIONS = store.GROUP_OPTIONS || [];
 
-  const COMBINED_OPTIONS = useMemo(
-    () => [...CATEGORY_OPTIONS, ...GROUP_OPTIONS],
-    [CATEGORY_OPTIONS, GROUP_OPTIONS]
-  );
-
-  const categories = COMBINED_OPTIONS;
+  const categories = CATEGORY_OPTIONS;
 
   const [unrecognizedCategories, setUnrecognizedCategories] = useState([]);
 
@@ -66,14 +60,12 @@ const Edit = () => {
             COMBINED_OPTIONS.map((option) => option.value)
           );
 
-          // Initialize an array for unrecognized categories
           const _unrecognizedCategories = initialCategories
             .filter((category) => !knownCategoryValues.has(category))
-            .map((category) => ({ category, keep: null })); // null indicates no decision made yet
+            .map((category) => ({ category, keep: null }));
 
           setUnrecognizedCategories(_unrecognizedCategories);
 
-          // Proceed to set recognized categories and other form data
           const recognizedCategories = initialCategories.filter((category) =>
             knownCategoryValues.has(category)
           );
@@ -108,14 +100,6 @@ const Edit = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-  };
-
-  const handleUnrecognizedCategoryChange = (index, value) => {
-    setUnrecognizedCategories((current) =>
-      current.map((item, i) =>
-        i === index ? { ...item, keep: value === "keep" } : item
-      )
-    );
   };
 
   const handleDelete = async () => {

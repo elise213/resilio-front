@@ -36,11 +36,13 @@ const Modal = ({}) => {
 
   const resource = store.selectedResource;
 
-  const mapCenter = {
-    lat: resource?.latitude || 0,
-    lng: resource?.longitude || 0,
-  };
-  const mapZoom = 13;
+  console.log("resource", resource);
+
+  // const mapCenter = {
+  //   lat: resource?.latitude || 0,
+  //   lng: resource?.longitude || 0,
+  // };
+  // const mapZoom = 13;
 
   const handleDelete = async (commentId) => {
     const confirm = window.confirm(
@@ -207,7 +209,7 @@ const Modal = ({}) => {
 
   const toggleFavorite = (event) => {
     event.stopPropagation();
-
+    const id = resource.id;
     console.log("sending favorite id", id);
     if (isFavorited) {
       actions.removeFavorite(id);
@@ -259,24 +261,6 @@ const Modal = ({}) => {
             setRatingCount={setRatingCount}
           />
         </div>
-        {/* <div
-          className="map-container-modal"
-          style={{ height: "300px", width: "500px", justifySelf: "center" }}
-        >
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: apiKey }}
-            defaultCenter={mapCenter}
-            defaultZoom={mapZoom}
-          >
-            <Marker
-              lat={resource.latitude}
-              lng={resource.longitude}
-              text={resource.name}
-              id={resource.id}
-              result={resource}
-            />
-          </GoogleMapReact>
-        </div> */}
       </div>
 
       {comments.length > 0 && (
@@ -296,18 +280,6 @@ const Modal = ({}) => {
             return (
               <div key={comment.comment_id} className="comment-div">
                 <div className="comment-info">
-                  <div className="comment-user-info">
-                    <div className="name-and-icon">
-                      <span
-                        // style={{ marginBottom: "-40px" }}
-                        className="material-symbols-outlined account-circle"
-                      >
-                        account_circle
-                      </span>
-                      {comment.user_name} {"   "}
-                    </div>
-                    {formattedDate}
-                  </div>
                   <Rating
                     name="read-only"
                     value={comment.rating_value}
@@ -316,6 +288,15 @@ const Modal = ({}) => {
                   />
                   <p className="comment-content">{comment.comment_cont}</p>
                   <div className="comment-content-div">
+                    <div className="comment-user-info">
+                      <div className="name-and-icon">
+                        <span className="material-symbols-outlined account-circle">
+                          account_circle
+                        </span>
+                        {comment.user_name} {"   "}
+                      </div>
+                      {formattedDate}
+                    </div>
                     {parseInt(comment.user_id) === userIdFromSession ? (
                       <DeleteIcon
                         fontSize="small"
@@ -323,7 +304,7 @@ const Modal = ({}) => {
                         style={{ cursor: "pointer", color: "gray" }}
                       />
                     ) : (
-                      <div></div>
+                      ""
                     )}
 
                     <div className="like-icon">
@@ -331,16 +312,20 @@ const Modal = ({}) => {
                         (like) => like.user_id === userIdFromSession
                       ) ? (
                         <FavoriteIcon
-                          fontSize="small"
+                          fontSize="x-small"
                           onClick={() => handleUnlike(comment.comment_id)}
                         />
                       ) : (
                         <FavoriteBorderIcon
-                          fontSize="small"
+                          fontSize="x-small"
                           onClick={() => handleLike(comment.comment_id)}
                         />
                       )}
-                      {comment.like_count}
+
+                      {/* Only show like count if it's greater than 0 */}
+                      {comment.like_count > 0 && (
+                        <span>{comment.like_count}</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -350,23 +335,17 @@ const Modal = ({}) => {
         </div>
       )}
 
-      <div className="modal-footer">
-        {isAuthorizedUser && isLoggedIn && (
+      {isAuthorizedUser && isLoggedIn && (
+        <div className="modal-footer">
           <>
-            <p className="problem">
-              Click {""}
-              <Link to="/create">here</Link>
-              {""} to create a new resource listing
-            </p>
-
             <p className="problem">
               Click {""}
               <Link to={`/edit/${resource.id}`}>here</Link>
               {""} to edit this resource
             </p>
           </>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Rating Modal */}
       {showRating && (

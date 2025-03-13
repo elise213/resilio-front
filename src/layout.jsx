@@ -8,7 +8,7 @@ import Favorites from "./pages/Favorites";
 import Account from "./pages/Account";
 import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
-import ResetPassword from "./pages/ProfileSettings";
+import ResetPassword from "./pages/ResetPassword";
 import ProfileSettings from "./pages/ProfileSettings";
 
 const Layout = () => {

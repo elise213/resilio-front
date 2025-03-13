@@ -110,16 +110,16 @@ const ProfileSettings = () => {
 
   return (
     <div className="settings-page">
-      <p className="close-modal">
+      <p className="close-settings">
         <Link to={`/`}>
           <span className="material-symbols-outlined">arrow_back_ios</span>
           Back to Search
         </Link>
       </p>
       <div className="settings-container">
-        <p className="page-title">Settings</p>
+        <p className="page-title">Account</p>
 
-        <form onSubmit={handleResetPassword}>
+        <form onSubmit={handleResetPassword} className="profile-form">
           <div className="form-row">
             <label htmlFor="newPassword">New Password:</label>
             <input
@@ -137,9 +137,9 @@ const ProfileSettings = () => {
 
         <hr />
 
-        <form onSubmit={handleProfileUpdate}>
+        <form onSubmit={handleProfileUpdate} className="profile-form">
           <div className="form-row">
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name">Display Name:</label>
             <input
               type="text"
               id="name"

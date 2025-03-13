@@ -4,19 +4,6 @@
   flex-direction: column;
 }
 
-.close-modal a {
-  color: black;
-  margin: 10px 0 0 0;
-  text-decoration: none;
-  margin: 10px;
-  font-size: 14px;
-}
-
-.close-modal a:hover {
-  color: gray;
-  cursor: pointer;
-}
-
 .favorites-page {
   height: 100%;
   width: 100%;

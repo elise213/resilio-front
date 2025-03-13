@@ -26,3 +26,15 @@ form {
   align-self: flex-end;
   margin-top: 10px;
 }
+
+.profile-form {
+  width: 260px;
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.close-settings {
+  align-self: flex-start;
+  padding: 5px;
+}

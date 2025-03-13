@@ -191,33 +191,6 @@ export const ModalInfo = ({
           </div>
         </div>
 
-        {/* {res.address && (
-          <>
-            <span
-              className="info-address"
-              title="Open Google Maps"
-              onClick={() =>
-                window.open(
-                  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                    res.address
-                  )}`,
-                  "_blank"
-                )
-              }
-            >
-              <span className="modal-info-title">Directions</span>
-              <span
-                className="material-icons"
-                style={{
-                  fontSize: "25px",
-                  cursor: "pointer",
-                }}
-              >
-                turn_sharp_right
-              </span>
-            </span>
-          </>
-        )} */}
         {/* Rating */}
         <div
           className="info-address"
@@ -238,7 +211,7 @@ export const ModalInfo = ({
               precision={0.5}
               readOnly
             />
-            <span>({ratingCount})</span>
+            {ratingCount > 0 && <span>{ratingCount}</span>}
           </div>
         </div>
 
