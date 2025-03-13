@@ -17,7 +17,7 @@
   cursor: pointer;
   transition: 0.3sease;
   align-self: flex-end;
-  padding: 5px;
+  padding: 10px;
 }
 
 .login-button-resilio:hover {
