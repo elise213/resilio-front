@@ -322,7 +322,7 @@ const Modal = ({}) => {
                         style={{
                           cursor: "pointer",
                           color: "gray",
-                          alignSelf: "flex-end",
+                          alignSelf: "flex-start",
                         }}
                       />
                     </Tooltip>
@@ -330,18 +330,19 @@ const Modal = ({}) => {
                     ""
                   )}
                   <Rating
+                    style={{ marginTop: "20px" }}
                     name="read-only"
                     value={comment.rating_value}
                     precision={0.5}
                     readOnly
                   />
                   <p className="comment-content">{comment.comment_cont}</p>
-                  <div className="comment-content-div">
+                  <div
+                    className="comment-content-div"
+                    style={{ marginTop: "15px" }}
+                  >
                     <div className="comment-user-info">
                       <div className="name-and-icon">
-                        {/* <span className="material-symbols-outlined account-circle">
-                          account_circle
-                        </span> */}
                         <span className="name-comment">
                           {comment.user_name} {"   "}
                         </span>

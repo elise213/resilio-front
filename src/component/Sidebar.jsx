@@ -197,7 +197,6 @@ const Sidebar = ({
               </>
             )}
             <div className="sidebar-dropdowns">
-              <ResilioDropdown />
               <Login log={log} setLog={setLog} setLayout={setLayout} />
             </div>
           </div>
@@ -212,11 +211,7 @@ const Sidebar = ({
               <div className=" nav-div">
                 <div className="side-by">
                   <>
-                    <Tooltip title="Find My Location" arrow>
-                      <Icon onClick={geoFindMe} style={{ cursor: "pointer" }}>
-                        my_location
-                      </Icon>
-                    </Tooltip>
+                    <ResilioDropdown />
 
                     <div className="search-bar">
                       <span className="material-symbols-outlined search-icon">
@@ -229,6 +224,12 @@ const Sidebar = ({
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
+
+                    <Tooltip title="Find My Location" arrow>
+                      <Icon onClick={geoFindMe} style={{ cursor: "pointer" }}>
+                        my_location
+                      </Icon>
+                    </Tooltip>
                     <Tooltip title="Filter Resources" arrow>
                       <Icon
                         onClick={() => {
