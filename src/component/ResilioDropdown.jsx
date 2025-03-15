@@ -15,7 +15,7 @@ const ResilioDropdown = ({}) => {
         <img
           src="/assets/RESILIOR.png"
           alt="Resilio Logo"
-          style={{ width: "25px", height: "auto" }}
+          style={{ width: "20px", height: "auto" }}
         />
       </IconButton>
       <Menu

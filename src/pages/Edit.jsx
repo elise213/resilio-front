@@ -39,14 +39,14 @@ const Edit = () => {
     image: "",
     image2: "",
     days: initialDaysState,
+    updated: "",
   };
   const [formData, setFormData] = useState(initialFormData || {});
-
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
-
   const categories = CATEGORY_OPTIONS;
-
   const [unrecognizedCategories, setUnrecognizedCategories] = useState([]);
+
+  console.log("USER ID", store.user_id);
 
   useEffect(() => {
     const fetchResourceData = async () => {
@@ -57,7 +57,7 @@ const Edit = () => {
             ? data.category.split(", ")
             : [];
           const knownCategoryValues = new Set(
-            COMBINED_OPTIONS.map((option) => option.value)
+            CATEGORY_OPTIONS.map((option) => option.value)
           );
 
           const _unrecognizedCategories = initialCategories
@@ -82,7 +82,7 @@ const Edit = () => {
       }
     };
     fetchResourceData();
-  }, [actions, id, COMBINED_OPTIONS]);
+  }, [actions, id, CATEGORY_OPTIONS]);
 
   useEffect(() => {
     if (formData.address) {
@@ -111,6 +111,46 @@ const Edit = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   let categoryArray;
+  //   if (Array.isArray(formData.category)) {
+  //     categoryArray = formData.category;
+  //   } else if (typeof formData.category === "string") {
+  //     categoryArray = [formData.category];
+  //   } else {
+  //     console.error("Invalid category format:", formData.category);
+  //     return;
+  //   }
+
+  //   const categoryString = categoryArray.join(", ");
+
+  //   const modifiedFormData = {
+  //     ...formData,
+  //     category: categoryString,
+  //     days: Object.fromEntries(
+  //       Object.entries(formData.days).map(([day, times]) => [
+  //         day,
+  //         {
+  //           start: formatTime(times.start),
+  //           end: formatTime(times.end),
+  //         },
+  //       ])
+  //     ),
+  //     updated: formData.updated ? new Date(formData.updated).toISOString() : "", // 🔥 Convert to ISO format if provided
+  //   };
+
+  //   console.log("Submitting with id: ", id);
+  //   try {
+  //     await actions.editResource(id, modifiedFormData, navigate);
+  //     resetForm();
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Error updating the resource:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -120,10 +160,7 @@ const Edit = () => {
     } else if (typeof formData.category === "string") {
       categoryArray = [formData.category];
     } else {
-      console.error(
-        "formData.category is neither an array nor a string:",
-        formData.category
-      );
+      console.error("Invalid category format:", formData.category);
       return;
     }
 
@@ -141,8 +178,13 @@ const Edit = () => {
           },
         ])
       ),
+      updated:
+        formData.updated && formData.updated.trim() !== ""
+          ? new Date(formData.updated).toISOString()
+          : null,
     };
-    console.log("Submitting with id: ", id);
+
+    console.log("Submitting with id: ", id, "Data:", modifiedFormData);
     try {
       await actions.editResource(id, modifiedFormData, navigate);
       resetForm();
@@ -237,7 +279,6 @@ const Edit = () => {
     return "";
   };
 
-  // console.log("form data", formData);
   return (
     <div className="form-container">
       <form className="geo-form" onSubmit={handleSubmit}>
@@ -366,6 +407,20 @@ const Edit = () => {
             </div>
           ))}
         </div>
+        <div className="input-group">
+          <label htmlFor="updated">Last Updated Date</label>
+          <input
+            className="geo-input"
+            id="updated"
+            name="updated"
+            type="date"
+            value={formData.updated ? formData.updated.split("T")[0] : ""}
+            onChange={(e) => {
+              const selectedDate = e.target.value;
+              handleChange("updated", selectedDate || "");
+            }}
+          />
+        </div>
 
         {daysOfWeek.map((day) => (
           <div key={day} className="input-group time-group">
@@ -397,9 +452,11 @@ const Edit = () => {
         </button>
       </form>
 
-      <button className="delete-button" onClick={handleDelete}>
-        Permanently Delete This Resource
-      </button>
+      {[1, 3, 4, 8].includes(store.user_id) && (
+        <button className="delete-button" onClick={handleDelete}>
+          Permanently Delete This Resource
+        </button>
+      )}
     </div>
   );
 };

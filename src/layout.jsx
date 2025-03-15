@@ -10,6 +10,7 @@ import injectContext from "./store/appContext";
 import { Context } from "./store/appContext";
 import ResetPassword from "./pages/ResetPassword";
 import ProfileSettings from "./pages/ProfileSettings";
+import AdminTools from "./pages/AdminTools";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
@@ -19,6 +20,7 @@ const Layout = () => {
     <BrowserRouter basename={basename}>
       <Routes>
         <Route element={<Home />} path="/" />
+        <Route element={<AdminTools />} path="/admin" />
         <Route element={<UserProfile />} path="/profile/:id" />
         <Route element={<Create />} path="/create" />
         <Route element={<ResetPassword />} path="/resetpassword" />

@@ -234,6 +234,7 @@ export const ModalInfo = ({
             </span>
             <span
               style={{
+                color: "gray",
                 fontSize: "18px",
                 cursor: "pointer",
                 fontWeight: "100",
@@ -298,7 +299,7 @@ export const ModalInfo = ({
         {/* DESCRIPTION */}
         {res.description && (
           <>
-            <div className="info-address" style={{ border: "none" }}>
+            <div className="info-address">
               <span className="modal-info-title" style={{ alignSelf: "start" }}>
                 About
               </span>
@@ -315,6 +316,23 @@ export const ModalInfo = ({
               </span>
             </div>
           </>
+        )}
+        {res.updated && (
+          <div className="info-address" style={{ borderBottom: "none" }}>
+            {/* LAST UPDATED DATE */}
+            <div className="info-address" style={{ borderBottom: "none" }}>
+              <span className="modal-info-title">Last Updated</span>
+              <span>
+                {new Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour12: true,
+                  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                }).format(new Date(res.updated + "Z"))}
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </>

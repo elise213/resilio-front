@@ -56,6 +56,11 @@
   font-style: italic;
 }
 
+a {
+  color: unset;
+  text-decoration: unset;
+}
+
 :root {
   --peruish: rgb(149, 84, 19);
   --newGreen: rgb(67, 172, 67);
@@ -231,6 +236,15 @@ body {
   border: 1px solid black;
   width: 400px !important;
   transition: 0.5s ease;
+}
+
+.name-comment {
+  font-size: 14px;
+}
+
+.date-comment {
+  font-size: 10px;
+  color: gray;
 }
 
 /* ______________________________________________________________SIZE < 700px */
