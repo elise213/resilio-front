@@ -189,6 +189,7 @@ const Sidebar = ({
                       checked={layout === "fullscreen-map"}
                       onChange={handleToggleChange}
                       color="primary"
+                      size="small"
                     />
                   }
                   label={layout === "fullscreen-map" ? "Map View" : "List View"}

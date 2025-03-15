@@ -144,7 +144,7 @@
 .my-schedule-button {
   font-family: "Urbanist", sans-serif;
   font-size: large;
-  color: var(--coral2);
+  color: var(--marascoral);
   z-index: 999;
   border: none;
   background-color: transparent;
@@ -355,6 +355,9 @@
 .side-by > * {
   padding: 0 5px !important;
 }
+.side-by > *:hover {
+  background-color: transparent !important;
+}
 
 .filter-button {
   width: 30px;
@@ -393,53 +396,6 @@
   transition: 0.5s ease;
 }
 
-.list-container {
-  scroll-behavior: smooth;
-  box-sizing: border-box;
-  margin: 0 15px;
-  /* width: 100%; */
-  flex: 1;
-  overflow-y: auto;
-}
-
-.list-container ul {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.modal-div::-webkit-scrollbar,
-.profile-container::-webkit-scrollbar,
-.list-container::-webkit-scrollbar {
-  width: 12px;
-}
-.modal-div::-webkit-scrollbar-track,
-.profile-container::-webkit-scrollbar-track,
-.list-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-.modal-div::-webkit-scrollbar-thumb,
-.profile-container::-webkit-scrollbar-thumb,
-.list-container::-webkit-scrollbar-thumb {
-  background-color: gray;
-  border-radius: 10px;
-  border: 2px solid transparent;
-  box-shadow: inset 0 0 0 1px gray;
-}
-.modal-div:hover::-webkit-scrollbar-thumb,
-.profile-container:hover::-webkit-scrollbar-thumb,
-.list-container:hover::-webkit-scrollbar-thumb {
-  background-color: darkgray;
-}
-.modal-div,
-.profile-container,
-.list-container {
-  scrollbar-color: gray transparent;
-}
-
 .favorites-scroll {
   height: 30vh;
   overflow-y: scroll;
@@ -451,7 +407,6 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  /* padding-left: 10px; */
   box-sizing: border-box;
 }
 

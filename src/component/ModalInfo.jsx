@@ -196,7 +196,7 @@ export const ModalInfo = ({
         {/* ADDRESS */}
         <div className="info-address">
           <span className="modal-info-title">Address</span>
-          <div>
+          <div style={{ display: "flex" }}>
             <span
               style={{ marginLeft: "10px", cursor: "pointer" }}
               onClick={handleCopy}
@@ -268,7 +268,7 @@ export const ModalInfo = ({
         {Object.keys(formattedSchedule).length > 0 &&
           scheduleCategory === "Varied" && (
             <>
-              <div className="info-address" style={{ border: "none" }}>
+              <div className="info-address">
                 <span className="modal-info-title">Hours</span>
                 <div className="schedule-info">
                   <div className="schedule-table">
@@ -321,7 +321,7 @@ export const ModalInfo = ({
           <div className="info-address" style={{ borderBottom: "none" }}>
             {/* LAST UPDATED DATE */}
             <div className="info-address" style={{ borderBottom: "none" }}>
-              <span className="modal-info-title">Last Updated</span>
+              <span className="modal-info-title">Updated</span>
               <span>
                 {new Intl.DateTimeFormat("en-US", {
                   year: "numeric",
