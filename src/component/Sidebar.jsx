@@ -104,7 +104,7 @@ const Sidebar = ({
                 <div className="active-filter">
                   {searchQuery}{" "}
                   <div onClick={clearSearchQuery} style={{ cursor: "pointer" }}>
-                    &times;
+                    {/* &times; */} x
                   </div>
                 </div>
               )}
@@ -115,7 +115,7 @@ const Sidebar = ({
                     onClick={() => clearSelectedCategory(category)}
                     style={{ cursor: "pointer" }}
                   >
-                    &times;
+                    {/* &times; */} x
                   </div>
                 </div>
               ))}
@@ -126,7 +126,7 @@ const Sidebar = ({
                     onClick={() => clearSelectedDay(day)}
                     style={{ cursor: "pointer" }}
                   >
-                    &times;
+                    {/* &times; */} x
                   </div>
                 </div>
               ))}
@@ -147,11 +147,11 @@ const Sidebar = ({
 
   useEffect(() => {
     setHasBoundaryResults(
-      !loadingResults &&
+      !store.loadingResults &&
         !!store.boundaryResults &&
         store.boundaryResults.length > 0
     );
-  }, [store.boundaryResults, loadingResults]);
+  }, [store.boundaryResults, store.loadingResults]);
 
   useEffect(() => {
     setSelectedCategories(
@@ -205,7 +205,7 @@ const Sidebar = ({
             <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
           </div>
 
-          {loadingResults ? (
+          {store.loadingResults ? (
             <p style={{ textAlign: "center", margin: "20px" }}>Loading...</p>
           ) : store.boundaryResults.length > 0 ? (
             <>
@@ -254,7 +254,7 @@ const Sidebar = ({
                     />
                   )}
                   <div className="list-container">
-                    {loadingResults ? (
+                    {store.loadingResults ? (
                       <p style={{ textAlign: "center", margin: "20px" }}>
                         Loading...
                       </p>

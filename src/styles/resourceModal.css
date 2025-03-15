@@ -91,8 +91,11 @@
 
 .modal-favorite-icon {
   display: flex;
-  padding: 10px 0 0 0;
+  padding: 10px;
   justify-self: flex-end;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .close-modal:hover {
@@ -184,6 +187,7 @@
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
+  margin-top: 20px;
 }
 
 .group-1 {
@@ -288,11 +292,11 @@ p {
 .comment-date {
   font-size: 14px;
   color: rgb(200, 198, 198);
+  margin-left: 5px;
 }
 
 .comment-user-info {
   font-size: 12px;
-
   justify-content: space-between;
   display: flex;
   flex-direction: column;
@@ -303,12 +307,12 @@ p {
   font-size: 14px;
   padding: 8px;
   font-weight: 100;
+  text-decoration: underline;
 }
 
-.name-and-icon {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+.delete-icon {
+  cursor: "pointer";
+  color: "gray" !important;
 }
 
 .comments-display {
@@ -360,15 +364,6 @@ textarea {
 .problem {
   text-decoration: none;
   font-weight: 100;
-}
-
-.here {
-  text-decoration: underline;
-  color: rgb(68, 138, 255);
-}
-
-.problem-link {
-  text-decoration: none !important;
 }
 
 body.modal-open {
@@ -531,7 +526,7 @@ body.modal-open {
 
 /* Emergency Alert Bar */
 .alert-bar {
-  /* position: fixed; */
+  margin-top: 40px;
   top: 0;
   left: 0;
   width: 100%;

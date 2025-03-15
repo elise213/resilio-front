@@ -5,10 +5,10 @@ import Map from "../component/Map";
 import ErrorBoundary from "../component/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Selection from "../component/Selection";
-import { debounce } from "lodash";
 import Modal from "../component/Modal";
 import Contact from "../component/Contact";
 import About from "../component/About";
+import { debounce } from "lodash";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -19,11 +19,8 @@ const Home = () => {
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [locationModalIsOpen, setLocationModalIsOpen] = useState(false);
-
-  // STATES
   const [zipInput, setZipInput] = useState("");
   const [layout, setLayout] = useState("fullscreen-sidebar");
-
   const INITIAL_CITY_STATE = store.austin[0];
   const [userLocation, setUserLocation] = useState(null);
   const [city, setCity] = useState(INITIAL_CITY_STATE);
@@ -50,7 +47,6 @@ const Home = () => {
       const token = sessionStorage.getItem("token") || store.token;
       setIsLoggedIn(!!token);
     };
-
     checkLoginStatus();
   }, [store.token]);
 
@@ -65,43 +61,36 @@ const Home = () => {
   }, [zipInput]);
 
   useEffect(() => {
-    actions.fetchFavorites();
-  }, []);
-
-  useEffect(() => {
     const noCategorySelected = areAllUnchecked(categories);
     const noDaySelected = areAllUnchecked(days);
 
     setUserSelectedFilter(!(noCategorySelected && noDaySelected));
   }, [categories, days]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log("🚀 Fetch started, setting loadingResults to true...");
-      setLoadingResults(true);
-
-      try {
-        console.log("Fetching boundary results...");
-        const results = await actions.setBoundaryResults(
-          city.bounds,
-          categories,
-          days
-        );
-
-        if (results) {
-          console.log("✅ Fetch complete, updating UI...");
-          setLoadingResults(false);
-        }
-      } catch (error) {
-        console.error("❌ Error fetching boundary results:", error);
-        setLoadingResults(false);
-      }
-    };
-
-    if (city.bounds) {
-      fetchData();
-    }
-  }, [categories, days, city.bounds]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     console.log("🚀 Fetch started, setting loadingResults to true...");
+  //     setLoadingResults(true);
+  //     try {
+  //       console.log("Fetching boundary results...");
+  //       const results = await actions.setBoundaryResults(
+  //         city.bounds,
+  //         categories,
+  //         days
+  //       );
+  //       if (results) {
+  //         console.log("✅ Fetch complete, updating UI...");
+  //         setLoadingResults(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("❌ Error fetching boundary results:", error);
+  //       setLoadingResults(false);
+  //     }
+  //   };
+  //   if (city.bounds) {
+  //     fetchData();
+  //   }
+  // }, [city.bounds]);
 
   // FUNCTIONS
 
@@ -134,21 +123,50 @@ const Home = () => {
     }
   };
 
+  // const handleBoundsChange = useCallback(
+  //   debounce((data) => {
+  //     actions.setBoundaryResults(data.bounds, categories, days);
+  //     setCity({
+  //       ...city,
+  //       bounds: {
+  //         ne: data.bounds.ne,
+  //         sw: data.bounds.sw,
+  //       },
+  //       center: {
+  //         lat: data.center.lat,
+  //         lng: normalizeLongitude(data.center.lng),
+  //       },
+  //     });
+  //   }, 800),
+  //   [categories, days]
+  // );
+
   const handleBoundsChange = useCallback(
     debounce((data) => {
+      console.log("📡 Calling setBoundaryResults...");
+
+      // Prevent API call if bounds are unchanged
+      if (
+        city.bounds?.ne?.lat === data.bounds.ne.lat &&
+        city.bounds?.ne?.lng === data.bounds.ne.lng &&
+        city.bounds?.sw?.lat === data.bounds.sw.lat &&
+        city.bounds?.sw?.lng === data.bounds.sw.lng
+      ) {
+        console.log("⏳ Bounds unchanged, skipping API call...");
+        return;
+      }
+
       actions.setBoundaryResults(data.bounds, categories, days);
+
       setCity({
         ...city,
-        bounds: {
-          ne: data.bounds.ne,
-          sw: data.bounds.sw,
-        },
+        bounds: { ne: data.bounds.ne, sw: data.bounds.sw },
         center: {
           lat: data.center.lat,
           lng: normalizeLongitude(data.center.lng),
         },
       });
-    }, 600),
+    }, 1000),
     [categories, days]
   );
 
@@ -276,7 +294,7 @@ const Home = () => {
     if (city.bounds) {
       fetchData();
     }
-  }, [categories, days, city.bounds]);
+  }, [city.bounds]);
 
   useEffect(() => {
     const handleResize = actions.updateScreenSize;

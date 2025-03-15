@@ -12,60 +12,12 @@ const Create = () => {
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
-
-  useEffect(() => {
-    const scriptId = "google-maps-script";
-    console.log("loading google maps");
-    // Check if the script is already added
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.id = scriptId;
-      script.async = true; // Ensure script is loaded asynchronously
-      script.defer = true; // Script executes after the document has been parsed
-      script.onload = () => setGoogleMapsLoaded(true);
-      document.body.appendChild(script);
-    } else {
-      // If the script exists, immediately set the map as loaded
-      setGoogleMapsLoaded(true);
-    }
-
-    return () => {
-      // Cleanup the script when the component unmounts
-      const script = document.getElementById(scriptId);
-      if (script) {
-        script.remove();
-      }
-    };
-  }, [apiKey]);
-
   const daysOfWeek = store.daysOfWeek;
-
-  // const daysOfWeek = store.DAY_OPTIONS.map(option => option.id);
   const initialDaysState = daysOfWeek.reduce((acc, day) => {
     acc[day] = { start: "", end: "" };
     return acc;
   }, {});
 
-  // const categories = store.CATEGORY_OPTIONS;
-  const categories = [
-    { id: "F", value: "food", label: "Food" },
-    { id: "Sh", value: "shelter", label: "Shelter" },
-    { id: "H", value: "health", label: "Health" },
-    { id: "Hy", value: "hygiene", label: "Hygiene" },
-    { id: "Wi", value: "wifi", label: "WiFi" },
-    { id: "C", value: "crisis", label: "Crisis Support" },
-    { id: "Su", value: "substance", label: "Drug Use" },
-    { id: "B", value: "bathroom", label: "Bathroom" },
-    { id: "Le", value: "legal", label: "Legal Services" },
-    { id: "Sex", value: "sex", label: "Sexual Health" },
-    { id: "Me", value: "mental", label: "Mental Health" },
-    { id: "Wo", value: "women", label: "Women" },
-    { id: "Y", value: "youth", label: "Youth" },
-    { id: "Sn", value: "seniors", label: "Seniors" },
-    { id: "Lg", value: "lgbtq", label: "LGBTQ" },
-  ];
   const initialFormData = {
     name: "",
     address: "",
@@ -73,28 +25,69 @@ const Create = () => {
     category: [],
     website: "",
     description: "",
-    latitude: "",
-    longitude: "",
+    latitude: null,
+    longitude: null,
     image: "",
     image2: "",
     days: initialDaysState,
   };
   const [formData, setFormData] = useState(initialFormData);
 
+  useEffect(() => {
+    const scriptId = "google-maps-script";
+    console.log("loading google maps");
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.id = scriptId;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => setGoogleMapsLoaded(true);
+      document.body.appendChild(script);
+    } else {
+      setGoogleMapsLoaded(true);
+    }
+
+    return () => {
+      const script = document.getElementById(scriptId);
+      if (script) {
+        script.remove();
+      }
+    };
+  }, [apiKey]);
+
+  const categories = store.CATEGORY_OPTIONS;
+
+  // const handleSelect = actions.debounce(async (address) => {
+  //   if (address !== formData.address) {
+  //     handleChange("address", address);
+  //     try {
+  //       const results = await geocodeByAddress(address);
+  //       const latLng = await getLatLng(results[0]);
+  //       handleChange("latitude", latLng.lat);
+  //       handleChange("longitude", latLng.lng);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   }
+  // }, 500);
+
   const handleSelect = actions.debounce(async (address) => {
     if (address !== formData.address) {
-      // Check if the address has actually changed
       handleChange("address", address);
       try {
         const results = await geocodeByAddress(address);
         const latLng = await getLatLng(results[0]);
-        handleChange("latitude", latLng.lat);
-        handleChange("longitude", latLng.lng);
+
+        // Ensure latitude & longitude are numbers before setting them
+        handleChange("latitude", latLng.lat || null);
+        handleChange("longitude", latLng.lng || null);
       } catch (error) {
         console.error("Error:", error);
       }
     }
-  }, 500); // 500ms debounce delay
+  }, 500);
 
   function handleSubmit(e) {
     e.preventDefault();

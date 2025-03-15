@@ -214,6 +214,14 @@ const Login = ({ setLayout }) => {
             </MenuItem>
             <MenuItem onClick={() => setAnchorEl(null)}>
               <Link
+                to={`/favorites`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                Favorites
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={() => setAnchorEl(null)}>
+              <Link
                 to={`/profile/${userId2}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >

@@ -212,11 +212,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       // ________________________________________________________________LOGIN/TOKEN
 
+      // getToken: () => {
+      //   const token = sessionStorage.getItem("token");
+      //   const favorites = JSON.parse(sessionStorage.getItem("favorites"));
+      //   if (token && token.length) {
+      //     setStore({ token: token, favorites: favorites || [] });
+      //   }
+      // },
       getToken: () => {
         const token = sessionStorage.getItem("token");
-        const favorites = JSON.parse(sessionStorage.getItem("favorites"));
+        const favorites = JSON.parse(sessionStorage.getItem("favorites")) || [];
+        const user_id = sessionStorage.getItem("user_id");
+        const name = sessionStorage.getItem("name");
+        const is_org = sessionStorage.getItem("is_org");
+
         if (token && token.length) {
-          setStore({ token: token, favorites: favorites || [] });
+          setStore({
+            token: token,
+            favorites: favorites,
+            user_id: user_id ? parseInt(user_id) : null, // Ensure user_id is an integer
+            name: name || null,
+            is_org: is_org ? parseInt(is_org) : null,
+          });
         }
       },
 
@@ -247,7 +264,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           const data = await response.json();
           const fullFavorites = data.favorites.map((fav) => ({
-            ...fav.resource, // Include full resource details
+            ...fav.resource,
           }));
 
           sessionStorage.setItem("token", data.access_token);
@@ -350,6 +367,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const current_back_url = getStore().current_back_url;
           const token = getStore().token;
+          console.log("Token being sent:", token);
+          console.log("Session Token:", sessionStorage.getItem("token"));
 
           const opts = {
             method: "POST",
@@ -404,6 +423,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       deleteResource: async (resourceId, navigate) => {
         const { current_back_url } = getStore();
         const token = sessionStorage.getItem("token");
+        console.log("Token being sent:", token);
         const opts = {
           method: "DELETE",
           headers: {
@@ -740,8 +760,15 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      setBoundaryResults: async (bounds, resources, days, groups) => {
+      setBoundaryResults: async (bounds, resources, days) => {
         const store = getStore();
+
+        // Prevent duplicate fetch calls
+        if (store.isFetchingBoundaryResults) {
+          console.log("⏳ Request already in progress, skipping...");
+          return;
+        }
+
         const currentTimestamp = Date.now();
 
         // Abort the previous request only if another request is active
@@ -754,6 +781,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({
           abortController: newAbortController,
           lastFetchTimestamp: currentTimestamp,
+          isFetchingBoundaryResults: true, // Mark request as active
+          loadingResults: true, // 🟢 Show loading state
         });
 
         let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
@@ -769,14 +798,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
 
         const url = getStore().current_back_url + "/api/getBResults";
-        const combinedResources = { ...resources, ...groups };
-
-        console.log(
-          "✅ Sending combined categories & groups:",
-          combinedResources
-        );
+        const combinedResources = { ...resources };
 
         try {
+          console.log("📡 Sending request to getBResults...");
           setStore({ loading: true });
 
           let response = await fetch(url, {
@@ -804,25 +829,99 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           // Ensure only the latest fetch updates state
           if (getStore().lastFetchTimestamp === currentTimestamp) {
-            setStore({ boundaryResults: data.data, loading: false });
+            setStore({
+              boundaryResults: data.data,
+              loading: false,
+              loadingResults: false,
+            }); // ✅ Stop loading on success
           } else {
             console.log("⚠️ Ignoring outdated fetch results...");
           }
-
-          console.log("🔍 Sending filters to backend:");
-          console.log("✅ Categories & Groups:", resources);
-          console.log("✅ Days:", days);
-
-          return data.data;
         } catch (error) {
           if (error.name === "AbortError") {
             console.log("⚠️ Fetch was aborted.");
           } else {
-            setStore({ loading: false });
             console.error("❌ Error fetching boundary results:", error);
           }
+        } finally {
+          setStore({ isFetchingBoundaryResults: false, loadingResults: false });
         }
       },
+
+      // setBoundaryResults: async (bounds, resources, days) => {
+      //   const store = getStore();
+      //   const currentTimestamp = Date.now();
+
+      //   // Abort the previous request only if another request is active
+      //   if (store.abortController) {
+      //     console.log("⏳ Aborting previous fetch...");
+      //     store.abortController.abort();
+      //   }
+
+      //   const newAbortController = new AbortController();
+      //   setStore({
+      //     abortController: newAbortController,
+      //     lastFetchTimestamp: currentTimestamp,
+      //   });
+
+      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
+      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+
+      //   // Normalize longitude values
+      //   neLng = neLng % 360;
+      //   if (neLng > 180) neLng -= 360;
+      //   swLng = swLng % 360;
+      //   if (swLng > 180) swLng -= 360;
+
+      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
+      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+
+      //   const url = getStore().current_back_url + "/api/getBResults";
+      //   const combinedResources = { ...resources };
+
+      //   try {
+      //     setStore({ loading: true });
+
+      //     let response = await fetch(url, {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({
+      //         neLat,
+      //         neLng,
+      //         swLat,
+      //         swLng,
+      //         resources: combinedResources || null,
+      //         days: days || null,
+      //       }),
+      //       signal: newAbortController.signal,
+      //     });
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
+      //     }
+
+      //     const data = await response.json();
+
+      //     // Ensure only the latest fetch updates state
+      //     if (getStore().lastFetchTimestamp === currentTimestamp) {
+      //       setStore({ boundaryResults: data.data, loading: false });
+      //     } else {
+      //       console.log("⚠️ Ignoring outdated fetch results...");
+      //     }
+
+      //     return data.data;
+      //   } catch (error) {
+      //     if (error.name === "AbortError") {
+      //       console.log("⚠️ Fetch was aborted.");
+      //     } else {
+      //       setStore({ loading: false });
+      //       console.error("❌ Error fetching boundary results:", error);
+      //     }
+      //   }
+      // },
 
       // setBoundaryResults: async (bounds, resources, days, groups) => {
       //   const store = getStore();

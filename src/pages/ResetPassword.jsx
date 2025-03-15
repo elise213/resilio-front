@@ -20,47 +20,64 @@ const ResetPassword = () => {
     }
   }, [token]);
 
+  const cleanToken = token ? token.trim().replace(/^b'|\'$/g, "") : null;
+
   const handleResetPassword = async () => {
+    console.log("🟡 Attempting password reset...");
+
     if (!newPassword || !confirmPassword) {
       setError("Both fields are required.");
+      console.error("❌ Error: Both password fields are required.");
       return;
     }
 
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match.");
+      console.error("❌ Error: Passwords do not match.");
       return;
     }
 
-    if (!token) {
+    if (!cleanToken) {
       setError("Invalid or expired token.");
+      console.error("❌ Error: Token is missing.");
       return;
     }
 
     setLoading(true);
     try {
-      console.log("🔍 Sending request with password:", newPassword);
-      console.log("🔍 Token being sent:", token);
+      console.log("🔍 Clean Token being sent:", cleanToken);
+      console.log("🔍 Password being sent:", newPassword);
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/change-password`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token.trim()}`,
+            Authorization: `Bearer ${cleanToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ password: newPassword }),
         }
       );
 
-      const result = await response.json();
-      console.log("📩 Server Response:", result);
+      console.log("📩 Server Response Status:", response.status);
+
+      // Ensure response is JSON before parsing
+      let result;
+      try {
+        result = await response.json();
+      } catch (err) {
+        throw new Error("Server returned invalid response.");
+      }
+
+      console.log("📩 Full Server Response:", result);
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to reset password. Try again.");
       }
 
       setSuccess(true);
+      console.log("✅ Password reset successful. Redirecting...");
       setTimeout(() => navigate("/"), 3000);
     } catch (err) {
       console.error("❌ Error resetting password:", err);

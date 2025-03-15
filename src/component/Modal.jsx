@@ -8,7 +8,6 @@ import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import GoogleMapReact from "google-map-react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Login from "./Login";
 import FavoriteButton from "./FavoriteButton";
@@ -36,14 +35,6 @@ const Modal = ({}) => {
   }, []);
 
   const resource = store.selectedResource;
-
-  console.log("resource", resource);
-
-  // const mapCenter = {
-  //   lat: resource?.latitude || 0,
-  //   lng: resource?.longitude || 0,
-  // };
-  // const mapZoom = 13;
 
   const handleDelete = async (commentId) => {
     const confirm = window.confirm(
@@ -264,13 +255,6 @@ const Modal = ({}) => {
   return (
     <>
       {!isLoggedIn && <Login />}
-      {resource.alert && (
-        <div className="alert-bar">
-          <marquee behavior="scroll" direction="left">
-            🚨 {resource.alert}
-          </marquee>
-        </div>
-      )}
 
       {isLoggedIn && (
         <FavoriteButton
@@ -278,6 +262,14 @@ const Modal = ({}) => {
           toggleFavorite={toggleFavorite}
         />
       )}
+      {resource.alert && (
+        <div className="alert-bar">
+          {/* <marquee behavior="scroll" direction="left"> */}
+          🚨 {resource.alert}
+          {/* </marquee> */}
+        </div>
+      )}
+
       <p
         className="close-modal"
         onClick={() => {
@@ -312,7 +304,7 @@ const Modal = ({}) => {
             const date = new Date(comment.created_at);
             const formattedDate = date.toLocaleDateString("en-US", {
               year: "numeric",
-              month: "short",
+              month: "numeric",
               day: "numeric",
             });
             let isLiked = comment.likes?.some(
@@ -322,6 +314,21 @@ const Modal = ({}) => {
             return (
               <div key={comment.comment_id} className="comment-div">
                 <div className="comment-info">
+                  {parseInt(comment.user_id) === userIdFromSession ? (
+                    <Tooltip title="Delete this comment" arrow>
+                      <DeleteIcon
+                        fontSize="small"
+                        onClick={() => handleDelete(comment.comment_id)}
+                        style={{
+                          cursor: "pointer",
+                          color: "gray",
+                          alignSelf: "flex-end",
+                        }}
+                      />
+                    </Tooltip>
+                  ) : (
+                    ""
+                  )}
                   <Rating
                     name="read-only"
                     value={comment.rating_value}
@@ -335,32 +342,25 @@ const Modal = ({}) => {
                         {/* <span className="material-symbols-outlined account-circle">
                           account_circle
                         </span> */}
-                        {comment.user_name} {"   "}
+                        <span className="name-comment">
+                          {comment.user_name} {"   "}
+                        </span>
+                        <span className="date-comment">{formattedDate}</span>
                       </div>
-                      {formattedDate}
                     </div>
 
-                    {parseInt(comment.user_id) === userIdFromSession ? (
-                      <Tooltip title="Delete this comment" arrow>
-                        <DeleteIcon
-                          fontSize="small"
-                          onClick={() => handleDelete(comment.comment_id)}
-                          style={{ cursor: "pointer", color: "gray" }}
-                        />
-                      </Tooltip>
-                    ) : (
-                      ""
-                    )}
                     <div className="like-icon">
                       {comment.likes?.some(
                         (like) => like.user_id === userIdFromSession
                       ) ? (
                         <FavoriteIcon
+                          sx={{ color: "red", cursor: "pointer" }}
                           fontSize="x-small"
                           onClick={() => handleUnlike(comment.comment_id)}
                         />
                       ) : (
                         <FavoriteBorderIcon
+                          sx={{ color: "gray", cursor: "pointer" }}
                           fontSize="x-small"
                           onClick={() => handleLike(comment.comment_id)}
                         />
