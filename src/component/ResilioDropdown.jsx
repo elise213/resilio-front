@@ -11,7 +11,7 @@ const ResilioDropdown = () => {
     <>
       <IconButton
         onClick={(e) => setAnchorEl2(e.currentTarget)}
-        sx={{ color: "salmon" }}
+        // sx={{ color: "salmon" }}
       >
         <InfoOutlinedIcon sx={{ fontSize: 20 }} />
       </IconButton>

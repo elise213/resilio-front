@@ -58,7 +58,7 @@
   display: flex;
   text-align: justify;
   justify-content: space-between;
-  border-bottom: 1px solid rgb(228, 226, 226);
+  border-bottom: 1px solid rgb(190, 232, 216);
   text-decoration: none;
   font-size: 12px;
   font-weight: 200;
@@ -141,9 +141,7 @@
 }
 
 .read-more {
-  /* font-size: 11px; */
   color: blue;
-  /* margin-left: 10px; */
   text-align: end;
 }
 
@@ -280,7 +278,7 @@ p {
 }
 
 .comment-info div p {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .comment-and-rating {
@@ -290,7 +288,7 @@ p {
 }
 
 .comment-date {
-  font-size: 14px;
+  font-size: 12px;
   color: rgb(200, 198, 198);
   margin-left: 5px;
 }
@@ -304,7 +302,7 @@ p {
 
 .user-reviews {
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   padding: 8px;
   font-weight: 100;
   text-decoration: underline;
@@ -355,6 +353,7 @@ textarea {
 .modal-info-title {
   font-size: 14px !important;
   width: 100px !important;
+  color: rgb(95, 118, 110);
 }
 
 .modal-info-value {
@@ -550,5 +549,15 @@ marquee {
   .info-groups {
     flex-direction: column;
     width: auto;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .modal-info-title {
+    width: 80px !important;
+    font-size: 12px !important;
+  }
+  .info-address {
+    font-size: 12px;
   }
 }
