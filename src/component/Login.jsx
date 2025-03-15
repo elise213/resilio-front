@@ -197,7 +197,10 @@ const Login = ({ setLayout }) => {
             onClick={(e) => setAnchorEl(e.currentTarget)}
             style={{ padding: "0" }}
           >
-            <Avatar alt="Profile" sx={{ width: 30, height: 30 }} />
+            <Avatar
+              alt="Profile"
+              sx={{ width: 30, height: 30, marginBottom: "10px" }}
+            />
           </IconButton>
           <Menu
             anchorEl={anchorEl}

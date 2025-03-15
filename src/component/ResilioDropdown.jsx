@@ -1,22 +1,19 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Menu, MenuItem, IconButton } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-const ResilioDropdown = ({}) => {
+const ResilioDropdown = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const { store, actions } = useContext(Context);
 
   return (
-    <div>
+    <>
       <IconButton
         onClick={(e) => setAnchorEl2(e.currentTarget)}
-        style={{ padding: "0" }}
+        sx={{ color: "salmon" }}
       >
-        <img
-          src="/assets/RESILIOR.png"
-          alt="Resilio Logo"
-          style={{ width: "20px", height: "auto" }}
-        />
+        <InfoOutlinedIcon sx={{ fontSize: 20 }} />
       </IconButton>
       <Menu
         anchorEl={anchorEl2}
@@ -27,7 +24,7 @@ const ResilioDropdown = ({}) => {
           onClick={() => {
             setAnchorEl2(null);
             actions.openAboutModal();
-            console.log("setting about modal true");
+            console.log("Opening About Modal");
           }}
         >
           About
@@ -49,7 +46,7 @@ const ResilioDropdown = ({}) => {
           Contact
         </MenuItem>
       </Menu>
-    </div>
+    </>
   );
 };
 

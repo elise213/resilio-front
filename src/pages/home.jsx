@@ -67,31 +67,6 @@ const Home = () => {
     setUserSelectedFilter(!(noCategorySelected && noDaySelected));
   }, [categories, days]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     console.log("🚀 Fetch started, setting loadingResults to true...");
-  //     setLoadingResults(true);
-  //     try {
-  //       console.log("Fetching boundary results...");
-  //       const results = await actions.setBoundaryResults(
-  //         city.bounds,
-  //         categories,
-  //         days
-  //       );
-  //       if (results) {
-  //         console.log("✅ Fetch complete, updating UI...");
-  //         setLoadingResults(false);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching boundary results:", error);
-  //       setLoadingResults(false);
-  //     }
-  //   };
-  //   if (city.bounds) {
-  //     fetchData();
-  //   }
-  // }, [city.bounds]);
-
   // FUNCTIONS
 
   const updateCityStateFromZip = async (zip) => {
@@ -123,29 +98,10 @@ const Home = () => {
     }
   };
 
-  // const handleBoundsChange = useCallback(
-  //   debounce((data) => {
-  //     actions.setBoundaryResults(data.bounds, categories, days);
-  //     setCity({
-  //       ...city,
-  //       bounds: {
-  //         ne: data.bounds.ne,
-  //         sw: data.bounds.sw,
-  //       },
-  //       center: {
-  //         lat: data.center.lat,
-  //         lng: normalizeLongitude(data.center.lng),
-  //       },
-  //     });
-  //   }, 800),
-  //   [categories, days]
-  // );
-
   const handleBoundsChange = useCallback(
     debounce((data) => {
       console.log("📡 Calling setBoundaryResults...");
 
-      // Prevent API call if bounds are unchanged
       if (
         city.bounds?.ne?.lat === data.bounds.ne.lat &&
         city.bounds?.ne?.lng === data.bounds.ne.lng &&

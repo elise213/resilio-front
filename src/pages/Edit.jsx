@@ -407,20 +407,6 @@ const Edit = () => {
             </div>
           ))}
         </div>
-        <div className="input-group">
-          <label htmlFor="updated">Last Updated Date</label>
-          <input
-            className="geo-input"
-            id="updated"
-            name="updated"
-            type="date"
-            value={formData.updated ? formData.updated.split("T")[0] : ""}
-            onChange={(e) => {
-              const selectedDate = e.target.value;
-              handleChange("updated", selectedDate || "");
-            }}
-          />
-        </div>
 
         {daysOfWeek.map((day) => (
           <div key={day} className="input-group time-group">
@@ -446,12 +432,24 @@ const Edit = () => {
             />
           </div>
         ))}
-
+        <div className="input-group">
+          <label htmlFor="updated">Last Updated Date</label>
+          <input
+            className="geo-input"
+            id="updated"
+            name="updated"
+            type="date"
+            value={formData.updated ? formData.updated.split("T")[0] : ""}
+            onChange={(e) => {
+              const selectedDate = e.target.value;
+              handleChange("updated", selectedDate || "");
+            }}
+          />
+        </div>
         <button className="update-button" type="submit">
           Update
         </button>
       </form>
-
       {[1, 3, 4, 8].includes(store.user_id) && (
         <button className="delete-button" onClick={handleDelete}>
           Permanently Delete This Resource

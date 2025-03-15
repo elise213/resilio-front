@@ -343,9 +343,17 @@
 
 .side-by {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: 300px;
+  align-self: center;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+.side-by > * {
+  padding: 0 5px !important;
 }
 
 .filter-button {
@@ -635,6 +643,7 @@ iframe {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 @media screen and (max-width: 700px) {
