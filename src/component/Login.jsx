@@ -9,7 +9,7 @@ import Register from "./Register";
 const Login = ({ setLayout }) => {
   const { store, actions } = useContext(Context);
   const [log, setLog] = useState("1");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -17,19 +17,11 @@ const Login = ({ setLayout }) => {
     store.loginModalIsOpen
   );
   const userId2 = parseInt(sessionStorage.getItem("user_id"), 10);
+  const isLoggedIn = !!store.token;
 
   useEffect(() => {
     setIsLoginModalOpen(store.loginModalIsOpen);
   }, [store.loginModalIsOpen]);
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = sessionStorage.getItem("token") || store.token;
-      setIsLoggedIn(!!token);
-    };
-
-    checkLoginStatus();
-  }, [store.token]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import Swal from "sweetalert2";
 import styles from "../styles/edit.css";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -11,6 +12,8 @@ const Edit = () => {
   const { id } = useParams();
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
   const daysOfWeek = [
@@ -40,6 +43,7 @@ const Edit = () => {
     image2: "",
     days: initialDaysState,
     updated: "",
+    user_ids: [1, 2, 3],
   };
   const [formData, setFormData] = useState(initialFormData || {});
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
@@ -51,38 +55,36 @@ const Edit = () => {
   useEffect(() => {
     const fetchResourceData = async () => {
       try {
-        const data = await actions.getResource(id);
-        if (data) {
-          const initialCategories = data.category
-            ? data.category.split(", ")
-            : [];
-          const knownCategoryValues = new Set(
-            CATEGORY_OPTIONS.map((option) => option.value)
-          );
+        const resourceData = await actions.getResource(id);
+        const assignedUsers = await actions.getResourceUsers(id); // Fetch only assigned users
 
-          const _unrecognizedCategories = initialCategories
-            .filter((category) => !knownCategoryValues.has(category))
-            .map((category) => ({ category, keep: null }));
-
-          setUnrecognizedCategories(_unrecognizedCategories);
-
-          const recognizedCategories = initialCategories.filter((category) =>
-            knownCategoryValues.has(category)
-          );
-          setFormData((prevData) => ({
-            ...initialFormData,
-            ...data,
-            category: recognizedCategories,
-          }));
-        } else {
-          console.error("Data is null");
-        }
+        setFormData((prevData) => ({
+          ...initialFormData,
+          ...resourceData,
+          category: resourceData.category
+            ? resourceData.category.split(", ")
+            : [],
+          user_ids: resourceData.user_ids || [], // Store assigned user IDs
+        }));
       } catch (error) {
-        console.error("Error fetching the resource data:", error);
+        console.error("Error fetching data:", error);
       }
     };
+
     fetchResourceData();
-  }, [actions, id, CATEGORY_OPTIONS]);
+  }, [actions, id]);
+
+  const handleAddUserId = () => {
+    const newUserId = parseInt(formData.newUserId);
+
+    if (!newUserId || formData.user_ids.includes(newUserId)) return; // Prevent invalid or duplicate entries
+
+    setFormData((prev) => ({
+      ...prev,
+      user_ids: [...prev.user_ids, newUserId], // Add new ID
+      newUserId: "", // Clear input field
+    }));
+  };
 
   useEffect(() => {
     if (formData.address) {
@@ -111,86 +113,37 @@ const Edit = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   let categoryArray;
-  //   if (Array.isArray(formData.category)) {
-  //     categoryArray = formData.category;
-  //   } else if (typeof formData.category === "string") {
-  //     categoryArray = [formData.category];
-  //   } else {
-  //     console.error("Invalid category format:", formData.category);
-  //     return;
-  //   }
-
-  //   const categoryString = categoryArray.join(", ");
-
-  //   const modifiedFormData = {
-  //     ...formData,
-  //     category: categoryString,
-  //     days: Object.fromEntries(
-  //       Object.entries(formData.days).map(([day, times]) => [
-  //         day,
-  //         {
-  //           start: formatTime(times.start),
-  //           end: formatTime(times.end),
-  //         },
-  //       ])
-  //     ),
-  //     updated: formData.updated ? new Date(formData.updated).toISOString() : "", // 🔥 Convert to ISO format if provided
-  //   };
-
-  //   console.log("Submitting with id: ", id);
-  //   try {
-  //     await actions.editResource(id, modifiedFormData, navigate);
-  //     resetForm();
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.error("Error updating the resource:", error);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let categoryArray;
-    if (Array.isArray(formData.category)) {
-      categoryArray = formData.category;
-    } else if (typeof formData.category === "string") {
-      categoryArray = [formData.category];
-    } else {
-      console.error("Invalid category format:", formData.category);
-      return;
-    }
-
-    const categoryString = categoryArray.join(", ");
-
     const modifiedFormData = {
       ...formData,
-      category: categoryString,
-      days: Object.fromEntries(
-        Object.entries(formData.days).map(([day, times]) => [
-          day,
-          {
-            start: formatTime(times.start),
-            end: formatTime(times.end),
-          },
-        ])
-      ),
-      updated:
-        formData.updated && formData.updated.trim() !== ""
-          ? new Date(formData.updated).toISOString()
-          : null,
+      category: formData.category.join(", "), // Convert array to string
+      user_ids: formData.user_ids || [], // Ensure user_ids are sent
+      latitude: formData.latitude ?? null, // Ensure null values
+      longitude: formData.longitude ?? null,
     };
 
-    console.log("Submitting with id: ", id, "Data:", modifiedFormData);
     try {
       await actions.editResource(id, modifiedFormData, navigate);
-      resetForm();
-      navigate("/");
+
+      Swal.fire({
+        icon: "success",
+        title: "Resource Updated",
+        text: "The resource has been successfully updated!",
+        confirmButtonText: "OK",
+      }).then(() => {
+        resetForm();
+        navigate("/"); // Redirect only after user clicks "OK"
+      });
     } catch (error) {
       console.error("Error updating the resource:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "An error occurred while updating the resource. Please try again.",
+      });
     }
   };
 
@@ -293,6 +246,35 @@ const Edit = () => {
             onChange={(e) => handleChange("name", e.target.value)}
             placeholder="Resource Name"
           />
+        </div>
+        <div className="input-group">
+          <label>Assign Users (Enter User ID)</label>
+          <input
+            type="number"
+            placeholder="Enter User ID"
+            value={formData.newUserId || ""}
+            onChange={(e) => handleChange("newUserId", e.target.value)}
+          />
+          <button type="button" onClick={handleAddUserId}>
+            Add User ID
+          </button>
+        </div>
+
+        <div className="assigned-users">
+          <p>Assigned Users:</p>
+          <ul>
+            {formData.user_ids.map((userId) => (
+              <li key={userId}>
+                {userId}{" "}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveUserId(userId)}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="input-group">

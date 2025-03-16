@@ -167,6 +167,65 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
       },
 
+      checkLoginStatus: async () => {
+        const token = sessionStorage.getItem("token");
+        const current_back_url = getStore().current_back_url;
+
+        if (!token) {
+          // No token found, user is not logged in
+          setStore({
+            token: null,
+            user_id: null,
+            name: null,
+            is_org: null,
+            avatarID: null,
+            favorites: [],
+            is_logged_in: false,
+          });
+          return false;
+        }
+
+        try {
+          const response = await fetch(`${current_back_url}/api/user-info`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (response.status !== 200) {
+            console.warn("Invalid token, logging out user.");
+            getActions().logout();
+            return false;
+          }
+
+          const data = await response.json();
+
+          // Save user info in session storage
+          sessionStorage.setItem("user_id", data.user_id);
+          sessionStorage.setItem("name", data.name);
+          sessionStorage.setItem("is_org", data.is_org);
+          sessionStorage.setItem("avatar", data.avatarID);
+          sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
+          sessionStorage.setItem("is_logged_in", true);
+
+          // Update store with user details
+          setStore({
+            // token: token,
+            user_id: data.user_id,
+            name: data.name,
+            is_org: data.is_org,
+            avatarID: data.avatarID,
+            favorites: data.favorites || [],
+            is_logged_in: true,
+          });
+
+          return true;
+        } catch (error) {
+          console.error("Error checking login status:", error);
+          getActions().logout();
+          return false;
+        }
+      },
+
       processCategory: (category) => {
         let categories = category;
         if (typeof categories === "string" && categories.includes(",")) {
@@ -219,20 +278,21 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     setStore({ token: token, favorites: favorites || [] });
       //   }
       // },
+
       getToken: () => {
         const token = sessionStorage.getItem("token");
-        const favorites = JSON.parse(sessionStorage.getItem("favorites")) || [];
-        const user_id = sessionStorage.getItem("user_id");
-        const name = sessionStorage.getItem("name");
-        const is_org = sessionStorage.getItem("is_org");
+        // const favorites = JSON.parse(sessionStorage.getItem("favorites")) || [];
+        // const user_id = sessionStorage.getItem("user_id");
+        // const name = sessionStorage.getItem("name");
+        // const is_org = sessionStorage.getItem("is_org");
 
         if (token && token.length) {
           setStore({
             token: token,
-            favorites: favorites,
-            user_id: user_id ? parseInt(user_id) : null, // Ensure user_id is an integer
-            name: name || null,
-            is_org: is_org ? parseInt(is_org) : null,
+            // favorites: favorites,
+            // user_id: user_id ? parseInt(user_id) : null,
+            // name: name || null,
+            // is_org: is_org ? parseInt(is_org) : null,
           });
         }
       },
@@ -418,6 +478,29 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      getAllUsers: async () => {
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(`${current_back_url}/api/getAllUsers`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            console.error("Failed to fetch users:", response.status);
+            return [];
+          }
+
+          const data = await response.json();
+          return data.users || []; // Ensure it returns an array of users
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          return [];
+        }
+      },
+
       // ________________________________________________________________RESOURCES
 
       deleteResource: async (resourceId, navigate) => {
@@ -503,6 +586,32 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Oops...",
             text: `An error occurred: ${error.message}`,
           });
+        }
+      },
+
+      getResourceUsers: async (resourceId) => {
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/getResourceUsers/${resourceId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            console.error("Failed to fetch resource users:", response.status);
+            return [];
+          }
+
+          const data = await response.json();
+          return data.users || []; // Ensure it returns an array
+        } catch (error) {
+          console.error("Error fetching resource users:", error);
+          return [];
         }
       },
 
@@ -824,16 +933,13 @@ const getState = ({ getStore, getActions, setStore }) => {
               `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
             );
           }
-
           const data = await response.json();
-
-          // Ensure only the latest fetch updates state
           if (getStore().lastFetchTimestamp === currentTimestamp) {
             setStore({
               boundaryResults: data.data,
               loading: false,
               loadingResults: false,
-            }); // ✅ Stop loading on success
+            });
           } else {
             console.log("⚠️ Ignoring outdated fetch results...");
           }

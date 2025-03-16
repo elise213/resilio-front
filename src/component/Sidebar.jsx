@@ -27,14 +27,12 @@ const Sidebar = ({
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasBoundaryResults, setHasBoundaryResults] = useState(false);
   const [activeTab, setActiveTab] = useState("AllResources");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedDays, setSelectedDays] = useState([]);
-  // const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-
   const [localZipInput, setLocalZipInput] = useState("");
+
   const [openDropdown, setOpenDropdown] = useState({
     category: false,
     day: false,
@@ -136,14 +134,6 @@ const Sidebar = ({
       </>
     );
   };
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = sessionStorage.getItem("token") || store.token;
-      setIsLoggedIn(!!token);
-    };
-    checkLoginStatus();
-  }, [store.token]);
 
   useEffect(() => {
     setHasBoundaryResults(

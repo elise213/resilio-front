@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Styles from "../styles/resourceCard.css";
 import Rating from "@mui/material/Rating";
+import FavoriteButton from "./FavoriteButton";
 
 const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
@@ -12,8 +13,21 @@ const ResourceCard = (props) => {
 
   const [isFavorited, setIsFavorited] = useState(false);
 
+  const isLoggedIn = !!store.token;
+
+  const toggleFavorite = (event) => {
+    event.stopPropagation();
+    const id = resource.id;
+    console.log("sending favorite id", id);
+    if (isFavorited) {
+      actions.removeFavorite(id);
+    } else {
+      actions.addFavorite(id);
+    }
+    setIsFavorited(!isFavorited);
+  };
+
   useEffect(() => {
-    // console.log("Fetching average rating for resource ID:", props.item.id);
     actions.getAverageRating(
       props.item.id,
       setAverageRating2,
@@ -86,33 +100,38 @@ const ResourceCard = (props) => {
       {categoryLabels.length > 0 && (
         <div className="card-description">
           <span className="resource-title">{props.item.name}</span>
-          <div
+          {/* <div
             style={{
               display: "flex",
               width: "100%",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
               alignItems: "center",
             }}
           >
             {categoryLabels.map((label, index) => (
-              <span key={index} className="category-span">
+              <p key={index} className="category-span">
                 {label}
-              </span>
+              </p>
             ))}
-
-            <div className="rating-div">
-              <Rating
-                style={{ flexDirection: "row" }}
-                name="read-only"
-                value={averageRating2}
-                precision={0.5}
-                readOnly
-                className="star"
-                size="small"
-              />
-              {ratingCount2 > 0 && <span>({ratingCount2})</span>}
-            </div>
+          </div> */}
+          <div className="rating-div">
+            <Rating
+              style={{ flexDirection: "row" }}
+              name="read-only"
+              value={averageRating2}
+              precision={0.5}
+              readOnly
+              className="star"
+              size="small"
+            />
+            {ratingCount2 > 0 && <span>({ratingCount2})</span>}
           </div>
+          {isLoggedIn && (
+            <FavoriteButton
+              isFavorited={isFavorited}
+              toggleFavorite={toggleFavorite}
+            />
+          )}
         </div>
       )}
     </div>

@@ -24,8 +24,13 @@ const Home = () => {
   const INITIAL_CITY_STATE = store.austin[0];
   const [userLocation, setUserLocation] = useState(null);
   const [city, setCity] = useState(INITIAL_CITY_STATE);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!store.token);
+
+  useEffect(() => {
+    setIsLoggedIn(!!store.token);
+  }, [store.token]);
 
   const favorites = store.favorites;
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
@@ -42,13 +47,6 @@ const Home = () => {
   const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
 
   // USE EFFECTS
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = sessionStorage.getItem("token") || store.token;
-      setIsLoggedIn(!!token);
-    };
-    checkLoginStatus();
-  }, [store.token]);
 
   useEffect(() => {
     setIsModalOpen(store.modalIsOpen);
@@ -220,15 +218,6 @@ const Home = () => {
       alert("Geolocation is not supported by your browser");
     }
   };
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = sessionStorage.getItem("token") || store.token;
-      setIsLoggedIn(!!token);
-    };
-
-    checkLoginStatus();
-  }, [store.token]);
 
   useEffect(() => {
     actions.setSchedules();

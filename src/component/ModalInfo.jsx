@@ -13,8 +13,8 @@ export const ModalInfo = ({
   ratingCount,
 }) => {
   const { store, actions } = useContext(Context);
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isReadMore, setIsReadMore] = useState(true);
+  const isLoggedIn = !!store.token;
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
@@ -51,15 +51,6 @@ export const ModalInfo = ({
 
     formattedSchedule[day] = scheduleString;
   });
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = sessionStorage.getItem("token") || store.token;
-      setIsLoggedIn(!!token);
-    };
-
-    checkLoginStatus();
-  }, [store.token, store.modalIsOpen]);
 
   function filterNonNullValues(schedule) {
     const result = {};

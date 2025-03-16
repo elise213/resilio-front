@@ -28,11 +28,9 @@ const Modal = ({}) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [isFavorited, setIsFavorited] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const isLoggedIn = !!store.token;
 
-  useEffect(() => {
-    actions.fetchFavorites();
-  }, []);
+  console.log(sessionStorage.getItem("user_id"));
 
   const resource = store.selectedResource;
 
@@ -212,15 +210,6 @@ const Modal = ({}) => {
   useEffect(() => {
     console.log("resource", resource);
   }, []);
-
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = sessionStorage.getItem("token") || store.token;
-      setIsLoggedIn(!!token);
-    };
-
-    checkLoginStatus();
-  }, [store.token, store.modalIsOpen]);
 
   useEffect(() => {
     if (store.favorites) {
