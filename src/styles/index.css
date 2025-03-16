@@ -68,6 +68,7 @@ a {
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #f9d783;
+  --color2: rgb(95, 118, 110);
 }
 
 #root {
@@ -188,7 +189,6 @@ body {
 .list-container {
   scroll-behavior: smooth;
   box-sizing: border-box;
-  margin: 0 15px;
   overflow-y: auto;
 }
 

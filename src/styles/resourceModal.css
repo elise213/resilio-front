@@ -182,9 +182,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 20px;
   box-sizing: border-box;
-  margin-top: 20px;
 }
 
 .group-1 {
@@ -353,7 +351,8 @@ textarea {
 .modal-info-title {
   font-size: 14px !important;
   width: 100px !important;
-  color: rgb(95, 118, 110);
+
+  color: var(--color2);
 }
 
 .modal-info-value {
@@ -521,7 +520,6 @@ body.modal-open {
 }
 
 .alert-bar {
-  margin-top: 40px;
   top: 0;
   left: 0;
   width: 100%;

@@ -203,7 +203,10 @@ export const ModalInfo = ({
               title="Copy Address"
               className="modal-info-value"
             >
-              {res.address.replace(", USA", "")} {"  "}
+              {/* {res.address.replace(", USA", "")} {"  "} */}
+              {res?.address
+                ? res.address.replace(", USA", "")
+                : "Address unavailable"}
             </span>
             <span
               style={{ cursor: "pointer" }}

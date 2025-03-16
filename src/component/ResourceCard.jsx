@@ -72,38 +72,46 @@ const ResourceCard = (props) => {
         console.log("called from resource card - open");
       }}
     >
-      <span className="resource-title">{props.item.name}</span>
-
       {props.item.image && (
         <img
           className="card-img"
           src={props.item.image}
           alt="profile picture"
           onError={(e) => {
-            e.target.style.display = "none"; // Hides the broken image completely
+            e.target.style.display = "none";
           }}
         />
       )}
 
       {categoryLabels.length > 0 && (
         <div className="card-description">
-          <div>
+          <span className="resource-title">{props.item.name}</span>
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             {categoryLabels.map((label, index) => (
               <span key={index} className="category-span">
                 {label}
               </span>
             ))}
-          </div>
-          <div className="rating-div">
-            <Rating
-              style={{ flexDirection: "row" }}
-              name="read-only"
-              value={averageRating2}
-              precision={0.5}
-              readOnly
-              className="star"
-            />
-            {ratingCount2 > 0 && <span>({ratingCount2})</span>}
+
+            <div className="rating-div">
+              <Rating
+                style={{ flexDirection: "row" }}
+                name="read-only"
+                value={averageRating2}
+                precision={0.5}
+                readOnly
+                className="star"
+                size="small"
+              />
+              {ratingCount2 > 0 && <span>({ratingCount2})</span>}
+            </div>
           </div>
         </div>
       )}

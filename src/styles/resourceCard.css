@@ -8,7 +8,6 @@
   position: relative;
   user-select: none;
   background-color: white;
-  border-radius: 2%;
   transition: 0.2s;
   overflow: hidden;
   margin: 10px 0px;
@@ -17,7 +16,6 @@
   border-style: solid;
   border: 1px solid gray;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
   max-width: 300px;
   width: 100%;
 }
@@ -41,6 +39,10 @@
 .card-description {
   padding: 0;
   margin: 0 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .category-span {
@@ -53,7 +55,7 @@
 .card-img {
   object-fit: cover;
   max-height: 120px;
-  margin: 0 10px 10px 10px;
+  /* margin: 0 10px 10px 10px; */
 }
 
 .card-icon {

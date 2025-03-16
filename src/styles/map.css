@@ -17,11 +17,6 @@
   position: relative !important;
 }
 
-.marker-icon i:hover {
-  color: lightgreen !important;
-  cursor: pointer !important;
-  transition: color 0.2s ease;
-}
 
 
 .corner-top-left {
@@ -66,19 +61,22 @@ margin-top: 40px;
 }
 
 
-
 .hover-card {
   z-index: 1000000 !important;
   width: 200px;
   opacity: 0;
-  transition: opacity 0.2s ease-in-out;
   position: absolute;
   cursor: pointer;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
 }
 
 .marker:hover .hover-card {
   opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  cursor: pointer !important;
 }
+
 
 @media screen and (max-width: 800px) {
   .resource-card {

@@ -21,9 +21,6 @@ const Map = ({
   const mapContainerRef = useRef(null);
   const selectedResources = store.selectedResources;
 
-  const closeModal = actions.closeModal;
-  const openModal = actions.openModal;
-
   const createMapOptions = (maps) => {
     return {
       scrollwheel: false,
@@ -33,9 +30,6 @@ const Map = ({
   useEffect(() => {
     actions.setSchedules();
   }, []);
-
-  const debouncedHoverEnter = debounce(() => setIsHovered(true), 100);
-  const debouncedHoverLeave = debounce(() => setIsHovered(false), 100);
 
   useEffect(() => {
     if (city.center) {
@@ -150,30 +144,161 @@ const Map = ({
   //   }
   // );
 
+  // const Marker = React.memo(
+  //   ({ text, id, result, markerColor }) => {
+  //     const [isHovered, setIsHovered] = useState(false);
+  //     const [hoverTimeout, setHoverTimeout] = useState(null);
+  //     const [closestCornerClass, setClosestCornerClass] = useState("");
+
+  //     const handleMouseEnter = (event) => {
+  //       const timeout = setTimeout(() => {
+  //         setIsHovered(true);
+  //         setHoveredItem(result);
+  //       }, 150);
+  //       const markerRect = event.currentTarget.getBoundingClientRect();
+  //       const cornerClass = calculateClosestCorner(
+  //         markerRect.left + markerRect.width / 2,
+  //         markerRect.top + markerRect.height / 2
+  //       );
+  //       setClosestCornerClass(cornerClass);
+  //       setHoverTimeout(timeout);
+  //     };
+
+  //     const handleMouseLeave = () => {
+  //       clearTimeout(hoverTimeout);
+  //       setIsHovered(false);
+  //       setHoveredItem(null);
+  //     };
+
+  //     return (
+  //       <div
+  //         className="marker"
+  //         onMouseEnter={handleMouseEnter}
+  //         onMouseLeave={handleMouseLeave}
+  //         // onClick={result ? () => openModal(result) : undefined}
+  //         onClick={() => {
+  //           if (!result) {
+  //             console.error("Error: result is undefined for marker", id);
+  //             return;
+  //           }
+  //           actions.setSelectedResource(result);
+  //           actions.openModal();
+  //         }}
+  //       >
+  //         {isHovered && result && (
+  //           <div className={`hover-card ${closestCornerClass}`}>
+  //             <ResourceCard key={result.id} item={result} />
+  //           </div>
+  //         )}
+
+  //         <div className="marker-icon">
+  //           <i
+  //             className="fa-solid fa-map-pin"
+  //             style={{ color: markerColor || "red" }}
+  //           ></i>
+  //         </div>
+  //       </div>
+  //     );
+  //   },
+  //   (prevProps, nextProps) => prevProps.id === nextProps.id
+  // );
+  // const Marker = React.memo(
+  //   ({ text, id, result, markerColor }) => {
+  //     const [isHovered, setIsHovered] = useState(false);
+  //     const hoverTimeoutRef = useRef(null);
+  //     const [closestCornerClass, setClosestCornerClass] = useState("");
+
+  //     const handleMouseEnter = (event) => {
+  //       if (isHovered) return;
+
+  //       if (hoverTimeoutRef.current) {
+  //         clearTimeout(hoverTimeoutRef.current);
+  //       }
+
+  //       hoverTimeoutRef.current = setTimeout(() => {
+  //         setIsHovered(true);
+  //         setHoveredItem(result);
+  //       }, 150);
+  //     };
+
+  //     const handleMouseLeave = () => {
+  //       if (hoverTimeoutRef.current) {
+  //         clearTimeout(hoverTimeoutRef.current);
+  //         hoverTimeoutRef.current = null; // Reset timeout ref
+  //       }
+  //       setIsHovered(false);
+  //       setHoveredItem(null);
+  //     };
+
+  //     return (
+  //       <div
+  //         className="marker"
+  //         onMouseEnter={handleMouseEnter}
+  //         onMouseLeave={handleMouseLeave}
+  //         onClick={() => {
+  //           if (!result) {
+  //             console.error("Error: result is undefined for marker", id);
+  //             return;
+  //           }
+  //           actions.setSelectedResource(result);
+  //           actions.openModal();
+  //         }}
+  //       >
+  //         {isHovered && result && (
+  //           <div className={`hover-card ${closestCornerClass}`}>
+  //             <ResourceCard key={result.id} item={result} />
+  //           </div>
+  //         )}
+
+  //         <div className="marker-icon">
+  //           <i
+  //             className="fa-solid fa-map-pin"
+  //             style={{ color: markerColor || "red" }}
+  //           ></i>
+  //         </div>
+  //       </div>
+  //     );
+  //   },
+  //   (prevProps, nextProps) => prevProps.id === nextProps.id
+  // );
+
   const Marker = React.memo(
     ({ text, id, result, markerColor }) => {
       const [isHovered, setIsHovered] = useState(false);
-      const [hoverTimeout, setHoverTimeout] = useState(null);
+      const hoverTimeoutRef = useRef(null);
       const [closestCornerClass, setClosestCornerClass] = useState("");
 
       const handleMouseEnter = (event) => {
-        const timeout = setTimeout(() => {
+        if (isHovered) return; // Prevent repeated state updates
+
+        // Clear previous timeout (if any) before setting a new one
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+        }
+
+        hoverTimeoutRef.current = setTimeout(() => {
           setIsHovered(true);
           setHoveredItem(result);
-        }, 150); // Adjust delay as needed
+        }, 150);
+
         const markerRect = event.currentTarget.getBoundingClientRect();
-        const cornerClass = calculateClosestCorner(
-          markerRect.left + markerRect.width / 2,
-          markerRect.top + markerRect.height / 2
+        setClosestCornerClass(
+          calculateClosestCorner(
+            markerRect.left + markerRect.width / 2,
+            markerRect.top + markerRect.height / 2
+          )
         );
-        setClosestCornerClass(cornerClass);
-        setHoverTimeout(timeout);
       };
 
       const handleMouseLeave = () => {
-        clearTimeout(hoverTimeout);
-        setIsHovered(false);
-        setHoveredItem(null);
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current);
+        }
+
+        hoverTimeoutRef.current = setTimeout(() => {
+          setIsHovered(false);
+          setHoveredItem(null);
+        }, 100);
       };
 
       return (
@@ -181,7 +306,14 @@ const Map = ({
           className="marker"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClick={result ? () => openModal(result) : undefined}
+          onClick={() => {
+            if (!result) {
+              console.error("Error: result is undefined for marker", id);
+              return;
+            }
+            actions.setSelectedResource(result);
+            actions.openModal();
+          }}
         >
           {isHovered && result && (
             <div className={`hover-card ${closestCornerClass}`}>
@@ -225,7 +357,6 @@ const Map = ({
                   text={result.name}
                   key={i}
                   id={result.id}
-                  openModal={openModal}
                   result={result}
                 />
               ))}
