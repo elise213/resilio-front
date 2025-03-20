@@ -1,0 +1,16 @@
+.geo-modal {
+  background-color: white;
+  width: 250px;
+  height: 250px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+  /* align-self: center; */
+  margin-top: 100px;
+  z-index: 1000;
+  justify-self: center;
+  position: absolute;
+}

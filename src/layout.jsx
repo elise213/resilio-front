@@ -11,6 +11,7 @@ import { Context } from "./store/appContext";
 import ResetPassword from "./pages/ResetPassword";
 import ProfileSettings from "./pages/ProfileSettings";
 import AdminTools from "./pages/AdminTools";
+import ApproveComments from "./pages/ApproveComments";
 
 const Layout = () => {
   const basename = import.meta.env.BASENAME || "";
@@ -24,6 +25,7 @@ const Layout = () => {
         <Route element={<UserProfile />} path="/profile/:id" />
         <Route element={<Create />} path="/create" />
         <Route element={<ResetPassword />} path="/resetpassword" />
+        <Route element={<ApproveComments />} path="/approvecomments" />
         <Route element={<Account />} path="/account" />
         <Route element={<Favorites />} path="/favorites" />
         <Route element={<Edit />} path="/edit/:id" />

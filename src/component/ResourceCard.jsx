@@ -8,11 +8,8 @@ const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
   const [averageRating2, setAverageRating2] = useState(0);
   const [ratingCount2, setRatingCount2] = useState(0);
-
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
-
   const [isFavorited, setIsFavorited] = useState(false);
-
   const isLoggedIn = !!store.token;
 
   const toggleFavorite = (event) => {
@@ -67,13 +64,32 @@ const ResourceCard = (props) => {
   }, [props.item.category, CATEGORY_OPTIONS]);
 
   useEffect(() => {
-    const storedFavorites = JSON.parse(
-      sessionStorage.getItem("favorites") || "[]"
-    );
-    const isItemFavorited = storedFavorites.some(
-      (favorite) => favorite.name === props.item.name
-    );
-    setIsFavorited(isItemFavorited);
+    try {
+      let storedFavorites = sessionStorage.getItem("favorites");
+
+      if (!storedFavorites || storedFavorites === "undefined") {
+        sessionStorage.setItem("favorites", JSON.stringify([]));
+        storedFavorites = "[]";
+      }
+
+      const parsedFavorites = JSON.parse(storedFavorites);
+
+      if (!Array.isArray(parsedFavorites)) {
+        console.warn("Invalid favorites format, resetting.");
+        sessionStorage.setItem("favorites", JSON.stringify([]));
+        setIsFavorited(false);
+        return;
+      }
+
+      const isItemFavorited = parsedFavorites.some(
+        (favorite) => favorite.name === props.item.name
+      );
+      setIsFavorited(isItemFavorited);
+    } catch (error) {
+      console.error("Error parsing favorites from sessionStorage:", error);
+      sessionStorage.setItem("favorites", JSON.stringify([]));
+      setIsFavorited(false);
+    }
   }, [props.item.name]);
 
   return (
@@ -100,11 +116,11 @@ const ResourceCard = (props) => {
       {categoryLabels.length > 0 && (
         <div className="card-description">
           <span className="resource-title">{props.item.name}</span>
-          {/* <div
+          <div
             style={{
               display: "flex",
               width: "100%",
-              // justifyContent: "space-between",
+
               alignItems: "center",
             }}
           >
@@ -113,7 +129,7 @@ const ResourceCard = (props) => {
                 {label}
               </p>
             ))}
-          </div> */}
+          </div>
           <div className="rating-div">
             <Rating
               style={{ flexDirection: "row" }}

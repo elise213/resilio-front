@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { Link } from "react-router-dom";
 
 const ResilioDropdown = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -45,6 +46,11 @@ const ResilioDropdown = () => {
         >
           Contact
         </MenuItem>
+        {store.authorizedUser && (
+          <MenuItem>
+            <Link to={`/approveComments`}> Approve Comments</Link>
+          </MenuItem>
+        )}
       </Menu>
     </>
   );

@@ -28,6 +28,7 @@ const Login = ({ setLayout }) => {
     const loginSuccessful = await actions.login(email, password);
     if (loginSuccessful) {
       actions.closeLoginModal();
+      window.location.reload();
     }
   };
 

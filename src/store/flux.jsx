@@ -4,14 +4,23 @@ const getState = ({ getStore, getActions, setStore }) => {
       abortController: null,
       abortController2: null,
       avatarID: null,
+      AuthorizedUserIds: [1, 3, 4],
+      authorizedUser: false,
+      aboutModalIsOpen: false,
       modalIsOpen: false,
       loginModalIsOpen: false,
-      aboutModalIsOpen: false,
+      userLocation: {},
       donationModalIsOpen: false,
       contactModalIsOpen: false,
       boundaryResults: [],
       categorySearch: [],
+      mapInstance: null,
+      mapsInstance: null,
+      loadingLocation: false,
+      loadingResults: false,
       selectedResource: null,
+      googleApiKey: import.meta.env.VITE_GOOGLE,
+      bounds: null,
       averageRating: 0,
       comments: [],
       CATEGORY_OPTIONS: [
@@ -74,7 +83,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       user_id: null,
       schedules: [],
       selectedResource: [],
-
       losAngeles: [
         {
           center: { lat: 34.0522, lng: -118.2437 },
@@ -99,6 +107,20 @@ const getState = ({ getStore, getActions, setStore }) => {
       dayCounts: {},
     },
     actions: {
+      setMapInstance: (map) => {
+        setStore({ mapInstance: map });
+      },
+      setMapsInstance: (maps) => {
+        setStore({ mapsInstance: maps });
+      },
+      getMapInstance: () => getStore().mapInstance,
+      getMapsInstance: () => getStore().mapsInstance,
+      setStore: (newState) => {
+        setStore((prevState) => ({ ...prevState, ...newState }));
+      },
+      updateBounds: (bounds) => {
+        setStore({ bounds });
+      },
       setSelectedResource: (resource) => {
         sessionStorage.setItem("selectedResource", JSON.stringify(resource));
         setStore({ selectedResource: resource });
@@ -156,6 +178,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           dayCounts: dayCounts,
         });
       },
+      clearSelectedCategory: (category) => {
+        setCategories((prevCategories) => {
+          const updatedCategories = { ...prevCategories, [category]: false };
+
+          setStore({ loadingResults: true });
+
+          setBoundaryResults(city.bounds, updatedCategories, days)
+            .then(() => setStore({ loadingResults: false }))
+            .catch(() => actions.setStore({ loadingResults: false }));
+
+          return updatedCategories;
+        });
+      },
+
+      clearSelectedDay: (day) => {
+        setDays((prevDays) => {
+          const updatedDays = { ...prevDays, [day]: false };
+
+          setStore({ loadingResults: true });
+
+          setBoundaryResults(city.bounds, categories, updatedDays)
+            .then(() => actions.setStore({ loadingResults: false }))
+            .catch(() => actions.setStore({ loadingResults: false }));
+
+          return updatedDays;
+        });
+      },
 
       debounce: (func, delay) => {
         let timerId;
@@ -167,12 +216,51 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
       },
 
+      checkAuthorizedUser: () => {
+        const store = getStore();
+        const userId = store.user_id; // Get user ID from store
+
+        if (userId && store.AuthorizedUserIds.includes(userId)) {
+          setStore({ authorizedUser: true });
+          sessionStorage.setItem("authorizedUser", "true"); // ✅ Save in session storage
+          console.log("✅ User is authorized.");
+        } else {
+          setStore({ authorizedUser: false });
+          sessionStorage.setItem("authorizedUser", "false"); // ❌ Save in session storage
+          console.log("❌ User is NOT authorized.");
+        }
+      },
+
+      handleRemoveUserId: (userId) => {
+        const store = getStore();
+
+        // Check if the user exists in the AuthorizedUserIds list
+        if (store.AuthorizedUserIds.includes(userId)) {
+          const updatedList = store.AuthorizedUserIds.filter(
+            (id) => id !== userId
+          );
+
+          setStore({ AuthorizedUserIds: updatedList });
+
+          console.log(`🚨 User ID ${userId} removed from Authorized Users.`);
+          Swal.fire(
+            "Removed",
+            `User ID ${userId} has been removed.`,
+            "success"
+          );
+        } else {
+          console.warn(`⚠️ User ID ${userId} not found in Authorized Users.`);
+          Swal.fire("Error", `User ID ${userId} not found.`, "error");
+        }
+      },
+
       checkLoginStatus: async () => {
         const token = sessionStorage.getItem("token");
+        const user_id = sessionStorage.getItem("user_id"); // Retrieve user_id
         const current_back_url = getStore().current_back_url;
 
-        if (!token) {
-          // No token found, user is not logged in
+        if (!token || !user_id) {
+          console.warn("No token or user ID found, logging out user.");
           setStore({
             token: null,
             user_id: null,
@@ -181,26 +269,34 @@ const getState = ({ getStore, getActions, setStore }) => {
             avatarID: null,
             favorites: [],
             is_logged_in: false,
+            authorizedUser: false, // Reset authorized user status
           });
           return false;
         }
 
         try {
-          const response = await fetch(`${current_back_url}/api/user-info`, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          console.log(`📡 Fetching user info for ID: ${user_id}`);
+          const response = await fetch(
+            `${current_back_url}/api/user/${user_id}`,
+            {
+              method: "GET",
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
 
-          if (response.status !== 200) {
-            console.warn("Invalid token, logging out user.");
-            getActions().logout();
+          console.log("📥 Response Status:", response.status);
+
+          if (!response.ok) {
+            console.warn("Invalid token or user not found, logging out user.");
+            // getActions().logout();
             return false;
           }
 
           const data = await response.json();
+          console.log("✅ User info fetched successfully:", data);
 
           // Save user info in session storage
-          sessionStorage.setItem("user_id", data.user_id);
+          sessionStorage.setItem("user_id", data.id);
           sessionStorage.setItem("name", data.name);
           sessionStorage.setItem("is_org", data.is_org);
           sessionStorage.setItem("avatar", data.avatarID);
@@ -209,8 +305,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           // Update store with user details
           setStore({
-            // token: token,
-            user_id: data.user_id,
+            user_id: data.id,
             name: data.name,
             is_org: data.is_org,
             avatarID: data.avatarID,
@@ -218,13 +313,81 @@ const getState = ({ getStore, getActions, setStore }) => {
             is_logged_in: true,
           });
 
+          // ✅ Check if user is authorized
+          const store = getStore();
+          if (store.AuthorizedUserIds.includes(data.id)) {
+            setStore({ authorizedUser: true });
+            console.log("✅ User is authorized.");
+          } else {
+            setStore({ authorizedUser: false });
+            console.log("❌ User is NOT authorized.");
+          }
+
           return true;
         } catch (error) {
-          console.error("Error checking login status:", error);
-          getActions().logout();
+          console.error("🚨 Error checking login status:", error);
           return false;
         }
       },
+
+      // checkLoginStatus: async () => {
+      //   const token = sessionStorage.getItem("token");
+      //   const current_back_url = getStore().current_back_url;
+
+      //   if (!token) {
+      //     // No token found, user is not logged in
+      //     setStore({
+      //       token: null,
+      //       user_id: null,
+      //       name: null,
+      //       is_org: null,
+      //       avatarID: null,
+      //       favorites: [],
+      //       is_logged_in: false,
+      //     });
+      //     return false;
+      //   }
+
+      //   try {
+      //     const response = await fetch(`${current_back_url}/api/user-info`, {
+      //       method: "GET",
+      //       headers: { Authorization: `Bearer ${token}` },
+      //     });
+
+      //     if (response.status !== 200) {
+      //       console.warn("Invalid token, logging out user.");
+      //       getActions().logout();
+      //       return false;
+      //     }
+
+      //     const data = await response.json();
+
+      //     // Save user info in session storage
+      //     sessionStorage.setItem("user_id", data.user_id);
+      //     sessionStorage.setItem("name", data.name);
+      //     sessionStorage.setItem("is_org", data.is_org);
+      //     sessionStorage.setItem("avatar", data.avatarID);
+      //     sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
+      //     sessionStorage.setItem("is_logged_in", true);
+
+      //     // Update store with user details
+      //     setStore({
+      //       // token: token,
+      //       user_id: data.user_id,
+      //       name: data.name,
+      //       is_org: data.is_org,
+      //       avatarID: data.avatarID,
+      //       favorites: data.favorites || [],
+      //       is_logged_in: true,
+      //     });
+
+      //     return true;
+      //   } catch (error) {
+      //     console.error("Error checking login status:", error);
+      //     // getActions().logout();
+      //     return false;
+      //   }
+      // },
 
       processCategory: (category) => {
         let categories = category;
@@ -503,6 +666,302 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       // ________________________________________________________________RESOURCES
 
+      fetchResources: async (bounds) => {
+        const store = getStore();
+
+        if (!bounds || !bounds.ne || !bounds.sw) {
+          console.error("❌ Error: Invalid bounds received:", bounds);
+          return;
+        }
+        setStore({ loadingResults: true });
+        console.log("📏 Received bounds:", bounds);
+
+        const formattedBounds = {
+          neLat: bounds.ne.lat,
+          neLng: bounds.ne.lng,
+          swLat: bounds.sw.lat,
+          swLng: bounds.sw.lng,
+        };
+
+        console.log(
+          "📡 Fetching resources with formatted bounds:",
+          formattedBounds
+        );
+
+        try {
+          const response = await fetch(
+            `${store.current_back_url}/api/getBResults`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formattedBounds),
+            }
+          );
+
+          console.log("📥 Response status:", response.status);
+
+          if (!response.ok) {
+            const text = await response.text();
+            console.error("❌ Backend request failed. Response:", text);
+            setStore({ loadingResults: false });
+            return;
+          }
+
+          const data = await response.json();
+          console.log("✅ Backend response received:", data);
+
+          if (!data || !data.data || data.data.length === 0) {
+            console.warn("⚠️ No resources returned from the backend.");
+          }
+
+          setStore({
+            boundaryResults: data.data || [],
+            loadingResults: false,
+          });
+
+          return data.data;
+        } catch (error) {
+          console.error("❌ Error fetching resources:", error);
+          setStore({ loadingResults: false });
+        }
+      },
+      setBoundaryResults: async (
+        bounds,
+        selectedCategories = {},
+        selectedDays = {}
+      ) => {
+        const store = getStore();
+        const actions = getActions();
+
+        console.log("📡 setBoundaryResults called!");
+        console.log("📌 Received bounds:", bounds);
+        console.log("📌 Selected Categories:", selectedCategories);
+        console.log("📌 Selected Days:", selectedDays);
+
+        if (!bounds || !bounds.ne || !bounds.sw) {
+          console.error("❌ Error: Invalid bounds received.");
+          return;
+        }
+
+        let allResources = store.boundaryResults; // Use boundaryResults instead
+
+        console.log(
+          "📌 Total resources before filtering:",
+          allResources.length
+        );
+
+        const isFilteringByCategory =
+          Object.values(selectedCategories).some(Boolean);
+        const isFilteringByDay = Object.values(selectedDays).some(Boolean);
+
+        console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
+        console.log("🔎 isFilteringByDay:", isFilteringByDay);
+
+        setStore({ loadingResults: true }); // 🔥 Start loading
+
+        try {
+          const filteredResults = allResources.filter((resource) => {
+            const hasValidCategory =
+              isFilteringByCategory &&
+              resource.category &&
+              resource.category
+                .split(",")
+                .map((c) => c.trim().toLowerCase())
+                .some((cat) => selectedCategories[cat]);
+
+            const hasValidDay =
+              isFilteringByDay &&
+              resource.schedule &&
+              Object.keys(resource.schedule).some(
+                (day) => selectedDays[day] && resource.schedule[day]?.start
+              );
+
+            return (
+              (isFilteringByCategory && hasValidCategory) ||
+              (isFilteringByDay && hasValidDay)
+            );
+          });
+
+          console.log(
+            "✅ Found",
+            filteredResults.length,
+            "resources after filtering."
+          );
+
+          setStore({
+            boundaryResults: [...filteredResults],
+            loadingResults: false, // 🔥 Ensure loading stops
+          });
+        } catch (error) {
+          console.error("❌ Error filtering resources:", error);
+          setStore({ loadingResults: false }); // 🔥 Ensure loading stops even on error
+        }
+      },
+
+      checkResourceCoordinates: async () => {
+        const url = "/api/getAllResources";
+        let resourcesWithInvalidCoordinates = false;
+
+        try {
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            console.error("Server responded with status:", response.status);
+            const contentType = response.headers.get("content-type");
+
+            if (contentType && contentType.includes("text/html")) {
+              const text = await response.text();
+              console.error("HTML response received:", text);
+            } else if (
+              contentType &&
+              contentType.includes("application/json")
+            ) {
+              const data = await response.json();
+              console.error("JSON error data received:", data);
+            } else {
+              console.error("Unexpected response received.");
+            }
+            return false;
+          }
+          const contentType = response.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            console.error("Invalid content type:", contentType);
+            const text = await response.text();
+            return false;
+          }
+          const resources = await response.json();
+          resources.forEach((resource) => {
+            const { latitude, longitude } = resource;
+            if (typeof latitude === "string" || typeof longitude === "string") {
+              console.error(
+                "Resource with invalid coordinates found:",
+                resource
+              );
+              resourcesWithInvalidCoordinates = true;
+            }
+          });
+
+          if (!resourcesWithInvalidCoordinates) {
+            console.log("All resources have valid coordinates");
+          }
+
+          return resourcesWithInvalidCoordinates;
+        } catch (error) {
+          console.error("An error occurred while checking resources:", error);
+          return false;
+        }
+      },
+
+      geoFindMe: async () => {
+        const store = getStore();
+        const actions = getActions();
+        console.log("📡 Attempting to get user location...");
+
+        if (!navigator.geolocation) {
+          console.error("❌ Geolocation is not supported by this browser.");
+          alert("Please enable location services.");
+          return;
+        }
+        setStore((prevStore) => ({
+          ...prevStore,
+          loadingLocation: true,
+        }));
+
+        const successCallback = async (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log(
+            `✅ Location retrieved: lat=${latitude}, lng=${longitude}`
+          );
+
+          // ✅ Store user location immediately
+          setStore((prevStore) => ({
+            ...prevStore,
+            userLocation: { lat: latitude, lng: longitude },
+          }));
+
+          // ✅ Fetch city/state info BEFORE moving the map
+          await actions.updateCityStateFromCoords(latitude, longitude);
+
+          // ✅ Ensure mapInstance is available before moving the map
+          let retries = 0;
+          let mapInstance = null;
+          let mapsInstance = null;
+
+          while (!mapInstance || !mapsInstance) {
+            console.warn(`⚠️ Waiting for mapInstance... (${retries + 1})`);
+            mapInstance = actions.getMapInstance();
+            mapsInstance = actions.getMapsInstance();
+
+            if (mapInstance && mapsInstance) break;
+
+            if (retries > 5) {
+              console.error(
+                "❌ mapInstance is still not available after retries."
+              );
+              setStore((prevStore) => ({
+                ...prevStore,
+
+                loadingLocation: false,
+              }));
+              return;
+            }
+            await new Promise((res) => setTimeout(res, 500));
+            retries++;
+          }
+
+          console.log("✅ Map is now ready. Moving map...");
+          mapInstance.setCenter(new mapsInstance.LatLng(latitude, longitude));
+          mapInstance.setZoom(13);
+
+          setStore((prevStore) => ({
+            ...prevStore,
+
+            loadingLocation: false,
+          }));
+        };
+
+        const errorCallback = (error) => {
+          console.error("❌ Geolocation error:", error);
+
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert("Please enable location services and try again.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Location unavailable. Retrying in 3 seconds...");
+              setTimeout(() => actions.geoFindMe(), 3000);
+              break;
+            case error.TIMEOUT:
+              alert("Location request timed out. Try again.");
+              break;
+            default:
+              alert("Unable to retrieve your location.");
+          }
+
+          setStore((prevStore) => ({
+            ...prevStore,
+
+            loadingLocation: false,
+          }));
+        };
+
+        navigator.geolocation.getCurrentPosition(
+          successCallback,
+          errorCallback,
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
+      },
+
       deleteResource: async (resourceId, navigate) => {
         const { current_back_url } = getStore();
         const token = sessionStorage.getItem("token");
@@ -546,9 +1005,27 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
+      setSchedules: () => {
+        let url = getStore().current_back_url + `/api/getSchedules`;
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "access-control-allow-origin": "*",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setStore({ schedules: data });
+          })
+          .catch((error) => console.log(error));
+        return () => {};
+      },
+
       editResource: async (resourceId, formData, navigate) => {
-        const { current_back_url, current_front_url } = getStore();
+        const { current_back_url } = getStore();
         const token = sessionStorage.getItem("token");
+
         const opts = {
           method: "PUT",
           headers: {
@@ -557,40 +1034,51 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
           body: JSON.stringify(formData),
         };
+
         try {
           const response = await fetch(
-            current_back_url + `/api/editResource/${resourceId}`,
+            `${current_back_url}/api/editResource/${resourceId}`,
             opts
           );
-          if (response.status >= 400) {
+          const data = await response.json();
+
+          if (!response.ok) {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "There has been an error while editing the resource.",
+              text:
+                data.message ||
+                "There has been an error while editing the resource.",
             });
             return false;
           }
-          const data = await response.json();
-          if (data.status === "true") {
-            Swal.fire({
-              icon: "success",
-              title: "Success",
-              text: "Resource edited successfully!",
-            });
-            navigate("/");
-          }
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Resource edited successfully!",
+          });
+
+          setStore({
+            modalIsOpen: true, // Open the modal
+            selectedResource: resourceId, // Store selected resource
+          });
+
+          return true;
         } catch (error) {
-          console.error("Error during resource editing:", error);
+          console.error("🚨 Error during resource editing:", error);
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: `An error occurred: ${error.message}`,
           });
+          return false;
         }
       },
 
       getResourceUsers: async (resourceId) => {
         const current_back_url = getStore().current_back_url;
+
         try {
           const response = await fetch(
             `${current_back_url}/api/getResourceUsers/${resourceId}`,
@@ -603,14 +1091,19 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (!response.ok) {
-            console.error("Failed to fetch resource users:", response.status);
+            console.error(
+              "❌ Failed to fetch resource users:",
+              response.status
+            );
             return [];
           }
 
           const data = await response.json();
-          return data.users || []; // Ensure it returns an array
+          console.log("✅ Resource Users Data:", data);
+
+          return Array.isArray(data.users) ? data.users : []; // Ensure an array is returned
         } catch (error) {
-          console.error("Error fetching resource users:", error);
+          console.error("🚨 Error fetching resource users:", error);
           return [];
         }
       },
@@ -689,397 +1182,557 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      checkResourceCoordinates: async () => {
-        const url = "/api/getAllResources";
-        let resourcesWithInvalidCoordinates = false;
+      // geoFindMe: async () => {
+      //   console.log("📡 Attempting to get user location...");
 
-        try {
-          const response = await fetch(url, {
-            method: "GET",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json",
-            },
-          });
-
-          if (!response.ok) {
-            console.error("Server responded with status:", response.status);
-            const contentType = response.headers.get("content-type");
-
-            if (contentType && contentType.includes("text/html")) {
-              const text = await response.text();
-              console.error("HTML response received:", text);
-            } else if (
-              contentType &&
-              contentType.includes("application/json")
-            ) {
-              const data = await response.json();
-              console.error("JSON error data received:", data);
-            } else {
-              console.error("Unexpected response received.");
-            }
-            return false;
-          }
-          const contentType = response.headers.get("content-type");
-          if (!contentType || !contentType.includes("application/json")) {
-            console.error("Invalid content type:", contentType);
-            const text = await response.text();
-            return false;
-          }
-          const resources = await response.json();
-          resources.forEach((resource) => {
-            const { latitude, longitude } = resource;
-            if (typeof latitude === "string" || typeof longitude === "string") {
-              console.error(
-                "Resource with invalid coordinates found:",
-                resource
-              );
-              resourcesWithInvalidCoordinates = true;
-            }
-          });
-
-          if (!resourcesWithInvalidCoordinates) {
-            console.log("All resources have valid coordinates");
-          }
-
-          return resourcesWithInvalidCoordinates;
-        } catch (error) {
-          console.error("An error occurred while checking resources:", error);
-          return false;
-        }
-      },
-
-      setSchedules: () => {
-        let url = getStore().current_back_url + `/api/getSchedules`;
-        fetch(url, {
-          method: "GET",
-          headers: {
-            "access-control-allow-origin": "*",
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setStore({ schedules: data });
-          })
-          .catch((error) => console.log(error));
-        return () => {};
-      },
-
-      setMapResults: async (bounds) => {
-        const store = getStore();
-        console.log("setMapResults called with bounds:", bounds);
-        if (store.abortController2) {
-          store.abortController2.abort();
-        }
-        const newAbortController = new AbortController();
-        setStore({ abortController2: newAbortController });
-
-        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-        neLng = neLng % 360;
-        if (neLng > 180) {
-          neLng -= 360;
-        }
-
-        swLng = swLng % 360;
-        if (swLng > 180) {
-          swLng -= 360;
-        }
-
-        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-        console.log("Normalized coordinates:", { neLat, neLng, swLat, swLng });
-
-        const resources = {
-          food: false,
-          health: false,
-          shelter: false,
-          hygiene: false,
-          crisis: false,
-          mental: false,
-          work: false,
-          bathroom: false,
-          wifi: false,
-          substance: false,
-          sex: false,
-          legal: false,
-          lgbtq: false,
-          women: false,
-          seniors: false,
-          babies: false,
-          kids: false,
-          youth: false,
-          vets: false,
-          migrant: false,
-        };
-
-        const days = {
-          monday: false,
-          tuesday: false,
-          wednesday: false,
-          thursday: false,
-          friday: false,
-          saturday: false,
-          sunday: false,
-        };
-
-        const url = getStore().current_back_url + "/api/getBResults";
-        console.log("Fetching from URL:", url);
-
-        try {
-          setStore({ loading: true });
-          let response = await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              neLat,
-              neLng,
-              swLat,
-              swLng,
-              resources,
-              days,
-            }),
-            signal: newAbortController.signal,
-          });
-
-          if (!response.ok) {
-            const text = await response.text();
-            console.error("Response text:", text);
-            throw new Error(
-              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-            );
-          }
-
-          const data = await response.json();
-          console.log("Fetched data:", data);
-          setStore({ mapResults: data.data, loading: false });
-
-          return data.data;
-        } catch (error) {
-          if (error.name === "AbortError") {
-            console.log("Fetch aborted");
-          } else {
-            setStore({ loading: false });
-            console.error("Error fetching data:", error);
-          }
-        }
-      },
-
-      setBoundaryResults: async (bounds, resources, days) => {
-        const store = getStore();
-
-        // Prevent duplicate fetch calls
-        if (store.isFetchingBoundaryResults) {
-          console.log("⏳ Request already in progress, skipping...");
-          return;
-        }
-
-        const currentTimestamp = Date.now();
-
-        // Abort the previous request only if another request is active
-        if (store.abortController) {
-          console.log("⏳ Aborting previous fetch...");
-          store.abortController.abort();
-        }
-
-        const newAbortController = new AbortController();
-        setStore({
-          abortController: newAbortController,
-          lastFetchTimestamp: currentTimestamp,
-          isFetchingBoundaryResults: true, // Mark request as active
-          loadingResults: true, // 🟢 Show loading state
-        });
-
-        let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-        let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-        // Normalize longitude values
-        neLng = neLng % 360;
-        if (neLng > 180) neLng -= 360;
-        swLng = swLng % 360;
-        if (swLng > 180) swLng -= 360;
-
-        const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-        const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-
-        const url = getStore().current_back_url + "/api/getBResults";
-        const combinedResources = { ...resources };
-
-        try {
-          console.log("📡 Sending request to getBResults...");
-          setStore({ loading: true });
-
-          let response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              neLat,
-              neLng,
-              swLat,
-              swLng,
-              resources: combinedResources || null,
-              days: days || null,
-            }),
-            signal: newAbortController.signal,
-          });
-
-          if (!response.ok) {
-            const text = await response.text();
-            throw new Error(
-              `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-            );
-          }
-          const data = await response.json();
-          if (getStore().lastFetchTimestamp === currentTimestamp) {
-            setStore({
-              boundaryResults: data.data,
-              loading: false,
-              loadingResults: false,
-            });
-          } else {
-            console.log("⚠️ Ignoring outdated fetch results...");
-          }
-        } catch (error) {
-          if (error.name === "AbortError") {
-            console.log("⚠️ Fetch was aborted.");
-          } else {
-            console.error("❌ Error fetching boundary results:", error);
-          }
-        } finally {
-          setStore({ isFetchingBoundaryResults: false, loadingResults: false });
-        }
-      },
-
-      // setBoundaryResults: async (bounds, resources, days) => {
-      //   const store = getStore();
-      //   const currentTimestamp = Date.now();
-
-      //   // Abort the previous request only if another request is active
-      //   if (store.abortController) {
-      //     console.log("⏳ Aborting previous fetch...");
-      //     store.abortController.abort();
+      //   if (!navigator.geolocation) {
+      //     console.error("❌ Geolocation is not supported by this browser.");
+      //     alert("Geolocation is not supported by your browser.");
+      //     return;
       //   }
 
-      //   const newAbortController = new AbortController();
-      //   setStore({
-      //     abortController: newAbortController,
-      //     lastFetchTimestamp: currentTimestamp,
-      //   });
+      //   // 🔵 Start Loading in Store
+      //   setStore({ loadingResults: true });
 
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
+      //   const successCallback = async (position) => {
+      //     const { latitude, longitude } = position.coords;
+      //     console.log(
+      //       `✅ Location retrieved: lat=${latitude}, lng=${longitude}`
+      //     );
 
-      //   // Normalize longitude values
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) neLng -= 360;
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) swLng -= 360;
+      //     const actions = getActions();
 
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
+      //     // Reset filters
+      //     actions.resetFilters();
 
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   const combinedResources = { ...resources };
+      //     // Update state with user's location
+      //     setStore({ userLocation: { lat: latitude, lng: longitude } });
 
-      //   try {
-      //     setStore({ loading: true });
+      //     // Fetch city data using these coordinates
+      //     await actions.updateCityStateFromCoords(latitude, longitude);
 
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources: combinedResources || null,
-      //         days: days || null,
-      //       }),
-      //       signal: newAbortController.signal,
-      //     });
-
-      //     if (!response.ok) {
-      //       const text = await response.text();
-      //       throw new Error(
-      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
-      //       );
-      //     }
-
-      //     const data = await response.json();
-
-      //     // Ensure only the latest fetch updates state
-      //     if (getStore().lastFetchTimestamp === currentTimestamp) {
-      //       setStore({ boundaryResults: data.data, loading: false });
-      //     } else {
-      //       console.log("⚠️ Ignoring outdated fetch results...");
-      //     }
-
-      //     return data.data;
-      //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("⚠️ Fetch was aborted.");
-      //     } else {
-      //       setStore({ loading: false });
-      //       console.error("❌ Error fetching boundary results:", error);
-      //     }
-      //   }
-      // },
-
-      // setBoundaryResults: async (bounds, resources, days, groups) => {
-      //   const store = getStore();
-      //   if (store.abortController) {
-      //     store.abortController.abort();
-      //   }
-      //   const newAbortController = new AbortController();
-      //   setStore({ abortController: newAbortController });
-
-      //   let neLng = bounds?.northeast?.lng || bounds?.ne?.lng || null;
-      //   let swLng = bounds?.southwest?.lng || bounds?.sw?.lng || null;
-
-      //   neLng = neLng % 360;
-      //   if (neLng > 180) {
-      //     neLng -= 360;
-      //   }
-
-      //   swLng = swLng % 360;
-      //   if (swLng > 180) {
-      //     swLng -= 360;
-      //   }
-
-      //   const neLat = bounds?.northeast?.lat || bounds?.ne?.lat || null;
-      //   const swLat = bounds?.southwest?.lat || bounds?.sw?.lat || null;
-      //   const url = getStore().current_back_url + "/api/getBResults";
-      //   const combinedResources = {
-      //     ...resources,
-      //     ...groups,
+      //     // 🔴 Stop Loading
+      //     setStore({ loadingResults: false });
       //   };
 
+      //   const errorCallback = (error) => {
+      //     console.error("❌ Geolocation error:", error);
+
+      //     switch (error.code) {
+      //       case error.PERMISSION_DENIED:
+      //         console.warn("⚠️ User denied location access.");
+      //         alert("Please enable location services and try again.");
+      //         break;
+      //       case error.POSITION_UNAVAILABLE:
+      //         console.warn("⚠️ Location unavailable.");
+      //         alert("Location unavailable. Retrying in 3 seconds...");
+      //         setTimeout(() => getActions().geoFindMe(), 3000);
+      //         break;
+      //       case error.TIMEOUT:
+      //         console.warn("⚠️ Location request timed out.");
+      //         alert("Location request timed out. Try again.");
+      //         break;
+      //       default:
+      //         alert("Unable to retrieve your location.");
+      //     }
+
+      //     setStore({ loadingResults: false });
+      //   };
+
+      //   navigator.geolocation.getCurrentPosition(
+      //     successCallback,
+      //     errorCallback,
+      //     {
+      //       enableHighAccuracy: true,
+      //       timeout: 10000,
+      //       maximumAge: 0,
+      //     }
+      //   );
+      // },
+
+      updateCityStateFromCoords: async (lat, lng) => {
+        const actions = getActions();
+        console.log(
+          `📡 Fetching city and bounds for coordinates: lat=${lat}, lng=${lng}`
+        );
+
+        try {
+          const data = await actions.fetchBounds({ lat, lng });
+
+          if (!data) {
+            console.error("❌ No valid data received from fetchBounds.");
+            return null; // Return null instead of breaking
+          }
+
+          const { location, bounds } = data;
+
+          console.log("✅ Updating city state with:", location, bounds);
+
+          setStore((prevStore) => ({
+            ...prevStore,
+            city: {
+              ...prevStore.city,
+              center: location,
+              bounds: bounds,
+            },
+            userLocation: location,
+            mapCenter: location, // 📌 Ensure map moves!
+          }));
+
+          // 🌍 Fetch resources immediately after updating the city
+          await actions.fetchResources(bounds);
+
+          return data; // Return the data for `geoFindMe`
+        } catch (error) {
+          console.error(
+            "❌ Error in updateCityStateFromCoords:",
+            error.message
+          );
+          return null;
+        }
+      },
+
+      // updateCityStateFromCoords: async (lat, lng) => {
+      //   const actions = getActions();
       //   console.log(
-      //     "✅ Sending combined categories & groups:",
-      //     combinedResources
+      //     `📡 Fetching city and bounds for coordinates: lat=${lat}, lng=${lng}`
       //   );
 
       //   try {
-      //     setStore({ loading: true });
-      //     let response = await fetch(url, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
+      //     const data = await actions.fetchBounds({ lat, lng });
+
+      //     if (!data) {
+      //       console.error("❌ No valid data received from fetchBounds.");
+      //       return null; // Return null instead of breaking
+      //     }
+
+      //     const { location, bounds } = data;
+
+      //     console.log("✅ Updating city state with:", location, bounds);
+
+      //     setStore((prevStore) => ({
+      //       ...prevStore,
+      //       city: {
+      //         ...prevStore.city,
+      //         center: location,
+      //         bounds: bounds,
       //       },
-      //       body: JSON.stringify({
-      //         neLat,
-      //         neLng,
-      //         swLat,
-      //         swLng,
-      //         resources: combinedResources || null,
-      //         days: days || null,
-      //       }),
-      //       signal: newAbortController.signal,
+      //       userLocation: location,
+      //       mapCenter: location, // 📌 Ensure map moves!
+      //     }));
+
+      //     // 🌍 Fetch resources immediately after updating the city
+      //     await actions.fetchResources(bounds);
+
+      //     return data; // Return the data for `geoFindMe`
+      //   } catch (error) {
+      //     console.error(
+      //       "❌ Error in updateCityStateFromCoords:",
+      //       error.message
+      //     );
+      //     return null;
+      //   }
+      // },
+
+      // fetchBounds: async (query, isZip = false) => {
+      //   const store = getStore();
+      //   const apiKey = store.googleApiKey; // Ensure API key is stored in flux.js
+
+      //   let apiUrl = isZip
+      //     ? `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`
+      //     : `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
+
+      //   console.log(`🌍 Fetching bounds from: ${apiUrl}`);
+
+      //   try {
+      //     const response = await fetch(apiUrl);
+      //     const data = await response.json();
+
+      //     if (!data || data.status !== "OK" || !data.results?.length) {
+      //       console.error("❌ No valid results found for query:", query);
+      //       return null;
+      //     }
+
+      //     const firstResult = data.results[0];
+      //     const location = firstResult.geometry?.location;
+      //     const bounds =
+      //       firstResult.geometry?.bounds || firstResult.geometry?.viewport;
+
+      //     if (!location || !bounds) {
+      //       console.error("❌ Missing location or bounds:", data);
+      //       return null;
+      //     }
+
+      //     console.log("✅ API Response:", { location, bounds });
+      //     return { location, bounds };
+      //   } catch (error) {
+      //     console.error("❌ Error fetching bounds:", error);
+      //     return null;
+      //   }
+      // },
+      fetchBounds: async (query, isZip = false) => {
+        console.log("🌍 Fetching bounds for:", query);
+
+        let apiUrl;
+        if (isZip) {
+          // Searching by ZIP code (not as precise as Google)
+          apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&format=json&addressdetails=1`;
+        } else {
+          // Reverse geocoding by lat/lng
+          apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
+        }
+
+        try {
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+
+          if (
+            !data ||
+            (Array.isArray(data) && data.length === 0) ||
+            !data.address
+          ) {
+            console.error("❌ No valid results found from Nominatim:", query);
+            return null;
+          }
+
+          const city =
+            data.address.city || data.address.town || data.address.village;
+          const state = data.address.state;
+          const country = data.address.country;
+          const location = { lat: query.lat, lng: query.lng };
+
+          // Nominatim does not provide precise bounds, so we approximate
+          const bounds = {
+            ne: { lat: query.lat + 0.05, lng: query.lng + 0.05 },
+            sw: { lat: query.lat - 0.05, lng: query.lng - 0.05 },
+          };
+
+          console.log("✅ Nominatim Response:", {
+            city,
+            state,
+            country,
+            location,
+            bounds,
+          });
+
+          return { city, state, country, location, bounds };
+        } catch (error) {
+          console.error("❌ Error fetching from Nominatim:", error);
+          return null;
+        }
+      },
+
+      // fetchBounds: async (query, isZip = false) => {
+      //   const store = getStore();
+      //   const apiKey = import.meta.env.VITE_GOOGLE || getStore().googleApiKey;
+
+      //   console.log("Google API Key from Store:", getStore().googleApiKey);
+      //   console.log("Google API Key from env:", import.meta.env.VITE_GOOGLE);
+
+      //   if (!apiKey) {
+      //     console.error("❌ Google API Key is missing. Check your .env file.");
+      //     return null;
+      //   }
+
+      //   let apiUrl = isZip
+      //     ? `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`
+      //     : `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
+
+      //   console.log(`🌍 Fetching bounds from: ${apiUrl}`);
+
+      //   try {
+      //     const response = await fetch(apiUrl);
+      //     const data = await response.json();
+
+      //     if (!data || data.status !== "OK" || !data.results?.length) {
+      //       console.error("❌ No valid results found for query:", query);
+      //       console.error("🛑 API Status:", data.status);
+      //       console.error("📩 API Error Message:", data.error_message);
+      //       return null;
+      //     }
+
+      //     const firstResult = data.results[0];
+      //     const location = firstResult.geometry?.location;
+      //     const bounds =
+      //       firstResult.geometry?.bounds || firstResult.geometry?.viewport;
+
+      //     if (!location || !bounds) {
+      //       console.error("❌ Missing location or bounds:", data);
+      //       return null;
+      //     }
+
+      //     console.log("✅ API Response:", { location, bounds });
+      //     return { location, bounds };
+      //   } catch (error) {
+      //     console.error("❌ Error fetching bounds:", error);
+      //     return null;
+      //   }
+      // },
+
+      // fetchResources: async (bounds) => {
+      //   const store = getStore();
+
+      //   if (!bounds || !bounds.ne || !bounds.sw) {
+      //     console.error("❌ Error: Invalid bounds received:", bounds);
+      //     return;
+      //   }
+
+      //   console.log("📏 Received bounds:", bounds);
+
+      //   // ✅ Ensure correct structure
+      //   const formattedBounds = {
+      //     ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+      //     sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+      //   };
+
+      //   console.log(
+      //     "📡 Fetching resources with formatted bounds:",
+      //     formattedBounds
+      //   );
+
+      //   // 🔵 START LOADING
+      //   setStore({ loadingResults: true });
+
+      //   try {
+      //     const response = await fetch(
+      //       `${store.current_back_url}/api/getBResults`,
+      //       {
+      //         method: "POST",
+      //         headers: { "Content-Type": "application/json" },
+      //         body: JSON.stringify(formattedBounds), // ✅ Fix: Send correctly formatted bounds
+      //       }
+      //     );
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       console.error("❌ Backend request failed. Response:", text);
+      //       setStore({ loadingResults: false }); // 🔴 STOP LOADING on failure
+      //       return;
+      //     }
+
+      //     const data = await response.json();
+      //     console.log("✅ Backend response received:", data);
+
+      //     if (!data || !data.data || data.data.length === 0) {
+      //       console.warn("⚠️ No resources returned from the backend.");
+      //     }
+
+      //     setStore({
+      //       boundaryResults: data.data || [],
+      //       loadingResults: false, // 🔴 STOP LOADING when data is received
       //     });
+
+      //     return data.data;
+      //   } catch (error) {
+      //     console.error("❌ Error fetching resources:", error);
+      //     setStore({ loadingResults: false }); // 🔴 STOP LOADING on error
+      //   }
+      // },
+
+      // fetchResources: async (bounds) => {
+      //   const store = getStore();
+
+      //   if (!bounds || !bounds.ne || !bounds.sw) {
+      //     console.error("❌ Error: Invalid bounds received:", bounds);
+      //     return;
+      //   }
+
+      //   console.log("📏 Received bounds:", bounds);
+
+      //   // Ensure the correct format
+      //   const formattedBounds = {
+      //     ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+      //     sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+      //   };
+
+      //   console.log(
+      //     "📡 Fetching resources with formatted bounds:",
+      //     formattedBounds
+      //   );
+
+      //   // 🔵 START LOADING
+      //   setStore({ loadingResults: true });
+
+      //   try {
+      //     const response = await fetch(
+      //       `${store.current_back_url}/api/getBResults`,
+      //       {
+      //         method: "POST",
+      //         headers: { "Content-Type": "application/json" },
+      //         body: JSON.stringify(formattedBounds), // ✅ Fix: Send correctly formatted bounds
+      //       }
+      //     );
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       console.error("❌ Backend request failed. Response:", text);
+      //       setStore({ loadingResults: false }); // 🔴 STOP LOADING on failure
+      //       return;
+      //     }
+
+      //     const data = await response.json();
+      //     console.log("✅ Backend response received:", data);
+
+      //     if (!data || !data.data || data.data.length === 0) {
+      //       console.warn("⚠️ No resources returned from the backend.");
+      //     }
+
+      //     setStore({
+      //       boundaryResults: data.data || [],
+      //       loadingResults: false, // 🔴 STOP LOADING when data is received
+      //     });
+
+      //     return data.data;
+      //   } catch (error) {
+      //     console.error("❌ Error fetching resources:", error);
+      //     setStore({ loadingResults: false }); // 🔴 STOP LOADING on error
+      //   }
+      // },
+
+      // setBoundaryResults: async (
+      //   bounds,
+      //   selectedCategories = {},
+      //   selectedDays = {}
+      // ) => {
+      //   const store = getStore();
+      //   const actions = getActions();
+
+      //   console.log("📡 setBoundaryResults called!");
+      //   console.log("📌 Received bounds:", bounds);
+      //   console.log("📌 Selected Categories:", selectedCategories);
+      //   console.log("📌 Selected Days:", selectedDays);
+
+      //   if (!bounds || !bounds.ne || !bounds.sw) {
+      //     console.error("❌ Error: Invalid bounds received.");
+      //     return;
+      //   }
+
+      //   let allResources = store.boundaryResults; // Use boundaryResults instead
+
+      //   console.log(
+      //     "📌 Total resources before filtering:",
+      //     allResources.length
+      //   );
+
+      //   const isFilteringByCategory =
+      //     Object.values(selectedCategories).some(Boolean);
+      //   const isFilteringByDay = Object.values(selectedDays).some(Boolean);
+
+      //   console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
+      //   console.log("🔎 isFilteringByDay:", isFilteringByDay);
+
+      //   // 🔵 START LOADING BEFORE FILTERING
+      //   setStore({ loadingResults: true });
+
+      //   if (!isFilteringByCategory && !isFilteringByDay) {
+      //     console.log("✅ No filters applied, returning all resources.");
+      //     setStore({
+      //       boundaryResults: [...allResources],
+      //       loadingResults: false,
+      //     }); // 🔴 STOP LOADING
+      //     return;
+      //   }
+
+      //   const filteredResults = allResources.filter((resource) => {
+      //     const hasValidCategory =
+      //       isFilteringByCategory &&
+      //       resource.category &&
+      //       resource.category
+      //         .split(",")
+      //         .map((c) => c.trim().toLowerCase())
+      //         .some((cat) => selectedCategories[cat]);
+
+      //     const hasValidDay =
+      //       isFilteringByDay &&
+      //       resource.schedule &&
+      //       Object.keys(resource.schedule).some(
+      //         (day) => selectedDays[day] && resource.schedule[day]?.start
+      //       );
+
+      //     return (
+      //       (isFilteringByCategory && hasValidCategory) ||
+      //       (isFilteringByDay && hasValidDay)
+      //     );
+      //   });
+
+      //   console.log(
+      //     "✅ Found",
+      //     filteredResults.length,
+      //     "resources after filtering."
+      //   );
+
+      //   // 🔴 STOP LOADING AFTER FILTERING
+      //   setStore({
+      //     boundaryResults: [...filteredResults],
+      //     loadingResults: false,
+      //   });
+      // },
+
+      // setBoundaryResults: async (bounds, resources = {}, days = {}) => {
+      //   const store = getStore();
+
+      //   if (!bounds || typeof bounds !== "object") {
+      //     console.error("❌ Error: No bounds provided.");
+      //     return;
+      //   }
+
+      //   setStore({ bounds }); // ✅ Save bounds in store
+
+      //   const neLat =
+      //     bounds.ne?.lat || bounds.northeast?.lat || bounds.nw?.lat || null;
+      //   const neLng =
+      //     bounds.ne?.lng || bounds.northeast?.lng || bounds.nw?.lng || null;
+      //   const swLat =
+      //     bounds.sw?.lat || bounds.southwest?.lat || bounds.se?.lat || null;
+      //   const swLng =
+      //     bounds.sw?.lng || bounds.southwest?.lng || bounds.se?.lng || null;
+
+      //   if (
+      //     neLat === null ||
+      //     neLng === null ||
+      //     swLat === null ||
+      //     swLng === null
+      //   ) {
+      //     console.error(
+      //       "❌ Error: Invalid bounds when fetching results:",
+      //       bounds
+      //     );
+      //     return;
+      //   }
+
+      //   console.log("📡 Fetching boundary results with bounds:", {
+      //     neLat,
+      //     neLng,
+      //     swLat,
+      //     swLng,
+      //   });
+
+      //   const selectedCategories = Object.keys(resources).filter(
+      //     (key) => resources[key]
+      //   );
+      //   const selectedDays = Object.keys(days).filter((key) => days[key]);
+
+      //   const requestBody = {
+      //     neLat,
+      //     neLng,
+      //     swLat,
+      //     swLng,
+      //     resources: selectedCategories.length > 0 ? resources : {},
+      //     days: selectedDays.length > 0 ? days : {},
+      //   };
+
+      //   try {
+      //     console.log("📡 Sending request:", requestBody);
+      //     setStore({ loading: true });
+
+      //     let response = await fetch(
+      //       `${store.current_back_url}/api/getBResults`,
+      //       {
+      //         method: "POST",
+      //         headers: { "Content-Type": "application/json" },
+      //         body: JSON.stringify(requestBody),
+      //       }
+      //     );
 
       //     if (!response.ok) {
       //       const text = await response.text();
@@ -1087,21 +1740,110 @@ const getState = ({ getStore, getActions, setStore }) => {
       //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
       //       );
       //     }
+
       //     const data = await response.json();
-      //     setStore({ boundaryResults: data.data, loading: false });
-
-      //     console.log("🔍 Sending filters to backend:");
-      //     console.log("✅ Categories & Groups:", resources);
-      //     console.log("✅ Days:", days);
-
-      //     return data.data;
+      //     setStore({
+      //       boundaryResults: data.data,
+      //       loading: false,
+      //       loadingResults: false,
+      //     });
       //   } catch (error) {
-      //     if (error.name === "AbortError") {
-      //       console.log("Fetch aborted");
-      //     } else {
-      //       setStore({ loading: false });
-      //       console.error("Error fetching data:", error);
+      //     console.error("❌ Error fetching boundary results:", error);
+      //   } finally {
+      //     setStore({ isFetchingBoundaryResults: false, loadingResults: false });
+      //   }
+      // },
+
+      // setBoundaryResults: async (bounds, resources = {}, days = {}) => {
+      //   const store = getStore();
+
+      //   if (store.isFetchingBoundaryResults) {
+      //     console.log("⏳ Request already in progress, skipping...");
+      //     return;
+      //   }
+
+      //   if (!bounds || typeof bounds !== "object") {
+      //     console.error(
+      //       "❌ Error: No bounds provided or invalid structure.",
+      //       bounds
+      //     );
+      //     return;
+      //   }
+
+      //   // Ensure bounds are consistently extracted
+      //   const neLat =
+      //     bounds.ne?.lat || bounds.northeast?.lat || bounds.nw?.lat || null;
+      //   const neLng =
+      //     bounds.ne?.lng || bounds.northeast?.lng || bounds.nw?.lng || null;
+      //   const swLat =
+      //     bounds.sw?.lat || bounds.southwest?.lat || bounds.se?.lat || null;
+      //   const swLng =
+      //     bounds.sw?.lng || bounds.southwest?.lng || bounds.se?.lng || null;
+
+      //   if (
+      //     neLat === null ||
+      //     neLng === null ||
+      //     swLat === null ||
+      //     swLng === null
+      //   ) {
+      //     console.error(
+      //       "❌ Error: Invalid bounds when fetching results.",
+      //       bounds
+      //     );
+      //     return;
+      //   }
+
+      //   console.log("📡 Fetching boundary results with:", {
+      //     neLat,
+      //     neLng,
+      //     swLat,
+      //     swLng,
+      //   });
+
+      //   const selectedCategories = Object.keys(resources).filter(
+      //     (key) => resources[key]
+      //   );
+      //   const selectedDays = Object.keys(days).filter((key) => days[key]);
+
+      //   const requestBody = {
+      //     neLat,
+      //     neLng,
+      //     swLat,
+      //     swLng,
+      //     resources: selectedCategories.length > 0 ? resources : {},
+      //     days: selectedDays.length > 0 ? days : {},
+      //   };
+
+      //   try {
+      //     console.log("📡 Sending request with:", requestBody);
+      //     setStore({ loading: true });
+
+      //     let response = await fetch(
+      //       `${store.current_back_url}/api/getBResults`,
+      //       {
+      //         method: "POST",
+      //         headers: { "Content-Type": "application/json" },
+      //         body: JSON.stringify(requestBody),
+      //       }
+      //     );
+
+      //     if (!response.ok) {
+      //       const text = await response.text();
+      //       throw new Error(
+      //         `Network response was not ok. Status: ${response.statusText}. Response Text: ${text}`
+      //       );
       //     }
+
+      //     const data = await response.json();
+      //     setStore({
+      //       boundaryResults: data.data,
+      //       loading: false,
+      //       loadingResults: false,
+      //     });
+      //   } catch (error) {
+      //     console.error("❌ Error fetching boundary results:", error);
+      //   } finally {
+      //     setStore({ isFetchingBoundaryResults: false, loadingResults: false });
       //   }
       // },
 
@@ -1189,6 +1931,74 @@ const getState = ({ getStore, getActions, setStore }) => {
             setAverageRatingCallback(0);
           if (typeof setRatingCountCallback === "function")
             setRatingCountCallback(0);
+        }
+      },
+
+      approveComment: async (commentId) => {
+        const token = sessionStorage.getItem("token");
+        const current_back_url = getStore().current_back_url;
+
+        console.log("📡 Approving comment:", commentId);
+        console.log("🔑 Token being sent:", token);
+        console.log(
+          "🛠️ Request URL:",
+          `${current_back_url}/api/approve_comment/${commentId}`
+        );
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/approve_comment/${commentId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Ensure token is properly formatted
+              },
+            }
+          );
+
+          console.log("📥 Response Status:", response.status);
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error("❌ Failed to approve comment:", errorData);
+            throw new Error(errorData.message || "Failed to approve comment");
+          }
+
+          const data = await response.json();
+          console.log("✅ Comment approved:", data);
+          return true;
+        } catch (error) {
+          console.error("🚨 Error in approveComment:", error);
+          return false;
+        }
+      },
+
+      getUnapprovedComments: async () => {
+        const current_back_url = getStore().current_back_url;
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/unapproved_comments`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*", // <-- Ensures CORS compliance
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch unapproved comments. Status: ${response.status}`
+            );
+          }
+
+          const data = await response.json();
+          return data.comments;
+        } catch (error) {
+          console.error("Error fetching unapproved comments:", error);
+          return [];
         }
       },
 
@@ -1405,6 +2215,28 @@ const getState = ({ getStore, getActions, setStore }) => {
             })
             .catch((error) => console.error("Error removing favorite:", error));
         }
+      },
+      initApp: function () {
+        const actions = getActions();
+        actions.getToken();
+
+        console.log("🚀 Initializing app...");
+
+        // Fetch schedules on app load
+        actions.setSchedules();
+
+        actions.checkLoginStatus();
+
+        // Listen for screen size changes
+        const handleResize = actions.updateScreenSize;
+        window.addEventListener("resize", handleResize);
+        console.log("📏 Screen resize listener added.");
+
+        // Cleanup listener on unmount
+        return () => {
+          window.removeEventListener("resize", handleResize);
+          console.log("📏 Screen resize listener removed.");
+        };
       },
     },
   };

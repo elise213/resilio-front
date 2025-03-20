@@ -9,13 +9,12 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 
 const Edit = () => {
+  const { store, actions } = useContext(Context);
   const { id } = useParams();
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
 
   const navigate = useNavigate();
-  const { store, actions } = useContext(Context);
   const daysOfWeek = [
     "monday",
     "tuesday",
@@ -48,41 +47,61 @@ const Edit = () => {
   const [formData, setFormData] = useState(initialFormData || {});
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const categories = CATEGORY_OPTIONS;
-  const [unrecognizedCategories, setUnrecognizedCategories] = useState([]);
 
-  console.log("USER ID", store.user_id);
+  const handleRemoveUserId = (userId) => {
+    setFormData((prev) => ({
+      ...prev,
+      user_ids: prev.user_ids.filter((id) => id !== userId),
+    }));
+  };
 
   useEffect(() => {
     const fetchResourceData = async () => {
       try {
         const resourceData = await actions.getResource(id);
-        const assignedUsers = await actions.getResourceUsers(id); // Fetch only assigned users
+        const assignedUsers = await actions.getResourceUsers(id); // Fetch assigned users
+        const loggedInUserId = store.user_id; // Get current user ID from store
 
-        setFormData((prevData) => ({
+        // ✅ Check if the user is authorized
+        const isAuthorized =
+          loggedInUserId === 1 ||
+          assignedUsers.some((user) => user.id === loggedInUserId);
+
+        if (!isAuthorized) {
+          Swal.fire({
+            icon: "error",
+            title: "Access Denied",
+            text: "You are not authorized to edit this resource.",
+          });
+          navigate("/"); // Redirect to home or another page
+          return;
+        }
+
+        setFormData({
           ...initialFormData,
           ...resourceData,
           category: resourceData.category
             ? resourceData.category.split(", ")
             : [],
-          user_ids: resourceData.user_ids || [], // Store assigned user IDs
-        }));
+          user_ids: assignedUsers.map((user) => user.id) || [],
+        });
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("🚨 Error fetching data:", error);
       }
     };
 
     fetchResourceData();
-  }, [actions, id]);
+  }, [actions, id, store.user_id, navigate]); // Depend on store.user_id for reactivity
 
   const handleAddUserId = () => {
     const newUserId = parseInt(formData.newUserId);
 
-    if (!newUserId || formData.user_ids.includes(newUserId)) return; // Prevent invalid or duplicate entries
+    if (!newUserId || formData.user_ids.includes(newUserId)) return;
 
     setFormData((prev) => ({
       ...prev,
-      user_ids: [...prev.user_ids, newUserId], // Add new ID
-      newUserId: "", // Clear input field
+      user_ids: [...prev.user_ids, newUserId],
+      newUserId: "",
     }));
   };
 
@@ -116,34 +135,23 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const modifiedFormData = {
-      ...formData,
-      category: formData.category.join(", "), // Convert array to string
-      user_ids: formData.user_ids || [], // Ensure user_ids are sent
-      latitude: formData.latitude ?? null, // Ensure null values
-      longitude: formData.longitude ?? null,
-    };
-
-    try {
-      await actions.editResource(id, modifiedFormData, navigate);
-
-      Swal.fire({
-        icon: "success",
-        title: "Resource Updated",
-        text: "The resource has been successfully updated!",
-        confirmButtonText: "OK",
-      }).then(() => {
-        resetForm();
-        navigate("/"); // Redirect only after user clicks "OK"
-      });
-    } catch (error) {
-      console.error("Error updating the resource:", error);
-
+    const loggedInUserId = store.user_id;
+    if (loggedInUserId !== 1 && !formData.user_ids.includes(loggedInUserId)) {
       Swal.fire({
         icon: "error",
-        title: "Update Failed",
-        text: "An error occurred while updating the resource. Please try again.",
+        title: "Access Denied",
+        text: "You do not have permission to edit this resource.",
       });
+      return;
+    }
+
+    try {
+      const success = await actions.editResource(id, formData, navigate);
+      if (success) {
+        actions.openModal;
+      }
+    } catch (error) {
+      console.error("🚨 Error updating the resource:", error);
     }
   };
 
@@ -170,49 +178,7 @@ const Edit = () => {
     });
   };
 
-  const handleTimeChange = (day, timeType, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      days: {
-        ...prevData.days,
-        [day]: {
-          ...prevData.days[day],
-          [timeType]: value,
-        },
-      },
-    }));
-  };
-
-  const resetForm = () => {
-    setFormData(initialFormData);
-  };
-
-  if (!formData) {
-    return <div>Loading...</div>;
-  }
-
-  useEffect(() => {
-    if (
-      !document.querySelector(
-        'script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]'
-      )
-    ) {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-      script.onload = () => setGoogleMapsLoaded(true);
-    }
-    return () => {
-      const script = document.querySelector(
-        'script[src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"]'
-      );
-      if (script) document.head.removeChild(script);
-    };
-  }, [apiKey]);
-
-  const handleAddressChange = actions.debounce(async (address) => {
+  const handleAddressChange = async (address) => {
     handleChange("address", address);
     try {
       const results = await geocodeByAddress(address);
@@ -220,16 +186,53 @@ const Edit = () => {
       handleChange("latitude", latLng.lat || null);
       handleChange("longitude", latLng.lng || null);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching address details:", error);
     }
-  }, 600); // Adjust the delay as necessary
+  };
+
+  const handleTimeChange = (day, timeType, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      days: {
+        ...prevData.days,
+        [day]: {
+          ...prevData.days[day],
+          [timeType]: value === "" ? null : value,
+        },
+      },
+    }));
+  };
+
+  if (!formData) {
+    return <div>Loading...</div>;
+  }
+
+  useEffect(() => {
+    if (window.google && window.google.maps) {
+      setGoogleMapsLoaded(true);
+      return;
+    }
+
+    const existingScript = document.querySelector(
+      'script[src^="https://maps.googleapis.com/maps/api/js"]'
+    );
+
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => setGoogleMapsLoaded(true);
+      document.head.appendChild(script);
+    } else {
+      existingScript.onload = () => setGoogleMapsLoaded(true);
+    }
+  }, [apiKey]);
 
   const formatTime = (time) => {
-    if (time) {
-      const [hour, minute] = time.split(":");
-      return `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
-    }
-    return "";
+    if (!time) return "";
+    const [hour, minute] = time.split(":");
+    return `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
   };
 
   return (
@@ -263,17 +266,21 @@ const Edit = () => {
         <div className="assigned-users">
           <p>Assigned Users:</p>
           <ul>
-            {formData.user_ids.map((userId) => (
-              <li key={userId}>
-                {userId}{" "}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveUserId(userId)}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
+            {formData.user_ids.length > 0 ? (
+              formData.user_ids.map((userId) => (
+                <li key={userId}>
+                  {userId}{" "}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveUserId(userId)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))
+            ) : (
+              <p>No users assigned.</p>
+            )}
           </ul>
         </div>
 
@@ -400,7 +407,7 @@ const Edit = () => {
               type="time"
               id={`${day}Start`}
               name={`${day}Start`}
-              value={formatTime(formData.days[day]?.start) || ""}
+              value={formData.days[day]?.start || ""}
               onChange={(e) => handleTimeChange(day, "start", e.target.value)}
             />
             <span> until </span>
@@ -409,13 +416,34 @@ const Edit = () => {
               type="time"
               id={`${day}End`}
               name={`${day}End`}
-              value={formatTime(formData.days[day]?.end) || ""}
+              value={formData.days[day]?.end || ""}
               onChange={(e) => handleTimeChange(day, "end", e.target.value)}
             />
+            <button
+              type="button"
+              style={{
+                width: "100px",
+                backgroundColor: "pink",
+                borderColor: "red",
+                justifySelf: "flex-end",
+                alignSelf: "flex-end",
+                margin: "5px 0",
+                borderRadius: "4px",
+                fontSize: "12px",
+              }}
+              onClick={() => {
+                handleTimeChange(day, "start", null);
+                handleTimeChange(day, "end", null);
+              }}
+            >
+              ❌ Clear {day.charAt(0).toUpperCase() + day.slice(1)}
+            </button>
           </div>
         ))}
+
         <div className="input-group">
           <label htmlFor="updated">Last Updated Date</label>
+
           <input
             className="geo-input"
             id="updated"
@@ -424,13 +452,19 @@ const Edit = () => {
             value={formData.updated ? formData.updated.split("T")[0] : ""}
             onChange={(e) => {
               const selectedDate = e.target.value;
-              handleChange("updated", selectedDate || "");
+              handleChange("updated", `${selectedDate}T00:00:00Z`);
             }}
           />
         </div>
-        <button className="update-button" type="submit">
-          Update
-        </button>
+        {store.authorizedUser || formData.user_ids.includes(store.user_id) ? (
+          <button className="update-button" type="submit">
+            Update
+          </button>
+        ) : (
+          <p style={{ color: "red" }}>
+            You do not have permission to edit this resource.
+          </p>
+        )}
       </form>
       {[1, 3, 4, 8].includes(store.user_id) && (
         <button className="delete-button" onClick={handleDelete}>

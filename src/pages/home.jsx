@@ -1,4 +1,10 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useContext,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import { Context } from "../store/appContext";
 import Sidebar from "../component/Sidebar";
 import Map from "../component/Map";
@@ -12,27 +18,12 @@ import { debounce } from "lodash";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
+
   const apiKey = import.meta.env.VITE_GOOGLE;
-  const [isModalOpen, setIsModalOpen] = useState(store.modalIsOpen);
-  const [loadingResults, setLoadingResults] = useState(true);
   const [loadingLocation, setLoadingLocation] = useState(false);
+  const [mapZoom, setMapZoom] = useState(11);
+
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [locationModalIsOpen, setLocationModalIsOpen] = useState(false);
-  const [zipInput, setZipInput] = useState("");
-  const [layout, setLayout] = useState("fullscreen-sidebar");
-  const INITIAL_CITY_STATE = store.austin[0];
-  const [userLocation, setUserLocation] = useState(null);
-  const [city, setCity] = useState(INITIAL_CITY_STATE);
-
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!store.token);
-
-  useEffect(() => {
-    setIsLoggedIn(!!store.token);
-  }, [store.token]);
-
-  const favorites = store.favorites;
   const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
     CATEGORY_OPTIONS.reduce((acc, curr) => {
       return { ...acc, [curr.id]: false };
@@ -42,212 +33,522 @@ const Home = () => {
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
   const [categories, setCategories] = useState(
-    INITIAL_CATEGORY_STATE(store.CATEGORY_OPTIONS)
+    store.CATEGORY_OPTIONS.reduce(
+      (acc, curr) => ({ ...acc, [curr.id]: false }),
+      {}
+    )
   );
-  const [days, setDays] = useState(INITIAL_DAY_STATE(store.DAY_OPTIONS));
+  const [mapInstance, setMapInstance] = useState(null);
+  const [mapsInstance, setMapsInstance] = useState(null);
+  const [days, setDays] = useState(
+    store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
+  );
 
-  // USE EFFECTS
+  const [tempCategories, setTempCategories] = useState(categories || {});
+  const [tempDays, setTempDays] = useState(days || {});
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [zipInput, setZipInput] = useState("");
+  const [layout, setLayout] = useState("fullscreen-sidebar");
+  const [lastBounds, setLastBounds] = useState(null);
 
-  useEffect(() => {
-    setIsModalOpen(store.modalIsOpen);
-  }, [store.modalIsOpen]);
+  const INITIAL_CITY_STATE = store.austin[0];
+  const [city, setCity] = useState(INITIAL_CITY_STATE);
+  const [mapCenter, setMapCenter] = useState(city.center);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [filteredResults2, setFilteredResults2] = useState(
+    store.boundaryResults
+  );
 
+  const resetFilters = () => {
+    console.log("🔄 Resetting categories and days to original values...");
+    setCategories(
+      store.CATEGORY_OPTIONS.reduce(
+        (acc, curr) => ({ ...acc, [curr.id]: false }),
+        {}
+      )
+    );
+    setDays(
+      store.DAY_OPTIONS.reduce(
+        (acc, curr) => ({ ...acc, [curr.id]: false }),
+        {}
+      )
+    );
+    console.log("✅ Categories and days reset.");
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    setCategories((prevCategories) => {
+      const newCategories = {
+        ...prevCategories,
+        [categoryId]: !prevCategories[categoryId],
+      };
+      return JSON.stringify(newCategories) === JSON.stringify(prevCategories)
+        ? prevCategories
+        : newCategories;
+    });
+  };
+
+  const handleDayChange = (dayId) => {
+    setDays((prevDays) => {
+      if (prevDays[dayId] === !prevDays[dayId]) {
+        return prevDays; // ✅ No state change = no re-render
+      }
+      return { ...prevDays, [dayId]: !prevDays[dayId] };
+    });
+  };
+
+  const updateCityStateFromZip = async (zip) => {
+    console.log(`🔍 Looking up ZIP: ${zip}`);
+
+    const data = await fetchCachedBounds(zip, true);
+
+    console.log("📌 Response from fetchCachedBounds:", data);
+
+    if (!data || data.length === 0) {
+      console.error("❌ Error fetching bounds: No results found.");
+      return null;
+    }
+
+    const firstResult = data[0];
+    const location = {
+      lat: parseFloat(firstResult.lat),
+      lng: parseFloat(firstResult.lon),
+    };
+
+    // Extract the bounding box
+    const bounds = {
+      ne: {
+        lat: parseFloat(firstResult.boundingbox[1]),
+        lng: parseFloat(firstResult.boundingbox[3]),
+      },
+      sw: {
+        lat: parseFloat(firstResult.boundingbox[0]),
+        lng: parseFloat(firstResult.boundingbox[2]),
+      },
+    };
+
+    console.log("✅ Found location:", location);
+    console.log("📏 Bounding Box:", bounds);
+
+    // Update state and fetch resources
+    handleBoundsChange({ center: location, bounds });
+
+    // Fetch new resources within these bounds
+    await actions.fetchResources(bounds);
+  };
+
+  const isFilteringByCategory = Object.keys(categories).some(
+    (key) => categories[key]
+  );
+  const isFilteringByDay = Object.keys(days).some((key) => days[key]);
+  const applyFiltering = isFilteringByCategory || isFilteringByDay;
+
+  /* ===========================
+   * 📌 Effects (useEffect)
+   * =========================== */
+
+  // 📍 Update city and state when ZIP input changes
   useEffect(() => {
     if (zipInput && zipInput.length === 5) {
       updateCityStateFromZip(zipInput);
     }
   }, [zipInput]);
 
+  // 📍 Apply filters when categories, days, or all resources change
+  useEffect(() => {
+    console.log("category or day change", categories, days);
+  }, [categories, days]);
+
+  // 📍 Count occurrences of categories in boundary results
+  useEffect(() => {
+    let categoryCounts = {};
+    if (!store.boundaryResults?.length) return;
+    store.boundaryResults.forEach((resource) => {
+      if (typeof resource.category === "string") {
+        let resourceCategories = resource.category
+          .split(",")
+          .map((cat) => cat.trim().toLowerCase());
+
+        resourceCategories.forEach((cat) => {
+          if (store.CATEGORY_OPTIONS.some((option) => option.id === cat)) {
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+          }
+        });
+      }
+    });
+    actions.setCategoryCounts(categoryCounts);
+  }, [store.boundaryResults]);
+
+  // 📍 Count occurrences of days in boundary results
+  useEffect(() => {
+    let dayCounts = store.DAY_OPTIONS.reduce((acc, day) => {
+      acc[day.id] = 0;
+      return acc;
+    }, {});
+    if (!store.boundaryResults?.length) return;
+    store.boundaryResults.forEach((resource) => {
+      if (!resource.schedule) return;
+      store.DAY_OPTIONS.forEach((day) => {
+        const daySchedule = resource.schedule[day.id];
+        if (daySchedule?.start && daySchedule?.end) {
+          dayCounts[day.id]++;
+        }
+      });
+    });
+    actions.setDayCounts({ ...dayCounts });
+  }, [store.boundaryResults]);
+
+  // 📍 Count categories and days in all resources
+  useEffect(() => {
+    if (!store.boundaryResults?.length) return;
+    let categoryCounts = {};
+    let dayCounts = store.DAY_OPTIONS.reduce((acc, day) => {
+      acc[day.id] = 0;
+      return acc;
+    }, {});
+
+    store.boundaryResults.forEach((resource) => {
+      if (typeof resource.category === "string") {
+        resource.category.split(",").forEach((cat) => {
+          cat = cat.trim().toLowerCase();
+          if (store.CATEGORY_OPTIONS.some((option) => option.id === cat)) {
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+          }
+        });
+      }
+
+      if (resource.schedule) {
+        store.DAY_OPTIONS.forEach((day) => {
+          if (
+            resource.schedule[day.id]?.start &&
+            resource.schedule[day.id]?.end
+          ) {
+            dayCounts[day.id]++;
+          }
+        });
+      }
+    });
+
+    actions.setCategoryCounts(categoryCounts);
+    actions.setDayCounts(dayCounts);
+  }, [store.boundaryResults, days]);
+
+  const debouncedApplyFilters = useCallback(
+    debounce(() => {
+      applyFilters();
+    }, 300),
+    [categories, days, store.boundaryResults]
+  );
+  useEffect(() => {
+    debouncedApplyFilters();
+  }, [categories, days, store.boundaryResults]);
+
+  // check if all values in an object (like categories or days) are false
+  const areAllUnchecked = (filters) => {
+    return Object.values(filters).every((value) => value === false);
+  };
+
+  // 📍 Track if user has selected filters
   useEffect(() => {
     const noCategorySelected = areAllUnchecked(categories);
     const noDaySelected = areAllUnchecked(days);
-
     setUserSelectedFilter(!(noCategorySelected && noDaySelected));
   }, [categories, days]);
 
-  // FUNCTIONS
+  // 📍 Sync temporary filters with actual filters
+  useEffect(() => {
+    setTempCategories(categories || {});
+    setTempDays(days || {});
+  }, [categories, days]);
 
-  const updateCityStateFromZip = async (zip) => {
-    const data = await fetchCachedBounds(zip, true);
-    if (data && data.results.length) {
-      const location = data.results[0]?.geometry?.location;
-      const bounds =
-        data.results[0]?.geometry?.bounds ||
-        data.results[0]?.geometry?.viewport;
+  // 📍 Initialize app
+  useEffect(() => {
+    const cleanup = actions.initApp();
+    return cleanup;
+  }, []);
 
-      if (location && bounds) {
-        actions.setBoundaryResults(bounds, categories, days);
-        handleBoundsChange({
-          center: { lat: location.lat, lng: location.lng },
-          bounds: {
-            ne: bounds.northeast,
-            sw: bounds.southwest,
-          },
-        });
-      }
+  /* ===========================
+   * 📌 State Management & Filtering
+   * =========================== */
+
+  const applyFilters = useCallback(() => {
+    console.log("🔍 Applying filters...");
+    console.log("📌 Categories:", categories);
+    console.log("📌 Days:", days);
+
+    if (!store.boundaryResults?.length) {
+      console.warn("❌ No resources available for filtering.");
+      return;
     }
-  };
 
-  const handleZipInputChange = async (e) => {
-    const value = e.target.value;
-    setZipInput(value);
-    if (value.length === 5) {
-      await updateCityStateFromZip(value);
+    const filteredCategories = Object.keys(categories).filter(
+      (key) => categories[key]
+    );
+    const filteredDays = Object.keys(days).filter((key) => days[key]);
+
+    // ✅ Fix: Check `filteredCategories.length` and `filteredDays.length`
+    if (filteredCategories.length === 0 && filteredDays.length === 0) {
+      // console.log("🚀 Resetting to all resources...");
+      setFilteredResults2(store.boundaryResults);
+      return;
     }
-  };
 
-  const handleBoundsChange = useCallback(
-    debounce((data) => {
-      console.log("📡 Calling setBoundaryResults...");
+    const filtered = store.boundaryResults.filter((resource) => {
+      const categoryMatch =
+        filteredCategories.length === 0 ||
+        (resource.category &&
+          resource.category
+            .split(",")
+            .some((cat) =>
+              filteredCategories.includes(cat.trim().toLowerCase())
+            ));
 
-      if (
-        city.bounds?.ne?.lat === data.bounds.ne.lat &&
-        city.bounds?.ne?.lng === data.bounds.ne.lng &&
-        city.bounds?.sw?.lat === data.bounds.sw.lat &&
-        city.bounds?.sw?.lng === data.bounds.sw.lng
-      ) {
-        console.log("⏳ Bounds unchanged, skipping API call...");
-        return;
-      }
+      const dayMatch =
+        filteredDays.length === 0 ||
+        (resource.schedule &&
+          filteredDays.some((day) => resource.schedule[day]?.start));
 
-      actions.setBoundaryResults(data.bounds, categories, days);
+      return categoryMatch && dayMatch;
+    });
 
-      setCity({
-        ...city,
-        bounds: { ne: data.bounds.ne, sw: data.bounds.sw },
-        center: {
-          lat: data.center.lat,
-          lng: normalizeLongitude(data.center.lng),
-        },
-      });
-    }, 1000),
-    [categories, days]
-  );
+    console.log("📊 Filtered Results:", filtered);
+    setFilteredResults2(filtered);
+  }, [categories, days, store.boundaryResults]);
 
-  const normalizeLongitude = (lng) => {
-    if (lng > 180) {
-      return lng - 360;
-    }
-    if (lng < -180) {
-      return lng + 360;
-    }
-    return lng;
-  };
+  // const fetchBounds = async (query, isZip = false) => {
+  //   let apiUrl = isZip
+  //     ? `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`
+  //     : `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
 
-  const fetchBounds = async (query, isZip = false) => {
-    let apiUrl;
-    if (isZip) {
-      apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`;
-    } else {
-      apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
-    }
-    console.log("Fetching bounds with URL:", apiUrl);
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+  //   console.log(`🌍 Fetching bounds from: ${apiUrl}`);
 
-      if (data.status !== "OK") {
-        console.error(`Error fetching data: ${data.status}`, data);
-        return null;
-      }
-      console.log("Fetched data:", data);
-      return data;
-    } catch (error) {
-      console.error("Error fetching bounds:", error);
-      return null;
-    }
-  };
+  //   try {
+  //     const response = await fetch(apiUrl);
+  //     const data = await response.json();
 
+  //     if (!data || data.status !== "OK" || !data.results?.length) {
+  //       console.error("❌ No valid results found for query:", query);
+  //       return null;
+  //     }
+
+  //     const firstResult = data.results[0];
+  //     const location = firstResult.geometry?.location;
+  //     const bounds =
+  //       firstResult.geometry?.bounds || firstResult.geometry?.viewport;
+
+  //     if (!location || !bounds) {
+  //       console.error("❌ Missing location or bounds:", data);
+  //       return null;
+  //     }
+
+  //     console.log("✅ API Response:", { location, bounds });
+  //     return { location, bounds };
+  //   } catch (error) {
+  //     console.error("❌ Error fetching bounds:", error);
+  //     return null;
+  //   }
+  // };
+
+  // 📍 Fetch cached boundary data
   const fetchCachedBounds = async (query, isZip = false) => {
     const cacheKey = `bounds-${JSON.stringify(query)}`;
     const cachedData = sessionStorage.getItem(cacheKey);
-    if (cachedData) {
-      return JSON.parse(cachedData);
-    }
+    if (cachedData) return JSON.parse(cachedData);
+
     let data = await fetchBounds(query, isZip);
-    sessionStorage.setItem(cacheKey, JSON.stringify(data));
+    if (data) sessionStorage.setItem(cacheKey, JSON.stringify(data));
     return data;
   };
 
-  const updateCityStateFromCoords = async (lat, lng) => {
-    try {
-      const data = await fetchBounds({ lat, lng });
-      const location = data.results[0]?.geometry?.location;
-      const bounds =
-        data.results[0]?.geometry?.bounds ||
-        data.results[0]?.geometry?.viewport;
-      if (location && bounds) {
-        setCity({
-          ...city,
-          center: location,
-          bounds: bounds,
-        });
+  /* ===========================
+   * 📌 Event Handlers
+   * =========================== */
+
+  // 📍 Handle ZIP input change
+
+  const MIN_BOUNDS_CHANGE = 0.002; // 🔥 Adjust as needed (about ~222m)
+
+  const boundsAreSimilar = (bounds1, bounds2) => {
+    if (!bounds1 || !bounds2) return false;
+
+    const latDiff = Math.abs(bounds1.ne.lat - bounds2.ne.lat);
+    const lngDiff = Math.abs(bounds1.ne.lng - bounds2.ne.lng);
+
+    return latDiff < MIN_BOUNDS_CHANGE && lngDiff < MIN_BOUNDS_CHANGE;
+  };
+
+  const handleBoundsChange = useCallback(
+    debounce(({ bounds, center, zoom }) => {
+      if (!bounds || !bounds.ne || !bounds.sw) {
+        console.error("❌ Invalid bounds received:", bounds);
+        return;
       }
-    } catch (error) {
-      console.error("Error fetching bounds:", error.message);
-    }
-  };
 
-  const areAllUnchecked = (stateObj) => {
-    return Object.values(stateObj).every((value) => !value);
-  };
+      const newBounds = {
+        ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+        sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+      };
 
-  const geoFindMe = async () => {
-    if (navigator.geolocation) {
-      setLoadingLocation(true);
+      console.log("📏 Sending corrected bounds:", newBounds);
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          updateCityStateFromCoords(
-            position.coords.latitude,
-            position.coords.longitude
-          );
-          setLoadingLocation(false);
-        },
-        (error) => {
-          console.log("Error getting position", error);
-          alert("Unable to retrieve your location");
-          setLoadingLocation(false);
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by your browser");
-    }
-  };
-
-  useEffect(() => {
-    actions.setSchedules();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoadingResults(true);
-
-        await actions.setBoundaryResults(city.bounds, categories, days);
-      } catch (error) {
-        console.error("Error in fetching boundary results:", error);
-      } finally {
-        setLoadingResults(false);
+      if (lastBounds && boundsAreSimilar(newBounds, lastBounds)) {
+        console.log("🛑 Bounds change is too small. Skipping fetch.");
+        return;
       }
-    };
 
-    if (city.bounds) {
-      fetchData();
-    }
-  }, [city.bounds]);
+      setLastBounds(newBounds);
+      setMapCenter(center);
+      setMapZoom(zoom);
+      actions.fetchResources(newBounds);
+    }, 1000),
+    [lastBounds]
+  );
 
-  useEffect(() => {
-    const handleResize = actions.updateScreenSize;
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  // const handleBoundsChange = useCallback(
+  //   debounce(({ bounds, center, zoom }) => {
+  //     if (!bounds || !bounds.ne || !bounds.sw) {
+  //       console.error("❌ Invalid bounds received:", bounds);
+  //       return;
+  //     }
+
+  //     const newBounds = {
+  //       ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+  //       sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+  //     };
+
+  //     console.log("📏 Sending corrected bounds:", newBounds);
+
+  //     if (JSON.stringify(newBounds) === JSON.stringify(lastBounds)) {
+  //       console.log("🛑 Skipping redundant bounds update.");
+  //       return;
+  //     }
+
+  //     setLastBounds(newBounds);
+  //     setMapCenter(center);
+  //     setMapZoom(zoom);
+  //     actions.fetchResources(newBounds);
+  //   }, 1000),
+  //   [lastBounds]
+  // );
+
+  // const geoFindMe = async () => {
+
+  //   console.log("📡 Attempting to get user location...");
+
+  //   if (!navigator.geolocation) {
+  //     console.error("❌ Geolocation is not supported by this browser.");
+  //     alert("Geolocation is not supported by your browser.");
+  //     return;
+  //   }
+
+  //   setLoadingLocation(true);
+
+  //   const successCallback = (position) => {
+  //     const { latitude, longitude } = position.coords;
+  //     console.log(`✅ Location retrieved: lat=${latitude}, lng=${longitude}`);
+  //     resetFilters();
+  //     // Update state with user's location
+  //     setUserLocation({ lat: latitude, lng: longitude });
+
+  //     // Fetch city data using these coordinates
+  //     updateCityStateFromCoords(latitude, longitude);
+
+  //     setLoadingLocation(false);
+  //   };
+
+  //   const errorCallback = (error) => {
+  //     console.error("❌ Geolocation error:", error);
+
+  //     switch (error.code) {
+  //       case error.PERMISSION_DENIED:
+  //         console.warn("⚠️ User denied location access.");
+  //         alert("Please enable location services and try again.");
+  //         break;
+  //       case error.POSITION_UNAVAILABLE:
+  //         console.warn("⚠️ Location unavailable.");
+  //         alert("Location unavailable. Retrying in 3 seconds...");
+  //         setTimeout(() => geoFindMe(), 3000);
+  //         break;
+  //       case error.TIMEOUT:
+  //         console.warn("⚠️ Location request timed out.");
+  //         alert("Location request timed out. Try again.");
+  //         break;
+  //       default:
+  //         alert("Unable to retrieve your location.");
+  //     }
+
+  //     setLoadingLocation(false);
+  //   };
+
+  //   navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
+  //     enableHighAccuracy: true,
+  //     timeout: 10000,
+  //     maximumAge: 0,
+  //   });
+  // };
+
+  // const geoFindMe = async () => {
+  //   console.log("📡 Attempting to get user location...");
+
+  //   if (!navigator.geolocation) {
+  //     console.error("❌ Geolocation is not supported by this browser.");
+  //     alert("Geolocation is not supported by your browser.");
+  //     return;
+  //   }
+
+  //   // 🔵 Start Loading
+  //   actions.setStore({ loadingResults: true });
+  //   setLoadingLocation(true);
+
+  //   const successCallback = async (position) => {
+  //     const { latitude, longitude } = position.coords;
+  //     console.log(`✅ Location retrieved: lat=${latitude}, lng=${longitude}`);
+
+  //     resetFilters();
+
+  //     // Update state with user's location
+  //     setUserLocation({ lat: latitude, lng: longitude });
+
+  //     // Fetch city data using these coordinates
+  //     await updateCityStateFromCoords(latitude, longitude);
+
+  //     // 🔴 Stop Loading
+  //     actions.setStore({ loadingResults: false });
+  //     setLoadingLocation(false);
+  //   };
+
+  //   const errorCallback = (error) => {
+  //     console.error("❌ Geolocation error:", error);
+
+  //     switch (error.code) {
+  //       case error.PERMISSION_DENIED:
+  //         console.warn("⚠️ User denied location access.");
+  //         alert("Please enable location services and try again.");
+  //         break;
+  //       case error.POSITION_UNAVAILABLE:
+  //         console.warn("⚠️ Location unavailable.");
+  //         alert("Location unavailable. Retrying in 3 seconds...");
+  //         setTimeout(() => geoFindMe(), 3000);
+  //         break;
+  //       case error.TIMEOUT:
+  //         console.warn("⚠️ Location request timed out.");
+  //         alert("Location request timed out. Try again.");
+  //         break;
+  //       default:
+  //         alert("Unable to retrieve your location.");
+  //     }
+
+  //     // 🔴 Stop Loading on Error
+  //     actions.setStore({ loadingResults: false });
+  //     setLoadingLocation(false);
+  //   };
+
+  //   navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
+  //     enableHighAccuracy: true,
+  //     timeout: 10000,
+  //     maximumAge: 0,
+  //   });
+  // };
 
   return (
     <>
@@ -257,48 +558,49 @@ const Home = () => {
 
       <div className={`grand-resilio-container`}>
         <Sidebar
+          handleCategoryChange={handleCategoryChange}
+          handleDayChange={handleDayChange}
           setIsFilterModalOpen={setIsFilterModalOpen}
           layout={layout}
           setLayout={setLayout}
           categories={categories}
           setCategories={setCategories}
-          favorites={favorites}
           days={days}
           setDays={setDays}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
           fetchCachedBounds={fetchCachedBounds}
           handleBoundsChange={handleBoundsChange}
-          userLocation={userLocation}
-          setUserLocation={setUserLocation}
-          geoFindMe={geoFindMe}
           updateCityStateFromZip={updateCityStateFromZip}
-          loadingResults={loadingResults}
+          city={city}
+          resetFilters={resetFilters}
+          mapInstance={mapInstance}
+          setMapInstance={setMapInstance}
+          mapsInstance={mapsInstance}
+          setMapsInstance={setMapsInstance}
         />
 
         <div className="grand-map-container">
           <ErrorBoundary>
             <Map
-              handleZipInputChange={handleZipInputChange}
-              zipInput={zipInput}
+              filteredResults2={filteredResults2}
+              handleBoundsChange={handleBoundsChange}
+              setMapCenter={setMapCenter}
+              mapCenter={mapCenter}
+              setMapZoom={setMapZoom}
+              mapZoom={mapZoom}
               layout={layout}
-              favorites={favorites}
               hoveredItem={hoveredItem}
               setHoveredItem={setHoveredItem}
               city={city}
-              categories={categories}
-              days={days}
-              handleBoundsChange={handleBoundsChange}
-              setCategories={setCategories}
-              setDays={setDays}
-              INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-              userLocation={userLocation}
-              setUserLocation={setUserLocation}
-              geoFindMe={geoFindMe}
+              mapInstance={mapInstance}
+              setMapInstance={setMapInstance}
+              mapsInstance={mapsInstance}
+              setMapsInstance={setMapsInstance}
             />
           </ErrorBoundary>
         </div>
 
-        {isModalOpen && (
+        {store.modalIsOpen && (
           <>
             <div
               className="resilio-overlay"
@@ -324,15 +626,15 @@ const Home = () => {
                 }}
               ></div>
               <Selection
-                handleBoundsChange={handleBoundsChange}
-                categories={categories}
-                setCategories={setCategories}
-                days={days}
-                setDays={setDays}
-                INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-                areAllUnchecked={areAllUnchecked}
                 isFilterModalOpen={isFilterModalOpen}
                 setIsFilterModalOpen={setIsFilterModalOpen}
+                tempCategories={tempCategories}
+                tempDays={tempDays}
+                applyFilters={applyFilters}
+                handleCategoryChange={handleCategoryChange}
+                handleDayChange={handleDayChange}
+                categories={categories}
+                days={days}
               />
             </ErrorBoundary>
           ) : (
@@ -343,8 +645,6 @@ const Home = () => {
           <p className="all-rights">© 2024 Open House</p>
         </div>
       </div>
-
-      {/* MODALS!! */}
 
       {store.donationModalIsOpen && (
         <>

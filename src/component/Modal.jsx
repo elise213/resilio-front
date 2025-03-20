@@ -21,17 +21,14 @@ const Modal = ({}) => {
   const [ratingCount, setRatingCount] = useState(0);
   const [showRating, setShowRating] = useState(false);
   const apiKey = import.meta.env.VITE_GOOGLE;
-  const validUserIds = [1, 3, 4]; //Mike, Eugene and Mara
-  const userIdFromSession = parseInt(sessionStorage.getItem("user_id"), 10);
-  const isAuthorizedUser = validUserIds.includes(userIdFromSession);
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [isFavorited, setIsFavorited] = useState(false);
   const isLoggedIn = !!store.token;
+  const userIdFromSession = sessionStorage.getItem("user_id");
 
-  console.log(sessionStorage.getItem("user_id"));
-
+  const isAuthorizedUser = store.authorizedUser;
   const resource = store.selectedResource;
 
   const handleDelete = async (commentId) => {
@@ -59,7 +56,7 @@ const Modal = ({}) => {
         Swal.fire({
           icon: "success",
           title: "Success",
-          text: "Your review has been submitted!",
+          text: "Thank you! Your comment is pending approval.",
         });
         setRating(0);
         setComment("");
@@ -319,7 +316,7 @@ const Modal = ({}) => {
                     ""
                   )}
                   <Rating
-                    style={{ marginTop: "20px" }}
+                    // style={{ marginTop: "20px" }}
                     name="read-only"
                     value={comment.rating_value}
                     precision={0.5}
@@ -370,13 +367,11 @@ const Modal = ({}) => {
 
       {isAuthorizedUser && isLoggedIn && (
         <div className="modal-footer">
-          <>
-            <p className="problem">
-              Click {""}
-              <Link to={`/edit/${resource.id}`}>here</Link>
-              {""} to edit this resource
-            </p>
-          </>
+          <p className="problem">
+            Click {""}
+            <Link to={`/edit/${resource.id}`}>here</Link>
+            {""} to edit this resource
+          </p>
         </div>
       )}
 

@@ -138,7 +138,7 @@
 }
 
 .my-input:checked + .my-label:before {
-  background-color: rgb(0, 117, 255);
+  background-color: var(--marascoral);
 }
 
 .my-schedule-button {
@@ -200,6 +200,9 @@
 
 .filter-section {
   margin-bottom: 20px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 }
 
 .filter-button span {
@@ -209,14 +212,81 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 .active-filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-gap: 5px;
-  width: 100%;
-  justify-content: start;
+  display: flex;
+
+  border: 1px solid lightgray;
+
+  border-radius: 10px;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+
+  align-items: center;
+  justify-content: center;
 }
 
-.active-filter {
+/* Title */
+.filter-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+/* Groups (Categories & Days) */
+.filter-group {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Label styling */
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* List container */
+.filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Individual filter item */
+.filter-item {
+  background: #e9ecef;
+  color: #333;
+  padding: 2px 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  border: 1px solid #d6d6d6;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+/* Remove button */
+.remove-filter {
+  background: none;
+  border: none;
+  color: #777;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.remove-filter:hover {
+  color: red !important;
+  /* transform: scale(1.1); */
+}
+
+/* .active-filter {
   display: flex;
   background-color: transparent;
   color: blue;
@@ -228,7 +298,7 @@
   margin-left: 5px;
   cursor: pointer;
   color: red;
-}
+} */
 
 .no-scroll {
   overflow: hidden;
@@ -743,4 +813,60 @@ iframe {
   .header-open {
     justify-content: center !important;
   }
+}
+
+.apply-button,
+.reset-button {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  min-width: 120px;
+}
+
+.apply-button {
+  background-color: var(--marascoral); /* Modern blue */
+  color: white;
+  box-shadow: 0px 3px 8px rgba(0, 123, 255, 0.3);
+}
+
+.apply-button:hover {
+  background-color: #0056b3; /* Slightly darker on hover */
+  box-shadow: 0px 4px 10px rgba(0, 91, 204, 0.4);
+}
+
+.apply-button:active {
+  background-color: #004494; /* Even darker when clicked */
+  box-shadow: 0px 2px 5px rgba(0, 91, 204, 0.3);
+}
+
+.reset-button {
+  background-color: #f8f9fa; /* Subtle gray */
+  color: #333;
+  border: 1px solid #ccc;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reset-button:hover {
+  background-color: #e2e6ea;
+  border-color: #bbb;
+  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.15);
+}
+
+.reset-button:active {
+  background-color: #d6d8db;
+  border-color: #aaa;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  flex-direction: column;
+  gap: 10px;
 }

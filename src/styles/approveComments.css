@@ -1,0 +1,49 @@
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-item {
+  background: #f8f9fa;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.approve-button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.approve-button:hover {
+  background: #218838;
+}
+
+.unapproved-ul {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.unapproved-heading {
+  font-size: 16px;
+}
+
+.unapproved-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

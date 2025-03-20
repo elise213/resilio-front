@@ -3,25 +3,19 @@ import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
-import ScheduleInfo from "./ScheduleInfo";
 
 export const ModalInfo = ({
-  isFavorited,
-  setIsFavorited,
   averageRating,
   toggleRatingModal,
   ratingCount,
 }) => {
   const { store, actions } = useContext(Context);
   const [isReadMore, setIsReadMore] = useState(true);
-  const isLoggedIn = !!store.token;
 
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
-
   const res = store.selectedResource;
-  const id = res.id;
   const scheduleStore = res.schedule;
   const [copied, setCopied] = useState(false);
 
@@ -68,11 +62,6 @@ export const ModalInfo = ({
         result[`${day}Start`] = "closed";
         result[`${day}End`] = "closed";
       }
-      // console.log(
-      //   `Day: ${day}, Start: ${result[`${day}Start`]}, End: ${
-      //     result[`${day}End`]
-      //   }`
-      // );
     });
     return result;
   }
@@ -180,7 +169,9 @@ export const ModalInfo = ({
               precision={0.5}
               readOnly
             />
-            {ratingCount > 0 && <span>{ratingCount}</span>}
+            {ratingCount > 0 && (
+              <span style={{ fontSize: "14px" }}>({ratingCount})</span>
+            )}
           </div>
         </div>
 
@@ -194,7 +185,6 @@ export const ModalInfo = ({
               title="Copy Address"
               className="modal-info-value"
             >
-              {/* {res.address.replace(", USA", "")} {"  "} */}
               {res?.address
                 ? res.address.replace(", USA", "")
                 : "Address unavailable"}
