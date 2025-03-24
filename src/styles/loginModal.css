@@ -16,7 +16,7 @@
   color: blue;
   font-style: italic;
   cursor: pointer;
-  transition: 0.3sease;
+  transition: 0.3s ease;
   align-self: flex-end;
   padding: 10px;
 }
@@ -25,14 +25,10 @@
   color: lightgreen !important;
 }
 
-/* Centered modal */
-
-/* Ensures the body doesn't scroll when modal is open */
 body.modal-open {
   overflow: hidden;
 }
 
-/* Centered modal background */
 .login-div {
   position: fixed;
   top: 50%;

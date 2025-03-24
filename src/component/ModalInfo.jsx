@@ -301,21 +301,19 @@ export const ModalInfo = ({
             </div>
           </>
         )}
+        {/* LAST UPDATED DATE */}
         {res.updated && (
           <div className="info-address" style={{ borderBottom: "none" }}>
-            {/* LAST UPDATED DATE */}
-            <div className="info-address" style={{ borderBottom: "none" }}>
-              <span className="modal-info-title">Updated</span>
-              <span>
-                {new Intl.DateTimeFormat("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour12: true,
-                  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                }).format(new Date(res.updated + "Z"))}
-              </span>
-            </div>
+            <span className="modal-info-title">Updated</span>
+            <span>
+              {new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour12: true,
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+              }).format(new Date(res.updated + "Z"))}
+            </span>
           </div>
         )}
       </div>

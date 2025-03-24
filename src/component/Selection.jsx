@@ -6,7 +6,6 @@ import styles from "../styles/selection.css";
 const Selection = ({
   isFilterModalOpen,
   setIsFilterModalOpen,
-  applyFilters,
   handleCategoryChange,
   handleDayChange,
   categories,

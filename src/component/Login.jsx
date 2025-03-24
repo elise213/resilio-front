@@ -28,7 +28,6 @@ const Login = ({ setLayout }) => {
     const loginSuccessful = await actions.login(email, password);
     if (loginSuccessful) {
       actions.closeLoginModal();
-      window.location.reload();
     }
   };
 
@@ -236,7 +235,7 @@ const Login = ({ setLayout }) => {
             setLayout("fullscreen-sidebar");
           }}
         >
-          Log in!
+          Log in
         </button>
       )}
       {isLoginModalOpen && (

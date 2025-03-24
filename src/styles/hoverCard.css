@@ -1,6 +1,6 @@
 .hover-card-inside {
   background-color: white;
-  z-index: 99999999 !important;
+  z-index: 99999 !important;
   border-radius: 3px;
   padding: 5px;
   border: 1px solid gray;

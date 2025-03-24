@@ -6,6 +6,7 @@ import ResourceCard from "./ResourceCard";
 import { Switch, FormControlLabel, Tooltip, Icon } from "@mui/material";
 import ResilioDropdown from "./ResilioDropdown";
 import GeoLocationModal from "./geoLocationModal";
+import AuthorizedToolbox from "./AuthorizedToolbox";
 
 const Sidebar = ({
   layout,
@@ -24,7 +25,6 @@ const Sidebar = ({
   setMapInstance,
   mapsInstance,
   setMapsInstance,
-  city,
 }) => {
   const { store, actions } = useContext(Context);
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,16 +38,12 @@ const Sidebar = ({
     setLayout(event.target.checked ? "fullscreen-map" : "fullscreen-sidebar");
   };
 
+  const authorizedUser = store.authorizedUser;
+
   useEffect(() => {
     console.log("🟡 Store loadingLocation:", store.loadingLocation);
     console.log("🟡 Store loading Result:", store.loadingLocation);
   }, [store.loadingLocation]);
-
-  const navDivListClassName = openDropdown.category
-    ? "nav-div-list open-dropdown"
-    : openDropdown.day
-    ? "nav-div-list open-dropday"
-    : "nav-div-list";
 
   const CombinedFilters = ({ categories = {}, days = {}, actions }) => {
     if (!actions) {
@@ -116,128 +112,122 @@ const Sidebar = ({
   return (
     <>
       <nav className={`new-navbar ${layout}`}>
-        <div className="navbar-content">
-          <div className="button-container-sidebar" style={{ display: "flex" }}>
-            {!store.loginModalisOpen && (
-              <FormControlLabel
-                className="switcheroo"
-                control={
-                  <Switch
-                    checked={layout === "fullscreen-map"}
-                    onChange={handleToggleChange}
-                    color="primary"
-                    size="small"
-                  />
-                }
-                label={layout === "fullscreen-map" ? "Map View" : "List View"}
-                labelPlacement="end"
-              />
-            )}
-            <div className="sidebar-dropdowns">
-              <Login log={log} setLog={setLog} setLayout={setLayout} />
-            </div>
-          </div>
-
-          <div className="logo-div">
-            <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
-          </div>
-
-          {store.loadingResults ? (
-            <p className="loading-text">Loading resources...</p>
-          ) : (
-            ""
-          )}
-          {store.loadingLocation ? (
-            <p className="loading-text">Finding your location...</p>
-          ) : (
-            ""
-          )}
-
-          {store.boundaryResults.length > 0 && !store.loadingResults ? (
-            <div className="nav-div">
-              <div className="side-by">
-                <ResilioDropdown />
-                <div className="search-bar">
-                  <span className="material-symbols-outlined search-icon">
-                    search
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-
-                <Tooltip title="Filter Resources" arrow>
-                  <Icon
-                    onClick={() => setIsFilterModalOpen(true)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    tune
-                  </Icon>
-                </Tooltip>
-
-                <Tooltip title="Find My Location" arrow>
-                  <Icon
-                    onClick={() => setIsGeoModalOpen(true)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    my_location
-                  </Icon>
-                </Tooltip>
-              </div>
-
-              <div className={navDivListClassName}>
-                <CombinedFilters
-                  categories={categories}
-                  days={days}
-                  actions={actions}
+        {/* <div className="navbar-content"> */}
+        <div className="button-container-sidebar" style={{ display: "flex" }}>
+          {!store.loginModalisOpen && (
+            <FormControlLabel
+              className="switcheroo"
+              control={
+                <Switch
+                  checked={layout === "fullscreen-map"}
+                  onChange={handleToggleChange}
+                  color="primary"
+                  size="small"
                 />
-                <div className="list-container">
-                  <ul>
-                    {(filteredResults2?.length > 0
-                      ? filteredResults2
-                      : store.boundaryResults || []
-                    ).map((resource, index) => (
-                      <ResourceCard
-                        key={resource.id || index}
-                        item={resource}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          ) : (
-            ""
+              }
+              label={layout === "fullscreen-map" ? "Map View" : "List View"}
+              labelPlacement="end"
+            />
           )}
-          {store.loadingRestults == false && (
-            <p className="no-results">No results found.</p>
-          )}
-
-          {isGeoModalOpen && (
-            <>
-              <div
-                className="resilio-overlay"
-                onClick={() => {
-                  setIsGeoModalOpen(false);
-                  document.body.classList.remove("modal-open");
-                }}
-              ></div>
-              <GeoLocationModal
-                setIsGeoModalOpen={setIsGeoModalOpen}
-                resetFilters={resetFilters}
-                mapInstance={mapInstance}
-                setMapInstance={setMapInstance}
-                mapsInstance={mapsInstance}
-                setMapsInstance={setMapsInstance}
-                updateCityStateFromZip={updateCityStateFromZip}
-              />
-            </>
-          )}
+          <div className="sidebar-dropdowns">
+            <Login log={log} setLog={setLog} setLayout={setLayout} />
+          </div>
         </div>
+
+        <div className="logo-div">
+          <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
+        </div>
+
+        {store.loadingResults ? (
+          <p className="loading-text">Loading resources...</p>
+        ) : (
+          ""
+        )}
+        {store.loadingLocation ? (
+          <p className="loading-text">Finding your location...</p>
+        ) : (
+          ""
+        )}
+
+        {store.boundaryResults.length > 0 && !store.loadingResults ? (
+          <div className="nav-div">
+            <div className="side-by">
+              {authorizedUser && <AuthorizedToolbox />}
+              <ResilioDropdown />
+              <div className="search-bar">
+                <span className="material-symbols-outlined search-icon">
+                  search
+                </span>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <Tooltip title="Filter Resources" arrow>
+                <Icon
+                  onClick={() => setIsFilterModalOpen(true)}
+                  style={{ cursor: "pointer" }}
+                >
+                  tune
+                </Icon>
+              </Tooltip>
+
+              <Tooltip title="Find My Location" arrow>
+                <Icon
+                  onClick={() => setIsGeoModalOpen(true)}
+                  style={{ cursor: "pointer" }}
+                  sx={{ fontSize: 20 }}
+                >
+                  my_location
+                </Icon>
+              </Tooltip>
+            </div>
+            <CombinedFilters
+              categories={categories}
+              days={days}
+              actions={actions}
+            />
+            <div className="list-container">
+              <ul>
+                {(filteredResults2?.length > 0
+                  ? filteredResults2
+                  : store.boundaryResults || []
+                ).map((resource, index) => (
+                  <ResourceCard key={resource.id || index} item={resource} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        {store.loadingRestults == false && (
+          <p className="no-results">No results found.</p>
+        )}
       </nav>
+      {isGeoModalOpen && (
+        <>
+          <div
+            className="resilio-overlay"
+            onClick={() => {
+              setIsGeoModalOpen(false);
+              document.body.classList.remove("modal-open");
+            }}
+          ></div>
+          <GeoLocationModal
+            setIsGeoModalOpen={setIsGeoModalOpen}
+            resetFilters={resetFilters}
+            mapInstance={mapInstance}
+            setMapInstance={setMapInstance}
+            mapsInstance={mapsInstance}
+            setMapsInstance={setMapsInstance}
+            updateCityStateFromZip={updateCityStateFromZip}
+          />
+        </>
+      )}
     </>
   );
 };

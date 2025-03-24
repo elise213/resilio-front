@@ -10,11 +10,8 @@ const ResilioDropdown = () => {
 
   return (
     <>
-      <IconButton
-        onClick={(e) => setAnchorEl2(e.currentTarget)}
-        // sx={{ color: "salmon" }}
-      >
-        <InfoOutlinedIcon sx={{ fontSize: 20 }} />
+      <IconButton onClick={(e) => setAnchorEl2(e.currentTarget)}>
+        <InfoOutlinedIcon sx={{ fontSize: 20, color: "black" }} />
       </IconButton>
       <Menu
         anchorEl={anchorEl2}
@@ -46,11 +43,6 @@ const ResilioDropdown = () => {
         >
           Contact
         </MenuItem>
-        {store.authorizedUser && (
-          <MenuItem>
-            <Link to={`/approveComments`}> Approve Comments</Link>
-          </MenuItem>
-        )}
       </Menu>
     </>
   );

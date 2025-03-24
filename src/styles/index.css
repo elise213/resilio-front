@@ -61,6 +61,20 @@ a {
   text-decoration: unset;
 }
 
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  box-sizing: border-box;
+  position: relative;
+}
+
 :root {
   --newGreen: rgb(67, 172, 67);
   --marascoral: rgb(246, 134, 68);
@@ -71,19 +85,22 @@ a {
   --color2: rgb(95, 118, 110);
 }
 
-#root {
-  height: 100vh !important;
+body {
+  box-sizing: border-box;
+  font-family: "Neutraface Text", sans-serif;
 }
 
-body {
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
-  height: 100vh;
-  height: 100dvh;
-  width: 100vw;
-  overflow: hidden;
-  font-family: "Neutraface Text", sans-serif;
+.material-icons {
+  cursor: pointer;
+  /* margin: 5px; */
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.loading-text {
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
 }
 
 .close-contact {
@@ -128,9 +145,24 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: visible !important;
-  min-height: 100%;
-  padding-left: 350px;
+  overflow: hidden !important;
+  height: 100%;
+  width: 100%;
+  padding: 0 0 0 350px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.fullscreen-map .grand-map-container {
+  flex: 3;
+}
+
+.fullscreen-sidebar .grand-map-container {
+  flex: 0;
+}
+
+.split-view .grand-map-container {
+  flex: 2;
 }
 
 .form-check-inline {
@@ -191,6 +223,10 @@ body {
   box-sizing: border-box;
   overflow-y: auto;
   width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .list-container ul {
@@ -200,6 +236,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 }
 
 .list-container::-webkit-scrollbar-thumb,
@@ -287,7 +324,6 @@ body {
 @media screen and (max-width: 700px) {
   .new-modal {
     width: 100% !important;
-    /* border-radius: 20px 20px 0 0 !important; */
     flex-direction: column !important;
     align-items: unset !important;
   }
@@ -297,5 +333,8 @@ body {
 
   .button-container-sidebar {
     justify-content: space-between !important;
+  }
+  .grand-map-container {
+    padding-left: 0px !important;
   }
 }

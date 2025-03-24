@@ -11,7 +11,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Login from "./Login";
 import FavoriteButton from "./FavoriteButton";
-import Tooltip from "@mui/material/Tooltip";
+import { Menu, MenuItem, IconButton, Tooltip, Icon } from "@mui/material";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
@@ -78,27 +78,6 @@ const Modal = ({}) => {
         });
       });
   };
-
-  // const handleLike = (commentId) => {
-  //   actions
-  //     .likeComment(commentId)
-  //     .then(() => {
-  //       setComments((prevComments) =>
-  //         prevComments.map((c) =>
-  //           c.comment_id === commentId
-  //             ? {
-  //                 ...c,
-  //                 like_count: c.like_count + 1,
-  //                 likes: [...(c.likes || []), { user_id: userIdFromSession }],
-  //               }
-  //             : c
-  //         )
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error liking comment:", error);
-  //     });
-  // };
 
   const handleLike = (commentId) => {
     if (!isLoggedIn) {
@@ -256,7 +235,7 @@ const Modal = ({}) => {
         </div>
       )}
 
-      <p
+      {/* <p
         className="close-modal"
         onClick={() => {
           actions.closeModal();
@@ -264,7 +243,7 @@ const Modal = ({}) => {
       >
         <span className="material-symbols-outlined">arrow_back_ios</span>
         Back
-      </p>
+      </p> */}
       {/* <div className="group-1"> */}
       <div className="resource-info">
         <ModalInfo
@@ -367,6 +346,7 @@ const Modal = ({}) => {
 
       {isAuthorizedUser && isLoggedIn && (
         <div className="modal-footer">
+          <Icon>handyman</Icon>
           <p className="problem">
             Click {""}
             <Link to={`/edit/${resource.id}`}>here</Link>

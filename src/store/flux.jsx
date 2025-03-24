@@ -3,6 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       abortController: null,
       abortController2: null,
+      allResources: null,
       avatarID: null,
       AuthorizedUserIds: [1, 3, 4],
       authorizedUser: false,
@@ -15,6 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       boundaryResults: [],
       categorySearch: [],
       mapInstance: null,
+      lastFetchedBounds: null,
       mapsInstance: null,
       loadingLocation: false,
       loadingResults: false,
@@ -434,28 +436,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       // ________________________________________________________________LOGIN/TOKEN
 
-      // getToken: () => {
-      //   const token = sessionStorage.getItem("token");
-      //   const favorites = JSON.parse(sessionStorage.getItem("favorites"));
-      //   if (token && token.length) {
-      //     setStore({ token: token, favorites: favorites || [] });
-      //   }
-      // },
-
       getToken: () => {
         const token = sessionStorage.getItem("token");
-        // const favorites = JSON.parse(sessionStorage.getItem("favorites")) || [];
-        // const user_id = sessionStorage.getItem("user_id");
-        // const name = sessionStorage.getItem("name");
-        // const is_org = sessionStorage.getItem("is_org");
-
         if (token && token.length) {
           setStore({
             token: token,
-            // favorites: favorites,
-            // user_id: user_id ? parseInt(user_id) : null,
-            // name: name || null,
-            // is_org: is_org ? parseInt(is_org) : null,
           });
         }
       },
@@ -715,7 +700,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           setStore({
-            boundaryResults: data.data || [],
+            allResources: data.data || [],
+            lastFetchedBounds: formattedBounds, // ✅ Save these bounds
             loadingResults: false,
           });
 
@@ -725,6 +711,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ loadingResults: false });
         }
       },
+
       setBoundaryResults: async (
         bounds,
         selectedCategories = {},
@@ -732,18 +719,41 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         const store = getStore();
         const actions = getActions();
+        const boundsContain = (outer, inner) => {
+          return (
+            outer.neLat >= inner.ne.lat &&
+            outer.neLng >= inner.ne.lng &&
+            outer.swLat <= inner.sw.lat &&
+            outer.swLng <= inner.sw.lng
+          );
+        };
 
-        console.log("📡 setBoundaryResults called!");
-        console.log("📌 Received bounds:", bounds);
-        console.log("📌 Selected Categories:", selectedCategories);
-        console.log("📌 Selected Days:", selectedDays);
-
+        const lastBounds = store.lastFetchedBounds;
         if (!bounds || !bounds.ne || !bounds.sw) {
           console.error("❌ Error: Invalid bounds received.");
           return;
         }
 
-        let allResources = store.boundaryResults; // Use boundaryResults instead
+        const newBounds = {
+          neLat: bounds.ne.lat,
+          neLng: bounds.ne.lng,
+          swLat: bounds.sw.lat,
+          swLng: bounds.sw.lng,
+        };
+
+        const shouldRefetch = !lastBounds || !boundsContain(lastBounds, bounds);
+
+        if (shouldRefetch) {
+          await actions.fetchResources(bounds);
+        }
+
+        let allResources = getStore().allResources || [];
+        // let allResources = getStore().boundaryResults;
+
+        console.log("📡 setBoundaryResults called!");
+        console.log("📌 Received bounds:", bounds);
+        console.log("📌 Selected Categories:", selectedCategories);
+        console.log("📌 Selected Days:", selectedDays);
 
         console.log(
           "📌 Total resources before filtering:",
@@ -757,12 +767,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
         console.log("🔎 isFilteringByDay:", isFilteringByDay);
 
-        setStore({ loadingResults: true }); // 🔥 Start loading
-
+        setStore({ loadingResults: true });
         try {
           const filteredResults = allResources.filter((resource) => {
             const hasValidCategory =
-              isFilteringByCategory &&
               resource.category &&
               resource.category
                 .split(",")
@@ -770,16 +778,26 @@ const getState = ({ getStore, getActions, setStore }) => {
                 .some((cat) => selectedCategories[cat]);
 
             const hasValidDay =
-              isFilteringByDay &&
               resource.schedule &&
               Object.keys(resource.schedule).some(
                 (day) => selectedDays[day] && resource.schedule[day]?.start
               );
 
-            return (
-              (isFilteringByCategory && hasValidCategory) ||
-              (isFilteringByDay && hasValidDay)
-            );
+            // ✅ If no filters are selected, include everything
+            if (!isFilteringByCategory && !isFilteringByDay) {
+              return true;
+            }
+
+            // ✅ If filters are selected, include only matching resources
+            if (isFilteringByCategory && isFilteringByDay) {
+              return hasValidCategory && hasValidDay;
+            } else if (isFilteringByCategory) {
+              return hasValidCategory;
+            } else if (isFilteringByDay) {
+              return hasValidDay;
+            }
+
+            return false; // fallback, shouldn't be hit
           });
 
           console.log(
@@ -790,11 +808,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           setStore({
             boundaryResults: [...filteredResults],
-            loadingResults: false, // 🔥 Ensure loading stops
+            loadingResults: false,
           });
         } catch (error) {
           console.error("❌ Error filtering resources:", error);
-          setStore({ loadingResults: false }); // 🔥 Ensure loading stops even on error
+          setStore({ loadingResults: false });
         }
       },
 
@@ -1290,6 +1308,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           return null;
         }
+      },
+      boundsContain: (outer, inner) => {
+        return (
+          outer.neLat >= inner.ne.lat &&
+          outer.neLng >= inner.ne.lng &&
+          outer.swLat <= inner.sw.lat &&
+          outer.swLng <= inner.sw.lng
+        );
       },
 
       // updateCityStateFromCoords: async (lat, lng) => {

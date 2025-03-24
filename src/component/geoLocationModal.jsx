@@ -18,7 +18,7 @@ const GeoLocationModal = ({
   const handleGeoFindMe = async () => {
     resetFilters();
     try {
-      await actions.geoFindMe(mapInstance, mapsInstance); // Ensure it completes before closing the modal
+      await actions.geoFindMe(mapInstance, mapsInstance);
       setIsGeoModalOpen(false);
     } catch (error) {
       console.error("Error in geoFindMe:", error);

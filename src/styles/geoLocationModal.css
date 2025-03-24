@@ -8,8 +8,8 @@
   justify-content: center;
   align-items: center;
   justify-self: center;
-  /* align-self: center; */
-  margin-top: 100px;
+  transform: translate(-50%, -50%);
+  /* margin-top: 100px; */
   z-index: 1000;
   justify-self: center;
   position: absolute;

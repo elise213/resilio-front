@@ -91,7 +91,7 @@ const Home = () => {
   const handleDayChange = (dayId) => {
     setDays((prevDays) => {
       if (prevDays[dayId] === !prevDays[dayId]) {
-        return prevDays; // ✅ No state change = no re-render
+        return prevDays;
       }
       return { ...prevDays, [dayId]: !prevDays[dayId] };
     });
@@ -134,13 +134,20 @@ const Home = () => {
     handleBoundsChange({ center: location, bounds });
 
     // Fetch new resources within these bounds
-    await actions.fetchResources(bounds);
+    // await actions.fetchResources(bounds);
+    await actions.setBoundaryResults(bounds, categories, days);
   };
 
-  const isFilteringByCategory = Object.keys(categories).some(
-    (key) => categories[key]
+  const isFilteringByCategory = useMemo(
+    () => Object.keys(categories).some((key) => categories[key]),
+    [categories]
   );
-  const isFilteringByDay = Object.keys(days).some((key) => days[key]);
+
+  const isFilteringByDay = useMemo(
+    () => Object.keys(days).some((key) => days[key]),
+    [days]
+  );
+
   const applyFiltering = isFilteringByCategory || isFilteringByDay;
 
   /* ===========================
@@ -267,6 +274,10 @@ const Home = () => {
     return cleanup;
   }, []);
 
+  useEffect(() => {
+    console.log("📌 Syncing Sidebar with filteredResults2", filteredResults2);
+  }, [filteredResults2]);
+
   /* ===========================
    * 📌 State Management & Filtering
    * =========================== */
@@ -315,41 +326,6 @@ const Home = () => {
     setFilteredResults2(filtered);
   }, [categories, days, store.boundaryResults]);
 
-  // const fetchBounds = async (query, isZip = false) => {
-  //   let apiUrl = isZip
-  //     ? `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`
-  //     : `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
-
-  //   console.log(`🌍 Fetching bounds from: ${apiUrl}`);
-
-  //   try {
-  //     const response = await fetch(apiUrl);
-  //     const data = await response.json();
-
-  //     if (!data || data.status !== "OK" || !data.results?.length) {
-  //       console.error("❌ No valid results found for query:", query);
-  //       return null;
-  //     }
-
-  //     const firstResult = data.results[0];
-  //     const location = firstResult.geometry?.location;
-  //     const bounds =
-  //       firstResult.geometry?.bounds || firstResult.geometry?.viewport;
-
-  //     if (!location || !bounds) {
-  //       console.error("❌ Missing location or bounds:", data);
-  //       return null;
-  //     }
-
-  //     console.log("✅ API Response:", { location, bounds });
-  //     return { location, bounds };
-  //   } catch (error) {
-  //     console.error("❌ Error fetching bounds:", error);
-  //     return null;
-  //   }
-  // };
-
-  // 📍 Fetch cached boundary data
   const fetchCachedBounds = async (query, isZip = false) => {
     const cacheKey = `bounds-${JSON.stringify(query)}`;
     const cachedData = sessionStorage.getItem(cacheKey);
@@ -399,7 +375,8 @@ const Home = () => {
       setLastBounds(newBounds);
       setMapCenter(center);
       setMapZoom(zoom);
-      actions.fetchResources(newBounds);
+      // actions.fetchResources(newBounds);
+      actions.setBoundaryResults(newBounds, categories, days);
     }, 1000),
     [lastBounds]
   );
@@ -577,6 +554,7 @@ const Home = () => {
           setMapInstance={setMapInstance}
           mapsInstance={mapsInstance}
           setMapsInstance={setMapsInstance}
+          filteredResults2={filteredResults2}
         />
 
         <div className="grand-map-container">
@@ -641,9 +619,9 @@ const Home = () => {
             <p>Loading selection options...</p>
           ))}
 
-        <div className="foot">
+        {/* <div className="foot">
           <p className="all-rights">© 2024 Open House</p>
-        </div>
+        </div> */}
       </div>
 
       {store.donationModalIsOpen && (
