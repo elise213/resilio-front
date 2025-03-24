@@ -7,10 +7,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  justify-self: center;
-  transform: translate(-50%, -50%);
-  /* margin-top: 100px; */
-  z-index: 1000;
-  justify-self: center;
+
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 1000;
 }

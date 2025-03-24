@@ -45,9 +45,6 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
-      console.log("🔍 Clean Token being sent:", cleanToken);
-      console.log("🔍 Password being sent:", newPassword);
-
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/change-password`,
         {
@@ -60,17 +57,12 @@ const ResetPassword = () => {
         }
       );
 
-      console.log("📩 Server Response Status:", response.status);
-
-      // Ensure response is JSON before parsing
       let result;
       try {
         result = await response.json();
       } catch (err) {
         throw new Error("Server returned invalid response.");
       }
-
-      console.log("📩 Full Server Response:", result);
 
       if (!response.ok) {
         throw new Error(result.error || "Failed to reset password. Try again.");

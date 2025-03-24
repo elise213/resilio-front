@@ -113,7 +113,7 @@ const Login = ({ setLayout }) => {
                 type="submit"
                 className="form-button"
               >
-                Reset Password
+                Set New Password
               </Button>
             </div>
           </form>

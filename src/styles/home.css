@@ -79,6 +79,15 @@
   width: 100%;
 }
 
+.reset-password-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+  justify-self: center;
+  align-items: center;
+}
+
 .modal-div {
   border-radius: 10px;
   justify-content: space-between;
