@@ -88,7 +88,6 @@
 .modal-favorite {
   display: flex;
   justify-self: flex-end;
-  color: var(--marascoral);
   cursor: pointer;
 }
 
@@ -178,6 +177,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 20px;
+  padding-bottom: 0;
 }
 
 .alert-bar {
@@ -226,7 +226,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
-  width: 100vw;
+  width: 100%;
 }
 
 .rating-container span {
@@ -243,7 +243,7 @@
   display: flex;
   flex-direction: column;
   width: 90%;
-  height: 100px;
+  /* height: 100px; */
   width: 100%;
 }
 

@@ -1,3 +1,4 @@
+/* Form container */
 .form-container {
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -16,6 +17,11 @@
   align-items: center;
 }
 
+button {
+  font-family: "Neutraface Text", sans-serif;
+}
+
+/* Scrollbar styles */
 .form-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -25,35 +31,40 @@
   border-radius: 10px;
 }
 
+/* Description field */
 #description {
   height: 140px;
   resize: vertical;
   line-height: 1.2;
+  font-family: "Neutraface Text", sans-serif;
 }
 
+/* Input group */
 .input-group {
   width: 100%;
   max-width: 700px;
-  margin-bottom: 15px;
-  margin: 15px 0;
+  margin: 0 0 15px 0;
 }
 
 .input-group label {
   font-size: 16px;
   font-weight: 500;
-  color: var(--peruish);
+  color: var(--color2);
   display: block;
   margin-bottom: 5px;
 }
 
+/* Form styles */
 .geo-form {
   padding: 5px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 80px;
 }
 
+/* Inputs */
 .geo-input,
 .time-input {
   width: 100%;
@@ -68,10 +79,11 @@
 
 .geo-input:focus,
 .time-input:focus {
-  border-color: var(--green2);
+  border-color: var(--green2); /* Change to a consistent green theme */
   outline: none;
 }
 
+/* Checkbox styling */
 .checkbox-row {
   display: flex;
   flex-wrap: wrap;
@@ -85,50 +97,69 @@
 }
 
 .checkbox-group input[type="checkbox"] {
-  accent-color: var(--marascoral);
+  accent-color: var(--marascoral); /* Red-orange accent color */
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
 
+/*  and Update buttons */
 .delete-button {
-  color: white;
+  /* color: white; */
   border: none;
-  background-color: var(--marascoral);
-  padding: 5px;
+  /* background-color: red; */
+  padding: 5px 10px;
   border-radius: 5px;
-  font-weight: bold;
   cursor: pointer;
-  margin: 5px;
   transition: background-color 0.3s;
   justify-self: flex-end;
   align-self: flex-end;
+  border: 1px solid red;
+  margin-top: 100px;
+}
+
+.clear-button {
+  width: 100px;
+  place-self: flex-end;
+  margin: 5px 0px;
+  border-radius: 4px;
+  font-size: 12px;
+  border: 1px solid red;
+  padding: 3px;
 }
 
 .delete-button:hover {
-  background-color: darkred;
+  background-color: red;
 }
 
 .update-button {
-  background-color: var(--green2);
-  color: white;
+  background-color: lightgreen;
+  /* color: white; */
   padding: 5px;
   border-radius: 5px;
-  font-weight: bold;
+  /* font-weight: bold; */
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 150px;
+  border: 1px solid gray;
+  font-size: 20px;
+  justify-self: flex-end;
+  /* align-self: flex-end; */
+  margin-top: 30px;
 }
 
 .update-button:hover {
-  background-color: var(--newGreen);
+  background-color: var(--newGreen); /* A lighter shade of green */
 }
 
+/* Time group layout */
 .time-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
 }
 
+/* Media queries */
 @media screen and (max-width: 700px) {
   .form-container {
     width: 90%;

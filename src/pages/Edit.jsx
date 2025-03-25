@@ -262,7 +262,11 @@ const Edit = () => {
               value={formData.newUserId || ""}
               onChange={(e) => handleChange("newUserId", e.target.value)}
             />
-            <button type="button" onClick={handleAddUserId}>
+            <button
+              style={{ marginLeft: "15px" }}
+              type="button"
+              onClick={handleAddUserId}
+            >
               Add User ID
             </button>
           </div>
@@ -426,17 +430,19 @@ const Edit = () => {
                 onChange={(e) => handleTimeChange(day, "end", e.target.value)}
               />
               <button
+                className="clear-button"
                 type="button"
-                style={{
-                  width: "100px",
-                  backgroundColor: "pink",
-                  borderColor: "red",
-                  justifySelf: "flex-end",
-                  alignSelf: "flex-end",
-                  margin: "5px 0",
-                  borderRadius: "4px",
-                  fontSize: "12px",
-                }}
+                // style={{
+                //   width: "100px",
+                //   backgroundColor: "pink",
+                //   borderColor: "red",
+                //   justifySelf: "flex-end",
+                //   alignSelf: "flex-end",
+                //   margin: "5px 0",
+                //   borderRadius: "4px",
+                //   fontSize: "12px",
+
+                // }}
                 onClick={() => {
                   handleTimeChange(day, "start", null);
                   handleTimeChange(day, "end", null);

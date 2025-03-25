@@ -193,7 +193,7 @@ export const ModalInfo = ({
                 : "Address unavailable"}
             </span>
             <span
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", marginLeft: "10px" }}
               onClick={handleCopy}
               className="material-symbols-outlined"
             >
@@ -221,8 +221,7 @@ export const ModalInfo = ({
             </span>
             <span
               style={{
-                color: "gray",
-                fontSize: "18px",
+                fontSize: "16px",
                 cursor: "pointer",
                 fontWeight: "100",
               }}

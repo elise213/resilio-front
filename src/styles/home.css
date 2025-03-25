@@ -82,13 +82,14 @@
 .faveButton-div {
   align-self: flex-end;
   bottom: 5px;
+  color: rgb(254, 198, 94);
 }
 
 .card-favorite {
   position: absolute;
   display: flex;
   justify-self: flex-end;
-  color: var(--marascoral);
+
   cursor: pointer;
 }
 
