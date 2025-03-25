@@ -3,11 +3,14 @@ import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
+import FavoriteButton from "./FavoriteButton";
 
 export const ModalInfo = ({
   averageRating,
   toggleRatingModal,
   ratingCount,
+  toggleFavorite,
+  isLoggedIn,
 }) => {
   const { store, actions } = useContext(Context);
   const [isReadMore, setIsReadMore] = useState(true);
@@ -158,7 +161,7 @@ export const ModalInfo = ({
           }}
         >
           <span className="modal-info-title">Rating</span>
-          <div className="rating-div">
+          <div className="rating-div-modal">
             <Rating
               style={{
                 flexDirection: "row",
@@ -287,7 +290,7 @@ export const ModalInfo = ({
               <span className="modal-info-title" style={{ alignSelf: "start" }}>
                 About
               </span>
-              <span className="modal-text" style={{ marginLeft: "20px" }}>
+              <span className="modal-info-value" style={{ marginLeft: "60px" }}>
                 {isReadMore
                   ? `${res.description.slice(0, 200)}...`
                   : res.description}
@@ -303,7 +306,7 @@ export const ModalInfo = ({
         )}
         {/* LAST UPDATED DATE */}
         {res.updated && (
-          <div className="info-address" style={{ borderBottom: "none" }}>
+          <div className="info-address">
             <span className="modal-info-title">Updated</span>
             <span>
               {new Intl.DateTimeFormat("en-US", {
@@ -314,6 +317,14 @@ export const ModalInfo = ({
                 timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
               }).format(new Date(res.updated + "Z"))}
             </span>
+          </div>
+        )}
+
+        {/* LAST UPDATED DATE */}
+        {isLoggedIn && (
+          <div className="info-address" style={{ borderBottom: "none" }}>
+            <span className="modal-info-title">Following</span>
+            <FavoriteButton type={"modal-favorite"} resource={res} />
           </div>
         )}
       </div>

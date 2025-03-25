@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import styles from "../styles/edit.css";
+import { Link } from "react-router-dom";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -77,6 +78,7 @@ const Edit = () => {
           return;
         }
 
+        // Initialize formData with resource data and handle nulls
         setFormData({
           ...initialFormData,
           ...resourceData,
@@ -84,6 +86,7 @@ const Edit = () => {
             ? resourceData.category.split(", ")
             : [],
           user_ids: assignedUsers.map((user) => user.id) || [],
+          schedule: resourceData.schedule || initialDaysState, // Handle null or missing schedule
         });
       } catch (error) {
         console.error("🚨 Error fetching data:", error);
@@ -91,7 +94,7 @@ const Edit = () => {
     };
 
     fetchResourceData();
-  }, [actions, id, store.user_id, navigate]); // Depend on store.user_id for reactivity
+  }, [id, store.user_id, navigate]);
 
   const handleAddUserId = () => {
     const newUserId = parseInt(formData.newUserId);
@@ -148,7 +151,7 @@ const Edit = () => {
     try {
       const success = await actions.editResource(id, formData, navigate);
       if (success) {
-        actions.openModal;
+        actions.closeModal();
       }
     } catch (error) {
       console.error("🚨 Error updating the resource:", error);
@@ -229,249 +232,253 @@ const Edit = () => {
     }
   }, [apiKey]);
 
-  const formatTime = (time) => {
-    if (!time) return "";
-    const [hour, minute] = time.split(":");
-    return `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
-  };
-
   return (
-    <div className="form-container">
-      <form className="geo-form" onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label htmlFor="name">Name</label>
-          <input
-            className="geo-input"
-            id="name"
-            name="name"
-            type="text"
-            value={formData.name || ""}
-            onChange={(e) => handleChange("name", e.target.value)}
-            placeholder="Resource Name"
-          />
-        </div>
-        <div className="input-group">
-          <label>Assign Users (Enter User ID)</label>
-          <input
-            type="number"
-            placeholder="Enter User ID"
-            value={formData.newUserId || ""}
-            onChange={(e) => handleChange("newUserId", e.target.value)}
-          />
-          <button type="button" onClick={handleAddUserId}>
-            Add User ID
-          </button>
-        </div>
-
-        <div className="assigned-users">
-          <p>Assigned Users:</p>
-          <ul>
-            {formData.user_ids.length > 0 ? (
-              formData.user_ids.map((userId) => (
-                <li key={userId}>
-                  {userId}{" "}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveUserId(userId)}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p>No users assigned.</p>
-            )}
-          </ul>
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="address">Address</label>
-
-          {isGoogleMapsLoaded && (
-            <PlacesAutocomplete
-              value={formData.address}
-              onChange={handleAddressChange}
-            >
-              {({
-                getInputProps,
-                suggestions,
-                getSuggestionItemProps,
-                loading,
-              }) => (
-                <div>
-                  <input
-                    className="geo-input"
-                    {...getInputProps({ placeholder: "Type address" })}
-                  />
-                  <div>
-                    {loading && <div>Loading...</div>}
-                    {suggestions.map((suggestion) => (
-                      <div
-                        {...getSuggestionItemProps(suggestion)}
-                        key={suggestion.placeId}
-                      >
-                        {suggestion.description}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </PlacesAutocomplete>
-          )}
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            className="geo-input"
-            id="description"
-            rows="3"
-            value={formData.description || ""}
-            onChange={(e) => handleChange("description", e.target.value)}
-          ></textarea>
-        </div>
-        <div className="input-group">
-          <label htmlFor="website">Website</label>
-          <input
-            className="geo-input"
-            id="website"
-            name="website"
-            type="text"
-            value={formData.website || ""}
-            onChange={(e) => handleChange("website", e.target.value)}
-            placeholder="Resource Website URL"
-          />
-        </div>
-        {/* Alert field */}
-        <div className="input-group">
-          <label htmlFor="alert">Alert</label>
-          <textarea
-            className="geo-input"
-            id="alert"
-            rows="2"
-            value={formData.alert || ""}
-            onChange={(e) => handleChange("alert", e.target.value)}
-            placeholder="Alert message for this resource"
-          ></textarea>
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="image">image 1</label>
-          <input
-            className="geo-input"
-            id="image"
-            name="image"
-            type="text"
-            value={formData.image || ""}
-            onChange={(e) => handleChange("image", e.target.value)}
-            placeholder="URL for image 1"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="image2">image 2</label>
-          <input
-            className="geo-input"
-            id="image2"
-            name="image2"
-            type="text"
-            value={formData.image2 || ""}
-            onChange={(e) => handleChange("image2", e.target.value)}
-            placeholder="URL for image 2"
-          />
-        </div>
-
-        <div className="input-group">
-          {categories.map((resource) => (
-            <div key={resource.id} className="checkbox-group">
-              <input
-                type="checkbox"
-                name="category"
-                id={`resource${resource.id}`}
-                value={resource.value || ""}
-                checked={!!formData?.category?.includes(resource.value)}
-                onChange={() => handleCategoryChange(resource.value)}
-              />
-              <label htmlFor={`resource${resource.id}`}>{resource.label}</label>
-            </div>
-          ))}
-        </div>
-
-        {daysOfWeek.map((day) => (
-          <div key={day} className="input-group time-group">
-            <label htmlFor={`${day}Start`}>
-              {day.charAt(0).toUpperCase() + day.slice(1)} from{" "}
-            </label>
+    <>
+      <p className="close-modal">
+        <Link to={`/`}>
+          <span className="material-symbols-outlined">arrow_back_ios</span>
+          Back to Search
+        </Link>
+      </p>
+      <div className="form-container">
+        <form className="geo-form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="name">Name</label>
             <input
-              className="geo-input time-input"
-              type="time"
-              id={`${day}Start`}
-              name={`${day}Start`}
-              value={formData.days[day]?.start || ""}
-              onChange={(e) => handleTimeChange(day, "start", e.target.value)}
+              className="geo-input"
+              id="name"
+              name="name"
+              type="text"
+              value={formData.name || ""}
+              onChange={(e) => handleChange("name", e.target.value)}
+              placeholder="Resource Name"
             />
-            <span> until </span>
+          </div>
+          <div className="input-group">
+            <label>Assign Users (Enter User ID)</label>
             <input
-              className="geo-input time-input"
-              type="time"
-              id={`${day}End`}
-              name={`${day}End`}
-              value={formData.days[day]?.end || ""}
-              onChange={(e) => handleTimeChange(day, "end", e.target.value)}
+              type="number"
+              placeholder="Enter User ID"
+              value={formData.newUserId || ""}
+              onChange={(e) => handleChange("newUserId", e.target.value)}
             />
-            <button
-              type="button"
-              style={{
-                width: "100px",
-                backgroundColor: "pink",
-                borderColor: "red",
-                justifySelf: "flex-end",
-                alignSelf: "flex-end",
-                margin: "5px 0",
-                borderRadius: "4px",
-                fontSize: "12px",
-              }}
-              onClick={() => {
-                handleTimeChange(day, "start", null);
-                handleTimeChange(day, "end", null);
-              }}
-            >
-              ❌ Clear {day.charAt(0).toUpperCase() + day.slice(1)}
+            <button type="button" onClick={handleAddUserId}>
+              Add User ID
             </button>
           </div>
-        ))}
 
-        <div className="input-group">
-          <label htmlFor="updated">Last Updated Date</label>
+          <div className="assigned-users">
+            <p>Assigned Users:</p>
+            <ul>
+              {formData.user_ids.length > 0 ? (
+                formData.user_ids.map((userId) => (
+                  <li key={userId}>
+                    {userId}{" "}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveUserId(userId)}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <p>No users assigned.</p>
+              )}
+            </ul>
+          </div>
 
-          <input
-            className="geo-input"
-            id="updated"
-            name="updated"
-            type="date"
-            value={formData.updated ? formData.updated.split("T")[0] : ""}
-            onChange={(e) => {
-              const selectedDate = e.target.value;
-              handleChange("updated", `${selectedDate}T00:00:00Z`);
-            }}
-          />
-        </div>
-        {store.authorizedUser || formData.user_ids.includes(store.user_id) ? (
-          <button className="update-button" type="submit">
-            Update
+          {/* <div className="input-group">
+            <label htmlFor="address">Address</label>
+
+            {isGoogleMapsLoaded && (
+              <PlacesAutocomplete
+                value={formData.address}
+                onChange={handleAddressChange}
+              >
+                {({
+                  getInputProps,
+                  suggestions,
+                  getSuggestionItemProps,
+                  loading,
+                }) => (
+                  <div>
+                    <input
+                      className="geo-input"
+                      {...getInputProps({ placeholder: "Type address" })}
+                    />
+                    <div>
+                      {loading && <div>Loading...</div>}
+                      {suggestions.map((suggestion) => (
+                        <div
+                          {...getSuggestionItemProps(suggestion)}
+                          key={suggestion.placeId}
+                        >
+                          {suggestion.description}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </PlacesAutocomplete>
+            )}
+          </div> */}
+
+          <div className="input-group">
+            <label htmlFor="description">Description</label>
+            <textarea
+              className="geo-input"
+              id="description"
+              rows="3"
+              value={formData.description || ""}
+              onChange={(e) => handleChange("description", e.target.value)}
+            ></textarea>
+          </div>
+          <div className="input-group">
+            <label htmlFor="website">Website</label>
+            <input
+              className="geo-input"
+              id="website"
+              name="website"
+              type="text"
+              value={formData.website || ""}
+              onChange={(e) => handleChange("website", e.target.value)}
+              placeholder="Resource Website URL"
+            />
+          </div>
+          {/* Alert field */}
+          <div className="input-group">
+            <label htmlFor="alert">Alert</label>
+            <textarea
+              className="geo-input"
+              id="alert"
+              rows="2"
+              value={formData.alert || ""}
+              onChange={(e) => handleChange("alert", e.target.value)}
+              placeholder="Alert message for this resource"
+            ></textarea>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="image">image 1</label>
+            <input
+              className="geo-input"
+              id="image"
+              name="image"
+              type="text"
+              value={formData.image || ""}
+              onChange={(e) => handleChange("image", e.target.value)}
+              placeholder="URL for image 1"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="image2">image 2</label>
+            <input
+              className="geo-input"
+              id="image2"
+              name="image2"
+              type="text"
+              value={formData.image2 || ""}
+              onChange={(e) => handleChange("image2", e.target.value)}
+              placeholder="URL for image 2"
+            />
+          </div>
+
+          <div className="input-group">
+            {categories.map((resource) => (
+              <div key={resource.id} className="checkbox-group">
+                <input
+                  type="checkbox"
+                  name="category"
+                  id={`resource${resource.id}`}
+                  value={resource.value || ""}
+                  checked={!!formData?.category?.includes(resource.value)}
+                  onChange={() => handleCategoryChange(resource.value)}
+                />
+                <label htmlFor={`resource${resource.id}`}>
+                  {resource.label}
+                </label>
+              </div>
+            ))}
+          </div>
+
+          {daysOfWeek.map((day) => (
+            <div key={day} className="input-group time-group">
+              <label htmlFor={`${day}Start`}>
+                {day.charAt(0).toUpperCase() + day.slice(1)} from{" "}
+              </label>
+              <input
+                className="geo-input time-input"
+                type="time"
+                id={`${day}Start`}
+                name={`${day}Start`}
+                value={formData.days[day]?.start || ""}
+                onChange={(e) => handleTimeChange(day, "start", e.target.value)}
+              />
+              <span> until </span>
+              <input
+                className="geo-input time-input"
+                type="time"
+                id={`${day}End`}
+                name={`${day}End`}
+                value={formData.days[day]?.end || ""}
+                onChange={(e) => handleTimeChange(day, "end", e.target.value)}
+              />
+              <button
+                type="button"
+                style={{
+                  width: "100px",
+                  backgroundColor: "pink",
+                  borderColor: "red",
+                  justifySelf: "flex-end",
+                  alignSelf: "flex-end",
+                  margin: "5px 0",
+                  borderRadius: "4px",
+                  fontSize: "12px",
+                }}
+                onClick={() => {
+                  handleTimeChange(day, "start", null);
+                  handleTimeChange(day, "end", null);
+                }}
+              >
+                ❌ Clear {day.charAt(0).toUpperCase() + day.slice(1)}
+              </button>
+            </div>
+          ))}
+
+          <div className="input-group">
+            <label htmlFor="updated">Last Updated Date</label>
+
+            <input
+              className="geo-input"
+              id="updated"
+              name="updated"
+              type="date"
+              value={formData.updated ? formData.updated.split("T")[0] : ""}
+              onChange={(e) => {
+                const selectedDate = e.target.value;
+                handleChange("updated", `${selectedDate}T00:00:00Z`);
+              }}
+            />
+          </div>
+          {store.authorizedUser || formData.user_ids.includes(store.user_id) ? (
+            <button className="update-button" type="submit">
+              Update
+            </button>
+          ) : (
+            <p style={{ color: "red" }}>
+              You do not have permission to edit this resource.
+            </p>
+          )}
+        </form>
+        {[1, 3, 4, 8].includes(store.user_id) && (
+          <button className="delete-button" onClick={handleDelete}>
+            Permanently Delete This Resource
           </button>
-        ) : (
-          <p style={{ color: "red" }}>
-            You do not have permission to edit this resource.
-          </p>
         )}
-      </form>
-      {[1, 3, 4, 8].includes(store.user_id) && (
-        <button className="delete-button" onClick={handleDelete}>
-          Permanently Delete This Resource
-        </button>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

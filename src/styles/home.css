@@ -79,6 +79,19 @@
   width: 100%;
 }
 
+.faveButton-div {
+  align-self: flex-end;
+  bottom: 5px;
+}
+
+.card-favorite {
+  position: absolute;
+  display: flex;
+  justify-self: flex-end;
+  color: var(--marascoral);
+  cursor: pointer;
+}
+
 .reset-password-container {
   display: flex;
   flex-direction: column;
@@ -86,27 +99,6 @@
   width: 250px;
   justify-self: center;
   align-items: center;
-}
-
-.modal-div {
-  border-radius: 10px;
-  justify-content: space-between;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  max-height: 90%;
-  width: 90%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  box-sizing: border-box !important;
-  border: 1px solid black;
 }
 
 .side-by > * {

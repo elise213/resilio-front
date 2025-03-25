@@ -4,34 +4,62 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.user-review-profile {
-  border: 1px solid black;
-  width: 270px;
-  padding: 10px;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 3px;
-}
-
-.profile-rating {
-  font-size: 12px !important;
-}
-
-.delete-button-profile {
-  float: inline-end;
-  color: maroon;
-  border: 1px solid red;
-  background-color: salmon;
-  padding: 3px;
-  border-radius: 3px;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  font-family: "Neutraface Text", sans-serif;
 }
 
 .profile-title {
-  margin-top: 30px;
-  font-size: 20px;
+  font-size: 24px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.user-review-profile {
+  border: 1px solid #dcdcdc;
+  padding: 15px;
+  margin: 10px;
+  width: 300px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+}
+
+.profile-rating {
+  font-size: 14px;
+}
+
+.resource-link {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.resource-name {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #888;
+  font-weight: normal;
+}
+
+.comment-text {
+  text-align: center;
+}
+
+.rating-div-profile {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .group-2 {
@@ -39,4 +67,70 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+}
+
+.like-icon {
+  display: flex;
+  align-items: center;
+}
+
+.like-icon span {
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: #dc3545;
+}
+
+.loading-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.loading-alert::after {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  width: 50px;
+  height: 4px;
+  background-color: #fff;
+  animation: loading 2.2s infinite ease-in-out;
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 50px;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  .user-review-profile {
+    width: 80%;
+  }
+
+  .profile-title {
+    font-size: 25px;
+  }
 }

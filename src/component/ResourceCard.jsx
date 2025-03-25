@@ -9,20 +9,7 @@ const ResourceCard = (props) => {
   const [averageRating2, setAverageRating2] = useState(0);
   const [ratingCount2, setRatingCount2] = useState(0);
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
-  const [isFavorited, setIsFavorited] = useState(false);
   const isLoggedIn = !!store.token;
-
-  const toggleFavorite = (event) => {
-    event.stopPropagation();
-    const id = resource.id;
-    console.log("sending favorite id", id);
-    if (isFavorited) {
-      actions.removeFavorite(id);
-    } else {
-      actions.addFavorite(id);
-    }
-    setIsFavorited(!isFavorited);
-  };
 
   useEffect(() => {
     actions.getAverageRating(
@@ -63,35 +50,6 @@ const ResourceCard = (props) => {
     });
   }, [props.item.category, CATEGORY_OPTIONS]);
 
-  useEffect(() => {
-    try {
-      let storedFavorites = sessionStorage.getItem("favorites");
-
-      if (!storedFavorites || storedFavorites === "undefined") {
-        sessionStorage.setItem("favorites", JSON.stringify([]));
-        storedFavorites = "[]";
-      }
-
-      const parsedFavorites = JSON.parse(storedFavorites);
-
-      if (!Array.isArray(parsedFavorites)) {
-        console.warn("Invalid favorites format, resetting.");
-        sessionStorage.setItem("favorites", JSON.stringify([]));
-        setIsFavorited(false);
-        return;
-      }
-
-      const isItemFavorited = parsedFavorites.some(
-        (favorite) => favorite.name === props.item.name
-      );
-      setIsFavorited(isItemFavorited);
-    } catch (error) {
-      console.error("Error parsing favorites from sessionStorage:", error);
-      sessionStorage.setItem("favorites", JSON.stringify([]));
-      setIsFavorited(false);
-    }
-  }, [props.item.name]);
-
   return (
     <div
       className="my-resource-card"
@@ -116,7 +74,7 @@ const ResourceCard = (props) => {
       {categoryLabels.length > 0 && (
         <div className="card-description">
           <span className="resource-title">{props.item.name}</span>
-          <div
+          {/* <div
             style={{
               display: "flex",
               width: "100%",
@@ -129,7 +87,7 @@ const ResourceCard = (props) => {
                 {label}
               </p>
             ))}
-          </div>
+          </div> */}
           <div className="rating-div">
             <Rating
               style={{ flexDirection: "row" }}
@@ -143,10 +101,7 @@ const ResourceCard = (props) => {
             {ratingCount2 > 0 && <span>({ratingCount2})</span>}
           </div>
           {isLoggedIn && (
-            <FavoriteButton
-              isFavorited={isFavorited}
-              toggleFavorite={toggleFavorite}
-            />
+            <FavoriteButton resource={props.item} type={"card-favorite"} />
           )}
         </div>
       )}

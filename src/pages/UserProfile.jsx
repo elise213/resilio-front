@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Rating from "@mui/material/Rating";
 import Swal from "sweetalert2";
-import Styles from "../styles/profile.css";
-import { Modal } from "../component";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Styles from "../styles/profile.css";
+import Modal from "../component/Modal.jsx";
 
 const UserProfile = () => {
   const { store, actions } = useContext(Context);
@@ -71,94 +71,90 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="profile-container">
-      <p className="close-modal">
-        <Link to={`/`}>
-          <span className="material-symbols-outlined">arrow_back_ios</span>
-          Back to Search
-        </Link>
-      </p>
-      <span className="profile-title">{userName}'s Reviews</span>
+    <>
+      <div className="profile-container">
+        <p className="close-modal">
+          <Link to={`/`}>
+            <span className="material-symbols-outlined">arrow_back_ios</span>
+            Back to Search
+          </Link>
+        </p>
+        <div className="profile-title">Your Reviews</div>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : userCommentsAndRatings.length > 0 ? (
-        userCommentsAndRatings.map((item, index) => (
-          <div key={index} className="user-review-profile">
-            <div>
-              <strong>Resource: </strong>
-              <span
-                onClick={() => handleOpenModal(item.resource_id)}
-                style={{ cursor: "pointer", color: "blue" }}
-              >
-                {item.resource_name}
-              </span>
-            </div>
-            <p>
-              <strong>Comment:</strong> {item.comment_cont}
-            </p>
-            <Rating
-              name="read-only"
-              value={item.rating_value}
-              precision={0.5}
-              readOnly
-              className="profile-rating"
-            />
+        {loading ? (
+          <div className="loading-alert">Loading...</div>
+        ) : userCommentsAndRatings.length > 0 ? (
+          userCommentsAndRatings.map((item, index) => (
+            <div key={index} className="user-review-profile">
+              <div className="resource-link">
+                <div className="comment-date">
+                  {new Date(item.created_at).toLocaleDateString()}
+                </div>
+                <span
+                  onClick={() => handleOpenModal(item.resource_id)}
+                  className="resource-name"
+                >
+                  {item.resource_name}
+                </span>
+              </div>
 
-            <p>
-              <strong>Date:</strong>{" "}
-              {new Date(item.created_at).toLocaleDateString()}
-            </p>
+              <div className="comment-text"> {item.comment_cont}</div>
+              <div className="rating-div-profile">
+                <Rating
+                  name="read-only"
+                  value={item.rating_value}
+                  precision={0.5}
+                  readOnly
+                  className="profile-rating"
+                />
+              </div>
 
-            <div className="group-2">
-              <div className="like-icon">
-                {item.likes?.some((like) => like.user_id === loggedInUserId) ? (
-                  <FavoriteIcon
-                    fontSize="x-small"
-                    onClick={() => handleUnlike(item.comment_id)}
-                  />
-                ) : (
-                  <FavoriteBorderIcon
-                    fontSize="x-small"
-                    onClick={() => handleLike(item.comment_id)}
+              <div className="group-2">
+                <div className="like-icon">
+                  {item.likes?.some(
+                    (like) => like.user_id === loggedInUserId
+                  ) ? (
+                    <FavoriteIcon
+                      fontSize="small"
+                      onClick={() => handleUnlike(item.comment_id)}
+                    />
+                  ) : (
+                    <FavoriteBorderIcon
+                      fontSize="small"
+                      onClick={() => handleLike(item.comment_id)}
+                    />
+                  )}
+                  {item.like_count > 0 && <span>{item.like_count}</span>}
+                </div>
+                {parseInt(id) === loggedInUserId && (
+                  <DeleteIcon
+                    fontSize="small"
+                    onClick={() => handleDelete(item.comment_id)}
+                    className="delete-icon"
                   />
                 )}
-
-                {item.like_count > 0 && <span>{item.like_count}</span>}
               </div>
-              {parseInt(id) === loggedInUserId ? (
-                <DeleteIcon
-                  fontSize="small"
-                  onClick={() => handleDelete(item.comment_id)}
-                  style={{ cursor: "pointer", color: "gray" }}
-                />
-              ) : (
-                ""
-              )}
             </div>
-          </div>
-        ))
-      ) : (
-        <p>No comments or ratings found.</p>
-      )}
-
+          ))
+        ) : (
+          <p>No comments or ratings found.</p>
+        )}
+      </div>
       {store.modalIsOpen && (
-        <div className="modal-div">
-          <>
-            <div
-              className="resilio-overlay"
-              onClick={() => {
-                actions.closeModal();
-                document.body.classList.remove("modal-open");
-              }}
-            >
-              {" "}
-            </div>
+        <div
+          className="resilio-overlay"
+          onClick={() => {
+            actions.closeModal();
+            document.body.classList.remove("modal-open");
+          }}
+        >
+          {" "}
+          <div className="modal-div">
             <Modal />
-          </>
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

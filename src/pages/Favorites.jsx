@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const Favorites = () => {
   const { store, actions } = useContext(Context);
 
+  console.log("favorites", store.favorites);
   return (
     <>
       <div className="favorites-page">
@@ -18,7 +19,7 @@ const Favorites = () => {
           </Link>
         </p>
         <div className="scroll-favorites">
-          <p style={{ marginTop: "20px" }}>YOUR FAVORITE RESOURCES</p>
+          <p style={{ marginTop: "40px" }}>YOUR FAVORITE RESOURCES</p>
           <ul>
             {Array.isArray(store.favorites) &&
               store.favorites.map((resource, index) => (

@@ -25,7 +25,7 @@ const ApproveComments = () => {
     try {
       const success = await actions.approveComment(commentId);
       if (success) {
-        Swal.fire("Success", "Comment approved!", "success");
+        // Swal.fire("Success", "Comment approved!", "success");
         setUnapprovedComments(
           unapprovedComments.filter(
             (comment) => comment.comment_id !== commentId
@@ -42,7 +42,7 @@ const ApproveComments = () => {
       <p className="unapproved-heading">Unapproved Comments</p>
 
       {isLoading ? (
-        <p>Loading...</p>
+        <div className="loading-alert">Loading...</div>
       ) : unapprovedComments.length === 0 ? (
         <p>No unapproved comments found.</p>
       ) : (

@@ -27,12 +27,14 @@ const GeoLocationModal = ({
 
   return (
     <div className="geo-modal">
-      <Tooltip title="Find My Location" arrow>
-        <Button onClick={handleGeoFindMe} style={{ cursor: "pointer" }}>
-          Find my location
-        </Button>
-      </Tooltip>
-      <p>OR</p>
+      <Button
+        onClick={handleGeoFindMe}
+        style={{ cursor: "pointer", backgroundColor: "transparent" }}
+      >
+        Find my location
+      </Button>
+
+      <p style={{ marginBottom: "10px" }}>OR</p>
       <ZipCodeDropdown updateCityStateFromZip={updateCityStateFromZip} />
     </div>
   );

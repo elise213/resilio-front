@@ -24,7 +24,7 @@ const Modal = ({}) => {
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const [isFavorited, setIsFavorited] = useState(false);
+
   const isLoggedIn = !!store.token;
   const userIdFromSession = sessionStorage.getItem("user_id");
 
@@ -187,16 +187,6 @@ const Modal = ({}) => {
     console.log("resource", resource);
   }, []);
 
-  useEffect(() => {
-    if (store.favorites) {
-      const storedFavorites = store.favorites;
-      const isItemFavorited = storedFavorites.some(
-        (favorite) => favorite.id === resource.id
-      );
-      setIsFavorited(isItemFavorited);
-    }
-  }, [store.favorites]);
-
   const labels = {
     1: "Poor",
     2: "Fair",
@@ -205,52 +195,26 @@ const Modal = ({}) => {
     5: "Exceptional",
   };
 
-  const toggleFavorite = (event) => {
-    event.stopPropagation();
-    const id = resource.id;
-    console.log("sending favorite id", id);
-    if (isFavorited) {
-      actions.removeFavorite(id);
-    } else {
-      actions.addFavorite(id);
-    }
-    setIsFavorited(!isFavorited);
-  };
-
   return (
     <>
-      {!isLoggedIn && <Login />}
-
-      {isLoggedIn && (
-        <FavoriteButton
-          isFavorited={isFavorited}
-          toggleFavorite={toggleFavorite}
-        />
-      )}
       {resource.alert && (
         <div className="alert-bar">
           {/* <marquee behavior="scroll" direction="left"> */}
-          🚨 {resource.alert}
-          {/* </marquee> */}
+          {/* 🚨 */}
+          <div className="alert-text-div">
+            <span className="modal-info-title">
+              {resource.name} would like you to have the following information:{" "}
+              {resource.alert}
+            </span>
+            {/* </marquee> */}
+          </div>
         </div>
       )}
 
-      {/* <p
-        className="close-modal"
-        onClick={() => {
-          actions.closeModal();
-        }}
-      >
-        <span className="material-symbols-outlined">arrow_back_ios</span>
-        Back
-      </p> */}
-      {/* <div className="group-1"> */}
       <div className="resource-info">
         <ModalInfo
           schedule={resource.schedule}
           res={resource}
-          isFavorited={isFavorited}
-          setIsFavorited={setIsFavorited}
           setShowRating={setShowRating}
           setComments={setComments}
           averageRating={averageRating}
@@ -258,6 +222,7 @@ const Modal = ({}) => {
           toggleRatingModal={toggleRatingModal}
           ratingCount={ratingCount}
           setRatingCount={setRatingCount}
+          isLoggedIn={isLoggedIn}
         />
       </div>
       {/* </div> */}
@@ -344,17 +309,6 @@ const Modal = ({}) => {
         </div>
       )}
 
-      {isAuthorizedUser && isLoggedIn && (
-        <div className="modal-footer">
-          <Icon>handyman</Icon>
-          <p className="problem">
-            Click {""}
-            <Link to={`/edit/${resource.id}`}>here</Link>
-            {""} to edit this resource
-          </p>
-        </div>
-      )}
-
       {/* Rating Modal */}
       {showRating && (
         <>
@@ -421,6 +375,15 @@ const Modal = ({}) => {
             )}
           </div>
         </>
+      )}
+      {isAuthorizedUser && isLoggedIn && (
+        <div className="modal-footer">
+          <Tooltip title="Click here to edit this resource" arrow>
+            <Link to={`/edit/${resource.id}`}>
+              <Icon>handyman</Icon>
+            </Link>
+          </Tooltip>
+        </div>
       )}
     </>
   );

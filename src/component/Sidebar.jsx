@@ -34,6 +34,20 @@ const Sidebar = ({
     day: false,
   });
 
+  const filteredResources = (searchQuery) => {
+    if (!searchQuery) return store.boundaryResults; // If no search query, return all resources
+
+    const lowercasedQuery = searchQuery.toLowerCase();
+    return store.boundaryResults.filter(
+      (resource) =>
+        resource.name.toLowerCase().includes(lowercasedQuery) ||
+        (resource.description &&
+          resource.description.toLowerCase().includes(lowercasedQuery)) ||
+        (resource.category &&
+          resource.category.toLowerCase().includes(lowercasedQuery))
+    );
+  };
+
   const handleToggleChange = (event) => {
     setLayout(event.target.checked ? "fullscreen-map" : "fullscreen-sidebar");
   };
@@ -45,7 +59,12 @@ const Sidebar = ({
     console.log("🟡 Store loading Result:", store.loadingLocation);
   }, [store.loadingLocation]);
 
-  const CombinedFilters = ({ categories = {}, days = {}, actions }) => {
+  const CombinedFilters = ({
+    categories = {},
+    days = {},
+    actions,
+    searchQuery,
+  }) => {
     if (!actions) {
       console.error("⚠️ Actions prop is missing in CombinedFilters!");
       return null;
@@ -58,11 +77,36 @@ const Sidebar = ({
     );
     const activeDays = Object.keys(days).filter((key) => days[key]);
 
-    if (activeCategories.length === 0 && activeDays.length === 0) return null;
+    if (
+      activeCategories.length === 0 &&
+      activeDays.length === 0 &&
+      !searchQuery
+    )
+      return null; // If there are no active filters or search query, don't display anything.
 
     return (
       <div className="active-filters">
         <p className="filter-title">Filtering by:</p>
+
+        {searchQuery && (
+          <div className="filter-group">
+            <span className="filter-label">Search</span>
+            <div className="filter-list">
+              <div className="filter-item">
+                {capitalize(searchQuery)}
+                <button
+                  className="remove-filter"
+                  onClick={() => {
+                    // Clear search query when clicking the 'x'
+                    setSearchQuery("");
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {activeCategories.length > 0 && (
           <div className="filter-group">
@@ -109,10 +153,73 @@ const Sidebar = ({
     );
   };
 
+  // const CombinedFilters = ({ categories = {}, days = {}, actions }) => {
+  //   if (!actions) {
+  //     console.error("⚠️ Actions prop is missing in CombinedFilters!");
+  //     return null;
+  //   }
+
+  //   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+  //   const activeCategories = Object.keys(categories).filter(
+  //     (key) => categories[key]
+  //   );
+  //   const activeDays = Object.keys(days).filter((key) => days[key]);
+
+  //   if (activeCategories.length === 0 && activeDays.length === 0) return null;
+
+  //   return (
+  //     <div className="active-filters">
+  //       <p className="filter-title">Filtering by:</p>
+
+  //       {activeCategories.length > 0 && (
+  //         <div className="filter-group">
+  //           <span className="filter-label">Category</span>
+  //           <div className="filter-list">
+  //             {activeCategories.map((category) => (
+  //               <div key={category} className="filter-item">
+  //                 {capitalize(category)}
+  //                 <button
+  //                   className="remove-filter"
+  //                   onClick={() => {
+  //                     handleCategoryChange(category);
+  //                   }}
+  //                 >
+  //                   ✕
+  //                 </button>
+  //               </div>
+  //             ))}
+  //           </div>
+  //         </div>
+  //       )}
+
+  //       {activeDays.length > 0 && (
+  //         <div className="filter-group">
+  //           <span className="filter-label">Day</span>
+  //           <div className="filter-list">
+  //             {activeDays.map((day) => (
+  //               <div key={day} className="filter-item">
+  //                 {capitalize(day)}
+  //                 <button
+  //                   className="remove-filter"
+  //                   onClick={() => {
+  //                     handleDayChange(day);
+  //                   }}
+  //                 >
+  //                   ✕
+  //                 </button>
+  //               </div>
+  //             ))}
+  //           </div>
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // };
+
   return (
     <>
       <nav className={`new-navbar ${layout}`}>
-        {/* <div className="navbar-content"> */}
         <div className="button-container-sidebar" style={{ display: "flex" }}>
           {!store.loginModalisOpen && (
             <FormControlLabel
@@ -139,12 +246,12 @@ const Sidebar = ({
         </div>
 
         {store.loadingResults ? (
-          <p className="loading-text">Loading resources...</p>
+          <div className="loading-alert">Loading...</div>
         ) : (
           ""
         )}
         {store.loadingLocation ? (
-          <p className="loading-text">Finding your location...</p>
+          <div className="loading-alert">Loading Location...</div>
         ) : (
           ""
         )}
@@ -189,15 +296,29 @@ const Sidebar = ({
               categories={categories}
               days={days}
               actions={actions}
+              searchQuery={searchQuery}
             />
-            <div className="list-container">
+            {/* <div className="list-container">
               <ul>
-                {(filteredResults2?.length > 0
-                  ? filteredResults2
+                {(Object.values(categories).some(Boolean) ||
+                Object.values(days).some(Boolean)
+                  ? filteredResults2 // use filtered only
                   : store.boundaryResults || []
                 ).map((resource, index) => (
                   <ResourceCard key={resource.id || index} item={resource} />
                 ))}
+              </ul>
+            </div> */}
+            <div className="list-container">
+              <ul>
+                {(Object.values(categories).some(Boolean) ||
+                Object.values(days).some(Boolean)
+                  ? filteredResults2 // use filtered only
+                  : filteredResources(searchQuery)
+                ) // apply search filtering
+                  .map((resource, index) => (
+                    <ResourceCard key={resource.id || index} item={resource} />
+                  ))}
               </ul>
             </div>
           </div>

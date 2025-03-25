@@ -24,11 +24,10 @@ const Home = () => {
   const [mapZoom, setMapZoom] = useState(11);
 
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
-  const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
-    CATEGORY_OPTIONS.reduce((acc, curr) => {
-      return { ...acc, [curr.id]: false };
-    }, {});
-
+  // const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
+  //   CATEGORY_OPTIONS.reduce((acc, curr) => {
+  //     return { ...acc, [curr.id]: false };
+  //   }, {});
   const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
@@ -44,13 +43,10 @@ const Home = () => {
     store.DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {})
   );
 
-  const [tempCategories, setTempCategories] = useState(categories || {});
-  const [tempDays, setTempDays] = useState(days || {});
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [zipInput, setZipInput] = useState("");
   const [layout, setLayout] = useState("fullscreen-sidebar");
   const [lastBounds, setLastBounds] = useState(null);
-
   const INITIAL_CITY_STATE = store.austin[0];
   const [city, setCity] = useState(INITIAL_CITY_STATE);
   const [mapCenter, setMapCenter] = useState(city.center);
@@ -115,7 +111,6 @@ const Home = () => {
       lng: parseFloat(firstResult.lon),
     };
 
-    // Extract the bounding box
     const bounds = {
       ne: {
         lat: parseFloat(firstResult.boundingbox[1]),
@@ -130,11 +125,7 @@ const Home = () => {
     console.log("✅ Found location:", location);
     console.log("📏 Bounding Box:", bounds);
 
-    // Update state and fetch resources
     handleBoundsChange({ center: location, bounds });
-
-    // Fetch new resources within these bounds
-    // await actions.fetchResources(bounds);
     await actions.setBoundaryResults(bounds, categories, days);
   };
 
@@ -154,7 +145,6 @@ const Home = () => {
    * 📌 Effects (useEffect)
    * =========================== */
 
-  // 📍 Update city and state when ZIP input changes
   useEffect(() => {
     if (zipInput && zipInput.length === 5) {
       updateCityStateFromZip(zipInput);
@@ -262,31 +252,17 @@ const Home = () => {
     setUserSelectedFilter(!(noCategorySelected && noDaySelected));
   }, [categories, days]);
 
-  // 📍 Sync temporary filters with actual filters
-  useEffect(() => {
-    setTempCategories(categories || {});
-    setTempDays(days || {});
-  }, [categories, days]);
-
   // 📍 Initialize app
   useEffect(() => {
     const cleanup = actions.initApp();
     return cleanup;
   }, []);
 
-  useEffect(() => {
-    console.log("📌 Syncing Sidebar with filteredResults2", filteredResults2);
-  }, [filteredResults2]);
-
   /* ===========================
    * 📌 State Management & Filtering
    * =========================== */
 
   const applyFilters = useCallback(() => {
-    console.log("🔍 Applying filters...");
-    console.log("📌 Categories:", categories);
-    console.log("📌 Days:", days);
-
     if (!store.boundaryResults?.length) {
       console.warn("❌ No resources available for filtering.");
       return;
@@ -297,9 +273,7 @@ const Home = () => {
     );
     const filteredDays = Object.keys(days).filter((key) => days[key]);
 
-    // ✅ Fix: Check `filteredCategories.length` and `filteredDays.length`
     if (filteredCategories.length === 0 && filteredDays.length === 0) {
-      // console.log("🚀 Resetting to all resources...");
       setFilteredResults2(store.boundaryResults);
       return;
     }
@@ -322,7 +296,7 @@ const Home = () => {
       return categoryMatch && dayMatch;
     });
 
-    console.log("📊 Filtered Results:", filtered);
+    // console.log("📊 Filtered Results:", filtered);
     setFilteredResults2(filtered);
   }, [categories, days, store.boundaryResults]);
 
@@ -340,9 +314,7 @@ const Home = () => {
    * 📌 Event Handlers
    * =========================== */
 
-  // 📍 Handle ZIP input change
-
-  const MIN_BOUNDS_CHANGE = 0.002; // 🔥 Adjust as needed (about ~222m)
+  const MIN_BOUNDS_CHANGE = 0.002;
 
   const boundsAreSimilar = (bounds1, bounds2) => {
     if (!bounds1 || !bounds2) return false;
@@ -375,157 +347,57 @@ const Home = () => {
       setLastBounds(newBounds);
       setMapCenter(center);
       setMapZoom(zoom);
-      // actions.fetchResources(newBounds);
       actions.setBoundaryResults(newBounds, categories, days);
     }, 1000),
     [lastBounds]
   );
 
-  // const handleBoundsChange = useCallback(
-  //   debounce(({ bounds, center, zoom }) => {
-  //     if (!bounds || !bounds.ne || !bounds.sw) {
-  //       console.error("❌ Invalid bounds received:", bounds);
-  //       return;
-  //     }
+  useEffect(() => {
+    const checkAndReplenishSession = async () => {
+      const isSessionValid = await actions.checkLoginStatus();
 
-  //     const newBounds = {
-  //       ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
-  //       sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
-  //     };
+      if (isSessionValid) {
+        const favorites = sessionStorage.getItem("favorites");
 
-  //     console.log("📏 Sending corrected bounds:", newBounds);
+        if (favorites) {
+          try {
+            const parsedFavorites = JSON.parse(favorites);
+            if (Array.isArray(parsedFavorites)) {
+              setStore({
+                favorites: parsedFavorites,
+              });
+              console.log(
+                "Favorites replenished from session storage:",
+                parsedFavorites
+              );
+            } else {
+              throw new Error("Invalid favorites format in sessionStorage");
+            }
+          } catch (error) {
+            console.warn(
+              "⚠️ Invalid JSON in sessionStorage for favorites. Fetching from backend."
+            );
+            actions.fetchFavorites();
+          }
+        } else {
+          console.log(
+            "No favorites in session storage, fetching from backend..."
+          );
+          actions.fetchFavorites();
+        }
+      } else {
+        console.log(
+          "Session is not valid, favorites could not be replenished."
+        );
+      }
+    };
 
-  //     if (JSON.stringify(newBounds) === JSON.stringify(lastBounds)) {
-  //       console.log("🛑 Skipping redundant bounds update.");
-  //       return;
-  //     }
+    checkAndReplenishSession();
+  }, []);
 
-  //     setLastBounds(newBounds);
-  //     setMapCenter(center);
-  //     setMapZoom(zoom);
-  //     actions.fetchResources(newBounds);
-  //   }, 1000),
-  //   [lastBounds]
-  // );
-
-  // const geoFindMe = async () => {
-
-  //   console.log("📡 Attempting to get user location...");
-
-  //   if (!navigator.geolocation) {
-  //     console.error("❌ Geolocation is not supported by this browser.");
-  //     alert("Geolocation is not supported by your browser.");
-  //     return;
-  //   }
-
-  //   setLoadingLocation(true);
-
-  //   const successCallback = (position) => {
-  //     const { latitude, longitude } = position.coords;
-  //     console.log(`✅ Location retrieved: lat=${latitude}, lng=${longitude}`);
-  //     resetFilters();
-  //     // Update state with user's location
-  //     setUserLocation({ lat: latitude, lng: longitude });
-
-  //     // Fetch city data using these coordinates
-  //     updateCityStateFromCoords(latitude, longitude);
-
-  //     setLoadingLocation(false);
-  //   };
-
-  //   const errorCallback = (error) => {
-  //     console.error("❌ Geolocation error:", error);
-
-  //     switch (error.code) {
-  //       case error.PERMISSION_DENIED:
-  //         console.warn("⚠️ User denied location access.");
-  //         alert("Please enable location services and try again.");
-  //         break;
-  //       case error.POSITION_UNAVAILABLE:
-  //         console.warn("⚠️ Location unavailable.");
-  //         alert("Location unavailable. Retrying in 3 seconds...");
-  //         setTimeout(() => geoFindMe(), 3000);
-  //         break;
-  //       case error.TIMEOUT:
-  //         console.warn("⚠️ Location request timed out.");
-  //         alert("Location request timed out. Try again.");
-  //         break;
-  //       default:
-  //         alert("Unable to retrieve your location.");
-  //     }
-
-  //     setLoadingLocation(false);
-  //   };
-
-  //   navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
-  //     enableHighAccuracy: true,
-  //     timeout: 10000,
-  //     maximumAge: 0,
-  //   });
-  // };
-
-  // const geoFindMe = async () => {
-  //   console.log("📡 Attempting to get user location...");
-
-  //   if (!navigator.geolocation) {
-  //     console.error("❌ Geolocation is not supported by this browser.");
-  //     alert("Geolocation is not supported by your browser.");
-  //     return;
-  //   }
-
-  //   // 🔵 Start Loading
-  //   actions.setStore({ loadingResults: true });
-  //   setLoadingLocation(true);
-
-  //   const successCallback = async (position) => {
-  //     const { latitude, longitude } = position.coords;
-  //     console.log(`✅ Location retrieved: lat=${latitude}, lng=${longitude}`);
-
-  //     resetFilters();
-
-  //     // Update state with user's location
-  //     setUserLocation({ lat: latitude, lng: longitude });
-
-  //     // Fetch city data using these coordinates
-  //     await updateCityStateFromCoords(latitude, longitude);
-
-  //     // 🔴 Stop Loading
-  //     actions.setStore({ loadingResults: false });
-  //     setLoadingLocation(false);
-  //   };
-
-  //   const errorCallback = (error) => {
-  //     console.error("❌ Geolocation error:", error);
-
-  //     switch (error.code) {
-  //       case error.PERMISSION_DENIED:
-  //         console.warn("⚠️ User denied location access.");
-  //         alert("Please enable location services and try again.");
-  //         break;
-  //       case error.POSITION_UNAVAILABLE:
-  //         console.warn("⚠️ Location unavailable.");
-  //         alert("Location unavailable. Retrying in 3 seconds...");
-  //         setTimeout(() => geoFindMe(), 3000);
-  //         break;
-  //       case error.TIMEOUT:
-  //         console.warn("⚠️ Location request timed out.");
-  //         alert("Location request timed out. Try again.");
-  //         break;
-  //       default:
-  //         alert("Unable to retrieve your location.");
-  //     }
-
-  //     // 🔴 Stop Loading on Error
-  //     actions.setStore({ loadingResults: false });
-  //     setLoadingLocation(false);
-  //   };
-
-  //   navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
-  //     enableHighAccuracy: true,
-  //     timeout: 10000,
-  //     maximumAge: 0,
-  //   });
-  // };
+  useEffect(() => {
+    console.log("store favorites", store.favorites);
+  }, [store.favorites]);
 
   return (
     <>
@@ -574,6 +446,8 @@ const Home = () => {
               setMapInstance={setMapInstance}
               mapsInstance={mapsInstance}
               setMapsInstance={setMapsInstance}
+              categories={categories}
+              days={days}
             />
           </ErrorBoundary>
         </div>
@@ -606,8 +480,6 @@ const Home = () => {
               <Selection
                 isFilterModalOpen={isFilterModalOpen}
                 setIsFilterModalOpen={setIsFilterModalOpen}
-                tempCategories={tempCategories}
-                tempDays={tempDays}
                 applyFilters={applyFilters}
                 handleCategoryChange={handleCategoryChange}
                 handleDayChange={handleDayChange}
@@ -618,10 +490,6 @@ const Home = () => {
           ) : (
             <p>Loading selection options...</p>
           ))}
-
-        {/* <div className="foot">
-          <p className="all-rights">© 2024 Open House</p>
-        </div> */}
       </div>
 
       {store.donationModalIsOpen && (

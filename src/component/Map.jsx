@@ -10,9 +10,9 @@ const Map = ({
   city,
   userLocation,
   setHoveredItem,
-
+  categories,
+  days,
   mapCenter,
-
   mapZoom,
   filteredResults2,
 }) => {
@@ -41,91 +41,6 @@ const Map = ({
       filteredResults2?.length > 0 ? filteredResults2 : store.boundaryResults;
     console.log("🗺 Rendering markers for:", toLog.length, "items");
   }, [filteredResults2, store.boundaryResults]);
-
-  // const Marker = React.memo(
-  //   ({ text, id, result, markerColor }) => {
-  //     const [isHovered, setIsHovered] = useState(false);
-  //     const [closestCornerClass, setClosestCornerClass] = useState("");
-
-  //     const handleMouseEnter = (event) => {
-  //       if (result !== store.hoveredItem) {
-  //         setHoveredItem(result);
-  //       }
-  //       setIsHovered(true);
-  //       const cursorX = event.clientX;
-  //       const cursorY = event.clientY;
-  //       const mapRect = mapContainerRef.current.getBoundingClientRect();
-  //       const isCloserToTop = cursorY < (mapRect.top + mapRect.bottom) / 2;
-  //       const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
-
-  //       if (isCloserToTop && isCloserToLeft) {
-  //         setClosestCornerClass("corner-top-left");
-  //       } else if (isCloserToTop && !isCloserToLeft) {
-  //         setClosestCornerClass("corner-top-right");
-  //       } else if (!isCloserToTop && isCloserToLeft) {
-  //         setClosestCornerClass("corner-bottom-left");
-  //       } else {
-  //         setClosestCornerClass("corner-bottom-right");
-  //       }
-  //     };
-
-  //     const handleMouseLeave = () => {
-  //       setIsHovered(false);
-  //       setHoveredItem(null);
-  //     };
-
-  //     return (
-  //       <div
-  //         className="marker"
-  //         onMouseEnter={handleMouseEnter}
-  //         onMouseLeave={handleMouseLeave}
-  //         onClick={() => {
-  //           if (!result) {
-  //             console.error("Error: result is undefined for marker", id);
-  //             return;
-  //           }
-  //           actions.setSelectedResource(result);
-  //           actions.openModal();
-  //         }}
-  //       >
-  //         {isHovered && result && (
-  //           <div className={`hover-card ${closestCornerClass}`}>
-  //             <ResourceCard key={result.id} item={result} />
-  //           </div>
-  //         )}
-
-  //         <div className="marker-icon">
-  //           <i
-  //             className="fa-solid fa-map-pin"
-  //             style={{ color: isHovered ? "green" : markerColor || "red" }}
-  //           ></i>
-  //         </div>
-  //       </div>
-  //     );
-  //   },
-  //   (prevProps, nextProps) => prevProps.id === nextProps.id
-  // );
-
-  // const Marker = ({ lat, lng, text }) => {
-  //   console.log("📌 Marker mounted at:", lat, lng, text);
-  //   return (
-  //     <div
-  //       style={{
-  //         fontSize: "30px",
-  //         color: "red",
-  //         backgroundColor: "white",
-  //         border: "2px solid black",
-  //         borderRadius: "50%",
-  //         padding: "5px",
-  //         position: "absolute",
-  //         transform: "translate(-50%, -50%)",
-  //         zIndex: 10000,
-  //       }}
-  //     >
-  //       📍
-  //     </div>
-  //   );
-  // };
 
   const Marker = React.memo(
     ({ id, result, markerColor = "red" }) => {
@@ -196,15 +111,15 @@ const Map = ({
               <ResourceCard key={result.id} item={result} />
             </div>
           )}
-          <span
-            className="material-symbols-outlined"
-            style={{
-              fontSize: "32px",
-              color: isHovered ? "green" : markerColor,
-            }}
-          >
-            location_on
-          </span>
+          <div className="marker-icon">
+            <i
+              className="fa-solid fa-map-pin"
+              style={{
+                fontSize: "28px",
+                color: isHovered ? "green" : markerColor || "red",
+              }}
+            ></i>
+          </div>
         </div>
       );
     },
@@ -278,6 +193,17 @@ const Map = ({
     [city.center]
   );
 
+  const filtersAreActive =
+    Object.values(categories || {}).some(Boolean) ||
+    Object.values(days || {}).some(Boolean);
+
+  const listToRender = filtersAreActive
+    ? filteredResults2 || []
+    : store.boundaryResults || [];
+
+  // console.log("📍 Filters active:", filtersAreActive);
+  // console.log("📍 Rendering", listToRender.length, "markers on the map.");
+
   return (
     <div className={`map-frame`}>
       <div
@@ -295,10 +221,7 @@ const Map = ({
           onGoogleApiLoaded={handleApiLoaded}
           yesIWantToUseGoogleMapApiInternals={true}
         >
-          {(filteredResults2?.length > 0
-            ? filteredResults2
-            : store.boundaryResults || []
-          ).map((result, i) => (
+          {listToRender.map((result, i) => (
             <Marker
               lat={result.latitude}
               lng={result.longitude}

@@ -13,17 +13,14 @@ const Selection = ({
 }) => {
   const { store } = useContext(Context);
 
-  // ✅ Local state for selection checkmarks
   const [localCategories, setLocalCategories] = useState({ ...categories });
   const [localDays, setLocalDays] = useState({ ...days });
 
-  // ✅ Sync local state when modal opens or categories/days change externally
   useEffect(() => {
     setLocalCategories({ ...categories });
     setLocalDays({ ...days });
   }, [isFilterModalOpen, categories, days]);
 
-  // ✅ Handle checkbox changes locally
   const toggleLocalCategory = (id) => {
     setLocalCategories((prev) => ({
       ...prev,
@@ -38,12 +35,6 @@ const Selection = ({
     }));
   };
 
-  const resetFilters = () => {
-    setTempCategories({});
-    setTempDays({});
-  };
-
-  // ✅ When Apply Filters is clicked, update global state properly
   const handleApplyLocalFilters = () => {
     Object.entries(localCategories).forEach(([id, value]) => {
       if (categories[id] !== value) handleCategoryChange(id);
@@ -78,7 +69,7 @@ const Selection = ({
                   label={`${option.label} (${
                     store.categoryCounts?.[option.id] || 0
                   })`}
-                  isChecked={!!localCategories[option.id]} // ✅ Ensure boolean value
+                  isChecked={!!localCategories[option.id]}
                   handleToggle={() => toggleLocalCategory(option.id)}
                 />
               ))}
@@ -94,7 +85,7 @@ const Selection = ({
                     label={`${option.label} (${
                       store.dayCounts?.[option.id] || 0
                     })`}
-                    isChecked={!!localDays[option.id]} // ✅ Ensure boolean value
+                    isChecked={!!localDays[option.id]}
                     handleToggle={() => toggleLocalDay(option.id)}
                   />
                 ))}
