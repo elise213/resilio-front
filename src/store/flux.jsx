@@ -1276,8 +1276,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
 
           setStore({
-            modalIsOpen: true, // Open the modal
-            selectedResource: resourceId, // Store selected resource
+            modalIsOpen: true,
+            selectedResource: resourceId,
           });
 
           return true;
@@ -1398,74 +1398,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // geoFindMe: async () => {
-      //   console.log("📡 Attempting to get user location...");
-
-      //   if (!navigator.geolocation) {
-      //     console.error("❌ Geolocation is not supported by this browser.");
-      //     alert("Geolocation is not supported by your browser.");
-      //     return;
-      //   }
-
-      //   // 🔵 Start Loading in Store
-      //   setStore({ loadingResults: true });
-
-      //   const successCallback = async (position) => {
-      //     const { latitude, longitude } = position.coords;
-      //     console.log(
-      //       `✅ Location retrieved: lat=${latitude}, lng=${longitude}`
-      //     );
-
-      //     const actions = getActions();
-
-      //     // Reset filters
-      //     actions.resetFilters();
-
-      //     // Update state with user's location
-      //     setStore({ userLocation: { lat: latitude, lng: longitude } });
-
-      //     // Fetch city data using these coordinates
-      //     await actions.updateCityStateFromCoords(latitude, longitude);
-
-      //     // 🔴 Stop Loading
-      //     setStore({ loadingResults: false });
-      //   };
-
-      //   const errorCallback = (error) => {
-      //     console.error("❌ Geolocation error:", error);
-
-      //     switch (error.code) {
-      //       case error.PERMISSION_DENIED:
-      //         console.warn("⚠️ User denied location access.");
-      //         alert("Please enable location services and try again.");
-      //         break;
-      //       case error.POSITION_UNAVAILABLE:
-      //         console.warn("⚠️ Location unavailable.");
-      //         alert("Location unavailable. Retrying in 3 seconds...");
-      //         setTimeout(() => getActions().geoFindMe(), 3000);
-      //         break;
-      //       case error.TIMEOUT:
-      //         console.warn("⚠️ Location request timed out.");
-      //         alert("Location request timed out. Try again.");
-      //         break;
-      //       default:
-      //         alert("Unable to retrieve your location.");
-      //     }
-
-      //     setStore({ loadingResults: false });
-      //   };
-
-      //   navigator.geolocation.getCurrentPosition(
-      //     successCallback,
-      //     errorCallback,
-      //     {
-      //       enableHighAccuracy: true,
-      //       timeout: 10000,
-      //       maximumAge: 0,
-      //     }
-      //   );
-      // },
-
       updateCityStateFromCoords: async (lat, lng) => {
         const actions = getActions();
         console.log(
@@ -1477,7 +1409,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           if (!data) {
             console.error("❌ No valid data received from fetchBounds.");
-            return null; // Return null instead of breaking
+            return null;
           }
 
           const { location, bounds } = data;
@@ -1492,13 +1424,12 @@ const getState = ({ getStore, getActions, setStore }) => {
               bounds: bounds,
             },
             userLocation: location,
-            mapCenter: location, // 📌 Ensure map moves!
+            mapCenter: location,
           }));
 
-          // 🌍 Fetch resources immediately after updating the city
           await actions.fetchResources(bounds);
 
-          return data; // Return the data for `geoFindMe`
+          return data;
         } catch (error) {
           console.error(
             "❌ Error in updateCityStateFromCoords:",
@@ -1516,84 +1447,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         );
       },
 
-      // updateCityStateFromCoords: async (lat, lng) => {
-      //   const actions = getActions();
-      //   console.log(
-      //     `📡 Fetching city and bounds for coordinates: lat=${lat}, lng=${lng}`
-      //   );
-
-      //   try {
-      //     const data = await actions.fetchBounds({ lat, lng });
-
-      //     if (!data) {
-      //       console.error("❌ No valid data received from fetchBounds.");
-      //       return null; // Return null instead of breaking
-      //     }
-
-      //     const { location, bounds } = data;
-
-      //     console.log("✅ Updating city state with:", location, bounds);
-
-      //     setStore((prevStore) => ({
-      //       ...prevStore,
-      //       city: {
-      //         ...prevStore.city,
-      //         center: location,
-      //         bounds: bounds,
-      //       },
-      //       userLocation: location,
-      //       mapCenter: location, // 📌 Ensure map moves!
-      //     }));
-
-      //     // 🌍 Fetch resources immediately after updating the city
-      //     await actions.fetchResources(bounds);
-
-      //     return data; // Return the data for `geoFindMe`
-      //   } catch (error) {
-      //     console.error(
-      //       "❌ Error in updateCityStateFromCoords:",
-      //       error.message
-      //     );
-      //     return null;
-      //   }
-      // },
-
-      // fetchBounds: async (query, isZip = false) => {
-      //   const store = getStore();
-      //   const apiKey = store.googleApiKey; // Ensure API key is stored in flux.js
-
-      //   let apiUrl = isZip
-      //     ? `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${apiKey}`
-      //     : `https://maps.googleapis.com/maps/api/geocode/json?latlng=${query.lat},${query.lng}&key=${apiKey}`;
-
-      //   console.log(`🌍 Fetching bounds from: ${apiUrl}`);
-
-      //   try {
-      //     const response = await fetch(apiUrl);
-      //     const data = await response.json();
-
-      //     if (!data || data.status !== "OK" || !data.results?.length) {
-      //       console.error("❌ No valid results found for query:", query);
-      //       return null;
-      //     }
-
-      //     const firstResult = data.results[0];
-      //     const location = firstResult.geometry?.location;
-      //     const bounds =
-      //       firstResult.geometry?.bounds || firstResult.geometry?.viewport;
-
-      //     if (!location || !bounds) {
-      //       console.error("❌ Missing location or bounds:", data);
-      //       return null;
-      //     }
-
-      //     console.log("✅ API Response:", { location, bounds });
-      //     return { location, bounds };
-      //   } catch (error) {
-      //     console.error("❌ Error fetching bounds:", error);
-      //     return null;
-      //   }
-      // },
       fetchBounds: async (query, isZip = false) => {
         console.log("🌍 Fetching bounds for:", query);
 
@@ -1861,14 +1714,25 @@ const getState = ({ getStore, getActions, setStore }) => {
         setUserCommentsAndRatings
       ) => {
         const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+
         try {
           const response = await fetch(
-            `${current_back_url}/api/comments-ratings/user/${userId}`
+            `${current_back_url}/api/comments-ratings/user/${userId}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
+
           if (!response.ok) {
             console.error("Failed to fetch user comments and ratings");
             return;
           }
+
           const data = await response.json();
           setUserCommentsAndRatings(data.comments);
         } catch (error) {
