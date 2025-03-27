@@ -19,6 +19,13 @@ const ResourceCard = (props) => {
     );
   }, []);
 
+  // useEffect(() => {
+  //   console.log(
+  //     "💾 ResourceCard loaded. Current store favorites:",
+  //     store.favorites
+  //   );
+  // }, []);
+
   useEffect(() => {
     actions.getAverageRating(props.item.id, setAverageRating2, setRatingCount2); // Pass both callbacks
   }, [props.item.id]);

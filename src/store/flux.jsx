@@ -281,7 +281,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             is_logged_in: false,
             authorizedUser: false,
           });
-          console.log("emptying store");
+          console.warn("🧨 Clearing store due to invalid session or token.");
           return false;
         }
 
@@ -578,6 +578,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           sessionStorage.setItem("avatar", parseInt(data.avatar));
           sessionStorage.setItem("favorites", JSON.stringify(fullFavorites));
           sessionStorage.setItem("user_id", data.user_id);
+          console.log("📦 Setting favorites in store on login:", fullFavorites);
 
           setStore({
             token: data.access_token,
@@ -1628,6 +1629,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       getUnapprovedComments: async () => {
         const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+        console.log("🪪 Token being sent:", token);
+
+        if (!token) {
+          console.warn("❌ No token found in sessionStorage");
+          return [];
+        }
+
         try {
           const response = await fetch(
             `${current_back_url}/api/unapproved_comments`,
@@ -1635,10 +1644,12 @@ const getState = ({ getStore, getActions, setStore }) => {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*", // <-- Ensures CORS compliance
+                Authorization: `Bearer ${token}`, // ✅ Send token
               },
             }
           );
+
+          console.log("📥 Status from /unapproved_comments:", response.status);
 
           if (!response.ok) {
             throw new Error(
@@ -1647,12 +1658,105 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          return data.comments;
+          console.log("✅ Received unapproved comments:", data);
+          return data.comments || [];
         } catch (error) {
-          console.error("Error fetching unapproved comments:", error);
+          console.error("🚨 Error fetching unapproved comments:", error);
           return [];
         }
       },
+
+      initializeSessionFromStorage: () => {
+        const token = sessionStorage.getItem("token");
+        const name = sessionStorage.getItem("name");
+        const is_org = sessionStorage.getItem("is_org");
+        const avatarID = sessionStorage.getItem("avatar");
+        const user_id = sessionStorage.getItem("user_id");
+
+        let favorites = [];
+        try {
+          const raw = sessionStorage.getItem("favorites");
+          favorites = JSON.parse(raw || "[]");
+          if (!Array.isArray(favorites)) throw new Error("Not an array");
+        } catch (err) {
+          console.warn(
+            "⚠️ Could not parse favorites from sessionStorage, resetting."
+          );
+          favorites = [];
+          sessionStorage.setItem("favorites", JSON.stringify([]));
+        }
+
+        if (token) {
+          setStore({
+            token,
+            name,
+            is_org,
+            avatarID,
+            user_id,
+            favorites,
+          });
+
+          console.log("📦 Session restored from sessionStorage:");
+          console.log({ token, name, is_org, avatarID, user_id, favorites });
+        } else {
+          console.warn("🔒 No token found in sessionStorage on init.");
+        }
+      },
+
+      // initializeSessionFromStorage: () => {
+      //   const token = sessionStorage.getItem("token");
+      //   const name = sessionStorage.getItem("name");
+      //   const is_org = sessionStorage.getItem("is_org");
+      //   const avatarID = sessionStorage.getItem("avatar");
+      //   const user_id = sessionStorage.getItem("user_id");
+      //   const favorites = JSON.parse(
+      //     sessionStorage.getItem("favorites") || "[]"
+      //   );
+
+      //   if (token) {
+      //     setStore({
+      //       token,
+      //       name,
+      //       is_org,
+      //       avatarID,
+      //       user_id,
+      //       favorites,
+      //     });
+
+      //     console.log("📦 Session restored from sessionStorage:");
+      //     console.log({ token, name, is_org, avatarID, user_id, favorites });
+      //   } else {
+      //     console.warn("🔒 No token found in sessionStorage on init.");
+      //   }
+      // },
+
+      // getUnapprovedComments: async () => {
+      //   const current_back_url = getStore().current_back_url;
+      //   try {
+      //     const response = await fetch(
+      //       `${current_back_url}/api/unapproved_comments`,
+      //       {
+      //         method: "GET",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //           "Access-Control-Allow-Origin": "*", // <-- Ensures CORS compliance
+      //         },
+      //       }
+      //     );
+
+      //     if (!response.ok) {
+      //       throw new Error(
+      //         `Failed to fetch unapproved comments. Status: ${response.status}`
+      //       );
+      //     }
+
+      //     const data = await response.json();
+      //     return data.comments;
+      //   } catch (error) {
+      //     console.error("Error fetching unapproved comments:", error);
+      //     return [];
+      //   }
+      // },
 
       submitRatingAndComment: async (
         resourceId,
@@ -1788,99 +1892,212 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      fetchFavorites: function () {
-        const current_back_url = getStore().current_back_url;
-        const token = sessionStorage.getItem("token");
-        if (token) {
-          fetch(`${current_back_url}/api/getFavorites`, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              const favorites = data.favorites.map((fav) => ({
-                ...fav.resource,
-              }));
-              sessionStorage.setItem("favorites", JSON.stringify(favorites));
+      // fetchFavorites: function () {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+      //   if (token) {
+      //     fetch(`${current_back_url}/api/getFavorites`, {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //       },
+      //     })
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         const favorites = data.favorites.map((fav) => ({
+      //           ...fav.resource,
+      //         }));
+      //         sessionStorage.setItem("favorites", JSON.stringify(favorites));
 
-              setStore({
-                favorites: favorites,
-              });
-            })
-            .catch((error) => {
-              console.error("Error fetching updated favorites:", error);
-            });
+      //         setStore({
+      //           favorites: favorites,
+      //         });
+      //       })
+      //       .catch((error) => {
+      //         console.error("Error fetching updated favorites:", error);
+      //       });
+      //   }
+      // },
+
+      fetchFavorites: async () => {
+        try {
+          const token = sessionStorage.getItem("token");
+          console.log("🪪 JWT token being sent:", token);
+
+          const response = await fetch(
+            "http://localhost:5000/api/getFavorites",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              credentials: "include",
+            }
+          );
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || "Failed to fetch favorites");
+          }
+
+          const data = await response.json();
+          if (!data.favorites) throw new Error("Invalid response format");
+
+          const flattenedFavorites = data.favorites.map((fav) => ({
+            ...fav.resource,
+          }));
+
+          setStore({ favorites: flattenedFavorites });
+          sessionStorage.setItem(
+            "favorites",
+            JSON.stringify(flattenedFavorites)
+          );
+        } catch (error) {
+          console.error("Error fetching updated favorites:", error);
         }
       },
 
-      addFavorite: function (resourceId) {
-        const current_back_url = getStore().current_back_url;
+      addFavorite: async (resourceId) => {
         const token = sessionStorage.getItem("token");
+        const current_back_url = getStore().current_back_url;
 
-        console.log("Adding favorite with resourceId:", resourceId);
-        console.log("Current Backend URL:", current_back_url);
-        console.log("Token:", token);
-
-        if (token) {
-          const opts = {
-            headers: {
-              Authorization: "Bearer " + token,
-              "Content-Type": "application/json",
-            },
+        try {
+          const response = await fetch(`${current_back_url}/api/addFavorite`, {
             method: "POST",
-            body: JSON.stringify({ resourceId }), // ✅ Fixed key
-          };
-
-          console.log("Request Options:", opts);
-          fetch(`${current_back_url}/api/addFavorite`, opts)
-            .then((response) => {
-              console.log("Response Status:", response.status);
-              if (response.status === 409) {
-                console.error("This item is already in your favorites.");
-                return Promise.reject(
-                  new Error("This item is already in your favorites.")
-                );
-              } else if (!response.ok) {
-                console.error("Failed to add favorite due to server error.");
-                return Promise.reject(new Error("Failed to add favorite"));
-              }
-              return response.json();
-            })
-            .then(() => {
-              console.log("Favorite added successfully!");
-              getActions().fetchFavorites();
-            })
-            .catch((error) => {
-              console.error("Error adding favorite:", error);
-            });
-        }
-      },
-
-      removeFavorite: function (resourceId) {
-        const current_back_url = getStore().current_back_url;
-        const token = sessionStorage.getItem("token");
-        if (token) {
-          const opts = {
             headers: {
               Authorization: "Bearer " + token,
               "Content-Type": "application/json",
             },
-            method: "DELETE",
             body: JSON.stringify({ resourceId }),
-          };
-          fetch(`${current_back_url}/api/removeFavorite`, opts)
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.message === "okay") {
-                getActions().fetchFavorites();
-              }
-            })
-            .catch((error) => console.error("Error removing favorite:", error));
+          });
+
+          if (!response.ok) {
+            const err = await response.json(); // get error body too
+            throw new Error("Failed to add favorite: " + JSON.stringify(err));
+          }
+
+          const data = await response.json(); // ← ✅ THIS is what you want
+
+          console.log("✅ Favorite added:", data);
+
+          const newFavorites = [...getStore().favorites, { id: resourceId }];
+          setStore({ favorites: newFavorites });
+          sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
+        } catch (err) {
+          console.error("Error adding favorite:", err);
         }
       },
+
+      // addFavorite: function (resourceId) {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+
+      //   console.log("Adding favorite with resourceId:", resourceId);
+      //   console.log("Current Backend URL:", current_back_url);
+      //   console.log("Token:", token);
+
+      //   if (token) {
+      //     const opts = {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //         "Content-Type": "application/json",
+      //       },
+      //       method: "POST",
+      //       body: JSON.stringify({ resourceId }), // ✅ Fixed key
+      //     };
+
+      //     console.log("Request Options:", opts);
+      //     fetch(`${current_back_url}/api/addFavorite`, opts)
+      //       .then((response) => {
+      //         console.log("Response Status:", response.status);
+      //         if (response.status === 409) {
+      //           console.error("This item is already in your favorites.");
+      //           return Promise.reject(
+      //             new Error("This item is already in your favorites.")
+      //           );
+      //         } else if (!response.ok) {
+      //           console.error("Failed to add favorite due to server error.");
+      //           return Promise.reject(new Error("Failed to add favorite"));
+      //         }
+      //         return response.json();
+      //       })
+      //       .then(() => {
+      //         console.log("Favorite added successfully!");
+      //         getActions().fetchFavorites();
+      //       })
+      //       .catch((error) => {
+      //         console.error("Error adding favorite:", error);
+      //       });
+      //   }
+      // },
+
+      removeFavorite: async function (resourceId) {
+        const current_back_url = getStore().current_back_url;
+        const token = sessionStorage.getItem("token");
+
+        if (!token) {
+          console.warn("No token found for removing favorite.");
+          return;
+        }
+
+        // ⏱️ Optimistically update UI
+        const updatedFavorites = getStore().favorites.filter(
+          (fav) => fav.id !== resourceId
+        );
+        setStore({ favorites: updatedFavorites });
+        sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+        try {
+          const response = await fetch(
+            `${current_back_url}/api/removeFavorite`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ resourceId }),
+            }
+          );
+
+          if (!response.ok) {
+            console.error("❌ Failed to remove favorite. Re-fetching...");
+            getActions().fetchFavorites(); // fallback to true state
+          } else {
+            console.log("🗑️ Favorite removed successfully.");
+          }
+        } catch (error) {
+          console.error("🚨 Network error removing favorite:", error);
+          getActions().fetchFavorites(); // fallback in case of error
+        }
+      },
+
+      // removeFavorite: function (resourceId) {
+      //   const current_back_url = getStore().current_back_url;
+      //   const token = sessionStorage.getItem("token");
+      //   if (token) {
+      //     const opts = {
+      //       headers: {
+      //         Authorization: "Bearer " + token,
+      //         "Content-Type": "application/json",
+      //       },
+      //       method: "DELETE",
+      //       body: JSON.stringify({ resourceId }),
+      //     };
+      //     fetch(`${current_back_url}/api/removeFavorite`, opts)
+      //       .then((response) => response.json())
+      //       .then((data) => {
+      //         if (data.message === "okay") {
+      //           getActions().fetchFavorites();
+      //         }
+      //       })
+      //       .catch((error) => console.error("Error removing favorite:", error));
+      //   }
+      // },
+
       initApp: function () {
         const actions = getActions();
+        actions.initializeSessionFromStorage();
         actions.getToken();
         actions.setSchedules();
         actions.checkLoginStatus();

@@ -15,6 +15,7 @@ import Modal from "../component/Modal";
 import Contact from "../component/Contact";
 import About from "../component/About";
 import { debounce } from "lodash";
+import Donation from "../component/Donation";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -353,46 +354,19 @@ const Home = () => {
   );
 
   useEffect(() => {
-    const checkAndReplenishSession = async () => {
-      const isSessionValid = await actions.checkLoginStatus();
-
-      if (isSessionValid) {
-        const favorites = sessionStorage.getItem("favorites");
-
-        if (favorites) {
-          try {
-            const parsedFavorites = JSON.parse(favorites);
-            if (Array.isArray(parsedFavorites)) {
-              setStore({
-                favorites: parsedFavorites,
-              });
-              console.log(
-                "Favorites replenished from session storage:",
-                parsedFavorites
-              );
-            } else {
-              throw new Error("Invalid favorites format in sessionStorage");
-            }
-          } catch (error) {
-            console.warn(
-              "⚠️ Invalid JSON in sessionStorage for favorites. Fetching from backend."
-            );
-            actions.fetchFavorites();
-          }
-        } else {
-          console.log(
-            "No favorites in session storage, fetching from backend..."
-          );
-          actions.fetchFavorites();
-        }
-      } else {
-        console.log(
-          "Session is not valid, favorites could not be replenished."
-        );
+    const favorites = sessionStorage.getItem("favorites");
+    if (favorites) {
+      try {
+        const parsed = JSON.parse(favorites);
+        setStore({ favorites: parsed });
+        console.log("✅ Rehydrated favorites from sessionStorage:", parsed);
+      } catch (err) {
+        console.warn("⚠️ Could not rehydrate favorites. Fetching instead.");
+        actions.fetchFavorites();
       }
-    };
-
-    checkAndReplenishSession();
+    } else {
+      actions.fetchFavorites();
+    }
   }, []);
 
   useEffect(() => {
@@ -494,28 +468,7 @@ const Home = () => {
 
       {store.donationModalIsOpen && (
         <>
-          <div className="new-modal donation">
-            <p
-              className="close-new-modal"
-              onClick={() => actions.closeDonationModal()}
-            >
-              <span className="material-symbols-outlined">arrow_back_ios</span>
-              Back to search
-            </p>
-
-            <iframe
-              title="Donation form powered by Zeffy"
-              style={{
-                position: "relative",
-                overflow: "hidden",
-                width: "100%",
-                height: "1200px",
-              }}
-              src="https://www.zeffy.com/en-US/embed/donation-form/cc33bc68-a2e1-4fd3-a1c6-88afd0cae253"
-              allowpaymentrequest
-              allowtransparency="true"
-            ></iframe>
-          </div>
+          <Donation />
         </>
       )}
 

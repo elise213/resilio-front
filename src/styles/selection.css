@@ -641,7 +641,7 @@ iframe {
 }
 
 .donation {
-  box-sizing: unset !important;
+  /* box-sizing: unset !important; */
   z-index: 9999;
 }
 

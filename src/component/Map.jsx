@@ -201,9 +201,6 @@ const Map = ({
     ? filteredResults2 || []
     : store.boundaryResults || [];
 
-  // console.log("📍 Filters active:", filtersAreActive);
-  // console.log("📍 Rendering", listToRender.length, "markers on the map.");
-
   return (
     <div className={`map-frame`}>
       <div

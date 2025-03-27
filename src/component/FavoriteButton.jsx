@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -6,66 +6,40 @@ import { Context } from "../store/appContext";
 
 const FavoriteButton = ({ type, resource }) => {
   const { store, actions } = useContext(Context);
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [favoritesLoaded, setFavoritesLoaded] = useState(true);
+  const [isFavorited, setIsFavorited] = useState(
+    store.favorites?.some((fav) => fav.id === resource?.id)
+  );
 
   useEffect(() => {
-    const checkIfFavorited = () => {
-      let parsedFavorites = [];
-
-      try {
-        const sessionFavorites = sessionStorage.getItem("favorites");
-
-        // If sessionFavorites is not null and valid JSON, parse it, otherwise default to an empty array
-        parsedFavorites = sessionFavorites ? JSON.parse(sessionFavorites) : [];
-
-        // If parsing failed or the data is malformed, reset favorites in sessionStorage
-        if (!Array.isArray(parsedFavorites)) {
-          throw new Error("Favorites is not an array");
-        }
-      } catch (err) {
-        console.warn(
-          "⚠️ Could not parse session favorites. Resetting to an empty array."
-        );
-        sessionStorage.setItem("favorites", JSON.stringify([])); // Reset to empty array
-        parsedFavorites = [];
-        setFavoritesLoaded(false); // Mark favorites as not loaded
-      }
-
-      const storeFavorited = store.favorites?.some(
-        (fav) => fav.id === resource.id
-      );
-      const sessionFavorited = parsedFavorites.some(
-        (fav) => fav.id === resource.id
-      );
-
-      setIsFavorited(storeFavorited || sessionFavorited);
-    };
-
-    checkIfFavorited();
-  }, [store.favorites, resource.id]);
+    setIsFavorited(store.favorites?.some((fav) => fav.id === resource?.id));
+  }, [store.favorites, resource?.id]);
 
   const handleToggleFavorite = async (event) => {
-    event.stopPropagation();
+    event.preventDefault(); // ✅ Prevent weird default actions
+    event.stopPropagation(); // ✅ Stop bubbling to parent click events
 
     if (isFavorited) {
       console.log("💔 Removing favorite:", resource.id);
       await actions.removeFavorite(resource.id);
+      setIsFavorited(false);
     } else {
       console.log("🤍 Adding favorite:", resource.id);
       await actions.addFavorite(resource.id);
+      setIsFavorited(true);
     }
-
-    setIsFavorited((prev) => !prev);
   };
 
-  // If favorites data is not loaded properly, don't render anything
-  if (!favoritesLoaded) {
-    return null;
-  }
+  useEffect(() => {
+    console.log("🧪 resource passed to FavoriteButton:", resource);
+  }, [resource]);
 
   return (
-    <div className={`faveButton-div ${type}`} onClick={handleToggleFavorite}>
+    <button
+      type="button"
+      className={`faveButton-div ${type}`}
+      onClick={handleToggleFavorite}
+      style={{ border: "none", backgroundColor: "transparent" }}
+    >
       <Tooltip
         title={
           isFavorited
@@ -74,14 +48,13 @@ const FavoriteButton = ({ type, resource }) => {
         }
         arrow
       >
-        {/* Only the icon is wrapped in the Tooltip */}
         {isFavorited ? (
           <BookmarkIcon fontSize="medium" />
         ) : (
           <BookmarkBorderIcon fontSize="medium" />
         )}
       </Tooltip>
-    </div>
+    </button>
   );
 };
 
