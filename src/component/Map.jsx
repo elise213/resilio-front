@@ -4,6 +4,7 @@ import GoogleMapReact from "google-map-react";
 import Styles from "../styles/map.css";
 import ResourceCard from "./ResourceCard";
 import { debounce } from "lodash";
+import { useIsVisible } from "../hooks/isVisible";
 
 const Map = ({
   layout,
@@ -24,6 +25,16 @@ const Map = ({
   const mapsInstanceRef = useRef(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapHasLoaded, setMapHasLoaded] = useState(false);
+
+  const isMapVisible = useIsVisible(mapContainerRef);
+  useEffect(() => {
+    if (isMapVisible && mapInstanceRef.current && window.google?.maps) {
+      console.log("👁 Map is visible — forcing resize...");
+      setTimeout(() => {
+        window.google.maps.event.trigger(mapInstanceRef.current, "resize");
+      }, 200);
+    }
+  }, [isMapVisible]);
 
   useEffect(() => {
     if (mapHasLoaded && mapInstanceRef.current) {
