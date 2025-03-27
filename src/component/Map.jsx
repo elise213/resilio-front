@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/map.css";
 import ResourceCard from "./ResourceCard";
+import { debounce } from "lodash";
 
 const Map = ({
   layout,
@@ -21,26 +22,70 @@ const Map = ({
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const mapsInstanceRef = useRef(null);
+  const [mapReady, setMapReady] = useState(false);
+  const [mapHasLoaded, setMapHasLoaded] = useState(false);
 
   useEffect(() => {
-    const list =
-      filteredResults2?.length > 0 ? filteredResults2 : store.boundaryResults;
-    console.log("🗺 Total markers rendering:", list.length);
-    if (list.length > 0) {
-      console.log(
-        "✅ First marker example:",
-        list[0]?.name,
-        list[0]?.latitude,
-        list[0]?.longitude
-      );
+    if (mapHasLoaded && mapInstanceRef.current) {
+      console.log("🛠 Forcing map resize...");
+      setTimeout(() => {
+        if (window.google?.maps) {
+          window.google.maps.event.trigger(mapInstanceRef.current, "resize");
+        }
+
+        // google.maps.event.trigger(mapInstanceRef.current, "resize");
+
+        // Also re-center after resize
+        if (mapCenter) {
+          mapInstanceRef.current.setCenter(
+            new mapsInstanceRef.current.LatLng(mapCenter.lat, mapCenter.lng)
+          );
+        }
+      }, 300);
     }
-  }, [filteredResults2, store.boundaryResults]);
+  }, [mapHasLoaded, layout, mapCenter?.lat, mapCenter?.lng]);
 
   useEffect(() => {
-    const toLog =
-      filteredResults2?.length > 0 ? filteredResults2 : store.boundaryResults;
-    console.log("🗺 Rendering markers for:", toLog.length, "items");
-  }, [filteredResults2, store.boundaryResults]);
+    if (mapContainerRef.current && city?.center?.lat && city?.center?.lng) {
+      setMapReady(true);
+    }
+  }, [layout, city?.center?.lat, city?.center?.lng, mapContainerRef.current]);
+
+  useEffect(() => {
+    if (mapReady && mapInstanceRef.current) {
+      setTimeout(() => {
+        window.google?.maps?.event?.trigger(mapInstanceRef.current, "resize");
+      }, 200);
+    }
+  }, [mapReady]);
+
+  useEffect(() => {
+    if (
+      mapHasLoaded &&
+      mapInstanceRef.current &&
+      mapsInstanceRef.current &&
+      store.boundaryResults?.length === 0
+    ) {
+      const bounds = mapInstanceRef.current.getBounds();
+      if (!bounds) return;
+
+      const ne = bounds.getNorthEast();
+      const sw = bounds.getSouthWest();
+      const center = mapInstanceRef.current.getCenter();
+
+      const newBounds = {
+        ne: { lat: ne.lat(), lng: ne.lng() },
+        sw: { lat: sw.lat(), lng: sw.lng() },
+      };
+
+      console.log(
+        "📦 Fallback initial fetch triggered with bounds:",
+        newBounds
+      );
+
+      actions.setBoundaryResults(newBounds, categories, days);
+    }
+  }, [mapHasLoaded]);
 
   const Marker = React.memo(
     ({ id, result, markerColor = "red" }) => {
@@ -105,7 +150,6 @@ const Map = ({
                 opacity: 1,
                 pointerEvents: "auto",
                 transform: "translateY(0)",
-                zIndex: 1001,
               }}
             >
               <ResourceCard key={result.id} item={result} />
@@ -130,31 +174,31 @@ const Map = ({
     scrollwheel: false,
   });
 
-  const handleApiLoaded = ({ map, maps }) => {
-    console.log("✅ Google Maps API Loaded!");
-    mapInstanceRef.current = map;
-    mapsInstanceRef.current = maps;
-
-    actions.setMapInstance(map);
-    actions.setMapsInstance(maps);
-
-    if (userLocation) {
-      console.log("📍 Moving map to user location:", userLocation);
-      map.setCenter(new maps.LatLng(userLocation.lat, userLocation.lng));
-      map.setZoom(13);
-    }
-  };
-
   useEffect(() => {
-    if (!mapInstanceRef.current || !mapsInstanceRef.current || !userLocation) {
-      console.warn(
-        "⚠️ Map instance or user location is missing. Skipping movement."
-      );
+    console.log("💡 Checking map dependencies:", {
+      mapReady,
+      mapInstance: !!mapInstanceRef.current,
+      mapsInstance: !!mapsInstanceRef.current,
+      userLocation,
+    });
+
+    if (
+      !mapReady ||
+      !mapInstanceRef.current ||
+      !mapsInstanceRef.current ||
+      !userLocation
+    ) {
+      console.warn("⚠️ Waiting for map to be ready and dependencies to exist.");
+      return;
+    }
+    if (!google.maps?.geometry) {
+      console.warn("Google Maps Geometry library is missing");
       return;
     }
 
     const map = mapInstanceRef.current;
     const maps = mapsInstanceRef.current;
+
     const currentCenter = map.getCenter();
     const distance = google.maps.geometry.spherical.computeDistanceBetween(
       currentCenter,
@@ -162,28 +206,76 @@ const Map = ({
     );
 
     if (distance < 500) {
-      console.log(
-        "🟢 Map is already close to user location. Skipping movement."
-      );
+      console.log("🟢 Map already centered. Skipping movement.");
       return;
     }
-    console.log("✅ Moving map to user location:", userLocation);
+
+    console.log("📍 Panning to user location...");
     map.setCenter(new maps.LatLng(userLocation.lat, userLocation.lng));
-  }, [userLocation]);
+    map.setZoom(13);
+  }, [userLocation, mapReady]);
+
+  // useEffect(() => {
+  //   if (!store.modalIsOpen) {
+  //     setTimeout(() => {
+  //       if (mapInstanceRef.current) {
+  //         google.maps.event.trigger(mapInstanceRef.current, "resize");
+  //       }
+  //     }, 300); // Give it a tiny bit of time after modal closes
+  //   }
+  // }, [store.modalIsOpen]);
+
+  const handleApiLoaded = ({ map, maps }) => {
+    if (!map || !maps) {
+      console.error("❌ Map or Maps not loaded!");
+      return;
+    }
+
+    console.log("✅ Google Maps API Loaded");
+
+    mapInstanceRef.current = map;
+    mapsInstanceRef.current = maps;
+    actions.setMapInstance(map);
+    actions.setMapsInstance(maps);
+    setMapHasLoaded(true);
+  };
 
   useEffect(() => {
-    if (!mapInstanceRef.current || !mapsInstanceRef.current || !mapCenter) {
-      console.warn("⚠️ Map instance or mapCenter is missing. Waiting...");
+    if (!mapInstanceRef.current || !mapsInstanceRef.current || !mapCenter)
       return;
-    }
+
     const map = mapInstanceRef.current;
-    console.log("✅ Moving map to:", mapCenter);
-    const currentZoom = map.getZoom();
-    map.setCenter(
-      new mapsInstanceRef.current.LatLng(mapCenter.lat, mapCenter.lng)
+    const current = map.getCenter();
+    const maps = mapsInstanceRef.current;
+    const newLatLng = new maps.LatLng(mapCenter.lat, mapCenter.lng);
+
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(
+      current,
+      newLatLng
     );
-    map.setZoom(currentZoom);
+
+    if (distance < 10) return;
+
+    map.setCenter(newLatLng);
   }, [mapCenter]);
+
+  useEffect(() => {
+    return () => {
+      mapInstanceRef.current = null;
+      mapsInstanceRef.current = null;
+      setMapReady(false); // clean slate
+      console.log("🧹 Cleaned up map refs on unmount");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mapInstanceRef.current && window.google?.maps) {
+      setTimeout(() => {
+        console.log("🧽 Forcing map redraw...");
+        window.google.maps.event.trigger(mapInstanceRef.current, "resize");
+      }, 300);
+    }
+  }, [layout]);
 
   const defaultCenter = useMemo(
     () => ({
@@ -191,6 +283,11 @@ const Map = ({
       lng: city?.center?.lng || -118.2437,
     }),
     [city.center]
+  );
+
+  const debouncedHandleBoundsChange = useMemo(
+    () => debounce(handleBoundsChange, 1000), // or even 1500ms
+    [handleBoundsChange]
   );
 
   const filtersAreActive =
@@ -204,40 +301,44 @@ const Map = ({
   return (
     <div className={`map-frame`}>
       <div
+        key={`${layout}`}
         ref={mapContainerRef}
         className={`map-container ${layout}map`}
-        style={{ height: "100vh", width: "calc(100vw - 350px)" }}
+        style={{ height: "100%", width: "100%" }}
       >
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey }}
-          center={mapCenter || defaultCenter}
-          zoom={mapZoom}
-          defaultZoom={11}
-          options={createMapOptions}
-          onChange={handleBoundsChange}
-          onGoogleApiLoaded={handleApiLoaded}
-          yesIWantToUseGoogleMapApiInternals={true}
-        >
-          {listToRender.map((result, i) => (
-            <Marker
-              lat={result.latitude}
-              lng={result.longitude}
-              text={result.name}
-              key={result.id || i}
-              id={result.id}
-              result={result}
-            />
-          ))}
-
-          {userLocation && (
-            <Marker
-              lat={userLocation.lat}
-              lng={userLocation.lng}
-              text="You are here!"
-              markerColor="maroon"
-            />
-          )}
-        </GoogleMapReact>
+        {mapCenter?.lat && (
+          <GoogleMapReact
+            key={`map-${layout}-${mapCenter?.lat}-${mapCenter?.lng}-${mapZoom}-${mapReady}`}
+            bootstrapURLKeys={{ key: apiKey }}
+            center={mapCenter}
+            zoom={mapZoom}
+            defaultZoom={11}
+            options={createMapOptions}
+            // onChange={handleBoundsChange}
+            onIdle={debouncedHandleBoundsChange}
+            onGoogleApiLoaded={handleApiLoaded}
+            yesIWantToUseGoogleMapApiInternals={true}
+          >
+            {listToRender.map((result, i) => (
+              <Marker
+                lat={result.latitude}
+                lng={result.longitude}
+                text={result.name}
+                key={result.id || i}
+                id={result.id}
+                result={result}
+              />
+            ))}
+            {userLocation && (
+              <Marker
+                lat={userLocation.lat}
+                lng={userLocation.lng}
+                text="You are here!"
+                markerColor="maroon"
+              />
+            )}
+          </GoogleMapReact>
+        )}
       </div>
     </div>
   );

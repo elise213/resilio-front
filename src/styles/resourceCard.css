@@ -8,16 +8,13 @@
   position: relative;
   user-select: none;
   background-color: white;
-  transition: 0.2s;
   overflow: hidden;
   margin: 10px 0px;
-  border-width: 1px;
-  border-style: solid;
   border: 1px solid gray;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   max-width: 300px;
   width: 100%;
-  z-index: 9999999;
+  z-index: 99 !important;
   border-radius: 4px;
 }
 

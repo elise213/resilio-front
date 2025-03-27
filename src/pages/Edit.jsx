@@ -74,11 +74,10 @@ const Edit = () => {
             title: "Access Denied",
             text: "You are not authorized to edit this resource.",
           });
-          navigate("/"); // Redirect to home or another page
+          navigate("/");
           return;
         }
 
-        // Initialize formData with resource data and handle nulls
         setFormData({
           ...initialFormData,
           ...resourceData,
@@ -152,6 +151,8 @@ const Edit = () => {
       const success = await actions.editResource(id, formData, navigate);
       if (success) {
         actions.closeModal();
+        navigate("/");
+        // return;
       }
     } catch (error) {
       console.error("🚨 Error updating the resource:", error);
@@ -255,41 +256,44 @@ const Edit = () => {
             />
           </div>
           <div className="input-group">
-            <label>Assign Users (Enter User ID)</label>
+            <label>Authorized Users</label>
             <input
+              className="geo-input"
               type="number"
               placeholder="Enter User ID"
               value={formData.newUserId || ""}
               onChange={(e) => handleChange("newUserId", e.target.value)}
             />
-            <button
-              style={{ marginLeft: "15px" }}
-              type="button"
-              onClick={handleAddUserId}
-            >
-              Add User ID
-            </button>
           </div>
+          <button
+            style={{ marginLeft: "15px" }}
+            type="button"
+            onClick={handleAddUserId}
+          >
+            Add User ID
+          </button>
 
           <div className="assigned-users">
-            <p>Assigned Users:</p>
-            <ul>
-              {formData.user_ids.length > 0 ? (
-                formData.user_ids.map((userId) => (
-                  <li key={userId}>
-                    {userId}{" "}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveUserId(userId)}
-                    >
-                      Remove
-                    </button>
-                  </li>
-                ))
-              ) : (
-                <p>No users assigned.</p>
-              )}
-            </ul>
+            {formData.user_ids.length > 0 ? (
+              <>
+                <p>Assigned Users:</p>
+                <ul>
+                  {formData.user_ids.map((userId) => (
+                    <li key={userId}>
+                      {userId}{" "}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveUserId(userId)}
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p>No users assigned.</p>
+            )}
           </div>
 
           {/* <div className="input-group">
@@ -410,8 +414,9 @@ const Edit = () => {
           {daysOfWeek.map((day) => (
             <div key={day} className="input-group time-group">
               <label htmlFor={`${day}Start`}>
-                {day.charAt(0).toUpperCase() + day.slice(1)} from{" "}
+                {day.charAt(0).toUpperCase() + day.slice(1)}
               </label>
+              <span>from </span>
               <input
                 className="geo-input time-input"
                 type="time"
@@ -432,17 +437,6 @@ const Edit = () => {
               <button
                 className="clear-button"
                 type="button"
-                // style={{
-                //   width: "100px",
-                //   backgroundColor: "pink",
-                //   borderColor: "red",
-                //   justifySelf: "flex-end",
-                //   alignSelf: "flex-end",
-                //   margin: "5px 0",
-                //   borderRadius: "4px",
-                //   fontSize: "12px",
-
-                // }}
                 onClick={() => {
                   handleTimeChange(day, "start", null);
                   handleTimeChange(day, "end", null);

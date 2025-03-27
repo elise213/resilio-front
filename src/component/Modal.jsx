@@ -9,9 +9,7 @@ import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Login from "./Login";
-import FavoriteButton from "./FavoriteButton";
-import { Menu, MenuItem, IconButton, Tooltip, Icon } from "@mui/material";
+import { Tooltip, Icon } from "@mui/material";
 
 const Modal = ({}) => {
   const { store, actions } = useContext(Context);
@@ -20,7 +18,6 @@ const Modal = ({}) => {
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCount, setRatingCount] = useState(0);
   const [showRating, setShowRating] = useState(false);
-  const apiKey = import.meta.env.VITE_GOOGLE;
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -225,7 +222,6 @@ const Modal = ({}) => {
           isLoggedIn={isLoggedIn}
         />
       </div>
-      {/* </div> */}
 
       {comments.length > 0 && (
         <div className="comments-display">
@@ -240,7 +236,6 @@ const Modal = ({}) => {
             let isLiked = comment.likes?.some(
               (like) => like.user_id === userIdFromSession
             );
-            console.log("isliked", isLiked);
             return (
               <div key={comment.comment_id} className="comment-div">
                 <div className="comment-info">
@@ -260,7 +255,6 @@ const Modal = ({}) => {
                     ""
                   )}
                   <Rating
-                    // style={{ marginTop: "20px" }}
                     name="read-only"
                     value={comment.rating_value}
                     precision={0.5}

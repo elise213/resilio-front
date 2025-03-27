@@ -83,6 +83,7 @@
   align-self: flex-end;
   bottom: 5px;
   color: rgb(254, 198, 94);
+  padding: 0;
 }
 
 .card-favorite {

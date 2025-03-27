@@ -4,11 +4,12 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { Context } from "../store/appContext";
 import Sidebar from "../component/Sidebar";
 import Map from "../component/Map";
-import ErrorBoundary from "../component/ErrorBoundary";
+import ErrorBoundary from "../hooks/ErrorBoundary";
 import Styles from "../styles/home.css";
 import Selection from "../component/Selection";
 import Modal from "../component/Modal";
@@ -23,6 +24,17 @@ const Home = () => {
   const apiKey = import.meta.env.VITE_GOOGLE;
   const [loadingLocation, setLoadingLocation] = useState(false);
   const [mapZoom, setMapZoom] = useState(11);
+  // Top of file
+  const callHistory = useRef([]);
+
+  const isRateLimited = () => {
+    const now = Date.now();
+    // Keep only calls within the last minute
+    callHistory.current = callHistory.current.filter((t) => now - t < 60000);
+    if (callHistory.current.length >= 10) return true;
+    callHistory.current.push(now);
+    return false;
+  };
 
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
   // const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
@@ -31,6 +43,14 @@ const Home = () => {
   //   }, {});
   const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
+
+  const [city, setCity] = useState(
+    () =>
+      store.austin?.[0] || {
+        center: { lat: 34.0522, lng: -118.2437 }, // default to LA
+      }
+  );
+  const [mapCenter, setMapCenter] = useState(city.center);
 
   const [categories, setCategories] = useState(
     store.CATEGORY_OPTIONS.reduce(
@@ -48,9 +68,9 @@ const Home = () => {
   const [zipInput, setZipInput] = useState("");
   const [layout, setLayout] = useState("fullscreen-sidebar");
   const [lastBounds, setLastBounds] = useState(null);
-  const INITIAL_CITY_STATE = store.austin[0];
-  const [city, setCity] = useState(INITIAL_CITY_STATE);
-  const [mapCenter, setMapCenter] = useState(city.center);
+  // const INITIAL_CITY_STATE = store.austin[0];
+  // const [city, setCity] = useState(INITIAL_CITY_STATE);
+  // const [mapCenter, setMapCenter] = useState(city.center);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [filteredResults2, setFilteredResults2] = useState(
     store.boundaryResults
@@ -73,15 +93,26 @@ const Home = () => {
     console.log("✅ Categories and days reset.");
   };
 
+  useEffect(() => {
+    if (store.austin?.[0]) {
+      setCity(store.austin[0]);
+      setMapCenter(store.austin[0].center);
+    }
+  }, [store.austin]);
+
   const handleCategoryChange = (categoryId) => {
     setCategories((prevCategories) => {
       const newCategories = {
         ...prevCategories,
         [categoryId]: !prevCategories[categoryId],
       };
-      return JSON.stringify(newCategories) === JSON.stringify(prevCategories)
-        ? prevCategories
-        : newCategories;
+      // return JSON.stringify(newCategories) === JSON.stringify(prevCategories)
+      //   ? prevCategories
+      //   : newCategories;
+      const isSame = Object.keys(prevCategories).every(
+        (key) => prevCategories[key] === newCategories[key]
+      );
+      return isSame ? prevCategories : newCategories;
     });
   };
 
@@ -328,30 +359,50 @@ const Home = () => {
 
   const handleBoundsChange = useCallback(
     debounce(({ bounds, center, zoom }) => {
-      if (!bounds || !bounds.ne || !bounds.sw) {
-        console.error("❌ Invalid bounds received:", bounds);
-        return;
-      }
+      if (!bounds || !bounds.ne || !bounds.sw) return;
+
+      const latChanged = Math.abs(center.lat - mapCenter.lat) > 0.0001;
+      const lngChanged = Math.abs(center.lng - mapCenter.lng) > 0.0001;
+      const zoomChanged = zoom !== mapZoom;
 
       const newBounds = {
         ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
         sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
       };
+      if (isRateLimited()) {
+        console.warn(
+          "⛔ Rate limit hit: skipping map update to save API calls."
+        );
+        return;
+      }
 
-      console.log("📏 Sending corrected bounds:", newBounds);
+      const isFirstCall = !lastBounds;
 
-      if (lastBounds && boundsAreSimilar(newBounds, lastBounds)) {
-        console.log("🛑 Bounds change is too small. Skipping fetch.");
+      if (
+        !isFirstCall &&
+        boundsAreSimilar(newBounds, lastBounds) &&
+        !latChanged &&
+        !lngChanged &&
+        !zoomChanged
+      ) {
+        console.log(
+          "🛑 Bounds, center, and zoom are basically the same. Skipping."
+        );
         return;
       }
 
       setLastBounds(newBounds);
-      setMapCenter(center);
-      setMapZoom(zoom);
+      if (latChanged || lngChanged) setMapCenter(center);
+      if (zoomChanged) setMapZoom(zoom);
       actions.setBoundaryResults(newBounds, categories, days);
     }, 1000),
-    [lastBounds]
+    [lastBounds, mapCenter, mapZoom, categories, days]
   );
+
+  const mapCenterRef = useRef(mapCenter);
+  useEffect(() => {
+    mapCenterRef.current = mapCenter;
+  }, [mapCenter]);
 
   useEffect(() => {
     const favorites = sessionStorage.getItem("favorites");
@@ -368,10 +419,6 @@ const Home = () => {
       actions.fetchFavorites();
     }
   }, []);
-
-  useEffect(() => {
-    console.log("store favorites", store.favorites);
-  }, [store.favorites]);
 
   return (
     <>

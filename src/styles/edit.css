@@ -11,7 +11,7 @@
   width: 100%;
   justify-self: center;
   align-self: center;
-  height: 100%;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,9 +41,9 @@ button {
 
 /* Input group */
 .input-group {
-  width: 100%;
+  /* width: 100%; */
   max-width: 700px;
-  margin: 0 0 15px 0;
+  margin: 10px 0 15px 0;
 }
 
 .input-group label {
@@ -65,10 +65,22 @@ button {
 }
 
 /* Inputs */
+
+.geo-input {
+  padding: 3px;
+  width: 300px;
+}
+
+.time-input {
+  padding: 0;
+  margin-bottom: 5px;
+  width: 150px;
+}
+
 .geo-input,
 .time-input {
-  width: 100%;
-  padding: 10px;
+  max-height: 100%;
+  max-width: 100%;
   border: 1px solid #ccc;
   border-radius: 6px;
   transition: border-color 0.3s;
@@ -97,7 +109,7 @@ button {
 }
 
 .checkbox-group input[type="checkbox"] {
-  accent-color: var(--marascoral); /* Red-orange accent color */
+  accent-color: var(--marascorallight);
   width: 18px;
   height: 18px;
   cursor: pointer;
@@ -105,9 +117,7 @@ button {
 
 /*  and Update buttons */
 .delete-button {
-  /* color: white; */
   border: none;
-  /* background-color: red; */
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
@@ -162,16 +172,14 @@ button {
 /* Media queries */
 @media screen and (max-width: 700px) {
   .form-container {
-    width: 90%;
-    height: 100vh;
     padding: 15px;
   }
 
-  .geo-input,
+  /* .geo-input,
   .time-input {
     font-size: 14px;
     padding: 8px;
-  }
+  } */
 
   .update-button {
     font-size: 16px;

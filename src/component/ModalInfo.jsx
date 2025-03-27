@@ -193,7 +193,11 @@ export const ModalInfo = ({
                 : "Address unavailable"}
             </span>
             <span
-              style={{ cursor: "pointer", marginLeft: "10px" }}
+              style={{
+                cursor: "pointer",
+                marginLeft: "10px",
+                alignSelf: "center",
+              }}
               onClick={handleCopy}
               className="material-symbols-outlined"
             >

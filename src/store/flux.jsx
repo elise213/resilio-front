@@ -19,7 +19,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       lastFetchedBounds: null,
       mapsInstance: null,
       loadingLocation: false,
-      loadingResults: false,
+      loadingResults: true,
       selectedCategories: null,
       selectedDays: null,
       selectedResource: null,
@@ -263,14 +263,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         const token = sessionStorage.getItem("token");
         const user_id = sessionStorage.getItem("user_id");
         const current_back_url = getStore().current_back_url;
-
-        // If there's no token or user_id, try to automatically refresh the session (attempt silent login or session refresh)
         if (!token || !user_id) {
           console.warn(
             "No token or user ID found, attempting to refresh session."
           );
-
-          // If no valid session, reset store and session
           setStore({
             token: null,
             user_id: null,
@@ -351,143 +347,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // checkLoginStatus: async () => {
-      //   console.log("called check login status!");
-      //   const token = sessionStorage.getItem("token");
-      //   const user_id = sessionStorage.getItem("user_id");
-      //   const current_back_url = getStore().current_back_url;
-
-      //   if (!token || !user_id) {
-      //     console.warn("No token or user ID found, logging out user.");
-      //     setStore({
-      //       token: null,
-      //       user_id: null,
-      //       name: null,
-      //       is_org: null,
-      //       avatarID: null,
-      //       favorites: [],
-      //       is_logged_in: false,
-      //       authorizedUser: false,
-      //     });
-      //     console.log("emptying store");
-      //     return false;
-      //   }
-
-      //   try {
-      //     console.log(`📡 Fetching user info for ID: ${user_id}`);
-      //     const response = await fetch(
-      //       `${current_back_url}/api/user/${user_id}`,
-      //       {
-      //         method: "GET",
-      //         headers: { Authorization: `Bearer ${token}` },
-      //       }
-      //     );
-
-      //     console.log("📥 Response Status:", response.status);
-
-      //     if (!response.ok) {
-      //       console.warn("Invalid token or user not found, logging out user.");
-      //       // getActions().logout();
-      //       return false;
-      //     }
-
-      //     const data = await response.json();
-      //     console.log("✅ User info fetched successfully:", data);
-
-      //     // Save user info in session storage
-      //     sessionStorage.setItem("user_id", data.id);
-      //     sessionStorage.setItem("name", data.name);
-      //     sessionStorage.setItem("is_org", data.is_org);
-      //     sessionStorage.setItem("avatar", data.avatarID);
-      //     sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
-      //     sessionStorage.setItem("is_logged_in", true);
-
-      //     // Update store with user details
-      //     setStore({
-      //       user_id: data.id,
-      //       name: data.name,
-      //       is_org: data.is_org,
-      //       avatarID: data.avatarID,
-      //       favorites: data.favorites || [],
-      //       is_logged_in: true,
-      //     });
-
-      //     // ✅ Check if user is authorized
-      //     const store = getStore();
-      //     if (store.AuthorizedUserIds.includes(data.id)) {
-      //       setStore({ authorizedUser: true });
-      //       console.log("✅ User is authorized.");
-      //     } else {
-      //       setStore({ authorizedUser: false });
-      //       console.log("❌ User is NOT authorized.");
-      //     }
-
-      //     return true;
-      //   } catch (error) {
-      //     console.error("🚨 Error checking login status:", error);
-      //     return false;
-      //   }
-      // },
-
-      // checkLoginStatus: async () => {
-      //   const token = sessionStorage.getItem("token");
-      //   const current_back_url = getStore().current_back_url;
-
-      //   if (!token) {
-      //     // No token found, user is not logged in
-      //     setStore({
-      //       token: null,
-      //       user_id: null,
-      //       name: null,
-      //       is_org: null,
-      //       avatarID: null,
-      //       favorites: [],
-      //       is_logged_in: false,
-      //     });
-      //     return false;
-      //   }
-
-      //   try {
-      //     const response = await fetch(`${current_back_url}/api/user-info`, {
-      //       method: "GET",
-      //       headers: { Authorization: `Bearer ${token}` },
-      //     });
-
-      //     if (response.status !== 200) {
-      //       console.warn("Invalid token, logging out user.");
-      //       getActions().logout();
-      //       return false;
-      //     }
-
-      //     const data = await response.json();
-
-      //     // Save user info in session storage
-      //     sessionStorage.setItem("user_id", data.user_id);
-      //     sessionStorage.setItem("name", data.name);
-      //     sessionStorage.setItem("is_org", data.is_org);
-      //     sessionStorage.setItem("avatar", data.avatarID);
-      //     sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
-      //     sessionStorage.setItem("is_logged_in", true);
-
-      //     // Update store with user details
-      //     setStore({
-      //       // token: token,
-      //       user_id: data.user_id,
-      //       name: data.name,
-      //       is_org: data.is_org,
-      //       avatarID: data.avatarID,
-      //       favorites: data.favorites || [],
-      //       is_logged_in: true,
-      //     });
-
-      //     return true;
-      //   } catch (error) {
-      //     console.error("Error checking login status:", error);
-      //     // getActions().logout();
-      //     return false;
-      //   }
-      // },
-
       processCategory: (category) => {
         let categories = category;
         if (typeof categories === "string" && categories.includes(",")) {
@@ -543,6 +402,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       login: async (email, password) => {
+        const store = getStore();
         try {
           const current_back_url = getStore().current_back_url;
           const opts = {
@@ -588,6 +448,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             favorites: fullFavorites,
             user_id: data.user_id,
           });
+
+          if (store.AuthorizedUserIds.includes(data.user_id)) {
+            setStore({ authorizedUser: true });
+            sessionStorage.setItem("authorizedUser", "true");
+            console.log("✅ User is authorized.");
+          } else {
+            setStore({ authorizedUser: false });
+            sessionStorage.setItem("authorizedUser", "false");
+            console.log("❌ User is NOT authorized.");
+          }
 
           Swal.fire({
             icon: "success",
@@ -930,7 +800,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             outer.swLng <= inner.sw.lng
           );
         };
-
+        console.log("set boundary results called");
         const lastBounds = store.lastFetchedBounds;
         if (!bounds || !bounds.ne || !bounds.sw) {
           console.error("❌ Error: Invalid bounds received.");
@@ -1649,8 +1519,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
 
-          console.log("📥 Status from /unapproved_comments:", response.status);
-
           if (!response.ok) {
             throw new Error(
               `Failed to fetch unapproved comments. Status: ${response.status}`
@@ -1658,7 +1526,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          console.log("✅ Received unapproved comments:", data);
           return data.comments || [];
         } catch (error) {
           console.error("🚨 Error fetching unapproved comments:", error);
@@ -1697,66 +1564,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
 
           console.log("📦 Session restored from sessionStorage:");
-          console.log({ token, name, is_org, avatarID, user_id, favorites });
         } else {
           console.warn("🔒 No token found in sessionStorage on init.");
         }
       },
-
-      // initializeSessionFromStorage: () => {
-      //   const token = sessionStorage.getItem("token");
-      //   const name = sessionStorage.getItem("name");
-      //   const is_org = sessionStorage.getItem("is_org");
-      //   const avatarID = sessionStorage.getItem("avatar");
-      //   const user_id = sessionStorage.getItem("user_id");
-      //   const favorites = JSON.parse(
-      //     sessionStorage.getItem("favorites") || "[]"
-      //   );
-
-      //   if (token) {
-      //     setStore({
-      //       token,
-      //       name,
-      //       is_org,
-      //       avatarID,
-      //       user_id,
-      //       favorites,
-      //     });
-
-      //     console.log("📦 Session restored from sessionStorage:");
-      //     console.log({ token, name, is_org, avatarID, user_id, favorites });
-      //   } else {
-      //     console.warn("🔒 No token found in sessionStorage on init.");
-      //   }
-      // },
-
-      // getUnapprovedComments: async () => {
-      //   const current_back_url = getStore().current_back_url;
-      //   try {
-      //     const response = await fetch(
-      //       `${current_back_url}/api/unapproved_comments`,
-      //       {
-      //         method: "GET",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //           "Access-Control-Allow-Origin": "*", // <-- Ensures CORS compliance
-      //         },
-      //       }
-      //     );
-
-      //     if (!response.ok) {
-      //       throw new Error(
-      //         `Failed to fetch unapproved comments. Status: ${response.status}`
-      //       );
-      //     }
-
-      //     const data = await response.json();
-      //     return data.comments;
-      //   } catch (error) {
-      //     console.error("Error fetching unapproved comments:", error);
-      //     return [];
-      //   }
-      // },
 
       submitRatingAndComment: async (
         resourceId,
@@ -1892,37 +1703,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // fetchFavorites: function () {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     fetch(`${current_back_url}/api/getFavorites`, {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //       },
-      //     })
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         const favorites = data.favorites.map((fav) => ({
-      //           ...fav.resource,
-      //         }));
-      //         sessionStorage.setItem("favorites", JSON.stringify(favorites));
-
-      //         setStore({
-      //           favorites: favorites,
-      //         });
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error fetching updated favorites:", error);
-      //       });
-      //   }
-      // },
-
       fetchFavorites: async () => {
         try {
           const token = sessionStorage.getItem("token");
-          console.log("🪪 JWT token being sent:", token);
-
           const response = await fetch(
             "http://localhost:5000/api/getFavorites",
             {
@@ -2098,6 +1881,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       initApp: function () {
         const actions = getActions();
         actions.initializeSessionFromStorage();
+        actions.setBoundaryResults();
         actions.getToken();
         actions.setSchedules();
         actions.checkLoginStatus();
