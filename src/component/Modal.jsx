@@ -18,6 +18,7 @@ const Modal = ({}) => {
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCount, setRatingCount] = useState(0);
   const [showRating, setShowRating] = useState(false);
+  const apiKey = import.meta.env.VITE_GOOGLE;
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -220,6 +221,7 @@ const Modal = ({}) => {
           ratingCount={ratingCount}
           setRatingCount={setRatingCount}
           isLoggedIn={isLoggedIn}
+          comments={comments}
         />
       </div>
 

@@ -6,7 +6,7 @@ import { Context } from "../store/appContext";
 
 const FavoriteButton = ({ type, resource }) => {
   const { store, actions } = useContext(Context);
-  const [isFavorited, setIsFavorited] = useState(null); // start with "unknown"
+  const [isFavorited, setIsFavorited] = useState(null);
 
   useEffect(() => {
     if (resource?.id && Array.isArray(store.favorites)) {
@@ -19,7 +19,7 @@ const FavoriteButton = ({ type, resource }) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (isFavorited === null) return; // don't proceed if not loaded
+    if (isFavorited === null) return;
 
     if (isFavorited) {
       console.log("💔 Removing favorite:", resource.id);

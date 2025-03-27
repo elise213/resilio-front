@@ -11,6 +11,8 @@ export const ModalInfo = ({
   ratingCount,
   toggleFavorite,
   isLoggedIn,
+  comments,
+  setComments,
 }) => {
   const { store, actions } = useContext(Context);
   const [isReadMore, setIsReadMore] = useState(true);
@@ -341,6 +343,89 @@ export const ModalInfo = ({
           </div>
         )}
       </div>
+
+      {comments.length > 0 && (
+        <div className="info-address" style={{ borderBottom: "none" }}>
+          <span className="modal-info-title">Following</span>
+          <div className="comments-display">
+            <span className="user-reviews">User Reviews</span>
+            {comments.map((comment) => {
+              const date = new Date(comment.created_at);
+              const formattedDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+              });
+              let isLiked = comment.likes?.some(
+                (like) => like.user_id === userIdFromSession
+              );
+              return (
+                <div key={comment.comment_id} className="comment-div">
+                  <div className="comment-info">
+                    {parseInt(comment.user_id) === userIdFromSession ? (
+                      <Tooltip title="Delete this comment" arrow>
+                        <DeleteIcon
+                          fontSize="small"
+                          onClick={() => handleDelete(comment.comment_id)}
+                          style={{
+                            cursor: "pointer",
+                            color: "gray",
+                            alignSelf: "flex-start",
+                          }}
+                        />
+                      </Tooltip>
+                    ) : (
+                      ""
+                    )}
+                    <Rating
+                      name="read-only"
+                      value={comment.rating_value}
+                      precision={0.5}
+                      readOnly
+                    />
+                    <p className="comment-content">{comment.comment_cont}</p>
+                    <div
+                      className="comment-content-div"
+                      style={{ marginTop: "15px" }}
+                    >
+                      <div className="comment-user-info">
+                        <div className="name-and-icon">
+                          <span className="name-comment">
+                            {comment.user_name} {"   "}
+                          </span>
+                          <span className="date-comment">{formattedDate}</span>
+                        </div>
+                      </div>
+
+                      <div className="like-icon">
+                        {comment.likes?.some(
+                          (like) => like.user_id === userIdFromSession
+                        ) ? (
+                          <FavoriteIcon
+                            sx={{ color: "red", cursor: "pointer" }}
+                            fontSize="x-small"
+                            onClick={() => handleUnlike(comment.comment_id)}
+                          />
+                        ) : (
+                          <FavoriteBorderIcon
+                            sx={{ color: "gray", cursor: "pointer" }}
+                            fontSize="x-small"
+                            onClick={() => handleLike(comment.comment_id)}
+                          />
+                        )}
+
+                        {comment.like_count > 0 && (
+                          <span>{comment.like_count}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </>
   );
 };
