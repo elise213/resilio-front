@@ -93,10 +93,6 @@
   transition: color 0.3s, font-size 0.3s;
 }
 
-.my-input {
-  display: none;
-}
-
 .my-form-check {
   width: 100%;
   display: flex;
@@ -114,8 +110,10 @@
 
 .my-input + .my-label {
   position: relative;
-  padding-left: 23px;
+  /* padding-left: 15px; */
   cursor: pointer;
+  align-items: center;
+  padding-top: 4px;
 }
 
 .what-type {
@@ -126,21 +124,40 @@
   align-items: center;
 }
 
+.my-input {
+  border-radius: 3px;
+  border: 1px solid salmon;
+}
+
 .my-input + .my-label:before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -20.5px;
+  top: 4.5px;
   width: 10px;
   height: 10px;
-  border-radius: 3px;
-  border: 1px solid salmon;
-  background: #fff;
-  margin: 3px 5px 0px 7px;
+  background: white;
+}
+
+.my-input:checked + .my-label::after {
+  content: "✓";
+  position: absolute;
+  left: -20px;
+  top: 0px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--marascoral);
 }
 
 .my-input:checked + .my-label:before {
-  background-color: var(--marascoral);
+  /* background-color: salmon; */
+  background-color: #ffca93;
+}
+
+.my-input:focus {
+  outline: none !important;
+  border: none;
+  color: none;
 }
 
 .my-schedule-button {
@@ -211,8 +228,6 @@
 .filter-button span {
   font-size: 20px;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 .active-filters {
   display: flex;
@@ -748,6 +763,7 @@ iframe {
   font-size: 14px;
   text-align: center;
   font-family: "Neutraface Text", sans-serif;
+  padding: 5px 0;
 }
 
 .modal-filter-header {
@@ -804,32 +820,24 @@ iframe {
 }
 
 .apply-button {
-  background-color: var(--marascoral); /* Modern blue */
-  color: white;
-  box-shadow: 0px 3px 8px rgba(0, 123, 255, 0.3);
+  background-color: #ffca93;
+  color: salmon;
+  border: 1px solid salmon;
 }
 
 .apply-button:hover {
-  background-color: #0056b3; /* Slightly darker on hover */
-  box-shadow: 0px 4px 10px rgba(0, 91, 204, 0.4);
-}
-
-.apply-button:active {
-  background-color: #004494; /* Even darker when clicked */
-  box-shadow: 0px 2px 5px rgba(0, 91, 204, 0.3);
+  background-color: #e2e6ea;
 }
 
 .reset-button {
-  background-color: #f8f9fa; /* Subtle gray */
+  background-color: #f8f9fa;
   color: #333;
   border: 1px solid #ccc;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .reset-button:hover {
   background-color: #e2e6ea;
   border-color: #bbb;
-  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.15);
 }
 
 .reset-button:active {

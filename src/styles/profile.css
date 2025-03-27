@@ -1,8 +1,8 @@
 .profile-container {
-  /* height: 100%; */
-  flex: 1;
+  box-sizing: border-box;
+  padding: 15px 0;
+  height: 100dvh;
   overflow-y: auto;
-  /* overflow-y: auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,6 +46,7 @@
   display: flex;
   justify-content: center;
   margin: 15px 0;
+  text-decoration: none;
 }
 
 .comment-date {
@@ -124,10 +125,6 @@
 }
 
 @media screen and (max-width: 700px) {
-  .profile-container {
-    padding: 10px;
-  }
-
   .user-review-profile {
     width: 80%;
   }

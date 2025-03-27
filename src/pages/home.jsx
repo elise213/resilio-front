@@ -459,6 +459,7 @@ const Home = () => {
                 handleDayChange={handleDayChange}
                 categories={categories}
                 days={days}
+                resetFilters={resetFilters}
               />
             </ErrorBoundary>
           ) : (

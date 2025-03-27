@@ -6,17 +6,20 @@ import { Context } from "../store/appContext";
 
 const FavoriteButton = ({ type, resource }) => {
   const { store, actions } = useContext(Context);
-  const [isFavorited, setIsFavorited] = useState(
-    store.favorites?.some((fav) => fav.id === resource?.id)
-  );
+  const [isFavorited, setIsFavorited] = useState(null); // start with "unknown"
 
   useEffect(() => {
-    setIsFavorited(store.favorites?.some((fav) => fav.id === resource?.id));
+    if (resource?.id && Array.isArray(store.favorites)) {
+      const favStatus = store.favorites.some((fav) => fav.id === resource.id);
+      setIsFavorited(favStatus);
+    }
   }, [store.favorites, resource?.id]);
 
   const handleToggleFavorite = async (event) => {
-    event.preventDefault(); // ✅ Prevent weird default actions
-    event.stopPropagation(); // ✅ Stop bubbling to parent click events
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (isFavorited === null) return; // don't proceed if not loaded
 
     if (isFavorited) {
       console.log("💔 Removing favorite:", resource.id);
@@ -29,9 +32,7 @@ const FavoriteButton = ({ type, resource }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("🧪 resource passed to FavoriteButton:", resource);
-  }, [resource]);
+  if (isFavorited === null) return null; // 👈 Don't render until known
 
   return (
     <button

@@ -19,6 +19,7 @@
   transition: 0.3s ease;
   align-self: flex-end;
   padding: 10px;
+  font-size: 15px;
 }
 
 .login-button-resilio:hover {

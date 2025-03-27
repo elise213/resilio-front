@@ -7,7 +7,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  border-radius: 100%;
   position: absolute;
   top: 50%;
   left: 50%;

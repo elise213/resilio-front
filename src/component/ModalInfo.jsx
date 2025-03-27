@@ -233,7 +233,6 @@ export const ModalInfo = ({
         )}
 
         {/* HOURS */}
-
         {scheduleCategory === "Closed Everyday" && (
           <>
             <span className="info-address">
@@ -284,6 +283,17 @@ export const ModalInfo = ({
           )}
         {/* DESCRIPTION */}
         {res.description && (
+          <div className="info-address">
+            <span className="modal-info-title" style={{ alignSelf: "start" }}>
+              About
+            </span>
+            <span className="modal-info-value" style={{ marginLeft: "0px" }}>
+              {res.description}
+            </span>
+          </div>
+        )}
+
+        {/* {res.description && (
           <>
             <div className="info-address">
               <span className="modal-info-title" style={{ alignSelf: "start" }}>
@@ -302,7 +312,7 @@ export const ModalInfo = ({
               </span>
             </div>
           </>
-        )}
+        )} */}
         {/* LAST UPDATED DATE */}
         {res.updated && (
           <div className="info-address">

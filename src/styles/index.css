@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Lexend:wght@100..900&family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 @font-face {
   font-family: "Neutraface Text";
@@ -75,8 +76,10 @@ body,
 
 :root {
   --newGreen: rgb(67, 172, 67);
-  --marascoral: rgb(246, 134, 68);
-  --peach: rgb(249, 183, 173);
+  /* --marascoral: rgb(246, 134, 68); */
+  --marascoral: salmon;
+  --marascorallight: #ffca93;
+  /* --peach: rgb(249, 183, 173); */
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #f9d783;
@@ -228,7 +231,7 @@ body {
 }
 
 .list-container ul {
-  padding: 5px 0 20px 0;
+  padding: 0 0 20px 0;
   margin: 0;
   width: 100%;
   display: flex;
