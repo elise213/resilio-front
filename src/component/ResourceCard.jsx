@@ -19,15 +19,8 @@ const ResourceCard = (props) => {
     );
   }, []);
 
-  // useEffect(() => {
-  //   console.log(
-  //     "💾 ResourceCard loaded. Current store favorites:",
-  //     store.favorites
-  //   );
-  // }, []);
-
   useEffect(() => {
-    actions.getAverageRating(props.item.id, setAverageRating2, setRatingCount2); // Pass both callbacks
+    actions.getAverageRating(props.item.id, setAverageRating2, setRatingCount2);
   }, [props.item.id]);
 
   const normalizeCategories = (categories) => {
@@ -81,20 +74,6 @@ const ResourceCard = (props) => {
       {categoryLabels.length > 0 && (
         <div className="card-description">
           <span className="resource-title">{props.item.name}</span>
-          {/* <div
-            style={{
-              display: "flex",
-              width: "100%",
-
-              alignItems: "center",
-            }}
-          >
-            {categoryLabels.map((label, index) => (
-              <p key={index} className="category-span">
-                {label}
-              </p>
-            ))}
-          </div> */}
           <div className="rating-div">
             <Rating
               style={{ flexDirection: "row" }}

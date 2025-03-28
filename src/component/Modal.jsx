@@ -6,9 +6,7 @@ import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import { Tooltip, Icon } from "@mui/material";
 
 const Modal = ({}) => {
@@ -28,15 +26,6 @@ const Modal = ({}) => {
 
   const isAuthorizedUser = store.authorizedUser;
   const resource = store.selectedResource;
-
-  const handleDelete = async (commentId) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this comment? This action cannot be undone."
-    );
-    if (confirm) {
-      await actions.deleteComment(commentId);
-    }
-  };
 
   const handleSubmitReview = () => {
     if (!rating || !comment.trim()) {
@@ -74,70 +63,6 @@ const Modal = ({}) => {
           title: "Error",
           text: "Failed to submit your review.",
         });
-      });
-  };
-
-  const handleLike = (commentId) => {
-    if (!isLoggedIn) {
-      Swal.fire({
-        icon: "info",
-        // title: "",
-        html: `You need to <a href="#" id="login-link">log in</a> to like this comment.`,
-        showConfirmButton: false,
-        didOpen: () => {
-          document
-            .getElementById("login-link")
-            .addEventListener("click", (e) => {
-              e.preventDefault();
-              Swal.close();
-              actions.openLoginModal();
-              actions.closeModal();
-            });
-        },
-      });
-      return;
-    }
-
-    actions
-      .likeComment(commentId)
-      .then(() => {
-        setComments((prevComments) =>
-          prevComments.map((c) =>
-            c.comment_id === commentId
-              ? {
-                  ...c,
-                  like_count: c.like_count + 1,
-                  likes: [...(c.likes || []), { user_id: userIdFromSession }],
-                }
-              : c
-          )
-        );
-      })
-      .catch((error) => {
-        console.error("Error liking comment:", error);
-      });
-  };
-
-  const handleUnlike = (commentId) => {
-    actions
-      .unlikeComment(commentId)
-      .then(() => {
-        setComments((prevComments) =>
-          prevComments.map((c) =>
-            c.comment_id === commentId
-              ? {
-                  ...c,
-                  like_count: c.like_count - 1,
-                  likes: c.likes.filter(
-                    (like) => like.user_id !== userIdFromSession
-                  ),
-                }
-              : c
-          )
-        );
-      })
-      .catch((error) => {
-        console.error("Error unliking comment:", error);
       });
   };
 
@@ -222,88 +147,9 @@ const Modal = ({}) => {
           setRatingCount={setRatingCount}
           isLoggedIn={isLoggedIn}
           comments={comments}
+          userIdFromSession={userIdFromSession}
         />
       </div>
-
-      {comments.length > 0 && (
-        <div className="comments-display">
-          <span className="user-reviews">User Reviews</span>
-          {comments.map((comment) => {
-            const date = new Date(comment.created_at);
-            const formattedDate = date.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "numeric",
-              day: "numeric",
-            });
-            let isLiked = comment.likes?.some(
-              (like) => like.user_id === userIdFromSession
-            );
-            return (
-              <div key={comment.comment_id} className="comment-div">
-                <div className="comment-info">
-                  {parseInt(comment.user_id) === userIdFromSession ? (
-                    <Tooltip title="Delete this comment" arrow>
-                      <DeleteIcon
-                        fontSize="small"
-                        onClick={() => handleDelete(comment.comment_id)}
-                        style={{
-                          cursor: "pointer",
-                          color: "gray",
-                          alignSelf: "flex-start",
-                        }}
-                      />
-                    </Tooltip>
-                  ) : (
-                    ""
-                  )}
-                  <Rating
-                    name="read-only"
-                    value={comment.rating_value}
-                    precision={0.5}
-                    readOnly
-                  />
-                  <p className="comment-content">{comment.comment_cont}</p>
-                  <div
-                    className="comment-content-div"
-                    style={{ marginTop: "15px" }}
-                  >
-                    <div className="comment-user-info">
-                      <div className="name-and-icon">
-                        <span className="name-comment">
-                          {comment.user_name} {"   "}
-                        </span>
-                        <span className="date-comment">{formattedDate}</span>
-                      </div>
-                    </div>
-
-                    <div className="like-icon">
-                      {comment.likes?.some(
-                        (like) => like.user_id === userIdFromSession
-                      ) ? (
-                        <FavoriteIcon
-                          sx={{ color: "red", cursor: "pointer" }}
-                          fontSize="x-small"
-                          onClick={() => handleUnlike(comment.comment_id)}
-                        />
-                      ) : (
-                        <FavoriteBorderIcon
-                          sx={{ color: "gray", cursor: "pointer" }}
-                          fontSize="x-small"
-                          onClick={() => handleLike(comment.comment_id)}
-                        />
-                      )}
-
-                      {comment.like_count > 0 && (
-                        <span>{comment.like_count}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
 
       {/* Rating Modal */}
       {showRating && (

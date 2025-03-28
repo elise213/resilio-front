@@ -19,7 +19,7 @@ const Sidebar = ({
   setLog,
   setIsFilterModalOpen,
   filteredResults2,
-  updateCityStateFromZip,
+  handleBoundsChange,
   resetFilters,
   mapInstance,
   setMapInstance,
@@ -35,7 +35,7 @@ const Sidebar = ({
   });
 
   const filteredResources = (searchQuery) => {
-    if (!searchQuery) return store.boundaryResults; // If no search query, return all resources
+    if (!searchQuery) return store.boundaryResults;
 
     const lowercasedQuery = searchQuery.toLowerCase();
     return store.boundaryResults.filter(
@@ -82,7 +82,7 @@ const Sidebar = ({
       activeDays.length === 0 &&
       !searchQuery
     )
-      return null; // If there are no active filters or search query, don't display anything.
+      return null;
 
     return (
       <div className="active-filters">
@@ -97,7 +97,6 @@ const Sidebar = ({
                 <button
                   className="remove-filter"
                   onClick={() => {
-                    // Clear search query when clicking the 'x'
                     setSearchQuery("");
                   }}
                 >
@@ -256,7 +255,7 @@ const Sidebar = ({
           ""
         )}
 
-        {store.boundaryResults.length > 0 && !store.loadingResults ? (
+        {!store.loadingResults ? (
           <div className="nav-div">
             <div className="side-by">
               {authorizedUser && <AuthorizedToolbox />}
@@ -345,7 +344,7 @@ const Sidebar = ({
             setMapInstance={setMapInstance}
             mapsInstance={mapsInstance}
             setMapsInstance={setMapsInstance}
-            updateCityStateFromZip={updateCityStateFromZip}
+            handleBoundsChange={handleBoundsChange}
           />
         </>
       )}

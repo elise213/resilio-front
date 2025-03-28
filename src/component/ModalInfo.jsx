@@ -3,7 +3,11 @@ import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteButton from "./FavoriteButton";
+import LikeComment from "./likeComment";
 
 export const ModalInfo = ({
   averageRating,
@@ -13,13 +17,15 @@ export const ModalInfo = ({
   isLoggedIn,
   comments,
   setComments,
+  userIdFromSession,
 }) => {
   const { store, actions } = useContext(Context);
   const [isReadMore, setIsReadMore] = useState(true);
 
-  const toggleReadMore = () => {
-    setIsReadMore(!isReadMore);
-  };
+  // const toggleReadMore = () => {
+  //   setIsReadMore(!isReadMore);
+  // };
+
   const res = store.selectedResource;
   const scheduleStore = res.schedule;
   const [copied, setCopied] = useState(false);
@@ -31,10 +37,17 @@ export const ModalInfo = ({
   };
 
   const currentSchedule = scheduleStore;
-
   const schedule2 = filterNonNullValues(currentSchedule);
-
   const formattedSchedule = {};
+
+  const handleDelete = async (commentId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this comment? This action cannot be undone."
+    );
+    if (confirm) {
+      await actions.deleteComment(commentId);
+    }
+  };
 
   Object.keys(schedule2).forEach((key) => {
     const day = key.replace(/End|Start/g, "");
@@ -153,7 +166,6 @@ export const ModalInfo = ({
           <span className="modal-info-title">Name</span>
           <span>{res.name}</span>
         </div>
-
         {/* Rating */}
         <div
           className="info-address"
@@ -337,7 +349,7 @@ export const ModalInfo = ({
 
         {/* LAST UPDATED DATE */}
         {isLoggedIn && (
-          <div className="info-address" style={{ borderBottom: "none" }}>
+          <div className="info-address">
             <span className="modal-info-title">Following</span>
             <FavoriteButton type={"modal-favorite"} resource={res} />
           </div>
@@ -346,9 +358,9 @@ export const ModalInfo = ({
 
       {comments.length > 0 && (
         <div className="info-address" style={{ borderBottom: "none" }}>
-          <span className="modal-info-title">Following</span>
+          <span className="modal-info-title">User Reviews</span>
           <div className="comments-display">
-            <span className="user-reviews">User Reviews</span>
+            {/* <span className="user-reviews">User Reviews</span> */}
             {comments.map((comment) => {
               const date = new Date(comment.created_at);
               const formattedDate = date.toLocaleDateString("en-US", {
@@ -377,13 +389,17 @@ export const ModalInfo = ({
                     ) : (
                       ""
                     )}
+                    <p className="comment-content">{comment.comment_cont}</p>
                     <Rating
                       name="read-only"
                       value={comment.rating_value}
                       precision={0.5}
                       readOnly
+                      style={{
+                        flexDirection: "row",
+                        fontSize: "18px",
+                      }}
                     />
-                    <p className="comment-content">{comment.comment_cont}</p>
                     <div
                       className="comment-content-div"
                       style={{ marginTop: "15px" }}
@@ -397,27 +413,12 @@ export const ModalInfo = ({
                         </div>
                       </div>
 
-                      <div className="like-icon">
-                        {comment.likes?.some(
-                          (like) => like.user_id === userIdFromSession
-                        ) ? (
-                          <FavoriteIcon
-                            sx={{ color: "red", cursor: "pointer" }}
-                            fontSize="x-small"
-                            onClick={() => handleUnlike(comment.comment_id)}
-                          />
-                        ) : (
-                          <FavoriteBorderIcon
-                            sx={{ color: "gray", cursor: "pointer" }}
-                            fontSize="x-small"
-                            onClick={() => handleLike(comment.comment_id)}
-                          />
-                        )}
-
-                        {comment.like_count > 0 && (
-                          <span>{comment.like_count}</span>
-                        )}
-                      </div>
+                      <LikeComment
+                        comment={comment}
+                        userIdFromSession={userIdFromSession}
+                        isLoggedIn={isLoggedIn}
+                        setComments={setComments}
+                      />
                     </div>
                   </div>
                 </div>

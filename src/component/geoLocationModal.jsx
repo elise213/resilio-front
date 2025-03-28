@@ -12,6 +12,7 @@ const GeoLocationModal = ({
   mapsInstance,
   setMapsInstance,
   updateCityStateFromZip,
+  handleBoundsChange,
 }) => {
   const { actions } = useContext(Context);
 
@@ -35,7 +36,11 @@ const GeoLocationModal = ({
       </Button>
 
       <p style={{ marginBottom: "10px" }}>OR</p>
-      <ZipCodeDropdown updateCityStateFromZip={updateCityStateFromZip} />
+      <ZipCodeDropdown
+        updateCityStateFromZip={updateCityStateFromZip}
+        handleBoundsChange={handleBoundsChange}
+        setIsGeoModalOpen={setIsGeoModalOpen}
+      />
     </div>
   );
 };

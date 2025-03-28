@@ -666,7 +666,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (!data || !data.data || data.data.length === 0) {
             console.warn("⚠️ No resources returned from the backend.");
           }
-
+          console.log("all resources", data.data);
+          console.log("all resources", formattedBounds);
           setStore({
             allResources: data.data || [],
             lastFetchedBounds: formattedBounds,
@@ -785,106 +786,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       //   }
       // },
 
-      setBoundaryResults: async (
-        bounds,
-        selectedCategories = {},
-        selectedDays = {}
-      ) => {
-        const store = getStore();
-        const actions = getActions();
-        const boundsContain = (outer, inner) => {
-          return (
-            outer.neLat >= inner.ne.lat &&
-            outer.neLng >= inner.ne.lng &&
-            outer.swLat <= inner.sw.lat &&
-            outer.swLng <= inner.sw.lng
-          );
-        };
-        console.log("set boundary results called");
-        const lastBounds = store.lastFetchedBounds;
-        if (!bounds || !bounds.ne || !bounds.sw) {
-          console.error("❌ Error: Invalid bounds received.");
-          return;
-        }
-
-        const newBounds = {
-          neLat: bounds.ne.lat,
-          neLng: bounds.ne.lng,
-          swLat: bounds.sw.lat,
-          swLng: bounds.sw.lng,
-        };
-
-        const shouldRefetch = !lastBounds || !boundsContain(lastBounds, bounds);
-
-        if (shouldRefetch) {
-          await actions.fetchResources(bounds);
-        }
-
-        let allResources = getStore().allResources || [];
-
-        console.log("📡 setBoundaryResults called!");
-        console.log("📌 Received bounds:", bounds);
-        console.log("📌 Selected Categories:", selectedCategories);
-        console.log("📌 Selected Days:", selectedDays);
-        console.log(
-          "📌 Total resources before filtering:",
-          allResources.length
-        );
-
-        const isFilteringByCategory =
-          Object.values(selectedCategories).some(Boolean);
-        const isFilteringByDay = Object.values(selectedDays).some(Boolean);
-
-        console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
-        console.log("🔎 isFilteringByDay:", isFilteringByDay);
-
-        // ✅ Save the most recent filters to the store
-        setStore({
-          selectedCategories,
-          selectedDays,
-          loadingResults: true,
-        });
-
-        try {
-          const filteredResults = allResources.filter((resource) => {
-            const hasValidCategory =
-              resource.category &&
-              resource.category
-                .split(",")
-                .map((c) => c.trim().toLowerCase())
-                .some((cat) => selectedCategories[cat] === true);
-
-            const hasValidDay =
-              resource.schedule &&
-              Object.keys(resource.schedule).some(
-                (day) => selectedDays[day] && resource.schedule[day]?.start
-              );
-
-            if (!isFilteringByCategory && !isFilteringByDay) return true;
-            if (isFilteringByCategory && isFilteringByDay)
-              return hasValidCategory && hasValidDay;
-            if (isFilteringByCategory) return hasValidCategory;
-            if (isFilteringByDay) return hasValidDay;
-
-            return false;
-          });
-
-          console.log(
-            "✅ Found",
-            filteredResults.length,
-            "resources after filtering."
-          );
-
-          setStore({
-            boundaryResults: [...filteredResults],
-            loadingResults: false,
-          });
-        } catch (error) {
-          console.error("❌ Error filtering resources:", error);
-          setStore({ loadingResults: false });
-        }
-      },
-
       checkResourceCoordinates: async () => {
         const url = "/api/getAllResources";
         let resourcesWithInvalidCoordinates = false;
@@ -947,6 +848,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       geoFindMe: async () => {
         const store = getStore();
+        setStore((prevStore) => ({
+          ...prevStore,
+          loadingLocation: true,
+        }));
         const actions = getActions();
         console.log("📡 Attempting to get user location...");
 
@@ -955,10 +860,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Please enable location services.");
           return;
         }
-        setStore((prevStore) => ({
-          ...prevStore,
-          loadingLocation: true,
-        }));
 
         const successCallback = async (position) => {
           const { latitude, longitude } = position.coords;
@@ -966,16 +867,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             `✅ Location retrieved: lat=${latitude}, lng=${longitude}`
           );
 
-          // ✅ Store user location immediately
           setStore((prevStore) => ({
             ...prevStore,
             userLocation: { lat: latitude, lng: longitude },
           }));
 
-          // ✅ Fetch city/state info BEFORE moving the map
           await actions.updateCityStateFromCoords(latitude, longitude);
 
-          // ✅ Ensure mapInstance is available before moving the map
           let retries = 0;
           let mapInstance = null;
           let mapsInstance = null;
@@ -1033,7 +931,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           setStore((prevStore) => ({
             ...prevStore,
-
             loadingLocation: false,
           }));
         };
@@ -1270,13 +1167,14 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       updateCityStateFromCoords: async (lat, lng) => {
+        const store = getStore();
         const actions = getActions();
         console.log(
           `📡 Fetching city and bounds for coordinates: lat=${lat}, lng=${lng}`
         );
 
         try {
-          const data = await actions.fetchBounds({ lat, lng });
+          const data = await fetchBounds({ lat, lng });
 
           if (!data) {
             console.error("❌ No valid data received from fetchBounds.");
@@ -1318,15 +1216,160 @@ const getState = ({ getStore, getActions, setStore }) => {
         );
       },
 
+      boundsEqual: (b1, b2) => {
+        return (
+          b1.neLat.toFixed(5) === b2.neLat.toFixed(5) &&
+          b1.neLng.toFixed(5) === b2.neLng.toFixed(5) &&
+          b1.swLat.toFixed(5) === b2.swLat.toFixed(5) &&
+          b1.swLng.toFixed(5) === b2.swLng.toFixed(5)
+        );
+      },
+
+      setBoundaryResults: async (
+        bounds,
+        selectedCategories = {},
+        selectedDays = {}
+      ) => {
+        const store = getStore();
+        const actions = getActions();
+        const boundsContain = (outer, inner) => {
+          return (
+            outer.neLat >= inner.ne.lat &&
+            outer.neLng >= inner.ne.lng &&
+            outer.swLat <= inner.sw.lat &&
+            outer.swLng <= inner.sw.lng
+          );
+        };
+        console.log("set boundary results called");
+        const lastBounds = store.lastFetchedBounds;
+        if (!bounds || !bounds.ne || !bounds.sw) {
+          console.error("❌ Error: Invalid bounds received.");
+          return;
+        }
+
+        const newBounds = {
+          neLat: bounds.ne.lat,
+          neLng: bounds.ne.lng,
+          swLat: bounds.sw.lat,
+          swLng: bounds.sw.lng,
+        };
+        const shouldRefetch =
+          !lastBounds || !actions.boundsEqual(lastBounds, newBounds);
+
+        // const shouldRefetch = !lastBounds || !boundsContain(lastBounds, bounds);
+
+        if (shouldRefetch) {
+          await actions.fetchResources(bounds);
+        }
+
+        let allResources = getStore().allResources || [];
+
+        console.log("📡 setBoundaryResults called!");
+        console.log("📌 Received bounds:", bounds);
+        console.log("📌 Selected Categories:", selectedCategories);
+        console.log("📌 Selected Days:", selectedDays);
+        console.log(
+          "📌 Total resources before filtering:",
+          allResources.length
+        );
+
+        const isFilteringByCategory =
+          Object.values(selectedCategories).some(Boolean);
+        const isFilteringByDay = Object.values(selectedDays).some(Boolean);
+
+        console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
+        console.log("🔎 isFilteringByDay:", isFilteringByDay);
+
+        // ✅ Save the most recent filters to the store
+        setStore({
+          selectedCategories,
+          selectedDays,
+          loadingResults: true,
+        });
+
+        try {
+          const filteredResults = allResources.filter((resource) => {
+            const hasValidCategory =
+              resource.category &&
+              resource.category
+                .split(",")
+                .map((c) => c.trim().toLowerCase())
+                .some((cat) => selectedCategories[cat] === true);
+
+            const hasValidDay =
+              resource.schedule &&
+              Object.keys(resource.schedule).some(
+                (day) => selectedDays[day] && resource.schedule[day]?.start
+              );
+
+            if (!isFilteringByCategory && !isFilteringByDay) return true;
+            if (isFilteringByCategory && isFilteringByDay)
+              return hasValidCategory && hasValidDay;
+            if (isFilteringByCategory) return hasValidCategory;
+            if (isFilteringByDay) return hasValidDay;
+
+            return false;
+          });
+
+          console.log(
+            "✅ Found",
+            filteredResults.length,
+            "resources after filtering."
+          );
+
+          setStore({
+            boundaryResults: [...filteredResults],
+            loadingResults: false,
+          });
+        } catch (error) {
+          console.error("❌ Error filtering resources:", error);
+          setStore({ loadingResults: false });
+        }
+      },
+
+      formatNominatimResult: (result) => {
+        const city =
+          result.address?.city ||
+          result.address?.town ||
+          result.address?.village;
+        const state = result.address?.state;
+        const country = result.address?.country;
+
+        const location = {
+          lat: parseFloat(result.lat),
+          lng: parseFloat(result.lon),
+        };
+
+        const bounds = {
+          ne: {
+            lat: parseFloat(result.boundingbox?.[1]) || location.lat + 0.05,
+            lng: parseFloat(result.boundingbox?.[3]) || location.lng + 0.05,
+          },
+          sw: {
+            lat: parseFloat(result.boundingbox?.[0]) || location.lat - 0.05,
+            lng: parseFloat(result.boundingbox?.[2]) || location.lng - 0.05,
+          },
+        };
+
+        console.log("✅ Nominatim Response:", {
+          city,
+          state,
+          country,
+          location,
+          bounds,
+        });
+
+        return { city, state, country, location, bounds };
+      },
+
       fetchBounds: async (query, isZip = false) => {
+        const actions = getActions();
         console.log("🌍 Fetching bounds for:", query);
 
         let apiUrl;
         if (isZip) {
-          // Searching by ZIP code (not as precise as Google)
-          apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&format=json&addressdetails=1`;
+          apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
         } else {
-          // Reverse geocoding by lat/lng
           apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
         }
 
@@ -1334,41 +1377,225 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await fetch(apiUrl);
           const data = await response.json();
 
-          if (
-            !data ||
-            (Array.isArray(data) && data.length === 0) ||
-            !data.address
-          ) {
-            console.error("❌ No valid results found from Nominatim:", query);
+          if (!data || (Array.isArray(data) && data.length === 0)) {
+            console.warn("⚠️ Falling back to free-text query...");
+            if (isZip) {
+              apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
+              const retryResponse = await fetch(apiUrl);
+              const retryData = await retryResponse.json();
+              if (!retryData || retryData.length === 0) {
+                console.error(
+                  "❌ No valid results found even after fallback:",
+                  query
+                );
+                return null;
+              }
+              return actions.formatNominatimResult(retryData[0]); // ✅ FIXED
+            }
             return null;
           }
 
-          const city =
-            data.address.city || data.address.town || data.address.village;
-          const state = data.address.state;
-          const country = data.address.country;
-          const location = { lat: query.lat, lng: query.lng };
-
-          // Nominatim does not provide precise bounds, so we approximate
-          const bounds = {
-            ne: { lat: query.lat + 0.05, lng: query.lng + 0.05 },
-            sw: { lat: query.lat - 0.05, lng: query.lng - 0.05 },
-          };
-
-          console.log("✅ Nominatim Response:", {
-            city,
-            state,
-            country,
-            location,
-            bounds,
-          });
-
-          return { city, state, country, location, bounds };
+          return actions.formatNominatimResult(
+            Array.isArray(data) ? data[0] : data
+          ); // ✅ FIXED
         } catch (error) {
           console.error("❌ Error fetching from Nominatim:", error);
           return null;
         }
       },
+
+      // fetchBounds: async (query, isZip = false) => {
+      //   const store = getStore();
+      //   const actions = getActions();
+      //   console.log("🌍 Fetching bounds for:", query);
+
+      //   let apiUrl;
+      //   if (isZip) {
+      //     apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
+      //   } else {
+      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
+      //   }
+
+      //   try {
+      //     const response = await fetch(apiUrl);
+      //     const data = await response.json();
+
+      //     if (!data || (Array.isArray(data) && data.length === 0)) {
+      //       console.warn("⚠️ Falling back to free-text query...");
+      //       if (isZip) {
+      //         apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
+      //         const retryResponse = await fetch(apiUrl);
+      //         const retryData = await retryResponse.json();
+      //         if (!retryData || retryData.length === 0) {
+      //           console.error(
+      //             "❌ No valid results found even after fallback:",
+      //             query
+      //           );
+      //           return null;
+      //         }
+      //         return formatNominatimResult(retryData[0]);
+      //       }
+      //       return null;
+      //     }
+
+      //     return formatNominatimResult(Array.isArray(data) ? data[0] : data);
+      //   } catch (error) {
+      //     console.error("❌ Error fetching from Nominatim:", error);
+      //     return null;
+      //   }
+      // },
+      // fetchBounds: async (query, isZip = false) => {
+      //   console.log("🌍 Fetching bounds for:", query);
+
+      //   let apiUrl;
+      //   if (isZip) {
+      //     // ✅ Correct way to search by ZIP
+      //     apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&country=USA&format=json&addressdetails=1&limit=1`;
+      //   } else {
+      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
+      //   }
+
+      //   try {
+      //     const response = await fetch(apiUrl);
+      //     const data = await response.json();
+
+      //     if (!data || (Array.isArray(data) && data.length === 0)) {
+      //       console.error("❌ No valid results found from Nominatim:", query);
+      //       return null;
+      //     }
+
+      //     const result = Array.isArray(data) ? data[0] : data;
+
+      //     const city =
+      //       result.address?.city ||
+      //       result.address?.town ||
+      //       result.address?.village;
+      //     const state = result.address?.state;
+      //     const country = result.address?.country;
+
+      //     const location = {
+      //       lat: parseFloat(result.lat),
+      //       lng: parseFloat(result.lon),
+      //     };
+
+      //     const bounds = {
+      //       ne: {
+      //         lat: parseFloat(result.boundingbox?.[1]) || location.lat + 0.05,
+      //         lng: parseFloat(result.boundingbox?.[3]) || location.lng + 0.05,
+      //       },
+      //       sw: {
+      //         lat: parseFloat(result.boundingbox?.[0]) || location.lat - 0.05,
+      //         lng: parseFloat(result.boundingbox?.[2]) || location.lng - 0.05,
+      //       },
+      //     };
+
+      //     console.log("✅ Nominatim Response:", {
+      //       city,
+      //       state,
+      //       country,
+      //       location,
+      //       bounds,
+      //     });
+
+      //     return { city, state, country, location, bounds };
+      //   } catch (error) {
+      //     console.error("❌ Error fetching from Nominatim:", error);
+      //     return null;
+      //   }
+      // },
+
+      // fetchBounds: async (query, isZip = false) => {
+      //   console.log("🌍 Fetching bounds for:", query);
+
+      //   let apiUrl;
+      //   if (isZip) {
+      //     // Searching by ZIP code (not as precise as Google)
+      //     apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&format=json&addressdetails=1`;
+      //   } else {
+      //     // Reverse geocoding by lat/lng
+      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
+      //   }
+
+      //   try {
+      //     const response = await fetch(apiUrl);
+      //     const data = await response.json();
+
+      //     if (
+      //       !data ||
+      //       (Array.isArray(data) && data.length === 0) ||
+      //       !data.address
+      //     ) {
+      //       console.error("❌ No valid results found from Nominatim:", query);
+      //       return null;
+      //     }
+
+      //     const city =
+      //       data.address.city || data.address.town || data.address.village;
+      //     const state = data.address.state;
+      //     const country = data.address.country;
+      //     const location = { lat: query.lat, lng: query.lng };
+
+      //     // Nominatim does not provide precise bounds, so we approximate
+      //     const bounds = {
+      //       ne: { lat: query.lat + 0.05, lng: query.lng + 0.05 },
+      //       sw: { lat: query.lat - 0.05, lng: query.lng - 0.05 },
+      //     };
+
+      //     console.log("✅ Nominatim Response:", {
+      //       city,
+      //       state,
+      //       country,
+      //       location,
+      //       bounds,
+      //     });
+
+      //     return { city, state, country, location, bounds };
+      //   } catch (error) {
+      //     console.error("❌ Error fetching from Nominatim:", error);
+      //     return null;
+      //   }
+      // },
+
+      // fetchBounds: async (query, isZip = false) => {
+      //   console.log("🌍 Fetching bounds for:", query);
+
+      //   let apiUrl;
+      //   if (isZip) {
+      //     apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
+      //   } else {
+      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
+      //   }
+
+      //   try {
+      //     const response = await fetch(apiUrl);
+      //     const data = await response.json();
+
+      //     if (!data || (Array.isArray(data) && data.length === 0)) {
+      //       console.warn("⚠️ Falling back to free-text query...");
+      //       if (isZip) {
+      //         apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
+      //         const retryResponse = await fetch(apiUrl);
+      //         const retryData = await retryResponse.json();
+      //         if (!retryData || retryData.length === 0) {
+      //           console.error(
+      //             "❌ No valid results found even after fallback:",
+      //             query
+      //           );
+      //           return null;
+      //         }
+      //         return this.formatNominatimResult(retryData[0]);
+      //       }
+      //       return null;
+      //     }
+
+      //     return this.formatNominatimResult(
+      //       Array.isArray(data) ? data[0] : data
+      //     );
+      //   } catch (error) {
+      //     console.error("❌ Error fetching from Nominatim:", error);
+      //     return null;
+      //   }
+      // },
 
       likeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
@@ -1378,7 +1605,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${current_back_url}/api/likeComment/${commentId}`,
             {
               method: "POST",
-              headers: { Authorization: `Bearer ${token}` },
+              // headers: { Authorization: `Bearer ${token}` },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
             }
           );
           if (response.ok) {
@@ -1618,6 +1849,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             throw new Error("Failed to get comments");
           }
           const data = await response.json();
+          console.log("Fetched comments:", data.comments);
           setCommentsCallback(data.comments);
         } catch (error) {
           console.error("Error:", error);

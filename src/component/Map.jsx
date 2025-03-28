@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
 import Styles from "../styles/map.css";
@@ -35,6 +42,22 @@ const Map = ({
       }, 200);
     }
   }, [isMapVisible]);
+
+  const handleMapIdle = () => {
+    if (!mapInstanceRef.current) return;
+    const bounds = mapInstanceRef.current.getBounds();
+    if (!bounds) return;
+
+    const ne = bounds.getNorthEast();
+    const sw = bounds.getSouthWest();
+    const newBounds = {
+      ne: { lat: ne.lat(), lng: ne.lng() },
+      sw: { lat: sw.lat(), lng: sw.lng() },
+    };
+
+    console.log("🟡 Map idle detected, new bounds:", newBounds);
+    actions.setBoundaryResults(newBounds, categories, days);
+  };
 
   useEffect(() => {
     if (mapHasLoaded && mapInstanceRef.current) {
@@ -75,28 +98,53 @@ const Map = ({
       mapHasLoaded &&
       mapInstanceRef.current &&
       mapsInstanceRef.current &&
-      store.boundaryResults?.length === 0
+      !store.boundaryResults?.length &&
+      !store.userLocation &&
+      !lastBoundsRef.current
     ) {
       const bounds = mapInstanceRef.current.getBounds();
       if (!bounds) return;
 
       const ne = bounds.getNorthEast();
       const sw = bounds.getSouthWest();
-      const center = mapInstanceRef.current.getCenter();
 
       const newBounds = {
         ne: { lat: ne.lat(), lng: ne.lng() },
         sw: { lat: sw.lat(), lng: sw.lng() },
       };
 
-      console.log(
-        "📦 Fallback initial fetch triggered with bounds:",
-        newBounds
-      );
-
+      console.log("📦 Initial fallback fetch triggered:", newBounds);
       actions.setBoundaryResults(newBounds, categories, days);
     }
-  }, [mapHasLoaded]);
+  }, [mapHasLoaded, store.userLocation]);
+
+  // useEffect(() => {
+  //   if (
+  //     mapHasLoaded &&
+  //     mapInstanceRef.current &&
+  //     mapsInstanceRef.current &&
+  //     store.boundaryResults?.length === 0
+  //   ) {
+  //     const bounds = mapInstanceRef.current.getBounds();
+  //     if (!bounds) return;
+
+  //     const ne = bounds.getNorthEast();
+  //     const sw = bounds.getSouthWest();
+  //     const center = mapInstanceRef.current.getCenter();
+
+  //     const newBounds = {
+  //       ne: { lat: ne.lat(), lng: ne.lng() },
+  //       sw: { lat: sw.lat(), lng: sw.lng() },
+  //     };
+
+  //     console.log(
+  //       "📦 Fallback initial fetch triggered with bounds:",
+  //       newBounds
+  //     );
+
+  //     actions.setBoundaryResults(newBounds, categories, days);
+  //   }
+  // }, [mapHasLoaded]);
 
   const Marker = React.memo(
     ({ id, result, markerColor = "red" }) => {
@@ -288,6 +336,70 @@ const Map = ({
     }
   }, [layout]);
 
+  const MIN_BOUND_CHANGE_DELTA = 0.001; // adjustable sensitivity
+
+  const boundsChangedSignificantly = (oldBounds, newBounds) => {
+    if (!oldBounds) return true; // first time
+    return (
+      Math.abs(oldBounds.ne.lat - newBounds.ne.lat) > MIN_BOUND_CHANGE_DELTA ||
+      Math.abs(oldBounds.ne.lng - newBounds.ne.lng) > MIN_BOUND_CHANGE_DELTA ||
+      Math.abs(oldBounds.sw.lat - newBounds.sw.lat) > MIN_BOUND_CHANGE_DELTA ||
+      Math.abs(oldBounds.sw.lng - newBounds.sw.lng) > MIN_BOUND_CHANGE_DELTA
+    );
+  };
+
+  const lastBoundsRef = useRef(null);
+
+  const skipNextRef = useRef(false);
+
+  const handleMapChange = useCallback(
+    debounce(({ bounds }) => {
+      if (skipNextRef.current) {
+        console.log("⏩ Skipping fetch due to programmatic move.");
+        skipNextRef.current = false;
+        return;
+      }
+
+      if (!bounds || !bounds.ne || !bounds.sw) return;
+
+      const newBounds = {
+        ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+        sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+      };
+
+      if (!boundsChangedSignificantly(lastBoundsRef.current, newBounds)) {
+        console.log("🟣 Bounds changed insignificantly, skipping fetch.");
+        return;
+      }
+
+      console.log("🟢 Significant map movement detected:", newBounds);
+      lastBoundsRef.current = newBounds;
+      actions.setBoundaryResults(newBounds, categories, days);
+    }, 1000),
+    [categories, days]
+  );
+
+  // const handleMapChange = useCallback(
+  //   debounce(({ bounds, center, zoom }) => {
+  //     if (!bounds || !bounds.ne || !bounds.sw) return;
+
+  //     const newBounds = {
+  //       ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+  //       sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+  //     };
+
+  //     if (!boundsChangedSignificantly(lastBoundsRef.current, newBounds)) {
+  //       console.log("🟣 Bounds changed insignificantly, skipping fetch.");
+  //       return;
+  //     }
+
+  //     console.log("🟢 Significant map movement detected:", newBounds);
+  //     lastBoundsRef.current = newBounds;
+  //     actions.setBoundaryResults(newBounds, categories, days);
+  //   }, 1000), // debounce time
+  //   [categories, days]
+  // );
+
   const defaultCenter = useMemo(
     () => ({
       lat: city?.center?.lat || 34.0522,
@@ -320,13 +432,12 @@ const Map = ({
         {mapCenter?.lat && (
           <GoogleMapReact
             key={`map-${layout}-${mapCenter?.lat}-${mapCenter?.lng}-${mapZoom}-${mapReady}`}
-            bootstrapURLKeys={{ key: apiKey }}
+            bootstrapURLKeys={{ key: apiKey, libraries: ["geometry"] }}
             center={mapCenter}
             zoom={mapZoom}
             defaultZoom={11}
             options={createMapOptions}
-            // onChange={handleBoundsChange}
-            onIdle={debouncedHandleBoundsChange}
+            onChange={handleMapChange}
             onGoogleApiLoaded={handleApiLoaded}
             yesIWantToUseGoogleMapApiInternals={true}
           >

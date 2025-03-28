@@ -65,7 +65,7 @@ const Home = () => {
   );
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [zipInput, setZipInput] = useState("");
+
   const [layout, setLayout] = useState("fullscreen-sidebar");
   const [lastBounds, setLastBounds] = useState(null);
   // const INITIAL_CITY_STATE = store.austin[0];
@@ -125,42 +125,6 @@ const Home = () => {
     });
   };
 
-  const updateCityStateFromZip = async (zip) => {
-    console.log(`🔍 Looking up ZIP: ${zip}`);
-
-    const data = await fetchCachedBounds(zip, true);
-
-    console.log("📌 Response from fetchCachedBounds:", data);
-
-    if (!data || data.length === 0) {
-      console.error("❌ Error fetching bounds: No results found.");
-      return null;
-    }
-
-    const firstResult = data[0];
-    const location = {
-      lat: parseFloat(firstResult.lat),
-      lng: parseFloat(firstResult.lon),
-    };
-
-    const bounds = {
-      ne: {
-        lat: parseFloat(firstResult.boundingbox[1]),
-        lng: parseFloat(firstResult.boundingbox[3]),
-      },
-      sw: {
-        lat: parseFloat(firstResult.boundingbox[0]),
-        lng: parseFloat(firstResult.boundingbox[2]),
-      },
-    };
-
-    console.log("✅ Found location:", location);
-    console.log("📏 Bounding Box:", bounds);
-
-    handleBoundsChange({ center: location, bounds });
-    await actions.setBoundaryResults(bounds, categories, days);
-  };
-
   const isFilteringByCategory = useMemo(
     () => Object.keys(categories).some((key) => categories[key]),
     [categories]
@@ -176,12 +140,6 @@ const Home = () => {
   /* ===========================
    * 📌 Effects (useEffect)
    * =========================== */
-
-  useEffect(() => {
-    if (zipInput && zipInput.length === 5) {
-      updateCityStateFromZip(zipInput);
-    }
-  }, [zipInput]);
 
   // 📍 Apply filters when categories, days, or all resources change
   useEffect(() => {
@@ -332,16 +290,6 @@ const Home = () => {
     setFilteredResults2(filtered);
   }, [categories, days, store.boundaryResults]);
 
-  const fetchCachedBounds = async (query, isZip = false) => {
-    const cacheKey = `bounds-${JSON.stringify(query)}`;
-    const cachedData = sessionStorage.getItem(cacheKey);
-    if (cachedData) return JSON.parse(cachedData);
-
-    let data = await fetchBounds(query, isZip);
-    if (data) sessionStorage.setItem(cacheKey, JSON.stringify(data));
-    return data;
-  };
-
   /* ===========================
    * 📌 Event Handlers
    * =========================== */
@@ -391,6 +339,7 @@ const Home = () => {
         return;
       }
 
+      console.log("handleboundschange called");
       setLastBounds(newBounds);
       if (latChanged || lngChanged) setMapCenter(center);
       if (zoomChanged) setMapZoom(zoom);
@@ -428,6 +377,7 @@ const Home = () => {
 
       <div className={`grand-resilio-container`}>
         <Sidebar
+          handleBoundsChange={handleBoundsChange}
           handleCategoryChange={handleCategoryChange}
           handleDayChange={handleDayChange}
           setIsFilterModalOpen={setIsFilterModalOpen}
@@ -438,9 +388,6 @@ const Home = () => {
           days={days}
           setDays={setDays}
           INITIAL_DAY_STATE={INITIAL_DAY_STATE}
-          fetchCachedBounds={fetchCachedBounds}
-          handleBoundsChange={handleBoundsChange}
-          updateCityStateFromZip={updateCityStateFromZip}
           city={city}
           resetFilters={resetFilters}
           mapInstance={mapInstance}
