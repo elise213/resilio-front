@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import styles from "../styles/approveComments.css";
+import { Link } from "react-router-dom";
 
 const ApproveComments = () => {
   const { store, actions } = useContext(Context);
@@ -36,14 +37,19 @@ const ApproveComments = () => {
 
   return (
     <div className="unapproved-page">
-      <p className="unapproved-heading">Unapproved Comments</p>
+      <p className="close-settings">
+        <Link to={`/`} style={{ display: "flex", alignItems: "center" }}>
+          <span className="material-symbols-outlined">arrow_back_ios</span>
+          Back
+        </Link>
+      </p>
 
       {isLoading ? (
         <div className="loading-alert">Loading...</div>
       ) : unapprovedComments.length === 0 ? (
         <p>No unapproved comments found.</p>
       ) : (
-        <ul className="unapproved-ul">
+        <ul className="unapproved-ul" style={{ marginTop: "30px" }}>
           {unapprovedComments.map((comment) => (
             <li key={comment.comment_id}>
               <p>

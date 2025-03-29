@@ -13,9 +13,9 @@ const Favorites = () => {
     <>
       <div className="favorites-page">
         <p className="close-modal">
-          <Link to={`/`}>
+          <Link to={`/`} style={{ display: "flex", alignItems: "center" }}>
             <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to Search
+            Back
           </Link>
         </p>
         <div className="scroll-favorites">

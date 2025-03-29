@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+.scroll-favorites ul {
+  padding: 0 !important;
+}
+
 .favorites-page {
   height: 100%;
   width: 100%;

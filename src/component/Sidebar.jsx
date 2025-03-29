@@ -111,19 +111,24 @@ const Sidebar = ({
           <div className="filter-group">
             <span className="filter-label">Category</span>
             <div className="filter-list">
-              {activeCategories.map((category) => (
-                <div key={category} className="filter-item">
-                  {capitalize(category)}
-                  <button
-                    className="remove-filter"
-                    onClick={() => {
-                      handleCategoryChange(category);
-                    }}
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
+              {activeCategories.map((category) => {
+                const found = store.CATEGORY_OPTIONS.find(
+                  (option) => option.id === category
+                );
+                return (
+                  <div key={category} className="filter-item">
+                    {found ? found.label : capitalize(category)}
+                    <button
+                      className="remove-filter"
+                      onClick={() => {
+                        handleCategoryChange(category);
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

@@ -159,9 +159,9 @@ const ProfileSettings = () => {
   return (
     <div className="settings-page">
       <p className="close-settings">
-        <Link to={`/`}>
+        <Link to={`/`} style={{ display: "flex", alignItems: "center" }}>
           <span className="material-symbols-outlined">arrow_back_ios</span>
-          Back to Search
+          Back
         </Link>
       </p>
       <div className="settings-container">
