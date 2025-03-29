@@ -66,20 +66,15 @@ const Map = ({
         if (window.google?.maps) {
           window.google.maps.event.trigger(mapInstanceRef.current, "resize");
         }
-        if (mapCenter) {
-          mapInstanceRef.current.setCenter(
-            new mapsInstanceRef.current.LatLng(mapCenter.lat, mapCenter.lng)
-          );
-        }
       }, 300);
     }
-  }, [mapHasLoaded, layout, mapCenter?.lat, mapCenter?.lng]);
+  }, [mapHasLoaded]);
 
   useEffect(() => {
     if (mapContainerRef.current && city?.center?.lat && city?.center?.lng) {
       setMapReady(true);
     }
-  }, [layout, city?.center?.lat, city?.center?.lng, mapContainerRef.current]);
+  }, [city?.center?.lat, city?.center?.lng, mapContainerRef.current]);
 
   useEffect(() => {
     if (mapReady && mapInstanceRef.current) {
@@ -297,7 +292,7 @@ const Map = ({
         window.google.maps.event.trigger(mapInstanceRef.current, "resize");
       }, 300);
     }
-  }, [layout]);
+  }, []);
 
   const MIN_BOUND_CHANGE_DELTA = 0.001; // adjustable sensitivity
 
@@ -315,14 +310,10 @@ const Map = ({
 
   const skipNextRef = useRef(false);
 
-  const handleMapChange = useCallback(
-    debounce(({ bounds }) => {
-      if (skipNextRef.current) {
-        console.log("⏩ Skipping fetch due to programmatic move.");
-        skipNextRef.current = false;
-        return;
-      }
+  const currentZoomRef = useRef(null);
 
+  const handleMapChange = useCallback(
+    debounce(({ bounds, center, zoom }) => {
       if (!bounds || !bounds.ne || !bounds.sw) return;
 
       const newBounds = {
@@ -330,17 +321,52 @@ const Map = ({
         sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
       };
 
-      if (!boundsChangedSignificantly(lastBoundsRef.current, newBounds)) {
-        console.log("🟣 Bounds changed insignificantly, skipping fetch.");
+      const zoomChanged = zoom !== currentZoomRef.current;
+      currentZoomRef.current = zoom;
+
+      if (
+        !boundsChangedSignificantly(lastBoundsRef.current, newBounds) &&
+        !zoomChanged
+      ) {
+        console.log(
+          "🟣 Bounds and zoom changed insignificantly, skipping fetch."
+        );
         return;
       }
 
-      console.log("🟢 Significant map movement detected:", newBounds);
+      console.log("🟢 Map movement or zoom detected");
       lastBoundsRef.current = newBounds;
       actions.setBoundaryResults(newBounds, categories, days);
     }, 1000),
     [categories, days]
   );
+
+  // const handleMapChange = useCallback(
+  //   debounce(({ bounds }) => {
+  //     if (skipNextRef.current) {
+  //       console.log("⏩ Skipping fetch due to programmatic move.");
+  //       skipNextRef.current = false;
+  //       return;
+  //     }
+
+  //     if (!bounds || !bounds.ne || !bounds.sw) return;
+
+  //     const newBounds = {
+  //       ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
+  //       sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
+  //     };
+
+  //     if (!boundsChangedSignificantly(lastBoundsRef.current, newBounds)) {
+  //       console.log("🟣 Bounds changed insignificantly, skipping fetch.");
+  //       return;
+  //     }
+
+  //     console.log("🟢 Significant map movement detected:", newBounds);
+  //     lastBoundsRef.current = newBounds;
+  //     actions.setBoundaryResults(newBounds, categories, days);
+  //   }, 1000),
+  //   [categories, days]
+  // );
 
   // const handleMapChange = useCallback(
   //   debounce(({ bounds, center, zoom }) => {
@@ -387,23 +413,12 @@ const Map = ({
   return (
     <div className={`map-frame`}>
       <div
-        key={`${layout}`}
+        // key={`${layout}`}
         ref={mapContainerRef}
-        className={`map-container ${layout}map`}
+        className={`map-container${layout}`}
         style={{ height: "100%", width: "100%" }}
       >
         {mapCenter?.lat && (
-          // <GoogleMapReact
-          //   key={`map-${layout}-${mapCenter?.lat}-${mapCenter?.lng}-${mapZoom}-${mapReady}`}
-          //   bootstrapURLKeys={{ key: apiKey, libraries: ["geometry"] }}
-          //   center={mapCenter}
-          //   zoom={mapZoom}
-          //   defaultZoom={11}
-          //   options={createMapOptions}
-          //   onChange={handleMapChange}
-          //   onGoogleApiLoaded={handleApiLoaded}
-          //   yesIWantToUseGoogleMapApiInternals={true}
-          // >
           <GoogleMapReact
             key={`map`}
             bootstrapURLKeys={{ key: apiKey, libraries: ["geometry"] }}

@@ -1263,6 +1263,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           };
         };
 
+        const resourceIsInsideBounds = (resource, bounds) => {
+          if (!resource?.latitude || !resource?.longitude) return false;
+          return (
+            resource.latitude <= bounds.ne.lat &&
+            resource.latitude >= bounds.sw.lat &&
+            resource.longitude <= bounds.ne.lng &&
+            resource.longitude >= bounds.sw.lng
+          );
+        };
+
         // Helper: Check containment
         const boundsContain = (outer, inner) => {
           return (
@@ -1310,6 +1320,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         try {
           const filteredResults = allResources.filter((resource) => {
+            const insideBounds = resourceIsInsideBounds(resource, bounds);
+            if (!insideBounds) return false;
+
             const hasValidCategory =
               resource.category &&
               resource.category
@@ -1323,7 +1336,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                 (day) => selectedDays[day] && resource.schedule[day]?.start
               );
 
-            if (!isFilteringByCategory && !isFilteringByDay) return true;
+            if (!isFilteringByCategory && !isFilteringByDay) {
+              return true; // ← bounds already verified above
+            }
+
             if (isFilteringByCategory && isFilteringByDay)
               return hasValidCategory && hasValidDay;
             if (isFilteringByCategory) return hasValidCategory;
@@ -1347,133 +1363,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ loadingResults: false });
         }
       },
-
-      // setBoundaryResults: async (
-      //   bounds,
-      //   selectedCategories = {},
-      //   selectedDays = {}
-      // ) => {
-      //   const store = getStore();
-      //   const actions = getActions();
-
-      //   const inflateBounds = (bounds, percentage = 0.1) => {
-      //     const latDiff = bounds.ne.lat - bounds.sw.lat;
-      //     const lngDiff = bounds.ne.lng - bounds.sw.lng;
-
-      //     const latPad = latDiff * percentage;
-      //     const lngPad = lngDiff * percentage;
-
-      //     return {
-      //       neLat: bounds.ne.lat + latPad,
-      //       neLng: bounds.ne.lng + lngPad,
-      //       swLat: bounds.sw.lat - latPad,
-      //       swLng: bounds.sw.lng - lngPad,
-      //     };
-      //   };
-
-      //   if (!lastBounds || !boundsContain(lastBounds, bounds)) {
-      //     console.log("🌍 Fetching because bounds exceed last fetched area.");
-      //     await actions.fetchResources(bounds);
-      //     const paddedBounds = inflateBounds(bounds, 0.1); // ← add padding here
-      //     setStore({ lastFetchedBounds: paddedBounds });
-      //   } else {
-      //     console.log("📦 Inside buffered bounds, using cached data.");
-      //   }
-
-      //   const boundsContain = (outer, inner) => {
-      //     return (
-      //       outer.neLat >= inner.ne.lat &&
-      //       outer.neLng >= inner.ne.lng &&
-      //       outer.swLat <= inner.sw.lat &&
-      //       outer.swLng <= inner.sw.lng
-      //     );
-      //   };
-      //   console.log("set boundary results called");
-      //   const lastBounds = store.lastFetchedBounds;
-      //   if (!bounds || !bounds.ne || !bounds.sw) {
-      //     console.error("❌ Error: Invalid bounds received.");
-      //     return;
-      //   }
-
-      //   const newBounds = {
-      //     neLat: bounds.ne.lat,
-      //     neLng: bounds.ne.lng,
-      //     swLat: bounds.sw.lat,
-      //     swLng: bounds.sw.lng,
-      //   };
-      //   const shouldRefetch =
-      //     !lastBounds || !actions.boundsEqual(lastBounds, newBounds);
-
-      //   // const shouldRefetch = !lastBounds || !boundsContain(lastBounds, bounds);
-
-      //   if (shouldRefetch) {
-      //     await actions.fetchResources(bounds);
-      //   }
-
-      //   let allResources = getStore().allResources || [];
-
-      //   console.log("📡 setBoundaryResults called!");
-      //   console.log("📌 Received bounds:", bounds);
-      //   console.log("📌 Selected Categories:", selectedCategories);
-      //   console.log("📌 Selected Days:", selectedDays);
-      //   console.log(
-      //     "📌 Total resources before filtering:",
-      //     allResources.length
-      //   );
-
-      //   const isFilteringByCategory =
-      //     Object.values(selectedCategories).some(Boolean);
-      //   const isFilteringByDay = Object.values(selectedDays).some(Boolean);
-
-      //   console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
-      //   console.log("🔎 isFilteringByDay:", isFilteringByDay);
-
-      //   // ✅ Save the most recent filters to the store
-      //   setStore({
-      //     selectedCategories,
-      //     selectedDays,
-      //     loadingResults: true,
-      //   });
-
-      //   try {
-      //     const filteredResults = allResources.filter((resource) => {
-      //       const hasValidCategory =
-      //         resource.category &&
-      //         resource.category
-      //           .split(",")
-      //           .map((c) => c.trim().toLowerCase())
-      //           .some((cat) => selectedCategories[cat] === true);
-
-      //       const hasValidDay =
-      //         resource.schedule &&
-      //         Object.keys(resource.schedule).some(
-      //           (day) => selectedDays[day] && resource.schedule[day]?.start
-      //         );
-
-      //       if (!isFilteringByCategory && !isFilteringByDay) return true;
-      //       if (isFilteringByCategory && isFilteringByDay)
-      //         return hasValidCategory && hasValidDay;
-      //       if (isFilteringByCategory) return hasValidCategory;
-      //       if (isFilteringByDay) return hasValidDay;
-
-      //       return false;
-      //     });
-
-      //     console.log(
-      //       "✅ Found",
-      //       filteredResults.length,
-      //       "resources after filtering."
-      //     );
-
-      //     setStore({
-      //       boundaryResults: [...filteredResults],
-      //       loadingResults: false,
-      //     });
-      //   } catch (error) {
-      //     console.error("❌ Error filtering resources:", error);
-      //     setStore({ loadingResults: false });
-      //   }
-      // },
 
       formatNominatimResult: (result) => {
         const city =
