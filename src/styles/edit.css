@@ -142,26 +142,6 @@ button {
   background-color: red;
 }
 
-.update-button {
-  background-color: lightgreen;
-  /* color: white; */
-  padding: 5px;
-  border-radius: 5px;
-  /* font-weight: bold; */
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 150px;
-  border: 1px solid gray;
-  font-size: 20px;
-  justify-self: flex-end;
-  /* align-self: flex-end; */
-  margin-top: 30px;
-}
-
-.update-button:hover {
-  background-color: var(--newGreen); /* A lighter shade of green */
-}
-
 /* Time group layout */
 .time-group {
   display: flex;
@@ -180,9 +160,4 @@ button {
     font-size: 14px;
     padding: 8px;
   } */
-
-  .update-button {
-    font-size: 16px;
-    padding: 10px;
-  }
 }

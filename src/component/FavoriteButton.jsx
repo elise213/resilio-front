@@ -42,17 +42,13 @@ const FavoriteButton = ({ type, resource }) => {
       style={{ border: "none", backgroundColor: "transparent" }}
     >
       <Tooltip
-        title={
-          isFavorited
-            ? "You follow this resource. Click to unfollow"
-            : "Click to follow this resource"
-        }
+        title={isFavorited ? "Click to unfollow" : "Click to follow"}
         arrow
       >
         {isFavorited ? (
-          <BookmarkIcon fontSize="medium" />
+          <BookmarkIcon fontSize="small" />
         ) : (
-          <BookmarkBorderIcon fontSize="medium" />
+          <BookmarkBorderIcon fontSize="small" />
         )}
       </Tooltip>
     </button>

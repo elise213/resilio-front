@@ -6,21 +6,35 @@ import FavoriteButton from "./FavoriteButton";
 
 const ResourceCard = (props) => {
   const { store, actions } = useContext(Context);
-  const [averageRating2, setAverageRating2] = useState(0);
-  const [ratingCount2, setRatingCount2] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
+  const [ratingCount, setRatingCount] = useState(0);
+  const [ready, setReady] = useState(false);
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const isLoggedIn = !!store.token;
 
   useEffect(() => {
-    actions.getAverageRating(
-      props.item.id,
-      setAverageRating2,
-      props.setRatingCount
-    );
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    actions.getAverageRating(props.item.id, setAverageRating2, setRatingCount2);
+    const fetchRating = async () => {
+      await actions.getAverageRating(
+        props.item.id,
+        (avg) => {
+          if (isMounted) setAverageRating(avg);
+        },
+        (count) => {
+          if (isMounted) setRatingCount(count);
+        }
+      );
+      if (isMounted) setReady(true);
+    };
+
+    if (props.item.id) {
+      fetchRating();
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [props.item.id]);
 
   const normalizeCategories = (categories) => {
@@ -50,13 +64,15 @@ const ResourceCard = (props) => {
     });
   }, [props.item.category, CATEGORY_OPTIONS]);
 
+  if (!ready) return null; // Prevent partial card flashes
+
   return (
     <div
       className="my-resource-card"
+      style={{ zIndex: "99999999" }}
       onClick={() => {
         actions.setSelectedResource(props.item);
         actions.openModal();
-
         console.log("called from resource card - open");
       }}
     >
@@ -78,13 +94,17 @@ const ResourceCard = (props) => {
             <Rating
               style={{ flexDirection: "row" }}
               name="read-only"
-              value={averageRating2}
+              value={averageRating}
               precision={0.5}
               readOnly
               className="star"
               size="small"
             />
-            {ratingCount2 > 0 && <span>({ratingCount2})</span>}
+            {ratingCount > 0 && (
+              <span style={{ fontSize: "12px", color: "gray" }}>
+                ( {ratingCount} )
+              </span>
+            )}
           </div>
           {isLoggedIn && (
             <FavoriteButton resource={props.item} type={"card-favorite"} />

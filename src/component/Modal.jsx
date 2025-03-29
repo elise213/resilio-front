@@ -4,28 +4,36 @@ import { Link } from "react-router-dom";
 import { ModalInfo } from "./ModalInfo";
 import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
+import { Tooltip, Icon } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 
-import { Tooltip, Icon } from "@mui/material";
-
-const Modal = ({}) => {
+const Modal = ({ setShowRating, showRating }) => {
   const { store, actions } = useContext(Context);
 
   const [rating, setRating] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCount, setRatingCount] = useState(0);
-  const [showRating, setShowRating] = useState(false);
-  const apiKey = import.meta.env.VITE_GOOGLE;
-  const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [hover, setHover] = useState(-1);
 
   const isLoggedIn = !!store.token;
   const userIdFromSession = sessionStorage.getItem("user_id");
-
   const isAuthorizedUser = store.authorizedUser;
-  const resource = store.selectedResource;
+  const resource = store.selectedResource || {};
+
+  const labels = {
+    1: "Poor",
+    2: "Fair",
+    3: "Good",
+    4: "Very Good",
+    5: "Exceptional",
+  };
+
+  useEffect(() => {
+    if (!showRating) setHover(-1);
+  }, [showRating]);
 
   const handleSubmitReview = () => {
     if (!rating || !comment.trim()) {
@@ -100,23 +108,19 @@ const Modal = ({}) => {
   }
 
   useEffect(() => {
-    if (resource?.id) {
-      actions.getAverageRating(resource.id, setAverageRating, setRatingCount);
-      actions.getComments(resource.id, setComments);
+    if (store.selectedResource?.id) {
+      actions.getAverageRating(
+        store.selectedResource.id,
+        setAverageRating,
+        setRatingCount
+      );
+      actions.getComments(store.selectedResource.id, setComments);
     }
-  }, [resource]);
+  }, [store.selectedResource]);
 
   useEffect(() => {
     console.log("resource", resource);
   }, []);
-
-  const labels = {
-    1: "Poor",
-    2: "Fair",
-    3: "Good",
-    4: "Very Good",
-    5: "Exceptional",
-  };
 
   return (
     <>
@@ -151,9 +155,20 @@ const Modal = ({}) => {
         />
       </div>
 
+      {isAuthorizedUser && isLoggedIn && (
+        <div className="modal-footer">
+          <Tooltip title="Edit this information" arrow>
+            <Link to={`/edit/${resource.id}`}>
+              <Icon>handyman</Icon>
+            </Link>
+          </Tooltip>
+        </div>
+      )}
+
       {/* Rating Modal */}
       {showRating && (
         <>
+          {" "}
           <div className="rate">
             <span className="close-modal" onClick={() => setShowRating(false)}>
               <span className="material-symbols-outlined">arrow_back_ios</span>
@@ -170,7 +185,7 @@ const Modal = ({}) => {
                   onClick={() => {
                     actions.openLoginModal();
                     setShowRating(false);
-                    actions.closeModal;
+                    actions.closeModal();
                   }}
                 >
                   log in
@@ -181,6 +196,9 @@ const Modal = ({}) => {
             {isLoggedIn && (
               <>
                 <div className="rating-container">
+                  <div className="rating-label">
+                    {rating !== null && labels[hover !== -1 ? hover : rating]}
+                  </div>
                   <Rating
                     className="resource-rating"
                     name="resource-rating"
@@ -190,11 +208,9 @@ const Modal = ({}) => {
                     onChangeActive={(event, newHover) => {
                       setHover(newHover);
                     }}
-                    style={{ fontSize: "30px" }}
+                    style={{ fontSize: "25px" }}
                   />
-                  <div className="rating-label">
-                    {rating !== null && labels[hover !== -1 ? hover : rating]}
-                  </div>
+
                   <div className="comment-section">
                     <textarea
                       className="comment-text-area"
@@ -204,28 +220,18 @@ const Modal = ({}) => {
                       maxLength="280"
                     ></textarea>
 
-                    <Button
-                      variant="contained"
-                      color="primary"
+                    <button
+                      className="apply-button"
                       onClick={handleSubmitReview}
                     >
                       Submit
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </>
             )}
           </div>
         </>
-      )}
-      {isAuthorizedUser && isLoggedIn && (
-        <div className="modal-footer">
-          <Tooltip title="Click here to edit this resource" arrow>
-            <Link to={`/edit/${resource.id}`}>
-              <Icon>handyman</Icon>
-            </Link>
-          </Tooltip>
-        </div>
       )}
     </>
   );

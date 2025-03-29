@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import { Avatar, Menu, MenuItem, IconButton, Button } from "@mui/material";
+import {
+  Avatar,
+  Menu,
+  MenuItem,
+  IconButton,
+  Button,
+  Tooltip,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import styles from "../styles/loginModal.css";
@@ -127,7 +134,13 @@ const Login = ({ setLayout }) => {
     field = (
       <div className="login-modal-content">
         <div className="login-modal-header">
-          <span className="close-login-modal" onClick={() => setLog("1")}>
+          <span
+            className="close-login-modal"
+            onClick={() => {
+              setIsLoginModalOpen(false);
+              setLog("1");
+            }}
+          >
             <span className="material-symbols-outlined">arrow_back_ios</span>
             Back to Search
           </span>
@@ -185,15 +198,18 @@ const Login = ({ setLayout }) => {
     <>
       {!isLoginModalOpen && isLoggedIn ? (
         <>
-          <IconButton
-            onClick={(e) => setAnchorEl(e.currentTarget)}
-            style={{ padding: "0" }}
-          >
-            <Avatar
-              alt="Profile"
-              sx={{ width: 30, height: 30, marginBottom: "10px" }}
-            />
-          </IconButton>
+          <Tooltip title="Account tools" arrow>
+            <IconButton
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              style={{ padding: "0" }}
+            >
+              <Avatar
+                alt="Profile"
+                sx={{ width: 30, height: 30, marginBottom: "10px" }}
+              />
+            </IconButton>
+          </Tooltip>
+
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -202,13 +218,14 @@ const Login = ({ setLayout }) => {
             <MenuItem onClick={() => setAnchorEl(null)}>
               <Link
                 to={`/profilesettings/${userId2}`}
-                style={{ textDecoration: "none", color: "inherit" }}
+                className="profile-links"
               >
                 Account
               </Link>
             </MenuItem>
             <MenuItem onClick={() => setAnchorEl(null)}>
               <Link
+                className="profile-links"
                 to={`/favorites`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
@@ -217,13 +234,16 @@ const Login = ({ setLayout }) => {
             </MenuItem>
             <MenuItem onClick={() => setAnchorEl(null)}>
               <Link
+                className="profile-links"
                 to={`/profile/${userId2}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 Profile
               </Link>
             </MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <p className="profile-links">Log out</p>
+            </MenuItem>
           </Menu>
         </>
       ) : (

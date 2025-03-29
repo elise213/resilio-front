@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import MyCheckbox from "./MyCheckbox";
 import styles from "../styles/selection.css";
+import { Menu, MenuItem, IconButton, Tooltip, Icon } from "@mui/material";
 
 const Selection = ({
   isFilterModalOpen,
@@ -56,6 +57,7 @@ const Selection = ({
             <button
               className="close-filters"
               onClick={() => setIsFilterModalOpen(false)}
+              style={{ color: "white", padding: 0 }}
             >
               X
             </button>
@@ -94,18 +96,6 @@ const Selection = ({
             <div className="filter-section">
               <div>
                 <p className="selection-heading">Days</p>
-                {/* {Array.isArray(store.DAY_OPTIONS) &&
-                  store.DAY_OPTIONS.map((option) => (
-                    <MyCheckbox
-                      key={option.id}
-                      id={option.id}
-                      label={`${option.label} (${
-                        store.dayCounts?.[option.id] || 0
-                      })`}
-                      isChecked={!!localDays[option.id]}
-                      handleToggle={() => toggleLocalDay(option.id)}
-                    />
-                  ))} */}
                 {Array.isArray(store.DAY_OPTIONS) &&
                   store.DAY_OPTIONS.filter(
                     (option) => (store.dayCounts?.[option.id] || 0) > 0
@@ -121,28 +111,24 @@ const Selection = ({
                     />
                   ))}
               </div>
-
-              <div
-                className="filter-modal-footer"
-                style={{ marginTop: "30px" }}
+            </div>
+            <div className="filter-modal-footer">
+              <button
+                className="apply-button"
+                onClick={handleApplyLocalFilters}
               >
-                <button
-                  className="apply-button"
-                  onClick={handleApplyLocalFilters}
-                >
-                  Apply Filters
-                </button>
-                <button
-                  className="reset-button"
-                  onClick={() => {
-                    setLocalCategories({});
-                    setLocalDays({});
-                    if (typeof resetFilters === "function") resetFilters(); // ✅ added safety
-                  }}
-                >
-                  Reset Filters
-                </button>
-              </div>
+                Apply Filters
+              </button>
+              <button
+                className="reset-button"
+                onClick={() => {
+                  setLocalCategories({});
+                  setLocalDays({});
+                  if (typeof resetFilters === "function") resetFilters();
+                }}
+              >
+                Reset Filters
+              </button>
             </div>
           </div>
         </div>

@@ -171,6 +171,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ contactModalIsOpen: false });
       },
 
+      closeAllModals: () => {
+        setStore({
+          modalIsOpen: false,
+          loginModalIsOpen: false,
+          aboutModalIsOpen: false,
+          donationModalIsOpen: false,
+          contactModalIsOpen: false,
+        });
+      },
+
       setCategoryCounts: (categoryCounts) => {
         setStore({
           categoryCounts: categoryCounts,
@@ -1933,6 +1943,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error fetching user info:", error);
           return { name: "Unknown" };
         }
+      },
+      getCurrentUserInfo: async () => {
+        const store = getStore();
+        if (!store.user_id) {
+          console.warn("No user_id found in store.");
+          return null;
+        }
+        return await getActions().getUserInfo(store.user_id);
       },
 
       fetchFavorites: async () => {

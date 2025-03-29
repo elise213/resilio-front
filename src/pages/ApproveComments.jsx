@@ -6,16 +6,14 @@ import styles from "../styles/approveComments.css";
 const ApproveComments = () => {
   const { store, actions } = useContext(Context);
   const [unapprovedComments, setUnapprovedComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // ⬅️ Loading state added
-
-  console.log("🔑 Token in store:", store.token);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUnapprovedComments = async () => {
-      setIsLoading(true); // Start loading
+      setIsLoading(true);
       const comments = await actions.getUnapprovedComments();
       setUnapprovedComments(comments);
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     };
 
     fetchUnapprovedComments();
@@ -25,7 +23,6 @@ const ApproveComments = () => {
     try {
       const success = await actions.approveComment(commentId);
       if (success) {
-        // Swal.fire("Success", "Comment approved!", "success");
         setUnapprovedComments(
           unapprovedComments.filter(
             (comment) => comment.comment_id !== commentId

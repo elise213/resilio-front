@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Switch, FormControlLabel, Tooltip, Icon } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Rating from "@mui/material/Rating";
@@ -79,7 +80,7 @@ const UserProfile = () => {
             Back to Search
           </Link>
         </p>
-        <div className="profile-title">Your Reviews</div>
+        <div className="heading-bpages">YOUR REVIEWS</div>
 
         {loading ? (
           <div className="loading-alert">Loading...</div>
@@ -127,11 +128,13 @@ const UserProfile = () => {
                   {item.like_count > 0 && <span>{item.like_count}</span>}
                 </div>
                 {parseInt(id) === loggedInUserId && (
-                  <DeleteIcon
-                    fontSize="small"
-                    onClick={() => handleDelete(item.comment_id)}
-                    className="delete-icon"
-                  />
+                  <Tooltip title="Delte Comment" arrow>
+                    <DeleteIcon
+                      fontSize="small"
+                      onClick={() => handleDelete(item.comment_id)}
+                      className="delete-icon"
+                    />
+                  </Tooltip>
                 )}
               </div>
             </div>

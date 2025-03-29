@@ -49,40 +49,18 @@
 
 .info-address {
   display: flex;
-  align-items: flex-start;
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
   width: 100%;
-}
-
-.modal-info-title {
-  flex-shrink: 0;
-  width: 80px;
-  font-weight: 600;
-  color: #333;
-}
-
-.modal-info-value {
-  flex: 1;
-  font-weight: 400;
-  color: #555;
-}
-
-.info-address {
+  font-size: 14px;
   padding: 8px;
-  /* width: 100%; */
   align-items: center;
   display: flex;
   text-align: justify;
   justify-content: space-between;
   border-bottom: 1px solid rgb(212, 212, 212);
   text-decoration: none;
-  font-size: 12px;
   font-weight: 200;
-}
-
-.info-address span {
-  font-weight: 100 !important;
 }
 
 .modal-open {
@@ -94,10 +72,14 @@
   cursor: pointer;
   z-index: 9999;
   position: absolute;
-  top: 0;
-  padding: 10px;
+  top: 10px;
+  left: 10px;
   text-decoration: none;
   color: black;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .modal-favorite {
@@ -149,8 +131,8 @@
 }
 
 .read-more {
-  color: blue;
-  text-align: end;
+  color: #5b5bdd;
+  margin-left: 15px;
 }
 
 .read-more:hover {
@@ -191,8 +173,7 @@
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  padding: 20px;
-  padding-bottom: 0;
+  padding: 10px 20px;
 }
 
 .alert-bar {
@@ -240,7 +221,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
   width: 100%;
 }
 
@@ -249,17 +229,27 @@
 }
 
 .comment-text-area {
-  margin-bottom: 20px;
+  margin: 20px 0;
   min-height: 100px;
   font-family: "Neutraface Text", sans-serif !important;
+  line-height: 1.6;
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  overflow: auto;
+  white-space: normal; /* <-- this is key */
+  word-wrap: break-word; /* also helps */
+  outline: none;
 }
 
 .comment-section {
   display: flex;
   flex-direction: column;
-  width: 90%;
-  /* height: 100px; */
-  width: 100%;
+  min-width: 300px;
 }
 
 p {
@@ -278,7 +268,6 @@ p {
 }
 
 .comment-div {
-  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
   border: none;
@@ -308,7 +297,7 @@ p {
   flex: 1;
   padding: 5px;
   border: 1px solid lightgray;
-  background-color: #f5f2f2;
+  background-color: #f2f2f2;
   border-radius: 4px;
 }
 
@@ -355,6 +344,7 @@ p {
   box-sizing: border-box;
   flex: 1;
   justify-content: center;
+  gap: 10px;
 }
 
 textarea {
@@ -380,18 +370,23 @@ textarea {
   display: flex;
   background-color: lightgray;
   display: flex;
-  justify-content: space-between;
+  margin-top: -1px;
+  justify-content: flex-start;
 }
 
 .modal-info-title {
-  font-size: 14px !important;
-  width: 100px !important;
-  /* color: var(--color2); */
+  width: 120px;
+  flex-shrink: 0;
+  width: 80px;
+  font-weight: 500;
+  color: #333;
+  text-wrap: nowrap;
 }
 
 .modal-info-value {
-  font-weight: 100;
+  font-weight: 200;
   line-height: 1.5;
+  flex: 1;
 }
 
 .problem {
@@ -568,6 +563,9 @@ marquee {
 }
 
 @media screen and (max-width: 700px) {
+  .info-address {
+    font-size: 12px;
+  }
   .details-column {
     flex-direction: column;
   }
@@ -581,8 +579,5 @@ marquee {
   .modal-info-title {
     width: 80px !important;
     font-size: 12px !important;
-  }
-  .info-address {
-    font-size: 12px;
   }
 }

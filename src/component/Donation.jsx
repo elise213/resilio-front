@@ -10,14 +10,14 @@ import { Context } from "../store/appContext";
 const Donation = () => {
   const { store, actions } = useContext(Context);
   return (
-    <div className="new-modal donation">
-      <p
+    <div className="donation-modal">
+      {/* <p
         className="close-new-modal"
         onClick={() => actions.closeDonationModal()}
       >
         <span className="material-symbols-outlined">arrow_back_ios</span>
         Back to search
-      </p>
+      </p> */}
       <iframe
         title="Donation form powered by Zeffy"
         style={{

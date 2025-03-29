@@ -17,19 +17,18 @@ import Contact from "../component/Contact";
 import About from "../component/About";
 import { debounce } from "lodash";
 import Donation from "../component/Donation";
+import Rating from "@mui/material/Rating";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
-
-  const apiKey = import.meta.env.VITE_GOOGLE;
+  const isLoggedIn = !!store.token;
   const [loadingLocation, setLoadingLocation] = useState(false);
+  const [showRating, setShowRating] = useState(false);
   const [mapZoom, setMapZoom] = useState(11);
-  // Top of file
   const callHistory = useRef([]);
 
   const isRateLimited = () => {
     const now = Date.now();
-    // Keep only calls within the last minute
     callHistory.current = callHistory.current.filter((t) => now - t < 60000);
     if (callHistory.current.length >= 10) return true;
     callHistory.current.push(now);
@@ -37,10 +36,6 @@ const Home = () => {
   };
 
   const [userSelectedFilter, setUserSelectedFilter] = useState(false);
-  // const INITIAL_CATEGORY_STATE = (CATEGORY_OPTIONS) =>
-  //   CATEGORY_OPTIONS.reduce((acc, curr) => {
-  //     return { ...acc, [curr.id]: false };
-  //   }, {});
   const INITIAL_DAY_STATE = (DAY_OPTIONS) =>
     DAY_OPTIONS.reduce((acc, curr) => ({ ...acc, [curr.id]: false }), {});
 
@@ -430,7 +425,7 @@ const Home = () => {
               }}
             ></div>
             <div className="modal-div">
-              <Modal />
+              <Modal showRating={showRating} setShowRating={setShowRating} />
             </div>
           </>
         )}
@@ -463,6 +458,13 @@ const Home = () => {
 
       {store.donationModalIsOpen && (
         <>
+          <div
+            className="resilio-overlay"
+            onClick={() => {
+              actions.closeDonationModal();
+              document.body.classList.remove("modal-open");
+            }}
+          ></div>
           <Donation />
         </>
       )}
@@ -470,16 +472,24 @@ const Home = () => {
       {store.aboutModalIsOpen && <About />}
 
       {store.contactModalIsOpen && (
-        <div className="new-modal">
-          <p
-            className="close-new-modal"
-            onClick={() => actions.closeContactModal()}
-          >
-            <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to search
-          </p>
-          <Contact />
-        </div>
+        <>
+          <div
+            className="resilio-overlay"
+            onClick={() => {
+              actions.closeContactModal();
+              document.body.classList.remove("modal-open");
+            }}
+          ></div>
+          <div className="new-modal">
+            <p
+              className="close-new-modal"
+              onClick={() => actions.closeContactModal()}
+            >
+              X
+            </p>
+            <Contact />
+          </div>
+        </>
       )}
     </>
   );

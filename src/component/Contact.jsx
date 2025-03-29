@@ -3,13 +3,12 @@ import React, { useState, useContext, useRef, useEffect } from "react";
 import styles from "../styles/contact.css";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
-import Button from "@mui/material/Button";
 
 const Contact = () => {
   const form = useRef();
-  const SERVICE_ID = "service_betnze8";
-  const TEMPLATE_ID = "template_99iigjc";
-  const PUBLIC_KEY = "bSrh0TD_khQU1Jash";
+  const SERVICE_ID = "service_5v912b5";
+  const TEMPLATE_ID = "template_u7nitmj";
+  const PUBLIC_KEY = "frmUHhhWUG9vtMRit";
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -37,43 +36,40 @@ const Contact = () => {
   return (
     <>
       <form ref={form} onSubmit={sendEmail} className="contact-form">
-        <div className="contact-form-div">
-          <div className="form-col">
-            <input
-              type="text"
-              id="nameInput"
-              name="name"
-              className="form-control"
-              placeholder="Name"
-            />
-          </div>
-          <div className="form-col">
-            <input
-              type="text"
-              id="emailInput"
-              name="email"
-              className="form-control"
-              placeholder="Email address"
-            />
-          </div>
-          <div className="form-col-full">
-            <textarea
-              id="contactTextArea"
-              name="message"
-              className="form-control"
-              placeholder="Message"
-            ></textarea>
-          </div>
+        <div className="form-col">
+          <input
+            type="text"
+            id="nameInput"
+            name="name"
+            className="form-control"
+            placeholder="Name"
+          />
         </div>
+        <div className="form-col">
+          <input
+            type="text"
+            id="emailInput"
+            name="email"
+            className="form-control"
+            placeholder="Email address"
+          />
+        </div>
+        <div className="form-col-full">
+          <textarea
+            id="contactTextArea"
+            name="message"
+            className="form-control"
+            placeholder="Message"
+          ></textarea>
+        </div>
+        <button
+          className="apply-button"
+          type="submit"
+          style={{ marginTop: "20px" }}
+        >
+          SEND
+        </button>
       </form>
-      <Button
-        variant="contained"
-        color="primary"
-        className="contact-submit"
-        type="submit"
-      >
-        SEND
-      </Button>
     </>
   );
 };

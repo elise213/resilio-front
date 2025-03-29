@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Link } from "react-router-dom";
+import { Switch, FormControlLabel, Tooltip, Icon } from "@mui/material";
 
 const ResilioDropdown = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);
@@ -10,15 +11,17 @@ const ResilioDropdown = () => {
 
   return (
     <>
-      <IconButton onClick={(e) => setAnchorEl2(e.currentTarget)}>
-        <InfoOutlinedIcon sx={{ fontSize: 20, color: "black" }} />
-      </IconButton>
+      <Tooltip title="About the organization" arrow>
+        <IconButton onClick={(e) => setAnchorEl2(e.currentTarget)}>
+          <InfoOutlinedIcon sx={{ fontSize: 20, color: "black" }} />
+        </IconButton>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl2}
         open={Boolean(anchorEl2)}
         onClose={() => setAnchorEl2(null)}
       >
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             setAnchorEl2(null);
             actions.openAboutModal();
@@ -26,7 +29,7 @@ const ResilioDropdown = () => {
           }}
         >
           About
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             setAnchorEl2(null);

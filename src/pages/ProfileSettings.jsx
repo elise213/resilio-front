@@ -9,23 +9,66 @@ const ProfileSettings = () => {
   const { store, actions } = useContext(Context);
   const location = useLocation();
   const { userId } = useParams();
-  const queryParams = new URLSearchParams(location.search);
-  const tokenFromUrl = queryParams.get("token");
+  const tokenFromUrl = new URLSearchParams(location.search).get("token");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
 
   useEffect(() => {
-    if (userId && store.user_id !== parseInt(userId, 10)) {
-      actions.getUserInfo(userId).then((userInfo) => {
-        setName(userInfo?.name || "");
-        setCity(userInfo?.city || "");
-      });
-    } else {
-      setName(store.name || "");
-      setCity(store.city || "");
-    }
-  }, [userId, store.user_id, store.name, store.city, actions]);
+    const fetchUserData = async () => {
+      const userInfo = userId
+        ? await actions.getUserInfo(userId)
+        : await actions.getCurrentUserInfo();
+
+      if (userInfo) {
+        setName(userInfo.name || "");
+        setCity(userInfo.city || "");
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  // const handleResetPassword = async (e) => {
+  //   e.preventDefault();
+  //   const token = tokenFromUrl || sessionStorage.getItem("token");
+
+  //   try {
+  //     const response = await fetch(
+  //       `${store.current_back_url}/api/change-password`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify({ password: newPassword }),
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Password Reset",
+  //         text: "Your password has been reset successfully.",
+  //       });
+  //       setNewPassword("");
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error",
+  //         text: "Failed to reset password. Please try again.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Failed to reset password. Please try again.",
+  //     });
+  //   }
+  // };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -40,7 +83,10 @@ const ProfileSettings = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ password: newPassword }),
+          body: JSON.stringify({
+            current_password: currentPassword,
+            new_password: newPassword,
+          }),
         }
       );
 
@@ -50,19 +96,21 @@ const ProfileSettings = () => {
           title: "Password Reset",
           text: "Your password has been reset successfully.",
         });
+        setCurrentPassword("");
         setNewPassword("");
       } else {
+        const result = await response.json();
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "Failed to reset password. Please try again.",
+          text: result.error || "Failed to reset password.",
         });
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to reset password. Please try again.",
+        text: "Failed to reset password.",
       });
     }
   };
@@ -120,6 +168,16 @@ const ProfileSettings = () => {
         <p className="page-title">Account</p>
 
         <form onSubmit={handleResetPassword} className="profile-form">
+          <div className="form-row">
+            <label htmlFor="currentPassword">Current Password:</label>
+            <input
+              type="password"
+              id="currentPassword"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+            />
+          </div>
           <div className="form-row">
             <label htmlFor="newPassword">New Password:</label>
             <input

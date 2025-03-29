@@ -91,25 +91,25 @@ body {
   font-family: "Neutraface Text", sans-serif;
 }
 
+.MuiTooltip-popper {
+  z-index: 2000999 !important;
+}
+
 .material-icons {
   cursor: pointer;
-  /* margin: 5px; */
   display: flex !important;
   justify-content: center !important;
+}
+
+.heading-bpages {
+  margin-top: 30px;
+  font-size: 18px;
 }
 
 .loading-text {
   font-size: 14px;
   margin-top: 20px;
   text-align: center;
-}
-
-.close-contact {
-  font-size: 20px;
-  border: none;
-  z-index: 999;
-  align-self: flex-end;
-  color: gray;
 }
 
 .close-contact:hover {
@@ -300,11 +300,16 @@ body {
 
 .close-new-modal {
   cursor: pointer;
-
   position: absolute;
-  left: 0;
-  z-index: 999;
+  z-index: 9999;
   padding: 5px;
+  color: white;
+  font-weight: 400;
+  z-index: 9999;
+  font-size: 30px;
+  top: -20px;
+  position: absolute;
+  right: -20px;
 }
 
 .about-div {
@@ -317,19 +322,44 @@ body {
 
 /* match wtih navbar-content */
 .new-modal {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: white;
-  height: 100dvw;
-  padding: 10px;
-  z-index: 1000;
+  overflow: visible;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* background: white; */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  z-index: 9999;
   box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
-  border: 1px solid black;
   width: 400px !important;
   transition: 0.5s ease-in-out;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.donation-modal {
+  overflow-x: hidden;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  z-index: 9999;
+  box-sizing: border-box;
+  overflow-y: auto;
+  width: 400px !important;
+  height: 90%;
+  transition: 0.5s ease-in-out;
+  border-radius: 10px;
+  align-items: center;
 }
 
 .name-comment {

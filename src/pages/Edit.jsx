@@ -211,9 +211,36 @@ const Edit = () => {
     return <div>Loading...</div>;
   }
 
+  // useEffect(() => {
+  //   if (window.google && window.google.maps) {
+  //     setGoogleMapsLoaded(true);
+  //     return;
+  //   }
+
+  //   const existingScript = document.querySelector(
+  //     'script[src^="https://maps.googleapis.com/maps/api/js"]'
+  //   );
+
+  //   if (!existingScript) {
+  //     const script = document.createElement("script");
+  //     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+  //     script.async = true;
+  //     script.defer = true;
+  //     script.onload = () => setGoogleMapsLoaded(true);
+  //     document.head.appendChild(script);
+  //   } else {
+  //     existingScript.onload = () => setGoogleMapsLoaded(true);
+  //   }
+  // }, [apiKey]);
+
+  const [hasLoadedGoogleScript, setHasLoadedGoogleScript] = useState(false);
+
   useEffect(() => {
+    if (hasLoadedGoogleScript) return;
+
     if (window.google && window.google.maps) {
       setGoogleMapsLoaded(true);
+      setHasLoadedGoogleScript(true);
       return;
     }
 
@@ -226,12 +253,18 @@ const Edit = () => {
       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
-      script.onload = () => setGoogleMapsLoaded(true);
+      script.onload = () => {
+        setGoogleMapsLoaded(true);
+        setHasLoadedGoogleScript(true);
+      };
       document.head.appendChild(script);
     } else {
-      existingScript.onload = () => setGoogleMapsLoaded(true);
+      existingScript.onload = () => {
+        setGoogleMapsLoaded(true);
+        setHasLoadedGoogleScript(true);
+      };
     }
-  }, [apiKey]);
+  }, [apiKey, hasLoadedGoogleScript]);
 
   return (
     <>
@@ -463,7 +496,11 @@ const Edit = () => {
             />
           </div>
           {store.authorizedUser || formData.user_ids.includes(store.user_id) ? (
-            <button className="update-button" type="submit">
+            <button
+              className="apply-button"
+              style={{ backgroundColor: "lightgreen", marginTop: "40px" }}
+              type="submit"
+            >
               Update
             </button>
           ) : (

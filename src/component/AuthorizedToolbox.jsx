@@ -10,8 +10,13 @@ const AuthorizedToolbox = () => {
   return (
     <>
       <IconButton onClick={(e) => setAnchorEl2(e.currentTarget)}>
-        <Tooltip title="Toolbox" arrow>
-          <Icon>handyman</Icon>
+        <Tooltip title="Admin Tools" arrow>
+          <Icon
+            style={{ cursor: "pointer", color: "black" }}
+            sx={{ fontSize: 18 }}
+          >
+            handyman
+          </Icon>
         </Tooltip>
       </IconButton>
       <Menu

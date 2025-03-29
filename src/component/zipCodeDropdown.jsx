@@ -55,7 +55,7 @@ const ZipCodeDropdown = ({ handleBoundsChange, setIsGeoModalOpen }) => {
   };
 
   return (
-    <div className="zip-dropdown-container">
+    <div className="zip-dropdown-container" style={{ margin: "10px" }}>
       <input
         type="text"
         id="zip-code"

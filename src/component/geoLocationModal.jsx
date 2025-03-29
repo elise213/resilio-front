@@ -30,12 +30,16 @@ const GeoLocationModal = ({
     <div className="geo-modal">
       <Button
         onClick={handleGeoFindMe}
-        style={{ cursor: "pointer", backgroundColor: "transparent" }}
+        style={{
+          cursor: "pointer",
+          backgroundColor: "transparent",
+          color: "black",
+        }}
       >
         Find my location
       </Button>
 
-      <p style={{ marginBottom: "10px" }}>OR</p>
+      <p>OR</p>
       <ZipCodeDropdown
         updateCityStateFromZip={updateCityStateFromZip}
         handleBoundsChange={handleBoundsChange}

@@ -21,7 +21,7 @@
   border: 1px solid #dcdcdc;
   padding: 15px;
   margin: 10px;
-  width: 300px;
+  width: 250px;
   border-radius: 8px;
   background-color: #f9f9f9;
   display: flex;
@@ -47,6 +47,13 @@
   justify-content: center;
   margin: 15px 0;
   text-decoration: none;
+}
+
+.profile-links {
+  text-decoration: "none";
+  color: black;
+  font-size: "14px";
+  font-family: "Neutraface Text", sans-serif;
 }
 
 .comment-date {

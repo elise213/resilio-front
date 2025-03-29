@@ -260,25 +260,35 @@ const Sidebar = ({
             <div className="side-by">
               {authorizedUser && <AuthorizedToolbox />}
               <ResilioDropdown />
-              <div className="search-bar">
+              <div
+                className="search-bar"
+                style={{ border: "1px solid black", borderRadius: "2px" }}
+              >
                 <span className="material-symbols-outlined search-icon">
                   search
                 </span>
                 <input
+                  style={{ width: "100%", border: "none", padding: "1px" }}
                   type="text"
-                  placeholder="Search"
+                  placeholder=""
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+              {/* </Tooltip> */}
 
               <Tooltip title="Filter Resources" arrow>
-                <Icon
+                <span
                   onClick={() => setIsFilterModalOpen(true)}
-                  style={{ cursor: "pointer" }}
+                  className="material-symbols-outlined"
+                  style={{
+                    cursor: "pointer",
+                    color: "black",
+                    fontSize: "22px",
+                  }}
                 >
                   tune
-                </Icon>
+                </span>
               </Tooltip>
 
               <Tooltip title="Find My Location" arrow>

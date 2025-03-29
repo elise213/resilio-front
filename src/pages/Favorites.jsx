@@ -19,7 +19,7 @@ const Favorites = () => {
           </Link>
         </p>
         <div className="scroll-favorites">
-          <p style={{ marginTop: "40px" }}>YOUR FAVORITE RESOURCES</p>
+          <p className="heading-bpages">YOUR FAVORITE RESOURCES</p>
           <ul>
             {Array.isArray(store.favorites) &&
               store.favorites.map((resource, index) => (

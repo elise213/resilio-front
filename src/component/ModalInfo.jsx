@@ -8,6 +8,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteButton from "./FavoriteButton";
 import LikeComment from "./likeComment";
+import { Menu, MenuItem, IconButton, Tooltip, Icon } from "@mui/material";
 
 export const ModalInfo = ({
   averageRating,
@@ -22,9 +23,9 @@ export const ModalInfo = ({
   const { store, actions } = useContext(Context);
   const [isReadMore, setIsReadMore] = useState(true);
 
-  // const toggleReadMore = () => {
-  //   setIsReadMore(!isReadMore);
-  // };
+  const toggleReadMore = () => {
+    setIsReadMore(!isReadMore);
+  };
 
   const res = store.selectedResource;
   const scheduleStore = res.schedule;
@@ -166,31 +167,6 @@ export const ModalInfo = ({
           <span className="modal-info-title">Name</span>
           <span>{res.name}</span>
         </div>
-        {/* Rating */}
-        <div
-          className="info-address"
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            toggleRatingModal();
-          }}
-        >
-          <span className="modal-info-title">Rating</span>
-          <div className="rating-div-modal">
-            <Rating
-              style={{
-                flexDirection: "row",
-                fontSize: "20px",
-              }}
-              name="read-only"
-              value={averageRating}
-              precision={0.5}
-              readOnly
-            />
-            {ratingCount > 0 && (
-              <span style={{ fontSize: "14px" }}>({ratingCount})</span>
-            )}
-          </div>
-        </div>
 
         {/* ADDRESS */}
         <div className="info-address">
@@ -300,7 +276,7 @@ export const ModalInfo = ({
             </>
           )}
         {/* DESCRIPTION */}
-        {res.description && (
+        {/* {res.description && (
           <div className="info-address">
             <span className="modal-info-title" style={{ alignSelf: "start" }}>
               About
@@ -309,32 +285,35 @@ export const ModalInfo = ({
               {res.description}
             </span>
           </div>
-        )}
+        )} */}
 
-        {/* {res.description && (
+        {res.description && (
           <>
             <div className="info-address">
               <span className="modal-info-title" style={{ alignSelf: "start" }}>
                 About
               </span>
-              <span className="modal-info-value" style={{ marginLeft: "60px" }}>
-                {isReadMore
-                  ? `${res.description.slice(0, 200)}...`
-                  : res.description}
+              <span>
+                <span className="modal-info-value">
+                  {isReadMore
+                    ? `${res.description.slice(0, 200)}...`
+                    : res.description}
+                </span>
                 {res.description.length > 200 && (
                   <span onClick={toggleReadMore} className="read-more">
                     {"  "}
-                    {isReadMore ? "(Show more)" : "(Show less)"}
+                    {isReadMore ? "Show more" : "Show less"}
                   </span>
                 )}
               </span>
             </div>
           </>
-        )} */}
+        )}
+
         {/* LAST UPDATED DATE */}
         {res.updated && (
           <div className="info-address">
-            <span className="modal-info-title">Updated</span>
+            <span className="modal-info-title">Last updated</span>
             <span>
               {new Intl.DateTimeFormat("en-US", {
                 year: "numeric",
@@ -354,6 +333,34 @@ export const ModalInfo = ({
             <FavoriteButton type={"modal-favorite"} resource={res} />
           </div>
         )}
+      </div>
+
+      {/* Rating */}
+      <div
+        className="info-address"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          toggleRatingModal();
+        }}
+      >
+        <span className="modal-info-title">Average Review</span>
+        <Tooltip title="Rate this resource" arrow>
+          <div className="rating-div-modal">
+            <Rating
+              style={{
+                flexDirection: "row",
+                fontSize: "20px",
+              }}
+              name="read-only"
+              value={averageRating}
+              precision={0.5}
+              readOnly
+            />
+            {ratingCount > 0 && (
+              <span style={{ fontSize: "14px" }}>({ratingCount})</span>
+            )}
+          </div>
+        </Tooltip>
       </div>
 
       {comments.length > 0 && (
@@ -390,16 +397,18 @@ export const ModalInfo = ({
                       ""
                     )}
                     <p className="comment-content">{comment.comment_cont}</p>
-                    <Rating
-                      name="read-only"
-                      value={comment.rating_value}
-                      precision={0.5}
-                      readOnly
-                      style={{
-                        flexDirection: "row",
-                        fontSize: "18px",
-                      }}
-                    />
+                    <Tooltip title="click to rate this resource" arrow>
+                      <Rating
+                        name="read-only"
+                        value={comment.rating_value}
+                        precision={0.5}
+                        readOnly
+                        style={{
+                          flexDirection: "row",
+                          fontSize: "18px",
+                        }}
+                      />
+                    </Tooltip>
                     <div
                       className="comment-content-div"
                       style={{ marginTop: "15px" }}

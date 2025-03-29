@@ -8,6 +8,7 @@
 .marker,
 .marker-icon {
   display: block;
+  z-index: 0;
 }
 
 .marker-icon i {
@@ -70,6 +71,7 @@
   transform: translateY(0);
   pointer-events: auto;
   cursor: pointer !important;
+  pointer-events: auto;
 }
 
 @media screen and (max-width: 500px) {

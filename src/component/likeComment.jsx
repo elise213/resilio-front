@@ -21,7 +21,7 @@ const LikeComment = ({
     if (!isLoggedIn) {
       Swal.fire({
         icon: "info",
-        html: `You need to <a href="#" id="login-link">log in</a> to like this comment.`,
+        html: `You need to <a href="#" id="login-link" style="color: #4A90E2; text-decoration: underline; font-weight: 500;">log in</a> to like this comment.`,
         showConfirmButton: false,
         didOpen: () => {
           document
@@ -34,6 +34,7 @@ const LikeComment = ({
             });
         },
       });
+
       return;
     }
 
