@@ -218,6 +218,7 @@
   gap: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   z-index: 99;
+  margin-bottom: 15px;
 }
 
 /* Title */
@@ -460,8 +461,7 @@
   width: 356px !important;
   background-color: white;
   border-radius: 0 10px 0 0;
-  border: 1px solid #c2e6cc;
-  border: 1px solid black;
+  border: 2px solid black;
   transition: 0.3s ease;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
@@ -790,6 +790,9 @@
   min-width: 120px;
   width: 120px;
   align-self: center;
+  background-color: white;
+  color: black;
+  border: 2px solid salmon;
 }
 
 .apply-button {
@@ -823,7 +826,7 @@
 .filter-modal-footer {
   display: flex;
   margin: 0;
-  padding: 5px;
+  padding: 10px;
   flex-direction: column;
   gap: 10px;
 }

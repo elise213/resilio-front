@@ -15,8 +15,6 @@ const ZipCodeDropdown = ({ handleBoundsChange, setIsGeoModalOpen }) => {
     return data;
   };
 
-  const forcePanRef = useRef(false);
-
   const updateCityStateFromZip = async (zip) => {
     console.log(`🔍 Looking up ZIP: ${zip}`);
     actions.setForcePan(true);
@@ -36,31 +34,6 @@ const ZipCodeDropdown = ({ handleBoundsChange, setIsGeoModalOpen }) => {
     );
     setIsGeoModalOpen(false);
   };
-
-  // const updateCityStateFromZip = async (zip) => {
-  //   console.log(`🔍 Looking up ZIP: ${zip}`);
-  //   const data = await fetchCachedBounds(zip, true);
-
-  //   console.log("📌 Response from fetchCachedBounds:", data);
-
-  //   if (!data) {
-  //     console.error("❌ Error fetching bounds: No results found.");
-  //     return;
-  //   }
-
-  //   const { location, bounds } = data;
-
-  //   console.log("✅ Found location:", location);
-  //   console.log("📏 Bounding Box:", bounds);
-
-  //   handleBoundsChange({ center: location, bounds }); // Always recenters
-  //   await actions.setBoundaryResults(
-  //     bounds,
-  //     store.selectedCategories,
-  //     store.selectedDays
-  //   );
-  //   setIsGeoModalOpen(false);
-  // };
 
   const handleZipChange = (e) => {
     const value = e.target.value;

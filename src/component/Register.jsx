@@ -81,12 +81,12 @@ const Register = ({ setLog, log }) => {
 
   return (
     <div className="login-modal-content">
-      <div className="login-modal-header">
+      {/* <div className="login-modal-header">
         <span className="close-login-modal" onClick={() => setLog("1")}>
           <span className="material-symbols-outlined">arrow_back_ios</span>
           Back to Login
         </span>
-      </div>
+      </div> */}
       <div className="login-modal-body">
         <form ref={formRef} onSubmit={handleRegister}>
           <div className="form-section">
@@ -137,7 +137,10 @@ const Register = ({ setLog, log }) => {
             <span className="form-label">
               Do you represent an organization?
             </span>
-            <div className="form-check">
+            <div
+              className="form-check"
+              style={{ alignSelf: "start", width: "50px" }}
+            >
               <input
                 className="form-check-input radio"
                 type="radio"
@@ -150,7 +153,10 @@ const Register = ({ setLog, log }) => {
                 Yes
               </label>
             </div>
-            <div className="form-check">
+            <div
+              className="form-check"
+              style={{ alignSelf: "start", width: "50px" }}
+            >
               <input
                 className="form-check-input radio"
                 type="radio"

@@ -92,14 +92,13 @@ const Login = ({ setLayout }) => {
   } else if (log === "3") {
     field = (
       <div className="login-modal-content">
-        <div className="login-modal-header">
+        {/* <div className="login-modal-header">
           <span className="close-login-modal" onClick={() => setLog("1")}>
-            <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to Login
+            X
           </span>
-        </div>
+        </div> */}
         <div className="login-modal-body">
-          <form onSubmit={handleForgotPassword} style={{ padding: "40px 0" }}>
+          <form onSubmit={handleForgotPassword}>
             <div className="form-section">
               <label htmlFor="forgotPasswordEmail" className="form-label">
                 Email
@@ -120,7 +119,7 @@ const Login = ({ setLayout }) => {
                 type="submit"
                 className="form-button"
               >
-                Set New Password
+                Reset Password
               </Button>
             </div>
           </form>
@@ -133,7 +132,7 @@ const Login = ({ setLayout }) => {
   } else {
     field = (
       <div className="login-modal-content">
-        <div className="login-modal-header">
+        {/* <div className="login-modal-header">
           <span
             className="close-login-modal"
             onClick={() => {
@@ -141,10 +140,9 @@ const Login = ({ setLayout }) => {
               setLog("1");
             }}
           >
-            <span className="material-symbols-outlined">arrow_back_ios</span>
-            Back to Search
+            X
           </span>
-        </div>
+        </div> */}
         <div className="login-modal-body">
           <form>
             <div className="form-section">
@@ -187,7 +185,7 @@ const Login = ({ setLayout }) => {
             Register for an account
           </div>
           <div className="forgot-password" onClick={() => setLog("3")}>
-            I forgot my password
+            Recover lost password
           </div>
         </div>
       </div>
@@ -261,6 +259,7 @@ const Login = ({ setLayout }) => {
             className="resilio-overlay"
             onClick={() => {
               actions.closeLoginModal();
+              setLog("1");
               document.body.classList.remove("modal-open");
             }}
           ></div>
