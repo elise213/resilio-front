@@ -71,6 +71,18 @@ const Map = ({
   }, [mapHasLoaded]);
 
   useEffect(() => {
+    if (store.forcePan) {
+      console.log("🚩 Forced pan triggered");
+      if (mapInstanceRef.current && mapCenter) {
+        mapInstanceRef.current.setCenter(
+          new window.google.maps.LatLng(mapCenter.lat, mapCenter.lng)
+        );
+      }
+      actions.setForcePan(false); // reset
+    }
+  }, [store.forcePan]);
+
+  useEffect(() => {
     if (mapContainerRef.current && city?.center?.lat && city?.center?.lng) {
       setMapReady(true);
     }
@@ -200,6 +212,29 @@ const Map = ({
   const createMapOptions = (maps) => ({
     scrollwheel: false,
   });
+
+  const forcePanRef = useRef(false);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !mapsInstanceRef.current || !mapCenter)
+      return;
+
+    const map = mapInstanceRef.current;
+    const current = map.getCenter();
+    const maps = mapsInstanceRef.current;
+    const newLatLng = new maps.LatLng(mapCenter.lat, mapCenter.lng);
+
+    const distance = google.maps.geometry.spherical.computeDistanceBetween(
+      current,
+      newLatLng
+    );
+
+    if (!forcePanRef.current && distance < 10) return;
+
+    console.log("📍 Panning to mapCenter:", mapCenter);
+
+    map.setCenter(newLatLng);
+  }, [mapCenter]);
 
   useEffect(() => {
     console.log("💡 Checking map dependencies:", {

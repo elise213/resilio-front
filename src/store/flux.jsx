@@ -1363,7 +1363,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ loadingResults: false });
         }
       },
-
+      setForcePan: (value) => {
+        setStore({ forcePan: value });
+      },
       formatNominatimResult: (result) => {
         const city =
           result.address?.city ||
