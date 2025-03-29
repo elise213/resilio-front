@@ -47,7 +47,7 @@ const ApproveComments = () => {
           {unapprovedComments.map((comment) => (
             <li key={comment.comment_id}>
               <p>
-                <strong>{comment.user_name}:</strong> {comment.comment_cont}
+                {comment.user_name}: {comment.comment_cont}
               </p>
               <button onClick={() => handleApprove(comment.comment_id)}>
                 Approve

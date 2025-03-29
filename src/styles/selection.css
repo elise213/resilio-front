@@ -21,7 +21,6 @@
 
 .my-input:checked {
   background-color: #ffca93;
-  /* border: 1px solid #ffca93; */
 }
 
 .my-input:checked::after {
@@ -35,15 +34,13 @@
 
 .my-label {
   font-family: "Neutraface Text", sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   margin: 0;
   white-space: nowrap;
   cursor: pointer;
 }
 
-/* Disable focus ring entirely (if desired) */
 .my-input:focus {
-  /* outline: none !important; */
   box-shadow: none !important;
 }
 
@@ -640,6 +637,7 @@
 }
 
 .sidebar-dropdowns {
+  margin-top: 2px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -726,7 +724,7 @@
   display: flex;
   background-color: white;
   justify-content: space-around;
-  border-radius: 4px;
+  border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -740,7 +738,7 @@
 .modal-filter-header {
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 5px 0;
   justify-content: flex-end;
 }
 
@@ -791,7 +789,6 @@
 }
 
 .apply-button {
-  margin: 10px;
   color: #333;
   border: 1px solid #ccc;
   background-color: #f8f9fa;

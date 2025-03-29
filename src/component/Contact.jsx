@@ -65,7 +65,7 @@ const Contact = () => {
         <button
           className="apply-button"
           type="submit"
-          style={{ marginTop: "20px" }}
+          style={{ marginTop: "20px", marginLeft: "5px" }}
         >
           SEND
         </button>

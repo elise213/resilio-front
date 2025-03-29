@@ -36,6 +36,8 @@
 .unapproved-ul {
   flex: 1;
   overflow-y: auto;
+  max-width: 300px;
+  font-size: 12px;
 }
 
 .unapproved-heading {
@@ -46,4 +48,9 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.unapproved-ul p {
+  font-size: 12px;
+  font-family: "Neutraface Text", sans-serif;
 }

@@ -99,7 +99,7 @@ const Login = ({ setLayout }) => {
           </span>
         </div>
         <div className="login-modal-body">
-          <form onSubmit={handleForgotPassword}>
+          <form onSubmit={handleForgotPassword} style={{ padding: "40px 0" }}>
             <div className="form-section">
               <label htmlFor="forgotPasswordEmail" className="form-label">
                 Email
@@ -203,10 +203,7 @@ const Login = ({ setLayout }) => {
               onClick={(e) => setAnchorEl(e.currentTarget)}
               style={{ padding: "0" }}
             >
-              <Avatar
-                alt="Profile"
-                sx={{ width: 30, height: 30, marginBottom: "10px" }}
-              />
+              <Avatar alt="Profile" sx={{ width: 30, height: 30, margin: 0 }} />
             </IconButton>
           </Tooltip>
 

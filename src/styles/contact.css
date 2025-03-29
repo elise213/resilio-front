@@ -20,9 +20,9 @@
 
 .form-control,
 .send-button {
-  border-radius: 2px;
+  border-radius: 4px;
   width: 100%;
-  padding: 5px;
+  padding: 8px;
   border: 1px solid gray;
 }
 

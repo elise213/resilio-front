@@ -30,14 +30,14 @@ const ResilioDropdown = () => {
         >
           About
         </MenuItem> */}
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             setAnchorEl2(null);
             actions.openDonationModal();
           }}
         >
           Donate
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             setAnchorEl2(null);
