@@ -12,7 +12,6 @@ import Styles from "../styles/map.css";
 import ResourceCard from "./ResourceCard";
 import { debounce } from "lodash";
 import { useIsVisible } from "../hooks/isVisible";
-// import { createPortal } from "react-dom";
 
 const Map = ({
   layout,
@@ -67,10 +66,6 @@ const Map = ({
         if (window.google?.maps) {
           window.google.maps.event.trigger(mapInstanceRef.current, "resize");
         }
-
-        // google.maps.event.trigger(mapInstanceRef.current, "resize");
-
-        // Also re-center after resize
         if (mapCenter) {
           mapInstanceRef.current.setCenter(
             new mapsInstanceRef.current.LatLng(mapCenter.lat, mapCenter.lng)
@@ -119,257 +114,6 @@ const Map = ({
     }
   }, [mapHasLoaded, store.userLocation]);
 
-  // useEffect(() => {
-  //   if (
-  //     mapHasLoaded &&
-  //     mapInstanceRef.current &&
-  //     mapsInstanceRef.current &&
-  //     store.boundaryResults?.length === 0
-  //   ) {
-  //     const bounds = mapInstanceRef.current.getBounds();
-  //     if (!bounds) return;
-
-  //     const ne = bounds.getNorthEast();
-  //     const sw = bounds.getSouthWest();
-  //     const center = mapInstanceRef.current.getCenter();
-
-  //     const newBounds = {
-  //       ne: { lat: ne.lat(), lng: ne.lng() },
-  //       sw: { lat: sw.lat(), lng: sw.lng() },
-  //     };
-
-  //     console.log(
-  //       "📦 Fallback initial fetch triggered with bounds:",
-  //       newBounds
-  //     );
-
-  //     actions.setBoundaryResults(newBounds, categories, days);
-  //   }
-  // }, [mapHasLoaded]);
-
-  // const Marker = React.memo(
-  //   ({ id, result, markerColor = "red" }) => {
-  //     const [isHovered, setIsHovered] = useState(false);
-  //     const [closestCornerClass, setClosestCornerClass] = useState("");
-  //     const { store, actions } = useContext(Context);
-
-  //     const handleMouseEnter = (event) => {
-  //       if (result !== store.hoveredItem) {
-  //         setHoveredItem(result);
-  //       }
-  //       setIsHovered(true);
-
-  //       const cursorX = event.clientX;
-  //       const cursorY = event.clientY;
-  //       const mapRect = document
-  //         .querySelector(".map-container")
-  //         .getBoundingClientRect();
-
-  //       const isCloserToTop = cursorY < (mapRect.top + mapRect.bottom) / 2;
-  //       const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
-
-  //       const positionClass = isCloserToTop
-  //         ? isCloserToLeft
-  //           ? "corner-top-left"
-  //           : "corner-top-right"
-  //         : isCloserToLeft
-  //         ? "corner-bottom-left"
-  //         : "corner-bottom-right";
-
-  //       setClosestCornerClass(positionClass);
-  //     };
-
-  //     const handleMouseLeave = () => {
-  //       setIsHovered(false);
-  //       setHoveredItem(null);
-  //     };
-
-  //     return (
-  //       <div
-  //         className="marker"
-  //         onMouseEnter={handleMouseEnter}
-  //         onMouseLeave={handleMouseLeave}
-  //         onClick={() => {
-  //           if (!result) {
-  //             console.error("Error: result is undefined for marker", id);
-  //             return;
-  //           }
-  //           actions.setSelectedResource(result);
-  //           actions.openModal();
-  //         }}
-  //         style={{
-  //           position: "absolute",
-  //           transform: "translate(-50%, -100%)",
-  //           zIndex: 0,
-  //         }}
-  //       >
-  //         {isHovered && result && (
-  //           <div
-  //             className={`hover-card ${closestCornerClass}`}
-  //             style={{
-  //               opacity: 1,
-  //               pointerEvents: "auto",
-  //               transform: "translateY(0)",
-  //               zIndex: 9999999,
-  //             }}
-  //           >
-  //             <ResourceCard key={result.id} item={result} />
-  //           </div>
-  //         )}
-  //         <div className="marker-icon">
-  //           <i
-  //             className="fa-solid fa-map-pin"
-  //             style={{
-  //               zIndex: 0,
-  //               fontSize: "28px",
-  //               color: isHovered ? "lightgreen" : markerColor || "red",
-  //             }}
-  //           ></i>
-  //         </div>
-  //       </div>
-  //     );
-  //   },
-  //   (prevProps, nextProps) => prevProps.id === nextProps.id
-  // );
-
-  // const Marker = React.memo(
-  //   ({ id, result, markerColor = "red", setHoveredItem }) => {
-  //     const [isHovered, setIsHovered] = useState(false);
-  //     const [position, setPosition] = useState({ x: 0, y: 0 });
-  //     const { actions } = useContext(Context);
-
-  //     const handleMouseEnter = (e) => {
-  //       setPosition({ x: e.clientX, y: e.clientY });
-  //       setHoveredItem(result);
-  //       setIsHovered(true);
-  //     };
-
-  //     const handleMouseLeave = () => {
-  //       setIsHovered(false);
-  //       setHoveredItem(null);
-  //     };
-
-  //     return (
-  //       <div
-  //         className="marker"
-  //         onMouseEnter={handleMouseEnter}
-  //         onMouseLeave={handleMouseLeave}
-  //         onClick={() => {
-  //           if (!result) {
-  //             console.error("Error: result is undefined for marker", id);
-  //             return;
-  //           }
-  //           actions.setSelectedResource(result);
-  //           actions.openModal();
-  //         }}
-  //         style={{
-  //           position: "absolute",
-  //           transform: "translate(-50%, -100%)",
-  //           zIndex: 0,
-  //         }}
-  //       >
-  //         <div className="marker-icon">
-  //           <i
-  //             className="fa-solid fa-map-pin"
-  //             style={{
-  //               zIndex: 0,
-  //               fontSize: "28px",
-  //               color: isHovered ? "lightgreen" : markerColor || "red",
-  //             }}
-  //           ></i>
-  //         </div>
-
-  //         {/* 💡 This is the hover card rendered OUTSIDE of the map canvas */}
-  //         {/* {isHovered &&
-  //           result &&
-  //           createPortal(
-  //             <div
-  //               className="hover-card"
-  //               style={{
-  //                 position: "fixed",
-  //                 top: position.y + 10,
-  //                 left: position.x + 10,
-  //                 zIndex: 99999,
-  //                 pointerEvents: "auto",
-  //               }}
-  //             >
-  //               <ResourceCard key={result.id} item={result} />
-  //             </div>,
-  //             document.getElementById("map-hover-layer")
-  //           )} */}
-  //       </div>
-  //     );
-  //   },
-  //   (prevProps, nextProps) => prevProps.id === nextProps.id
-  // );
-
-  // const Marker = React.memo(
-  //   ({ id, result, markerColor = "red", setHoveredItem }) => {
-  //     const [isHovered, setIsHovered] = useState(false);
-  //     const { actions } = useContext(Context);
-
-  //     const handleMouseEnter = () => {
-  //       setHoveredItem(result);
-  //       setIsHovered(true);
-  //     };
-
-  //     const handleMouseLeave = () => {
-  //       setIsHovered(false);
-  //       setHoveredItem(null);
-  //     };
-
-  //     return (
-  //       <div
-  //         className="marker"
-  //         onMouseEnter={handleMouseEnter}
-  //         onMouseLeave={handleMouseLeave}
-  //         onClick={() => {
-  //           if (!result) {
-  //             console.error("Error: result is undefined for marker", id);
-  //             return;
-  //           }
-  //           actions.setSelectedResource(result);
-  //           actions.openModal();
-  //         }}
-  //         style={{
-  //           position: "absolute",
-  //           transform: "translate(-50%, -100%)",
-  //           zIndex: isHovered ? 10 : 1,
-  //         }}
-  //       >
-  //         <div className="marker-icon">
-  //           <i
-  //             className="fa-solid fa-map-pin"
-  //             style={{
-  //               fontSize: "28px",
-  //               color: isHovered ? "lightgreen" : markerColor,
-  //             }}
-  //           ></i>
-  //         </div>
-
-  //         {isHovered && result && (
-  //           <div
-  //             className="hover-card"
-  //             style={{
-  //               position: "absolute",
-  //               top: "-100px",
-  //               left: "50%",
-  //               transform: "translateX(-50%)",
-  //               background: "transparent",
-  //               boxShadow: "0 0 6px rgba(0,0,0,0.2)",
-  //               borderRadius: "6px",
-  //               padding: "5px",
-  //               zIndex: 100,
-  //             }}
-  //           >
-  //             <ResourceCard key={result.id} item={result} />
-  //           </div>
-  //         )}
-  //       </div>
-  //     );
-  //   },
-  //   (prevProps, nextProps) => prevProps.id === nextProps.id
-  // );
   const Marker = React.memo(
     ({ id, result, markerColor = "red", setHoveredItem }) => {
       const [isHovered, setIsHovered] = useState(false);
@@ -443,8 +187,6 @@ const Map = ({
             <div
               className={`hover-card ${closestCornerClass}`}
               style={{
-                // position: "absolute",
-                // transform: "translate(-50%, -100%)",
                 background: "transparent",
                 borderRadius: "6px",
                 padding: "0px",
@@ -504,16 +246,6 @@ const Map = ({
     map.setCenter(new maps.LatLng(userLocation.lat, userLocation.lng));
     map.setZoom(13);
   }, [userLocation, mapReady]);
-
-  // useEffect(() => {
-  //   if (!store.modalIsOpen) {
-  //     setTimeout(() => {
-  //       if (mapInstanceRef.current) {
-  //         google.maps.event.trigger(mapInstanceRef.current, "resize");
-  //       }
-  //     }, 300); // Give it a tiny bit of time after modal closes
-  //   }
-  // }, [store.modalIsOpen]);
 
   const handleApiLoaded = ({ map, maps }) => {
     if (!map || !maps) {
