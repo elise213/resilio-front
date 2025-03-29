@@ -43,21 +43,21 @@ const Map = ({
     }
   }, [isMapVisible]);
 
-  const handleMapIdle = () => {
-    if (!mapInstanceRef.current) return;
-    const bounds = mapInstanceRef.current.getBounds();
-    if (!bounds) return;
+  // const handleMapIdle = () => {
+  //   if (!mapInstanceRef.current) return;
+  //   const bounds = mapInstanceRef.current.getBounds();
+  //   if (!bounds) return;
 
-    const ne = bounds.getNorthEast();
-    const sw = bounds.getSouthWest();
-    const newBounds = {
-      ne: { lat: ne.lat(), lng: ne.lng() },
-      sw: { lat: sw.lat(), lng: sw.lng() },
-    };
+  //   const ne = bounds.getNorthEast();
+  //   const sw = bounds.getSouthWest();
+  //   const newBounds = {
+  //     ne: { lat: ne.lat(), lng: ne.lng() },
+  //     sw: { lat: sw.lat(), lng: sw.lng() },
+  //   };
 
-    console.log("🟡 Map idle detected, new bounds:", newBounds);
-    actions.setBoundaryResults(newBounds, categories, days);
-  };
+  //   console.log("🟡 Map idle detected, new bounds:", newBounds);
+  //   actions.setBoundaryResults(newBounds, categories, days);
+  // };
 
   useEffect(() => {
     if (mapHasLoaded && mapInstanceRef.current) {
@@ -363,18 +363,18 @@ const Map = ({
   //   [categories, days]
   // );
 
-  const defaultCenter = useMemo(
-    () => ({
-      lat: city?.center?.lat || 34.0522,
-      lng: city?.center?.lng || -118.2437,
-    }),
-    [city.center]
-  );
+  // const defaultCenter = useMemo(
+  //   () => ({
+  //     lat: city?.center?.lat || 34.0522,
+  //     lng: city?.center?.lng || -118.2437,
+  //   }),
+  //   [city.center]
+  // );
 
-  const debouncedHandleBoundsChange = useMemo(
-    () => debounce(handleBoundsChange, 1000), // or even 1500ms
-    [handleBoundsChange]
-  );
+  // const debouncedHandleBoundsChange = useMemo(
+  //   () => debounce(handleBoundsChange, 1000), // or even 1500ms
+  //   [handleBoundsChange]
+  // );
 
   const filtersAreActive =
     Object.values(categories || {}).some(Boolean) ||
@@ -393,8 +393,19 @@ const Map = ({
         style={{ height: "100%", width: "100%" }}
       >
         {mapCenter?.lat && (
+          // <GoogleMapReact
+          //   key={`map-${layout}-${mapCenter?.lat}-${mapCenter?.lng}-${mapZoom}-${mapReady}`}
+          //   bootstrapURLKeys={{ key: apiKey, libraries: ["geometry"] }}
+          //   center={mapCenter}
+          //   zoom={mapZoom}
+          //   defaultZoom={11}
+          //   options={createMapOptions}
+          //   onChange={handleMapChange}
+          //   onGoogleApiLoaded={handleApiLoaded}
+          //   yesIWantToUseGoogleMapApiInternals={true}
+          // >
           <GoogleMapReact
-            key={`map-${layout}-${mapCenter?.lat}-${mapCenter?.lng}-${mapZoom}-${mapReady}`}
+            key={`map`}
             bootstrapURLKeys={{ key: apiKey, libraries: ["geometry"] }}
             center={mapCenter}
             zoom={mapZoom}
