@@ -34,12 +34,14 @@
 .form-col {
   padding: 5px;
   box-sizing: border-box;
+  width: 200px;
 }
 
 .form-col-full {
   height: 150px;
   padding: 5px;
   box-sizing: border-box;
+  width: 200px;
 }
 
 .message {
@@ -61,4 +63,8 @@ input textarea {
   padding: 10px;
   box-sizing: border-box;
   width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }

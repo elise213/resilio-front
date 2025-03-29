@@ -52,20 +52,19 @@ const Selection = ({
   return (
     <>
       {isFilterModalOpen && (
-        <div className="filter-modal">
-          <div className="modal-filter-header">
-            <button
-              className="close-filters"
-              onClick={() => setIsFilterModalOpen(false)}
-              style={{ color: "white", padding: 0 }}
-            >
-              X
-            </button>
-          </div>
-          <div className="filter-modal-content">
-            <div className="filter-section">
-              <p className="selection-heading">Categories</p>
-              {/* {Array.isArray(store.CATEGORY_OPTIONS) &&
+        <>
+          <button
+            className="close-filters"
+            onClick={() => setIsFilterModalOpen(false)}
+            style={{ color: "white", padding: 0 }}
+          >
+            X
+          </button>
+          <div className="filter-modal">
+            <div className="filter-modal-content">
+              <div className="filter-section">
+                <p className="selection-heading">Categories</p>
+                {/* {Array.isArray(store.CATEGORY_OPTIONS) &&
                 store.CATEGORY_OPTIONS.map((option) => (
                   <MyCheckbox
                     key={option.id}
@@ -77,39 +76,40 @@ const Selection = ({
                     handleToggle={() => toggleLocalCategory(option.id)}
                   />
                 ))} */}
-              {Array.isArray(store.CATEGORY_OPTIONS) &&
-                store.CATEGORY_OPTIONS.filter(
-                  (option) => (store.categoryCounts?.[option.id] || 0) > 0
-                ).map((option) => (
-                  <MyCheckbox
-                    key={option.id}
-                    id={option.id}
-                    label={`${option.label} (${
-                      store.categoryCounts?.[option.id]
-                    })`}
-                    isChecked={!!localCategories[option.id]}
-                    handleToggle={() => toggleLocalCategory(option.id)}
-                  />
-                ))}
-            </div>
-
-            <div className="filter-section">
-              <div>
-                <p className="selection-heading">Days</p>
-                {Array.isArray(store.DAY_OPTIONS) &&
-                  store.DAY_OPTIONS.filter(
-                    (option) => (store.dayCounts?.[option.id] || 0) > 0
+                {Array.isArray(store.CATEGORY_OPTIONS) &&
+                  store.CATEGORY_OPTIONS.filter(
+                    (option) => (store.categoryCounts?.[option.id] || 0) > 0
                   ).map((option) => (
                     <MyCheckbox
                       key={option.id}
                       id={option.id}
                       label={`${option.label} (${
-                        store.dayCounts?.[option.id]
+                        store.categoryCounts?.[option.id]
                       })`}
-                      isChecked={!!localDays[option.id]}
-                      handleToggle={() => toggleLocalDay(option.id)}
+                      isChecked={!!localCategories[option.id]}
+                      handleToggle={() => toggleLocalCategory(option.id)}
                     />
                   ))}
+              </div>
+
+              <div className="filter-section">
+                <div>
+                  <p className="selection-heading">Days</p>
+                  {Array.isArray(store.DAY_OPTIONS) &&
+                    store.DAY_OPTIONS.filter(
+                      (option) => (store.dayCounts?.[option.id] || 0) > 0
+                    ).map((option) => (
+                      <MyCheckbox
+                        key={option.id}
+                        id={option.id}
+                        label={`${option.label} (${
+                          store.dayCounts?.[option.id]
+                        })`}
+                        isChecked={!!localDays[option.id]}
+                        handleToggle={() => toggleLocalDay(option.id)}
+                      />
+                    ))}
+                </div>
               </div>
             </div>
             <div className="filter-modal-footer">
@@ -131,7 +131,7 @@ const Selection = ({
               </button>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
