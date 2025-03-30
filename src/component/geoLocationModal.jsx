@@ -28,16 +28,9 @@ const GeoLocationModal = ({
 
   return (
     <div className="geo-modal">
-      <Button
-        onClick={handleGeoFindMe}
-        style={{
-          cursor: "pointer",
-          backgroundColor: "transparent",
-          color: "black",
-        }}
-      >
-        Find my location
-      </Button>
+      <button onClick={handleGeoFindMe} className="find-location">
+        FIND MY LOCATION
+      </button>
 
       <p>OR</p>
       <ZipCodeDropdown

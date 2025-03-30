@@ -14,3 +14,18 @@
   transform: translate(-50%, -50%);
   z-index: 9999;
 }
+
+.find-location {
+  cursor: pointer;
+  background-color: transparent;
+  color: black;
+  font-weight: 100;
+  border: none;
+  font-size: 18px;
+  transition: 0.3s ease-in-out;
+  margin: 10px;
+}
+
+.find-location:hover {
+  color: salmon !important;
+}

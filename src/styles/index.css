@@ -68,6 +68,8 @@ input[type="text"] {
 
 #zip-code {
   font-size: 16px;
+  width: 100px;
+  text-align: center;
 }
 
 html,
