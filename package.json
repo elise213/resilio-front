@@ -17,6 +17,7 @@
     "@material/web": "^1.0.1",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
+    "@react-google-maps/api": "^2.20.6",
     "@react-pdf/renderer": "^3.1.14",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "axios": "^1.4.0",

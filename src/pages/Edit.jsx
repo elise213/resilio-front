@@ -3,19 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import styles from "../styles/edit.css";
+import SmartPlacesAutocomplete from "../component/SmartPlacesAutocomplete";
 import { Link } from "react-router-dom";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+import { useGoogleMapsLoader } from "../hooks/googleMapsLoader";
 
 const Edit = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
-  const apiKey = import.meta.env.VITE_GOOGLE;
-  const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
-
   const navigate = useNavigate();
+
   const daysOfWeek = [
     "monday",
     "tuesday",
@@ -25,10 +21,12 @@ const Edit = () => {
     "saturday",
     "sunday",
   ];
+
   const initialDaysState = daysOfWeek.reduce((acc, day) => {
     acc[day] = { start: "", end: "" };
     return acc;
   }, {});
+
   const initialFormData = {
     name: "",
     address: "",
@@ -45,6 +43,7 @@ const Edit = () => {
     updated: "",
     user_ids: [1, 2, 3],
   };
+
   const [formData, setFormData] = useState(initialFormData || {});
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const categories = CATEGORY_OPTIONS;
@@ -60,10 +59,9 @@ const Edit = () => {
     const fetchResourceData = async () => {
       try {
         const resourceData = await actions.getResource(id);
-        const assignedUsers = await actions.getResourceUsers(id); // Fetch assigned users
-        const loggedInUserId = store.user_id; // Get current user ID from store
+        const assignedUsers = await actions.getResourceUsers(id);
+        const loggedInUserId = store.user_id;
 
-        // ✅ Check if the user is authorized
         const isAuthorized =
           loggedInUserId === 1 ||
           assignedUsers.some((user) => user.id === loggedInUserId);
@@ -85,7 +83,7 @@ const Edit = () => {
             ? resourceData.category.split(", ")
             : [],
           user_ids: assignedUsers.map((user) => user.id) || [],
-          schedule: resourceData.schedule || initialDaysState, // Handle null or missing schedule
+          schedule: resourceData.schedule || initialDaysState,
         });
       } catch (error) {
         console.error("🚨 Error fetching data:", error);
@@ -97,32 +95,12 @@ const Edit = () => {
 
   const handleAddUserId = () => {
     const newUserId = parseInt(formData.newUserId);
-
     if (!newUserId || formData.user_ids.includes(newUserId)) return;
-
     setFormData((prev) => ({
       ...prev,
       user_ids: [...prev.user_ids, newUserId],
       newUserId: "",
     }));
-  };
-
-  useEffect(() => {
-    if (formData.address) {
-      handleSelect(formData.address);
-    }
-  }, [formData.address]);
-
-  const handleSelect = async (address) => {
-    handleChange("address", address);
-    try {
-      const results = await geocodeByAddress(address);
-      const latLng = await getLatLng(results[0]);
-      handleChange("latitude", latLng.lat || null);
-      handleChange("longitude", latLng.lng || null);
-    } catch (error) {
-      console.error("Error:", error);
-    }
   };
 
   const handleDelete = async () => {
@@ -134,10 +112,32 @@ const Edit = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const loggedInUserId = store.user_id;
+  //   if (loggedInUserId !== 1 && !formData.user_ids.includes(loggedInUserId)) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Access Denied",
+  //       text: "You do not have permission to edit this resource.",
+  //     });
+  //     return;
+  //   }
+  //   try {
+  //     const success = await actions.editResource(id, formData, navigate);
+  //     if (success) {
+  //       actions.closeModal();
+  //       navigate("/");
+  //     }
+  //   } catch (error) {
+  //     console.error("🚨 Error updating the resource:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const loggedInUserId = store.user_id;
+
     if (loggedInUserId !== 1 && !formData.user_ids.includes(loggedInUserId)) {
       Swal.fire({
         icon: "error",
@@ -147,12 +147,20 @@ const Edit = () => {
       return;
     }
 
+    if (!formData.latitude || !formData.longitude) {
+      Swal.fire({
+        icon: "error",
+        title: "Address Required",
+        text: "Please select a valid address from Google suggestions.",
+      });
+      return;
+    }
+
     try {
       const success = await actions.editResource(id, formData, navigate);
       if (success) {
         actions.closeModal();
         navigate("/");
-        // return;
       }
     } catch (error) {
       console.error("🚨 Error updating the resource:", error);
@@ -165,33 +173,14 @@ const Edit = () => {
 
   const handleCategoryChange = (value) => {
     setFormData((prevData) => {
-      if (prevData && prevData.category) {
-        const hasCategory = prevData.category.includes(value);
-        return {
-          ...prevData,
-          category: hasCategory
-            ? prevData.category.filter((category) => category !== value)
-            : [...prevData.category, value],
-        };
-      } else {
-        return {
-          ...prevData,
-          category: [value],
-        };
-      }
+      const hasCategory = prevData.category.includes(value);
+      return {
+        ...prevData,
+        category: hasCategory
+          ? prevData.category.filter((category) => category !== value)
+          : [...prevData.category, value],
+      };
     });
-  };
-
-  const handleAddressChange = async (address) => {
-    handleChange("address", address);
-    try {
-      const results = await geocodeByAddress(address);
-      const latLng = await getLatLng(results[0]);
-      handleChange("latitude", latLng.lat || null);
-      handleChange("longitude", latLng.lng || null);
-    } catch (error) {
-      console.error("Error fetching address details:", error);
-    }
   };
 
   const handleTimeChange = (day, timeType, value) => {
@@ -207,64 +196,7 @@ const Edit = () => {
     }));
   };
 
-  if (!formData) {
-    return <div>Loading...</div>;
-  }
-
-  // useEffect(() => {
-  //   if (window.google && window.google.maps) {
-  //     setGoogleMapsLoaded(true);
-  //     return;
-  //   }
-
-  //   const existingScript = document.querySelector(
-  //     'script[src^="https://maps.googleapis.com/maps/api/js"]'
-  //   );
-
-  //   if (!existingScript) {
-  //     const script = document.createElement("script");
-  //     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-  //     script.async = true;
-  //     script.defer = true;
-  //     script.onload = () => setGoogleMapsLoaded(true);
-  //     document.head.appendChild(script);
-  //   } else {
-  //     existingScript.onload = () => setGoogleMapsLoaded(true);
-  //   }
-  // }, [apiKey]);
-
-  const [hasLoadedGoogleScript, setHasLoadedGoogleScript] = useState(false);
-
-  useEffect(() => {
-    if (hasLoadedGoogleScript) return;
-
-    if (window.google && window.google.maps) {
-      setGoogleMapsLoaded(true);
-      setHasLoadedGoogleScript(true);
-      return;
-    }
-
-    const existingScript = document.querySelector(
-      'script[src^="https://maps.googleapis.com/maps/api/js"]'
-    );
-
-    if (!existingScript) {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => {
-        setGoogleMapsLoaded(true);
-        setHasLoadedGoogleScript(true);
-      };
-      document.head.appendChild(script);
-    } else {
-      existingScript.onload = () => {
-        setGoogleMapsLoaded(true);
-        setHasLoadedGoogleScript(true);
-      };
-    }
-  }, [apiKey, hasLoadedGoogleScript]);
+  if (!formData) return <div>Loading...</div>;
 
   return (
     <>
@@ -288,82 +220,19 @@ const Edit = () => {
               placeholder="Resource Name"
             />
           </div>
+
           <div className="input-group">
-            <label>Authorized Users</label>
-            <input
-              className="geo-input"
-              type="number"
-              placeholder="Enter User ID"
-              value={formData.newUserId || ""}
-              onChange={(e) => handleChange("newUserId", e.target.value)}
+            <label htmlFor="geo-input">Address</label>
+            <SmartPlacesAutocomplete
+              defaultValue={formData.address}
+              placeholder="Type address"
+              onSelect={({ address, latitude, longitude }) => {
+                handleChange("address", address);
+                handleChange("latitude", latitude);
+                handleChange("longitude", longitude);
+              }}
             />
           </div>
-          <button
-            style={{ marginLeft: "15px" }}
-            type="button"
-            onClick={handleAddUserId}
-          >
-            Add User ID
-          </button>
-
-          <div className="assigned-users">
-            {formData.user_ids.length > 0 ? (
-              <>
-                <p>Assigned Users:</p>
-                <ul>
-                  {formData.user_ids.map((userId) => (
-                    <li key={userId}>
-                      {userId}{" "}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveUserId(userId)}
-                      >
-                        Remove
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p>No users assigned.</p>
-            )}
-          </div>
-
-          {/* <div className="input-group">
-            <label htmlFor="address">Address</label>
-
-            {isGoogleMapsLoaded && (
-              <PlacesAutocomplete
-                value={formData.address}
-                onChange={handleAddressChange}
-              >
-                {({
-                  getInputProps,
-                  suggestions,
-                  getSuggestionItemProps,
-                  loading,
-                }) => (
-                  <div>
-                    <input
-                      className="geo-input"
-                      {...getInputProps({ placeholder: "Type address" })}
-                    />
-                    <div>
-                      {loading && <div>Loading...</div>}
-                      {suggestions.map((suggestion) => (
-                        <div
-                          {...getSuggestionItemProps(suggestion)}
-                          key={suggestion.placeId}
-                        >
-                          {suggestion.description}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </PlacesAutocomplete>
-            )}
-          </div> */}
 
           <div className="input-group">
             <label htmlFor="description">Description</label>
@@ -375,6 +244,7 @@ const Edit = () => {
               onChange={(e) => handleChange("description", e.target.value)}
             ></textarea>
           </div>
+
           <div className="input-group">
             <label htmlFor="website">Website</label>
             <input
@@ -387,7 +257,7 @@ const Edit = () => {
               placeholder="Resource Website URL"
             />
           </div>
-          {/* Alert field */}
+
           <div className="input-group">
             <label htmlFor="alert">Alert</label>
             <textarea
@@ -447,9 +317,8 @@ const Edit = () => {
           {daysOfWeek.map((day) => (
             <div key={day} className="input-group time-group">
               <label htmlFor={`${day}Start`}>
-                {day.charAt(0).toUpperCase() + day.slice(1)}
+                {day.charAt(0).toUpperCase() + day.slice(1)} from
               </label>
-              <span>from </span>
               <input
                 className="geo-input time-input"
                 type="time"
@@ -482,7 +351,6 @@ const Edit = () => {
 
           <div className="input-group">
             <label htmlFor="updated">Last Updated Date</label>
-
             <input
               className="geo-input"
               id="updated"
@@ -495,6 +363,7 @@ const Edit = () => {
               }}
             />
           </div>
+
           {store.authorizedUser || formData.user_ids.includes(store.user_id) ? (
             <button
               className="apply-button"
@@ -509,6 +378,7 @@ const Edit = () => {
             </p>
           )}
         </form>
+
         {[1, 3, 4, 8].includes(store.user_id) && (
           <button className="delete-button" onClick={handleDelete}>
             Permanently Delete This Resource

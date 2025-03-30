@@ -455,15 +455,19 @@ const Map = ({
       >
         {mapCenter?.lat && (
           <GoogleMapReact
+            bootstrapURLKeys={{
+              key: import.meta.env.VITE_GOOGLE,
+              libraries: ["places", "geometry"],
+            }}
             key={`map`}
-            bootstrapURLKeys={{ key: apiKey, libraries: ["geometry"] }}
+            options={createMapOptions}
             center={mapCenter}
             zoom={mapZoom}
             defaultZoom={11}
-            options={createMapOptions}
             onChange={handleMapChange}
             onGoogleApiLoaded={handleApiLoaded}
             yesIWantToUseGoogleMapApiInternals={true}
+            ootstrapURLKeys={{ key: apiKey, libraries: ["places", "geometry"] }}
           >
             {listToRender.map((result, i) => (
               <Marker

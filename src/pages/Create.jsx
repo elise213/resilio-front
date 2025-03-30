@@ -1,24 +1,26 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Button from "@mui/material/Button";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+import Swal from "sweetalert2";
+import { useGoogleMapsLoader } from "../hooks/googleMapsLoader";
 
-const Create = () => {
-  const apiKey = import.meta.env.VITE_GOOGLE;
-  const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
-  const navigate = useNavigate();
-  const { store, actions } = useContext(Context);
-  const daysOfWeek = store.daysOfWeek;
-  const initialDaysState = daysOfWeek.reduce((acc, day) => {
+const initializeDaysState = (daysOfWeek) => {
+  return daysOfWeek.reduce((acc, day) => {
     acc[day] = { start: "", end: "" };
     return acc;
   }, {});
+};
 
-  const initialFormData = {
+const Create = () => {
+  const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
+  const mapsLoaded = useGoogleMapsLoader();
+  const autocompleteRef = useRef(null);
+
+  const daysOfWeek = useMemo(() => store.daysOfWeek || [], [store.daysOfWeek]);
+
+  const [formData, setFormData] = useState(() => ({
     name: "",
     address: "",
     phone: "",
@@ -29,76 +31,63 @@ const Create = () => {
     longitude: null,
     image: "",
     image2: "",
-    days: initialDaysState,
-  };
-  const [formData, setFormData] = useState(initialFormData);
+    days: initializeDaysState(daysOfWeek),
+  }));
+
+  const categories = store.CATEGORY_OPTIONS || [];
 
   useEffect(() => {
-    const scriptId = "google-maps-script";
-    console.log("loading google maps");
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.id = scriptId;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => setGoogleMapsLoaded(true);
-      document.body.appendChild(script);
-    } else {
-      setGoogleMapsLoaded(true);
-    }
+    if (!mapsLoaded || !autocompleteRef.current) return;
 
-    return () => {
-      const script = document.getElementById(scriptId);
-      if (script) {
-        script.remove();
+    const autocomplete = new window.google.maps.places.Autocomplete(
+      autocompleteRef.current,
+      {
+        componentRestrictions: { country: ["us"] },
+        fields: ["geometry", "formatted_address"],
       }
-    };
-  }, [apiKey]);
+    );
 
-  const categories = store.CATEGORY_OPTIONS;
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      if (!place.geometry) return;
 
-  // const handleSelect = actions.debounce(async (address) => {
-  //   if (address !== formData.address) {
-  //     handleChange("address", address);
-  //     try {
-  //       const results = await geocodeByAddress(address);
-  //       const latLng = await getLatLng(results[0]);
-  //       handleChange("latitude", latLng.lat);
-  //       handleChange("longitude", latLng.lng);
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //     }
-  //   }
-  // }, 500);
+      setFormData((prev) => ({
+        ...prev,
+        address: place.formatted_address,
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng(),
+      }));
+    });
+  }, [mapsLoaded]);
 
-  const handleSelect = actions.debounce(async (address) => {
-    if (address !== formData.address) {
-      handleChange("address", address);
-      try {
-        const results = await geocodeByAddress(address);
-        const latLng = await getLatLng(results[0]);
-
-        // Ensure latitude & longitude are numbers before setting them
-        handleChange("latitude", latLng.lat || null);
-        handleChange("longitude", latLng.lng || null);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-  }, 500);
-
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.latitude || !formData.longitude) {
+      Swal.fire({
+        icon: "error",
+        title: "Missing Address",
+        text: "Please select a valid address from the autocomplete suggestions.",
+      });
+      return;
+    }
+
     const modifiedFormData = {
       ...formData,
       category: formData.category.join(", "),
     };
-    actions.createResource(modifiedFormData, navigate);
-    resetForm();
-    navigate("/");
-  }
+
+    try {
+      await actions.createResource(modifiedFormData, navigate);
+      resetForm();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to create resource. Please try again.",
+      });
+    }
+  };
 
   const handleChange = (field, value) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -128,9 +117,25 @@ const Create = () => {
       },
     }));
   };
+
   const resetForm = () => {
-    setFormData(initialFormData);
+    setFormData({
+      name: "",
+      address: "",
+      phone: "",
+      category: [],
+      website: "",
+      description: "",
+      latitude: null,
+      longitude: null,
+      image: "",
+      image2: "",
+      days: initializeDaysState(daysOfWeek),
+    });
   };
+
+  if (!mapsLoaded) return <div>Loading...</div>;
+
   return (
     <div className="form-container">
       <form className="geo-form" onSubmit={handleSubmit}>
@@ -149,48 +154,16 @@ const Create = () => {
 
         <div className="input-group">
           <label htmlFor="address">Address</label>
-          {isGoogleMapsLoaded && (
-            <PlacesAutocomplete
-              value={formData.address}
-              onChange={(address) => handleChange("address", address)}
-              onSelect={handleSelect}
-            >
-              {({
-                getInputProps,
-                suggestions,
-                getSuggestionItemProps,
-                loading,
-              }) => (
-                <div>
-                  <input
-                    {...getInputProps({
-                      className: "geo-input",
-                      id: "address",
-                      placeholder: "Resource Address",
-                    })}
-                  />
-                  <div>
-                    {loading ? <div>Loading...</div> : null}
-                    {suggestions.map((suggestion) => {
-                      console.log("SUGGESTIONS", suggestions);
-                      const className = suggestion.active
-                        ? "suggestion-item--active"
-                        : "suggestion-item";
-                      return (
-                        <div
-                          {...getSuggestionItemProps(suggestion, {
-                            className,
-                          })}
-                        >
-                          {suggestion.description}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </PlacesAutocomplete>
-          )}
+          <input
+            ref={autocompleteRef}
+            className="geo-input"
+            id="address"
+            name="address"
+            type="text"
+            value={formData.address}
+            onChange={(e) => handleChange("address", e.target.value)}
+            placeholder="Resource Address"
+          />
         </div>
 
         <div className="input-group">
@@ -223,7 +196,7 @@ const Create = () => {
         {daysOfWeek.map((day) => (
           <div key={day} className="input-group time-group">
             <label htmlFor={`${day}Start`}>
-              {day.charAt(0).toUpperCase() + day.slice(1)} from{" "}
+              {day.charAt(0).toUpperCase() + day.slice(1)} from
             </label>
             <input
               className="geo-input time-input"
