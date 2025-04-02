@@ -63,7 +63,12 @@ const Edit = () => {
         const loggedInUserId = store.user_id;
         const isAuthorized =
           loggedInUserId === 1 ||
-          assignedUsers.some((user) => user.id === loggedInUserId);
+          loggedInUserId === 3 ||
+          assignedUsers.some(
+            (user) => Number(user.id) === Number(loggedInUserId)
+          );
+
+        assignedUsers.some((user) => user.id === loggedInUserId);
         if (!isAuthorized) {
           Swal.fire({
             icon: "error",
