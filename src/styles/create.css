@@ -1,0 +1,152 @@
+/* ===========================
+   Create Page Styles
+=========================== */
+
+.form-container-create {
+  padding: 50px 20px 20px 20px;
+  box-shadow: none;
+  width: 100dvw;
+  max-height: 100dvh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.geo-form-create {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group-create {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.geo-input-create {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.geo-input-create:focus {
+  outline: none;
+  border-color: var(--newGreen);
+}
+
+/* ===========================
+     Categories - Two Columns
+  =========================== */
+
+.category-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-group label {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ===========================
+     Schedule Inputs - Two Columns
+  =========================== */
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.time-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.time-input {
+  width: 100px;
+}
+
+/* ===========================
+     Submit Button
+  =========================== */
+
+.submit-create {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--newGreen);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-create:hover {
+  background-color: #1565c0;
+}
+
+.donation-form-create {
+  position: relative;
+  overflow-x: hidden !important;
+  height: 1500px !important;
+  border: 2px solid salmon;
+  border-radius: 15px;
+  margin: 25px 0;
+}
+
+@media screen and (max-width: 800px) {
+  .donation-form-create {
+    height: 1480px !important;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .landing-title {
+    font-size: 25px !important;
+  }
+  .donation-form-create {
+    height: 1560px !important;
+  }
+  .landing-container {
+    margin-top: 0px !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .basic-info span {
+    font-size: 13px !important;
+  }
+  .donation-form-create {
+    height: 1610px !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .first-section {
+    flex-direction: column !important;
+  }
+  .donation-form-create {
+    height: 1680px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .donation-form-create {
+    height: 1750px !important;
+  }
+}

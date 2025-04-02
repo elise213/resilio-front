@@ -86,10 +86,8 @@ body,
 
 :root {
   --newGreen: rgb(67, 172, 67);
-  /* --marascoral: rgb(246, 134, 68); */
   --marascoral: salmon;
   --marascorallight: #ffca93;
-  /* --peach: rgb(249, 183, 173); */
   --green: rgb(170, 255, 200);
   --green2: rgb(48, 129, 69);
   --yellow: #f9d783;
@@ -381,7 +379,6 @@ body {
   color: gray;
 }
 
-/* General styles for the page */
 .unapproved-page {
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -395,7 +392,6 @@ body {
   color: #333;
 }
 
-/* Styles for the list of unapproved comments */
 .unapproved-ul {
   list-style-type: none;
   padding: 0;

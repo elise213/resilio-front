@@ -4,6 +4,8 @@ import { Context } from "../store/appContext";
 import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
 import { useGoogleMapsLoader } from "../hooks/googleMapsLoader";
+import styles from "../styles/create.css";
+import { Link } from "react-router-dom";
 
 const initializeDaysState = (daysOfWeek) => {
   return daysOfWeek.reduce((acc, day) => {
@@ -17,9 +19,7 @@ const Create = () => {
   const navigate = useNavigate();
   const mapsLoaded = useGoogleMapsLoader();
   const autocompleteRef = useRef(null);
-
   const daysOfWeek = useMemo(() => store.daysOfWeek || [], [store.daysOfWeek]);
-
   const [formData, setFormData] = useState(() => ({
     name: "",
     address: "",
@@ -137,12 +137,18 @@ const Create = () => {
   if (!mapsLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="form-container">
-      <form className="geo-form" onSubmit={handleSubmit}>
-        <div className="input-group">
+    <div className="form-container-create">
+      <p className="close-modal">
+        <Link to={`/`}>
+          <span className="material-symbols-outlined">arrow_back_ios</span>
+          Back to Search
+        </Link>
+      </p>
+      <form className="geo-form-create" onSubmit={handleSubmit}>
+        <div className="input-group-create">
           <label htmlFor="name">Name</label>
           <input
-            className="geo-input"
+            className="geo-input-create"
             id="name"
             name="name"
             type="text"
@@ -152,11 +158,11 @@ const Create = () => {
           />
         </div>
 
-        <div className="input-group">
+        <div className="input-group-create">
           <label htmlFor="address">Address</label>
           <input
             ref={autocompleteRef}
-            className="geo-input"
+            className="geo-input-create"
             id="address"
             name="address"
             type="text"
@@ -166,10 +172,10 @@ const Create = () => {
           />
         </div>
 
-        <div className="input-group">
+        <div className="input-group-create">
           <label htmlFor="description">Description</label>
           <textarea
-            className="geo-input"
+            className="geo-input-create"
             id="description"
             rows="3"
             value={formData.description}
@@ -177,7 +183,7 @@ const Create = () => {
           ></textarea>
         </div>
 
-        <div className="input-group">
+        {/* <div className="input-group-create">
           {categories.map((resource) => (
             <div key={resource.id} className="checkbox-group">
               <input
@@ -199,7 +205,7 @@ const Create = () => {
               {day.charAt(0).toUpperCase() + day.slice(1)} from
             </label>
             <input
-              className="geo-input time-input"
+              className="geo-input-create time-input"
               type="time"
               id={`${day}Start`}
               name={`${day}Start`}
@@ -208,7 +214,7 @@ const Create = () => {
             />
             <span> until </span>
             <input
-              className="geo-input time-input"
+              className="geo-input-create time-input"
               type="time"
               id={`${day}End`}
               name={`${day}End`}
@@ -216,12 +222,57 @@ const Create = () => {
               onChange={(e) => handleTimeChange(day, "end", e.target.value)}
             />
           </div>
-        ))}
+        ))} */}
+
+        {/* Categories Section */}
+        <div className="input-group-create category-checkboxes">
+          {categories.map((resource) => (
+            <div key={resource.id} className="checkbox-group">
+              <input
+                type="checkbox"
+                name="category"
+                id={`resource${resource.id}`}
+                value={resource.value}
+                checked={formData.category.includes(resource.value)}
+                onChange={() => handleCategoryChange(resource.value)}
+              />
+              <label htmlFor={`resource${resource.id}`}>{resource.label}</label>
+            </div>
+          ))}
+        </div>
+
+        {/* Schedule Section */}
+        <div className="schedule-grid">
+          {daysOfWeek.map((day) => (
+            <div key={day} className="input-group-create time-group">
+              <label htmlFor={`${day}Start`}>
+                {day.charAt(0).toUpperCase() + day.slice(1)} from
+              </label>
+              <input
+                className="geo-input-create time-input"
+                type="time"
+                id={`${day}Start`}
+                name={`${day}Start`}
+                value={formData.days[day].start}
+                onChange={(e) => handleTimeChange(day, "start", e.target.value)}
+              />
+              <span> until </span>
+              <input
+                className="geo-input-create time-input"
+                type="time"
+                id={`${day}End`}
+                name={`${day}End`}
+                value={formData.days[day].end}
+                onChange={(e) => handleTimeChange(day, "end", e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
 
         <Button
           variant="contained"
           color="primary"
-          className="submit"
+          className="submit-create"
           type="submit"
         >
           Submit

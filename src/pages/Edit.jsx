@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import styles from "../styles/edit.css";
 import SmartPlacesAutocomplete from "../component/SmartPlacesAutocomplete";
 import { Link } from "react-router-dom";
-import { useGoogleMapsLoader } from "../hooks/googleMapsLoader";
+// import { useGoogleMapsLoader } from "../hooks/googleMapsLoader";
 
 const Edit = () => {
   const { store, actions } = useContext(Context);
@@ -48,12 +48,12 @@ const Edit = () => {
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const categories = CATEGORY_OPTIONS;
 
-  const handleRemoveUserId = (userId) => {
-    setFormData((prev) => ({
-      ...prev,
-      user_ids: prev.user_ids.filter((id) => id !== userId),
-    }));
-  };
+  // const handleRemoveUserId = (userId) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     user_ids: prev.user_ids.filter((id) => id !== userId),
+  //   }));
+  // };
 
   useEffect(() => {
     const fetchResourceData = async () => {
@@ -61,11 +61,9 @@ const Edit = () => {
         const resourceData = await actions.getResource(id);
         const assignedUsers = await actions.getResourceUsers(id);
         const loggedInUserId = store.user_id;
-
         const isAuthorized =
           loggedInUserId === 1 ||
           assignedUsers.some((user) => user.id === loggedInUserId);
-
         if (!isAuthorized) {
           Swal.fire({
             icon: "error",
@@ -75,7 +73,6 @@ const Edit = () => {
           navigate("/");
           return;
         }
-
         setFormData({
           ...initialFormData,
           ...resourceData,
@@ -89,19 +86,18 @@ const Edit = () => {
         console.error("🚨 Error fetching data:", error);
       }
     };
-
     fetchResourceData();
   }, [id, store.user_id, navigate]);
 
-  const handleAddUserId = () => {
-    const newUserId = parseInt(formData.newUserId);
-    if (!newUserId || formData.user_ids.includes(newUserId)) return;
-    setFormData((prev) => ({
-      ...prev,
-      user_ids: [...prev.user_ids, newUserId],
-      newUserId: "",
-    }));
-  };
+  // const handleAddUserId = () => {
+  //   const newUserId = parseInt(formData.newUserId);
+  //   if (!newUserId || formData.user_ids.includes(newUserId)) return;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     user_ids: [...prev.user_ids, newUserId],
+  //     newUserId: "",
+  //   }));
+  // };
 
   const handleDelete = async () => {
     const confirm = window.confirm(
