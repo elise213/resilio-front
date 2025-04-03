@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import styles from "../styles/edit.css";
 import SmartPlacesAutocomplete from "../component/SmartPlacesAutocomplete";
 import { Link } from "react-router-dom";
-// import { useGoogleMapsLoader } from "../hooks/googleMapsLoader";
 
 const Edit = () => {
   const { store, actions } = useContext(Context);
@@ -64,6 +63,7 @@ const Edit = () => {
         const isAuthorized =
           loggedInUserId === 1 ||
           loggedInUserId === 3 ||
+          loggedInUserId === 4 ||
           assignedUsers.some(
             (user) => Number(user.id) === Number(loggedInUserId)
           );
@@ -112,28 +112,6 @@ const Edit = () => {
       await actions.deleteResource(id, navigate);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const loggedInUserId = store.user_id;
-  //   if (loggedInUserId !== 1 && !formData.user_ids.includes(loggedInUserId)) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Access Denied",
-  //       text: "You do not have permission to edit this resource.",
-  //     });
-  //     return;
-  //   }
-  //   try {
-  //     const success = await actions.editResource(id, formData, navigate);
-  //     if (success) {
-  //       actions.closeModal();
-  //       navigate("/");
-  //     }
-  //   } catch (error) {
-  //     console.error("🚨 Error updating the resource:", error);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
