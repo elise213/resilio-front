@@ -27,6 +27,9 @@ const AuthorizedToolbox = () => {
         <MenuItem onClick={() => setAnchorEl2(null)}>
           <Link to={`/approveComments`}> Approve Comments</Link>
         </MenuItem>
+        <MenuItem onClick={() => setAnchorEl2(null)}>
+          <Link to={`/create`}> Create New Resource</Link>
+        </MenuItem>
       </Menu>
     </>
   );

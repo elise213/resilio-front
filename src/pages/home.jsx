@@ -41,9 +41,12 @@ const Home = () => {
 
   const [city, setCity] = useState(
     () =>
+      // ({
+
       store.austin?.[0] || {
         center: { lat: 34.0522, lng: -118.2437 }, // default to LA
       }
+    // })
   );
   const [mapCenter, setMapCenter] = useState(city.center);
 
