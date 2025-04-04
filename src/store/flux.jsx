@@ -5,7 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       abortController2: null,
       allResources: null,
       avatarID: null,
-      AuthorizedUserIds: [1, 3, 4],
+      authorizedUserIds: [1, 3, 4],
       authorizedUser: false,
       aboutModalIsOpen: false,
       modalIsOpen: false,
@@ -234,7 +234,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const userId = store.user_id; // Get user ID from store
         console.log("uer ID", userId);
 
-        if (userId && store.AuthorizedUserIds.includes(userId)) {
+        if (userId && store.authorizedUserIds.includes(userId)) {
           setStore({ authorizedUser: true });
           sessionStorage.setItem("authorizedUser", "true"); // ✅ Save in session storage
           console.log("✅ User is authorized.");
@@ -248,13 +248,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       handleRemoveUserId: (userId) => {
         const store = getStore();
 
-        // Check if the user exists in the AuthorizedUserIds list
-        if (store.AuthorizedUserIds.includes(userId)) {
-          const updatedList = store.AuthorizedUserIds.filter(
+        // Check if the user exists in the authorizedUserIds list
+        if (store.authorizedUserIds.includes(userId)) {
+          const updatedList = store.authorizedUserIds.filter(
             (id) => id !== userId
           );
 
-          setStore({ AuthorizedUserIds: updatedList });
+          setStore({ authorizedUserIds: updatedList });
 
           console.log(`🚨 User ID ${userId} removed from Authorized Users.`);
           Swal.fire(
@@ -342,7 +342,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           // ✅ Check if user is authorized
           const store = getStore();
-          if (store.AuthorizedUserIds.includes(data.id)) {
+          if (store.authorizedUserIds.includes(data.id)) {
             setStore({ authorizedUser: true });
             console.log("✅ User is authorized.");
           } else {
@@ -459,7 +459,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             user_id: data.user_id,
           });
 
-          if (store.AuthorizedUserIds.includes(data.user_id)) {
+          if (store.authorizedUserIds.includes(data.user_id)) {
             setStore({ authorizedUser: true });
             sessionStorage.setItem("authorizedUser", "true");
             console.log("✅ User is authorized.");
@@ -1069,7 +1069,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
-
       getResourceUsers: async (resourceId) => {
         const current_back_url = getStore().current_back_url;
 
@@ -1101,6 +1100,38 @@ const getState = ({ getStore, getActions, setStore }) => {
           return [];
         }
       },
+
+      // getResourceUsers: async (resourceId) => {
+      //   const current_back_url = getStore().current_back_url;
+
+      //   try {
+      //     const response = await fetch(
+      //       `${current_back_url}/api/getResourceUsers/${resourceId}`,
+      //       {
+      //         method: "GET",
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //         },
+      //       }
+      //     );
+
+      //     if (!response.ok) {
+      //       console.error(
+      //         "❌ Failed to fetch resource users:",
+      //         response.status
+      //       );
+      //       return [];
+      //     }
+
+      //     const data = await response.json();
+      //     console.log("✅ Resource Users Data:", data);
+
+      //     return Array.isArray(data.users) ? data.users : []; // Ensure an array is returned
+      //   } catch (error) {
+      //     console.error("🚨 Error fetching resource users:", error);
+      //     return [];
+      //   }
+      // },
 
       getResource: async (resourceId) => {
         const { current_back_url, current_front_url } = getStore();

@@ -10,6 +10,10 @@ const Edit = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
   const navigate = useNavigate();
+  const [assignedUsers, setAssignedUsers] = useState([]);
+
+  console.log("👤 Logged in user ID:", store.user_id);
+  console.log("✅ Authorized user IDs:", store.authorizedUserIds);
 
   const daysOfWeek = [
     "monday",
@@ -40,35 +44,80 @@ const Edit = () => {
     image2: "",
     days: initialDaysState,
     updated: "",
-    user_ids: [1, 2, 3],
+    user_ids: [],
+    newUserId: "",
   };
 
   const [formData, setFormData] = useState(initialFormData || {});
   const CATEGORY_OPTIONS = store.CATEGORY_OPTIONS || [];
   const categories = CATEGORY_OPTIONS;
 
-  // const handleRemoveUserId = (userId) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     user_ids: prev.user_ids.filter((id) => id !== userId),
-  //   }));
-  // };
+  const handleRemoveUserId = (userId) => {
+    setFormData((prev) => ({
+      ...prev,
+      user_ids: prev.user_ids.filter((id) => id !== userId),
+    }));
+  };
+
+  // useEffect(() => {
+  //   const fetchResourceData = async () => {
+  //     try {
+  //       const resourceData = await actions.getResource(id);
+  //       const assignedUsers = await actions.getResourceUsers(id);
+  //       const loggedInUserId = store.user_id;
+  //       const isAuthorized =
+  //         store.authorizedUserIds.includes(Number(loggedInUserId)) ||
+  //         assignedUsers.some(
+  //           (user) => Number(user.id) === Number(loggedInUserId)
+  //         );
+
+  //       if (!isAuthorized) {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Access Denied",
+  //           text: "You are not authorized to edit this resource.",
+  //         });
+  //         navigate("/");
+  //         return;
+  //       }
+
+  //       setFormData({
+  //         ...initialFormData,
+  //         ...resourceData,
+  //         category: resourceData.category
+  //           ? resourceData.category.split(", ")
+  //           : [],
+  //         user_ids: assignedUsers.map((user) => user.id) || [],
+  //         schedule: resourceData.schedule || initialDaysState,
+  //       });
+  //       setAssignedUsers(assignedUsers);
+  //     } catch (error) {
+  //       console.error("🚨 Error fetching data:", error);
+  //     }
+  //   };
+  //   fetchResourceData();
+  // }, [id, store.user_id, navigate]);
 
   useEffect(() => {
     const fetchResourceData = async () => {
       try {
         const resourceData = await actions.getResource(id);
-        const assignedUsers = await actions.getResourceUsers(id);
-        const loggedInUserId = store.user_id;
-        const isAuthorized =
-          loggedInUserId === 1 ||
-          loggedInUserId === 3 ||
-          loggedInUserId === 4 ||
-          assignedUsers.some(
-            (user) => Number(user.id) === Number(loggedInUserId)
-          );
+        const response = await actions.getResourceUsers(id);
+        const assignedUsers = Array.isArray(response) ? response : [];
 
-        assignedUsers.some((user) => user.id === loggedInUserId);
+        console.log("📦 resourceData:", resourceData);
+        console.log("👥 assignedUsers (from API):", assignedUsers);
+
+        const loggedInUserId = store.user_id;
+
+        const isAuthorized =
+          store.authorizedUserIds.includes(Number(loggedInUserId)) ||
+          formData.user_ids.map(Number).includes(Number(loggedInUserId));
+        // store.authorizedUserIds.includes(Number(loggedInUserId)) ||
+        // assignedUsers.some(
+        //   (user) => Number(user.id) === Number(loggedInUserId)
+        // );
+
         if (!isAuthorized) {
           Swal.fire({
             icon: "error",
@@ -78,6 +127,7 @@ const Edit = () => {
           navigate("/");
           return;
         }
+
         setFormData({
           ...initialFormData,
           ...resourceData,
@@ -87,22 +137,25 @@ const Edit = () => {
           user_ids: assignedUsers.map((user) => user.id) || [],
           schedule: resourceData.schedule || initialDaysState,
         });
+
+        setAssignedUsers(assignedUsers);
       } catch (error) {
         console.error("🚨 Error fetching data:", error);
       }
     };
+
     fetchResourceData();
   }, [id, store.user_id, navigate]);
 
-  // const handleAddUserId = () => {
-  //   const newUserId = parseInt(formData.newUserId);
-  //   if (!newUserId || formData.user_ids.includes(newUserId)) return;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     user_ids: [...prev.user_ids, newUserId],
-  //     newUserId: "",
-  //   }));
-  // };
+  const handleAddUserId = () => {
+    const newUserId = parseInt(formData.newUserId);
+    if (!newUserId || formData.user_ids.includes(newUserId)) return;
+    setFormData((prev) => ({
+      ...prev,
+      user_ids: [...prev.user_ids, newUserId],
+      newUserId: "",
+    }));
+  };
 
   const handleDelete = async () => {
     const confirm = window.confirm(
@@ -113,11 +166,57 @@ const Edit = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const loggedInUserId = store.user_id;
+  //   console.log("🧾 Submitting form");
+  //   console.log("👤 Logged in user ID:", loggedInUserId, typeof loggedInUserId);
+  //   console.log("👥 Current authorized user IDs:", formData.user_ids);
+
+  //   if (!formData.user_ids.map(Number).includes(Number(loggedInUserId))) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Access Denied",
+  //       text: "You do not have permission to edit this resource.",
+  //     });
+  //     return;
+  //   }
+
+  //   if (!formData.latitude || !formData.longitude) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Address Required",
+  //       text: "Please select a valid address from Google suggestions.",
+  //     });
+  //     return;
+  //   }
+
+  //   try {
+  //     const success = await actions.editResource(id, formData, navigate);
+  //     if (success) {
+  //       actions.closeModal();
+  //       navigate("/");
+  //     }
+  //   } catch (error) {
+  //     console.error("🚨 Error updating the resource:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const loggedInUserId = store.user_id;
+    const loggedInUserId = Number(store.user_id);
+    console.log("🧾 Submitting form");
+    console.log("👤 Logged in user ID:", loggedInUserId);
+    console.log("✅ store.authorizedUserIds:", store.authorizedUserIds);
+    console.log("👥 formData.user_ids:", formData.user_ids);
 
-    if (loggedInUserId !== 1 && !formData.user_ids.includes(loggedInUserId)) {
+    const isAuthorized =
+      store.authorizedUserIds.includes(loggedInUserId) ||
+      formData.user_ids.map(Number).includes(loggedInUserId);
+
+    console.log("🔐 isAuthorized:", isAuthorized);
+
+    if (!isAuthorized) {
       Swal.fire({
         icon: "error",
         title: "Access Denied",
@@ -199,6 +298,65 @@ const Edit = () => {
               placeholder="Resource Name"
             />
           </div>
+
+          {store.authorizedUserIds?.includes(store.user_id) &&
+            formData.user_ids && (
+              <div className="input-group">
+                <label>Approved Users</label>
+                <ul>
+                  {formData.user_ids.map((userId) => (
+                    <li key={userId}>
+                      User ID: {userId}{" "}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveUserId(userId)}
+                      >
+                        ❌ Remove
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <input
+                  className="geo-input"
+                  type="number"
+                  value={formData.newUserId || ""}
+                  onChange={(e) => handleChange("newUserId", e.target.value)}
+                  placeholder="Enter user ID to add"
+                />
+                <button type="button" onClick={handleAddUserId}>
+                  ➕ Add User ID
+                </button>
+              </div>
+            )}
+
+          {/* {store.authorizedUserIds.includes(store.user_id) && (
+            <div className="input-group">
+              <label>Approved Users</label>
+              <ul>
+                {formData.user_ids.map((userId) => (
+                  <li key={userId}>
+                    User ID: {userId}{" "}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveUserId(userId)}
+                    >
+                      ❌ Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <input
+                className="geo-input"
+                type="number"
+                value={formData.newUserId || ""}
+                onChange={(e) => handleChange("newUserId", e.target.value)}
+                placeholder="Enter user ID to add"
+              />
+              <button type="button" onClick={handleAddUserId}>
+                ➕ Add User ID
+              </button>
+            </div>
+          )} */}
 
           <div className="input-group">
             <label htmlFor="geo-input">Address</label>
