@@ -3,18 +3,15 @@ import { Context } from "../store/appContext";
 import Carousel from "./Carousel";
 import styles from "../styles/resourceModal.css";
 import Rating from "@mui/material/Rating";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteButton from "./FavoriteButton";
 import LikeComment from "./likeComment";
-import { Menu, MenuItem, IconButton, Tooltip, Icon } from "@mui/material";
+import { Tooltip } from "@mui/material";
 
 export const ModalInfo = ({
   averageRating,
   toggleRatingModal,
   ratingCount,
-  toggleFavorite,
   isLoggedIn,
   comments,
   setComments,
@@ -275,18 +272,6 @@ export const ModalInfo = ({
               </div>
             </>
           )}
-        {/* DESCRIPTION */}
-        {/* {res.description && (
-          <div className="info-address">
-            <span className="modal-info-title" style={{ alignSelf: "start" }}>
-              About
-            </span>
-            <span className="modal-info-value" style={{ marginLeft: "0px" }}>
-              {res.description}
-            </span>
-          </div>
-        )} */}
-
         {res.description && (
           <>
             <div className="info-address">
@@ -367,7 +352,6 @@ export const ModalInfo = ({
         <div className="info-address" style={{ borderBottom: "none" }}>
           <span className="modal-info-title">User Reviews</span>
           <div className="comments-display">
-            {/* <span className="user-reviews">User Reviews</span> */}
             {comments.map((comment) => {
               const date = new Date(comment.created_at);
               const formattedDate = date.toLocaleDateString("en-US", {

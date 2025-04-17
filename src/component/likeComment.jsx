@@ -11,7 +11,6 @@ const LikeComment = ({
   isLoggedIn,
 }) => {
   const { actions } = useContext(Context);
-
   const isLiked = comment.likes?.some(
     (like) => Number(like.user_id) === Number(userIdFromSession)
   );
@@ -37,7 +36,6 @@ const LikeComment = ({
 
       return;
     }
-
     actions
       .likeComment(comment.comment_id)
       .then(() => {

@@ -73,7 +73,6 @@ const ResourceCard = (props) => {
       onClick={() => {
         actions.setSelectedResource(props.item);
         actions.openModal();
-        console.log("called from resource card - open");
       }}
     >
       {props.item.image && (

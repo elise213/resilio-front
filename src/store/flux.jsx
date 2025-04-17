@@ -105,7 +105,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         },
       ],
-
       categoryCounts: {},
       dayCounts: {},
     },
@@ -113,17 +112,21 @@ const getState = ({ getStore, getActions, setStore }) => {
       setMapInstance: (map) => {
         setStore({ mapInstance: map });
       },
+
       setMapsInstance: (maps) => {
         setStore({ mapsInstance: maps });
       },
+
       getMapInstance: () => getStore().mapInstance,
       getMapsInstance: () => getStore().mapsInstance,
       setStore: (newState) => {
         setStore((prevState) => ({ ...prevState, ...newState }));
       },
+
       updateBounds: (bounds) => {
         setStore({ bounds });
       },
+
       setSelectedResource: (resource) => {
         sessionStorage.setItem("selectedResource", JSON.stringify(resource));
         setStore({ selectedResource: resource });
@@ -231,32 +234,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       checkAuthorizedUser: () => {
         const store = getStore();
-        const userId = store.user_id; // Get user ID from store
+        const userId = store.user_id;
         console.log("uer ID", userId);
 
         if (userId && store.authorizedUserIds.includes(userId)) {
           setStore({ authorizedUser: true });
-          sessionStorage.setItem("authorizedUser", "true"); // ✅ Save in session storage
+          sessionStorage.setItem("authorizedUser", "true");
           console.log("✅ User is authorized.");
         } else {
           setStore({ authorizedUser: false });
-          sessionStorage.setItem("authorizedUser", "false"); // ❌ Save in session storage
-          console.log("❌ User is NOT authorized.");
+          sessionStorage.setItem("authorizedUser", "false");
+          console.log(" User is NOT authorized.");
         }
       },
 
       handleRemoveUserId: (userId) => {
         const store = getStore();
-
-        // Check if the user exists in the authorizedUserIds list
         if (store.authorizedUserIds.includes(userId)) {
           const updatedList = store.authorizedUserIds.filter(
             (id) => id !== userId
           );
-
           setStore({ authorizedUserIds: updatedList });
-
-          console.log(`🚨 User ID ${userId} removed from Authorized Users.`);
+          console.log(` User ID ${userId} removed from Authorized Users.`);
           Swal.fire(
             "Removed",
             `User ID ${userId} has been removed.`,
@@ -290,7 +289,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.warn("🧨 Clearing store due to invalid session or token.");
           return false;
         }
-
         try {
           console.log(`📡 Fetching user info for ID: ${user_id}`);
           const response = await fetch(
@@ -300,10 +298,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-
           console.log("📥 Response Status:", response.status);
-
-          // If the token is invalid or the user is not found, log the user out
           if (!response.ok) {
             console.warn("Invalid token or user not found, logging out user.");
             setStore({
@@ -318,19 +313,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
             return false;
           }
-
           const data = await response.json();
-          console.log("✅ User info fetched successfully:", data);
-
-          // Save user info and favorites in session storage
+          console.log("User info fetched successfully:", data);
           sessionStorage.setItem("user_id", data.id);
           sessionStorage.setItem("name", data.name);
           sessionStorage.setItem("is_org", data.is_org);
           sessionStorage.setItem("avatar", data.avatarID);
           sessionStorage.setItem("favorites", JSON.stringify(data.favorites));
           sessionStorage.setItem("is_logged_in", true);
-
-          // Update store with user details and favorites
           setStore({
             user_id: data.id,
             name: data.name,
@@ -339,17 +329,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             favorites: data.favorites || [],
             is_logged_in: true,
           });
-
-          // ✅ Check if user is authorized
           const store = getStore();
           if (store.authorizedUserIds.includes(data.id)) {
             setStore({ authorizedUser: true });
-            console.log("✅ User is authorized.");
+            console.log("User is authorized.");
           } else {
             setStore({ authorizedUser: false });
-            console.log("❌ User is NOT authorized.");
+            console.log(" User is NOT authorized.");
           }
-
           return true;
         } catch (error) {
           console.error("🚨 Error checking login status:", error);
@@ -436,12 +423,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
             return false;
           }
-
           const data = await response.json();
           const fullFavorites = data.favorites.map((fav) => ({
             ...fav.resource,
           }));
-
           sessionStorage.setItem("token", data.access_token);
           sessionStorage.setItem("is_org", data.is_org);
           sessionStorage.setItem("name", data.name);
@@ -449,7 +434,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           sessionStorage.setItem("favorites", JSON.stringify(fullFavorites));
           sessionStorage.setItem("user_id", data.user_id);
           console.log("📦 Setting favorites in store on login:", fullFavorites);
-
           setStore({
             token: data.access_token,
             is_org: data.is_org,
@@ -458,7 +442,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             favorites: fullFavorites,
             user_id: data.user_id,
           });
-
           if (store.authorizedUserIds.includes(data.user_id)) {
             setStore({ authorizedUser: true });
             sessionStorage.setItem("authorizedUser", "true");
@@ -468,12 +451,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             sessionStorage.setItem("authorizedUser", "false");
             console.log("❌ User is NOT authorized.");
           }
-
           Swal.fire({
             icon: "success",
             title: "Logged in Successfully",
           });
-
           return true;
         } catch (error) {
           console.error(error);
@@ -482,7 +463,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Something went wrong",
             text: error.message,
           });
-
           return false;
         }
       },
@@ -493,7 +473,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("name");
         sessionStorage.removeItem("favorites");
         setStore({ token: null, is_org: null, name: null, favorites: null });
-
         Swal.fire({
           icon: "success",
           title: "Logged out Successfully",
@@ -580,17 +559,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
             return false;
           }
-
           const result = await response.json();
-          console.log(result);
-
           Swal.fire({
             icon: "success",
             title: "Password Reset Successfully",
           }).then(() => {
             window.location.href = "/";
           });
-
           return true;
         } catch (error) {
           console.error("Error:", error);
@@ -599,7 +574,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Something went wrong",
             text: error.message,
           });
-
           return false;
         }
       },
@@ -613,14 +587,12 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
           });
-
           if (!response.ok) {
             console.error("Failed to fetch users:", response.status);
             return [];
           }
-
           const data = await response.json();
-          return data.users || []; // Ensure it returns an array of users
+          return data.users || [];
         } catch (error) {
           console.error("Error fetching users:", error);
           return [];
@@ -631,26 +603,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       fetchResources: async (bounds) => {
         const store = getStore();
-
         if (!bounds || !bounds.ne || !bounds.sw) {
-          console.error("❌ Error: Invalid bounds received:", bounds);
+          console.error(" Error: Invalid bounds received:", bounds);
           return;
         }
         setStore({ loadingResults: true });
-        console.log("📏 Received bounds:", bounds);
-
+        console.log("Received bounds:", bounds);
         const formattedBounds = {
           neLat: bounds.ne.lat,
           neLng: bounds.ne.lng,
           swLat: bounds.sw.lat,
           swLng: bounds.sw.lng,
         };
-
         console.log(
-          "📡 Fetching resources with formatted bounds:",
+          " Fetching resources with formatted bounds:",
           formattedBounds
         );
-
         try {
           const response = await fetch(
             `${store.current_back_url}/api/getBResults`,
@@ -661,20 +629,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
 
-          console.log("📥 Response status:", response.status);
-
           if (!response.ok) {
             const text = await response.text();
-            console.error("❌ Backend request failed. Response:", text);
+            console.error(" Backend request failed. Response:", text);
             setStore({ loadingResults: false });
             return;
           }
-
           const data = await response.json();
-          console.log("✅ Backend response received:", data);
-
+          console.log(" Backend response received:", data);
           if (!data || !data.data || data.data.length === 0) {
-            console.warn("⚠️ No resources returned from the backend.");
+            console.warn("No resources returned from the backend.");
           }
           console.log("all resources", data.data);
           console.log("all resources", formattedBounds);
@@ -683,123 +647,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             lastFetchedBounds: formattedBounds,
             loadingResults: false,
           });
-
           return data.data;
         } catch (error) {
-          console.error("❌ Error fetching resources:", error);
+          console.error("Error fetching resources:", error);
           setStore({ loadingResults: false });
         }
       },
 
-      // setBoundaryResults: async (
-      //   bounds,
-      //   selectedCategories = {},
-      //   selectedDays = {}
-      // ) => {
-      //   const store = getStore();
-      //   const actions = getActions();
-      //   const boundsContain = (outer, inner) => {
-      //     return (
-      //       outer.neLat >= inner.ne.lat &&
-      //       outer.neLng >= inner.ne.lng &&
-      //       outer.swLat <= inner.sw.lat &&
-      //       outer.swLng <= inner.sw.lng
-      //     );
-      //   };
-
-      //   const lastBounds = store.lastFetchedBounds;
-      //   if (!bounds || !bounds.ne || !bounds.sw) {
-      //     console.error("❌ Error: Invalid bounds received.");
-      //     return;
-      //   }
-
-      //   const newBounds = {
-      //     neLat: bounds.ne.lat,
-      //     neLng: bounds.ne.lng,
-      //     swLat: bounds.sw.lat,
-      //     swLng: bounds.sw.lng,
-      //   };
-
-      //   const shouldRefetch = !lastBounds || !boundsContain(lastBounds, bounds);
-
-      //   if (shouldRefetch) {
-      //     await actions.fetchResources(bounds);
-      //   }
-
-      //   let allResources = getStore().allResources || [];
-      //   // let allResources = getStore().boundaryResults;
-
-      //   console.log("📡 setBoundaryResults called!");
-      //   console.log("📌 Received bounds:", bounds);
-      //   console.log("📌 Selected Categories:", selectedCategories);
-      //   console.log("📌 Selected Days:", selectedDays);
-
-      //   console.log(
-      //     "📌 Total resources before filtering:",
-      //     allResources.length
-      //   );
-
-      //   const isFilteringByCategory =
-      //     Object.values(selectedCategories).some(Boolean);
-      //   const isFilteringByDay = Object.values(selectedDays).some(Boolean);
-
-      //   console.log("🔎 isFilteringByCategory:", isFilteringByCategory);
-      //   console.log("🔎 isFilteringByDay:", isFilteringByDay);
-
-      //   setStore({ loadingResults: true });
-      //   try {
-      //     const filteredResults = allResources.filter((resource) => {
-      //       const hasValidCategory =
-      //         resource.category &&
-      //         resource.category
-      //           .split(",")
-      //           .map((c) => c.trim().toLowerCase())
-      //           // .some((cat) => selectedCategories[cat]);
-      //           .some((cat) => selectedCategories[cat] === true);
-
-      //       const hasValidDay =
-      //         resource.schedule &&
-      //         Object.keys(resource.schedule).some(
-      //           (day) => selectedDays[day] && resource.schedule[day]?.start
-      //         );
-
-      //       // ✅ If no filters are selected, include everything
-      //       if (!isFilteringByCategory && !isFilteringByDay) {
-      //         return true;
-      //       }
-
-      //       // ✅ If filters are selected, include only matching resources
-      //       if (isFilteringByCategory && isFilteringByDay) {
-      //         return hasValidCategory && hasValidDay;
-      //       } else if (isFilteringByCategory) {
-      //         return hasValidCategory;
-      //       } else if (isFilteringByDay) {
-      //         return hasValidDay;
-      //       }
-
-      //       return false; // fallback, shouldn't be hit
-      //     });
-
-      //     console.log(
-      //       "✅ Found",
-      //       filteredResults.length,
-      //       "resources after filtering."
-      //     );
-
-      //     setStore({
-      //       boundaryResults: [...filteredResults],
-      //       loadingResults: false,
-      //     });
-      //   } catch (error) {
-      //     console.error("❌ Error filtering resources:", error);
-      //     setStore({ loadingResults: false });
-      //   }
-      // },
-
       checkResourceCoordinates: async () => {
         const url = "/api/getAllResources";
         let resourcesWithInvalidCoordinates = false;
-
         try {
           const response = await fetch(url, {
             method: "GET",
@@ -808,11 +665,9 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
             },
           });
-
           if (!response.ok) {
             console.error("Server responded with status:", response.status);
             const contentType = response.headers.get("content-type");
-
             if (contentType && contentType.includes("text/html")) {
               const text = await response.text();
               console.error("HTML response received:", text);
@@ -844,11 +699,9 @@ const getState = ({ getStore, getActions, setStore }) => {
               resourcesWithInvalidCoordinates = true;
             }
           });
-
           if (!resourcesWithInvalidCoordinates) {
             console.log("All resources have valid coordinates");
           }
-
           return resourcesWithInvalidCoordinates;
         } catch (error) {
           console.error("An error occurred while checking resources:", error);
@@ -863,41 +716,31 @@ const getState = ({ getStore, getActions, setStore }) => {
           loadingLocation: true,
         }));
         const actions = getActions();
-        console.log("📡 Attempting to get user location...");
-
+        console.log(" Attempting to get user location...");
         if (!navigator.geolocation) {
-          console.error("❌ Geolocation is not supported by this browser.");
+          console.error(" Geolocation is not supported by this browser.");
           alert("Please enable location services.");
           return;
         }
-
         const successCallback = async (position) => {
           const { latitude, longitude } = position.coords;
-          console.log(
-            `✅ Location retrieved: lat=${latitude}, lng=${longitude}`
-          );
-
+          console.log(`Location retrieved: lat=${latitude}, lng=${longitude}`);
           setStore((prevStore) => ({
             ...prevStore,
             userLocation: { lat: latitude, lng: longitude },
           }));
-
           await actions.updateCityStateFromCoords(latitude, longitude);
-
           let retries = 0;
           let mapInstance = null;
           let mapsInstance = null;
-
           while (!mapInstance || !mapsInstance) {
             console.warn(`⚠️ Waiting for mapInstance... (${retries + 1})`);
             mapInstance = actions.getMapInstance();
             mapsInstance = actions.getMapsInstance();
-
             if (mapInstance && mapsInstance) break;
-
             if (retries > 5) {
               console.error(
-                "❌ mapInstance is still not available after retries."
+                "mapInstance is still not available after retries."
               );
               setStore((prevStore) => ({
                 ...prevStore,
@@ -909,21 +752,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             await new Promise((res) => setTimeout(res, 500));
             retries++;
           }
-
-          console.log("✅ Map is now ready. Moving map...");
+          console.log("Map is now ready. Moving map...");
           mapInstance.setCenter(new mapsInstance.LatLng(latitude, longitude));
           mapInstance.setZoom(11);
-
           setStore((prevStore) => ({
             ...prevStore,
 
             loadingLocation: false,
           }));
         };
-
         const errorCallback = (error) => {
-          console.error("❌ Geolocation error:", error);
-
+          console.error(" Geolocation error:", error);
           switch (error.code) {
             case error.PERMISSION_DENIED:
               alert("Please enable location services and try again.");
@@ -938,13 +777,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             default:
               alert("Unable to retrieve your location.");
           }
-
           setStore((prevStore) => ({
             ...prevStore,
             loadingLocation: false,
           }));
         };
-
         navigator.geolocation.getCurrentPosition(
           successCallback,
           errorCallback,
@@ -984,10 +821,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             title: "Deleted",
             text: "Resource deleted successfully!",
           });
-
           const actions = getActions();
           actions.closeModal();
-
           if (navigate) navigate("/");
         } catch (error) {
           console.error("Error during resource deletion:", error);
@@ -1019,7 +854,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       editResource: async (resourceId, formData, navigate) => {
         const { current_back_url } = getStore();
         const token = sessionStorage.getItem("token");
-
         const opts = {
           method: "PUT",
           headers: {
@@ -1028,7 +862,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
           body: JSON.stringify(formData),
         };
-
         try {
           const response = await fetch(
             `${current_back_url}/api/editResource/${resourceId}`,
@@ -1046,18 +879,15 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
             return false;
           }
-
           Swal.fire({
             icon: "success",
             title: "Success",
             text: "Resource edited successfully!",
           });
-
           setStore({
             modalIsOpen: true,
             selectedResource: resourceId,
           });
-
           return true;
         } catch (error) {
           console.error("🚨 Error during resource editing:", error);
@@ -1069,9 +899,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
+
       getResourceUsers: async (resourceId) => {
         const current_back_url = getStore().current_back_url;
-
         try {
           const response = await fetch(
             `${current_back_url}/api/getResourceUsers/${resourceId}`,
@@ -1082,56 +912,18 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-
           if (!response.ok) {
-            console.error(
-              "❌ Failed to fetch resource users:",
-              response.status
-            );
+            console.error(" Failed to fetch resource users:", response.status);
             return [];
           }
-
           const data = await response.json();
           console.log("✅ Resource Users Data:", data);
-
-          return Array.isArray(data.users) ? data.users : []; // Ensure an array is returned
+          return Array.isArray(data.users) ? data.users : [];
         } catch (error) {
           console.error("🚨 Error fetching resource users:", error);
           return [];
         }
       },
-
-      // getResourceUsers: async (resourceId) => {
-      //   const current_back_url = getStore().current_back_url;
-
-      //   try {
-      //     const response = await fetch(
-      //       `${current_back_url}/api/getResourceUsers/${resourceId}`,
-      //       {
-      //         method: "GET",
-      //         headers: {
-      //           "Content-Type": "application/json",
-      //         },
-      //       }
-      //     );
-
-      //     if (!response.ok) {
-      //       console.error(
-      //         "❌ Failed to fetch resource users:",
-      //         response.status
-      //       );
-      //       return [];
-      //     }
-
-      //     const data = await response.json();
-      //     console.log("✅ Resource Users Data:", data);
-
-      //     return Array.isArray(data.users) ? data.users : []; // Ensure an array is returned
-      //   } catch (error) {
-      //     console.error("🚨 Error fetching resource users:", error);
-      //     return [];
-      //   }
-      // },
 
       getResource: async (resourceId) => {
         const { current_back_url, current_front_url } = getStore();
@@ -1211,21 +1003,16 @@ const getState = ({ getStore, getActions, setStore }) => {
         const store = getStore();
         const actions = getActions();
         console.log(
-          `📡 Fetching city and bounds for coordinates: lat=${lat}, lng=${lng}`
+          ` Fetching city and bounds for coordinates: lat=${lat}, lng=${lng}`
         );
-
         try {
           const data = await fetchBounds({ lat, lng });
-
           if (!data) {
-            console.error("❌ No valid data received from fetchBounds.");
+            console.error(" No valid data received from fetchBounds.");
             return null;
           }
-
           const { location, bounds } = data;
-
-          console.log("✅ Updating city state with:", location, bounds);
-
+          console.log("Updating city state with:", location, bounds);
           setStore((prevStore) => ({
             ...prevStore,
             city: {
@@ -1236,18 +1023,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             userLocation: location,
             mapCenter: location,
           }));
-
           await actions.fetchResources(bounds);
-
           return data;
         } catch (error) {
-          console.error(
-            "❌ Error in updateCityStateFromCoords:",
-            error.message
-          );
+          console.error("Error in updateCityStateFromCoords:", error.message);
           return null;
         }
       },
+
       boundsContain: (outer, inner) => {
         return (
           outer.neLat >= inner.ne.lat &&
@@ -1265,6 +1048,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           b1.swLng.toFixed(5) === b2.swLng.toFixed(5)
         );
       },
+
       setBoundaryResults: async (
         bounds,
         selectedCategories = {},
@@ -1272,20 +1056,16 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         const store = getStore();
         const actions = getActions();
-
         if (!bounds || !bounds.ne || !bounds.sw) {
           console.error("❌ Error: Invalid bounds received.");
           return;
         }
-
-        // Helper: Inflate bounds by percentage
         const inflateBounds = (bounds, percentage = 0.1) => {
           const latDiff = bounds.ne.lat - bounds.sw.lat;
           const lngDiff = bounds.ne.lng - bounds.sw.lng;
 
           const latPad = latDiff * percentage;
           const lngPad = lngDiff * percentage;
-
           return {
             neLat: bounds.ne.lat + latPad,
             neLng: bounds.ne.lng + lngPad,
@@ -1293,7 +1073,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             swLng: bounds.sw.lng - lngPad,
           };
         };
-
         const resourceIsInsideBounds = (resource, bounds) => {
           if (!resource?.latitude || !resource?.longitude) return false;
           return (
@@ -1303,8 +1082,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             resource.longitude >= bounds.sw.lng
           );
         };
-
-        // Helper: Check containment
         const boundsContain = (outer, inner) => {
           return (
             outer.neLat >= inner.ne.lat &&
@@ -1313,11 +1090,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             outer.swLng <= inner.sw.lng
           );
         };
-
         console.log("setBoundaryResults called");
-
         const lastBounds = store.lastFetchedBounds;
-
         // Only fetch if bounds are not fully contained
         if (!lastBounds || !boundsContain(lastBounds, bounds)) {
           console.log("🌍 Fetching because bounds exceed last fetched area.");
@@ -1327,28 +1101,20 @@ const getState = ({ getStore, getActions, setStore }) => {
         } else {
           console.log("📦 Inside buffered bounds, using cached data.");
         }
-
         const allResources = getStore().allResources || [];
-
-        console.log("📡 Filtering results");
-        console.log("📌 Received bounds:", bounds);
-        console.log("📌 Selected Categories:", selectedCategories);
-        console.log("📌 Selected Days:", selectedDays);
-        console.log(
-          "📌 Total resources before filtering:",
-          allResources.length
-        );
-
+        console.log(" Filtering results");
+        console.log(" Received bounds:", bounds);
+        console.log("Selected Categories:", selectedCategories);
+        console.log("Selected Days:", selectedDays);
+        console.log("Total resources before filtering:", allResources.length);
         const isFilteringByCategory =
           Object.values(selectedCategories).some(Boolean);
         const isFilteringByDay = Object.values(selectedDays).some(Boolean);
-
         setStore({
           selectedCategories,
           selectedDays,
           loadingResults: true,
         });
-
         try {
           const filteredResults = allResources.filter((resource) => {
             const insideBounds = resourceIsInsideBounds(resource, bounds);
@@ -1366,37 +1132,34 @@ const getState = ({ getStore, getActions, setStore }) => {
               Object.keys(resource.schedule).some(
                 (day) => selectedDays[day] && resource.schedule[day]?.start
               );
-
             if (!isFilteringByCategory && !isFilteringByDay) {
-              return true; // ← bounds already verified above
+              return true;
             }
-
             if (isFilteringByCategory && isFilteringByDay)
               return hasValidCategory && hasValidDay;
             if (isFilteringByCategory) return hasValidCategory;
             if (isFilteringByDay) return hasValidDay;
-
             return false;
           });
-
           console.log(
-            "✅ Found",
+            "Found",
             filteredResults.length,
             "resources after filtering."
           );
-
           setStore({
             boundaryResults: [...filteredResults],
             loadingResults: false,
           });
         } catch (error) {
-          console.error("❌ Error filtering resources:", error);
+          console.error(" Error filtering resources:", error);
           setStore({ loadingResults: false });
         }
       },
+
       setForcePan: (value) => {
         setStore({ forcePan: value });
       },
+
       formatNominatimResult: (result) => {
         const city =
           result.address?.city ||
@@ -1404,12 +1167,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           result.address?.village;
         const state = result.address?.state;
         const country = result.address?.country;
-
         const location = {
           lat: parseFloat(result.lat),
           lng: parseFloat(result.lon),
         };
-
         const bounds = {
           ne: {
             lat: parseFloat(result.boundingbox?.[1]) || location.lat + 0.05,
@@ -1420,33 +1181,28 @@ const getState = ({ getStore, getActions, setStore }) => {
             lng: parseFloat(result.boundingbox?.[2]) || location.lng - 0.05,
           },
         };
-
-        console.log("✅ Nominatim Response:", {
+        console.log("Nominatim Response:", {
           city,
           state,
           country,
           location,
           bounds,
         });
-
         return { city, state, country, location, bounds };
       },
 
       fetchBounds: async (query, isZip = false) => {
         const actions = getActions();
         console.log("🌍 Fetching bounds for:", query);
-
         let apiUrl;
         if (isZip) {
           apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
         } else {
           apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
         }
-
         try {
           const response = await fetch(apiUrl);
           const data = await response.json();
-
           if (!data || (Array.isArray(data) && data.length === 0)) {
             console.warn("⚠️ Falling back to free-text query...");
             if (isZip) {
@@ -1455,217 +1211,23 @@ const getState = ({ getStore, getActions, setStore }) => {
               const retryData = await retryResponse.json();
               if (!retryData || retryData.length === 0) {
                 console.error(
-                  "❌ No valid results found even after fallback:",
+                  " No valid results found even after fallback:",
                   query
                 );
                 return null;
               }
-              return actions.formatNominatimResult(retryData[0]); // ✅ FIXED
+              return actions.formatNominatimResult(retryData[0]);
             }
             return null;
           }
-
           return actions.formatNominatimResult(
             Array.isArray(data) ? data[0] : data
-          ); // ✅ FIXED
+          );
         } catch (error) {
-          console.error("❌ Error fetching from Nominatim:", error);
+          console.error(" Error fetching from Nominatim:", error);
           return null;
         }
       },
-
-      // fetchBounds: async (query, isZip = false) => {
-      //   const store = getStore();
-      //   const actions = getActions();
-      //   console.log("🌍 Fetching bounds for:", query);
-
-      //   let apiUrl;
-      //   if (isZip) {
-      //     apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
-      //   } else {
-      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
-      //   }
-
-      //   try {
-      //     const response = await fetch(apiUrl);
-      //     const data = await response.json();
-
-      //     if (!data || (Array.isArray(data) && data.length === 0)) {
-      //       console.warn("⚠️ Falling back to free-text query...");
-      //       if (isZip) {
-      //         apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
-      //         const retryResponse = await fetch(apiUrl);
-      //         const retryData = await retryResponse.json();
-      //         if (!retryData || retryData.length === 0) {
-      //           console.error(
-      //             "❌ No valid results found even after fallback:",
-      //             query
-      //           );
-      //           return null;
-      //         }
-      //         return formatNominatimResult(retryData[0]);
-      //       }
-      //       return null;
-      //     }
-
-      //     return formatNominatimResult(Array.isArray(data) ? data[0] : data);
-      //   } catch (error) {
-      //     console.error("❌ Error fetching from Nominatim:", error);
-      //     return null;
-      //   }
-      // },
-      // fetchBounds: async (query, isZip = false) => {
-      //   console.log("🌍 Fetching bounds for:", query);
-
-      //   let apiUrl;
-      //   if (isZip) {
-      //     // ✅ Correct way to search by ZIP
-      //     apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&country=USA&format=json&addressdetails=1&limit=1`;
-      //   } else {
-      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
-      //   }
-
-      //   try {
-      //     const response = await fetch(apiUrl);
-      //     const data = await response.json();
-
-      //     if (!data || (Array.isArray(data) && data.length === 0)) {
-      //       console.error("❌ No valid results found from Nominatim:", query);
-      //       return null;
-      //     }
-
-      //     const result = Array.isArray(data) ? data[0] : data;
-
-      //     const city =
-      //       result.address?.city ||
-      //       result.address?.town ||
-      //       result.address?.village;
-      //     const state = result.address?.state;
-      //     const country = result.address?.country;
-
-      //     const location = {
-      //       lat: parseFloat(result.lat),
-      //       lng: parseFloat(result.lon),
-      //     };
-
-      //     const bounds = {
-      //       ne: {
-      //         lat: parseFloat(result.boundingbox?.[1]) || location.lat + 0.05,
-      //         lng: parseFloat(result.boundingbox?.[3]) || location.lng + 0.05,
-      //       },
-      //       sw: {
-      //         lat: parseFloat(result.boundingbox?.[0]) || location.lat - 0.05,
-      //         lng: parseFloat(result.boundingbox?.[2]) || location.lng - 0.05,
-      //       },
-      //     };
-
-      //     console.log("✅ Nominatim Response:", {
-      //       city,
-      //       state,
-      //       country,
-      //       location,
-      //       bounds,
-      //     });
-
-      //     return { city, state, country, location, bounds };
-      //   } catch (error) {
-      //     console.error("❌ Error fetching from Nominatim:", error);
-      //     return null;
-      //   }
-      // },
-
-      // fetchBounds: async (query, isZip = false) => {
-      //   console.log("🌍 Fetching bounds for:", query);
-
-      //   let apiUrl;
-      //   if (isZip) {
-      //     // Searching by ZIP code (not as precise as Google)
-      //     apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&format=json&addressdetails=1`;
-      //   } else {
-      //     // Reverse geocoding by lat/lng
-      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
-      //   }
-
-      //   try {
-      //     const response = await fetch(apiUrl);
-      //     const data = await response.json();
-
-      //     if (
-      //       !data ||
-      //       (Array.isArray(data) && data.length === 0) ||
-      //       !data.address
-      //     ) {
-      //       console.error("❌ No valid results found from Nominatim:", query);
-      //       return null;
-      //     }
-
-      //     const city =
-      //       data.address.city || data.address.town || data.address.village;
-      //     const state = data.address.state;
-      //     const country = data.address.country;
-      //     const location = { lat: query.lat, lng: query.lng };
-
-      //     // Nominatim does not provide precise bounds, so we approximate
-      //     const bounds = {
-      //       ne: { lat: query.lat + 0.05, lng: query.lng + 0.05 },
-      //       sw: { lat: query.lat - 0.05, lng: query.lng - 0.05 },
-      //     };
-
-      //     console.log("✅ Nominatim Response:", {
-      //       city,
-      //       state,
-      //       country,
-      //       location,
-      //       bounds,
-      //     });
-
-      //     return { city, state, country, location, bounds };
-      //   } catch (error) {
-      //     console.error("❌ Error fetching from Nominatim:", error);
-      //     return null;
-      //   }
-      // },
-
-      // fetchBounds: async (query, isZip = false) => {
-      //   console.log("🌍 Fetching bounds for:", query);
-
-      //   let apiUrl;
-      //   if (isZip) {
-      //     apiUrl = `https://nominatim.openstreetmap.org/search?postalcode=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
-      //   } else {
-      //     apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${query.lat}&lon=${query.lng}&format=json&addressdetails=1`;
-      //   }
-
-      //   try {
-      //     const response = await fetch(apiUrl);
-      //     const data = await response.json();
-
-      //     if (!data || (Array.isArray(data) && data.length === 0)) {
-      //       console.warn("⚠️ Falling back to free-text query...");
-      //       if (isZip) {
-      //         apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=us&format=json&addressdetails=1&limit=1`;
-      //         const retryResponse = await fetch(apiUrl);
-      //         const retryData = await retryResponse.json();
-      //         if (!retryData || retryData.length === 0) {
-      //           console.error(
-      //             "❌ No valid results found even after fallback:",
-      //             query
-      //           );
-      //           return null;
-      //         }
-      //         return this.formatNominatimResult(retryData[0]);
-      //       }
-      //       return null;
-      //     }
-
-      //     return this.formatNominatimResult(
-      //       Array.isArray(data) ? data[0] : data
-      //     );
-      //   } catch (error) {
-      //     console.error("❌ Error fetching from Nominatim:", error);
-      //     return null;
-      //   }
-      // },
 
       likeComment: async (commentId) => {
         const token = sessionStorage.getItem("token");
@@ -1675,7 +1237,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${current_back_url}/api/likeComment/${commentId}`,
             {
               method: "POST",
-              // headers: { Authorization: `Bearer ${token}` },
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -1736,7 +1297,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               setRatingCountCallback(0);
             return;
           }
-
           const data = await response.json();
           if (data && data.rating === "No ratings yet") {
             if (typeof setAverageRatingCallback === "function")
@@ -1776,21 +1336,18 @@ const getState = ({ getStore, getActions, setStore }) => {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // Ensure token is properly formatted
+                Authorization: `Bearer ${token}`,
               },
             }
           );
-
           console.log("📥 Response Status:", response.status);
-
           if (!response.ok) {
             const errorData = await response.json();
-            console.error("❌ Failed to approve comment:", errorData);
+            console.error(" Failed to approve comment:", errorData);
             throw new Error(errorData.message || "Failed to approve comment");
           }
-
           const data = await response.json();
-          console.log("✅ Comment approved:", data);
+          console.log(" Comment approved:", data);
           return true;
         } catch (error) {
           console.error("🚨 Error in approveComment:", error);
@@ -1804,10 +1361,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         console.log("🪪 Token being sent:", token);
 
         if (!token) {
-          console.warn("❌ No token found in sessionStorage");
+          console.warn(" No token found in sessionStorage");
           return [];
         }
-
         try {
           const response = await fetch(
             `${current_back_url}/api/unapproved_comments`,
@@ -1815,17 +1371,15 @@ const getState = ({ getStore, getActions, setStore }) => {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`, // ✅ Send token
+                Authorization: `Bearer ${token}`,
               },
             }
           );
-
           if (!response.ok) {
             throw new Error(
               `Failed to fetch unapproved comments. Status: ${response.status}`
             );
           }
-
           const data = await response.json();
           return data.comments || [];
         } catch (error) {
@@ -1840,7 +1394,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         const is_org = sessionStorage.getItem("is_org");
         const avatarID = sessionStorage.getItem("avatar");
         const user_id = sessionStorage.getItem("user_id");
-
         let favorites = [];
         try {
           const raw = sessionStorage.getItem("favorites");
@@ -1853,7 +1406,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           favorites = [];
           sessionStorage.setItem("favorites", JSON.stringify([]));
         }
-
         if (token) {
           setStore({
             token,
@@ -1863,7 +1415,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             user_id,
             favorites,
           });
-
           console.log("📦 Session restored from sessionStorage:");
         } else {
           console.warn("🔒 No token found in sessionStorage on init.");
@@ -1877,11 +1428,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         const url = getStore().current_back_url + "/api/createCommentAndRating";
         const token = sessionStorage.getItem("token");
-
         if (!token) {
           throw new Error("User is not logged in.");
         }
-
         try {
           const response = await fetch(url, {
             method: "POST",
@@ -1899,7 +1448,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (!response.ok) {
             throw new Error("Network response was not ok.");
           }
-
           const data = await response.json();
           return data;
         } catch (error) {
@@ -1910,7 +1458,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       getComments: async (resourceId, setCommentsCallback) => {
         const current_back_url = getStore().current_back_url;
-
         try {
           const response = await fetch(
             `${current_back_url}/api/getcomments/${resourceId}`
@@ -1932,7 +1479,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
-
         try {
           const response = await fetch(
             `${current_back_url}/api/comments-ratings/user/${userId}`,
@@ -1944,12 +1490,10 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-
           if (!response.ok) {
             console.error("Failed to fetch user comments and ratings");
             return;
           }
-
           const data = await response.json();
           setUserCommentsAndRatings(data.comments);
         } catch (error) {
@@ -1960,12 +1504,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       deleteComment: async (commentId) => {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
-
         if (!token) {
           console.error("User is not logged in.");
           return { success: false };
         }
-
         try {
           const response = await fetch(
             `${current_back_url}/api/deleteComment/${commentId}`,
@@ -1976,11 +1518,9 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-
           if (!response.ok) {
             throw new Error("Failed to delete comment");
           }
-
           return { success: true };
         } catch (error) {
           console.error("Error deleting comment:", error);
@@ -2004,6 +1544,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return { name: "Unknown" };
         }
       },
+
       getCurrentUserInfo: async () => {
         const store = getStore();
         if (!store.user_id) {
@@ -2027,19 +1568,15 @@ const getState = ({ getStore, getActions, setStore }) => {
               credentials: "include",
             }
           );
-
           if (!response.ok) {
             const error = await response.json();
             throw new Error(error.message || "Failed to fetch favorites");
           }
-
           const data = await response.json();
           if (!data.favorites) throw new Error("Invalid response format");
-
           const flattenedFavorites = data.favorites.map((fav) => ({
             ...fav.resource,
           }));
-
           setStore({ favorites: flattenedFavorites });
           sessionStorage.setItem(
             "favorites",
@@ -2053,7 +1590,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       addFavorite: async (resourceId) => {
         const token = sessionStorage.getItem("token");
         const current_back_url = getStore().current_back_url;
-
         try {
           const response = await fetch(`${current_back_url}/api/addFavorite`, {
             method: "POST",
@@ -2065,14 +1601,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
 
           if (!response.ok) {
-            const err = await response.json(); // get error body too
+            const err = await response.json();
             throw new Error("Failed to add favorite: " + JSON.stringify(err));
           }
-
-          const data = await response.json(); // ← ✅ THIS is what you want
-
-          console.log("✅ Favorite added:", data);
-
+          const data = await response.json();
+          console.log(" Favorite added:", data);
           const newFavorites = [...getStore().favorites, { id: resourceId }];
           setStore({ favorites: newFavorites });
           sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
@@ -2081,65 +1614,18 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // addFavorite: function (resourceId) {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-
-      //   console.log("Adding favorite with resourceId:", resourceId);
-      //   console.log("Current Backend URL:", current_back_url);
-      //   console.log("Token:", token);
-
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "POST",
-      //       body: JSON.stringify({ resourceId }), // ✅ Fixed key
-      //     };
-
-      //     console.log("Request Options:", opts);
-      //     fetch(`${current_back_url}/api/addFavorite`, opts)
-      //       .then((response) => {
-      //         console.log("Response Status:", response.status);
-      //         if (response.status === 409) {
-      //           console.error("This item is already in your favorites.");
-      //           return Promise.reject(
-      //             new Error("This item is already in your favorites.")
-      //           );
-      //         } else if (!response.ok) {
-      //           console.error("Failed to add favorite due to server error.");
-      //           return Promise.reject(new Error("Failed to add favorite"));
-      //         }
-      //         return response.json();
-      //       })
-      //       .then(() => {
-      //         console.log("Favorite added successfully!");
-      //         getActions().fetchFavorites();
-      //       })
-      //       .catch((error) => {
-      //         console.error("Error adding favorite:", error);
-      //       });
-      //   }
-      // },
-
       removeFavorite: async function (resourceId) {
         const current_back_url = getStore().current_back_url;
         const token = sessionStorage.getItem("token");
-
         if (!token) {
           console.warn("No token found for removing favorite.");
           return;
         }
-
-        // ⏱️ Optimistically update UI
         const updatedFavorites = getStore().favorites.filter(
           (fav) => fav.id !== resourceId
         );
         setStore({ favorites: updatedFavorites });
         sessionStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-
         try {
           const response = await fetch(
             `${current_back_url}/api/removeFavorite`,
@@ -2154,39 +1640,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (!response.ok) {
-            console.error("❌ Failed to remove favorite. Re-fetching...");
-            getActions().fetchFavorites(); // fallback to true state
+            console.error(" Failed to remove favorite. Re-fetching...");
+            getActions().fetchFavorites();
           } else {
-            console.log("🗑️ Favorite removed successfully.");
+            console.log("Favorite removed successfully.");
           }
         } catch (error) {
-          console.error("🚨 Network error removing favorite:", error);
-          getActions().fetchFavorites(); // fallback in case of error
+          console.error(" Network error removing favorite:", error);
+          getActions().fetchFavorites();
         }
       },
-
-      // removeFavorite: function (resourceId) {
-      //   const current_back_url = getStore().current_back_url;
-      //   const token = sessionStorage.getItem("token");
-      //   if (token) {
-      //     const opts = {
-      //       headers: {
-      //         Authorization: "Bearer " + token,
-      //         "Content-Type": "application/json",
-      //       },
-      //       method: "DELETE",
-      //       body: JSON.stringify({ resourceId }),
-      //     };
-      //     fetch(`${current_back_url}/api/removeFavorite`, opts)
-      //       .then((response) => response.json())
-      //       .then((data) => {
-      //         if (data.message === "okay") {
-      //           getActions().fetchFavorites();
-      //         }
-      //       })
-      //       .catch((error) => console.error("Error removing favorite:", error));
-      //   }
-      // },
 
       initApp: function () {
         const actions = getActions();

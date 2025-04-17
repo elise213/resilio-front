@@ -6,7 +6,6 @@ import styles from "../styles/resourceModal.css";
 import Swal from "sweetalert2";
 import { Tooltip, Icon } from "@mui/material";
 import Rating from "@mui/material/Rating";
-import Button from "@mui/material/Button";
 
 const Modal = ({ setShowRating, showRating }) => {
   const { store, actions } = useContext(Context);

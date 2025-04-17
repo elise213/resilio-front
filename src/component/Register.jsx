@@ -81,12 +81,6 @@ const Register = ({ setLog, log }) => {
 
   return (
     <div className="login-modal-content">
-      {/* <div className="login-modal-header">
-        <span className="close-login-modal" onClick={() => setLog("1")}>
-          <span className="material-symbols-outlined">arrow_back_ios</span>
-          Back to Login
-        </span>
-      </div> */}
       <div className="login-modal-body">
         <form ref={formRef} onSubmit={handleRegister}>
           <div className="form-section">

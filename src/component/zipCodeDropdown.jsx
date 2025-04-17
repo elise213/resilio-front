@@ -20,7 +20,7 @@ const ZipCodeDropdown = ({ handleBoundsChange, setIsGeoModalOpen }) => {
     actions.setForcePan(true);
     const data = await fetchCachedBounds(zip, true);
     if (!data) {
-      console.error("❌ Error fetching bounds: No results found.");
+      console.error("Error fetching bounds: No results found.");
       return;
     }
     const { location, bounds } = data;

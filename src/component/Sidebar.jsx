@@ -157,70 +157,6 @@ const Sidebar = ({
     );
   };
 
-  // const CombinedFilters = ({ categories = {}, days = {}, actions }) => {
-  //   if (!actions) {
-  //     console.error("⚠️ Actions prop is missing in CombinedFilters!");
-  //     return null;
-  //   }
-
-  //   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
-  //   const activeCategories = Object.keys(categories).filter(
-  //     (key) => categories[key]
-  //   );
-  //   const activeDays = Object.keys(days).filter((key) => days[key]);
-
-  //   if (activeCategories.length === 0 && activeDays.length === 0) return null;
-
-  //   return (
-  //     <div className="active-filters">
-  //       <p className="filter-title">Filtering by:</p>
-
-  //       {activeCategories.length > 0 && (
-  //         <div className="filter-group">
-  //           <span className="filter-label">Category</span>
-  //           <div className="filter-list">
-  //             {activeCategories.map((category) => (
-  //               <div key={category} className="filter-item">
-  //                 {capitalize(category)}
-  //                 <button
-  //                   className="remove-filter"
-  //                   onClick={() => {
-  //                     handleCategoryChange(category);
-  //                   }}
-  //                 >
-  //                   ✕
-  //                 </button>
-  //               </div>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       )}
-
-  //       {activeDays.length > 0 && (
-  //         <div className="filter-group">
-  //           <span className="filter-label">Day</span>
-  //           <div className="filter-list">
-  //             {activeDays.map((day) => (
-  //               <div key={day} className="filter-item">
-  //                 {capitalize(day)}
-  //                 <button
-  //                   className="remove-filter"
-  //                   onClick={() => {
-  //                     handleDayChange(day);
-  //                   }}
-  //                 >
-  //                   ✕
-  //                 </button>
-  //               </div>
-  //             ))}
-  //           </div>
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // };
-
   return (
     <>
       <nav className={`new-navbar ${layout}`}>
@@ -280,7 +216,6 @@ const Sidebar = ({
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              {/* </Tooltip> */}
 
               <Tooltip title="Filter Resources" arrow>
                 <span
@@ -312,27 +247,16 @@ const Sidebar = ({
               actions={actions}
               searchQuery={searchQuery}
             />
-            {/* <div className="list-container">
-              <ul>
-                {(Object.values(categories).some(Boolean) ||
-                Object.values(days).some(Boolean)
-                  ? filteredResults2 // use filtered only
-                  : store.boundaryResults || []
-                ).map((resource, index) => (
-                  <ResourceCard key={resource.id || index} item={resource} />
-                ))}
-              </ul>
-            </div> */}
+
             <div className="list-container">
               <ul>
                 {(Object.values(categories).some(Boolean) ||
                 Object.values(days).some(Boolean)
-                  ? filteredResults2 // use filtered only
+                  ? filteredResults2
                   : filteredResources(searchQuery)
-                ) // apply search filtering
-                  .map((resource, index) => (
-                    <ResourceCard key={resource.id || index} item={resource} />
-                  ))}
+                ).map((resource, index) => (
+                  <ResourceCard key={resource.id || index} item={resource} />
+                ))}
               </ul>
             </div>
           </div>

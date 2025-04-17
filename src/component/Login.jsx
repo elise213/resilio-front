@@ -16,7 +16,6 @@ import Register from "./Register";
 const Login = ({ setLayout }) => {
   const { store, actions } = useContext(Context);
   const [log, setLog] = useState("1");
-
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,19 +40,16 @@ const Login = ({ setLayout }) => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     const forgotEmail = email;
-
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ recipient_email: forgotEmail }),
     };
-
     try {
       const response = await fetch(
         `${store.current_back_url}/api/forgot-password`,
         requestOptions
       );
-
       if (response.ok) {
         Swal.fire({
           icon: "success",
@@ -84,19 +80,12 @@ const Login = ({ setLayout }) => {
     setAnchorEl(null);
     setLayout("fullscreen-sidebar");
   };
-
   let field = null;
-
   if (log === "2") {
     field = <Register setLog={setLog} log={log} />;
   } else if (log === "3") {
     field = (
       <div className="login-modal-content">
-        {/* <div className="login-modal-header">
-          <span className="close-login-modal" onClick={() => setLog("1")}>
-            X
-          </span>
-        </div> */}
         <div className="login-modal-body">
           <form onSubmit={handleForgotPassword}>
             <div className="form-section">
@@ -132,17 +121,6 @@ const Login = ({ setLayout }) => {
   } else {
     field = (
       <div className="login-modal-content">
-        {/* <div className="login-modal-header">
-          <span
-            className="close-login-modal"
-            onClick={() => {
-              setIsLoginModalOpen(false);
-              setLog("1");
-            }}
-          >
-            X
-          </span>
-        </div> */}
         <div className="login-modal-body">
           <form>
             <div className="form-section">

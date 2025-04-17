@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import MyCheckbox from "./MyCheckbox";
 import styles from "../styles/selection.css";
-import { Menu, MenuItem, IconButton, Tooltip, Icon } from "@mui/material";
 
 const Selection = ({
   isFilterModalOpen,
@@ -14,7 +13,6 @@ const Selection = ({
   resetFilters,
 }) => {
   const { store } = useContext(Context);
-
   const [localCategories, setLocalCategories] = useState({ ...categories });
   const [localDays, setLocalDays] = useState({ ...days });
 
@@ -41,11 +39,9 @@ const Selection = ({
     Object.entries(localCategories).forEach(([id, value]) => {
       if (categories[id] !== value) handleCategoryChange(id);
     });
-
     Object.entries(localDays).forEach(([id, value]) => {
       if (days[id] !== value) handleDayChange(id);
     });
-
     setIsFilterModalOpen(false);
   };
 
@@ -64,18 +60,7 @@ const Selection = ({
             <div className="filter-modal-content">
               <div className="filter-section">
                 <p className="selection-heading">Categories</p>
-                {/* {Array.isArray(store.CATEGORY_OPTIONS) &&
-                store.CATEGORY_OPTIONS.map((option) => (
-                  <MyCheckbox
-                    key={option.id}
-                    id={option.id}
-                    label={`${option.label} (${
-                      store.categoryCounts?.[option.id] || 0
-                    })`}
-                    isChecked={!!localCategories[option.id]}
-                    handleToggle={() => toggleLocalCategory(option.id)}
-                  />
-                ))} */}
+
                 {Array.isArray(store.CATEGORY_OPTIONS) &&
                   store.CATEGORY_OPTIONS.filter(
                     (option) => (store.categoryCounts?.[option.id] || 0) > 0

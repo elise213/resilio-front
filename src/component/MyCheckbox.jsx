@@ -1,7 +1,6 @@
 import React from "react";
 
 const MyCheckbox = ({ id, label, isChecked, handleToggle }) => (
-  // <div className="day-row" key={id}>
   <div className="my-form-check">
     <input
       className="my-input"
@@ -16,7 +15,6 @@ const MyCheckbox = ({ id, label, isChecked, handleToggle }) => (
       {label}
     </label>
   </div>
-  // </div>
 );
 
 export default MyCheckbox;

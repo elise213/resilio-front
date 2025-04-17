@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  useMemo,
 } from "react";
 import { Context } from "../store/appContext";
 import GoogleMapReact from "google-map-react";
@@ -15,7 +14,6 @@ import { useIsVisible } from "../hooks/isVisible";
 
 const Map = ({
   layout,
-  handleBoundsChange,
   city,
   userLocation,
   setHoveredItem,
@@ -42,22 +40,6 @@ const Map = ({
       }, 200);
     }
   }, [isMapVisible]);
-
-  // const handleMapIdle = () => {
-  //   if (!mapInstanceRef.current) return;
-  //   const bounds = mapInstanceRef.current.getBounds();
-  //   if (!bounds) return;
-
-  //   const ne = bounds.getNorthEast();
-  //   const sw = bounds.getSouthWest();
-  //   const newBounds = {
-  //     ne: { lat: ne.lat(), lng: ne.lng() },
-  //     sw: { lat: sw.lat(), lng: sw.lng() },
-  //   };
-
-  //   console.log("🟡 Map idle detected, new bounds:", newBounds);
-  //   actions.setBoundaryResults(newBounds, categories, days);
-  // };
 
   useEffect(() => {
     if (mapHasLoaded && mapInstanceRef.current) {
@@ -116,7 +98,7 @@ const Map = ({
         sw: { lat: sw.lat(), lng: sw.lng() },
       };
 
-      console.log("📦 Initial fallback fetch triggered:", newBounds);
+      console.log("Initial fallback fetch triggered:", newBounds);
       actions.setBoundaryResults(newBounds, categories, days);
     }
   }, [mapHasLoaded, store.userLocation]);
@@ -130,20 +112,16 @@ const Map = ({
 
       const handleMouseEnter = (event) => {
         if (!markerRef.current) return;
-
         setIsHovered(true);
         setHoveredItem(result);
-
         const cursorX = event.clientX;
         const cursorY = event.clientY;
         const mapRect = markerRef.current
           .closest(".map-container")
           ?.getBoundingClientRect();
         if (!mapRect) return;
-
         const isCloserToTop = cursorY < (mapRect.top + mapRect.bottom) / 2;
         const isCloserToLeft = cursorX < (mapRect.left + mapRect.right) / 2;
-
         const positionClass = isCloserToTop
           ? isCloserToLeft
             ? "corner-top-left"
@@ -151,10 +129,8 @@ const Map = ({
           : isCloserToLeft
           ? "corner-bottom-left"
           : "corner-bottom-right";
-
         setClosestCornerClass(positionClass);
       };
-
       const handleMouseLeave = () => {
         setIsHovered(false);
         setHoveredItem(null);
@@ -218,21 +194,16 @@ const Map = ({
   useEffect(() => {
     if (!mapInstanceRef.current || !mapsInstanceRef.current || !mapCenter)
       return;
-
     const map = mapInstanceRef.current;
     const current = map.getCenter();
     const maps = mapsInstanceRef.current;
     const newLatLng = new maps.LatLng(mapCenter.lat, mapCenter.lng);
-
     const distance = google.maps.geometry.spherical.computeDistanceBetween(
       current,
       newLatLng
     );
-
     if (!forcePanRef.current && distance < 10) return;
-
-    console.log("📍 Panning to mapCenter:", mapCenter);
-
+    console.log("Panning to mapCenter:", mapCenter);
     map.setCenter(newLatLng);
   }, [mapCenter]);
 
@@ -243,7 +214,6 @@ const Map = ({
       mapsInstance: !!mapsInstanceRef.current,
       userLocation,
     });
-
     if (
       !mapReady ||
       !mapInstanceRef.current ||
@@ -257,10 +227,8 @@ const Map = ({
       console.warn("Google Maps Geometry library is missing");
       return;
     }
-
     const map = mapInstanceRef.current;
     const maps = mapsInstanceRef.current;
-
     const currentCenter = map.getCenter();
     const distance = google.maps.geometry.spherical.computeDistanceBetween(
       currentCenter,
@@ -271,20 +239,17 @@ const Map = ({
       console.log("🟢 Map already centered. Skipping movement.");
       return;
     }
-
-    console.log("📍 Panning to user location...");
+    console.log(" Panning to user location...");
     map.setCenter(new maps.LatLng(userLocation.lat, userLocation.lng));
     map.setZoom(13);
   }, [userLocation, mapReady]);
 
   const handleApiLoaded = ({ map, maps }) => {
     if (!map || !maps) {
-      console.error("❌ Map or Maps not loaded!");
+      console.error(" Map not loaded!");
       return;
     }
-
     console.log("✅ Google Maps API Loaded");
-
     mapInstanceRef.current = map;
     mapsInstanceRef.current = maps;
     actions.setMapInstance(map);
@@ -295,19 +260,15 @@ const Map = ({
   useEffect(() => {
     if (!mapInstanceRef.current || !mapsInstanceRef.current || !mapCenter)
       return;
-
     const map = mapInstanceRef.current;
     const current = map.getCenter();
     const maps = mapsInstanceRef.current;
     const newLatLng = new maps.LatLng(mapCenter.lat, mapCenter.lng);
-
     const distance = google.maps.geometry.spherical.computeDistanceBetween(
       current,
       newLatLng
     );
-
     if (distance < 10) return;
-
     map.setCenter(newLatLng);
   }, [mapCenter]);
 
@@ -330,7 +291,6 @@ const Map = ({
   }, []);
 
   const MIN_BOUND_CHANGE_DELTA = 0.001; // adjustable sensitivity
-
   const boundsChangedSignificantly = (oldBounds, newBounds) => {
     if (!oldBounds) return true; // first time
     return (
@@ -342,23 +302,18 @@ const Map = ({
   };
 
   const lastBoundsRef = useRef(null);
-
-  const skipNextRef = useRef(false);
-
+  // const skipNextRef = useRef(false);
   const currentZoomRef = useRef(null);
 
   const handleMapChange = useCallback(
     debounce(({ bounds, center, zoom }) => {
       if (!bounds || !bounds.ne || !bounds.sw) return;
-
       const newBounds = {
         ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
         sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
       };
-
       const zoomChanged = zoom !== currentZoomRef.current;
       currentZoomRef.current = zoom;
-
       if (
         !boundsChangedSignificantly(lastBoundsRef.current, newBounds) &&
         !zoomChanged
@@ -368,74 +323,12 @@ const Map = ({
         );
         return;
       }
-
-      console.log("🟢 Map movement or zoom detected");
+      console.log("Map movement or zoom detected");
       lastBoundsRef.current = newBounds;
       actions.setBoundaryResults(newBounds, categories, days);
     }, 1000),
     [categories, days]
   );
-
-  // const handleMapChange = useCallback(
-  //   debounce(({ bounds }) => {
-  //     if (skipNextRef.current) {
-  //       console.log("⏩ Skipping fetch due to programmatic move.");
-  //       skipNextRef.current = false;
-  //       return;
-  //     }
-
-  //     if (!bounds || !bounds.ne || !bounds.sw) return;
-
-  //     const newBounds = {
-  //       ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
-  //       sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
-  //     };
-
-  //     if (!boundsChangedSignificantly(lastBoundsRef.current, newBounds)) {
-  //       console.log("🟣 Bounds changed insignificantly, skipping fetch.");
-  //       return;
-  //     }
-
-  //     console.log("🟢 Significant map movement detected:", newBounds);
-  //     lastBoundsRef.current = newBounds;
-  //     actions.setBoundaryResults(newBounds, categories, days);
-  //   }, 1000),
-  //   [categories, days]
-  // );
-
-  // const handleMapChange = useCallback(
-  //   debounce(({ bounds, center, zoom }) => {
-  //     if (!bounds || !bounds.ne || !bounds.sw) return;
-
-  //     const newBounds = {
-  //       ne: { lat: bounds.ne.lat, lng: bounds.ne.lng },
-  //       sw: { lat: bounds.sw.lat, lng: bounds.sw.lng },
-  //     };
-
-  //     if (!boundsChangedSignificantly(lastBoundsRef.current, newBounds)) {
-  //       console.log("🟣 Bounds changed insignificantly, skipping fetch.");
-  //       return;
-  //     }
-
-  //     console.log("🟢 Significant map movement detected:", newBounds);
-  //     lastBoundsRef.current = newBounds;
-  //     actions.setBoundaryResults(newBounds, categories, days);
-  //   }, 1000), // debounce time
-  //   [categories, days]
-  // );
-
-  // const defaultCenter = useMemo(
-  //   () => ({
-  //     lat: city?.center?.lat || 34.0522,
-  //     lng: city?.center?.lng || -118.2437,
-  //   }),
-  //   [city.center]
-  // );
-
-  // const debouncedHandleBoundsChange = useMemo(
-  //   () => debounce(handleBoundsChange, 1000), // or even 1500ms
-  //   [handleBoundsChange]
-  // );
 
   const filtersAreActive =
     Object.values(categories || {}).some(Boolean) ||
@@ -448,7 +341,6 @@ const Map = ({
   return (
     <div className={`map-frame`}>
       <div
-        // key={`${layout}`}
         ref={mapContainerRef}
         className={`map-container${layout}`}
         style={{ height: "100%", width: "100%" }}

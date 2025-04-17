@@ -10,12 +10,10 @@ const SmartPlacesAutocomplete = ({
   const [localValue, setLocalValue] = useState(defaultValue);
   const [ready, setReady] = useState(false);
 
-  // Wait until Google Maps Places is available
   useEffect(() => {
     if (!window.google || !window.google.maps || !window.google.maps.places) {
       const interval = setInterval(() => {
         if (window.google?.maps?.places) {
-          console.log("✅ Google Places Library Ready");
           setReady(true);
           clearInterval(interval);
         }
