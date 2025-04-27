@@ -18,7 +18,6 @@ const Layout = () => {
   const { store, actions } = useContext(Context);
 
   return (
-    // <BrowserRouter future={{ v7_startTransition: true }} basename={basename}>
     <BrowserRouter
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       basename={basename}

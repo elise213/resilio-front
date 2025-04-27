@@ -53,12 +53,6 @@ const Sidebar = ({
   };
 
   const authorizedUser = store.authorizedUser;
-
-  useEffect(() => {
-    console.log("🟡 Store loadingLocation:", store.loadingLocation);
-    console.log("🟡 Store loading Result:", store.loadingLocation);
-  }, [store.loadingLocation]);
-
   const CombinedFilters = ({
     categories = {},
     days = {},
@@ -69,25 +63,20 @@ const Sidebar = ({
       console.error("⚠️ Actions prop is missing in CombinedFilters!");
       return null;
     }
-
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
     const activeCategories = Object.keys(categories).filter(
       (key) => categories[key]
     );
     const activeDays = Object.keys(days).filter((key) => days[key]);
-
     if (
       activeCategories.length === 0 &&
       activeDays.length === 0 &&
       !searchQuery
     )
       return null;
-
     return (
       <div className="active-filters">
         <p className="filter-title">Filtering by:</p>
-
         {searchQuery && (
           <div className="filter-group">
             <span className="filter-label">Search</span>
@@ -180,11 +169,9 @@ const Sidebar = ({
             <Login log={log} setLog={setLog} setLayout={setLayout} />
           </div>
         </div>
-
         <div className="logo-div">
           <img className="top-logo" src="/assets/OV.png" alt="Resilio Logo" />
         </div>
-
         {store.loadingResults ? (
           <div className="loading-alert">Loading...</div>
         ) : (
@@ -195,7 +182,6 @@ const Sidebar = ({
         ) : (
           ""
         )}
-
         {!store.loadingResults ? (
           <div className="nav-div">
             <div className="side-by">

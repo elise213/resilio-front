@@ -608,7 +608,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
         setStore({ loadingResults: true });
-        console.log("Received bounds:", bounds);
+        // console.log("Received bounds:", bounds);
         const formattedBounds = {
           neLat: bounds.ne.lat,
           neLng: bounds.ne.lng,
@@ -640,8 +640,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (!data || !data.data || data.data.length === 0) {
             console.warn("No resources returned from the backend.");
           }
-          console.log("all resources", data.data);
-          console.log("all resources", formattedBounds);
+          // console.log("all resources", data.data);
+          // console.log("all resources", formattedBounds);
           setStore({
             allResources: data.data || [],
             lastFetchedBounds: formattedBounds,
@@ -1102,11 +1102,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("📦 Inside buffered bounds, using cached data.");
         }
         const allResources = getStore().allResources || [];
-        console.log(" Filtering results");
-        console.log(" Received bounds:", bounds);
-        console.log("Selected Categories:", selectedCategories);
-        console.log("Selected Days:", selectedDays);
-        console.log("Total resources before filtering:", allResources.length);
         const isFilteringByCategory =
           Object.values(selectedCategories).some(Boolean);
         const isFilteringByDay = Object.values(selectedDays).some(Boolean);
@@ -1141,11 +1136,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             if (isFilteringByDay) return hasValidDay;
             return false;
           });
-          console.log(
-            "Found",
-            filteredResults.length,
-            "resources after filtering."
-          );
+          // console.log(
+          //   "Found",
+          //   filteredResults.length,
+          //   "resources after filtering."
+          // );
           setStore({
             boundaryResults: [...filteredResults],
             loadingResults: false,

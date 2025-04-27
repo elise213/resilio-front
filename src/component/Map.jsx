@@ -236,7 +236,7 @@ const Map = ({
     );
 
     if (distance < 500) {
-      console.log("🟢 Map already centered. Skipping movement.");
+      console.log("Map already centered. Skipping movement.");
       return;
     }
     console.log(" Panning to user location...");
@@ -249,7 +249,6 @@ const Map = ({
       console.error(" Map not loaded!");
       return;
     }
-    console.log("✅ Google Maps API Loaded");
     mapInstanceRef.current = map;
     mapsInstanceRef.current = maps;
     actions.setMapInstance(map);
