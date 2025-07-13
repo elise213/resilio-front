@@ -64,7 +64,7 @@ const Home = () => {
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
-  const [layout, setLayout] = useState("fullscreen-sidebar");
+  const [layout, setLayout] = useState("fullscreen-map");
   const [lastBounds, setLastBounds] = useState(null);
   // const INITIAL_CITY_STATE = store.austin[0];
   // const [city, setCity] = useState(INITIAL_CITY_STATE);
