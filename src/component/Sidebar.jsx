@@ -161,7 +161,7 @@ const Sidebar = ({
                   size="small"
                 />
               }
-              label={layout === "fullscreen-map" ? "List View" : "Map View"}
+              label={layout === "fullscreen-map" ? "Map View" : "List View"}
               labelPlacement="end"
             />
           )}
